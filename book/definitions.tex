@@ -1,0 +1,104 @@
+%
+% PACKAGES
+%
+
+% http://andrewjpage.com/index.php?/archives/55-Algorithms-in-Latex.html
+\usepackage[algochapter, ruled, linesnumbered]{algorithm2e}
+% \usepackage[ruled, linesnumbered]{algorithm2e}
+
+
+
+
+\usepackage{fancyhdr} % nice headers
+\usepackage{amsmath} %Never write a paper without using amsmath for its many new commands
+\usepackage{amssymb} %Some extra symbols
+\usepackage{makeidx} %If you want to generate an index, automatically
+\usepackage{graphicx} %If you want to include postscript graphics
+% \usepackage{mystyle} %Create your own file, mystyle.sty where you put all your own \newcommand statements, for example.
+
+% so i can define the margins explicitly
+% http://www.biochem.ucl.ac.uk/~james/latex/thesis_master_file.html
+\usepackage{geometry}
+
+% code listings
+% http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
+\usepackage{listings} 
+
+% use colors
+\usepackage{color}
+
+% use in-line references for 'further reading'
+\usepackage{bibentry}
+% \usepackage{natbib}
+
+
+
+% fix quotes in code listings
+\usepackage{upquote}
+\usepackage{textcomp}
+
+\usepackage[pdftex,  % needed for pdflatex
+  breaklinks=true,  % so long urls are correctly broken across lines
+  colorlinks=true,
+  urlcolor=blue,
+  linkcolor=blue,
+  citecolor=blue,
+  ]{hyperref}
+
+
+%
+% NEW COMMMANDS
+%
+
+% new macro for starting a new page and changing the style to empty
+% \newpage == ends the current page. 
+% \thispagestyle == works in the same manner as the \pagestyle, except that it changes the style for the current page only. 
+% empty == Produces empty heads and feet - no page numbers
+\newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
+
+% The main title of the book
+\newcommand{\mybooktitle}{Clever Algorithms}
+
+% The sub title of the book
+\newcommand{\mybooksubtitle}{A Practical Artificial Intelligence Reference}
+
+
+% 
+% TOC
+% \setcounter{tocdepth}{1}
+
+
+%
+% Title Page
+%
+\makeatletter
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1pt\hfill \kern \z@}
+\renewcommand{\maketitle}{\begin{titlepage}%
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \parindent \z@
+    \reset@font
+    \null
+    \vskip 10\p@
+    \hbox{\mbox{\hspace{3em}}%
+      \vrule depth 0.6\textheight%
+      \mbox{\hspace{2em}}
+      \vbox{
+        \vskip 40\p@
+        \begin{flushleft}
+          \Large \@author \par
+        \end{flushleft}
+        \vskip 70\p@
+        \begin{flushleft}
+          \huge \bfseries \@title \par
+        \end{flushleft}
+        \vfil
+        }}
+    \null
+  \end{titlepage}%
+  \setcounter{footnote}{0}%
+}
+\makeatother
+\author{Jason Brownlee}
+\title{\mybooktitle\\{\large\mybooksubtitle}}
+\date{2009}

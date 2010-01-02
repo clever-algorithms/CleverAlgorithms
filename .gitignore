@@ -1,0 +1,6 @@
+.DS_Store
+book/*.aux
+book/*.pdf
+book/*.toc
+book/*.out
+book/*.log

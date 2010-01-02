@@ -1,0 +1,24 @@
+h1. Clever Algorithms
+
+h2. Overview
+
+This project manages the development of content and structure for the Clever Algorithms book by Jason Brownlee. 
+
+h2. Breakdown
+
+This project is partitioned into four efforts:
+
+* *workspace/* A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organised into sub-directories. 
+* *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
+* *web/* A webpage used to promote the project with a specialised content management system tailored to the content of the book.
+* *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
+
+h2. License 
+
+Copyright (C) 2009-2010 Jason Brownlee
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
+	<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />
+</a>
+
+This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
