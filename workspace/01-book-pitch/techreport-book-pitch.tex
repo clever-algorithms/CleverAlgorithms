@@ -1,4 +1,4 @@
-% Book Pitch
+% project overview
 % Copyright (C) 2010 Jason Brownlee
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
@@ -12,14 +12,15 @@
 \newcommand{\myreportname}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20090105}
 
-% todo add 'tech report' also add 'Clever Algorithms'
+% todo add 'Clever Algorithms'
 % todo setup clever algorithms email
-% todo setup tech report numbering system
 % todo setup header and footer - copyright, license, etc
 
 \title{{\myreporttitle}: {\myreportsubtitle}\\{\normalsize\myreportproject}}
 \author{\myreportname\\\myreportemail}
+\date{Technical Report: CA-TR-\myreportdate}
 \begin{document}
 \maketitle
 
@@ -40,7 +41,7 @@ This section describes the motivation for the Clever Algorithms Project.
 \subsection{The Problem}
 There is a critical open problem in the field of Artificial Intelligence: communication. Generally, techniques are poorly described, the descriptions a distributed, spanning multiple documents, and the descriptions of a given technique and the descriptions across techniques are not consistent. 
 
-Artificial Intelligence is a very large field of study, and the description and investigation of algorithmic techniques is a central pursuit in subfields such as Operations Research, Machine Learning, Biologically Inspired Computation, and Computational Intelligence. The latter two fields are exemplars for the open problem of algorithm communication, where an average conference proceeding will show algorithms described mathematically, using ad hoc pseudo code, real programming language code, and in some cases algorithms are only partially described or not described at all. 
+Artificial Intelligence is a very large field of study, and the description and investigation of algorithmic techniques is a central pursuit in subfields such as Operations Research, Machine Learning, Biologically Inspired Computation, and Computational Intelligence. The latter two fields are exemplars for the open problem of algorithm communication, where an average conference proceeding will show algorithms described mathematically, using ad hoc pseudo code, real programming language code, and in some cases algorithms are only partially described or not described at all. Diversity of description may be an advantage if a the audience has skill set that is as diverse. An inconsistent representation for techniques mean that for a specialized audience, the skills acquired and used to realize one technique may or may not be transferable to realizing other techniques or even updated versions of the same technique.
 
 \subsection{The Affect}
 For the individual, an ill described algorithm may be a frustration where the gaps are filled with intuition and `best guess' or they may an example of bad science and the failure of the scientific method where the inability to understand and implement a technique may prevent the replication of results or the investigation and extension of a technique. 
@@ -54,15 +55,15 @@ The problem may be summarized as follows:
 \begin{itemize}
 	\item \textbf{Problem}: Poor communication of algorithmic techniques, specifically those from the fields of Biologically Inspired Computation and Computational Intelligence.
 	\begin{itemize}
-		\item \textbf{Incomplete Descriptions}
-		\item \textbf{Inconsistent Descriptions}
-		\item \textbf{Decentralized Descriptions}
+		\item \textbf{Incomplete Descriptions}: Many techniques are ambiguously described, partially described, or not described at all.
+		\item \textbf{Inconsistent Descriptions}: A given technique may be described using a variety of formal and semi-formal techniques, representations that also vary across different techniques limiting the transferability of the skills an audience used to realize a technique.
+		\item \textbf{Decentralized Descriptions}: The description of data structures, operations, and parameterization of a given technique may be distributed across an array of papers, articles, books, and source code published over a number of years, the access to some of which may be restricted or difficult to obtain. 
 	\end{itemize}
 	\item \textbf{Affect}: 
 	\begin{itemize}
 		\item \textbf{Technique Interpretation}
-		\item \textbf{Bad Science}		
-		\item \textbf{Technique Attrition}: 
+		\item \textbf{Bad Science}: 
+		\item \textbf{Technique Attrition}: Those techniques that can only be realistically implemented by the original author may as well not exist, regardless of related claims of efficiency or efficacy.
 	\end{itemize}
 \end{itemize}
 
