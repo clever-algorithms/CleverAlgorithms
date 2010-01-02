@@ -6,12 +6,23 @@
 	\maketitle
 	\include{copyright}
 	\tableofcontents
+	\include{preface}
 \mainmatter 
 	% complie bib but do not display at the back (all inline)
 	\bibliographystyle{plain}
-	\nobibliography{bibliography}	
-	
-	
+	\nobibliography{bibliography}		
+	% chapters
+	\include{c_introduction}
+	% algorithms
+	\include{c_stochastic}
+	\include{c_evolution}
+	\include{c_probabilistic}
+	\include{c_swarm}
+	\include{c_immune}
+	\include{c_physical}
+	\include{c_neural}
+	% conclusions
+	\include{c_advanced}
 \backmatter 
 	% index
 \end{document}
