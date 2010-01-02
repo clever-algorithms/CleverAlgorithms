@@ -15,7 +15,7 @@ This project is partitioned into four efforts:
 
 h2. License 
 
-Copyright (C) 2009-2010 Jason Brownlee
+Copyright (C) 2008-2010 Jason Brownlee
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
 	<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />

@@ -1,0 +1,11 @@
+Coming up with an appropriate name for the book is hard, this file contains list of possible book names.
+
+format: <title>: <subtitle>
+
+
+- Computational Intelligence: Algorithm Atlas
+- Inspired Algorithms: A Handbook of Machine Learning Recipes in Ruby
+- Inspired Algorithms: A Handbook of Machine Learning Recipes
+- Inspired Algorithms: Pocket Reference 1: Function Optimization
+- Programming Inspired Algorithms: A Pocket Guide
+- Clever Algorithms: A Practical Artificial Intelligence Reference
