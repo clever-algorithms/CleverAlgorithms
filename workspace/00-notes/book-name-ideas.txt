@@ -6,6 +6,10 @@ format: <title>: <subtitle>
 - Computational Intelligence: Algorithm Atlas
 - Inspired Algorithms: A Handbook of Machine Learning Recipes in Ruby
 - Inspired Algorithms: A Handbook of Machine Learning Recipes
+- Inspired Algorithms: A Machine Learning Cookbook in Ruby
+- Inspired Algorithms: Computational Intelligence Recipes in Ruby
+- Inspired Algorithms: Machine Learning Recipes with the Ruby Programming Language
 - Inspired Algorithms: Pocket Reference 1: Function Optimization
 - Programming Inspired Algorithms: A Pocket Guide
 - Clever Algorithms: A Practical Artificial Intelligence Reference
+
