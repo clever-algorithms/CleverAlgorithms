@@ -1,4 +1,4 @@
-h1. Clever Algorithms
+h1. Clever Algorithms 
 
 h2. Overview
 
@@ -12,6 +12,10 @@ This project is partitioned into four efforts:
 * *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
 * *web/* A webpage used to promote the project with a specialised content management system tailored to the content of the book.
 * *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
+
+h2. History
+
+todo
 
 h2. License 
 
