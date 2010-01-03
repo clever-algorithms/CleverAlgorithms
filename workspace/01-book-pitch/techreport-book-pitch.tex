@@ -1,5 +1,5 @@
-% project overview
-% Copyright (C) 2010 Jason Brownlee
+% The Clever Algorithms Project: Overview
+% (c) Copyright 2010 Jason Brownlee. All Rights Reserved. 
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 \documentclass[a4paper, 11pt]{article}
@@ -8,36 +8,50 @@
 \usepackage{geometry}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
-% Fill these in
+% Dear template user: fill these in
 \newcommand{\myreporttitle}{The Clever Algorithms Project}
 \newcommand{\myreportsubtitle}{Overview}
 \newcommand{\myreportname}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
 \newcommand{\myreportdate}{20090105}
-\newcommand{\myreportlicense}{Copyright \copyright\ 2010 Jason Brownlee. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. All Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
 % todo setup clever algorithms email
-% todo setup header and footer - copyright, license, etc
 
+% leave this alone, it's templated baby!
 \title{{\myreporttitle}: {\myreportsubtitle}\footnote{\myreportlicense}}
 \author{\myreportname\\\small\myreportemail\\\myreportproject}
-\date{Technical Report: CA-TR-\myreportdate}
+\date{\today\\Technical Report: CA-TR-\myreportdate}
 \begin{document}
 \maketitle
 
+% write a summary sentence for each major section
 \section*{Abstract} 
-\label{sec:abstract}
-\emph{This is where the abstract goes.}
+% problem
+An open problem in the general field of Artificial Intelligence is that algorithm descriptions can be incomplete, inconsistent, and distributed resulting in inconsistent interpretations of algorithms, undue attrition of algorithms, and ultimately bad science. 
+% solution
+The Clever Algorithms Project proposes an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
+% audience
+The proposed audience for the algorithm descriptions produced as a result of the project include research scientists, engineers, students, and interested amateurs.
+% location
+All files and content for the project are released under a permissive license and can be accessed online from the address \url{http://www.CleverAlgorithms.com}.
+% methodology
+An initial methodology for completing the project is proposed, involving the incremental completion of discrete standalone algorithm descriptions over an extended period of time, allowing continuous review, revision, and refinement of both the content and algorithm description template.
+% future
+future?
 \\
-\textbf{Keywords}: \texttt{Clever, Algorithms, Project, Overview, Motivation}
+\textbf{Keywords}: \texttt{Clever, Algorithms, Project, Overview, Motivation, Problem, Solution, Audience}
 
+% summarise the document breakdown with cross references
 \section{Introduction}
 \label{sec:introduction}
-
-this report provides an overview of the clever algorithms project
+The Clever Algorithms Project is concerned with the investigation of algorithms from subfields of Artificial Intelligence and presenting them in a consistent and structured manner. This report provides the touchstone for the projects mission.
+% breakdown
+The project is motivated in Section~\ref{sec:motivation} reviewing the perceived open problem of algorithm communication and the detrimental effect it has on progress in the field. The project is presented in Section~\ref{sec:project} as an attempt to address this open problem by providing a set of standardized algorithm descriptions. The objectives of the project and the intended audience are listed, and the projects current location and proposed methodology are reviewed. Finally, Section~\ref{sec:conclusions} highlights some areas for further consideration in order to ready the effort.
 
 \section{Motivation}
+\label{sec:motivation}
 
 \subsection{Problem}
 Artificial Intelligence is a very large field of study and the description and investigation of algorithmic techniques is a central pursuit in subfields such as Machine Learning, Biologically Inspired Computation, and Computational Intelligence. There is a critical open problem in the field of Artificial Intelligence: communication. The fields of Biologically Inspired Computation and Computational Intelligence are of particular concern because the techniques they are concerned with are typically heuristic procedures based in metaphor making them susceptible to description my analogy and metaphorical nomenclature.
@@ -62,6 +76,7 @@ For the individual, an ill described algorithm may be a frustration where the ga
 \end{itemize}
 
 \section{Clever Algorithms Project}
+\label{sec:project}
 
 \subsection{Solution}
 Algorithmic techniques that emerge from the fields of Computational Intelligence and Biologically Inspired Computation are interesting, surprising, and will potentially contribute alternative paradigms of computation to address the limits of more tradition approaches. 
@@ -91,9 +106,8 @@ The secondary objectives of the project are \emph{accessibility}, \emph{usabilit
 \end{itemize}
 
 \subsection{Audience}
-The audience for the The Clever Algorithms Project are practitioners somehow concerned or interested with the fields of Computational Intelligence and Biologically Inspired Computation:
+The audience for the The Clever Algorithms Project are practitioners somehow concerned or interested with the fields of Computational Intelligence and Biologically Inspired Computation, as follows:
 
-why do these groups of people need this book?
 
 \textbf{Scientists} - Research scientists concerned with theoretically or empirically investigating algorithms, addressing the questions:
 \begin{itemize}
@@ -123,7 +137,7 @@ the where?
 \subsection{Methodology}
 how is this book going to get done?
 
-
+% summarise the document message and areas for future consideration
 \section{Conclusions}
 \label{sec:conclusions}
 what was this all about, what is next, what big questions and problems does this raise?
@@ -136,3 +150,4 @@ follow ups - extensions
 
 
 \end{document}
+% EOF
