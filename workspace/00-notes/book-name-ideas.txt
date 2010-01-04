@@ -12,4 +12,4 @@ format: <title>: <subtitle>
 - Inspired Algorithms: Pocket Reference 1: Function Optimization
 - Programming Inspired Algorithms: A Pocket Guide
 - Clever Algorithms: A Practical Artificial Intelligence Reference
-
+- Clever Algorithms: A Compendium of Messy Artificial Intelligence
