@@ -1,0 +1,11 @@
+GA Tutorial Survey
+
+The genetic algorithm is perhaps the most popular algorithm described in the book. It provides a good test case for assessing the state of online tutorials for computational intelligence algorithms.
+
+Points:
+
+
+Cases:
+
+
+

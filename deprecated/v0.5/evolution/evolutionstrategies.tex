@@ -1,0 +1,133 @@
+\section{Evolution Strategies}
+
+\subsection{Inspiration}
+Evolution Strategies are inspired by the general theory of evolution by means of natural selection
+
+\subsection{Strategy}
+The strategy of Evolutionary Strategies is evolution with self-adaptive mutation. 
+
+Evolutionary Strategies are based on a general evolutionary system where heuristics govern the application of mutation. Traditionally this strategy involved increasing and decreasing a global mutation rate based on the progress of the evolutionary search (such as multiple or divide by 1/5 respectively). The intention of this adaptive control is search efficiency, for example the system may take large steps in across neural regions of the search space or along gradients, and smaller steps around optima.
+
+More recently this strategy has been realized through the co-evolution of parameters that control the amount of evolution that occurs either globally or per problem specific parameter. The strategy parameters control the scope of the mutation operator, influencing the step size (in problem space) of changes that may be introduced during a search. This introduces a fine level of control over the self-adaptation of candidate solutions governed by the same evolutionary process that governs the broader search.
+
+\subsection{Procedure}
+The procedure for Evolution Strategies involves a classical generational model of selection, recombination and mutation.
+
+The Evolution Strategy algorithm models problem domains in the problem space, requiring problem specific recombination and variation operators. A popular class of problem for the algorithm are non-linear optimization problems with real-valued function parameters. In this domain recombination may involve a traditional operator such as one-point crossover or a domain specific approach such as calculating the central tendency. Gaussian re-sampling around existing candidate solutions is used as the variation operator where strategy parameters influence the standard deviation of the distribution from which the random numbers are drawn.
+
+The field has its own nomenclature to describe the setup of a given strategy. For example a population has mu individuals which create lambda offspring each generation. The offspring may directly replace the parent population which is denoted as (mu,lambda)-ES. Alternatively, members from the two populations may compete with each other for positions in the next generation, denoted as (m+lambda)-ES. The numbers can be varied promoting selective pressure or generational gap, for example (1+5)-ES denotes a 1-member population that creates 5 offspring each generation the best of which competes with the parent for survival.
+
+\begin{lstlisting}
+Randomly initialize the population
+While not Stop Condition
+	Evaluate
+	Select Parents
+	For each 
+		Recombine to create offspring
+		Mutate strategy parameters
+		Mutate problem parameters (using mutated strategy parameters)
+	End
+	Replace Current Population
+End
+\end{lstlisting}
+
+\subsection{Heuristics}
+rules of thumb for using this algorithm
+
+\begin{itemize}
+	\item Maintain a modest population size (1<mu<100) such that the technique does not get stuck in local optima
+	\item Covariance Matrix Adaptation Evolution Strategy (CMA-ES) is a state of the art variation of the algorithm (for real-valued search spaces)
+	\item Should look at replacing 1/7 to 1/2 of the worst individuals in the population per generation with the comma-based approach
+	\item plus-based selection is preferred for combinatorial problems
+\end{itemize}
+
+\subsection{Tutorial}
+
+\subsubsection{Introduction}
+This section describes the implementation of (mu, lambda)-ES to solve a non linear programming problem, where individual candidate solutions self-adapt mutation size and direction parameters. 
+
+\subsubsection{Problem}
+The selected problem is a parameterized function with real valued variables called called Schwefel's function. It is a standard non linear programming problem for benchmarking optimization algorithms and was selected because the number of parameters (dimensions) can be varied to vary the difficulty of the problem.
+
+\begin{lstlisting}
+def calculate(real_vector)
+  real_vector.inject(0) {|sum, x| sum + -x * Math::sin(Math::sqrt(x.abs)) }
+end
+\end{lstlisting}
+
+The function in minimizing, meaning that small fitness values are better. The optimal solution is known at the coordinate 420.9687 in each dimension, and the problem is a bounded between -500 and 500. 
+
+\subsubsection{Solution}
+A candidate solution to the problem is defined by an array of floating point numbers, each element representing a parameter in the problem definition. In addition to a fitness score, each solution maintains an array of strategy parameters that influence the scope of variation on each function parameter. 
+
+New solutions are created at the beginning of the run as random points within the hyper-cube of the functions parameter space. Strategy parameters are initialized with random floats between 0 and 1. 
+
+\begin{lstlisting}
+def initialize_recombine(parent1, parent2)
+  length = parent1.strategy_params.length
+  # populate strategy parameters
+  @strategy_params = Array.new(length) do |i|
+    transcribe_strategy(Random.next_bool ? parent1.strategy_params[i] : parent2.strategy_params[i], length)
+  end
+  # populate objective values
+  @objective_params = Array.new(length) do |i|
+    transcribe_objective(Random.next_bool ? parent1.objective_params[i] : parent2.objective_params[i], @strategy_params[i])
+  end
+end
+\end{lstlisting}
+
+Solutions define their own crossover and mutation operators. A uniform crossover operator is used that creates a new objective and strategy vectors from two parents. The operator enumerates each vector one parameter at a time and flips a coin to choose whether to copy a value from the first or second parent.
+
+\begin{lstlisting}
+def transcribe_strategy(x)
+  x * Math::exp(heuristic_tau * Random::next_gaussian) 
+end
+\end{lstlisting}
+
+Mutations of parameters occurs at the time they are copied by passing them through a transcribe function. In this simple realization of Evolution Strategies, the strategy parameters represent standard deviations applied random Gaussian numbers which are in turn applied to the current objective parameters. In effect, the adaptation of the standard deviations for the mutation of each objective parameter control the scope of possible new values, referred to as a the jump or step size. 
+
+\begin{lstlisting}
+def transcribe_objective(x, stdev)
+  x + stdev * Random::next_gaussian
+end
+\end{lstlisting}
+
+\subsubsection{Algorithm}
+The algorithm is partitioned into the main evolve loop that executes one generation per algorithm iteration. Each generation, the entire population is selected to contribute to the next generation (mu == lambda). The general loop can use either the (mu+lambda)-ES or (mu+lambda)-ES confirmations. The first or `comma' mode requires that the newly created population replace the existing solution each iteration. A potential problem with this method is that good solutions in the old population may be replaced with less good solutions in the new population. 
+
+\begin{lstlisting}
+def comma_es
+  # direct replacement
+  @population = evolve_population(@population)
+  # evaluate
+  evaluate_population(new_population)
+end
+\end{lstlisting}
+
+The `plus' variation requires the selection of the best overall solutions from the union of both the old and the new populations. This strategy does preserve the best solutions found by the algorithm, although at the expense of greediness. Intermediate of these two extremes can be achieved by selecting less than the entire population each iteration and integrating the new offspring by displacing the lowest fitness members of the population.
+
+\begin{lstlisting}
+def plus_es
+  # create the new population
+  new_population = evolve_population(@population)
+  # evaluate the newly created candidate solutions
+  evaluate_population(new_population)
+  # combine the existing and new populations
+  union = @population + new_population
+  # rank by fitness evaluation (ascending numeric order)
+  union.sort!
+  # select the best of all available solutions
+  @population.fill {|i| @problem.is_maximizing? ? union[union.length-1-i] : union[i] }    
+end
+\end{lstlisting}
+
+\subsection{Summary}
+The Evolution Strategies algorithm is an evolutionary approach that uses a strategy of self-adaptive mutation. More advanced variations of the approach introduce finer granularity and control over the changes to the application of evolutionary operators to the strategy parameters.
+
+Some obvious extensions include a problem-specific initialization of the strategy parameters (standard deviations) in the base population and more elaborate heuristics for evolving the strategy parameters (based on the covariance matrix for example).
+
+\subsubsection{Further Reading}
+
+\begin{itemize}
+	\item EC1, Chapter 9
+\end{itemize}

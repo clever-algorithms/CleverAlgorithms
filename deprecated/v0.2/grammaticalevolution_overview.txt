@@ -1,0 +1,39 @@
+Grammatical Evolution Overview
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/09  JB  Created
+
+Inspiration
+: Grammatical Evolution is inspired by the theory of evolution by means of natural selection.
+
+Strategy
+: The strategy of Grammatical Evolution is to evolve programs represented by variable length binary strings that are mapped onto an expression tree defined by a context free grammar.
+
+Grammatical Evolution (GE) is focused on the evolution of expression trees with a well defined grammatical structure. The grammar is problem specific and defined by a final method called Backus Normal Form (BNF). A differentiating feature of GE from other program evolving algorithms is that the base representation used for candidate solutions are binary strings which are mapped into integers and eventually onto a domain specific BNF.
+
+As such GE exploits the adaptive potential of the evolutionary process applied to a sub-symbolic representation, coupled with the power of mapping the sub-symbolic representation onto a context free grammar that can formally define a natural language, a programming language, or domain specific language.
+
+Procedure
+The GE procedure is an evolutionary process where an initial randomly generated population of binary strings is adapted over a series of generations. A generation involves the mapping and evaluation of candidate solutions, the selection of a breeding set that replicate, and the integration of offspring into the population.
+
+New candidate solutions are created by crossing over two existing solutions and coping their representation with low frequency copying errors. GE uses variable length binary strings to represent candidate solutions, so the crossover operator must take this into consideration when selecting a cross point. Two additional genetic operators are used, prune operator that deletes sequences of bits from the genome, and a duplication operator that copies sequences of bits and adds them to the end of the genome. Both of the structure modifying genetic operators typically operate on 'gene' (parameter scope), that is sets of contiguous bits that map into a discrete parameter in the problem space duration candidate solution evaluation.
+
+The mapping process involves first decoding the binary string to a sequences of integers, and then consistently mapping the sequences of integers onto a syntactically correct expression using a BNF definition.
+
+Bits are read from the a candidate solutions genome in blocks of 8 and decoded to an integer (in the range between 0 and 2^8-1). If the end of the bitstring is reached when reading integers, the reading process loops back to the start of the string, effectively treating creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not decode and use a solutions entire genome or may decode the genome more than once given it's circular nature.
+
+A problem with this technique are genome failures. These are valid expression trees that produce invalid results, such as infinity, NaN or divide by zero errors. Such candidate solutions may be removed from the population or penalized for the errors. As such, a conservative approach is needed to manage the population with low frequency crossover, large generational gap, and low frequency mutation.
+
+Heuristics
+* Use of a large generational gap, for example replace about half the population per generation (least fit individuals).
+* A low crossover rate, such as 20% of new solutions
+* A low mutation rate, such as 1/L (length of binary string)
+* Penalization of expression trees that generate invalid results.
+
+Further Reading
+* Grammatical Evolution: Evolutionary Automatic Programming in an Arbitrary Language (2003)
+* Grammatical Evolution : Evolving Programs for an Arbitrary Language (1998)
+	http://www.grammatical-evolution.org/papers/eurogp98/index.html
+	(provides introduction to the technique and a simple symbolic regression example)
+* Official website: http://www.grammatical-evolution.org

@@ -1,0 +1,101 @@
+Cellular Genetic Algorithm Tutorial
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/11  JB  Created
+
+Introduction
+This tutorial demonstrates an implementation of the cellular genetic algorithm applied to the OneMax test function.
+
+Problem
+The problem is called OneMax and involves counting the number of 1's in a binary string. The optimal result for problem is L, where L is a parameter that defines the length of the strings used by the problem.
+
+def count_ones(bitstring)
+  bitstring.inject(0) {|sum, x| sum + ((x=='1') ? 1 : 0)}
+end
+
+Solution
+A solution is defined as a binary string and a fitness value. New candidate solutions are created as random binary strings.
+
+def initialize_random(length)
+  @genome = Array.new(length) {|i| Random.next_bool ? "1" : "0"}
+end
+
+During the execution of an algorithmic run, new solutions are created by recombining the genetic material of two parents. A recombination scheme from genetic algorithms called one-point crossover is used. This involves selecting a random point along the fixed length chromosome, then reading the genetic material off the one parent, onto the child, half from the first parent, and half from the second. During this coping or transcription process errors are introduced with a low frequency providing an additional level of variation.
+
+def initialize_recombination(parent1, parent2)
+  length = parent1.genome.length
+  # select a cut position
+  cut = Random.next_int(length - 2) + 1
+  # recombine the genomes with copy errors
+  @genome = Array.new(length) do |i| 
+    (i<cut) ? transcribe(parent1.genome[i], length) : transcribe(parent2.genome[i], length) 
+  end
+end
+
+def transcribe(value, length)
+  if Random.next_float < heuristic_mutation_rate(length)
+    return ((value == "1") ? "0" : "1" )
+  end
+  return value
+end
+
+Algorithm
+The algorithm involves initializing the population structure and executing generations until the stop condition is met. A toroid population structure is used. This is achieved by creating a two dimensional array 10x10 to give a lattice of 100 population members.
+
+def evolve problem
+  # store problem
+  @problem = problem
+  # prepare the population and state
+  @best_solution = nil
+  @generation = 0
+  edge = Math.sqrt(heuristic_population_size)
+  @population = Array.new(edge) {|i| Array.new(edge) {|j| @problem.new_solution} }
+  evaluate_pop_matrix(@population)
+  # evolve until stop condition is triggered
+  evolve_population(@population) until should_stop?
+end
+
+This example is implemented for a single processor machine rather than a distributed environment. One the algorithm could be realized would be to create a new lattice each generation allowing each member in the current lattice to select a mate and reproduce into the same grid position the new lattice. A second approach that better demonstrates the independence of cells in the lattice in a distributed environment involves selecting a random cell to reproduce, a process that is repeated 100 times.
+
+def evolve_population(pop)
+  # complete a fixed number of reproduction events
+  heuristic_population_size.times do
+    # select position
+    x, y = Random.next_int(pop.length), Random.next_int(pop[0].length)
+    # select random mate from the neighbourhood
+    mate = select_random_neighbour(pop, x, y)
+    # create offspring
+    offspring = @problem.new_solution_recombine(pop[x][y], mate)
+    evaluate_solution(offspring)
+    # compete for position in population
+    pop[x][y] = @problem.choose_better(pop[x][y], offspring)
+  end
+  # one more generation has completed
+  @generation += 1
+  puts "#{@generation}, best: #{@best_solution}"
+end
+
+A random coordinate is selected for a reproduction event. A random mate is selected from the solutions neighborhood, is recombined with the solution to create an offspring. The created offspring is evaluated and then competes with the originally selected population member for its position in the population. This is a steady state approach where selective pressure is imposed during replacement (limited positions in the population) rather than during mate selection. 
+
+def select_random_neighbour(pop, x, y)
+  neighbour = nil
+  case rand(4)
+    # north
+    when 0: neighbour= (x==0) ? pop[pop.length-1][y] : pop[x-1][y]
+    # south
+    when 1: neighbour= (x==(pop.length-1)) ? pop[0][y] : pop[x+1][y]
+    # west
+    when 2: neighbour= (y==0) ? pop[x][pop[x].length-1] : pop[x][y-1]
+    # east
+    when 3: neighbour= (y==pop[x].length-1) ? pop[x][0] : pop[x][y+1]    
+  end
+  return neighbour
+end
+
+A four-points of the compass neighbourhood structure is used (north, south, east, west) that wraps around the lattice as needed. This effectively means that population interactions within the two dimensional array occur on a three dimensional torroid (doughnut). 
+
+Summary
+A relatively easy extension to the example would involve visualizing the population structure, where each cell in the lattice is represented by a gray scale mapping of the normalized fitness of the candidate solution it contains. It should demonstrate self-organizing fitness neighbourhoods.
+
+An advanced extension to this approach would be to mutli-threaded the algorithm to allow execution on a multiple core/CPU system. this would require synchronization between the threads on neighbourhood interactions to ensure consistency.

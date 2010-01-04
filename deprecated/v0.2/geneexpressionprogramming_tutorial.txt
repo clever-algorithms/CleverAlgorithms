@@ -1,0 +1,143 @@
+Gene Expression Programming Tutorial
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/10  JB  Created
+
+Introduction
+This tutorial demonstrates an implementation of Gene Expression Programming applied to a symbolic regression problem. It is a reproduction of the experiment in the seminal paper: Gene Expression Programming: A New Adaptive Algorithm for Solving Problems (2001).
+
+Problem
+The problem is a symbolic regression problem that involves finding a function that can map a set of inputs to a set of outputs. The function used to generate the sample data is: f(x) = x^4 + x^3 + x^2 + x^1. The range of inputs is bounded to [1,20]. 
+
+def source(x)
+  (x**4.0) + (x**3.0) + (x**2.0) + x
+end
+
+The set of function nodes available is limited to [+, -, *, /] and the terminal nodes is limited to the input value [x]. These are modeled as lambda's such that an expression tree can be modeled as a tree structure that can be executed recursively.
+
+@functions = {
+  "*"=>lambda{|a,b| a*b},
+  "/"=>lambda{|a,b| a/b},
+  "+"=>lambda{|a,b| a+b},
+  "-"=>lambda{|a,b| a-b}
+  }
+@terminals = {
+  "x"=>lambda{current_point}
+}
+
+A candidate solution is comprised of a sequence of symbols that are mapped onto lambdas. The mapping occurs in a breadth first manner without recurision. This is achieved by using a queue, the classical method for processing a graph in a breadth first manner. For each node, the symbol is read from the chromosome, it is translated to a lambda and stored within the graph structure.
+
+def breadth_first_mapping(symbols)
+  queue = Array.new
+  # create the root
+  root = GEPNode.new(lookup(symbols.pop))
+  # push root onto the queue
+  queue.push(root)
+  # process the queue until empty
+  while !queue.empty? do
+    # dequeue (start)
+    curr = queue.shift
+    # process children
+    if curr.value.arity == 2
+      #  create and enqueue (end) left
+      curr.left = GEPNode.new(lookup(symbols.pop))
+      queue.push(curr.left)
+      # create and enqueue (end) right
+      curr.right = GEPNode.new(lookup(symbols.pop))
+      queue.push(curr.right)
+    end
+  end
+  return root
+end
+
+The evaluation of a candidate solution involves mapping the sequence to an expression tree. The expression tree is then evaluated 10 times with 10 different input parameters. The values produced by the candidate solution are compared to ground truth and the sum of the absolute differences are assigned to the solution as the fitness score. A large (10) problem specific penalty error is assigned each time a candidate solution generates a value that is NaN or infinite. This may happen if a divide by zero or overflow occurs.
+
+def cost(solution)
+  # parse expression
+  # genome is reversed because stack behavior operates on the end of an array in ruby
+  solution.expression = breadth_first_mapping(solution.genome.reverse)  
+  # sum errors in the model
+  sum_errors = 0.0    
+  heuristic_num_points.times do |i|
+    score = solution.expression.eval     
+    score = 10.0 if (score.nan? or !score.finite?)
+    sum_errors += (score - source(current_point)).abs
+    next_point
+  end    
+  solution.fitness = sum_errors
+end
+
+Solution
+The solution is defined as a string of symbols that are mapped into functions in the problem. New candidate solutions are initialized as a random sequences of symbols.
+
+def initialize_random
+  @genome = Array.new(heuristic_length) do |i|
+    (i<heuristic_head_length) ? random_head_symbol : random_tail_symbol
+  end
+end
+
+Solutions created during the execution of the algorithm are recombined from two existing parents. One point crossover is implemented to and mutations are implemented in the transcription process. Inversions, transpositions, and additional crossover approaches are left as exercises to the reader.
+
+def initialize_recombination(parent1, parent2)
+  # select cut position
+  cut = Random.next_int(heuristic_length - 2) + 1
+  # recombine the genomes with copy errors
+  @genome = Array.new(heuristic_length) do |i| 
+    (i<cut) ? transcribe(i, parent1.genome[i]) : transcribe(i, parent2.genome[i])
+  end
+end
+
+def transcribe(pos, value)
+  if Random.next_float < heuristic_mutation_rate
+    (pos<heuristic_head_length) ? random_head_symbol : random_tail_symbol
+  else
+    value
+  end    
+end
+
+Algorithm
+The algorithm is an evolutionary process that evolves a solution to the problem over a number of generations.
+
+def evolve problem
+  # store problem
+  @problem = problem
+  # prepare the population and state
+  @best_solution = nil
+  @generation = 0
+  @population = Array.new(heuristic_population_size) {|i| @problem.new_solution}
+  # evolve until stop condition is triggered
+  @population = evolve_population(@population) until should_stop?
+end
+
+Each generation a new population is created by evaluating and selecting a breeding set which either recombine to create offspring or are directly promoted to the next generation. Tournament selection is used.
+
+def evolve_population(population)
+  # evaluate
+  evaluate(population)
+  # select
+  selected = population.collect {|solution| tournament_select solution, population}
+  # recombine and mutate
+  new_population = Array.new(population.length)
+  selected.each_with_index do |solution, index|
+    # probabilistic crossover or promotion
+    if Random.next_float < heuristic_crossover_rate        
+      if index.modulo(2)==0
+        new_population[index] = @problem.new_solution_recombine(solution, selected[index+1])
+      else
+        new_population[index] = @problem.new_solution_recombine(solution, selected[index-1])
+      end
+    else
+      new_population[index] = solution
+    end
+  end
+  # one more generation has completed
+  @generation += 1
+  puts "#{@generation}, best: #{@best_solution}"    
+  return new_population
+end
+
+Summary
+The algorithm is simple and powerful given the flexibility and robustness of the representation using K-expressions.
+
+Natural extensions for the reader include implementing an inversion operator, the transposition operators, and alternative crossover operators. Additional the reader can implement a multi-gene version, potentially link functions as well as the GEP approach to numerical constants.

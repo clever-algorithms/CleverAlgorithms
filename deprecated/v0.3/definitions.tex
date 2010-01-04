@@ -1,0 +1,176 @@
+%
+% PACKAGES
+%
+
+% http://andrewjpage.com/index.php?/archives/55-Algorithms-in-Latex.html
+\usepackage[algochapter, ruled, linesnumbered]{algorithm2e}
+% \usepackage[ruled, linesnumbered]{algorithm2e}
+
+\usepackage{fancyhdr} % nice headers
+\usepackage{amsmath} %Never write a paper without using amsmath for its many new commands
+\usepackage{amssymb} %Some extra symbols
+\usepackage{makeidx} %If you want to generate an index, automatically
+\usepackage{graphicx} %If you want to include postscript graphics
+% \usepackage{mystyle} %Create your own file, mystyle.sty where you put all your own \newcommand statements, for example.
+
+% so i can define the margins explicitly
+% http://www.biochem.ucl.ac.uk/~james/latex/thesis_master_file.html
+\usepackage{geometry}
+
+% code listings
+% http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
+\usepackage{listings} 
+
+% use colors
+\usepackage{color}
+
+% use in-line references for 'further reading'
+\usepackage{bibentry}
+% \usepackage{natbib}
+
+
+
+% fix quotes in code listings
+\usepackage{upquote}
+\usepackage{textcomp}
+
+\usepackage[pdftex,  % needed for pdflatex
+  breaklinks=true,  % so long urls are correctly broken across lines
+  colorlinks=true,
+  urlcolor=blue,
+  linkcolor=blue,
+  citecolor=blue,
+  ]{hyperref}
+
+% using max fonts: http://jon.smajda.com/blog/2007/04/25/xetex-basics/
+% \usepackage{fontspec}
+% \usepackage{xunicode}
+% \usepackage{xltxtra}
+% \defaultfontfeatures{Scale=MatchLowercase}
+% \setromanfont[Mapping=tex-text]{Garamond}
+% \setsansfont[Mapping=tex-text]{Lucida Grande}
+% \setmonofont{Monaco}
+
+% colors used in color ruby listing
+\definecolor{gray}{gray}{0.5} 
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkblue}{rgb}{0,0,0.8}
+\definecolor{paleblue}{rgb}{0.5,0.5,1}
+\definecolor{blue}{rgb}{0,0,1}
+\definecolor{darkcyan}{rgb}{0,0.60,0.60}
+
+
+% 
+% Color Ruby Listing
+% 
+% TODO
+% support :var, @var
+
+\lstdefinestyle{colorruby}{ %
+language=Ruby,
+backgroundcolor=,
+rulecolor=, 
+tabsize=4,
+basicstyle=\small,
+commentstyle=\color{darkgreen}, 
+stringstyle=\color{darkgreen}, 
+identifierstyle=\color{black}, 
+keywordstyle=\color{blue}\bfseries, 
+showstringspaces=false,
+numbers=left, 
+numberstyle=\tiny\color{gray}, 
+breaklines=true,
+captionpos=b,
+stepnumber=1, 
+numbersep=5pt,
+morekeywords={new, attr_reader, attr_accessor},
+moredelim=[s][\color{darkcyan}]{|}{|},
+alsoletter={1234567890},
+emph={1, 2, 3, 4, 5, 6, 7, 8, 9, 0},
+emphstyle=\color{darkblue},
+emph={[2]true, false, nil},
+emphstyle=[2]\color{paleblue},
+literate=%
+{=}{{\textcolor{blue}=}}{1}%
+{-}{{\textcolor{blue}-}}{1}%
+{+}{{\textcolor{blue}+}}{1}%
+{*}{{\textcolor{blue}*}}{1}%
+{?}{{\textcolor{blue}?}}{1}%
+{/}{{\textcolor{blue}/}}{1}%
+{!}{{\textcolor{blue}!}}{1}%
+{<}{{\textcolor{blue}{$<$}}}{1}%
+{>}{{\textcolor{blue}{$>$}}}{1}%
+{@}{{\textcolor{darkcyan}@}}{1}%
+}
+
+% use the color ruby listing
+\lstset{style=colorruby}
+
+
+% 
+% SETUP
+% 
+% \geometry{a4paper, lmargin=40mm, rmargin=20mm, tmargin=30mm, bmargin=20mm}
+% \geometry{margin=1in}
+
+% \topmargin=-1in    % Make letterhead start about 1 inch from top of page 
+% \textheight=10in  % text height can be bigger for a longer letter
+% \oddsidemargin=0pt % leftmargin is 1 inch
+% \textwidth=6.5in   % textwidth of 6.5in leaves 1 inch for right margin
+
+
+
+
+
+
+%
+% NEW COMMMANDS
+%
+
+% new macro for starting a new page and changing the style to empty
+% \newpage == ends the current page. 
+% \thispagestyle == works in the same manner as the \pagestyle, except that it changes the style for the current page only. 
+% empty == Produces empty heads and feet - no page numbers
+\newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
+
+
+
+% 
+% TOC
+\setcounter{tocdepth}{1}
+
+
+%
+% Title Page
+%
+\makeatletter
+\def\thickhrulefill{\leavevmode \leaders \hrule height 1pt\hfill \kern \z@}
+\renewcommand{\maketitle}{\begin{titlepage}%
+    \let\footnotesize\small
+    \let\footnoterule\relax
+    \parindent \z@
+    \reset@font
+    \null
+    \vskip 10\p@
+    \hbox{\mbox{\hspace{3em}}%
+      \vrule depth 0.6\textheight%
+      \mbox{\hspace{2em}}
+      \vbox{
+        \vskip 40\p@
+        \begin{flushleft}
+          \Large \@author \par
+        \end{flushleft}
+        \vskip 70\p@
+        \begin{flushleft}
+          \Huge \bfseries \@title \par
+        \end{flushleft}
+        \vfil
+        }}
+    \null
+  \end{titlepage}%
+  \setcounter{footnote}{0}%
+}
+\makeatother
+\author{Jason Brownlee}
+\title{Inspired Algorithms\\ {\large A Handbook of Machine Learning Recipes in Ruby}}
+\date{2008}

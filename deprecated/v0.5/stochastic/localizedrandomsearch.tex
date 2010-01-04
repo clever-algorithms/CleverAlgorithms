@@ -1,0 +1,137 @@
+\section{Localized Random Search}
+This guide extends Random Search by generating new candidate solutions as variations of the the best known solution. This approach is generally referred to as \textbf{Localized Random Search} or as \emph{Mutation Hill Climbing} by the evolutionary computation community. This approach works by firstly selecting a starting point for the search by generating a random solution or selecting the best solution from a set of randomly generated solutions. The algorithm then proceeds to generate new candidate solutions as variations of the current best, replacing the current best if and only if the new mutant candidate solution is better or has the same objective scoring.
+
+The search is localized to a known `good' area of the problem space, and can rapidly locate the locally optimal solution. Naturally, the starting point for the localized search is critically important as once a starting point for the search is selected, the algorithm can at best return the locally optimal solution. As such, the approach is commonly used to refine the results of another more broadly focused search algorithm. Additionally, Localized Random Search can operate upon a set of candidate starting points in parallel or be restarted after it has converged to a local optimum, both strategies of which may increase the chances better approximating the global optimal solution.
+
+\subsection{Mutation Hill Climbing Algorithm on the OneMax Problem}
+The evolutionary computation community have produced some interesting work on Localized Random Search. Specifically regarding the binary string optimization under difficult and deceptive cost functions, referring to the algorithm as a stochastic hill climber or mutation hill climbing algorithm. This guide demonstrates a mutation hill climbing algorithm on a binary string optimization problem called OneMax.
+
+The OneMax problem involves the optimization of a string of binary digits (1's and 0's) of an arbitrary fixed length where the cost assigned to a given string reflects the number of 1's in the string. The optimal scoring in this maximization problem is equal to the length of the string, sometimes referred to as unity. It is an interesting black box function because although gradient information is provided (more or less 1's), the algorithm is not informed which positions in the string are right or wrong.
+
+The \texttt{OneMaxFunction} class encapsulates the problem definition. It expects a string of characters comprised of 1's and 0's which are assessed via the \texttt{evaluate(bitstring)} method. The complexity of the problem is managed by the \texttt{@length} instance variable, which defaults to 16 bits.
+
+\begin{lstlisting}
+class OneMaxFunction
+  attr_reader :length
+
+  def initialize(length=16)
+    @length = length
+  end
+
+  def evaluate(bitstring)
+    bitstring.inject(0) {|sum, x| sum + ((x=='1') ? 1 : 0)}
+  end  
+
+  def is_optimal?(scoring)
+    scoring == optimal_score
+  end
+
+  def optimal_score
+    @length
+  end
+  
+  # true if s1 has the same or better score than s2
+  def is_same_or_better?(s1, s2)
+    s1 >= s2 # maximizing
+  end
+end
+\end{lstlisting}
+
+The \texttt{Solution} class is a simple convenience class, providing an immutable (problem non-specific) representation of candidate solutions with the \texttt{data} instance variable, and a mutable \texttt{score} instance variable for assigned costing. The \texttt{to\_s} method enumerates \texttt{data} to ensure that the binary strings used in this example print nicely (for example: \texttt{101100101}). 
+
+\begin{lstlisting}
+class Solution
+  attr_reader :data
+  attr_accessor :score
+  
+  def initialize(data)
+    @data = data
+    @score = 0.0/0.0 # NaN
+  end
+  
+  def to_s
+    "[#{@data.collect{|x|x}}] (#{@score})"
+  end    
+end
+\end{lstlisting}
+
+The \texttt{LocalizedRandomSearchAlgorithm} class is initialized with a maximum number of iterations to complete. The important method of this class is \texttt{search(problem)} which executes a search on the provided problem definition. The method calls \texttt{generate\_random\_solution(problem)} to create a random candidate solution as a starting point for the search. The algorithm then loops until the stop condition is triggered \texttt{should\_stop?(curr\_it, problem)} creating mutated variations of the current best known solution (\texttt{@best\_solution} instance variable), and replacing the current best known solution of the mutated candidate has the same or equal scoring. This acceptance criteria (of not just accepting improved scores) is important as it allows the search to continue across flat regions of the search space, potentially escaping local optima.
+
+The \texttt{generate\_mutate\_solution(solution)} method creates a new candidate solution from a provided solution. It works by enumerating the provided solutions data one bit (character) at a time, probabilistically mutating the string by inverting a give bit position (`0'=>`1' or `1'=>`0'). This is achieved by calling the \texttt{should\_mutate?(length)} method for each bit in the string which permits a bit-flip mutation with the probability of 1/L, where L is the length of the bitstring being optimized. This has be demonstrated to be an optimal mutation rate for the OneMax function and related linear binary optimization problems (see references), can provide a good heuristic for problems with unknown response surfaces.
+
+\begin{lstlisting}
+class LocalizedRandomSearchAlgorithm
+  attr_accessor :max_iterations
+  attr_reader :best_solution
+  
+  def initialize(max_iterations)
+    @max_iterations = max_iterations
+  end
+  
+  # execute a random search on the provided problem
+  def search(problem)
+    @best_solution = generate_random_solution(problem) # starting point
+    @best_solution.score = problem.evaluate(@best_solution.data)
+    curr_it = 0
+    begin
+      # generate mutant
+      candidate = generate_mutate_solution(@best_solution)
+      candidate.score = problem.evaluate(candidate.data)
+      # compare to current best
+      if problem.is_same_or_better?(candidate.score, @best_solution.score)
+        @best_solution = candidate
+        puts " > new best: #{@best_solution.score}"    
+      end
+      curr_it += 1
+    end until should_stop?(curr_it, problem)
+    return @best_solution
+  end
+  
+  def should_stop?(curr_it, problem)
+    (curr_it >= @max_iterations) or problem.is_optimal?(best_solution.score)
+  end
+  
+  def generate_random_solution(problem)
+    bitstring = Array.new(problem.length) {|i| (rand<0.5) ? "1" : "0"}
+    return Solution.new(bitstring)
+  end
+
+  def generate_mutate_solution(solution)
+    data = solution.data
+    bitstring = Array.new(data.length) do |i| 
+      if should_mutate?(data.length)
+         (data[i]=='0') ? "1" : "0" # invert
+      else
+        data[i]
+      end
+    end
+    return Solution.new(bitstring)
+  end
+  
+  def should_mutate?(length)
+    rand < 1.0/length
+  end
+end
+\end{lstlisting}
+
+The algorithm is demonstrated by first seeding the global random number generator to 1, creating an instance of the problem initialized with 32 bits, and an instance of the algorithm with a maximum of 1000 algorithm iterations. The algorithm is executed by calling and passed the problem instance. The algorithms current progress is displayed as improved or equally best scored solutions are found and the best solution is displayed at the end of the run.
+
+\begin{lstlisting}
+srand(1) # set the random number seed to 1
+algorithm = LocalizedRandomSearchAlgorithm.new(1000) # limit to 1000 iterations
+problem = OneMaxFunction.new(32) # create a problem with 32 bits
+best = algorithm.search(problem) # execute the search
+puts "Best Solution: #{best}" # display the best solution
+\end{lstlisting}
+
+This implementation can be extended upon by modifying the \texttt{LocalizedRandomSearchAlgorithm} class to manage a population of `best' solutions in parallel, or to generate a small set of mutate candidate solutions from the current best solution each iteration. The algorithm implementation is generalized and can be applied to other problems that align to the \texttt{OneMaxFunction} interface by specializing the \texttt{generate\_random\_solution(problem)} and \texttt{generate\_mutate\_solution(solution)} methods.
+
+\subsection{Further Reading}
+This section lists some additional reading related to localized random search.
+
+\begin{itemize}
+	\item Thomas Bäck, ``Optimal Mutation Rates in Genetic Search". Proceedings of the Fifth International Conference on Genetic Algorithms, pages 2-9, 1993.
+    \item Heinz Mühlenbein, ``How Genetic Algorithms Really Work: I. Mutation and Hillclimbing". Parallel Problem Solving from Nature 2, PPSN-II, Belgium, pp. 15-26, 1992.
+    \item James C. Spall, Stochastic Optimization. In James E. Gentle, Wolfgang Härdle, Yuichi Mori, Handbook of Computational Statistics. 2004
+\end{itemize}
+

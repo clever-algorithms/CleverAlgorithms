@@ -1,0 +1,49 @@
+Evolution Strategies Overview
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/04  JB  Created
+
+Inspiration
+: Evolution Strategies are inspired by the general theory of evolution by means of natural selection.
+
+Strategy
+: The strategy of Evolutionary Strategies is evolution with self-adaptive mutation. 
+
+Evolutionary Strategies are based on a general evolutionary system where heuristics govern the application of mutation. Traditionally this strategy involved increasing and decreasing a global mutation rate based on the progress of the evolutionary search (such as multiple or divide by 1/5 respectively). The intention of this adaptive control is search efficiency, for example the system may take large steps in across neural regions of the search space or along gradients, and smaller steps around optima.
+
+More recently this strategy has been realized through the co-evolution of parameters that control the amount of evolution that occurs either globally or per problem specific parameter. The strategy parameters control the scope of the mutation operator, influencing the step size (in problem space) of changes that may be introduced during a search. This introduces a fine level of control over the self-adaptation of candidate solutions governed by the same evolutionary process that governs the broader search. 
+
+
+Procedure
+: The procedure for Evolution Strategies involves a classical generational model of selection, recombination and mutation.
+
+The Evolution Strategy algorithm models problem domains in the problem space, requiring problem specific recombination and variation operators. A popular class of problem for the algorithm are non-linear optimization problems with real-valued function parameters. In this domain recombination may involve a traditional operator such as one-point crossover or a domain specific approach such as calculating the central tendency. Gaussian re-sampling around existing candidate solutions is used as the variation operator where strategy parameters influence the standard deviation of the distribution from which the random numbers are drawn.
+
+The field has its own nomenclature to describe the setup of a given strategy. For example a population has mu individuals which create lambda offspring each generation. The offspring may directly replace the parent population which is denoted as (mu,lambda)-ES. Alternatively, members from the two populations may compete with each other for positions in the next generation, denoted as (m+lambda)-ES. The numbers can be varied promoting selective pressure or generational gap, for example (1+5)-ES denotes a 1-member population that creates 5 offspring each generation the best of which competes with the parent for survival.
+
+Randomly initialize the population
+While not Stop Condition
+	Evaluate
+	Select Parents
+	For each 
+		Recombine to create offspring
+		Mutate strategy parameters
+		Mutate problem parameters (using mutated strategy parameters)
+	End
+	Replace Current Population
+End
+
+Heuristics
+* Maintain a modest population size (1<mu<100) such that the technique does not get stuck in local optima
+* Covariance Matrix Adaptation Evolution Strategy (CMA-ES) is a state of the art variation of the algorithm (for real-valued search spaces)
+* Should look at replacing 1/7 to 1/2 of the worst individuals in the population per generation with the comma-based approach
+* plus-based selection is preferred for combinatorial problems
+
+
+Further Reading
+
+* EC1, Chapter 9
+
+Web
+* Evolution strategies on Scholarpedia: http://www.scholarpedia.org/article/Evolution_strategies

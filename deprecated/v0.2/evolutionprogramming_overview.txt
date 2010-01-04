@@ -1,0 +1,34 @@
+Evolutionary Programming Overview
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/05  JB  Created
+
+Inspiration
+: The inspiration for evolutionary programming is the theory of evolution by means of natural selection.
+
+Strategy
+: The evolutionary programming strategy is focused on the product of the evolutionary process for problem solving.
+
+The Evolutionary Programming (EP) algorithm is focused on evolution at the species level as a method of artificial intelligence, contrasted with heuristic-driven approaches. The strategy is concerned with the macro properties of evolution (adaptive fit in an environment) over micro concerns such as manipulating and concerning sub-symbolic information in artificial genomes.
+
+Procedure
+Traditional realizations of EP make use of a variation operator applied to each member of the population independently (no recombination operator for example) and a competitive selection process between parents and offspring for the limited number of positions in the subsequent generation. The algorithm models problems using domain specific representations.
+
+Initialize the population
+While not stop condition
+	Evaluate
+	Select breeding set
+	Create offspring
+	Select new population from union of old and new populations
+End
+
+More recently the field has sought to merge with the broader field of evolutionary computation, incorporating conventional genetic operators and application to a broader set of problem domains. As such, modern EP bares a strong resemblance to ES given the now standard use of self-adaptive variance operators.
+
+Heuristics
+* Heuristics to govern the mutation of self-adaptive strategy variables as well as objective variables
+
+Further Reading
+* Evolutionary programming made faster (1999)
+* Book by L Fogel: Artificial Intelligence through Simulated Evolution
+* EP on Scholarpedia: http://www.scholarpedia.org/article/Evolutionary_programming

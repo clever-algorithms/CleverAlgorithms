@@ -1,0 +1,48 @@
+Genetic Algorithm Overview
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/03  JB  Created
+
+Inspiration
+: The inspiration for the Genetic Algorithm is a genetic perspective of the theory of evolution.
+
+The theory of evolution by means of natural selection accounts for the diversity of life of the planet. It describes a situation where organisms reproduce in quantities greater than can be supported by the environment, the uniqueness of individuals in the population given low frequency genetic mutations during cell division, and the competition for survival in an environment biased by individual variance. In this situation, the theory describes a process where beneficial differences between individuals accumulate in the population over time. The theory describes a natural process where organisms improve their adaptive fit for their environment.
+
+Strategy
+: The strategy for the Genetic Algorithm is to improve the fitness of a population of candidate solutions in the context of an objective function using repeated rounds of selection and variation.
+
+The Genetic Algorithm is inspired by a genetic perspective of the theory of evolution by means of natural selection. The inspiration focuses on a model genetic system of an organism defined by a genome (typically one chromosome and a number of genes). The genome is assessed using an objective function (fitness function) which typically involves translating or mapping the genetic code (genotype) to a problem specific representation (phenotype).
+
+Procedure
+: The procedure for the Genetic Algorithm involves a large number of iterations called generations where the population is evaluated, the fitter members of which are selected to contribute their genetic material in the creation of the subsequent generation with minor copying errors.
+
+The Genetic Algorithm starts with a randomly initialized population of candidate solutions defined as binary strings. Each algorithm iteration, the population is exposed to a series of genetic operator functions that manipulate the population. The candidate solutions are first evaluated against a cost function. A subset of candidate solutions are selected proportional to their relative fitness and recombined to produce new candidate solutions that displace the current population. The creation of new child candidate solutions are random mixes the binary strings of two parents. Low frequency random copying errors are introduced during the recombination process providing a background level of diversity.
+
+Initialization
+Loop 
+	Evaluation
+	Selection
+	Recombination
+	Mutation
+	Replacement
+End
+
+Heuristics
+
+: The heuristics for the Genetic Algorithm are moderate population sizes, not too greedy, not too random, and try to preserve patterns of genetic material across generations.
+
+* Binary strings are the standard genetic representation when implementing the algorithm and its genetic operators, although domain specific representations may be used and the operators modified to support domain specific constraints
+* The selection process must be balanced between random selection and greedy selection to biased towards fitter candidate solutions (exploitation), whilst promoting useful diversity into the population (exploration). 
+* Recombination is intended to create new candidate solutions with the favorable attributes of both parents, and as such should attempt to preserve patterns (sub-sequences and/or patterns) of both parents.
+* Mutation is a low frequency event determined probabilistically for each position in the genome (locus) where the optimal probability is proposed to be 1.0/L where L is the length of the binary string.
+* Population sizes must be large enough to provide a sufficiently diverse pool of building blocks for the process to be effective, typically equal to the number bits in a candidate solution or some function thereof.
+
+Summary
+The Genetic Algorithm is a general optimization algorithm that models problem domains as binary strings. The lack of problem specific information incorporated into the technique means that it can be rapidly applied against a given problem. This same benefit also means that the technique is fragile to the the mapping of binary strings to the domain and the amount of problem specific information encoded into the fitness evaluation. 
+
+
+Further Reading
+
+* Goldberg
+* EC1 and EC2

@@ -1,0 +1,110 @@
+Island Population Model Genetic Algorithm - Tutorial
+Jason Brownlee
+
+Introduction
+This tutorial demonstrates an implementation of the island population genetic algorithm applied to a high dimensional non linear programming problem called Schwefels Function.
+
+Problem
+The problem is a multi-modal function optimization problem in high dimensionally which is typically difficult for the classical genetic algorithm. The function requires real values, one per dimension.
+
+def calculate(real_vector)
+  real_vector.inject(0) {|sum, x| sum + -x * Math::sin(Math::sqrt(x.abs)) }
+end
+
+Solution
+The solution is defined as a vector of real values, one parameter per dimension. The genetic algorithm models problems using binary strings, so the the binary strings are decoded to real values. A resolution of 8 bits per parameter was chosen (256 or 2**8 distinct values). A generic decode function is provided to decode binary strings using the binary coded decimal algorithm. 
+
+  if @object_params.nil? 
+    @object_params = Array.new(@dimensions) do |i| 
+      s = (i*heuristic_gene_length)
+      e = s+heuristic_gene_length
+      BinarySolution.decode(@genome[s...e],@min,@max)
+    end
+  end
+  return @object_params
+end  
+
+# generic decode function for bitstring to float in [min,max]
+def self.decode(bitstring, min, max)
+  sum = 0.0
+  bitstring.each_with_index do |x, i|
+    sum += ((x=='1') ? 1.0 : 0.0) * (2.0 ** i.to_f)
+  end
+  # rescale [0,2**L-1] to [min,max]
+  return min + ((max-min) / ((2.0**bitstring.length.to_f) - 1.0)) * sum
+end
+
+New solutions are created as a sequence of random bits at the appropriate length.
+
+def initialize_random    
+  length = @dimensions * heuristic_gene_length
+  @genome = Array.new(length) {|i| Random.next_bool ? "1" : "0"}
+end
+
+New solutions are also created from two parents in the genetic algorithm using a process of recombination. A one point crossover genetic operator is used. Low frequency mutations are introduced using the point mutation genetic operator that probabilistically flips bits during the string copying process (transcription).
+
+def initialize_recombination(parent1, parent2)
+  length = parent1.genome.length
+  # select a cut position
+  cut = Random.next_int(length - 2) + 1
+  # recombine the genomes with copy errors
+  @genome = Array.new(length) do |i| 
+    (i<cut) ? transcribe(parent1.genome[i], length) : transcribe(parent2.genome[i], length) 
+  end
+end
+
+def transcribe(value, length)
+  if Random.next_float < heuristic_mutation_rate(length)
+    return ((value == "1") ? "0" : "1" )
+  end
+  return value
+end
+
+Algorithm
+The algorithm is a sequential implementation of the approach. It is realized in three tiers. the highest level involves the initialization of the islands and iterates until a stop condition is triggered, creating a new batch of islands each loop.
+
+def evolve problem
+  # store problem
+  @problem = problem
+  @best_solution = nil
+  @islands = Array.new(heuristic_num_islands) do |i|
+    Array.new(heuristic_population_size) {|j| @problem.new_solution} 
+  end    
+  # evolve until stop condition is triggered
+  @generation = 0
+  (@islands = evolve_islands(@islands)) until stop_triggered?
+end
+
+The next tier involves the single execution of each island population, creating a new population for each in turn. This tier also checks for migration events, and manages migration, Migration involves selecting a random set of migrants from each population and integrating them into a connected island. Islands are arranged in a uni-directional loop for simplicit, so migrations always move right (relative to island indicies in the array), wrapping around into a loop structure. Emigrants are assimilated into the population after all migrants have been selected to avoid re-migrating a population member. Assimilation involves blondly replacing random members of the population.
+
+def evolve_islands(old_islands)    
+  # create new population    
+  new_islands = Array.new(old_islands.length) {|i| evolve_population(old_islands[i]) }
+  # check for migration event
+  if @generation!=0 and (@generation.modulo(heuristic_generations_before_migration) == 0)
+    # select a random set of migrants (with reselection) from each island 
+    migrants = Array.new(new_islands.length) do |i|
+      Array.new(heuristic_num_migrants) {|j| new_islands[i][rand(new_islands[i].length)] }
+    end      
+    # emigrate migrants into their connected neighobur
+    new_islands.each_with_index do |pop,i| 
+      # select emigrants (ring structure)
+      emigrants = (i==migrants.length-1) ? migrants[0] : migrants[i+1]
+      emigrants.each {|e| pop[rand(pop.length)] = e}
+    end
+    puts "-> completed a migration"
+  end
+  # one more generation has completed
+  @generation += 1  
+  puts "#{@generation}, #{@best_solution}"      
+  return new_islands
+end
+
+Finally, the lowest level of the algorithm involves the sequential execution of a single generation of the genetic algorithm. The entire population is first evaluated, a breeding set is selected using tournament selection with 3 bouts, and finally a new population is created using probabilistic recombination.
+
+Extensions
+Natural extensions involves varied topologies, varied island algorithm configurations, varied migration operators, and varied objective functions.
+- try a star topology, a grid topology
+- try a tree structure with the head of the tree with low migration and the terminals of the tree with high migration
+- try greedy migration or a probabilistically-greedy migration operator (tournament selection)
+- the objective function is linearly separable, which means that parameters can be evaluated independently. Try a variation of the algorithm where different islands evaluate different parts of the decoded structure (island one evaluates even, island two evaluates odd numbered parameters, island three evaluates all and is the only island to produce valid candidate solutions to address the problem)

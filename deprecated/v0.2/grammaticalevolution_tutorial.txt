@@ -1,0 +1,150 @@
+Grammatical Evolution Tutorial
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/09  JB  Created
+
+Introduction
+This tutorial demonstrates the Grammatical Evolution algorithm applied to a symbolic regression problem.
+Based on the paper: http://www.grammatical-evolution.org/papers/eurogp98/index.html
+Modified to include 1.0 in the terminal set and replace tan with exp in the pre-op set, as defined in Grammatical Evolution, IEEE Transactions in Evolutionary Computation (2001).
+
+Problem
+The problem is involves composing an expression that sufficiently maps a set of input values onto a set of output values, minimizing error in the mapping. The problem is called symbolic regression. In this case the source of the mapping is the expression:
+
+def source(x)
+  (x**4.0) + (x**3.0) + (x**2.0) + x
+end
+
+Input values are generated randomly from the range [-1, +1]. The set of valid symbols is defined in BNF as follows:
+
+(1) <expr> ::= <expr> <op> <expr>     (A) 
+             | ( <expr> <op> <expr> ) (B)
+             | <pre-op> ( <expr> )    (C) 
+             | <var>                  (D)
+
+(2) <op> ::= + (A)  
+           | - (B) 
+           | / (C) 
+           | * (D)
+
+(3) <pre-op> ::= Sin (A)  
+               | Cos (B) 
+               | Tan (C) 
+               | Log (D)
+
+(4) <var> ::= X
+
+
+Where the state expression is equal to <expr>. A valid solution under these constraints is as follows: sin(X) + X + X * X.
+
+A simple string-replacement approach is taken to managing the BNF and constructing expressions from sequences of integers. The problem class defines the expressions as follows:
+
+@@exp = [" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNIARY(EXP) ", " VAR "]
+@@op = ["+", "-", "/", "*" ]
+@@preop = ["Math.sin", "Math.cos", "Math.exp", "Math.log"]
+@@var = ["INPUT", "1.0"]
+@@all = {"EXP"=>@@exp, "BINARY"=>@@op, "UNIARY"=>@@preop, "VAR"=>@@var}
+@@start = "EXP"
+
+A candidate solution is mapped into these expression recursively, using decoded integers sequentially in the creation of the expression tree in a depth first manner. The size of the expression tree is bounded at heuristic_max_depth to avoid potential of blowing the stack given that there are only two terminal nodes in the BNF: the INPUT value and 1.0 in the @@var class variable.
+
+def map(solution, str, depth=0)   
+  @@all.keys.each do |key|
+    str = str.gsub(key) do |k| 
+      set = @@all[k]
+      if key=="EXP" and depth>=heuristic_max_depth
+        map(solution, set[set.length - 1], depth+1)          
+      else
+        i = solution.read_next_int.modulo(set.length)
+        map(solution, set[i], depth+1)
+      end
+    end
+  end    
+  return str
+end
+ 
+A candidate solution is evaluated by first mapping it onto a generic expression, then specializing the expression for a given input value to calculate its output value and finally its error from the source function. This is repeated a number of times, and the candidate solutions fitness value is assigned as the sum of the absolute errors.
+
+def cost(solution)
+  # reset the solution
+  solution.reset_read
+  # parse expression
+  solution.expression = map(solution, @@start)    
+  # sum errors in the model
+  errors = 0.0    
+  heuristic_num_exposures.times do |i|
+    x = Random::next_float_bounded(@min, @max)
+    exp = solution.expression.gsub(@@var[0], x.to_s)
+    begin
+      score = eval(exp)
+    rescue
+      score = Numbers::NAN
+    end      
+    errors += ((score.nan? ? 1.0 : score) - source(x)).abs
+  end    
+  solution.fitness = errors
+end	
+
+Solution
+A solution is defined by a bit string and a fitness evaluation. The circular reading of bits and decoding to integers is managed by a read_next_int function called by the problem when creating the problems expression. The consistent use of this approach requires a call to reset_read before a cost evaluation that sets the index to zero.
+
+def read_next_int
+  bitstring = Array.new(8)
+  8.times do |i|
+    bitstring[i] = @genome[@index]
+    @index += 1
+    reset_read if @index >= @genome.length
+  end
+  return decode_value(bitstring)
+end
+
+The creation of new candidate solutions via crossover requires the careful selection of the cross point, and the size of the offsprings binary string. There are also some prune and duplicate genetic operators (not written yet).
+
+def initialize_recombination(parent1, parent2)
+  # handle variable length genomes
+  lengths = [parent1.genome.length, parent2.genome.length]
+  min, max = lengths.min, lengths.max
+  cut = Random.next_int(min - 2) + 1
+  # recombine the genomes with copy errors
+  @genome = Array.new(max) {|i| (i<cut) ? transcribe(parent1.genome[i], max) : transcribe(parent2.genome[i], max)}
+  # duplicate  
+  # prune
+end
+
+Algorithm
+The algorithm is a classical evolutionary algorithm that involves the creation of a random initial population and the application of genetic operators over generations. Tournament selection is used.
+
+def evolve_population(population)
+  # evaluate
+  evaluate(population)
+  # select
+  selected = population.collect {|solution| tournament_select solution, population}
+  # recombine and mutate
+  new_population = Array.new(population.length)
+  selected.each_with_index do |solution, index|
+    # probabilistic crossover or promotion
+    if Random.next_float < heuristic_crossover_rate        
+      if index.modulo(2)==0
+        new_population[index] = @problem.new_solution_recombine(solution, selected[index+1])
+      else
+        new_population[index] = @problem.new_solution_recombine(solution, selected[index-1])
+      end
+    else
+      new_population[index] = @problem.new_solution_copy(solution)
+    end
+  end
+  # one more generation has completed
+  @generation += 1
+  puts "#{@generation}, best: #{@best_solution}"    
+  return new_population
+end
+
+
+Summary
+A powerful application of evolution where the genetic operators only manipulate sub-symbolic information which is translated to expression trees. The selection of BNF in the mapping means that the approach could be used to evolve expressions in english, in mathematics, even in ruby, as well as problem specific domain.
+
+A natural extension would involve the application of the alogorithm to additional BNF's. For example English and Ruby. Further there is a project that provides management of BNF in ruby.
+
+- manage BNF in ruby: http://rubyforge.org/projects/grammar/
+- ruby BNF http://www.ruby-doc.org/docs/ruby-doc-bundle/Manual/man-1.4/yacc.html

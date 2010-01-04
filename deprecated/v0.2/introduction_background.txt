@@ -1,0 +1,78 @@
+Introduction - Background
+Jason Brownlee
+
+Introduction
+Inspired Algorithms are strategies for problem solving inspired by the principles of a natural system and realized as computer algorithms. The inspirations are engaging analogies and metaphors with interesting systemic effects. The strategies are generalized problem solving methods abstracted from the inspiration. The procedures are parameterized algorithms for problem solving with computers.
+
+This is a practical book, so the best way to explain an inspired algorithm is with an example.
+
+The 'hot and cold' Game
+This section provides an illustrative example of a fictitious inspired algorithm. The inspiration outlines the scenario for the game itself and how it is commonly played. The strategy provides an abstraction of the inspiring game, suggesting at a potential algorithm and problem mapping. The procedure provides a realizing of the strategy in a generic pseudo code programming language.
+
+Inspiration: The children's game 'hot and cold'. Played with two children. The first child takes an object and hides it within a room while second child shields their eyes while the object is hidden. Once hidden, the second child moves about the room in search of the object responding to verbal indicators as temperatures by the first child as to proximity to the hidden object. A 'hot' by the second child means the second child is very close to the hidden object, warm means reasonably close, and cold means distant. The goal of the first child to prolong the finding of the hidden object by using creating hiding places whilst giving accurate indicators to the second child during the finding stage. The goal of the second child is to locate the hidden object as quickly as possible. A classic search strategy for the second child is to first circle the room to gauge the relative relative proximity of various points along the circuit before focusing the search on a region of the room.
+
+- Strategy: The 'hot and cold' strategy involve a search domain with a unknown optimal solution. Candidate solutions are tested against an evaluation oracle as needed providing an accurate ordinal relative measure of optimality (or distance to optimality) on the scale between least-optimal and most-optimal. A greedy and directed procedure is used to sample candidate solutions drawn from the search space inducing the gradient direction to the optimal solution based on accumulated evaluation measures. The strategy involves first sampling the space according to a fixed pattern (grid or patterned) and performing a local search based on the results of the fixed pattern
+
+- Procedures: 
+Sample the search space according to a fixed pattern
+Evaluate the sample set
+While Not At Optima
+	Evaluate trajectory to optima based on sample
+	Take a unit step along trajectory
+	Sample the search space
+	Evaluate
+	Add the sample to the set
+End
+
+Inspiration, Strategies, and Procedures
+We have described a simple scenario of a children's game. The game defines an environment, an objective. The strategy has abstracted the case as a search space and a strategy for locating an optimal solution in the search space. The adversarial relationship between the two players in the inspiration was simplified to problem difficulty and strategy efficiently. This abstraction highlights that there is no 'right' strategy abstraction - way of thinking about a case as a problem solving tool. The algorithm demonstrates a particular realization of the strategy, again highlighting that a given strategy may be realized in many different ways, on different specific problems, different computer hardware and with different languages.
+
+This methodology of separation into core features was chosen to provide a consistent template for introducing inspired algorithms. This mapping of an algorithm onto inspiration, strategy, and procedure is one methodology that works for many inspired algorithms but is by no means a perfect approach. It demonstrates that inspirations can be interesting on their own, that there is no true or correct abstraction of such metaphors, and that the computational procedure is separated from the inspiration by an abstraction process. The procedure is about problem solving in a computer and should be assessed as such, separate from any properties the inspired system may exhibit. It is the fidelity of the abstraction and the realization of the procedure that must outline and demonstrate respectively the intended salient features of the inspired system.
+
+Throughout this book, inspired algorithms are presented based on their inspiration, strategy, and procedure. In addition, each algorithm also lists heuristics (rules of thumb) for applying the approach, and further reading for seeking a deeper theoretical or practical appreciation of the approach. The focus of this book is the algorithms. As such a practical tutorial is provided for each algorithm described. Tutorials present the algorithm as problem solving tools in the context of a specific problems, and explain the practical concerns of the strategy and procedure step by step with code examples in the Ruby programming language. Importantly, each tutorial provides a all code for a fully working implementation of each algorithm described in the book.
+
+Artificial Intelligence Background
+Classical Artificial Intelligence (AI) coalesced after WWII in the 1950's drawing on an understanding of the brain from neuroscience, the new mathematics of information theory, control theory referred to as cybernetics, and the dawn of the digital computer. AI is a cross-disciplinary field of research generally concerned with developing and investigating systems that operate or act intelligently. It is generally considered a discipline in the field of computer science given the strong computational focus.
+
+The traditional stream of AI involves a top down perspective of problem solving, generally involving symbolic and logic based philosophies that can show why they work. The exemplars successes of this neat prescriptive stream include a multitude of specialist approaches such as rule-based expert systems, automatic theorem provers, and operations research techniques that underly modern planning and scheduling software. Although traditional approaches have resulted in significant success they have their limits, most notably scalability. Increases in problem size result in an unmanageable increase in the complexity of such problems meaning that although traditional techniques can guarantee an optimal, precise, or true solution the computational execution time or computing memory required is unrealistic (for example, longer than the universe has existed).
+
+As such, there have been a number of thrusts in the field of AI toward less neat (messy) techniques that are able to locate approximate, imprecise, or partially-true solutions to such problems with a reasonable cost of resources. Such approaches are descriptive rather than prescriptive, defining a strategy explaining how the strategy works, but not why. Such approaches are defined as relatively simple procedures that result in complex systems that can defy traditional reductionist analyses, the effects of which can be exploited for quickly locating approximate solutions to intractable problems.
+
+These techniques have been given many different names. The name 'soft computing' was used to describe these techniques as it contrasts the classical hard or crisp approaches to artificial intelligence, as well as the hardness or difficulty of the problems to which they are suited. More recently such approaches have fallen under the heading of 'computational intelligence', as an attempt to unify approaches focused on strategy and outcome. A common theme among these approaches is that they are patterned after natural or biological systems and given the name natural computing, biologically inspired computation, biomimicry, biomemetics. Such approaches embody the the adaptive and learning principles of natural and biological systems in algorithms and and also fall into the field of machine learning, a sub field of artificial intelligence primarily concerned with learning algorithms. An typically quality of such learning strategies is their inductive approach to problem solving, generalizing solutions or decision making from specific observations made by the system. A more recent term for such approaches is metaheuristics that proposes such strategies guide simpler problem specific heuristics for problem solving.
+
+This books is concerned with the algorithms from across these many names and sub fields of artificial intelligence. The goal this book is to provide an atlas of these strategy-focused approaches to problem solving using a consistent format and terminology. To make these approaches accessible.
+
+
+Why Inspired Algorithms?
+One may pose the question: Why are inspired algorithms so interesting?
+
+Inspired algorithms are useful
+More traditional, symbolic, logical approaches to problem solving may guarantee to locate optimal solutions although may require an unacceptable amount of computational time or memory. Alternatively, there may be human constraints on the problem such a limited availability of information about the problem, limited time to study the domain, and limited access to resources. A defining property of inspired algorithms is their capability of using bottom-up strategies quickly locating approximate and imprecise solutions to complex and intractable problems. 
+
+Examples include:
+- From computational complexity in the field of theoretical computer science, really hard problems are assigned the NP hard and NP complete classes of problems that do not have polynomial time solutions. Smaller instances can be solved by traditional techniques, but larger instances cannot be solved before the heat death of the universe using these techniques.
+
+
+Inspired algorithms can innovate
+The strategy based approach to problem solving guided by an inspired pattern may find creative and sometimes innovative solutions to difficulty problems. This occurs because search problem solving strategies are less restricted by the specifics of a domain. Typically inspired algorithms are applied such that they incorporate only enough of the problem for the strategy to execute. As such they are not restrained by the conventional approaches to problem solving in the domain as well as human factors such as symmetry or aesthetics. This can lead to unintuitive, simple, flexible and sometimes astounding solutions to common problems.
+
+Examples include:
+- NASA Antenna Design
+- Virtual Creatures
+- Human Competitive Results
+
+Which Algorithms
+Algorithms were selected for diversity of inspiration and diversity of strategy. A careful mix of classical and state of the art approaches were chosen.
+
+The book is broken down into the major paradigms (or kingdoms), as follows:
+- stochastic algorithms
+- evolutional algorithms
+- probabilistic algorithms
+- swarm intelligence algorithms
+- immune system algorithms 
+- natural algorithms 
+- neural network algorithms
+
+
+
+

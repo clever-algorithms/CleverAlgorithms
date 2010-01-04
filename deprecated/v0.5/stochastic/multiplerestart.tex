@@ -1,0 +1,181 @@
+\section{Multiple Restart Search}
+While searching for the global optimum of a given problem domain the may question arise as to whether it is worth continuing with the search or starting the search again. This strategy of repeatedly executing a search on a problem domain with new initial conditions is called \emph{Random}, \emph{Early}, or \textbf{Multiple Restart Search}.
+
+The Multiple Restart Search algorithm involves the application of another search technique until a predefined condition is met, after which the embedded search technique is executed again with different starting conditions. The conditions that govern when a restart will occur are refereed to as the restart schedule and examples include: a fixed number of function evaluations, a fixed time, or the convergence of the search process (no improvements for a fixed number of iterations or function evaluations).
+
+Restarting or multiple executions of a technique is a common practice with stochastic optimization algorithms as they are influenced by their initial starting conditions and convergent behavior that may lead to local rather than the desired global optimum of a problem's search space. Restart schedules are also used with local search and hill climbing searching algorithms as they allow potentially multiple local optima to be explored improving the algorithms approximation of the global optima. Such algorithms are commonly referred to a \emph{Random-Restart Hill Climbing} algorithms.
+
+The multiple executions of an embedded search algorithm (the restarts) are traditionally executed sequentially as the name suggests. Alternatively, the algorithm may exploit parallel or distributed hardware and execute each algorithm run in parallel, offering a linear (and in some cases a super-linear) speedup of locating or approximating a globally optimal solution.
+
+\subsection{Multiple Restart Search for Function Optimization}
+This guide provides an example of a the multiple restart search algorithm applied to a continuous function optimization problem. The embedded search algorithm that is repeatedly restarted is a hill climbing algorithm, and as such the generalized approach may be referred to as a Random-Restart Hill Climber.
+
+The \texttt{SquaringFunction} class defines an instance of a function optimization problem. The problem has a configurable number of parameters (\texttt{@num\_dimensions}) the squares of which are summed together (hence the name). The \texttt{evaluate(vector)} method expects a vector of real valued numbers, the \texttt{in\_bounds?(vector)} convenience method determines whether or not a given vector is valid within the bounds of the problems search space [-5.12, 5.12], and the \texttt{is\_optimal?(scoring)} method determines whether or not the given scoring is optimal (equal to zero).
+
+\begin{lstlisting}
+class SquaringFunction
+  attr_reader :dimensions, :min, :max
+
+  def initialize(dimensions=2)
+    @dimensions = dimensions
+    @min, @max = -5.12, +5.12
+  end
+
+  def evaluate(vector)
+    vector.inject(0) {|sum, x| sum + (x ** 2.0)}
+  end  
+  
+  def in_bounds?(vector)
+    vector.each {|x| return false if x>@max or x<@min}
+    return true    
+  end
+
+  def is_optimal?(scoring)
+    scoring == optimal_score
+  end
+
+  def optimal_score
+    0.0
+  end
+  
+  # true if s1 has a better score than s2
+  def is_better?(s1, s2)
+    s1 < s2 # minimizing
+  end
+end
+\end{lstlisting}
+
+The \texttt{Solution} class provides a container for candidate solutions. The \texttt{@data} instance variable maintains an immutable solution representation (in this case real valued vectors), whereas the \texttt{@score} instance variable maintains a mutable problem specific scoring for the maintained data. 
+
+\begin{lstlisting}
+class Solution
+  attr_reader :data
+  attr_accessor :score
+  
+  def initialize(data)
+    @data = data
+    @score = 0.0/0.0 # NaN
+  end
+  
+  def to_s
+    "[#{@data.inspect}] (#{@score})"
+  end    
+end
+\end{lstlisting}
+
+The \texttt{MultipleRestartSearchAlgorithm} provides an implementation of the random-restart hill climbing algorithm. The \texttt{initialize(max\_restarts)} constructor stores some algorithm configuration parameters in instance variables, specifically the maximum number of restarts provided as an argument, and the number of non-improving steps taken per run of the embedded hill climbing algorithm (set to 100). The \texttt{search(problem)} method manages the restart schedule generating a random starting point which is used to seed a run of the embedded hill climbing algorithm on each restart.
+
+The problem independent \texttt{hill\_climb(problem, current)} method does the hard work for the search, performing a fixed step hill climbing procedure on a provided starting point. The step size is set to 10\% of the possible search space, and is unchanged throughout the run. The main loop of this procedure involves the generation of two steps (a positive and negative application of the step size) for a single problem component (function parameter). If one of the two steps results in an improvement the candidate solution is taken as the current position otherwise the number of non-improving iterations is incremented. This counter is rest each time an improving move is made, and is used to measure the convergence of a run of the hill climbing algorithm. The procedure loops through all components of the problem (one per iteration) seeking improvements. A run completes on convergence, which is occurs when the \texttt{no\_improve\_count} variable exceeds the \texttt{@max\_no\_improvements} parameter.
+
+The \texttt{take\_step(problem, current, step\_size, index, add)} method creates a single new candidate solution from a given solution by mutating a specific component of the solution in a specific direction. Interestingly, this is the only problem-specific part of the algorithm, that in turn calls the \texttt{next\_bfloat(min, max)} utility method to generates random values that are used to perturb a given vector.
+
+\begin{lstlisting}
+class MultipleRestartSearchAlgorithm
+  attr_accessor :max_iterations
+  attr_reader :best_solution
+  
+  def initialize(max_restarts)
+    @max_restarts = max_restarts
+    @max_no_improvements = 100 # max steps for hill climber
+  end
+  
+  # execute a random search on the provided problem
+  def search(problem)    
+    curr_it = 0
+    begin
+      # generate a random solution 
+      current = generate_random_solution(problem)
+      evaluate_candidate_solution(current, problem)
+      # hill climb until convergence
+      run_best = hill_climb(problem, current)
+      curr_it += 1      
+      puts "> finished run #{curr_it} with: #{run_best.score}"   
+    end until should_stop?(curr_it, problem)
+    return @best_solution
+  end
+  
+  def should_stop?(curr_it, problem)
+    (curr_it >= @max_restarts) or problem.is_optimal?(best_solution.score)
+  end
+  
+  def generate_random_solution(problem)
+    real_vector = Array.new(problem.dimensions) do
+      next_bfloat(problem.min, problem.max)
+    end
+    return Solution.new(real_vector)
+  end
+  
+  def hill_climb(problem, current)
+    step_size = (problem.max-problem.min)*0.10
+    no_improve_count = 0
+    index = 0
+    begin
+      # take a step
+      step1 = take_step(problem, current, step_size, index, true)
+      evaluate_candidate_solution(step1, problem)
+      step2 = take_step(problem, current, step_size, index, false)
+      evaluate_candidate_solution(step2, problem)      
+      # check for improvement
+      if problem.is_better?(step1.score, current.score) or 
+        problem.is_better?(step2.score, current.score)
+        # store the best
+        if problem.is_better?(step1.score, current.score)
+          current = step1
+        else
+          current = step2
+        end
+        no_improve_count = 0 # reset
+      else
+        no_improve_count += 1 # count consecutative no improvements
+      end
+      index = (index==problem.dimensions-1) ? 0 : index+1
+    end until no_improve_count >= @max_no_improvements
+    return current
+  end
+  
+  def take_step(problem, current, step_size, index, add)
+    vector = nil
+    begin # keep stepping until a valid point is generated
+      offset = next_bfloat(0, step_size)
+      vector = Array.new(current.data)
+      vector[index] += (add) ? offset : -offset
+    end until problem.in_bounds?(vector)
+    return Solution.new(vector)
+  end
+
+  def next_bfloat(min, max)
+    min + ((max - min) * rand)
+  end
+  
+  def evaluate_candidate_solution(solution, problem)
+    solution.score = problem.evaluate(solution.data)
+    # keep track of the best solution found
+    if @best_solution.nil? or
+      problem.is_better?(solution.score, @best_solution.score)
+      @best_solution = solution                  
+    end
+  end  
+end
+\end{lstlisting}
+
+The algorithm is demonstrated by first seeding the global random number generator to ensure a consistent sequence of random numbers (useful for testing) and creating instance of the problem and algorithm. The search is executed by passing the problem instance to the algorithm's search method that displays the status of the algorithms as the best result found after each restart. The demonstration ends by displaying an approximation of the problem's global optima (which is 0.0 in each dimension) as the best solution encountered by the algorithm.
+
+\begin{lstlisting}
+srand(1) # set the random number seed to 1
+algorithm = MultipleRestartSearchAlgorithm.new(10) # limit to 10 restarts
+problem = SquaringFunction.new(5) # create a problem with 5 dimensions
+best = algorithm.search(problem) # execute the search
+puts "Best Solution: #{best}" # display the best solution
+\end{lstlisting}
+
+This general procedure is called a meta-search algorithm as it can generally be applied to any other direct search technique. The demonstration may be extended by elaborating upon the hill climbing algorithm such as using an adaptive rather than a fixed step size. Further, the embedded hill climbing (local search) algorithm may be replaced with a population-based global stochastic search algorithm. Additionally, restarted algorithm runs may exploit the results found by previous runs, and alternate restart schedules may be used such as a maximum number of function evaluations or relative improvement over previous runs.
+
+\subsection{Further Reading}
+This section provides some additional reading.
+
+\begin{itemize}
+	\item X. Hu, R. Shonkwiler, and M. Spruill. Random restart in global optimization. Technical Report 110592-015, Georgia Tech School of Mathematics, 1994.
+	\item M. Magdon-Ismail and A. Atiya. The early restart algorithm. Neural Computation, 12(6), pages 1303–1312, 2000.
+	\item A. Fukunaga. Restart scheduling for genetic algorithms. (pre-print) In Parallel Problem Solving from Nature - PPSN V, pages 357-366. 1998.
+	\item Marco Muselli, A Theoretical Approach to Restart in Global Optimization. (pre-print) In Journal of Global Optimization, 10(1), pages 1-16. 1997
+\end{itemize}

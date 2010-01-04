@@ -1,0 +1,43 @@
+Book Motivation
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/10  JB  Created
+
+
+A suite of problems that can be used as further exercises in extending algorithm implementations. Many of these problems are used in demonstrations. The goal is to find sample problems that are simple, easy to communicate, and that readers can relate to (have meaning). Likely exposed to them in high school science or mathematics. 
+
+Function Optimization (parametric)
+- given a known functional form, find a set of coefficients for the function such that the value produce by the function is minimized or maximized
+
+
+Logic (boolean concept learning)
+- 11 multiplexer problem
+
+
+Symbolic Regression (non-parametric)
+- given a set of observations and the assumption that there relationships between the observations, find a symbolic function that maps one or a set of inputs to one or a set of outputs.
+
+- Pythagorean theorem (relationships between the lengths of triangles)
+	- http://en.wikipedia.org/wiki/Pythagorean_theorem
+- Kepler’s Third Law
+	- http://www.dtreg.com/gep.htm
+- Odd Parity 
+	- http://www.dtreg.com/gep.htm
+
+
+Symbolic Integration
+- much like regression i'd expect
+
+
+Function Approximation (non-parametric)
+- given a set of of observations and the assumption that there are a relationship between the observations, find a sub-symbolic function that maps one or a set of the inputs to one or a set of outputs.
+
+Controller
+- Maze
+- maxpath
+
+Combinatorial
+- TSP
+- bin packing
+- N Queens

@@ -1,0 +1,97 @@
+% The argument for the book
+% The information the user requires to read and understand the book
+\chapter{Introduction}
+\label{chap:intro}
+\emph{Welcome to Inspired Algorithms!} This is a handbook of recipes for computational problems solving techniques inspired by natural systems and processes. It has been designed to be used as a reference text rather then being read cover to cover, where a technique or a class of techniques is looked up. A research scientist of system designer may be interested in browsing algorithm inspirations in search of an interesting system or process analogue for investigating developing new techniques or tools. Alternatively, system and software engineers may lookup and compare various problem solving strategies that may be used to address a specific problem. The practitioner and interested programmer may lookup and implement popular and state of the art algorithms to address business or scientific needs, or simply play with the fascinating systems they represent.
+
+This chapter provides some context for the algorithms (Section~\ref{sec:intro:background}), their presentation (Section~\ref{sec:intro:techniques}), and the code tutorials (Section~\ref{sec:intro:tutorials}) throughout the book. It may be skipped for those eager to get into the details of inspired algorithms. 
+
+\section{Background}
+\label{sec:intro:background}
+This section provides context for the study and application of \emph{Inspired Algorithms}, summarizing their place, relationship, and need within the field of Artificial Intelligence.
+
+\subsection{Artificial Intelligence}
+The field of classical \emph{Artificial Intelligence} (AI) coalesced after World War II in the 1950's drawing on an understanding of the brain from neuroscience, the new mathematics of information theory, control theory referred to as cybernetics, and the dawn of the digital computer. AI is a cross-disciplinary field of research generally concerned with developing and investigating systems that operate or act intelligently. It is generally considered a discipline in the field of computer science given the strong focus on computation.
+
+The traditional stream of AI involves a top down perspective of problem solving, generally involving symbolic representations and logic processes that most importantly can explain why they work. The exemplars successes of this neat prescriptive stream include a multitude of specialist approaches such as rule-based expert systems, automatic theorem provers, and operations research techniques that underly modern planning and scheduling software. Although traditional approaches have resulted in significant success they have their limits, most notably scalability. Increases in problem size result in an unmanageable increase in the complexity of such problems meaning that although traditional techniques can guarantee an optimal, precise, or true solution, the computational execution time or computing memory required can be fantastically unreasonable.
+
+\subsection{Messy Artificial Intelligence}
+As such, there have been a number of thrusts in the field of AI toward less neat techniques that are able to locate approximate, imprecise, or partially-true solutions to such problems with a reasonable cost of resources. Such approaches are typically \emph{descriptive} rather than \emph{prescriptive}, describing a process for achieving a solution (how), but not explaining why they work (like the neat perceptive approaches). 
+
+Messy AI approaches are defined as relatively simple procedures that result in complex emergent and self-organizing behavior that can defy traditional reductionist analyses, the effects of which can be exploited for quickly locating approximate solutions to intractable problems. A common characteristic of such techniques is the incorporation of randomness in their processes resulting in robust probabilistic and stochastic decision contrasted to the sometimes more fragile crisp approaches. Another important common quality is the adoption of an inductive rather than deductive approach to problem solving, generalizing solutions or decisions from sets of specific observations made by the system.
+
+\subsection{Techniques Patterned After Nature}
+These techniques have been given many different names. \emph{Soft computing} was used to describe these techniques, a name that contrasts the classical hard or crisp approaches, as well as the hardness or difficulty of the problems to which they are suited. More recently such approaches have fallen under the heading of \emph{Computational Intelligence}, as an attempt to unify approaches focused on \emph{strategy} and \emph{outcome}. 
+
+A common theme among these approaches is that they are patterned after natural or biological systems and given the name \emph{Natural Computing}, \emph{Biologically Inspired Computation}, \emph{Biomimicry}, and \emph{Biomemetics}. Natural systems and processes can provide powerful analogies and metaphors for a wide array of problems faced by humans. A related field that is out of scope of this book include \emph{Computing with Nature} concerned with using non-silicon substrates for computation such as DNA Computing, Photonic Computing, and Quantum Computing. Another interesting natural inspired field of research that is out of scope is \textit{Nature with Computers} that is concerned with computational modeling to better understand natural processes such as Computational Biology, Artificial Life (ALife), and Fractal Geometry.
+
+Approaches embody the the adaptive principles of natural and biological systems and also fall into the field of \emph{Machine Learning}. This is a sub-field of AI primarily concerned with investigating statistical computational learning as well as learning strategies and algorithms. A final and more recent perspective for such approaches is \emph{Metaheuristics} that proposes such strategies guide simpler problem specific heuristics for problem solving.
+
+\subsection{Inspired Algorithms}
+This books is concerned with the algorithms, their general strategies, and their inspiration drawn from across these sub-fields of Artificial Intelligence and Computer Science. The term \emph{Inspired Algorithms} is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner: \emph{algorithms drawn from the field of artificial intelligence whose strategies are inspired by a natural or physical systems}. The term is intended for accessibility, not as a new branch of study, a branch that perhaps already has too many names
+
+\subsection{Further Reading}
+There are many good books on Artificial and Computational Intelligence. The following lists some seminal and diverse works that cover the perspectives on Inspired Algorithms covered in this section.
+
+\begin{itemize}
+	\small
+	% AI
+	\item \bibentry{Russell2003}
+	\item \bibentry{Luger1993}
+	% CI
+	\item \bibentry{Engelbrecht2007}
+	% BIC
+	\item \bibentry{Castro2005}
+	\item \bibentry{Forbes2005}
+	% biomimictry
+	\item \bibentry{Benyus1998}
+	% metaheuristics
+	\item \bibentry{Blum2003}
+\end{itemize}
+
+
+\section{Algorithms}
+\label{sec:intro:techniques}
+A consistent methodology for presenting algorithms was designed with the goal of clearly separating inspiration from algorithm whilst being suitable for the diverse array of algorithms. This approach to presenting algorithms includes four main headings: \emph{inspiration}, \emph{strategy}, \emph{procedure}, and \emph{further reading}.
+
+\subsection{Inspiration}
+The algorithm inspiration is a summary of the specific system which provoked the inception of the algorithm or which retrospectively the algorithm can be directly related by analog or metaphor. This include relevant theory and observation, and most importantly the salient attributes of the system abstracted or adopted by the algorithm. A given inspiring system may be abstracted to an algorithmic problem solving strategy in a number of ways.
+
+\subsection{Strategy}
+The algorithm strategy is an abstraction of the inspiration toward a computational model. The strategy highlights a canonical interpretation of the salient attributes in the inspiring system and how they map onto a computational approach with the goal of problem solving. The strategy provides a logical separation between a computational realization (algorithm) and a metaphoric system (inspiration). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.
+
+\subsection{Procedure}
+The algorithm procedure summarizes the specifics of realizing the strategy as a systemized and parameterized computation. It outlines how the algorithm is organized and the data structures and representation used. The procedure also reviews the best practices and heuristics (drawn from the literature) for configuring and applying the algorithm.
+
+\subsection{Further Reading}
+The presented algorithm inspiration, strategy, and procedure were written for conciseness. As such, each algorithm provides a further reading section for those readers interested in a deeper understanding of the theory and application of the technique. The listing consists of hand-selected reference material including books, peer reviewed conference papers and journal articles.
+
+\section{Tutorials}
+\label{sec:intro:tutorials}
+The focus on this book is the presentation of inspired algorithms with working code examples. Towards this end, each algorithm is described using a programming tutorial in the Ruby programming language. Tutorials are complete in that they result in a functional program, although they are demonstrative, implementing only just enough features to demonstrate a specific technique on a specific problem instance. They provide an exemplar realization of the technique suitable for demonstrating the fine details of the technique, and a template for specializing the technique for practical problem solving. 
+
+\subsection{Code Organization}
+All code tutorials are presented using the same structure, separating the \emph{problem}, \emph{solution}, and \emph{algorithm}. Normally code reuse is a good thing in programming, although in a book it is repetition and annoying. Toward this end problem instances, representations, and technique implementations have been varied between similar algorithms (wherever possible) in an effort to reduce such repetition and promote diverse and useful perspectives realizations.
+
+\subsubsection{Problem} A small problem instance definition that is prototypical for the problem class and domain from which it was drawn. Problem instances are selected to accentuate the properties of the specific algorithm being presented, and to demonstrate the capabilities, general appropriateness, and most importantly the behavior of the technique when executed. Each problem instance has a clear objective, is capable of assessing candidate solution (assigning an ordinal scoring), is either maximizing or minimizing and typically has a known optimal solution or set of solutions.
+\subsubsection{Solution} The representation of a candidate solution that can be interrogated and superficially manipulated  by an algorithm without internal knowledge of the specific operators, and which can be directly or indirectly evaluated by a problem. A solution may use a technique specific or sub-symbolic representation which can be transformed into a candidate solution meaningful to the problem definition, and which exposes interface of tools for the algorithm to operate.
+\subsubsection{Algorithm} These are the active process responsible for producing a good solution to a provided problem definition. Algorithms are focused on the realization of the problem solving process, and as such are mostly agnostic to the specifics of the problem definition (such as maximizing or minimizing), as well as the solution representation. Candidate solutions are treated as samples from a problem search space, the creation and resampling of which is directed by the algorithm although the specifics are managed by the candidate solutions themselves. This separation was designed to ease the reapplication of the demonstrative algorithm implementations to more and different problem definitions.
+\subsubsection{Helpers} Some algorithm realizations require additional helper functionality that does not easily fit into the problem-solution-algorithm organization. Helper classes cater for this need, providing utility functionality.
+
+\subsection{The Ruby Programming Language}
+Ruby is a dynamic scripting language that was developed in the early 1990's in Japan. It's main appeal is it's simple and flexible of syntax which allows for powerful programs to be written in very few lines of code. Some principles of the language are productivity and an enjoyable experience for programmers, properties which are becoming more important than raw execution speed for many business and scientific applications. Ruby is also the language that underlies the popular web development framework Ruby on Rails, resulting in the recent popularizing of the language itself.
+
+Ruby was selected for the code examples in this book because it is compact and expressive. Ruby offers a mixture of dynamic, procedural, object oriented, functional, and reflective features from modern programming languages. As such programmers literate in any and all of these programming paradigms will find the syntax human readable and semantics familiar. The combination of these programming paradigms can result in very concise programs, although care has been taken to ensure that examples are still understandable to the average C, Java, C\#, and Python programmer.
+
+\subsection{Further Reading}
+There are many excellent books and resources on programming and the Ruby programming language, the following lists some great starting points for the programming and/or Ruby novices.
+
+\begin{itemize}
+	% ruby
+	\item \bibentry{Thomas2004}
+	\item \bibentry{Flanagan2008}
+\end{itemize}
+
+
+\section{Organization}
+This book is divided into chapters that partition algorithms into typical taxonomy of \emph{kingdoms} based on their similarities of inspiration and operation. The separation is not ideal as many multi-disciplinary techniques do not play nice with such taxonomies, although links are made between related techniques where appropriate.

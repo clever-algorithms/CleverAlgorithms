@@ -1,0 +1,76 @@
+Evolution Strategies Tutorial
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/04  JB  Created
+
+Introduction
+This section describes the implementation of (mu, lambda)-ES to solve a non linear programming problem, where individual candidate solutions self-adapt mutation size and direction parameters. 
+
+Problem
+The selected problem is a parameterized function with real valued variables called called Schwefel's function. It is a standard non linear programming problem for benchmarking optimization algorithms and was selected because the number of parameters (dimensions) can be varied to vary the difficulty of the problem.
+
+def calculate(real_vector)
+  real_vector.inject(0) {|sum, x| sum + -x * Math::sin(Math::sqrt(x.abs)) }
+end
+
+The function in minimizing, meaning that small fitness values are better. The optimal solution is known at the coordinate 420.9687 in each dimension, and the problem is a bounded between -500 and 500. 
+
+Solution
+A candidate solution to the problem is defined by an array of floating point numbers, each element representing a parameter in the problem definition. In addition to a fitness score, each solution maintains an array of strategy parameters that influence the scope of variation on each function parameter. 
+
+New solutions are created at the beginning of the run as random points within the hyper-cube of the functions parameter space. Strategy parameters are initialized with random floats between 0 and 1. 
+
+def initialize_recombine(parent1, parent2)
+  length = parent1.strategy_params.length
+  # populate strategy parameters
+  @strategy_params = Array.new(length) do |i|
+    transcribe_strategy(Random.next_bool ? parent1.strategy_params[i] : parent2.strategy_params[i], length)
+  end
+  # populate objective values
+  @objective_params = Array.new(length) do |i|
+    transcribe_objective(Random.next_bool ? parent1.objective_params[i] : parent2.objective_params[i], @strategy_params[i])
+  end
+end
+
+Solutions define their own crossover and mutation operators. A uniform crossover operator is used that creates a new objective and strategy vectors from two parents. The operator enumerates each vector one parameter at a time and flips a coin to choose whether to copy a value from the first or second parent.
+
+def transcribe_strategy(x)
+  x * Math::exp(heuristic_tau * Random::next_gaussian) 
+end
+
+Mutations of parameters occurs at the time they are copied by passing them through a transcribe function. In this simple realization of Evolution Strategies, the strategy parameters represent standard deviations applied random Gaussian numbers which are in turn applied to the current objective parameters. In effect, the adaptation of the standard deviations for the mutation of each objective parameter control the scope of possible new values, referred to as a the jump or step size. 
+
+def transcribe_objective(x, stdev)
+  x + stdev * Random::next_gaussian
+end
+
+Algorithm
+The algorithm is partitioned into the main evolve loop that executes one generation per algorithm iteration. Each generation, the entire population is selected to contribute to the next generation (mu == lambda). The general loop can use either the (mu+lambda)-ES or (mu+lambda)-ES confirmations. The first or 'comma' mode requires that the newly created population replace the existing solution each iteration. A potential problem with this method is that good solutions in the old population may be replaced with less good solutions in the new population. 
+
+def comma_es
+  # direct replacement
+  @population = evolve_population(@population)
+  # evaluate
+  evaluate_population(new_population)
+end
+
+The 'plus' variation requires the selection of the best overall solutions from the union of both the old and the new populations. This strategy does preserve the best solutions found by the algorithm, although at the expense of greediness. Intermediate of these two extremes can be achieved by selecting less than the entire population each iteration and integrating the new offspring by displacing the lowest fitness members of the population.
+
+def plus_es
+  # create the new population
+  new_population = evolve_population(@population)
+  # evaluate the newly created candidate solutions
+  evaluate_population(new_population)
+  # combine the existing and new populations
+  union = @population + new_population
+  # rank by fitness evaluation (ascending numeric order)
+  union.sort!
+  # select the best of all available solutions
+  @population.fill {|i| @problem.is_maximizing? ? union[union.length-1-i] : union[i] }    
+end
+
+Summary
+The Evolution Strategies algorithm is an evolutionary approach that uses a strategy of self-adaptive mutation. More advanced variations of the approach introduce finer granularity and control over the changes to the application of evolutionary operators to the strategy parameters.
+
+Some obvious extensions include a problem-specific initialization of the strategy parameters (standard deviations) in the base population and more elaborate heuristics for evolving the strategy parameters (based on the covariance matrix for example).

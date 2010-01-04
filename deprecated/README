@@ -1,0 +1,10 @@
+This directory (deprecated) contains the previous epochal attempts at the clever algorithms project before the current project.
+
+Briefly, these attempts include:
+
+v0.1: January 2008, Initial attempt, Latex, called Algorithm Atlas
+v0.2: December 2008, Ruby code focus, 10 evolutionary algorithms, called EC Book
+v0.3: December 2008-January 2009, Cookbook format, Latex, called Tutorial Book
+v0.4: January-February 2009, Tutorial format, Blog, called Inspired Algorithms
+v0.5: July 2009, Unified approach, Latex, called Unified
+v0.6: July 2009, A simplified approach, Latex, called Simplified

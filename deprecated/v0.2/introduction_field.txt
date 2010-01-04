@@ -1,0 +1,137 @@
+Introduction - The Field 
+Jason Brownlee
+
+Introduction
+This section sets the scene for the study of inspired algorithms, drawing on the field of artificial intelligence and the many names and perspectives such approaches have had in the field over the last 60 years.
+
+Artificial Intelligence
+- design and study of intelligent machines
+- caught up on 'intelligent'
+	- machines that behave like humans
+	- machine that can do things that humans can do
+- focus on problems or tools
+- major areas include: reasoning, knowledge, planning, learning, communication, perception
+- goal of a general intelligence (artificial general intelligence)
+- arose from: neurology (study of the brain), information (mathematics), control theory (cybernetics), the digital computer (automated computation)
+
+- broad field that encompasses many research questions and directions
+
+reasoning:
+- approaches modeled on human problem solving, step by step (top down)
+- do not scale well, reach a combinatorial explosion.
+	- seek more efficient approaches
+- some problem solving by humans is not logical and step by step, much of it is sub-symbolic and intuitive
+
+knowledge representation
+- model systems symbolically - using symbols (Newell and Simon), can achieve intelligence
+- many things are not modelled as symbols and logical statements, does not scale
+
+learning
+- called machine learning
+- supervised learning (teacher that corrects, classification and regression)
+- unsupervised learning (find patterns in examples)
+- reinforcement learning (reward and punishment based on actions in an environment)
+
+other
+- planning, anticipating the future
+- natural language processing, and translation
+- robotics, embodied intelligent agents
+- perception, machine vision
+- social intelligence
+- creativity
+- general intelligence
+
+symbolic approaches (GOFAI)
+- cognitive simulation
+- logical planning
+- scruffy symbolic AI (and neat)
+- knowledge based and expert systems
+
+sub-symbolic approaches 
+- bottomup approaches (situated or embodied agents, robotics)
+- computational intelligence
+- formalization (specific mathematical approaches - OR)
+
+agents
+- perceive and take actions in an environment
+- solve specific problems
+- rational, use any approach that works
+- mutli agent system
+
+optimization
+- exhaustive, hill climbing only get you so far
+- non linear search strategies, using randomization, etc, other
+
+logic
+- propositional logic
+- first order logic
+- fuzzy logic
+
+uncertantity
+- probabilistic methods
+
+classification
+- pattern matching
+
+
+Machine Learning
+- algorithms and techniques that can learn
+- inductive and deductive learning
+- draws on data mining, theoretical computer science, and statistics
+- focus on statistical approaches
+
+
+Soft Computing
+- study complex systems
+- develop tools for problems that do not have good solutions (efficient or efficacious)
+- approximate solutions to NP compete problems for example
+- use inexact methods to give useful but inexact solutions to hard problems
+- contrasted with hard computing, precise and exact approaches
+- imprecision, partial truth, uncertantity
+- mostly inductive approaches (generalizing from observations)
+
+
+Computational Intelligence
+- focus on strategies or heuristics over statistical approaches
+
+
+Natural Computation
+- computational approaches inspired by nature and natural systems
+- interested in developing and investigating new tools inspired by natural for solving complex/intractable problems
+three approaches
+- computing inspired by nature. example is biologically inspired computing. aim of developing techniques for solving hard problems
+- computation simulation of nature. synthetic organisms via computation, artificial life, aim of better understanding natural systems. fractal geometry
+- computation with natural. using nature to perform computation. novel computational paradigms different from silicon. examples include dan computing, quantum computing, optical computing.
+
+biologically inspired computing
+bio inspired computing
+models of natural, typically biological processes that abstract the sailent features of a natural system, which are then applied to solving hard problems.
+- bottom up approaches to problem solving, decentralized
+- simple rules with complex emergent or self organizing effects
+
+biomimcry / Biomimetics
+- science that studies natural systems and copies the processes towards solving human problems
+- abstract the principles that underlie biological systems
+- apply the principles to human designs
+
+Bionics
+- study of natural systems applied to the design and development of engineering and technology
+
+Metaheuristics
+- general heuristic method for solving a complex problem using a black box technique
+- approximate methods for hard problems, such as NP complete combinatorial problems
+
+
+
+Other?
+- data mining
+- alife
+- intelligent agents
+- mutli agent systems
+
+
+
+
+
+
+

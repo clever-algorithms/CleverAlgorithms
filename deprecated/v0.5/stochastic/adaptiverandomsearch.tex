@@ -1,0 +1,179 @@
+\section{Adaptive Random Search}
+The Random Search algorithm involves the blind generation and evaluation of candidate solutions to a problem, where as the Localized Random Search algorithm makes the simple addition of successively varying the best solution found by the search so far. The \textbf{Adaptive Random Search} algorithm, like Localized Random Search is concerned with searching the neighborhood of the best solution found by the search so far, although unlike that algorithm the definition of neighborhood is not fixed. Instead it is changed dynamically over the course of the search.
+
+When exploring the neighborhood of a candidate solution, the size of the steps taken within the neighborhood may be fixed in what is referred to as Fixed Step Size Random Search. The Adaptive Random Search algorithm involves varying the step size during the search in response to the relative improvements or non-improving steps as defined by the objective function evaluation. A small number of samples are taken each iteration with varied small and large step sizes in an attempt to approximate an optimal step size to converge the search to the local optimum. The step size that generate an improved candidate solution is adopted as the current step size for the search, and improved solutions are taken as the current working position. When a given step size stops producing improvements, its size is reduced to encourage the search algorithm to more carefully explore the smaller localized neighborhood. Larger step sizes are frequently explored in an effort to potentially escape local optima, and very large step sizes are sampled with a low frequency in an effort to explore distant regions of the search space.
+
+\subsection{Adaptive Random Search for Continuous Function Optimization}
+This guide provides an example of the Adaptive Random Search algorithm applied to an instance of the continuous function optimization problem.
+
+The \texttt{ExponentFunction} class defines an instance of a function optimization problem with a variable number of function parameters or dimensions. The \texttt{evaluate(vector)} method expects a vector of real values in the problem bounds and evaluates it as the sum of the fourth power of each function parameter. The global optimum of this minimization function is located at 0.0 which is accessible via the \texttt{optimal\_score} method and is used by \texttt{is\_optimal?(scoring)} to test whether the algorithm has located to the global optimum. Finally, the problem provides a \texttt{in\_bounds?(vector)} method for assessing whether a given vector falls within the hypercube of the valid problem space, useful for algorithms like Adaptive Random Search that generate new samples from existing samples and may stray out of the problem's bounds.
+
+\begin{lstlisting}
+class ExponentFunction
+  attr_reader :dimensions, :min, :max
+
+  def initialize(dimensions=2)
+    @dimensions = dimensions
+    @min, @max = -5.12, +5.12
+  end
+
+  def evaluate(vector)
+    vector.inject(0) {|sum, x| sum + (x ** 4.0)}
+  end  
+  
+  def in_bounds?(vector)
+    vector.each {|x| return false if x>@max or x<@min}
+    return true    
+  end
+
+  def is_optimal?(scoring)
+    scoring == optimal_score
+  end
+
+  def optimal_score
+    0.0
+  end
+  
+  # true if s1 has a better score than s2
+  def is_better?(s1, s2)
+    s1 < s2 # minimizing
+  end
+end
+\end{lstlisting}
+
+The \texttt{Solution} class provides a convenience container for holding immutable real-valued vectors in the \texttt{@data} instance variable, and a mutable \texttt{@score} instance variable for holing the costing of the vector assigned by a problems objective function. 
+
+\begin{lstlisting}
+class Solution
+  attr_reader :data
+  attr_accessor :score
+  
+  def initialize(data)
+    @data = data
+    @score = 0.0/0.0 # NaN
+  end
+  
+  def to_s
+    "[#{@data.inspect}] (#{@score})"
+  end    
+end
+\end{lstlisting}
+
+The \texttt{AdaptiveRandomSearchAlgorithm} class provides a reasonably generic implementation of the algorithm. The \texttt{initialize(max\_iterations)} constructor expects a maximum number of algorithm iterations as an argument and goes on to define a set of algorithm configuration parameters as class instance variables. The \texttt{search(problem)} method is large and contains all the problem agnostic conditional logic of the algorithm. The search starts by generating a random starting point for the search (\texttt{current}) and setting an initial step size of 10\% of the size of the search domain. The main loop of the algorithm is concerned with first generating a new sample using the \texttt{step\_size} and a second sample using a larger step size. The larger step size is fixed at \texttt{@small\_factor $*$ step\_size} although periodically (once every \texttt{@large\_factor\_multiple} iterations) a much larger factor (\texttt{@large\_factor}) of the current step size is used.
+
+If one of the generated steps results in a candidate solution better than the current solution it is replaced. If the larger step size resulted in the improvement, it is used the current step size. If neither generated step sizes resulted in an improved candidate solution, a count of non-improving steps is incremented. If this count exceeds \texttt{@maximum\_no\_improvements} then the current step size is reduced by a constant factor (\texttt{step\_size / @small\_factor}).
+
+The \texttt{generate\_random\_solution(problem)} method used for the starting point of the search generates a random vector in the bounds of the problem space. The \texttt{take\_step(problem, current, step\_size)} is responsible for stochastically generating a new solution from a provided existing solution within a neighborhood defined by the provided \texttt{step\_size}. This works by generating a random vector between +/- \texttt{step\_size} which is then added to the current sample. This means the neighbourhood is a \texttt{step\_size} sized hypercube around the origin. Steps are taken by this method until a valid (within the problem bounds) candidate solution is generated.
+
+\begin{lstlisting}
+class AdaptiveRandomSearchAlgorithm
+  attr_accessor :max_iterations
+  attr_reader :best_solution
+  
+  def initialize(max_iterations)
+    @max_iterations = max_iterations
+    @small_factor = 1.3 # normal step size incrase(*) and decrease(/) rate
+    @large_factor = 10 # step size factor increase for larger jump
+    @large_factor_multiple = 100 # max steps before larger jump is tried
+    @maximum_no_improvements = 50 # max non-improvement steps before size decreased
+  end
+  
+  # execute a random search on the provided problem
+  def search(problem)    
+    # random starting point
+    current = generate_random_solution(problem)
+    evaluate_candidate_solution(current, problem)
+    curr_it = 0
+    step_size = (problem.max-problem.min)*0.1 # 10% of the domain
+    no_change_cnt = 0
+    begin
+      # current step
+      step = take_step(problem, current, step_size)
+      evaluate_candidate_solution(step, problem)
+      # take second larger step
+      factor = @small_factor
+      factor = @large_factor if curr_it.modulo(@large_factor_multiple) == 0
+      larger_step_size = step_size * factor
+      larger_step = take_step(problem, current, larger_step_size)
+      evaluate_candidate_solution(larger_step, problem)
+      # check for improvement
+      if problem.is_better?(step.score, current.score) or 
+        problem.is_better?(larger_step.score, current.score)        
+        # select new step size if larger step is better
+        if problem.is_better?(larger_step.score, step.score)
+          step_size = larger_step_size # increase step size
+          current = larger_step # new best solution
+        else
+          current = step # new best solution
+        end
+        no_change_cnt = 0 # reset counter
+      # check for step size decrease
+      elsif (no_change_cnt+=1) >= @maximum_no_improvements
+        no_change_cnt = 0 # reset counter
+        step_size /= @small_factor # decrease step size
+      end
+      curr_it += 1      
+    end until should_stop?(curr_it, problem)
+    return @best_solution
+  end
+  
+  def should_stop?(curr_it, problem)
+    (curr_it >= @max_iterations) or problem.is_optimal?(best_solution.score)
+  end
+  
+  def generate_random_solution(problem)
+    real_vector = Array.new(problem.dimensions) do
+      next_bfloat(problem.min, problem.max)
+    end
+    return Solution.new(real_vector)
+  end
+  
+  def take_step(problem, current, step_size)
+    vector = nil
+    begin # keep stepping until a valid point is generated
+      step = Array.new(problem.dimensions) do
+        v = next_bfloat(-step_size, +step_size) 
+      end
+      data = current.data
+      vector = Array.new(data.length) {|i| data[i] + step[i]}
+    end while !problem.in_bounds?(vector)
+    return Solution.new(vector)
+  end
+
+  def next_bfloat(min, max)
+    min + ((max - min) * rand)
+  end
+  
+  def evaluate_candidate_solution(solution, problem)
+    solution.score = problem.evaluate(solution.data)
+    # keep track of the best solution found
+    if @best_solution.nil? or
+      problem.is_better?(solution.score, @best_solution.score)
+      @best_solution = solution
+      puts "> new best: #{solution.score}"               
+    end
+  end  
+end
+\end{lstlisting}
+
+The algorithm is demonstrated by first seeding the global random number number generator to 1 to ensure the same sequence of random numbers is used for each run. A new instance of the algorithm is created allowing a maximum of 5000 iterations, and an instance of the \texttt{ExponentFunction} problem is created in 5 dimensions. The search is executed by passing the problem to the algorithm, and the best result achieved by the algorithm is printed once the search is completed.
+
+\begin{lstlisting}
+srand(1) # set the random number seed to 1
+algorithm = AdaptiveRandomSearchAlgorithm.new(5000) # limit to 5000 iterations 
+problem = ExponentFunction.new(5) # create a problem with 5 dimensions
+best = algorithm.search(problem) # execute the search
+puts "Best Solution: #{best}" # display the best solution
+\end{lstlisting}
+
+Once the general approach is understood, one may begin playing with the parameters defined in the algorithms constructor that govern the dynamic adaptation of the step size. For example, smaller or larger factors may be used, and the frequency of large or small step size increase and decreases may be varied. The acceptance criteria for when the current working solution is replaced may be made probabilistic rather than deterministically greedy. Finally, one may experiment with hyper-spherical sampling neighbourhoods in the \texttt{next\_step} function and with sampling distributions other than uniform such as Gaussian with the origin as the mean and the \texttt{step\_size} as the standard deviation.
+
+\subsection{Further Reading}
+This section lists some additional resources.
+
+\begin{itemize}
+	\item M. Schumer and Steiglitz, Adaptive step size random search. IEEE Transactions on Automatic Control 13(3), pages 270- 276. 1968
+	\item S. F. Masri and G. Bekey, Global Optimization Algorithm Using Adaptive Random Search. Applied Mathematics and Computation 7, pages 353-375. 1980
+	\item  Rajeeva Kumar, Pierre T. Kabamba, David C. Hyland, Analysis and parameter selection for an adaptive random search algorithm. Mathematics and Computers in Simulation 68(2), pages 95-103. 2005
+	\item Andrei A. Prudius, Adaptive Random Search Methods for Simulation Optimization. Ph.D. Thesis, Georgia Institute of Technology. 2007
+\end{itemize}

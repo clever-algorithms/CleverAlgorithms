@@ -1,0 +1,115 @@
+\section{Genetic Programming}
+
+\subsection{Inspiration}
+Genetic Programming is inspired by the biological theory of evolution by means of natural selection
+
+\subsection{Strategy}
+The strategy for Genetic Programming is to exploit evolution to develop a program to complete a user defined task.
+
+Genetic Programming (GP) is concerned with exploiting an evolutionary process to develop programs to solve a given problem. Candidate solutions are represented as executable programs, typically as expression trees in a scope limited functional language. Programs may or may not take input parameters and are assessed based upon their execution in the context of a problem domain. GP represent a different approach to evolutionary-based problem solving where instead of searching for a set of parameters to satisfy a model, a program-based model is evolved to satisfy the problem.
+
+\subsection{Procedure}
+A typical Genetic Programming algorithm involves the evolution of a population of candidate solutions of a number of generations of selection, recombination, and mutation. The expression tree representation requires specialized genetic operators for recombination and variation. The crossover operator involves pruning a part of the expression tree from one parent, and grafting on a sub-tree from a second parent. The mutation operator involves exchanging values or functions within the expression tree.
+
+For example a program may use a set of arithmetic functions, each of which take two parameters, such as $*\\+-$. A candidate solution may be be comprised of a mixture of the functions and numerical constants, arranged in a binary expression tree that is executed in a depth-first manner. 
+
+A common way to represent such solutions is to use a LISP-like syntax that represents programs as binary-expression trees using the prefix notation. The above example would be presented as: $(+ 2,4)$. Nodes in the tree that accept one or more parameters are referred to as `function nodes', whereas those that do not accept a parameter such as numeric constant are called `terminal nodes'.
+
+Candidate solutions may be comprised of mathematic functions as well as domain specific functions, such a movement directions for a maze controller. More elaborate realizations of the algorithm allow for the evolution the functions used by the candidate solutions called automatically defined functions (ADF) or the evolution of the genetic operators applied to the candidate solutions each generation.
+
+\begin{lstlisting}
+Initialize Population
+While not Stop Condition
+	Evaluation population (execute programs)
+	Selection
+	Crossover, Mutation
+	Replacement
+End
+\end{lstlisting}
+
+\subsection{Heuristics}
+rules of thumb for GP
+
+\begin{itemize}
+	\item Fitness assessments typically take the structure of the program into account (rewarding parsimony) as well as the problem specific evaluation
+	\item Crossover points are biased towards selecting function nodes in the expression tree over terminals (90/10 split)
+	\item The probability of a crossover event is typically high (90\% of members) and the probability of a point mutation is typically low (1\% of nodes)
+	\item Typical execution involve large population sizes (100-500, sometimes much larger) over a relatively small number of generations (10 to 50)
+	\item The function and terminal sets are domain dependent, and may direct interact with the problem (such as mathematic function or controller) or may construct a solution for evaluation (such as design problems).
+\end{itemize}
+
+\subsection{Tutorial}
+\subsubsection{Introduction}
+This tutorial demonstrates an implementation of the Genetic Programming algorithm applied to the approximation of Pi using arithmetic mathematical functions.
+
+\subsubsection{Problem}
+The mathematical constant PI represents the ratio of a circles circumference to its diameter. There are many known approximations of PI, for example: 22/7, 355/113. 
+
+This problem provides a good demonstration of the GP as the problem is simple in that it doesn't have any parameters or require multiple executions of the candidate solution against the problem definition, although requires the development of a mathematic expression (program) to approximate the value of Pi. The cost function is defined as the absolute difference from the value produced by a candidate solution to PI as defined by the ruby constant Math::PI (3.14159265358979). Engineers typically use Pi to 5 or 6 significant figures, so the problem is simplified to approximating PI rounded to 5 places: 3.14159.
+
+The function set is limited to the four arithmetic functions: *, \\, +, and - implemented as lambda's with an arity of 2. The terminal set is limited to constant floating point values between 0 and 1. The cost function involves evaluating a given solution's expression and calculating the absolute difference between the resulting value an Pi bout rounded to 6 significant places.
+
+\begin{lstlisting}
+def cost(solution)
+  # evaluate the expression
+  value = solution.expression.eval
+  # absolute difference from goal value
+  solution.fitness = (round(@goal) - round(value)).abs
+end
+
+def round(v)
+  ((v * 100000.0).floor).to_f / 100000.0
+end
+\end{lstlisting}
+
+\subsubsection{Solution}
+A candidate solution is comprised of an expression tree and a fitness value. Each solution manages it's own expression tree, so the recombination and mutation operators belong to the solution class.
+
+Expressions are managed as a binary tree of nodes, where a given node has a value and a left and right children. Function nodes are assigned one of the four arithmetic lambda's for their value and a node for each child (terminal or function). Terminal nodes are assigned a floating point constant value. The tree structure is held together by the object references and can be traversed in a traditional manner.
+
+New candidate solutions are prepared with a random expression, created recursively and bounded bounded to a maximum tree depth.
+
+\begin{lstlisting}
+def random_expression(problem, max_depth, curr_depth=1)
+  if (curr_depth.to_f/max_depth.to_f) < Random::next_float
+    func = problem.function_set[Random::next_int(problem.function_set.length)]
+    return GPNode.new(func, random_expression(problem,max_depth,curr_depth+1), random_expression(problem,max_depth,curr_depth+1))
+  else
+    term = problem.terminal_set[Random::next_int(problem.terminal_set.length)]
+    val = term.call
+    return GPNode.new(val)
+  end
+end
+\end{lstlisting}
+
+Recombined candidate solutions are created via a process of one point crossover between two parent solutions, which is then mutated recursively.
+
+\begin{lstlisting}
+def mutate_expression(problem, node)
+  if Random.next_float < heuristic_mutation_rate
+    if node.is_leaf? 
+      node.value = problem.terminal_set[Random::next_int(problem.terminal_set.length)].call
+    else
+      node.value = problem.function_set[Random::next_int(problem.function_set.length)]
+    end
+  end
+  if !node.is_leaf?
+    mutate_expression(problem, node.left)
+    mutate_expression(problem, node.right)
+  end
+end
+\end{lstlisting}
+
+\subsubsection{Algorithm}
+The Genetic Programming algorithm is a reusable system that evolves a solution in the context of a problem. The problem contains sufficient information for creating new solutions. The algorithm is executed by calling evolve that initializes the base population can rapidly calls the next\_generation method. A breeding set is selected from the population each generation using tournament selection.
+
+\subsection{Summary}
+Natural extensions involve varied genetic operators, and more intestinally different problem domains with new functions from which to encode candidate solutions.
+
+\subsubsection{Further Reading}
+
+\begin{itemize}
+	\item \url{http://www.genetic-programming.com}
+	\item Genetic Programming IV: Routine Human-Competitive Machine Intelligence (2003)
+	\item A Field Guide to Genetic Programming (2008) \url{http://www.gp-field-guide.org.uk}
+\end{itemize}

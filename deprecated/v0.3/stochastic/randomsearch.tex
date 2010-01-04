@@ -1,0 +1,120 @@
+\section{Random Search}
+The classical baseline for inspired algorithms is the \emph{random search algorithm}, also referred to as \emph{stochastic search algorithm}, \emph{blind search algorithm}, and \emph{stochastic generate and test}. The strategy of this algorithm involves randomly generating viable solutions from the problems search space and evaluating them. It is used as a baseline for comparison because it is general enough to be applied to any problem for which candidate solutions can be generated and tested. Each new randomly generated candidate solution is independent of the generated candidate solutions that came before it. Importantly, the algorithm keeps track of the candidate solution found so far using a simple ratcheting function (current best is only replaced by something as good as or better). Given that the random search algorithm samples the problem search space in an unbiased (uniform) manner it may discover areas of interest not considered by common wisdom. The penalty of the algorithms simplicity and lack of memory is its inefficiency. The algorithm may perform worse than an enumeration of the search space given that there are no mechanisms to bias or prevent the procedure from re-investigating regions of the search space already identified as undesirable or even re-sampling the same candidate solutions over and over again.
+
+\subsection{Random Search Algorithm}
+This section demonstrates the random search algorithm applied to a simple squaring function. We start by defining the problem as a class with methods for assessing and comparing candidate solutions. The function is defined in Equation~\ref{eq:random_search_squaring_function} where $n$ defines the number of function coefficients or \emph{dimensions} that defines the difficulty of the problem. The bounds of each variable are defined as $x \in [-5.12,5.12]$. 
+
+\begin{equation}
+	sum_{i=1}^n x_{i}^2, where -5.12 \leq x_i \leq 5.12
+	\label{eq:random_search_squaring_function}
+\end{equation}
+
+Candidate solutions are assessed via the \texttt{evaluate} method and and expected as arrays of floating point values. The global solution to the problem is known at $0.0$ in each dimension which evaluates to the optimal score of $0.0$. This known optimal scoring is made available in the \texttt{is\_optimal?(scoring)} function for accessing whether an allocated scoring is optimal. The problem also defines a solution score comparison, enforcing the minimization constrain of the problem.
+
+\begin{lstlisting}
+class SquaringFunction
+  attr_reader :dimensions, :min, :max
+
+  def initialize(dimensions=2)
+    @dimensions = dimensions
+    @min, @max = -5.12, +5.12
+  end
+
+  def (vector)
+    vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
+  end  
+
+  def is_optimal?(scoring)
+    scoring == optimal_score
+  end
+
+  def optimal_score
+    0.0
+  end
+  
+  # true if s1 has a better score than s2
+  def is_better?(s1, s2)
+    s1 < s2 # minimizing
+  end
+end
+\end{lstlisting}
+
+To address this problem using the random search algorithm a candidate solution class and algorithm class are defined. The \texttt{Solution} class is not problem specific, proving a immutable container for solution \texttt{data} in an instance variable which must be set on construction, as well as a \texttt{score} which can be assigned at any time. A default score of NaN (not a number) is assigned defensively to ensure that an error occurs if the solution is not evaluated and is compared to another solution that is evaluated.
+
+\begin{lstlisting}
+class Solution
+  attr_reader :data
+  attr_accessor :score
+  
+  def initialize(data)
+    @data = data
+    @score = 0.0/0.0 # NaN
+  end
+  
+  def to_s
+    "[#{@data}] (#{@score})"
+  end    
+end
+\end{lstlisting}
+
+The \texttt{RandomSearchAlgorithm} makes use of the random number generator defined in Section~\ref{ch:stochastic:sec:numbers} and it is presumed that this module is available\footnote{Either in the same file or imported using a \texttt{require `utils'} line at the top of the file.}. The class accepts a random number generator and a maximum number of iterations as parameters on construction which are stored as instance variables. The core method of the class is \texttt{search(problem)} that executes a random search on the provided problem definition. A single iteration of the algorithm involves the generation of a random candidate solution and its evaluation. The algorithm loops until the stop condition \texttt{should\_stop?(curr\_it, problem)} is triggered which occurs if the maximum number of iterations have elapsed or if the optimal solution was discovered. The generation of random solutions in the \texttt{generate\_random\_solution(problem)} method is the only problem-specific logic in the algorithm, creating a random floating point vector within there bounds of the problem space. Finally, the \texttt{evaluate\_candidate\_solution(solution, problem)} method evaluates a given candidate solution against the problem definition and keeps track of the best solution found.
+
+\begin{lstlisting}
+class RandomSearchAlgorithm
+  attr_accessor :max_iterations
+  attr_reader :best_solution
+  
+  def initialize(max_iterations)
+    @max_iterations = max_iterations
+  end
+  
+  # execute a random search on the provided problem
+  def search(problem)    
+    @best_solution = nil
+    curr_it = 0
+    begin
+      candidate = generate_random_solution(problem)
+      evaluate_candidate_solution(candidate, problem)
+      curr_it += 1
+    end until should_stop?(curr_it, problem)
+    return @best_solution
+  end
+  
+  def should_stop?(curr_it, problem)
+    (curr_it >= @max_iterations) or problem.is_optimal?(best_solution.score)
+  end
+  
+  def generate_random_solution(problem)
+    real_vector = Array.new(problem.dimensions) do
+      next_bfloat(problem.min, problem.max)
+    end
+    return Solution.new(real_vector)
+  end
+
+  def next_bfloat(min, max)
+    min + ((max - min) * rand)
+  end
+  
+  def evaluate_candidate_solution(solution, problem)
+    solution.score = problem.evaluate(solution.data)
+    # keep track of the best solution found
+    if @best_solution.nil? or
+      problem.is_better?(solution.score, @best_solution.score)
+      @best_solution = solution
+      puts " > new best: #{solution.score}"               
+    end
+  end  
+end
+\end{lstlisting}
+
+Now we can execute the algorithm on the problem. This involves creating a random number generator and initializing the algorithm with it and the maximum number of iterations to execute. The problem instance is created with 5 decision variables (dimensions) and the algorithm is executed on the instance. 
+
+\begin{lstlisting}
+srand(1) # set the random number seed to 1
+algorithm = RandomSearchAlgorithm.new(1000) # limit to 1000 iterations 
+problem = SquaringFunction.new(5) # create a problem with 5 dimensions
+best = algorithm.search(problem) # execute the search
+puts "Best Solution: #{best}" # display the best solution
+\end{lstlisting}
+
+This example provides a demonstration of a standard separation of \emph{problem}, \emph{algorithm}, and \emph{solution}, as well as modularized responsibility within each class. For example, the \texttt{RandomSearchAlgorithm} class can be directly applied to any function optimization problem, or with a replacement of the \texttt{generate\_random\_solution(problem)} method it can be applied to any problem definition that aligns to the \texttt{SquaringFunction} classes simple interface. 

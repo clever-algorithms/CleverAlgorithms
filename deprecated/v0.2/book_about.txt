@@ -1,0 +1,13 @@
+Book - About
+
+
+- there is separation between inspiration and strategy because the terminology from the inspiration can muddy the explanation of the computational/algorithmic strategy
+- good practice to adopt or map onto a new nomenclature - typically does not occur
+	- best practice, so it is promoted in this book
+	
+
+Inspiration : analogy or metaphor for a computational process
+Strategy : abstraction of inspired metaphor with a problem, solution, and suggestion an computational system / algorithm
+Procedure: specifics of realizing the strategy as a computation. how it is organized, data structures used, systemaization, parameterization
+Heuristic: guidelines for using executing the strategy
+Tutorial: example of realizing the approach on a problem - demonstrate strategy, realize the procedure, manifest the heuristics

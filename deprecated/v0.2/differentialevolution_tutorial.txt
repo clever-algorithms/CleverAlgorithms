@@ -1,0 +1,94 @@
+Differential Evolution Tutorial
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/08  JB  Created
+
+Introduction
+This tutorial demonstrate how to implement the classical differential evolution algorithm also known as DE/rand/1/bin. The algorithm is applied to a non linear programming problem with continuous parameters called Rosenbrock's Valley.
+
+Problem
+The problem is a non-linear programming problem called Rosenbrock's Valley that defines an equation with a number of continuous-valued parameters. The scope of valid parameters is between -2.048 and 2.048, and parameters are added linearly and as such can be scaled to increase the difficulty of the problem. The optimal solution is located at 1.0 in each dimension and evaluates to 0.0 in this minimization problem.
+
+def calculate(v)
+  sum = 0.0
+  v.each_with_index do |x, i|
+    sum += 100 * (((v[i+1] - (x**2.0)) ** 2.0) + ((1.0 - x) ** 2))  if i < v.length-1
+  end
+  return sum
+end
+
+Solution
+A candidate solution to this problem is defined as a vector of floating point values, one for each dimension of the problem. A new candidate solution is initialized to a random position within the constraints of the problem definition.
+
+def initialize_random(length, min, max)
+  # random objective parameters
+  @vector = Array.new(length) {|i| Random.next_float_bounded(min, max)}
+end
+
+During recombination, a new candidate solution is created from and competes with each member of the population p0. The recombination operator takes three randomly selected although distinct population members. During the creation of the offspring, at least one crossover event must occur, where as the average event is defined by a crossover rate. When a crossover event occurs, new values are calculated as the value from one of the randomly selected population members (P3) perturbed by a weighted difference vector between two other population members (P1 and P2). 
+
+def initialize_offspring(p0, p1, p2, p3, length, min, max)
+  @vector = Array.new(length)
+  forced_cross = rand(length)
+  @vector.fill do |i|
+    if (i==forced_cross or rand < heuristic_crossover_factor)
+      transcribe(p3.vector[i] + heuristic_weighting_Factor * (p1.vector[i] - p2.vector[i]), min, max)
+    else
+      p0.vector[i]
+    end
+  end
+end
+
+The effect is that points are projected based on the average spread of the population. Selection within the algorithm means that the spread of the population will be reduced over time to areas of interest within the problem space. The weighted difference vector approach therefore self-organizes re-sampling of the problem space, making use of existing information in a way quite different from most other evolutionary search algorithms.
+
+Newly assigned values pass through a transcribe function that ensures that the values are within the constraints of the problem definition.
+
+def transcribe(x, min, max)
+  return min if x < min
+  return max if x > max
+  return x
+end
+
+Algorithm
+The algorithm involves the initialization and evolution of a population of candidate solutions over a number of generations.
+
+def evolve(problem)
+  # initialize the system
+  @problem = problem
+  @best_solution = nil
+  @generation = 0
+  # prepare the initial population
+  @population = Array.new(heuristic_population_size) { |i| @problem.new_solution }
+  # evaluate the initial population
+  evaluate_population(population)
+  # evolve until stop condition is triggered
+  @population = evolve_population(@population) until should_stop?
+end
+
+A single generation involves creating a new candidate offspring from and to compete with each member of the population. This involves selecting three random although distinct candidate solutions from the population to participate in recombination for each candidate solution in the current population.
+
+def evolve_population(population)
+  # create offspring
+  offspring = Array.new(population.length)
+  population.each_with_index do |current, index|
+    p1 = p2 = p3 = -1
+    p1 = rand(population.length) until p1!=index
+    p2 = rand(population.length) until p2!=index and p2!=p1
+    p3 = rand(population.length) until p3!=index and p3!=p1 and p3!=p2
+    offspring[index] = @problem.new_solution_offspring(current, population[p1], population[p2], population[p3])
+  end
+  # evaluate
+  evaluate_population(offspring)
+  # compete for survival
+  new_population = Array.new(population.length) {|i| @problem.choose_better(population[i], offspring[i])}
+  # one more generation has completed
+  @generation += 1
+  puts "generation:#{@generation}, #{@best_solution}"    
+  return new_population
+end
+
+Summary
+The algorithm is deceptively simple, and the weighted difference vector approach to re-sampling the solution space requires some careful consideration. Frankly it amazes me that the approach works at all, let a lone as competitive as it does.
+
+Natural extensions to this implementation are to implement the other DE approaches. There are some great code examples in 'new ideas in optimization' as well as a good listing in 'New Optimization Techniques in Engineering'.

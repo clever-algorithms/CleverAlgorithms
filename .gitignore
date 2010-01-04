@@ -4,7 +4,13 @@ book/*.pdf
 book/*.toc
 book/*.out
 book/*.log
+workspace/**/*.toc
 workspace/**/*.aux
 workspace/**/*.pdf
 workspace/**/*.out
 workspace/**/*.log
+deprecated/**/*.toc
+deprecated/**/*.aux
+deprecated/**/*.pdf
+deprecated/**/*.out
+deprecated/**/*.log

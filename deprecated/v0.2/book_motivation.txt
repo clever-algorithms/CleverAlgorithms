@@ -1,0 +1,26 @@
+Book Motivation
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/10  JB  Created
+
+* Inspire: The inspirations, strategies, and algorithms are interesting, people should be excited by them
+* Simplicity: The core of the approaches is always simple although almost always poorly communicated. The book is about getting back to basics and communicating the core ideas of each approach
+* Consistency: No ego, no names, no marketing of research, just the strategy and a demonstration. All approaches communicated in the same consistent manner for comparison.
+* Programmer Focus: Like an engineer, lip service is great after the fact, what is important upfront is a working example. A demonstration that shows what it is all about and what it is trying to achieve - the underlying principles. Once you have that, you can then read the literature and begin to build a map of the field in your head. PRinciple first, detail later - almost always communicated the other way around.
+* More: More algorithms, presented more clearly than ever has been done before. The 'art of computer programming' for computational intelligence, the touch stone for now and forever
+
+
+
+Use Case:
+1. pick an algorithm
+2. do some searches on it (IEEE, google, scholar, etc) and you will get an abundance of papers, tutorials, variations, etc
+3. what do you do? what is the algorithm when there 100 versions? what is it for when there are 100 different applications? 
+
+solution: each approach as a core inspiration and a core strategy
+with these two aspects in mind we can look at the procedure and an example implementation, and heuristics for using it
+- we have a working copy, now if we want to push the bounds of an approach we have a platform from which to start 
+- focused look at algorithms, not dumbing down, platform for expansion, comparison, etc
+
+
+

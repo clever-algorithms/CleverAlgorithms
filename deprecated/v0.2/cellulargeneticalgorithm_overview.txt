@@ -1,0 +1,35 @@
+Cellular Genetic Algorithm Overview
+Copyright (C) 2008 Jason Brownlee
+
+Change History
+2008/12/11  JB  Created
+
+Inspiration
+: The inspiration for cellular genetic algorithms is the theory of evolution by means of natural selection over a spatial environment.
+
+Organisms live, interact, and compete with each other in a spacial environment. The inspiration for the cellular or diffusion genetic algorithm is spatially mediated interaction between individuals within a population.
+
+Strategy
+: The strategy of the cellular genetic algorithm involves the projection of a population onto a plain which mediates interaction between the individuals for selection, recombination, and competition.
+
+The Cellular Genetic Algorithm is a distributed strategy for the genetic algorithm. The population of candidate solutions is projected onto a spatial structure (like a lattice) and each position in the structure is governed by an independent process. The extreme localization of the approach (to the individual level) and the interaction in spatially local neighborhoods shows a string resemblance to cellular automata, hence the name 'cellular'. The strategy was designed for use on massively parallel hardware.
+
+Procedure
+
+The Cellular Genetic Algorithm is concerned with managing a spatially distributed population of candidate solutions. Solutions behave autonomously, interacting with their local neighborhoods to select mates to reproduce with. The recombination, mutation, and selection genetic operators are typically used meaning that the algorithm is almost always implemented as a variation of the genetic algorithm. 
+
+Selection typically involves an individual and an mate from the local neighborhood such as the best, randomly selected or the winner of a binary (two member) tournament. An offspring is created from the recombination of the parent and mate with low frequency copying errors.
+
+The distributed population and semi-independence of individuals means that a processor is assigned per individual candidate solution. Spatial population structures and neighborhoods are constrained by the underlying massively parallel hardware such as the MIMD SMID parallel paradigms. Common structures include a grid or lattice as well as ring structures. Interactions between individual candidate solutions are minimized because in a parallel computing environment that require synchronization and message passing. As such neighborhoods are typically small and localized to neighboring cells in the population structure such as 4 or 8 points on the compass in a lattice configuration.
+
+Heuristics
+* The approach may be applied to on parallel hardware where one CPU is assigned per 'individual' (position in the spatial population structure).
+* Almost always implemented using a genetic algorithm because it uses selection and recombination, although other algorithms that recombine solutions may be used in the strategy.
+* Typically small neighborhood sizes are chosen to minimize interaction between individuals which requires synchronization in parallel processing environments.
+
+Further Reading
+* Chapter 16, Diffusion (cellular) models (EC2)
+* Cellular Genetic Algorithms, Operations Research/Computer Science Interfaces Series (2008)
+	- http://www.springer.com/business/operations+research/book/978-0-387-77609-5
+* Cellular Genetic Algorithms (1993)
+	- related to a cellular automata

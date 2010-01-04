@@ -1,0 +1,112 @@
+\section{Pseudorandom Numbers}
+\label{ch:stochastic:sec:numbers}
+
+Non-determinism is introduced in inspired algorithms through the use of pseudorandom numbers. These are sequences of numbers that are produced by a function and so are not completely random, although approximate the properties of a sequence of random numbers. Truly random numbers are required for some computations, such as security and cryptography although are less important for computational intelligence algorithms which require \emph{random enough} numbers to exhibit non-deterministic behaviors.
+
+% There is research that shows no significant difference of some CI algorithms with real and pseudo random number generators.
+
+Pseudorandom number generators can be seeded (initialized) with a consistent number such that they always produce the same sequence of numbers. This can be useful when testing or debugging a given decision making process. Given that a stochastic or probabilistic algorithm can produce varied output given the same inputs, it is important to execute an algorithm more than once to give a fair approximation of its capabilities. When executing an algorithm multiple times, it is important to re-initialize the pseudorandom number generator with a different seed value (such as the current time) to ensure a different sequence of random numbers. 
+
+\subsection{Pseudorandom Numbers in Ruby}
+Ruby provides a modified implementation of the \emph{Mersenne Twister} pseudorandom number generator. It has a very long period (steps before the sequence repeats) of $2^{19937}-1$ iterations and is a common standard for computational intelligence algorithms. It is common practice in inspired algorithms to treat the seed for the pseudorandom number generator as a parameter for the algorithm and initialize the generator as a part of the initialization of the algorithm. Ruby provides two functions in the \texttt{Kernel} core library for managing random numbers:
+
+\begin{itemize}	
+	\item \texttt{Kernel::rand(max)} Generates a pseudorandom number. When no arguments are provided it generates a random Float more than or equal \texttt{0.0} and less than \texttt{1.0}. When an integer parameter \texttt{max} is provided it generators an random integer value more than or equal to \texttt{0} and less than \texttt{max}.
+	\item \texttt{Kernel::srand(seed)} Seeds the pseudorandom number generator. If no parameter is provided a seed is created from the current time, operating system process id and a sequence number.
+\end{itemize}
+
+\subsection{Pseudorandom Number Utilities}
+Give that pseudorandom numbers are so critical to inspired algorithms, this section proposes a class to mediate all generation and management. This abstraction facilitates reuse of common functions such as bounding the scope or distribution of generated numbers as well as potentially replacing the source of the random numbers (such as with a pre-generated sequence or alternative generation function).
+
+We start be defining a new class \texttt{RandomNumberGenerator} that belongs to a generic utility module called \texttt{Utils}. The class has a single instance variable for keeping track of the seed. A new sequence is started when the object is created using a the default seed of \texttt{0} or an argument if one is provided.
+
+\begin{lstlisting}
+module Utils
+  
+  # Helper class for managing peudorandom numbers, wraps Kernel::srand. 
+  class RandomNumberGenerator
+	
+	attr_reader :seed
+    
+    def initialize(seed=0)
+      start_sequence(seed)
+    end
+	
+	# ... code goes here
+	
+  end
+
+end
+\end{lstlisting}
+
+Next we define wrappers for the \texttt{rand} and \texttt{srand} functions. Here we use the intuitive \texttt{java.utils.Random} method naming from the Java standard library. This involves using \emph{next} to make it clear that we are requesting the next number in the sequence and the \emph{type} differentiate and provide convenience methods for acquiring random numbers mapped onto different data types. Seeding the generator is wrapped and the provided \texttt{Kernel.rand} function is split into \texttt{next\_float} and \texttt{next\_int} for floating point and integer data types respectively.
+
+\begin{lstlisting}
+# seed the random number generator
+def start_sequence(seed)
+  Kernel::srand(seed)
+end
+
+# x in [0,1)
+def next_float
+  Kernel::rand
+end
+
+# x in [0, max)
+def next_int(max)
+  Kernel::rand(max)
+end
+\end{lstlisting}
+
+Next we provide a convenience methods for generating random booleans useful for stochastic binary decision making, and for random floating point values bound between a maximum and minimum value. 
+
+\begin{lstlisting}
+# x in {true, false}
+def next_bool
+  Kernel::rand < 0.5
+end
+
+# x in [min, max)
+def next_bfloat(min, max)
+  min + ((max - min) * Kernel::rand)
+end
+\end{lstlisting}
+
+A property of randomly generated numbers is the independence of each number in the sequence. As such the numbers are drawn from a \emph{uniform} probability distribution. The final functions offer convenience methods for mapping uniform pseudorandom numbers onto a \emph{Gaussian} probability distribution with a mean of \texttt{0.0} and a standard deviation of \texttt{1.0}. The \texttt{next\_gaussian\_bounded} method offers an additional convenience of scaling the Gaussian pseudorandom numbers with an arbitrary mean and standard deviation.
+
+\begin{lstlisting}
+# x with a mean of 0.0 and a standard deviation of 1.0
+def next_gaussian
+  u1 = u2 = w = g1 = g2 = 0  # declare
+  begin
+    u1 = 2 * Kernel::rand - 1
+    u2 = 2 * Kernel::rand - 1
+    w = u1 * u1 + u2 * u2
+  end while w >= 1
+
+  w = Math::sqrt( (-2 * Math::log(w)) / w )
+  g2 = u1 * w;
+  g1 = u2 * w;
+  return g1
+end
+
+# x with a defined mean and standard deviation
+def next_bgaussian(mean, stdev)
+  mean + stdev * next_gaussian
+end
+\end{lstlisting}
+
+Now that the module of pseudorandom number convenience methods has been defined, we can test demonstrate behavior. 
+
+\begin{lstlisting}
+rand = Utils::RandomNumberGenerator.new(66)
+puts "Seed is: #{rand.seed}"
+puts "A float: #{rand.next_float}"
+puts "An int between 0 and 100: #{rand.next_int(100)}"
+puts "A boolean: #{rand.next_bool}"
+puts "A float between -1.0 and 1.0: #{rand.next_bfloat(-1.0, 1.0)}"
+puts "A Gaussian float: #{rand.next_gaussian}"
+puts "A Gaussian, mean of 50 stdev of 10: #{rand.next_bgaussian(50, 10)}"
+\end{lstlisting}
+
+The \texttt{RandomNumberGenerator} class is a wrapper for the \texttt{rand} and \texttt{rands} functions in the \texttt{Kernel} module, and as such the sequence managed by an instance of \texttt{RandomNumberGenerator} is shared between all instances. This means that if separate random number sequences are designed for some reason (such as different threads), then the provided implementation would not suffice. A natural extension of the example would be to implement the Mersenne Twister algorithm in Ruby such that each instance of \texttt{RandomNumberGenerator} is independent. Alternatively the \emph{RandomR} project\footnote{\url{http://rubyvm.sourceforge.net/subprojects/randomr/}} offers such a pseudorandom number generator class with a fast native C implementation.
