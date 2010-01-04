@@ -6,7 +6,7 @@ This project manages the development of content and structure for the Clever Alg
 
 h2. Description
 
-_to be completed_
+The Clever Algorithms Project proposes an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
 
 h2. Breakdown
 
