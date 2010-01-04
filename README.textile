@@ -14,10 +14,11 @@ h2. Breakdown
 
 This project is partitioned into four efforts:
 
-* *workspace/* A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organised into sub-directories. 
+* *workspace/* A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
 * *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
-* *web/* A webpage used to promote the project with a specialised content management system tailored to the content of the book.
+* *web/* A webpage used to promote the project with a specialized content management system tailored to the content of the book.
 * *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
+* *deprecated/*: A collection of the work product produced during the previous attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
 
 h2. How to Contribute
 
