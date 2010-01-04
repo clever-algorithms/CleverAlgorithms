@@ -2,11 +2,7 @@ h1. Clever Algorithms
 
 h2. Overview
 
-This project manages the development of content and structure for the Clever Algorithms book by Jason Brownlee. 
-
-h2. Description
-
-The Clever Algorithms Project proposes an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
+The Clever Algorithms Project is an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
 
 The Clever Algorithms Project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
 
