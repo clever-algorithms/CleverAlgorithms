@@ -33,18 +33,18 @@ An open problem in the general field of Artificial Intelligence is that algorith
 % solution
 The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
 % audience
-The audience for the algorithm descriptions produced as a result of the project include research scientists, engineers, students, and interested amateurs.
+The audience for the algorithm descriptions produced by the project include research scientists, engineers, students, and interested amateurs.
 % outcomes
 The outcome of the project is a compendium of algorithm descriptions that will be released as a book and/or made available online as a website.
 % methodology
-A methodology for completing the project is proposed, involving the incremental completion of discrete standalone algorithm descriptions over an extended period of time, allowing continuous review, revision, and refinement of both the content and algorithm description template.
+A methodology for completing the project is proposed involving the incremental completion of discrete standalone algorithm descriptions over an extended period of time, allowing continuous review, revision, and refinement of both the content and algorithm description template.
 % location
 All files and content for the project are released under a permissive license and can be accessed online from the address \url{http://www.CleverAlgorithms.com}.
 % future
 future?
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Overview, Motivation, Problem, Solution, Audience}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Overview, Motivation, Problem, Solution, Audience, Methodlogy, Outcomes}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -52,13 +52,13 @@ future?
 \label{sec:introduction}
 The Clever Algorithms Project is concerned with the investigation of algorithms from subfields of Artificial Intelligence and presenting them in a consistent and structured manner. This report provides the touchstone for the projects mission.
 % breakdown
-The project is motivated in Section~\ref{sec:motivation} reviewing the perceived open problem of algorithm communication and the detrimental effect it has on progress in the field. The project is presented in Section~\ref{sec:project} as an attempt to address this open problem by providing a set of standardized algorithm descriptions. The objectives of the project and the intended audience are listed, and the projects current location and proposed methodology are reviewed. Finally, Section~\ref{sec:conclusions} highlights some areas for further consideration in order to ready the effort.
+The project is motivated in Section~\ref{sec:motivation} that reviews the open problem of algorithm communication and the detrimental effect it has on progress in the field. The project is presented in Section~\ref{sec:project} as an attempt to address this open problem by providing a set of standardized algorithm descriptions. The objectives of the project and the intended audience are listed, and the projects outcomes and proposed methodology are reviewed. Finally, Section~\ref{sec:conclusions} highlights some areas for further consideration in order to ready the effort.
 
 \section{Motivation}
 \label{sec:motivation}
 
 \subsection{Problem}
-Artificial Intelligence is a very large field of study and the description and investigation of algorithmic techniques is a central pursuit in subfields such as Machine Learning, Biologically Inspired Computation, and Computational Intelligence. There is a critical open problem in the field of Artificial Intelligence: communication. The fields of Biologically Inspired Computation and Computational Intelligence are of particular concern because the techniques they are concerned with are typically heuristic procedures based in metaphor making them susceptible to description my analogy and metaphorical nomenclature.
+Artificial Intelligence is a very large field of study and the description and investigation of algorithmic techniques is a central pursuit in subfields such as Machine Learning, Biologically Inspired Computation, and Computational Intelligence. Communication is a critical open problem in the field of Artificial Intelligence, specifically the description of algorithmic techniques. The fields of Biologically Inspired Computation and Computational Intelligence are of particular concern because these fields are concerned with are typically heuristic procedures based in metaphor, making them susceptible to description my analogy and metaphorical nomenclature.
 
 \begin{description}
 	\item[Open Problem:]\emph{The communication of algorithmic techniques in the fields of Biologically Inspired Computation and Computational Intelligence is a difficult open problem.}
@@ -66,21 +66,21 @@ Artificial Intelligence is a very large field of study and the description and i
 
 \begin{itemize}
 	\item The description of techniques are typically \emph{incomplete}. Many techniques are ambiguously described, partially described, or not described at all.
-	\item The description of techniques are typically \emph{inconsistent}. A given technique may be described using a variety of formal and semi-formal methods that also vary across different techniques limiting the transferability of the skills an audience used to realize a technique (such as mathematics, pseudo code, program code, and narratives). An inconsistent representation for techniques mean that the skills used to realize one technique may not be transferable to realizing other techniques or even updated versions of the same technique.
-	\item The description of techniques are typically \emph{distributed}. The description of data structures, operations, and parameterization of a given technique may span an array of papers, articles, books, and source code published over a number of years, the access to some of which may be restricted or difficult to obtain.
+	\item The description of techniques are typically \emph{inconsistent}. A given technique may be described using a variety of formal and semi-formal methods that also vary across different techniques limiting the transferability of the skills an audience used to realize a technique (such as mathematics, pseudo code, program code, and narratives). An inconsistent representation for techniques mean that the skills used to understand and internalize one technique may not be transferable to realizing other techniques or even extensions of the same technique.
+	\item The description of techniques are typically \emph{distributed}. The description of data structures, operations, and parameterization of a given technique may span an array of papers, articles, books, and source code published over a number of years, the access to some of which may be restricted and/or difficult to obtain.
 \end{itemize}
 
 \subsection{Affect}
-For the individual, an ill described algorithm may be a frustration where the gaps are filled with intuition and `best guess' or they may an example of bad science and the failure of the scientific method where the inability to understand and implement a technique may prevent the replication of results or the investigation and extension of a technique. 
+For the practitioner, an ill described algorithm may be a frustration where the gaps are filled with intuition and `best guess'. At the other end of the spectrum, a badly described algorithm may an example of bad science and the failure of the scientific method, where the inability to understand and implement a technique may prevent the replication of results or the investigation and extension of a technique. 
 
 \begin{description}
 	\item[General Affect:]\emph{Poorly described algorithmic techniques in the fields of Biologically Inspired Computation and Computational Intelligence damage those fields.}
 \end{description}
 
 \begin{itemize}
-	\item Poorly described techniques result in \emph{inconsistent interpretation}. A field of study is generally concerned with building a corpus of knowledge the momentum of which is dependent on a common shared understanding. Diversity of the understanding provided through the effort required for the continued reinterpretation of an approach may promote a deeper understanding, although forward progress may become difficult. Without a consistent understanding of a technique it cannot be accurately compared, broadly and concurrently investigated, or ultimately make meaningful contributions to the broader field. 
-	\item Poorly described techniques result in \emph{undue attrition}. Techniques that can only be realistically implemented by the original author may as well not exist, regardless of related claims of efficiency or efficacy. Practitioners must sift through volumes of papers, articles, books, and sample source code to formulate a viable interpretation of a given technique. This investment of effort is required for each practitioner and each technique resulting in the vast majority of published approaches disappearing into obscurity. If a practitioner cannot realize a described the technique it will likely be lost to continuous and ruthless attrition as the practitioners and move onto those techniques that can realize.
-	\item Poorly described techniques result in \emph{bad science}. In a scientific setting, an algorithmic procedure is investigated both theoretically as an abstraction and empirically as an implementation. As such, investigation of an algorithmic technique using the scientific method requires an unambiguous description of the technique. Those algorithms that cannot be clearly communicated, cannot be subjected to broader study, the results cannot be reproduced, and the approach cannot be applied, investigated, or extended. 
+	\item Poorly described techniques result in \emph{inconsistent interpretation}. A field of study is generally concerned with building a corpus of knowledge, the momentum of which is dependent on a common shared understanding. The so-called diversity-of-understanding provided through the continued reinterpretation of an approach may promote a deeper understanding of a technique, although may cripple forward progress through unnecessary replication of effort. Without a consistent understanding of a technique it cannot be accurately compared, broadly and concurrently investigated, or ultimately make meaningful contributions to the broader field. 
+	\item Poorly described techniques result in \emph{undue attrition}. Techniques that can only be realistically implemented by the original author may as well not exist, regardless of related claims of efficiency or efficacy. Practitioners must sift through volumes of papers, articles, books, and sample source code to formulate a viable interpretation of a given technique. This investment of effort is required for each practitioner and each technique resulting in the vast majority of published approaches disappearing into obscurity. If a practitioner cannot realize a described the technique it will likely be lost as the practitioners move onto those techniques that they can realize with less effort.
+	\item Poorly described techniques result in \emph{bad science}. In a scientific setting, an algorithmic procedure is investigated both theoretically as an abstraction and empirically as an implementation. As such, investigation of an algorithmic technique using the scientific method requires an unambiguous description of the technique. Those algorithms that cannot be clearly communicated, cannot be subjected to broader study, the results cannot be reproduced, and the approach cannot be meaningfully applied, investigated, or extended. 
 \end{itemize}
 
 \section{Clever Algorithms Project}
@@ -93,9 +93,9 @@ Algorithmic techniques that emerge from the fields of Computational Intelligence
 	\item[Observed Solution:]\emph{A strategy to address the open problem of poor technique communication is to present complete algorithms in a consistent manner in a centralized location.} 
 \end{description}
 
-Much effort has been put into this solution with the production of many books and libraries of program code. Algorithms from the fields of Computational Intelligence and Biologically Inspired Computation are more nuanced than algorithms from Operations Research for example. They are typically rooted in metaphor and explained via analogy. Although this may contribute to the technical ambiguity of their description, this is also a strength, provoking interest, imagination, creativity, and motivation in practitioners. 
+Much effort has been put into this solution with the production of many books and libraries of program code. Algorithms from the fields of Computational Intelligence and Biologically Inspired Computation are more nuanced than algorithms from other fields (such as Operations Research for example). They are typically rooted in metaphor and explained via analogy. Although this may contribute to the technical ambiguity of their description, this is also a strength, provoking  interest, imagination, creativity that motivate practitioners. 
 
-The audience defines the completeness of an algorithm's description. Different audiences seek out and different descriptions with varied levels of rigor, from a theoretician that requires an unambiguous mathematical description, to an engineer who requires an implementable algorithmic procedure, to the algorithm designer interested in abstracting the strategy from the inspiring system. 
+The audience defines the completeness of an algorithm's description. Different audiences seek out different descriptions with varied levels of rigor, from a theoretician that requires an unambiguous mathematical description, to an engineer who requires an implementable algorithmic procedure, to the algorithm designer interested in abstracting the strategy from the inspiring system. 
 
 \subsection{Objectives}
 The Clever Algorithms Project proposes a compendium algorithm descriptions. The primary objectives of the project are \emph{completeness}, \emph{consistence}, and \emph{centralization}:
@@ -103,7 +103,7 @@ The Clever Algorithms Project proposes a compendium algorithm descriptions. The 
 \begin{itemize}
 	\item \textbf{Completeness}: A well-defined template will be defined for describing an algorithm to a selected audience, each section of which will have a clear intention. Algorithms conforming to the template will be considered complete, and all algorithm descriptions listed in the compendium will conform to the proposed template.
 	\item \textbf{Consistency}: The conformation of a collection of algorithm descriptions will consider the descriptions consistent, and all algorithm descriptions listed in the compendium will conform to the proposed template.
-	\item \textbf{Centralization}: Algorithm descriptions may be accessible via multiple means, although will be managed at a central point of dissemination. The audience of the compendium will consume its content from a centralized point such as a book or a website.
+	\item \textbf{Centralization}: Algorithm descriptions may be accessible via multiple means, although will be managed at a central point of dissemination. The audience of the compendium will consume its content from a centralized access point.
 \end{itemize}
 
 The secondary objectives of the project are \emph{accessibility}, \emph{usability}, \emph{understandability}:
@@ -111,34 +111,34 @@ The secondary objectives of the project are \emph{accessibility}, \emph{usabilit
 \begin{itemize}
 	\item \textbf{Accessibility}: The algorithm descriptions will be widely accessible by the intended target audience both physically (such as electronically online and tangibly printed) and practically (such as loosely coupled descriptions amenable to electronic search and hoc access).
 	\item \textbf{Usability}: The algorithm descriptions must be directly usable by the intended audience. The use of an algorithm description will be defined by a specific use case of a specific target audience, each section in the proposed template will address at least one specific use case of a specific target audience.
-	\item \textbf{Understandability}: The algorithm descriptions will be in a structure and nomenclature suitable to be understood by the target audience and where appropriate written in the English language.
+	\item \textbf{Understandability}: The algorithm descriptions will be in a structure and nomenclature suitable to be understood by the target audience and where appropriate written in the English language. Specifically, American English which is the dialect and language of science and technology.
 \end{itemize}
 
 \subsection{Audience}
-The audience for the The Clever Algorithms Project are practitioners somehow concerned or interested with the fields of Computational Intelligence and Biologically Inspired Computation, as follows:
+The audience for the The Clever Algorithms Project are practitioners concerned or interested with the fields of Computational Intelligence and Biologically Inspired Computation, as follows:
 
 \begin{itemize}
 	\item \textbf{Scientists}: Research scientists concerned with theoretically or empirically investigating algorithms, addressing questions such as: \emph{What is the motivating system and strategy of a given technique? What are some algorithm that may be used in a comparison within a given subfield or across subfields?}
-	\item \textbf{Engineers}: Programmers and developers concerned with implementing, applying, or maintaining algorithms, addressing questions such as: \emph{What is the algorithm procedure for a given technique?	What are the best practice heuristics for applying a given technique?}
-	\item \textbf{Students}: Graduate and Undergraduate students interested in learning algorithms, addressing questions such as: \emph{What are some interesting algorithms to study? How to implement a given approach?}
-	\item \textbf{Amateurs}: Practitioners interested in knowing more about algorithms, addressing questions such as: \emph{What classes of techniques exist and what algorithms do they provide? How to  the computation of a technique?}
+	\item \textbf{Engineers}: Programmers and developers concerned with implementing, applying, or maintaining algorithms, addressing questions such as: \emph{What is the algorithm procedure for a given technique? What are the best practice heuristics for employing a given technique?}
+	\item \textbf{Students}: Undergraduate and graduate students interested in learning algorithms, addressing questions such as: \emph{What are some interesting algorithms to study? How to implement a given approach?}
+	\item \textbf{Amateurs}: Practitioners interested in knowing more about algorithms, addressing questions such as: \emph{What classes of techniques exist and what algorithms do they provide? How to conceptualize the computation of a technique?}
 \end{itemize}
 
 \subsection{Outcomes}
-An important objective of the project is the centralization of the prepared algorithm descriptions as a compendium. This will be realized as a deliverable in one or two forms, as either (or both):
+An important objective of the project is the centralization of the prepared algorithm descriptions as a compendium. This will be realized as a deliverable as either, or both a book or website.
 
 \begin{itemize}
-	\item \textbf{Book}: Publish the compendium of algorithm descriptions in a book format (either or both an eBook and a dead tree book). The preparation of a book would require suitable front and back matter and one or more professional editor if the book is to be published commercially.
-	\item \textbf{Website}: Publish the compendium of algorithm descriptions as a website with a tailor made content management system. The preparation of the website would require hosting and careful attention to online marketing, discoverability, and potentially monetization.
+	\item \textbf{Book}: Publish the compendium of algorithm descriptions in a book format as an eBook and/or a dead tree book. The preparation of a book would require suitable front and back matter and one or more professional editors if the book is to be published commercially. Self-service publishing (publish on demand) services may be adopted to reduce costs.
+	\item \textbf{Website}: Publish the compendium of algorithm descriptions as a website with a tailor made content management system. The preparation of the website would require hosting and careful attention to online marketing, algorithm discoverability, and potentially monetization to cover ongoing hosting costs.
 \end{itemize} 
 
 \subsection{Methodology}
-The project will be completed through the completion of many small (2-4 man days), discrete, semi-independent technical reports. Each report will cover a specific aspect of the project, such as the algorithm description template, the process for selecting algorithms to include, a report for each given algorithm. This methodology for content development facilitates the continued ad hoc contribution to the project through the creation of formal work product. Each report represents a task toward the completion of the project, the discreteness and semi-independence of which may allow a distribution of effort over a small team, if available.
+The project will be completed through the completion of many small (2-4 man days), discrete, semi-independent technical reports. Each report will cover a specific aspect of the project, such as the algorithm description template, the process for selecting algorithms to include, and a report for each given algorithm. This methodology for content development facilitates the continued ad hoc contribution to the project through the creation of formal work product. Each report represents a task toward the completion of the project, the discreteness and semi-independence of which may allow a distribution of effort over a small team, if available.
 
 The content of the technical reports may be reviewed, edited, and refined relatively independently. The content of the completed technical reports may then be collected and included and/or adapted into a form suitable for consumption by the target audience, such as book and website formats. The development of the structure and content of the project outcomes will be developed in concert with the production of technical reports.
 
 \subsection{Location}
-The project structure and content is managed via a version control system hosted online currently located at the URL \url{http://www.CleverAlgorithms.com}. The managed project supports both content development, editing and revisions, as well as sample source code.
+The project structure and content is managed via a version control system hosted online currently located at the URL \url{http://www.CleverAlgorithms.com}. The managed project supports both content development, editing and revisions, as well as sample program source code.
 
 % summarise the document message and areas for future consideration
 \section{Conclusions}
