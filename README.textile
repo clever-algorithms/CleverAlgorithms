@@ -8,6 +8,8 @@ h2. Description
 
 The Clever Algorithms Project proposes an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
 
+The Clever Algorithms Project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+
 h2. Breakdown
 
 This project is partitioned into four efforts:
