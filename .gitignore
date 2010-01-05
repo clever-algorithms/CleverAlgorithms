@@ -4,6 +4,8 @@ book/*.pdf
 book/*.toc
 book/*.out
 book/*.log
+workspace/**/*.bbl
+workspace/**/*.blg
 workspace/**/*.toc
 workspace/**/*.aux
 workspace/**/*.pdf
