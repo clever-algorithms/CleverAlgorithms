@@ -25,6 +25,14 @@ You may want to:
 * or, Message the author though the github website: (signup and login to github, go to "http://github.com/jbrownlee":http://github.com/jbrownlee and click "Message")
 * or, Fork the CleverAlgorithms project on github, make changes, and request a pull into the main project (again, you must signup and login to github and follow the github documentation for forking, contributing, and making a pull request).
 
+h2. Outcomes
+
+A listing of outcomes from the project.
+
+h3. Technical Reports
+
+* Jason Brownlee. "The Clever Algorithms Project: Overview":workspace/release/techreport-20100105-1.pdf [Technical Report]. The Clever Algorithms Project http://www.CleverAlgorithms.com, 2010 Jan; Technical Report ID: CA-TR-20100105-1.
+
 h2. History
 
 A summary of how the project has developed over its lifetime.
