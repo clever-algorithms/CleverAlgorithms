@@ -51,22 +51,28 @@ Section~\ref{sec:elements} provides a summary of algorithm description elements 
 This section provides a summary of descriptive elements that may form apart of a standardized algorithm description. Each element is motivated by the speculated needs of the target audience.
 
 \subsection{Name}
-todo
+the common name, aliases and acronyms for the technique 
 
 \subsection{Inspiration}
 the system that provoked the algorithm
 
+The algorithm inspiration is a summary of the specific system which provoked the inception of the algorithm or which retrospectively the algorithm can be directly related by analog or metaphor. This include relevant theory and observation, and most importantly the salient attributes of the system abstracted or adopted by the algorithm. A given inspiring system may be abstracted to an algorithmic problem solving strategy in a number of ways.
+
 \subsection{Metaphor}
-allegory for explaining the computation
+allegory for explaining the computation. analogy or metaphor for a computational process
 
 \subsection{Strategy}
-the abstracted computation in terms of information processing
+the abstracted computation in terms of information processing. abstraction of inspired metaphor with a problem, solution, and suggestion an computational system / algorithm
+
+The algorithm strategy is an abstraction of the inspiration toward a computational model. The strategy highlights a canonical interpretation of the salient attributes in the inspiring system and how they map onto a computational approach with the goal of problem solving. The strategy provides a logical separation between a computational realization (algorithm) and a metaphoric system (inspiration). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.
 
 \subsection{Procedure}
-equations, operations, and pseudo code descriptions of the computation
+equations, operations, and pseudo code descriptions of the computation. specifics of realizing the strategy as a computation. how it is organized, data structures used, systemization, parameterization
+
+The algorithm procedure summarizes the specifics of realizing the strategy as a systemized and parameterized computation. It outlines how the algorithm is organized and the data structures and representation used. The procedure also reviews the best practices and heuristics (drawn from the literature) for configuring and applying the algorithm.
 
 \subsection{Heuristics}
-best practices and rules of thumb for configuring a parameterized algorithm
+best practices and rules of thumb for configuring a parameterized algorithm. guidelines for using executing and using the strategy
 
 \subsection{Applications}
 the general and/or specific domains the technique has been applied or is suited
@@ -77,12 +83,15 @@ the dates and people behind the development and progression of the technique
 \subsection{Further Reading}
 sources of information to seek if more detail is required
 
+The presented algorithm inspiration, strategy, and procedure were written for conciseness. As such, each algorithm provides a further reading section for those readers interested in a deeper understanding of the theory and application of the technique. The listing consists of hand-selected reference material including books, peer reviewed conference papers and journal articles.
+
 \subsection{Sample}
 complete source code listing
 
 \subsection{Tutorial}
-source code listing presented as a narrative
+source code listing presented as a narrative. example of realizing the approach on a problem - demonstrate strategy, realize the procedure, manifest the heuristics
 
+Tutorials are complete in that they result in a functional program, although they are demonstrative, implementing only just enough features to demonstrate a specific technique on a specific problem instance. They provide an exemplar realization of the technique suitable for demonstrating the fine details of the technique, and a template for specializing the technique for practical problem solving. 
 
 \section{Standardized Description} 
 \label{sec:template}
@@ -94,7 +103,7 @@ This section proposes a standardized algorithm description template to be comple
 todo: insert a table of template section and the expectation of what the section should contain.
 
 \subsection{Template Usage}
-how should the template be used? are all sections required?
+how should the template be used? are all sections required? little of the information is provided in an appropriate format, most likely the hard work will be formulating the elements of the description for each algorithm
 
 \subsection{A Living Standard}
 The proposed template should be considered a first draft of a standard that is expected to be refined through adoption and use throughout the execution of the Clever Algorithms project. The final version of this standard that the project converges to will be used for all algorithms described in the projects compendium to ensure the objective of consistency is met. This constraint is suggested, but not required for the algorithms described workspace during content development.
