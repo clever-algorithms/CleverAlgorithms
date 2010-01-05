@@ -31,7 +31,7 @@ A listing of outcomes from the project.
 
 h3. Technical Reports
 
-* Jason Brownlee. "The Clever Algorithms Project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf [Technical Report]. The Clever Algorithms Project http://www.CleverAlgorithms.com, 2010 Jan; Technical Report ID: CA-TR-20100105-1.
+* Jason Brownlee. "The clever algorithms project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 
 h2. History
 
