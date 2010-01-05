@@ -5,6 +5,8 @@
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 \documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
@@ -100,7 +102,20 @@ This section proposes a standardized algorithm template that includes some of th
 \subsection{Algorithm Description Template}
 This section proposes a standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project.
 
-todo: insert a table of template section and the expectation of what the section should contain.
+\begin{table}[ht]
+	\centering
+		\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		\textbf{Element} & \textbf{Description} \\ 
+		\toprule
+		something & words words words words. \\ 
+		\midrule
+		something & words words words words. \\ 		
+		\bottomrule
+		\end{tabularx}	
+	\caption{Standardized algorithm description template.}
+	\label{tab:template}
+\end{table}
 
 \subsection{Template Usage}
 how should the template be used? are all sections required? little of the information is provided in an appropriate format, most likely the hard work will be formulating the elements of the description for each algorithm
