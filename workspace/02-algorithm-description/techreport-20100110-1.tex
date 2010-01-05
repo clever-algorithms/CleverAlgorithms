@@ -50,57 +50,115 @@ Section~\ref{sec:elements} provides a summary of algorithm description elements 
 
 \section{Descriptive Elements}
 \label{sec:elements}
-This section provides a summary of descriptive elements that may form apart of a standardized algorithm description. Each element is motivated by the speculated needs of the target audience.
+This section provides a summary of descriptive elements that may form apart of a standardized algorithm description. Each element is 1) defined, 2) specifies the intended nature of an instantiated description (such as size, scope and form), and 3) specifies the questions that motivate the content for the element.
 
 \subsection{Name}
-the common name, aliases and acronyms for the technique 
+Defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. Described in terms of the heading and sub-headings of an algorithm.
+
+\begin{itemize}
+	\item \emph{What is the canonical name of the technique?}
+	\item \emph{What are the common aliases for the technique?}
+	\item \emph{What are the common abbreviations and acronyms for the technique?}
+\end{itemize}
 
 \subsection{Inspiration}
 the system that provoked the algorithm
 
 The algorithm inspiration is a summary of the specific system which provoked the inception of the algorithm or which retrospectively the algorithm can be directly related by analog or metaphor. This include relevant theory and observation, and most importantly the salient attributes of the system abstracted or adopted by the algorithm. A given inspiring system may be abstracted to an algorithmic problem solving strategy in a number of ways.
 
+\begin{itemize}
+	\item \emph{What is the system that motivated the development of the technique?}	
+\end{itemize}
+
 \subsection{Metaphor}
 allegory for explaining the computation. analogy or metaphor for a computational process
+uses nomenclature of motivating system
+
+\begin{itemize}
+	% metaphor
+	\item \emph{What is the explanation of the technique in the context of the inspiring system?}
+	% analogy
+	\item \emph{What are the functionalities inferred from the analogous inspiring system?}
+\end{itemize}
 
 \subsection{Strategy}
 the abstracted computation in terms of information processing. abstraction of inspired metaphor with a problem, solution, and suggestion an computational system / algorithm
 
 The algorithm strategy is an abstraction of the inspiration toward a computational model. The strategy highlights a canonical interpretation of the salient attributes in the inspiring system and how they map onto a computational approach with the goal of problem solving. The strategy provides a logical separation between a computational realization (algorithm) and a metaphoric system (inspiration). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.
 
-\subsection{Procedure}
-equations, operations, and pseudo code descriptions of the computation. specifics of realizing the strategy as a computation. how it is organized, data structures used, systemization, parameterization
+\begin{itemize}
+	\item \emph{What is the techniques plan of action?}
+	\item \emph{What are the information processing properties of the technique?}
+\end{itemize}
 
-The algorithm procedure summarizes the specifics of realizing the strategy as a systemized and parameterized computation. It outlines how the algorithm is organized and the data structures and representation used. The procedure also reviews the best practices and heuristics (drawn from the literature) for configuring and applying the algorithm.
+\subsection{Procedure}
+The algorithm procedure summarizes the specifics of realizing the strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and adopted representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+
+\begin{itemize}
+	\item \emph{What is the computational recipe for the technique?}
+	\item \emph{What are the data structures and organization for the technique?}
+	\item \emph{What mathematical operations are performed by the technique?}
+\end{itemize}
 
 \subsection{Heuristics}
 best practices and rules of thumb for configuring a parameterized algorithm. guidelines for using executing and using the strategy
 
+\begin{itemize}
+	\item \emph{What are the suggested configurations for the technique?}
+	\item \emph{What are the guidelines for the application of the technique to a problem instance?}
+\end{itemize}
+
 \subsection{Applications}
 the general and/or specific domains the technique has been applied or is suited
 
+\begin{itemize}
+	\item \emph{What are the suggested classes of problems for which the technique is suited?}
+	\item \emph{What are some exemplar problem instances to which the technique has been applied?}
+\end{itemize}
+
 \subsection{History}
 the dates and people behind the development and progression of the technique
+
+\begin{itemize}
+	\item \emph{Under what conditions was the original technique proposed?}
+	\item \emph{What are the significant milestones in the development of the technique?}
+\end{itemize}
 
 \subsection{Further Reading}
 sources of information to seek if more detail is required
 
 The presented algorithm inspiration, strategy, and procedure were written for conciseness. As such, each algorithm provides a further reading section for those readers interested in a deeper understanding of the theory and application of the technique. The listing consists of hand-selected reference material including books, peer reviewed conference papers and journal articles.
 
-\subsection{Sample}
+\begin{itemize}
+	\item \emph{What are the primary sources for a technique?}
+	\item \emph{What are the suggested reference sources for learning more about a technique?}
+\end{itemize}
+
+\subsection{Source Code}
 complete source code listing
+a technique is not understood until is implemented and seen running, observing and manipulating the effects of these things is where the real work is 
+
+\begin{itemize}
+	\item \emph{How is a technique implemented as an executable program?}
+	\item \emph{How is a technique applied to an actual problem instance?}
+\end{itemize}
 
 \subsection{Tutorial}
 source code listing presented as a narrative. example of realizing the approach on a problem - demonstrate strategy, realize the procedure, manifest the heuristics
 
 Tutorials are complete in that they result in a functional program, although they are demonstrative, implementing only just enough features to demonstrate a specific technique on a specific problem instance. They provide an exemplar realization of the technique suitable for demonstrating the fine details of the technique, and a template for specializing the technique for practical problem solving. 
 
+\begin{itemize}
+	\item \emph{What is the rationale when implementing a technique as an executable program?}
+	\item \emph{What is the rationale when applying a technique to an actual problem instance?}
+\end{itemize}
+
 \section{Standardized Description} 
 \label{sec:template}
 This section proposes a standardized algorithm template that includes some of the elements drawn from Section~\ref{sec:elements}. 
 
 \subsection{Algorithm Description Template}
-This section proposes a standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project.
+Table~\ref{tab:template} contains a standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project.
 
 \begin{table}[ht]
 	\centering
@@ -108,9 +166,9 @@ This section proposes a standardized algorithm description template to be comple
 		\toprule
 		\textbf{Element} & \textbf{Description} \\ 
 		\toprule
-		something & words words words words. \\ 
+		\emph{Name} & The heading and alternate headings for the algorithm description.  \\ 
 		\midrule
-		something & words words words words. \\ 		
+		\emph{Further Reading} & An annotated reference list of followup resources. \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Standardized algorithm description template.}
