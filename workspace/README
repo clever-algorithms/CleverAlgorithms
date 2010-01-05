@@ -1,5 +1,7 @@
 A workspace for developing content for the Clever Algorithms book by Jason Brownlee.
 
+JabRef is proposed for managing the bibtex: http://jabref.sourceforge.net/
+
 Provides a collection of notes and technical reports, organized into directories by topic/report. The methodology for content development involves the completion of a large number of small (2-4 man days), discrete, independent, formal reports on topics in or about the book that may be further developed or incorporated directly into the book itself. It is a methodology that promotes the prolonged capture of ad hoc and dis-contiguous effort to support project momentum and motivation through the production of tangible work product that contributes to the project objective. 
 
 See here: /workspace/00-notes/project-assessment-20100102-JB.txt
