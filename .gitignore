@@ -9,6 +9,7 @@ workspace/**/*.aux
 workspace/**/*.pdf
 workspace/**/*.out
 workspace/**/*.log
+workspace/*.bak
 deprecated/**/*.toc
 deprecated/**/*.aux
 deprecated/**/*.pdf
