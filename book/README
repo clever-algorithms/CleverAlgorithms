@@ -6,3 +6,5 @@ The book was prepared using LaTex and can be compiled using a popular fully-feat
 
 Developed using the MacTeX-2009 Distribution: http://www.tug.org/mactex/2009/
 Specifically, BasicTeX: http://www.tug.org/mactex/2009/morepackages.html
+
+JabRef is proposed for managing the bibtex: http://jabref.sourceforge.net/

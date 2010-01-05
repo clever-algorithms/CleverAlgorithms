@@ -3,7 +3,7 @@
 %
 
 % http://andrewjpage.com/index.php?/archives/55-Algorithms-in-Latex.html
-\usepackage[algochapter, ruled, linesnumbered]{algorithm2e}
+% \usepackage[algochapter, ruled, linesnumbered]{algorithm2e}
 % \usepackage[ruled, linesnumbered]{algorithm2e}
 
 
@@ -28,7 +28,7 @@
 \usepackage{color}
 
 % use in-line references for 'further reading'
-\usepackage{bibentry}
+% \usepackage{bibentry}
 % \usepackage{natbib}
 
 
@@ -37,13 +37,8 @@
 \usepackage{upquote}
 \usepackage{textcomp}
 
-\usepackage[pdftex,  % needed for pdflatex
-  breaklinks=true,  % so long urls are correctly broken across lines
-  colorlinks=true,
-  urlcolor=blue,
-  linkcolor=blue,
-  citecolor=blue,
-  ]{hyperref}
+% for ebooks, turn cross references into links
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 
 
 %
