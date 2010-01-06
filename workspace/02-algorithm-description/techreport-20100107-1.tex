@@ -202,10 +202,18 @@ Table~\ref{tab:template} contains the standardized algorithm description templat
 \end{table}
 
 % usage
-The template describes the intended usage of each descriptive element and the arrangements of the elements. It is suggested that each element represent a heading in a complete description of an algorithm, except the name element that becomes the name of the description itself. Very little algorithms will have the information required for all of the elements in a ready to use format. Elements such as the metaphor and strategy will have to be deduced from the primary sources. The procedure will have to be mapped onto a common pseudo code standard adopted for all algorithms described in the project to ensure the consistency objective is observed. The tutorial element will also have to be prepared anew for each technique, ensuring that a minimal although complete implementation is prepared and explained. It is suggested that standalone source code is prepared and tested separate from the tutorial elements in the description to ensure that source code correctness can be maintained. These code listing may be associated with the project but (as of the current version of the template) will not directly appear as an element in the description.  
+The template describes the intended usage of each descriptive element and the arrangements of the elements. It is suggested that each element represent a heading in a complete description of an algorithm, except the name element that becomes the name of the description itself. 
+% derived info
+Very little algorithms will have the information required for all of the elements in a ready to use format. Elements such as the metaphor and strategy will have to be deduced from the primary sources. The procedure will have to be mapped onto a common pseudo code standard adopted for all algorithms described in the project to ensure the consistency objective is observed. The tutorial element will also have to be prepared anew for each technique, ensuring that a minimal although complete implementation is prepared and explained. 
+% source code to support tutorials
+It is suggested that standalone source code is prepared and tested separate from the tutorial elements in the description to ensure that source code correctness can be maintained. These code listing may be associated with the project but (as of the current version of the template) will not directly appear as an element in the description.  
 
+% concern about redundency 
 For many techniques, the inspiration and the metaphor will be similar or even identical, with differentiation between the techniques occurring at the strategy or maybe even the procedure elements. In such cases, these algorithms are likely to represent candidates for siblings in the taxonomy description.
+% concern about algorithm grangularity
+% todo
 
+% these are not instances, just demonstrative suggestions
 \section{Examples} 
 \label{sec:examples}
 This section supports the standardized algorithm description template presented in Section~\ref{sec:template} by briefly summarizing how three popular algorithms from the fields of Computational Intelligence and Biologically Inspired Computation may be described. The presented algorithm descriptions are not complete, rather they suggest at the content that may be provided in each description element for a given specific algorithm. 
@@ -247,8 +255,8 @@ An example of the standardized algorithm description template applied to the par
 	\item \emph{Name}: Particle Swarm Optimization (PSO)
 	\item \emph{Taxonomy}: Belongs to swarm intelligence and collective intelligence, a sibling of ant colony optimization, a parent of many variants.
 	\item \emph{Inspiration}: Inspired by the flocking behaviors of birds and the schooling behaviors of fish.
-	\item \emph{Metaphor}: 
-	\item \emph{Strategy}: 
+	\item \emph{Metaphor}: A flock of creatures move through an environment in search of a desired location (such as a good location of food), sharing observations about the environment with each other in localized neighborhoods. Through the momentum of their movement and the localized social interactions, the group locates a good location that meets their needs in the environment. 
+	\item \emph{Strategy}: A population of particles move through a multiple dimension search space
 	\item \emph{Heuristics}: 
 	\item \emph{Procedure}: A procedural presentation of the algorithm's run loop in pseudo code.
 	\item \emph{Tutorial}: A guided example of implementing the classical particle swarm optimization algorithm for a continuos function optimization problem instance using a procedural programming language structure.
