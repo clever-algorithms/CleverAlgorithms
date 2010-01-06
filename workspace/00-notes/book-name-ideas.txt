@@ -13,3 +13,5 @@ format: <title>: <subtitle>
 - Programming Inspired Algorithms: A Pocket Guide
 - Clever Algorithms: A Practical Artificial Intelligence Reference
 - Clever Algorithms: A Compendium of Messy Artificial Intelligence
+- Clever Algorithms: A Handbook for Modern Artificial Intelligence
+- Clever Algorithms: Modern Artificial Intelligence Recipes
