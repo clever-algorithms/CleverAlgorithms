@@ -29,6 +29,10 @@ h2. Outcomes
 
 A listing of outcomes from the project.
 
+h3. Book Manuscripts
+
+_none yet_
+
 h3. Technical Reports
 
 * Jason Brownlee. "The clever algorithms project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
