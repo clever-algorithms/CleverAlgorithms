@@ -135,16 +135,16 @@ The history describes the inception of the technique including the original sour
 	\item \emph{What were the significant milestones in the development of a technique?}
 \end{itemize}
 
-\subsection{Further Reading: Deeper understanding}
-The further reading description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is well suited. 
+\subsection{References: Deeper understanding}
+The references description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is well suited. 
 
 \begin{itemize}
 	\item \emph{What are the primary sources for a technique?}
 	\item \emph{What are the suggested reference sources for learning more about a technique?}
 \end{itemize}
 
-\subsection{Source Code: Operational realization}
-The source code description provides a minimal but functional version of the technique implemented with a programming language. The source code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\subsection{Code: Operational realization}
+The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 
 \begin{itemize}
 	\item \emph{How is a technique implemented as an executable program?}
@@ -159,50 +159,102 @@ The tutorial description provides a guide to realizing the technique using a pro
 	\item \emph{What is the rationale when applying a technique to an actual problem instance?}
 \end{itemize}
 
-\section{Examples} 
-\label{sec:examples}
-This section elaborates the elements of a standardized algorithm description presented in Section~\ref{sec:elements} by briefly summarizing how three popular algorithms from the fields of Computational Intelligence and Biologically Inspired Computation may be described (in the simplest possible form).
-
-\subsection{Genetic Algorithm}
-todo
-
-\subsection{Simulated Annealing}
-todo
-
-\subsection{Particle Swarm Optimization}
-todo
-
 \section{Standardized Description} 
 \label{sec:template}
-This section proposes a standardized algorithm template that includes some of the elements drawn from Section~\ref{sec:elements}.
+This section proposes a standardized algorithm template that includes some of the elements drawn from Section~\ref{sec:elements}. The template is separate from the elements listed in the previous section to allow for independent on going refinement and modification.
 
-\subsection{Template Composition}
-need a mixture of abstraction and concreteness, need a mixture of narrative, programatic and potentially even diagrammatic 
+\subsection{The Template}
+% requirements
+A standardized algorithm description template needs a suitable mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.  
+% living standard
+The proposed template should be considered a first draft of a standard that is expected to be refined through adoption and use throughout the execution of the Clever Algorithms project. The final version of this standard that the project converges to will be used for all algorithms described in the projects compendium to ensure the objective of consistency is met. This constraint is suggested, but not required for the algorithms described workspace during content development.
 
-\subsection{Algorithm Description Template}
-Table~\ref{tab:template} contains a standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project.
+% template
+Table~\ref{tab:template} contains the standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project. The table describes the specific elements included in the template as well as their suggested ordering and their inclusion state as either required or optional. 
 
 \begin{table}[ht]
 	\centering
-		\begin{tabularx}{\textwidth}{lX}
+		\begin{tabularx}{\textwidth}{llX}
 		\toprule
-		\textbf{Element} & \textbf{Description} \\ 
+		\textbf{Element} & \textbf{Inclusion} &\textbf{Description} \\ 
 		\toprule
-		\emph{Name} & The heading and alternate headings for the algorithm description.  \\ 
+		\emph{Name} & Required & The heading and alternate headings for the algorithm description.  \\ 
 		\midrule
-		\emph{Further Reading} & An annotated reference list of followup resources. \\
+		\emph{Taxonomy} & Required & A small tree diagram showing related fields and algorithms. \\
+		\midrule
+		\emph{Inspiration} & Optional & A textual description of the inspiring system. \\
+		\midrule
+		\emph{Metaphor} & Optional & A textual description of the algorithm by analogy. \\
+		\midrule
+		\emph{Strategy} & Required & A textual description of the information processing strategy. \\
+		\midrule
+		\emph{Procedure} & Required & A pseudo code description of the algorithms procedure. \\
+		\midrule
+		\emph{Heuristics} & Required & A bullet-point listing of best practice usage. \\
+		\midrule
+		\emph{Tutorial} & Required & A textural narrative for realizing the algorithm with complete source code. \\
+		\midrule
+		\emph{References} & Required & An bullet-point annotated reference list of primary sources and useful resources. \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Standardized algorithm description template.}
 	\label{tab:template}
 \end{table}
 
-\subsection{Template Usage}
-how should the template be used? are all sections required? little of the information is provided in an appropriate format, most likely the hard work will be formulating the elements of the description for each algorithm
-not really separable all the time
+% usage
+The template describes the intended usage of each descriptive element and the arrangements of the elements. It is suggested that each element represent a heading in a complete description of an algorithm, except the name element that becomes the name of the description itself. Very little algorithms will have the information required for all of the elements in a ready to use format. Elements such as the metaphor and strategy will have to be deduced from the primary sources. The procedure will have to be mapped onto a common pseudo code standard adopted for all algorithms described in the project to ensure the consistency objective is observed. The tutorial element will also have to be prepared anew for each technique, ensuring that a minimal although complete implementation is prepared and explained. It is suggested that standalone source code is prepared and tested separate from the tutorial elements in the description to ensure that source code correctness can be maintained. These code listing may be associated with the project but (as of the current version of the template) will not directly appear as an element in the description.  
 
-\subsection{A Living Standard}
-The proposed template should be considered a first draft of a standard that is expected to be refined through adoption and use throughout the execution of the Clever Algorithms project. The final version of this standard that the project converges to will be used for all algorithms described in the projects compendium to ensure the objective of consistency is met. This constraint is suggested, but not required for the algorithms described workspace during content development.
+For many techniques, the inspiration and the metaphor will be similar or even identical, with differentiation between the techniques occurring at the strategy or maybe even the procedure elements. In such cases, these algorithms are likely to represent candidates for siblings in the taxonomy description.
+
+\section{Examples} 
+\label{sec:examples}
+This section supports the standardized algorithm description template presented in Section~\ref{sec:template} by briefly summarizing how three popular algorithms from the fields of Computational Intelligence and Biologically Inspired Computation may be described. The presented algorithm descriptions are not complete, rather they suggest at the content that may be provided in each description element for a given specific algorithm. 
+
+\subsection{Genetic Algorithm}
+An example of the standardized algorithm description template applied to the genetic algorithm.
+
+\begin{description}
+	\item[Name]
+	\item[Taxonomy] 
+	\item[Inspiration]
+	\item[Metaphor]
+	\item[Strategy]
+	\item[Heuristics]
+	\item[Procedure]
+	\item[Tutorial]
+	\item[References]
+\end{description}
+
+\subsection{Simulated Annealing}
+An example of the standardized algorithm description template applied to the simulated annealing algorithm.
+
+\begin{description}
+	\item[Name]
+	\item[Taxonomy] 
+	\item[Inspiration]
+	\item[Metaphor]
+	\item[Strategy]
+	\item[Heuristics]
+	\item[Procedure]
+	\item[Tutorial]
+	\item[References]
+\end{description}
+
+\subsection{Particle Swarm Optimization}
+An example of the standardized algorithm description template applied to the particle swarm optimization algorithm.
+
+\begin{description}
+	\item[Name]
+	\item[Taxonomy] 
+	\item[Inspiration]
+	\item[Metaphor]
+	\item[Strategy]
+	\item[Heuristics]
+	\item[Procedure]
+	\item[Tutorial]
+	\item[References]
+\end{description}
+
 
 % summarise the document message and areas for future consideration
 \section{Conclusions}
