@@ -6,9 +6,21 @@ The Clever Algorithms Project is an effort to describe a large number of algorit
 
 The Clever Algorithms Project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
 
+h2. Outcomes
+
+A listing of outcomes from the project.
+
+h3. Book Manuscripts
+
+_none yet_
+
+h3. Technical Reports
+
+* Jason Brownlee. "The clever algorithms project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
+
 h2. Breakdown
 
-This project is partitioned into four efforts:
+This project is partitioned into five efforts:
 
 * *workspace/* A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
 * *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
@@ -24,18 +36,6 @@ You may want to:
 * Email the author: "jason.brownlee05@gmail.com":mailto:jason.brownlee05@gmail.com
 * or, Message the author though the github website: (signup and login to github, go to "http://github.com/jbrownlee":http://github.com/jbrownlee and click "Message")
 * or, Fork the CleverAlgorithms project on github, make changes, and request a pull into the main project (again, you must signup and login to github and follow the github documentation for forking, contributing, and making a pull request).
-
-h2. Outcomes
-
-A listing of outcomes from the project.
-
-h3. Book Manuscripts
-
-_none yet_
-
-h3. Technical Reports
-
-* Jason Brownlee. "The clever algorithms project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 
 h2. History
 
