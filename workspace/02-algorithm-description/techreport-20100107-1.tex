@@ -165,9 +165,9 @@ This section proposes a standardized algorithm template that includes some of th
 
 \subsection{The Template}
 % requirements
-A standardized algorithm description template needs a suitable mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.  
+A standardized algorithm description template shall be a suitable mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.  
 % living standard
-The proposed template should be considered a first draft of a standard that is expected to be refined through adoption and use throughout the execution of the Clever Algorithms project. The final version of this standard that the project converges to will be used for all algorithms described in the projects compendium to ensure the objective of consistency is met. This constraint is suggested, but not required for the algorithms described workspace during content development.
+The proposed template should be considered a draft of a standard that is expected to be refined through adoption and use throughout the execution of the Clever Algorithms project. The final version of this standard that the project converges to will be used for all algorithms described in the projects compendium to ensure the objective of consistency is met. This constraint is suggested, but not required for the algorithms described workspace during content development.
 
 % template
 Table~\ref{tab:template} contains the standardized algorithm description template to be completed by all algorithms described in the Clever Algorithms project. The table describes the specific elements included in the template as well as their suggested ordering and their inclusion state as either required or optional. 
@@ -202,16 +202,17 @@ Table~\ref{tab:template} contains the standardized algorithm description templat
 \end{table}
 
 % usage
-The template describes the intended usage of each descriptive element and the arrangements of the elements. It is suggested that each element represent a heading in a complete description of an algorithm, except the name element that becomes the name of the description itself. 
+The template describes the intended usage of each descriptive element and the arrangements of the elements. It is suggested that each element represent a heading in a complete description of an algorithm, except the name element that becomes the name of the description itself. For textual descriptions such as the inspiration, metaphor, and strategy elements, a small number (1-4) of paragraphs are suggested as suitable scope of description.
+
 % derived info
-Very little algorithms will have the information required for all of the elements in a ready to use format. Elements such as the metaphor and strategy will have to be deduced from the primary sources. The procedure will have to be mapped onto a common pseudo code standard adopted for all algorithms described in the project to ensure the consistency objective is observed. The tutorial element will also have to be prepared anew for each technique, ensuring that a minimal although complete implementation is prepared and explained. 
+Very few algorithms will have the information required for all of the elements in a ready to use format. Elements such as the metaphor and strategy will have to be deduced from the primary sources. The procedure will have to be mapped onto a common pseudo code standard adopted for all algorithms described in the project to ensure the consistency objective is observed. The tutorial element will also have to be prepared anew for each technique, ensuring that a minimal although complete implementation is prepared and explained. 
 % source code to support tutorials
 It is suggested that standalone source code is prepared and tested separate from the tutorial elements in the description to ensure that source code correctness can be maintained. These code listing may be associated with the project but (as of the current version of the template) will not directly appear as an element in the description.  
 
 % concern about redundency 
 For many techniques, the inspiration and the metaphor will be similar or even identical, with differentiation between the techniques occurring at the strategy or maybe even the procedure elements. In such cases, these algorithms are likely to represent candidates for siblings in the taxonomy description.
 % concern about algorithm grangularity
-% todo
+The selection criteria of what constitutes an algorithm as opposed to a class of algorithms are not always well defined. This is a subject for future consideration, although in such a case where an algorithm name represents a family of specialization's that may or may not have their own differentiable names, a canonical or best practices form of the technique may be presented and the potential for variations discussed.
 
 % these are not instances, just demonstrative suggestions
 \section{Examples} 
@@ -266,7 +267,13 @@ An example of the standardized algorithm description template applied to the par
 % summarise the document message and areas for future consideration
 \section{Conclusions}
 \label{sec:conclusions}
-todo
+% overview
+This report introduce a number of elements that may be used in a standardized algorithm description template, then proceeded to specify those elements that have been adopted in a standardized template for use in the Clever Algorithms project. Importantly, the template was presented with practical suggestions for its usage including scope, organization, formulation recommendations for writing algorithm descriptions as well as maintenance advice for refining the proposed template in the future.
+
+% relevance
+It is expected that the presented standardized template and/or the proposed elements for use in such a template may relevant beyond the Clever Algorithms project, to the broader fields of Biologically Inspired Computation and Computational Intelligence. The proposed template or a new formulation may be used in other algorithm description projects such as books, programming libraries, dissertations, and perhaps articles and papers.
+% future
+algorithm selection, differentiation etc
 
 % bibliography
 \bibliographystyle{plain}
