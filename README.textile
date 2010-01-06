@@ -12,7 +12,9 @@ A listing of outcomes from the project.
 
 h3. Book Manuscripts
 
-_none yet_
+* Milestone 1: Draft book structure including title, parts, chapters, sections, and subsections. (_in progress_)
+* Milestone 2: Draft introduction chapter and preface. (_next_)
+* Milestone 3: Draft ten algorithm descriptions. (_future_) 
 
 h3. Technical Reports
 
