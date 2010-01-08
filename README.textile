@@ -2,9 +2,11 @@ h1. Clever Algorithms
 
 h2. Overview
 
-The Clever Algorithms Project is an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
+The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the fields of Biologically Inspired Computation and Computational Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
 
-The Clever Algorithms Project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+The Clever Algorithms project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+
+This is a repository for the Clever Algorithms project for hosting, versioning and collaboration, used during the development of the content for deliverables (website and book), as well as for the ongoing maintenance of the outcomes of the project.
 
 h2. Outcomes
 
@@ -31,7 +33,7 @@ This project is partitioned into five efforts:
 * *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
 * *web/* A webpage used to promote the project with a specialized content management system tailored to the content of the book.
 * *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
-* *deprecated/*: A collection of the work product produced during the previous attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
+* *deprecated/*: A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
 
 h2. How to Contribute
 
