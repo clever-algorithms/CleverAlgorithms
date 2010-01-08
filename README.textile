@@ -36,7 +36,7 @@ h2. How to Contribute
 Found a bug in the sample code or a typo in the content? Want to suggest an algorithm to include? Want to contribute a description of an algorithm or background content for the book?
 
 You may want to:
-* Email the author: "jason.brownlee05@gmail.com":mailto:jason.brownlee05@gmail.com
+* Email the author: "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com
 * or, Message the author though the github website: (signup and login to github, go to "http://github.com/jbrownlee":http://github.com/jbrownlee and click "Message")
 * or, Fork the CleverAlgorithms project on github, make changes, and request a pull into the main project (again, you must signup and login to github and follow the github documentation for forking, contributing, and making a pull request).
 
