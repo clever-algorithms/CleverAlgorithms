@@ -72,6 +72,7 @@ description of many ec techniques by many different authors, a compendium of tec
 %  Handbook of Exact String Matching Algorithms
 % 
 \subsection{Handbook of Exact String Matching Algorithms}
+\label{subsec:strings}
 % what is the book all about
 The Handbook of Exact String Matching Algorithms by Christian Charras and Thierry Lecroq \cite{Charras2004} is a technical book that presents 34 string matching algorithms. The book starts with a single chapter providing some context for the field of text processing and the importance of string matching, some conventions, then proceeds to present algorithms, one per chapter. The description of each algorithm is systematic, including the following sections:
 
@@ -110,13 +111,32 @@ Doctorow's works, specifically these two books provide great examples of what ma
 % Clonal Selection as an Inspiration for Adaptive and Distributed Information Processing
 % 
 \subsection{Clonal Selection as an Inspiration for Adaptive and Distributed Information Processing}
+The PhD dissertation in the field of Artificial Immune Systems by Jason Brownlee \cite{Brownlee2008}, the current author. The thesis presents a series of adaptive information processing models inspired by specific structures and functions of the acquired immune system. The content for the thesis was developed initially as a series of nearly 50 discrete, semi-independent technical reports over a period of approximately six-months, available online from \url{http://www.it.swin.edu.au/personal/jbrownlee}. A total of 11 algorithms clonal selection algorithms were described in a semi-structured format motivated by the following descriptive elements:
 
-PhD dissertation by this author \cite{Brownlee2008}
+\begin{itemize}
+	\item \emph{Inspiration}: A summary of the motivating structure and/or functions of the acquired immune system for the proposed algorithm or system.
+	\item \emph{Strategy}: An abstraction of the inspiring system as a description of the computational processes, data structure, and architecture (if appropriate).
+	\item \emph{Empirical Assessment}: One or a series of structured experiments (aim, method (problem, algorithm, experiment), results, analysis, conclusions) with the algorithm applied to a problem instance in order to demonstrate and empirically confirm the presence of expected systemic information processing properties. The description of empirical experiments was structured, including the following named elements:
+	\begin{itemize}
+		\item \emph{Aim}: The objective of the experiment.
+		\item \emph{Method}: A declaration of the problem instance, algorithm procedure in pseudo code, and experimental procedure.
+		\item \emph{Results}: A presented summary of the results
+		\item \emph{Analysis}: A textual analysis of the presented results and their potential impact.
+		\item \emph{Conclusions}: A textual summary of the findings of the experiment and their relationship to the stated objectives.
+	\end{itemize}
+\end{itemize}
 
-discrete work product released here \url{http://www.it.swin.edu.au/personal/jbrownlee/}, contributing to the complete product 
-description of many algorithmic techniques in a standard manner
+% what i do/don't like
+The algorithm description was somewhat structured, although without explicitly named description elements to encourage presentation consistency, although the motivating nature of the descriptions was formative for the clever algorithms project. A fixed and named structure was adopted for the description of empirical experiments, although generally the presentation of each algorithm was too verbose, compared to the concise descriptions discussed in Section~\ref{subsec:strings}.
+% discrete
+The content development methodology adopted for the Clever Algorithms project is patterned after the method used in the development of this thesis. A series of discrete, semi-independent (cross-referenced) technical reports was prepared on topics expected to be in and/or related to the topics presented in the thesis. The reports were prepared first and then reproduced with modification in the thesis in a patch work fashion, with gaps being filled as required. 
 
-
+% change
+This process will be adopted with some changes in the preparation of the book deliverable for the Clever Algorithms project. A series of technical reports will be prepared for topics expected to be in or related to the content of the front and back matter of the book, although one report will be written for each algorithm that appears in the book. Additionally, the content of the book (and potentially other deliverables such as a website) are proposed to be developed in parallel with the technical reports in a series of discrete milestones. 
+ 
+% 
+% Pro Git
+% 
 \subsection{Pro Git}
 book written by Scott Chacon and published by Apress \cite{Chacon2009}
 has a book website \url{http://progit.org}
