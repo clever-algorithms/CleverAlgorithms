@@ -62,6 +62,7 @@ Minsky's book was influential in the fields of Artificial Intelligence and Psych
 %  Evolutionary Computation
 % 
 \subsection{Evolutionary Computation}
+\label{subsec:ec}
 The Handbook of Evolutionary Computation \cite{Baeck1997} is a compendium (presented as a folder) of articles written by experts in the field of Evolutionary Computation generally about their specialty sub-fields. The objective of the handbook was to present complete, clear, and accessible information throughly describing state-of-the-art evolutionary computation research and application in a comprehensive style. The handbook presents 8 parts that cover a range of topics (introduction, fundamental concepts, computational models, hybrid approaches, implementations, applications, case studies, and research), each of which is partitioned into chapters that presents a series of independent articles (title, content, and references) authored by various different experts.
 
 This project was later updated resulting in the release of two books:
@@ -161,7 +162,6 @@ The book has a dedicated website on the form of a blog \url{http://www.gp-field-
 % what i like
 The book is in a field related to the Clever Algorithms project, although focuses on one technique - the genetic programing algorithms - and its variants, extensions, and applications in great detail. The self-publishing service LuLu handles both the on-demand publishing of the book as a paperback and a hosting facility for the ebook, providing tracking of sales and downloads to the authors for both concerns. The free status, quality content, and seniority of the authors in the field have strongly contributed to the success (tracked downloads) of the book. The self-published status suggest the intent of the project was readership, although the popularity of the book may also suggest that some reasonable revenue may have also been generated (split three ways though). 
 
-
 % 
 % Pro Git
 % 
@@ -197,25 +197,36 @@ The book is detailed and may provide an excellent reference text, although it is
 % like
 The project involves the periodic self-publishing of an incomplete work. The process has resulted in a lot of useful feedback according to the author that contribute to the quality of the work, and this is an advantage of an agile or iterative content development methodology (release early, release often). Reading a self-published book in an incomplete state is expected to damage the reputation of the quality of the project as it is a discomfort to the reader. It is proposed that an incomplete book is different to an incomplete piece of software, the latter is functional whereas the former is not. This problem may be addressed through the proposed technical report content development methodology for the Clever Algorithms project (early and complete sub-releases), and through a commitment to only releasing completed versions of the book deliverable.  
 
+% 
+% O'Reilly Cookbooks
+% 
 \subsection{O'Reilly Cookbooks}
+% what is it all about 
+O'Reilly Cookbooks are a series of book published by O'Reilly Media that present recipes or quick fixes to common and specific programming problems. A typical book is partitioned into chapters for major topics and each chapter is partitioned into specific recipes. The recipes are presented in a consistent format (problem, solution, discussion, see also), where the solution is most commonly a snippet of code that can be directly used (in a target programming language, in an executable form, and an exemplar and best practices solution to the presented problem). 
 
-O'Reilly cook book series - quick solutions for common problems
-specific use cases, lots and lots of them, ready to use code
-down sides, makes you dumb, more people doing best practice things, or quick hacks/patches
-\url{http://oreilly.com/store/series/cookbooks.csp}
+O'Reilly has a website dedicated to the series \url{http://oreilly.com/store/series/cookbooks.csp} that provides an effective description, as follows: ``\emph{Each cookbook contains hundreds of programming recipes presented in a special Problem/Solution/Discussion format, and includes hundreds of scripts, programs, and command sequences you can use to solve specific problems}''
 
+The O'Reilly Cookbooks webpage lists approximately 50 books in the series (at the time of writing), each on a specific programming language or development platform. Perhaps the most famous book in the series is the Perl Cookbook by Tom Christiansen and Nathan Torkington \cite{Christiansen2003} that may have started the series, the source code solutions of which have subsequently been ported to a number of other programming languages and released under the GNU Free Documentation License on a website dedicated to the maintenance of the examples \url{http://pleac.sourceforge.net}.
 
-\subsection{Java Developers Almanac}
+% what i like
+Although not about algorithms specifically, the cookbook format from O'Reilly is an excellent model for the presentation of content in the Clever Algorithms project. Essentially, each book is a compendium of discrete, independent, terse problem-solution pairs with executable programming code presented as the solutions.
+The intent of the Clever Algorithms project is to produce a reference text with the same general properties, although on a more complex subject matter, the details of which are dispersed across an elusive corpus of papers, articles, books, websites, and source code.
 
-terse solutions to common problems
-lots of very specific code examples
-search, locate the use case, implement it
-has its down sides two
+% ec
+The cookbook format is very similar to the article approach used in the Evolutionary Computation books discussed in Section~\ref{subsec:ec}, although with a fixed presentation structure and more independence between the sections. A reader may search the table of contents (or the content electronically) and locate a solution to the general class to their specific problem. Alternatively, a reader may browse the text, and randomly access knowledge on an array of specific best practice programming idioms.
+% re-create
+This experience may be recreated in the Clever Algorithms project for artificial intelligence practitioners seeking general algorithmic solutions suited to difficult problems and a corpus of such solutions that may be browsed for inspiration.
 
+% 
+%  Software
+% 
 \section{Software}
 \label{sec:software}
 This section summarizes specific software that influenced the Clever Algorithms project.
 
+% 
+% WEKA
+% 
 \subsection{WEKA}
 From the website: 
 
@@ -228,6 +239,9 @@ books, papers, community, many many algorithms
 
 open source, located online \url{http://www.cs.waikato.ac.nz/~ml/weka/}
 
+% 
+% Optimization Algorithm Toolkit
+% 
 \subsection{Optimization Algorithm Toolkit}
 OAT, created by this author \cite{Brownlee2007}, inspired by WEKA and other projects.
 
@@ -236,6 +250,9 @@ a model for what i want to achieve - implementation for lots of optimization alg
 From the website: 
 \emph{The Optimization Algorithm Toolkit (OAT) is a workbench and toolkit for developing, evaluating, experimenting, and playing with classical and state-of-the-art optimization algorithms on standard benchmark problem domains. The software includes reference algorithm implementations, graphing, visualizations, and much more.}
 
+% 
+% Watchmaker
+% 
 \subsection{Watchmaker}
 
 good quality library, used
@@ -243,6 +260,9 @@ the guy is everywhere, wherever the techniques are being discussed his is partic
 highlighting is project as needed, results in exposure - active participation results in exposure by default
 
 
+% 
+% Findings
+% 
 % summarise the document message and areas for future consideration
 \section{Findings}
 \label{sec:findings}
