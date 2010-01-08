@@ -41,7 +41,7 @@ todo
 \section{Introduction}
 \label{sec:introduction}
 % message
-The Clever Algorithms project seeks to describe a large number of algorithms from the fields of Computational Intelligence and Biologically Inspired Computation in a complete, consistent, and centralized manner \cite{Brownlee2010}. The project was not devised in isolation, it was inspired and influenced by a diverse collection of books (Section~\ref{sec:books}), software (Section~\ref{sec:software}), and websites (Section~\ref{sec:websites}). This technical report provides an overview of the works that influenced the inception and development of the Clever Algorithms project and distills the specific features from all the inspirations into a set of principles and actions to help guide the project (Section~\ref{sec:findings}).
+The Clever Algorithms project seeks to describe a large number of algorithms from the fields of Computational Intelligence and Biologically Inspired Computation in a complete, consistent, and centralized manner \cite{Brownlee2010}. The project was not devised in isolation, it was inspired and influenced by a diverse collection of books (Section~\ref{sec:books}) and software (Section~\ref{sec:software}). This technical report provides an overview of the works that influenced the inception and development of the Clever Algorithms project and distills and synthesizes the specific features from all the inspirations into a set of principles and actions to help guide the project (Section~\ref{sec:findings}).
 
 \section{Books}
 \label{sec:books}
@@ -62,16 +62,24 @@ Minsky's book was influential in the fields of Artificial Intelligence and Psych
 %  Evolutionary Computation
 % 
 \subsection{Evolutionary Computation}
-The Handbook of Evolutionary Computation \cite{Baeck1997} is a compendium (folder) of articles generally written by experts in the field of Evolutionary Computation about their specialty sub-fields. The compendium covers areas such as models of computation, hybrid approaches, and application areas. The articles are partitioned into parts that cover general topics, and each part presents a series of articles, each with a title, author, content, and references.
+The Handbook of Evolutionary Computation \cite{Baeck1997} is a compendium (presented as a folder) of articles written by experts in the field of Evolutionary Computation generally about their specialty sub-fields. The objective of the handbook was to present complete, clear, and accessible information throughly describing state-of-the-art evolutionary computation research and application in a comprehensive style. The handbook presents 8 parts that cover a range of topics (introduction, fundamental concepts, computational models, hybrid approaches, implementations, applications, case studies, and research), each of which is partitioned into chapters that presents a series of independent articles (title, content, and references) authored by various different experts.
 
-EC books 1 \cite{Baeck2000} and 2 \cite{Baeck2000a}
+This project was later updated resulting in the release of two books:
 
-description of many ec techniques by many different authors, a compendium of techniques. a pre-cursor to these books was the handbook of ec  same format. 
+\begin{itemize}
+	\item Evolutionary Computation 1: Basic Algorithms and Operations \cite{Baeck2000}
+	\item Evolutionary Computation 2: Advanced Algorithms and Operations \cite{Baeck2000a}
+\end{itemize} 
+
+The two volumes present similar material as the handbook although updated, and under a broader structure that presents increased detail. Volume one presents a series of six parts that cover major topics on evolutionary algorithms (why evolutionary computation, standard algorithms, representations, selection, and search) with 34 chapters, each chapter presenting anywhere between one and ten articles by specialists in the field. The second volume presents a similar structure (parts, chapters, articles) and focuses on more advanced topics in the field (fitness evaluation, constraint handling techniques, population structures, advanced techniques, and implementation). The articles are like short journal pieces with the same manner as the handbook with independent authorship and isolated structure (title, content, and references).
 
 % what i like
-readers can dip in, random access, consume the topics they are interested in when they are interested in them
-excellent re-usable reference texts
+The handbook and the updated book volumes are seminal references for practitioners and researches in the field of evolutionary computation. The content in a given article is suitable to gain a basic understanding of an approach or operation, there dearth of articles means that all major subfields and niches in the area of research are covered, and the compactness of each article means that a number can be consumed in a given sitting. 
+% random access
+A reader can skim across topics by flicking through the table of contents and dive into a specific sub field in a random access manner - both properties of good reference texts. The articles are independent, with few (if any) explicit cross connections, although any required prior knowledge is located in one or more other articles in the collection.
 
+% same field
+The handbook and volumes cover a field and a number of algorithms and related topics that are expected to be covered in the clever algorithms project. The handbook and volumes do present algorithms with pseudo code, but they are presented as areas of research, and are presented differently between the algorithms. The Clever Algorithms project is different in that it focuses only on the presentation of algorithms rather than focusing on the myriad of sub-fields, and all algorithms will be presented using the same structure. The Evolutionary Computation books are complementary to the Clever Algorithms project, providing a specific and more detailed reference (although at least ten years out of date at the time of writing) to accompany the presentation of most of the evolutionary algorithms in the project.
 
 % 
 %  Handbook of Exact String Matching Algorithms
@@ -211,12 +219,6 @@ a model for what i want to achieve - implementation for lots of optimization alg
 From the website: 
 \emph{The Optimization Algorithm Toolkit (OAT) is a workbench and toolkit for developing, evaluating, experimenting, and playing with classical and state-of-the-art optimization algorithms on standard benchmark problem domains. The software includes reference algorithm implementations, graphing, visualizations, and much more.}
 
-
-\section{Websites}
-\label{sec:websites}
-This section summarizes specific websites that influenced the Clever Algorithms project.
-
-
 % summarise the document message and areas for future consideration
 \section{Findings}
 \label{sec:findings}
@@ -236,6 +238,7 @@ The following describe a set of properties distilled from the inspiring works:
 	\item \emph{Publicly Developed}: attribution is recorded for posterity, progress is tracked, interest is tracked, content is backed up, contributions can be made form anywhere, and by any one (although moderated before added to the main project)
 	\item \emph{Algorithm Focus}: it is all about the techniques, front and back matter should be minimal
 	\item \emph{Clear and Fixed Scope} a set number of algorithms, early specification of how many and which ones (first milestone), can be refiened, but need an early commitment to avoid scope creep
+	\item \emph{Independence} few if any explicit cross connections, assuming reasonable prior knowledge, dip in and out of algorithms
 \end{itemize}
 
 \subsection{Regarding Product}
