@@ -44,6 +44,9 @@ This is the abstract. Consider writing a one sentence summary of each major sect
 The Clever Algorithms project aims to describe a large number of algorithms from the field of Artificial Intelligence in a complete, consistent, and centralized way to improve the accessibility of the methods \cite{Brownlee2010}. 
 % report
 This report\ldots
+
+the selection and organization of algorithms that appear in the book is a very big deal, it may even be more important than the algorithm descriptions themselves.
+
 % breakdown
 Section~\ref{sec:methodology}\ldots
 Section~\ref{sec:results}\ldots
@@ -51,33 +54,82 @@ Section~\ref{sec:analysis}\ldots
 Section~\ref{sec:selection}\ldots
 Section~\ref{sec:conclusions}\ldots
 
+% 
+% Methodology
+% 
 \section{Methodology}
 \label{sec:methodology}
 This section describes the methodology for the selection of algorithms for inclusion in the Clever Algorithms project.
 
 This methodology and its results are based on a blog post by Jason Brownlee on August 2nd 2009 entitled ``What is a good optimization algorithm? A data-driven method for algorithm selection'' located at: \url{http://www.neverreadpassively.com/2009/08/what-is-good-optimization-algorithm.html}.
 
+The previous method was based on the question: \emph{Is it possible to select a diverse, interesting, and useful set of inspired algorithms using a simple data driven method?}
+
+% 
+% Algorithm List
+% 
 \subsection{Algorithm List}
 prepare an algorithm list. include name, parent field
 draw from lots of fields, such as computational intelligence algorithms, metaheuristics, biologically inspired algorithms, natural algorithms, biomimetic algorithms
 draw from lots of sources: books, websites, papers, articles, friends
 
+
+Normalized algorithm names to their full unabbreviated form. No acronyms wherever reasonably possible.
+
+Assigned each algorithm a superficial grouping or kingdom (I thought for use in a book chapter structure) based on general observation and intuition. Kingdom names were generally based on the motivation for the methods strategy, including: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
+
+representative of the field
+
+problems
+not all algorithms are equal, some are more heuristics than true procedures
+not all have well defined names
+algorithms are renamed
+self references boost numbers
+time of publication, new algorithms get lower ranks, older get higher
+
+% 
+% Rank Algorithms
+% 
 \subsection{Rank Algorithms}
+some nice data points would include: objective efficiency, efficacy, quality of research, and maybe even scope of innovation
 
+simple ranking principle: \emph{An algorithm or method is as good its name, as useful and interesting as it is abundant.}
 
+more specifically: An algorithm that is used (written about) is an algorithm that is useful (worth knowing about).
+
+tally the number of search results for an algorithm across a number of domains
+
+Recorded the estimated-total number of search results for the exact algorithm name (quoted) in Google Web Search, Google Scholar Search, Google Book Search, Springer Search, and Scirus Search.
+
+Calculated the relative algorithm rank metric as the sum of the normalized search result measures.
+
+% 
+% Select Algorithms
+% 
 \subsection{Select Algorithms}
 order by rank, filter for interestingness
 organize by field or sub-field or some commonality
 
+list in order of increasing complexity, a logical narrative perhaps
 
+% 
+% Results
+% 
 \section{Results}
 \label{sec:results}
 This section summarizes the results of assessing algorithms for inclusion in the Clever Algorithms project.
+
+i focused on `unconventional optimization algorithms', leaving out so-called model building approaches from statistical machine learning such as artificial neural networks, fuzzy logic, kernels, etc 
+
+not out of the project for good, just out for now - perhaps a two volume study? algorithms and models
 
 Top overall?
 Top for each field?
 list all results? good for completeness 
 
+% 
+% Analysis
+% 
 \section{Analysis}
 \label{sec:analysis}
 This section analyses the results of the assessed algorithms for inclusion in the Clever Algorithms project.
@@ -105,8 +157,6 @@ selection based on a filtered version of the ranked listings
 
 \subsection{Physical Algorithms}
 
-\subsection{Neural Algorithms}
-do we want this in the book?
 
 % summarise the document message and areas for future consideration
 \section{Conclusions}
