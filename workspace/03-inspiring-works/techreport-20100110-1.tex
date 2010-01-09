@@ -126,6 +126,7 @@ Doctorow's works, specifically these two books provide great examples of what ma
 % Clonal Selection as an Inspiration for Adaptive and Distributed Information Processing
 % 
 \subsection{Clonal Selection as an Inspiration for Adaptive and Distributed Information Processing}
+\label{subsec:dissertation}
 The PhD dissertation in the field of Artificial Immune Systems by Jason Brownlee \cite{Brownlee2008}, the current author. The thesis presents a series of adaptive information processing models inspired by specific structures and functions of the acquired immune system. The content for the thesis was developed initially as a series of nearly 50 discrete, semi-independent technical reports over a period of approximately six-months, available online from \url{http://www.it.swin.edu.au/personal/jbrownlee}. A total of 11 algorithms clonal selection algorithms were described in a semi-structured format motivated by the following descriptive elements:
 
 \begin{itemize}
@@ -235,29 +236,32 @@ This section summarizes specific software that influenced the Clever Algorithms 
 % WEKA
 % 
 \subsection{Waikato Environment for Knowledge Analysis}
-The Waikato Environment for Knowledge Analysis (WEKA) is a machine learning workbench for exploring and experimenting with machine learning algorithms and data mining processes \cite{Hall2009}. It is an open source software platform developed by the University of Waikato written in Java and released under the GNU General Public License. The project is used in university level machine learning and data mining course, is a platform for scientific enterprise, has a dedicated website for the project \url{http://www.cs.waikato.ac.nz/~ml/weka} and at least one book written by the main contributors \cite{Witten2000} (now in at a second edition).
+The Waikato Environment for Knowledge Analysis (WEKA) is a machine learning workbench for exploring and experimenting with machine learning algorithms and data mining processes \cite{Hall2009}. It is an open source software platform developed by the University of Waikato written in Java and released under the GNU General Public License (GPL). The project is used in university level machine learning and data mining course, is a platform for scientific enterprise, has a dedicated website for the project \url{http://www.cs.waikato.ac.nz/~ml/weka} and at least one book written by the main contributors \cite{Witten2000} (now in at a second edition).
 
 The description from the WEKA webpage is as follows: ``\emph{Weka is a collection of machine learning algorithms for data mining tasks. The algorithms can either be applied directly to a dataset or called from your own Java code. Weka contains tools for data pre-processing, classification, regression, clustering, association rules, and visualization. It is also well-suited for developing new machine learning schemes.}''
 
 % what i like
 The WEKA platform is host to a large number of standardized algorithm implementations for general classes of problems such as regression, classification, feature selection and clustering. The platform is concerned with the fields of data mining and machine learning that may have some overlap with the Clever Algorithms project. The number of algorithms is always increasing as third party developers implement algorithms and researches implement and investigate their own approaches. I have been interested in the platform for a long time and have contributed to the effort by writing a series of algorithms for the platform \url{http://wekaclassalgos.sourceforge.net}. 
 
-The software specifies programatic contracts (interfaces, base types, abstract methods) that must be implemented for an algorithm to be included with the platform, enforcing standardization. This contract also includes referencing primary sources, parameterization documentation, and default algorithm configuration. These three pieces of information are invaluable to a practitioner in understanding where an algorithm came from, how to configure it, and a starting point for blind application (bad practice, but a typical use case).
+The software specifies programatic contracts (interfaces, base types, abstract methods) that must be implemented for an algorithm to be included with the platform, enforcing standardization. This contract also includes referencing primary sources, parameterization documentation, and default algorithm configuration. These three pieces of information are invaluable to a practitioner in understanding where an algorithm came from, how to configure it, and a starting point for blind application (bad practice, but a typical use case). 
+% i don't like
+What the algorithms are missing are more detailed descriptions. This is a point that that the associated book works to address, although it departs from the structured standardized presentation style used in the software.
 
-The large number of algorithms, and the high quality implementations has attracted a lot of attention resulting in it being considered a premiere platform for research in applied machine learning and data mining with many papers and articles referencing the software and the project. This supposition highlights that a positive feedback loop may be created for such a practical effort to the point where it becomes a de-facto standard in the field.
+% model for community
+The large number of algorithms, and the high quality implementations has attracted a lot of attention resulting in it being considered a premiere platform for research in applied machine learning and data mining with many papers and articles referencing the software and the project. This supposition highlights that a positive feedback loop may be created for such a practical effort to the point where it becomes a de-facto standard in the field. 
 
 % 
-% Optimization Algorithm Toolkit
+% OAT
 % 
 \subsection{Optimization Algorithm Toolkit}
-OAT, created by this author \cite{Brownlee2007}, inspired by WEKA and other projects.
+The Optimization Algorithm Toolkit (OAT) is a software platform created by Jason Brownlee (this author) in Java for exploring and experimenting with optimization algorithms from the fields of Computational Intelligence and Biologically Inspired Computation \cite{Brownlee2007}. It was developed between 2006 and 2008, was extended for use in Brownlee's dissertation work (Section~\ref{subsec:dissertation}), and is released as open source under the GNU Lesser General Public License (LGPL) version 3. The project has a dedicated website \url{http://optalgtoolkit.sourceforge.net} that describes the general use cases, the target audience, and provides support information.
 
-a model for what i want to achieve - implementation for lots of optimization algorithms from the fields of CI and BIC. open source code, open to contributions, online at \url{http://optalgtoolkit.sourceforge.net}
+A description of the project from the projects website is as follows: ``\emph{The Optimization Algorithm Toolkit (OAT) is a workbench and toolkit for developing, evaluating, experimenting, and playing with classical and state-of-the-art optimization algorithms on standard benchmark problem domains. The software includes reference algorithm implementations, graphing, visualizations, and much more.}''
 
-From the website: 
-\emph{The Optimization Algorithm Toolkit (OAT) is a workbench and toolkit for developing, evaluating, experimenting, and playing with classical and state-of-the-art optimization algorithms on standard benchmark problem domains. The software includes reference algorithm implementations, graphing, visualizations, and much more.}
+The project was inspired by the WEKA platform, although targeted optimization algorithms, providing a large number of problem and algorithm instances for a number domains (such as continuous function optimization, binary function optimization, traveling salesman problem, and graph coloring). Algorithms are drawn from many fields of study such as Evolutionary Computation, Swarm Intelligence, Ant Colony Optimization, and Stochastic Optimization. Like the WEKA project, the OAT library enforces algorithm implementation standardization through the use of programming artifacts (interfaces, base classes, and abstract methods).
 
 % what i like
+The OAT provides a large number of algorithms that are expected to appear in the Clever Algorithms project. In fact, the Clever Algorithms project is an effort to re-create and improved version of the OAT effort to be more accessible. OAT was broadly targeted to scientists, developers, and amateurs, although was only really usable by programmers that were also domain experts and likely research scientists. Additionally, a failure of the OAT project was that it did not provide sufficient support or documentation for the implemented algorithms. 
 
 % 
 % Watchmaker
