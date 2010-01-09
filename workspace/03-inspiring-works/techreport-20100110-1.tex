@@ -202,7 +202,7 @@ The project involves the periodic self-publishing of an incomplete work. The pro
 % 
 \subsection{O'Reilly Cookbooks}
 % what is it all about 
-O'Reilly Cookbooks are a series of book published by O'Reilly Media that present recipes or quick fixes to common and specific programming problems. A typical book is partitioned into chapters for major topics and each chapter is partitioned into specific recipes. The recipes are presented in a consistent format (problem, solution, discussion, see also), where the solution is most commonly a snippet of code that can be directly used (in a target programming language, in an executable form, and an exemplar and best practices solution to the presented problem). 
+O'Reilly Cookbooks are a series of book published by O'Reilly Media that present recipes or quick fixes to common and specific programming problems. A typical book is partitioned into chapters for major topics and each chapter is partitioned into specific recipes. The recipes are presented in a consistent format (problem, solution, discussion, see also), where the solution is most commonly a sequence of actions or snippet of code that can be directly used (in a target programming language, in an executable form, and an exemplar and best practices solution to the presented problem). 
 
 O'Reilly has a website dedicated to the series \url{http://oreilly.com/store/series/cookbooks.csp} that provides an effective description, as follows: ``\emph{Each cookbook contains hundreds of programming recipes presented in a special Problem/Solution/Discussion format, and includes hundreds of scripts, programs, and command sequences you can use to solve specific problems}'' The source code from each cookbook is provided on O'Reilly website and can be downloaded and copied directly into user applications, presumably released under a permissive license. The recipe structure taken from the O'Reilly website is as follows:
 
@@ -213,7 +213,7 @@ O'Reilly has a website dedicated to the series \url{http://oreilly.com/store/ser
 	\item \emph{See Also}: Directs you to additional information related to the topic.
 \end{itemize}
 
-The O'Reilly Cookbooks webpage lists approximately 50 books in the series (at the time of writing), each on a specific programming language or development platform. Perhaps the most famous book in the series is the Perl Cookbook by Tom Christiansen and Nathan Torkington \cite{Christiansen2003} that may have started the series, the source code solutions of which have subsequently been ported to a number of other programming languages and released under the GNU Free Documentation License on a website dedicated to the maintenance of the examples \url{http://pleac.sourceforge.net}.
+The O'Reilly Cookbooks webpage lists approximately 50 books in the series (at the time of writing), each on a specific subject such as a programming language, environment, or development platform. Perhaps the most famous book in the series is the Perl Cookbook by Tom Christiansen and Nathan Torkington \cite{Christiansen2003} that may have started the series, the source code solutions of which have subsequently been ported to a number of other programming languages and released under the GNU Free Documentation License on a website dedicated to the maintenance of the examples \url{http://pleac.sourceforge.net}.
 
 % what i like
 Although not about algorithms specifically, the cookbook format from O'Reilly is an excellent model for the presentation of content in the Clever Algorithms project. Essentially, each book is a compendium of discrete, independent, terse problem-solution pairs with executable programming code presented as the solutions.
@@ -234,17 +234,17 @@ This section summarizes specific software that influenced the Clever Algorithms 
 % 
 % WEKA
 % 
-\subsection{WEKA}
-From the website: 
+\subsection{Waikato Environment for Knowledge Analysis}
+The Waikato Environment for Knowledge Analysis (WEKA) is a machine learning workbench for exploring and experimenting with machine learning algorithms and data mining processes \cite{Hall2009}. It is an open source software platform developed by the University of Waikato written in Java and released under the GNU General Public License. The project is used in university level machine learning and data mining course, is a platform for scientific enterprise, has a dedicated website for the project \url{http://www.cs.waikato.ac.nz/~ml/weka} and at least one book written by the main contributors \cite{Witten2000} (now in at a second edition).
 
-\emph{Weka is a collection of machine learning algorithms for data mining tasks. The algorithms can either be applied directly to a dataset or called from your own Java code. Weka contains tools for data pre-processing, classification, regression, clustering, association rules, and visualization. It is also well-suited for developing new machine learning schemes.}
+The description from the WEKA webpage is as follows: ``\emph{Weka is a collection of machine learning algorithms for data mining tasks. The algorithms can either be applied directly to a dataset or called from your own Java code. Weka contains tools for data pre-processing, classification, regression, clustering, association rules, and visualization. It is also well-suited for developing new machine learning schemes.}''
 
+% what i like
+The WEKA platform is host to a large number of standardized algorithm implementations for general classes of problems such as regression, classification, feature selection and clustering. The platform is concerned with the fields of data mining and machine learning that may have some overlap with the Clever Algorithms project. The number of algorithms is always increasing as third party developers implement algorithms and researches implement and investigate their own approaches. I have been interested in the platform for a long time and have contributed to the effort by writing a series of algorithms for the platform \url{http://wekaclassalgos.sourceforge.net}. 
 
+The software specifies programatic contracts (interfaces, base types, abstract methods) that must be implemented for an algorithm to be included with the platform, enforcing standardization. This contract also includes referencing primary sources, parameterization documentation, and default algorithm configuration. These three pieces of information are invaluable to a practitioner in understanding where an algorithm came from, how to configure it, and a starting point for blind application (bad practice, but a typical use case).
 
-standardization effort for implementing data mining algorithms \cite{Hall2009}
-books, papers, community, many many algorithms
-
-open source, located online \url{http://www.cs.waikato.ac.nz/~ml/weka/}
+The large number of algorithms, and the high quality implementations has attracted a lot of attention resulting in it being considered a premiere platform for research in applied machine learning and data mining with many papers and articles referencing the software and the project. This supposition highlights that a positive feedback loop may be created for such a practical effort to the point where it becomes a de-facto standard in the field.
 
 % 
 % Optimization Algorithm Toolkit
@@ -256,6 +256,8 @@ a model for what i want to achieve - implementation for lots of optimization alg
 
 From the website: 
 \emph{The Optimization Algorithm Toolkit (OAT) is a workbench and toolkit for developing, evaluating, experimenting, and playing with classical and state-of-the-art optimization algorithms on standard benchmark problem domains. The software includes reference algorithm implementations, graphing, visualizations, and much more.}
+
+% what i like
 
 % 
 % Watchmaker
@@ -288,8 +290,9 @@ The following describe a set of properties distilled from the inspiring works:
 	\item \emph{Volume}: lots of algorithms, be a landmark or atlas, shock people at the number of algorithms
 	\item \emph{Publicly Developed}: attribution is recorded for posterity, progress is tracked, interest is tracked, content is backed up, contributions can be made form anywhere, and by any one (although moderated before added to the main project)
 	\item \emph{Algorithm Focus}: it is all about the techniques, front and back matter should be minimal
-	\item \emph{Clear and Fixed Scope} a set number of algorithms, early specification of how many and which ones (first milestone), can be refiened, but need an early commitment to avoid scope creep
+	\item \emph{Clear and Fixed Scope} a set number of algorithms, early specification of how many and which ones (first milestone), can be refined, but need an early commitment to avoid scope creep
 	\item \emph{Independence} few if any explicit cross connections, assuming reasonable prior knowledge, dip in and out of algorithms
+	\item \emph{Algorithm Usage} what do all the parameters mean, how are they configured, what is a default configuration
 \end{itemize}
 
 \subsection{Regarding Product}
