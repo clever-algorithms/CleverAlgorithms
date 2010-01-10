@@ -175,17 +175,34 @@ end
 
 # generate stats
 puts "Generating statistics..."
-algorithms_list = IO.readlines("./results.txt")
+puts "------------------------------"
+# load
+raw = IO.readlines("./results.txt")
+# split into something useful
+algorithms_list = []
+raw.each { |line| algorithms_list<<line.split(',')}
+# overall top algorithms
+puts "Top 10 Algorithms, Overall:"
+algorithms_list.sort {|x,y| y[2].to_f <=> x[2].to_f} # descending by rank
+top = 0
+algorithms_list.each_with_index do |v, i|
+  break if top>=10 # bounded
+  if v[0] != "Subfield" 
+    puts "#{(top+1)} #{v[1]}"
+    top +=1
+  end
+end
+puts "------------------------------"
+
 # organize by kingdom
 data = {}
-algorithms_list.each do |line|
-  kingdom, algorithm, rank = line.split(',')
-  data[kingdom] = [] if !data.has_key?(kingdom)
-  data[kingdom] << [algorithm.strip, rank.strip]
+algorithms_list.each do |row|
+  data[row[0].strip] = [] if !data.has_key?(row[0].strip)
+  data[row[0].strip] << [row[1].strip, row[2].strip]
 end
 # process each kingdom
 data.each_pair do |key, value| 
-  value.sort {|x,y| y[1] <=> x[1] } # descending by rank
+  value.sort {|x,y| y[1].to_f <=> x[1].to_f} # descending by rank
   # print top 10
   puts "Top 10 Algorithms for #{key}:"
   value.each_with_index do |v, i|
