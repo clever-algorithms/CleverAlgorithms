@@ -21,25 +21,27 @@
 # Flash and other Non-Javascript Environments (search docs): http://code.google.com/apis/ajaxsearch/documentation/reference.html#_intro_fonje
 # Net::HTTP http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/classes/Net/HTTP.html
 # Sample code.Python. Perl. Language Ajax api. Post method. 5000. api limit http://osdir.com/ml/GoogleAJAXAPIs/2009-05/msg00118.html
+# Hpricot Basics: http://wiki.github.com/whymirror/hpricot/hpricot-basics
+
 
 
 require 'rubygems'
-
-# hack - god knows why i need it
 module JSON
-  VARIANT_BINARY = false
+  VARIANT_BINARY = false # hack - god knows why i need it
 end
 require 'json'
 require 'net/http'
+require 'hpricot'
 
 
-# http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q=Paris%20Hilton
 def get_approx_google_web_results(keyword)
   http = Net::HTTP.new('ajax.googleapis.com', 80)
   header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
   path = "/ajax/services/search/web?v=1.0&q=#{keyword}&rsz=small"
   resp, data = http.request_get(path, header)
-  return JSON.parse(data)
+  rs = JSON.parse(data)
+  # TODO handle no results
+  return rs['responseData']['cursor']['estimatedResultCount']
 end
 
 def get_approx_google_book_results(keyword)
@@ -47,25 +49,56 @@ def get_approx_google_book_results(keyword)
   header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
   path = "/ajax/services/search/books?v=1.0&q=#{keyword}&rsz=small"
   resp, data = http.request_get(path, header)
-  return JSON.parse(data)
+  rs = JSON.parse(data)
+  # TODO handle no results
+  return rs['responseData']['cursor']['estimatedResultCount']
 end
 
-def get_results(algorithm_name)
-  keyword = algorithm_name.gsub(/ /, "+")
-  scores = []
+# http://springerlink.com/home/main.mpx
+# http://springerlink.com/content/?k=%22genetic+algorithm%22
+def get_approx_springer_results(keyword)
+  http = Net::HTTP.new('springerlink.com', 80)
+  header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
+  path = "/content/?k=#{keyword}"
+  resp, data = http.request_get(path, header)
+  doc = Hpricot(data)
+  rs = doc.search( "//span[@id='ctl00_PageSidebar_ctl01_Sidebarplaceholder1_StartsWith_ResultsCountLabel']" ).first.inner_html  
+  rs = rs.split(' ').first.gsub(',', '') # strip comma
+  # TODO handle no results
+  return rs
+end
 
-  # google web
-  web_rs = get_approx_google_web_results(keyword)
-  scores << web_rs['responseData']['cursor']['estimatedResultCount']
-  # google book
-  web_rs = get_approx_google_book_results(keyword)
-  scores << web_rs['responseData']['cursor']['estimatedResultCount']
-  # google scholar 
-  # TODO
+
+def get_results(algorithm_name)  
+  
+  keyword = algorithm_name.gsub(/ /, "+")  #covert spaces to a plus
+  keyword = "%22#{keyword}%22" # quote the results
+  scores = {}
+
+  # Google Web Search
+  scores['google_web'] = get_approx_google_web_results(keyword)
+  # Google Book Search
+  scores['google_book'] = get_approx_google_book_results(keyword)
+  # Google Scholar Search
+  scores['google_scholar'] = 0
+  # Springer Article Search
+  scores['springer'] = get_approx_springer_results(keyword)
+  # Scirus Search
+  scores['scirus'] = 0
   
   return scores
 end
 
 
+def rank_algorithm(name)
+  # score algorithm
+  scores = get_results(name)
+  # rank algorithm
+  rank = 0# TODO
+  
+  puts(" >processed: #{name} - #{scores.inspect}")
+  return rank
+end
+
 # testing
-puts get_results("genetic algorithm")
+rank_algorithm("genetic algorithm")
