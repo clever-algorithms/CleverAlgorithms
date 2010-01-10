@@ -165,7 +165,7 @@ else
     # rank
     clock = timer{rank = rank_algorithm(algorithm_name)}
     # write (for safety, at least we get something)
-    results.puts("#{line.strip},rank")
+    results.puts("#{line.strip},#{rank}")
     results.flush
     puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{rank}")
   end
