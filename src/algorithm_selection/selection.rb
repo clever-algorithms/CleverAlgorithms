@@ -22,16 +22,45 @@
 # Sample code.Python. Perl. Language Ajax api. Post method. 5000. api limit http://osdir.com/ml/GoogleAJAXAPIs/2009-05/msg00118.html
 
 
-require 'net/http'
+require 'rubygems'
 
+# hack - god knows why i need it
+module JSON
+  VARIANT_BINARY = false
+end
+require 'json'
+require 'net/http'
 
 def get_approx_google_web_results(keyword)
   http = Net::HTTP.new('ajax.googleapis.com', 80)
   header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
-  path = '/ajax/services/search/web?v=1.0&q=foo+bar'
+  path = "/ajax/services/search/web?v=1.0&q=#{keyword}&rsz=small"
   resp, data = http.request_get(path, header)
-  return data
+  return JSON.parse(data)
+end
+
+def get_approx_google_book_results(keyword)
+  http = Net::HTTP.new('ajax.googleapis.com', 80)
+  header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
+  path = "/ajax/services/search/book?v=1.0&q=#{keyword}&rsz=small"
+  resp, data = http.request_get(path, header)
+  return JSON.parse(data)
+end
+
+def get_results(algorithm_name)
+  keyword = algorithm_name.gsub(/ /, "+")
+  scores = []
+
+  # google web
+  web_rs = get_approx_google_web_results(keyword)
+  scores << web_rs['responseData']['cursor']['estimatedResultCount']
+  # google book
+  # web_rs = get_approx_google_book_results(keyword)
+  #   scores << web_rs['responseData']['cursor']['estimatedResultCount']
+  
+  return scores
 end
 
 
-puts get_approx_google_web_results("asdf")
+# testing
+puts get_results("genetic algorithm")
