@@ -102,11 +102,11 @@ def get_approx_scirus_results(keyword)
 end
 
 def get_results(algorithm_name)  
+  # spaces to plus, quote using %22 - good for all search services used
+  keyword = algorithm_name.gsub(/ /, "+")
+  keyword = "%22#{keyword}%22"
   
-  keyword = algorithm_name.gsub(/ /, "+")  #covert spaces to a plus
-  keyword = "%22#{keyword}%22" # quote the results
   scores = {}
-
   # Google Web Search
   scores['google_web'] = get_approx_google_web_results(keyword)
   # Google Book Search
@@ -121,16 +121,26 @@ def get_results(algorithm_name)
   return scores
 end
 
+def timer
+  start = Time.now
+  yield
+  Time.now - start
+end
 
 def rank_algorithm(name)
   # score algorithm
-  scores = get_results(name)
+  scores = nil
+  clock = timer{scores=get_results(name)}
   # rank algorithm
-  rank = 0 # TODO
-  
-  puts(" >processed: #{name} - #{scores.inspect}")
+  rank = 0
+  scores.each_pair do |key, value| 
+    # insert any special source handling - factors or exponents for example
+    rank += value.to_f;
+  end
+  puts(" > #{name}, #{clock.to_i} seconds, rank=#{rank}")
   return rank
 end
 
 # testing
-rank_algorithm("kjh2kj34hk23jh4kjh")
+rank = rank_algorithm("genetic algorithm")
+puts "rank: #{rank}"
