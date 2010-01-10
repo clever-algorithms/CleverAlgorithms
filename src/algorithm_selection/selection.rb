@@ -42,7 +42,7 @@ def get_approx_google_web_results(keyword)
   path = "/ajax/services/search/web?v=1.0&q=#{keyword}&rsz=small"
   resp, data = http.request_get(path, header)
   rs = JSON.parse(data)
-  # TODO handle no results
+  return 0 if rs.nil? or rs['responseData'].nil? or rs['responseData']['cursor'].nil? or rs['responseData']['cursor']['estimatedResultCount'].nil?
   return rs['responseData']['cursor']['estimatedResultCount']
 end
 
@@ -53,10 +53,9 @@ def get_approx_google_book_results(keyword)
   path = "/ajax/services/search/books?v=1.0&q=#{keyword}&rsz=small"
   resp, data = http.request_get(path, header)
   rs = JSON.parse(data)
-  # TODO handle no results
+  return 0 if rs.nil? or rs['responseData'].nil? or rs['responseData']['cursor'].nil? or rs['responseData']['cursor']['estimatedResultCount'].nil?
   return rs['responseData']['cursor']['estimatedResultCount']
 end
-
 
 # http://scholar.google.com.au/scholar?q=%22genetic+algorithm%22&hl=en&btnG=Search&as_sdt=2001&as_sdtp=on
 def get_approx_google_scholar_results(keyword)
@@ -93,6 +92,7 @@ def get_approx_scirus_results(keyword)
   header = {'User-Agent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1'}
   path = "/srsapp/search?q=#{keyword}&t=all&sort=0&g=s"
   resp, data = http.request_get(path, header)
+  return 0 if data.include?("Sorry, your search has not produced any results.")
   doc = Hpricot(data)
   rs = doc.search("//div[@class='headerAllText']")
   return 0 if rs.nil? # no results
@@ -133,4 +133,4 @@ def rank_algorithm(name)
 end
 
 # testing
-rank_algorithm("genetic algorithm")
+rank_algorithm("kjh2kj34hk23jh4kjh")
