@@ -154,20 +154,20 @@ end
 if File.exists?("./results.txt") 
   puts "Results already available, not generating."
 else
-  puts "No existing results, generating...(will take a while - 10sec per algorithm)"
+  puts "No existing results, generating...(will take a while - upto 10sec per algorithm)"
   # load the list of algorithms
   algorithms_list = IO.readlines("./algorithms.txt")
   # rank, push results to disk each loop in case we crash
   results = File.new("./results.txt", "w")
   
-  algorithms_list.each do |line|
+  algorithms_list.each_with_index do |line, i|
     algorithm_name, rank = line.split(',')[1].strip, 0
     # rank
     clock = timer{rank = rank_algorithm(algorithm_name)}
     # write (for safety, at least we get something)
     results.puts("#{line.strip},rank")
     results.flush
-    puts(" > #{algorithm_name}, #{clock.to_i} seconds, rank=#{rank}")
+    puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{rank}")
   end
   
   results.close
