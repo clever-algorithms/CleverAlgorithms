@@ -193,7 +193,6 @@ algorithms_list.each_with_index do |v, i|
   end
 end
 puts "------------------------------"
-
 # organize by kingdom
 data = {}
 algorithms_list.each do |row|
