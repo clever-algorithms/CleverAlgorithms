@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 # Description:
-# Enumerate a listing of algorithms (list.txt) and locate the approximate number of results
+# Enumerate a listing of algorithms (algorithms.txt) and locate the approximate number of results
 # from a number of different search engines and search domains (google). Rank the listing of 
 # algorithms and order the list by the ranking and by the algorithms allocated kingdom. Output
 # the results into a file (results.txt).
@@ -130,17 +130,42 @@ end
 def rank_algorithm(name)
   # score algorithm
   scores = nil
-  clock = timer{scores=get_results(name)}
+  scores=get_results(name)
   # rank algorithm
   rank = 0
+  # weighted sum, insert factors and exponents, it's a party
   scores.each_pair do |key, value| 
-    # insert any special source handling - factors or exponents for example
-    rank += value.to_f;
-  end
-  puts(" > #{name}, #{clock.to_i} seconds, rank=#{rank}")
+    # boost 'academic' sources
+    if ['google_scholar', 'springer', 'scirus', 'google_book'].include?(key) 
+      rank += (value.to_f * 1.5);
+    else
+      rank += (value.to_f * 1.0);
+    end    
+  end  
   return rank
 end
 
-# testing
-rank = rank_algorithm("genetic algorithm")
-puts "rank: #{rank}"
+# rank testing
+# rank = rank_algorithm("artificial intelligence")
+# puts "rank: #{rank}"
+# exit
+
+# check if results exist, generate if not
+if File.exists?("./results.txt") 
+  puts "Results already available, not generating."
+else
+  puts "No existing results, generating...(will take a while - 10sec per algorithm)"
+  # load the list of algorithms
+  algorithms_list = IO.readlines("./algorithms.txt")
+  # rank
+  results = []
+  algorithms_list.each do |line|
+    algorithm_name, rank = line.split(',')[1].strip, 0
+    clock = timer{rank = rank_algorithm(algorithm_name)}
+    puts(" > #{algorithm_name}, #{clock.to_i} seconds, rank=#{rank}")
+  end
+  # output results
+  
+end
+
+
