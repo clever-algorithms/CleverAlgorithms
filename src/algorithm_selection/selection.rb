@@ -174,6 +174,7 @@ else
 end
 
 # generate stats
+puts "Generating statistics..."
 algorithms_list = IO.readlines("./results.txt")
 # organize by kingdom
 data = {}
