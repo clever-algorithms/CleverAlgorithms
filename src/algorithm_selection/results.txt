@@ -1,0 +1,132 @@
+Subfield, Artificial Intelligence,5269354.0
+Subfield, Machine Learning,3058711.0
+Evolutionary, Genetic Algorithm,1153551.5
+Physical, Simulated Annealing,814773.5
+Evolutionary, Genetic Programming,232656.5
+Subfield, Computational Intelligence,442498.5
+Subfield, Evolutionary Computation,380022.0
+Subfield, Global Optimization,466323.5
+Subfield, Biomimetic,352068.0
+Subfield, Artificial Neural Network,513101.0
+Subfield, Collective Intelligence,205698.5
+Subfield, Evolutionary Algorithm,223623.5
+Stochastic, Random Search,399849.0
+Stochastic, Tabu Search,158697.0
+Subfield, Stochastic Optimization,109592.0
+Subfield, Local Optimization,84659.5
+Evolutionary, Evolutionary Programming,73060.0
+Subfield, Swarm Intelligence,113817.0
+Subfield, Ant Colony Optimization,69521.5
+Subfield, Metaheuristic,55003.0
+Evolutionary, Evolution Strategies,50178.0
+Swarm, Particle Swarm Optimization,113258.5
+Probabilistic, Expectation-maximization algorithm,61181.0
+Probabilistic, Bayesian Optimization Algorithm,6455.5
+Evolutionary, Differential Evolution,52919.5
+Subfield, Natural Computation,31929.0
+Evolutionary, Simple Genetic Algorithm,25443.5
+Subfield, Artificial Immune Systems,25510.5
+Swarm, Ant System,30160.5
+Stochastic, Scatter Search,15253.5
+Subfield, Estimation of Distribution Algorithm,10625.5
+Swarm, Ant Colony System,18677.0
+Physical, Memetic Algorithm,14350.5
+Stochastic, Hill Climbing Search,12520.5
+Probabilistic, Compact Genetic Algorithm,5167.5
+Evolutionary, Grammatical Evolution,7947.5
+Probabilistic, Extended Compact Genetic Algorithm,2607.0
+Evolutionary, Learning Classifier System,9409.5
+Stochastic, Iterated Local Search,8030.5
+Probabilistic, Cross-entropy method,6371.5
+Stochastic, Guided Local Search,7506.5
+Evolutionary, Non-dominated Sorting Genetic Algorithm,9204.0
+Physical, Adaptive Simulated Annealing,10089.5
+Stochastic, Greedy Randomized Adaptive Search Procedure,6816.0
+Stochastic, Variable Neighbourhood Search,6329.0
+Evolutionary, Strength Pareto Evolutionary Algorithm,7182.5
+Stochastic, Reactive Tabu Search,6690.5
+Swarm, AntNet,8771.5
+Evolutionary, Messy Genetic Algorithm,3959.0
+Swarm, MAX-MIN Ant System,6637.0
+Probabilistic, Population-based incremental learning,5639.0
+Evolutionary, Gene Expression Programming,7305.0
+Evolutionary, Interactive Genetic Algorithm,5391.0
+Immunological, Clonal Selection Algorithm,5600.0
+Evolutionary, GENITOR algorithm,4279.0
+Physical, Extremal Optimization,3876.5
+Stochastic, Adaptive Random Search,4287.0
+Immunological, Negative Selection Algorithm,4070.0
+Probabilistic, Hierarchical Bayesian Optimization Algorithm,1273.5
+Subfield, Biologically Inspired Computation,2224.0
+Evolutionary, Vector Evaluated Genetic Algorithm,1637.0
+Evolutionary, Shuffled complex evolution,2759.5
+Physical, Quantum Annealing,4455.5
+Stochastic, Variable Depth Search,1606.0
+Subfield, Hyperheuristic,1710.5
+Probabilistic, Probabilistic Incremental Program Evolution,1006.5
+Probabilistic, Univariate Marginal Distribution Algorithm,1332.5
+Physical, Cultural Algorithm,1983.5
+Evolutionary, Cellular Genetic Algorithm,1330.0
+Evolutionary, Linkage Learning Genetic Algorithm,640.5
+Stochastic, Stochastic gradient descent algorithm,1473.5
+Stochastic, Random-Mutation Hill Climbing,1258.0
+Swarm, Multiple ant colony system,1263.5
+Stochastic, Directed Random Search,1124.0
+Evolutionary, Coevolutionary Genetic Algorithm,1186.5
+Physical, Simplex-Simulated annealing,908.5
+Immunological, Artificial Immune Recognition System,1236.0
+Stochastic, Stochastic Diffusion Search,1144.5
+Evolutionary, Restricted Tournament Selection,794.5
+Physical, Harmony Search Algorithm,1249.0
+Evolutionary, Niching Genetic Algorithm,973.0
+Evolutionary, Covariance Matrix Adaptation Evolution Strategy,689.5
+Stochastic, Random Restart Hill Climbing,691.5
+Swarm, Population-based Ant Colony Optimization,650.5
+Evolutionary, Island Genetic Algorithm,672.0
+Immunological, Dendritic Cell Algorithm,631.0
+Probabilistic, Bivariate Marginal Distribution Algorithm,577.5
+Immunological, Immune Network Algorithm,652.5
+Stochastic, Reactive search optimization,5270.0
+Swarm, Bees Algorithm,1237.5
+Immunological, B-Cell Algorithm,279.0
+Evolutionary, Dependency Structure Matrix Driven Genetic Algorithm,164.0
+Evolutionary, Crowding Genetic Algorithm,318.0
+Swarm, Rank-Based Ant System,366.0
+Stochastic, Hill Climbing with Learning,294.0
+Swarm, Bee Colony Optimization,510.0
+Swarm, Pareto Ant Colony Optimisation,11.0
+Evolutionary, Cooperative Coevolutionary Genetic Algorithm,356.0
+Probabilistic, Mutual Information Maximization for Input Clustering,189.5
+Evolutionary, CHC Genetic Algorithm,146.0
+Probabilistic, Estimation of Bayesian Networks Algorithm,138.5
+Probabilistic, Gaussian adaptation,271.0
+Swarm, Elitist Ant System,270.5
+Stochastic, Parallel Hill-Climbing Algorithm,136.5
+Probabilistic, Stochastic hill climbing with learning by vectors of normal distributions,136.5
+Evolutionary, Deterministic Crowding Algorithm,118.0
+Evolutionary, Indicator Based Evolutionary Algorithm,161.0
+Stochastic, Mutation Hill Climbing Algorithm,99.0
+Swarm, Repulsive Particle Swarm Optimization,223.5
+Stochastic, Random Bit Climbing,86.0
+Swarm, Honey Bee Algorithm,106.0
+Swarm, Bacterial Foraging Optimization Algorithm,187.0
+Probabilistic, Estimation of Multivariate Normal Algorithm,113.0
+Physical, Stochastic Tunneling Algorithm,65.5
+Probabilistic, Graduated optimization,163.5
+Evolutionary, Fitness Sharing Genetic Algorithm,80.0
+Stochastic, Localized Random Search,76.0
+Probabilistic, Estimation of Gaussian Networks Algorithm,49.0
+Swarm, Waves of Swarm Particles,61.0
+Evolutionary, Genetic Algorithm with Punctuated Equilibria,46.0
+Swarm, MONACO: multi-objective network optimisation based on ACO,6.0
+Swarm, Wasp Swarm Algorithm,26.0
+Swarm, Firefly Algorithm,202.5
+Swarm, Virtual Bee Algorithm,45.5
+Evolutionary, Nested Evolution Strategy,25.5
+Evolutionary, Probabilistic Crowding Genetic Algorithm,10.5
+Evolutionary, Speciation Genetic Algorithm,60.5
+Stochastic, Multiple Restart Algorithm,6.5
+Swarm, Artificial Bee Colony Optimization,42.5
+Evolutionary, Sequential Niching Genetic Algorithm,444.0
+Swarm, Crowding Population-based Ant Colony Optimization,4.5
+Evolutionary, Double Diploid Genetic Algorithm,249.0

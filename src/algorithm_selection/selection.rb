@@ -150,7 +150,7 @@ end
 # puts "rank: #{rank}"
 # exit
 
-# check if results exist, generate if not
+# prepare results
 if File.exists?("./results.txt") 
   puts "Results already available, not generating."
 else
@@ -173,4 +173,23 @@ else
   results.close
 end
 
-
+# generate stats
+algorithms_list = IO.readlines("./results.txt")
+# organize by kingdom
+data = {}
+algorithms_list.each do |line|
+  kingdom, algorithm, rank = line.split(',')
+  data[kingdom] = [] if !data.has_key?(kingdom)
+  data[kingdom] << [algorithm.strip, rank.strip]
+end
+# process each kingdom
+data.each_pair do |key, value| 
+  value.sort {|x,y| y[1] <=> x[1] } # descending by rank
+  # print top 10
+  puts "Top 10 Algorithms for #{key}:"
+  value.each_with_index do |v, i|
+    break if i>=10
+    puts "#{(i+1)} #{v[0]}"
+  end
+  puts "------------------------------"
+end
