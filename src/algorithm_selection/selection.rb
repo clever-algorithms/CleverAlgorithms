@@ -203,7 +203,7 @@ end
 data.each_pair do |key, value| 
   value.sort {|x,y| y[1].to_f <=> x[1].to_f} # descending by rank
   # print top 10
-  puts "Top 10 Algorithms for #{key}:"
+  puts "Top 10 Algorithms for #{key}: (of #{value.size})"
   value.each_with_index do |v, i|
     break if i>=10
     puts "#{(i+1)} #{v[0]}"
