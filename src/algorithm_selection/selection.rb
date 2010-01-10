@@ -9,9 +9,11 @@
 # from a number of different search engines and search domains (google). Rank the listing of 
 # algorithms and order the list by the ranking and by the algorithms allocated kingdom. Output
 # the results into a file (results.txt).
+# This script does some screen scraping purely in the name of science.
+# Never Use It. (use my results) I Ran it once, collected the results, and analyze forever.
 
 
-# sources:
+# Development Sources (i hacked this together):
 # Screen Scraping Google with Hpricot and Watir: http://refactormycode.com/codes/673-screen-scraping-google-with-hpricot-and-watir
 # Scraping with style: scrAPI toolkit for Ruby: http://labnotes.org/2006/07/11/scraping-with-style-scrapi-toolkit-for-ruby/
 # How to get the number of results found for a keyword in google: http://stackoverflow.com/questions/1809976/how-to-get-the-number-of-results-found-for-a-keyword-in-google
@@ -27,13 +29,13 @@
 
 require 'rubygems'
 module JSON
-  VARIANT_BINARY = false # hack - god knows why i need it
+  VARIANT_BINARY = false # hack - god knows why i need it (I get a VARIANT_BINARY undefined error)
 end
 require 'json'
 require 'net/http'
 require 'hpricot'
 
-
+# Google REST (ajax) API: http://code.google.com/apis/ajaxsearch/documentation/#fonje
 def get_approx_google_web_results(keyword)
   http = Net::HTTP.new('ajax.googleapis.com', 80)
   header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
@@ -44,6 +46,7 @@ def get_approx_google_web_results(keyword)
   return rs['responseData']['cursor']['estimatedResultCount']
 end
 
+# Google REST (ajax) API: http://code.google.com/apis/ajaxsearch/documentation/#fonje
 def get_approx_google_book_results(keyword)
   http = Net::HTTP.new('ajax.googleapis.com', 80)
   header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
@@ -52,6 +55,20 @@ def get_approx_google_book_results(keyword)
   rs = JSON.parse(data)
   # TODO handle no results
   return rs['responseData']['cursor']['estimatedResultCount']
+end
+
+
+# http://scholar.google.com.au/scholar?q=%22genetic+algorithm%22&hl=en&btnG=Search&as_sdt=2001&as_sdtp=on
+def get_approx_google_scholar_results(keyword)
+  http = Net::HTTP.new('scholar.google.com.au', 80)
+  header = {}
+  path = "/scholar?q=#{keyword}&hl=en&btnG=Search&as_sdt=2001&as_sdtp=on"
+  resp, data = http.request_get(path, header)
+  doc = Hpricot(data)
+  rs = doc.search("//td[@bgcolor='#dcf6db']/font/b")
+  return 0 if rs.nil? or rs.size!=5 # no results or unexpected results
+  rs = rs[3].inner_html.gsub(',', '') # strip comma    
+  return rs
 end
 
 # http://springerlink.com/home/main.mpx
@@ -95,7 +112,7 @@ def get_results(algorithm_name)
   # Google Book Search
   scores['google_book'] = get_approx_google_book_results(keyword)
   # Google Scholar Search
-  scores['google_scholar'] = 0
+  scores['google_scholar'] = get_approx_google_scholar_results(keyword)
   # Springer Article Search
   scores['springer'] = get_approx_springer_results(keyword)
   # Scirus Search
