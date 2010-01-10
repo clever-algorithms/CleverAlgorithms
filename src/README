@@ -1,3 +1,4 @@
 This directory contains the source code the clever algorithms project.
 
-Source code is in the Ruby programming language and sample code follows a procedural programming paradigm.
+/algorithm_selection/:  source code to aid in the selection of algorithms for the project. 
+...
