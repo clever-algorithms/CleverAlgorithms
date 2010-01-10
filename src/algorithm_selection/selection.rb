@@ -58,16 +58,31 @@ end
 # http://springerlink.com/content/?k=%22genetic+algorithm%22
 def get_approx_springer_results(keyword)
   http = Net::HTTP.new('springerlink.com', 80)
-  header = {'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
+  header = {}
   path = "/content/?k=#{keyword}"
   resp, data = http.request_get(path, header)
   doc = Hpricot(data)
-  rs = doc.search( "//span[@id='ctl00_PageSidebar_ctl01_Sidebarplaceholder1_StartsWith_ResultsCountLabel']" ).first.inner_html  
+  rs = doc.search("//span[@id='ctl00_PageSidebar_ctl01_Sidebarplaceholder1_StartsWith_ResultsCountLabel']")
+  return 0 if rs.nil? # no results
+  rs = rs.first.inner_html
   rs = rs.split(' ').first.gsub(',', '') # strip comma
-  # TODO handle no results
   return rs
 end
 
+# http://www.scirus.com/
+# http://www.scirus.com/srsapp/search?q=%22genetic+algorithm%22&t=all&sort=0&g=s
+def get_approx_scirus_results(keyword)
+  http = Net::HTTP.new('scirus.com', 80)
+  header = {'User-Agent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1'}
+  path = "/srsapp/search?q=#{keyword}&t=all&sort=0&g=s"
+  resp, data = http.request_get(path, header)
+  doc = Hpricot(data)
+  rs = doc.search("//div[@class='headerAllText']")
+  return 0 if rs.nil? # no results
+  rs = rs.first.inner_html
+  rs = rs.split(' ')[2].gsub(',', '') # strip comma
+  return rs
+end
 
 def get_results(algorithm_name)  
   
@@ -84,7 +99,7 @@ def get_results(algorithm_name)
   # Springer Article Search
   scores['springer'] = get_approx_springer_results(keyword)
   # Scirus Search
-  scores['scirus'] = 0
+  scores['scirus'] = get_approx_scirus_results(keyword)
   
   return scores
 end
@@ -94,7 +109,7 @@ def rank_algorithm(name)
   # score algorithm
   scores = get_results(name)
   # rank algorithm
-  rank = 0# TODO
+  rank = 0 # TODO
   
   puts(" >processed: #{name} - #{scores.inspect}")
   return rank
