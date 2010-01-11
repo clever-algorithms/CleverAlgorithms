@@ -212,7 +212,7 @@ else
   results = File.new("./results_organized.txt", "w")
   data.each_pair do |key, value| 
     value.sort {|x,y| y[7].to_f <=> x[7].to_f} # descending by rank
-    results.puts "\nKingdom: #{key}"
+    results.puts "\nKingdom: #{key} (#{value.size})"
     value.each_with_index do |v, i|
       results.puts v.join(" & ")
     end

@@ -1,5 +1,5 @@
 
-Kingdom: Stochastic
+Kingdom: Stochastic (23)
 Random Search & 163000 & 1509 & 32400 & 2855 & 121802 & 400849.0
 Tabu Search & 42600 & 1444 & 35400 & 4208 & 36146 & 158397.0
 Scatter Search & 4290 & 450 & 3300 & 544 & 2987 & 15211.5
@@ -24,7 +24,7 @@ Random Bit Climbing & 32 & 21 & 25 & 3 & 12 & 123.5
 Localized Random Search & 36 & 9 & 25 & 3 & 14 & 112.5
 Multiple Restart Algorithm & 2 & 1 & 2 & 1 & 1 & 9.5
 
-Kingdom: Physical
+Kingdom: Physical (9)
 Simulated Annealing & 133000 & 3680 & 307000 & 10493 & 135676 & 818273.5
 Memetic Algorithm & 4070 & 433 & 2850 & 601 & 2963 & 14340.5
 Adaptive Simulated Annealing & 2780 & 593 & 1640 & 147 & 2493 & 10089.5
@@ -35,7 +35,7 @@ Simplex-Simulated annealing & 406 & 84 & 299 & 17 & 234 & 1357.0
 Harmony Search Algorithm & 888 & 50 & 266 & 44 & 150 & 1653.0
 Stochastic Tunneling Algorithm & 43 & 3 & 15 & 3 & 9 & 88.0
 
-Kingdom: Probabilistic
+Kingdom: Probabilistic (17)
 Expectation-maximization algorithm & 13700 & 727 & 14400 & 1182 & 15345 & 61181.0
 Bayesian Optimization Algorithm & 1780 & 251 & 1060 & 207 & 1599 & 6455.5
 Compact Genetic Algorithm & 1310 & 145 & 726 & 118 & 1576 & 5157.5
@@ -54,7 +54,7 @@ Estimation of Multivariate Normal Algorithm & 47 & 8 & 30 & 3 & 33 & 158.0
 Graduated optimization & 108 & 5 & 24 & 2 & 30 & 199.5
 Estimation of Gaussian Networks Algorithm & 16 & 9 & 30 & 5 & 8 & 94.0
 
-Kingdom: Evolutionary
+Kingdom: Evolutionary (36)
 Genetic Algorithm & 280000 & 4160 & 380000 & 18352 & 179189 & 1152551.5
 Genetic Programming & 64000 & 1515 & 38700 & 4699 & 67457 & 232556.5
 Evolutionary Programming & 19400 & 974 & 17500 & 1933 & 15421 & 73142.0
@@ -92,7 +92,7 @@ Speciation Genetic Algorithm & 50 & 1 & 1 & 0 & 6 & 62.0
 Sequential Niching Genetic Algorithm & 0 & 295 & 0 & 0 & 1 & 444.0
 Double Diploid Genetic Algorithm & 0 & 166 & 0 & 0 & 0 & 249.0
 
-Kingdom: Swarm
+Kingdom: Swarm (22)
 Particle Swarm Optimization & 48900 & 722 & 24600 & 2151 & 15566 & 113458.5
 Ant System & 9460 & 564 & 7400 & 940 & 4903 & 30170.5
 Ant Colony System & 6640 & 566 & 4260 & 609 & 2587 & 18673.0
@@ -116,7 +116,7 @@ Virtual Bee Algorithm & 20 & 7 & 18 & 7 & 3 & 72.5
 Artificial Bee Colony Optimization & 23 & 6 & 14 & 1 & 6 & 63.5
 Crowding Population-based Ant Colony Optimization & 3 & 1 & 2 & 0 & 0 & 7.5
 
-Kingdom: Subfield
+Kingdom: Subfield (19)
 Artificial Intelligence & 1340000 & 16033 & 1180000 & 296384 & 1133819 & 5279354.0
 Machine Learning & 427000 & 4405 & 1120000 & 34546 & 525488 & 2953658.5
 Computational Intelligence & 117000 & 2288 & 99000 & 12241 & 103470 & 442498.5
@@ -137,7 +137,7 @@ Estimation of Distribution Algorithm & 1730 & 153 & 927 & 180 & 4677 & 10635.5
 Biologically Inspired Computation & 787 & 71 & 261 & 25 & 860 & 2612.5
 Hyperheuristic & 664 & 72 & 347 & 101 & 526 & 2233.0
 
-Kingdom: Immunological
+Kingdom: Immunological (6)
 Clonal Selection Algorithm & 2120 & 183 & 1260 & 209 & 668 & 5600.0
 Negative Selection Algorithm & 1310 & 172 & 937 & 168 & 563 & 4070.0
 Artificial Immune Recognition System & 575 & 53 & 331 & 35 & 352 & 1731.5
