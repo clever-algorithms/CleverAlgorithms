@@ -114,6 +114,7 @@ This section describes the configuration under which the data was collected, as 
 	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary, immunological, swarm, physical, probabilistic, and stochastic, with a 7th kingdom used to rank names of related fields (for general interest).
 	\item The search engines included as algorithm measures included: Google Web, Google Book, Google Scholar, Springer Article, and Scirus Article.
 	\item The data collection process was automated with a ruby script that performs the searches, collated the results, and generated the final statistics and ordered listings.
+	\item The measures from the search domains were weighted when combined into the algorithm scoring as follows: todo
 \end{itemize}
 
 % 
@@ -161,12 +162,11 @@ Names are commonly used to delineate areas of research, not necessarily specific
 
 % Scoring
 \subsection{Algorithm Scoring}
-measures from different domains are absolute, not relative
-arbitrary weighting factors
-time of publication, new algorithms get lower ranks, older get higher
+The number of results returned from each search engine is an approximation with an unknown level of error, both with regard to the service reporting hits from its known index, and to the extent that index is not complete. Another area of concern with the collected measures is that it does not take into account when algorithms were released. For examples, those techniques released many years ago will likely be more popular than those released very recently. This is likely a desirable effect of the method, although may mask new algorithms whose popularity is rising and old algorithms whose popularity is falling. 
 
-some data points that would be nice but were not used
-some nice data points would include: objective efficiency, efficacy, quality of research, and maybe even scope of innovation
+Finally, the measures are absolute quantities that are not likely to be comparable between search domains. This was tentatively addressed though the introduction of weighting factors in the calculation of the algorithm scoring. An alternative method may involve normalizing the results for each domain before combining them into a single score.
+
+Ideally, popularity would not be the basis for algorithm comparison. Some more useful measures may include efficiency, efficacy, quality of research, and scope of innovation. These are all properties that are difficult to quantify and difficulty to measures, especially in using objective and automated means.  
 
 % Selection
 \subsection{Algorithm Selection}
