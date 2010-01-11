@@ -1,34 +1,17 @@
-Subfield, Artificial Intelligence
-Subfield, Machine Learning
 Evolutionary, Genetic Algorithm
 Physical, Simulated Annealing
 Evolutionary, Genetic Programming
-Subfield, Computational Intelligence
-Subfield, Evolutionary Computation
-Subfield, Global Optimization
-Subfield, Biomimetic
-Subfield, Artificial Neural Network
-Subfield, Collective Intelligence
-Subfield, Evolutionary Algorithm
 Stochastic, Random Search
 Stochastic, Tabu Search
-Subfield, Stochastic Optimization
-Subfield, Local Optimization
 Evolutionary, Evolutionary Programming
-Subfield, Swarm Intelligence
-Subfield, Ant Colony Optimization
-Subfield, Metaheuristic
 Evolutionary, Evolution Strategies
 Swarm, Particle Swarm Optimization
 Probabilistic, Expectation-maximization algorithm
 Probabilistic, Bayesian Optimization Algorithm
 Evolutionary, Differential Evolution
-Subfield, Natural Computation
 Evolutionary, Simple Genetic Algorithm
-Subfield, Artificial Immune Systems
 Swarm, Ant System
 Stochastic, Scatter Search
-Subfield, Estimation of Distribution Algorithm
 Swarm, Ant Colony System
 Physical, Memetic Algorithm
 Stochastic, Hill Climbing Search
@@ -57,12 +40,10 @@ Physical, Extremal Optimization
 Stochastic, Adaptive Random Search
 Immunological, Negative Selection Algorithm
 Probabilistic, Hierarchical Bayesian Optimization Algorithm
-Subfield, Biologically Inspired Computation
 Evolutionary, Vector Evaluated Genetic Algorithm
 Evolutionary, Shuffled complex evolution
 Physical, Quantum Annealing
 Stochastic, Variable Depth Search
-Subfield, Hyperheuristic
 Probabilistic, Probabilistic Incremental Program Evolution
 Probabilistic, Univariate Marginal Distribution Algorithm
 Physical, Cultural Algorithm

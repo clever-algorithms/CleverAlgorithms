@@ -10,7 +10,7 @@
 # algorithms and order the list by the ranking and by the algorithms allocated kingdom. Output
 # the results into a file (results.txt).
 # This script does some screen scraping purely in the name of science.
-# Never Use It. (use my results) I Ran it once, collected the results, and analyze forever.
+# Never Use It. (use my results) Run it once, collected the results, and analyze forever.
 
 
 # Development Sources (i hacked this program together):
@@ -24,14 +24,6 @@
 # Net::HTTP http://ruby-doc.org/stdlib/libdoc/net/http/rdoc/classes/Net/HTTP.html
 # Sample code.Python. Perl. Language Ajax api. Post method. 5000. api limit http://osdir.com/ml/GoogleAJAXAPIs/2009-05/msg00118.html
 # Hpricot Basics: http://wiki.github.com/whymirror/hpricot/hpricot-basics
-
-# method:
-# 1. prepare algorithm list
-# 2. assign kingdoms (maybe?)
-# 3. calculate scores (add lots of search sources)
-# 4. normalize results
-# 5. output results (by kingdom)
-# 6. output selections (top 10's)
 
 
 require 'rubygems'
@@ -108,22 +100,29 @@ def get_approx_scirus_results(keyword)
   return rs
 end
 
+
+# http://ieeexplore.ieee.org/search/freesearchresult.jsp?history=yes&queryText=%28~~genetic+algorithm~~%29&imageField.x=0&imageField.y=0
+def get_approx_ieee_results(keyword)
+  http = Net::HTTP.new('ieeexplore.ieee.org', 80)
+  header = {}
+  keyword = keyword.gsub("%22", "~~") #special handling
+  path = "/search/freesearchresult.jsp?history=yes&queryText=%28#{keyword}%29&imageField.x=0&imageField.y=0"
+  resp, data = http.request_get(path, header)
+  doc = Hpricot(data)
+  rs = doc.search("//td[@class='bodyCopyBlackLargeSpaced']/strong")
+  return 0 if rs.nil? # no results
+  rs = rs[1].inner_html
+  return rs
+end
+
 def get_results(algorithm_name)  
   # spaces to plus, lowercase, quote using %22 - good for all search services used
   keyword = algorithm_name.gsub(/ /, "+")
   keyword = "%22#{keyword.downcase}%22"
   
-  # scores = {}
-  # # Google Web Search
-  # scores['google_web'] = get_approx_google_web_results(keyword)
-  # # Google Book Search
-  # scores['google_book'] = get_approx_google_book_results(keyword)
-  # # Google Scholar Search
-  # scores['google_scholar'] = get_approx_google_scholar_results(keyword)
-  # # Springer Article Search
-  # scores['springer'] = get_approx_springer_results(keyword)
-  # # Scirus Search
-  # scores['scirus'] = get_approx_scirus_results(keyword)
+  # 
+  # dear future self, you can keep adding measures here and the pipeline should make use of them
+  # 
   
   scores = []
   # Google Web Search
@@ -136,6 +135,8 @@ def get_results(algorithm_name)
   scores << get_approx_springer_results(keyword)
   # Scirus Search
   scores << get_approx_scirus_results(keyword)
+  # IEEE Search
+  scores << get_approx_ieee_results(keyword)
   
   return scores
 end
@@ -145,67 +146,6 @@ def timer
   yield
   Time.now - start
 end
-
-# calculate results
-if File.exists?("./results.txt") 
-  puts "Results already available, not generating."
-else
-  puts "No existing results, generating...(will take a while - upto 10sec per algorithm)"
-  # load the list of algorithms
-  algorithms_list = IO.readlines("./algorithms.txt")
-  # rank, push results to disk each loop in case we crash
-  results = File.new("./results.txt", "w")
-  
-  algorithms_list.each_with_index do |line, i|
-    algorithm_name, scores = line.split(',')[1].strip, nil
-    # calculate scores
-    clock = timer{scores = get_results(algorithm_name)}
-    results.puts("#{line.strip},#{scores.join(",")}")
-    results.flush
-    puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{scores['rank']}")
-  end
-  
-  results.close
-end
-
-
-# normalization
-if File.exists?("./results_normalized.txt") 
-  puts " > skipping normalization results, already exists"  
-else
-  puts " > outputting normalization results"
-  
-  raw = IO.readlines("./results.txt")
-  # array of arrays
-  algorithms_list = []
-  raw.each { |line| algorithms_list<<line.split(',')}
-  Infinity = 1.0/0
-  normalized_scores = Array.new(5) {|i| [10000.0, 0.0]} 
-  algorithms_list.each do |row|
-    # calculate min/max
-    row[2..6].each_with_index do |v, i|
-      normalized_scores[i][0] = v if v.to_f < normalized_scores[i][0].to_f
-      normalized_scores[i][1] = v if v.to_f > normalized_scores[i][1].to_f
-    end
-  end
-  
-  # output normalized results
-  results = File.new("./results_normalized.txt", "w")
-  algorithms_list.each do |algorithm|
-    scores = []
-    algorithm[2..6].each_with_index do |v,i|      
-      # (v-min)/(max-min) 
-      a = (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
-      scores << a
-      puts "ERROR!!!! i=#{i} v=#{v}, min=#{normalized_scores[i][0]}, max=#{normalized_scores[i][1]}" if a>1.0||a<0.0
-    end
-    # calculate rank
-    rank = scores.inject(0) {|sum, n| sum + n.to_f } 
-    results.puts("#{algorithm[0]},#{algorithm[1]},#{scores.join(",")},#{rank}")
-  end  
-  results.close
-end
-
 
 # The Fisher-Yates shuffle: http://en.wikipedia.org/wiki/Knuth_shuffle
 def shuffle!(array)
@@ -217,58 +157,135 @@ def shuffle!(array)
   return array
 end
 
-
-# prepare data structures
-raw = IO.readlines("./results_normalized.txt")
-# array of arrays
-algorithms_list = []
-raw.each { |line| algorithms_list<<line.split(',')}
-shuffle!(algorithms_list)
-# hash of arrays by kingdom
-data = {}
-algorithms_list.each do |row|
-  row.collect! {|v| v.strip}
-  data[row[0]] = [] if !data.has_key?(row[0])
-  data[row[0]] << row[1..7]
-end
-
-# normalization
-
-# organized results, suitable for presenting
-if File.exists?("./results_organized.txt") 
-  puts " > skipping organized results, already exists"  
-else
-  puts " > outputting organized results"
-  results = File.new("./results_organized.txt", "w")
-  data.each_pair do |key, value| 
-    results.puts "\nKingdom: #{key} (#{value.size})"
-    value.sort {|x,y| y[6].to_f <=> x[6].to_f}.each { |v| results.puts v.join(" & ") }
+def generate_results
+  if File.exists?("./results.txt") 
+    puts "Results already available, not generating."
+  else
+    puts "No existing results, generating...(will take a while - upto 10sec per algorithm)"
+    algorithms_list = IO.readlines("./algorithms.txt")
+    # remove any bias in the way the file was put together (exposes sorting problems later)
+    shuffle!(algorithms_list)
+    results = ""
+    algorithms_list.each_with_index do |line, i|
+      algorithm_name, scores = line.split(',')[1].strip, nil
+      clock = timer{scores = get_results(algorithm_name)}
+      results << "#{line.strip},#{scores.join(",")}\n"
+      puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds")
+    end
+    File.open("./results.txt", "w") { |f| f.printf(results) }
   end
-  results.close
+end
+
+def normalize_results
+  if File.exists?("./results_normalized.txt") 
+    puts "Skipping normalization results, already exists"  
+  else
+    puts "Outputting normalization results..."
+    raw = IO.readlines("./results.txt")
+    algorithms_list = []
+    raw.each { |line| algorithms_list << line.split(',')}
+    normalized_scores = Array.new(algorithms_list[0].length-2) {|i| [10000.0, 0.0]} 
+    # calculate min/max
+    algorithms_list.each do |row|      
+      row[2..row.length-1].each_with_index do |v, i|
+        normalized_scores[i][0] = v if v.to_f < normalized_scores[i][0].to_f
+        normalized_scores[i][1] = v if v.to_f > normalized_scores[i][1].to_f
+      end
+    end
+    # normalize scores
+    results = ""
+    algorithms_list.each do |row|
+      scores = []
+      row[2..row.length-1].each_with_index do |v,i|      
+        # (v-min)/(max-min) 
+        scores << (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
+      end
+      # calculate rank
+      rank = scores.inject(0) {|sum, n| sum + n.to_f } 
+      results << "#{row[0]},#{row[1]},#{scores.join(",")},#{rank}\n"
+    end  
+    File.open("./results_normalized.txt", "w") { |f| f.printf(results) }
+  end
 end
 
 
-puts "Generating statistics..."
-puts "------------------------------"
-# overall top algorithms
-puts "Top 10 Algorithms, Overall:"
-top = 0
-algorithms_list.sort {|x,y| y[7].to_f <=> x[7].to_f}.each_with_index do |v, i|
-  break if top>=10 # bounded
-  if v[0] != "Subfield" 
+# organized results, suitable for presenting in latex tables
+def generate_organized_results  
+  if File.exists?("./results_organized.txt") 
+    puts "Skipping organized results, already exists"  
+  else
+    puts "Outputting organized results"
+    # prepare data structures
+    raw = IO.readlines("./results_normalized.txt")
+    # array of arrays
+    algorithms_list = []
+    raw.each { |line| algorithms_list<<line.split(',')}    
+    # hash of arrays by kingdom
+    data = {}
+    algorithms_list.each do |row|
+      row.collect! {|v| v.strip}
+      data[row[0]] = [] if !data.has_key?(row[0])
+      data[row[0]] << row[1..row.length-1]
+    end
+    # organize    
+    results = ""
+    data.each_pair do |key, value| 
+      results << "\nKingdom: #{key} (#{value.size})\n"
+      value.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each { |v| results << "#{v.join(" & ")}\n" }
+    end
+    File.open("./results_organized.txt", "w") { |f| f.printf(results) }
+  end
+end
+
+
+def display_pretty_results
+  # prepare data structures
+  raw = IO.readlines("./results_normalized.txt")
+  # array of arrays
+  algorithms_list = []
+  raw.each { |line| algorithms_list<<line.split(',')}
+  # hash of arrays by kingdom
+  data = {}
+  algorithms_list.each do |row|
+    row.collect! {|v| v.strip}
+    data[row[0]] = [] if !data.has_key?(row[0])
+    data[row[0]] << row[1..row.length-1]
+  end
+  puts "Generating statistics..."
+  puts "------------------------------"
+  # overall top algorithms
+  puts "Top 10 Algorithms, Overall:"
+  top = 0
+  algorithms_list.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each_with_index do |v, i|
+    break if top>=10 # bounded
     puts "#{(top+1)} #{v[1]}"
     top += 1
   end
-end
-puts "------------------------------"
-
-# process each kingdom
-data.each_pair do |key, value| 
-  # print top 10
-  puts "Top 10 Algorithms for #{key}: (of #{value.size})"
-  value.sort {|x,y| y[6].to_f <=> x[6].to_f}.each_with_index do |v, i|
-    break if i>=10
-    puts "#{(i+1)} #{v[0]}"
-  end
   puts "------------------------------"
+  # process each kingdom
+  data.each_pair do |key, value| 
+    # print top 10
+    puts "Top 10 Algorithms for #{key}: (of #{value.size})"
+    value.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each_with_index do |v, i|
+      break if i>=10
+      puts "#{(i+1)} #{v[0]}"
+    end
+    puts "------------------------------"
+  end
 end
+
+
+# 
+#  main execution
+# 
+
+puts "Starting..."
+# generate results
+generate_results
+# normalize results and calculate scores
+normalize_results
+# organize results for use in reports
+generate_organized_results
+# display pretty results to cmd line
+display_pretty_results
+puts "Done!"

@@ -86,7 +86,7 @@ Some example search domains to which algorithm names may be submitted include:
 
 The collected measures are representative of how often an algorithm name appears in a particular search domain, and inferred to represent the popularity to which a given algorithm is written about and studied. This data-driven algorithm evaluation strategy may be simply stated as \emph{An algorithm or method is as good its name, as useful and interesting as it is abundant}, or more specifically, an algorithm that is used (written about) is an algorithm that is useful (worth knowing about). 
 
-The collected measures are then combined to produce a scoring for a given algorithm name. The combination may be a weighted sum of the measures, where different weighting factors may be used to increase the influence of a particular search domain. For example an algorithms's occurrence in published books may have more importance than an algorithms occurrence on webpages. 
+The collected measures are then combined to produce a scoring for a given algorithm name. The combination may be a weighted sum of the measures, where different weighting factors may be used to increase the influence of a particular search domain. For example an algorithms occurrence in published books may have more importance than an algorithms occurrence on webpages. 
 
 Finally, the calculated algorithms scores are used to compare algorithms. Algorithm comparisons may be direct, or may be scoped, such as by using an algorithms allocated taxonomic kingdom.
 
@@ -125,33 +125,15 @@ This section described the raw data collected as a result of following the exper
 
 \begin{table}[ht]
 	\centering\small
-		\begin{tabularx}{\textwidth}{Xllllll}
+		\begin{tabularx}{\textwidth}{Xlllllll}
 		\toprule
-		\textbf{Name} & \textbf{googweb} & \textbf{googbook} & \textbf{googscho} & \textbf{springer} & \textbf{scirus} & \textbf{Rank} \\ 
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
 		\toprule
-		Artificial Intelligence & 1340000 & 16033 & 1180000 & 296384 & 1133819 & 5279354.0 \\
-		Machine Learning & 427000 & 4405 & 1120000 & 34546 & 525488 & 2953658.5 \\
-		Computational Intelligence & 117000 & 2288 & 99000 & 12241 & 103470 & 442498.5 \\
-		Evolutionary Computation & 84500 & 1741 & 94100 & 10082 & 87213 & 374204.0 \\
-		Global Optimization & 82600 & 1743 & 165000 & 8847 & 79103 & 464639.5 \\
-		Biomimetic & 107000 & 1775 & 69700 & 3601 & 87636 & 351068.0 \\
-		Artificial Neural Network & 140000 & 2070 & 167000 & 4642 & 75022 & 513101.0 \\
-		Collective Intelligence & 111000 & 1117 & 12500 & 903 & 49279 & 206698.5 \\
-		Evolutionary Algorithm & 70000 & 1272 & 39500 & 5534 & 54643 & 221423.5 \\
-		Stochastic Optimization & 25800 & 1077 & 24300 & 2588 & 27900 & 109597.5 \\
-		Local Optimization & 18200 & 1009 & 22700 & 2357 & 18207 & 84609.5 \\
-		Swarm Intelligence & 51700 & 746 & 13300 & 1894 & 25338 & 113617.0 \\
-		Ant Colony Optimization & 25000 & 675 & 12900 & 1812 & 14257 & 69466.0 \\
-		Metaheuristic & 14200 & 716 & 11800 & 2257 & 12429 & 55003.0 \\
-		Natural Computation & 9530 & 814 & 5630 & 448 & 8054 & 31949.0 \\
-		Artificial Immune Systems & 7400 & 466 & 4340 & 491 & 6770 & 25500.5 \\
-		Estimation of Distribution Algorithm & 1730 & 153 & 927 & 180 & 4677 & 10635.5 \\
-		Biologically Inspired Computation & 787 & 71 & 261 & 25 & 860 & 2612.5 \\
-		Hyperheuristic & 664 & 72 & 347 & 101 & 526 & 2233.0 \\
+		
 		\bottomrule
 		\end{tabularx}	
-	\caption{Raw results for the `subfield' kingdom, ordered by rank.}
-	\label{tab:subfield}
+	\caption{Raw results for the `evolutionary algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:evolutionary}
 \end{table}
 
 
