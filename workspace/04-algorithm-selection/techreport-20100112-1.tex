@@ -96,8 +96,6 @@ Finally, the calculated algorithms scores are used to compare algorithms. Algori
 \subsection{Algorithm Selection}
 The selection of the algorithms that are considered in the project is as important, if not more important, than the descriptions of the algorithms themselves. The particular mixture of algorithms must be include popular techniques that readers are expected to lookup, although the pool must be diverse enough to be interesting and promote discovery. As such, the selection of algorithms may not rely upon the ranking of algorithms alone. Algorithms may be sorted by ranking and kingdom which provide an indication of algorithm popularity. The sorted ranked algorithms may then filtered using using indicators for algorithm interestingness and diversity. Such measures are difficult to quantify and automate and so may rely on the subjective human assessments of an expert. The popularity-based ordering imposed by the list sorted by ranking may not be appropriate for presentation in the project. 
 
-Algorithm popularity may be useful for determining the ordering by which algorithms are described in the project (for marketing and discoverability purposes for example), although may not be appropriate for the ordering by which algorithms are listed in deliverable outcomes of the project, such as a book or website. A more appropriate ordering for these cases may be a logical progression through algorithm complexity, determined by difficulty (time) required to understand and/or implement a given algorithm.  
-
 % 
 % Results
 % 
@@ -153,25 +151,30 @@ todo
 % 
 \section{Analysis}
 \label{sec:analysis}
-This section analyses the results of the assessed algorithms for inclusion in the Clever Algorithms project.
+This section analyses the results of the assessed algorithms for inclusion in the Clever Algorithms project. The analysis focuses on the limitations of the adopted algorithm selection strategy, and the identification of potential areas for improvement.
 
-common base names boosting some algorithms, like the ga
+% Names
+\subsection{Algorithm Names}
+Not all algorithm names are created equal, and as such, using algorithm names alone to compare the popularity of algorithmic techniques provides an opportunity for improvement. For some algorithm names, such as the `genetic algorithm', the name represents a base name (and typically a base technique) for a family techniques. This results in artificially inflated popularity scorings. Additionally, some techniques are renamed one or more times throughout their life, and some techniques are better known by abbreviations or acronyms then their full unabbreviated names.
 
+Names are commonly used to delineate areas of research, not necessarily specific algorithmic techniques intended for application. For example, there is no `canonical genetic algorithm', there is instead a general procedure and a number of variant operators that may be applied at each step. Although, in this case, there does happen to be a `simple genetic algorithm' that could be considered canonical, and separately, a `canonical genetic algorithm' may be deduced from the best practice realization of each operator in the procedure. This is both an exemplar that highlights both the confusion in the field and an opportunity that that Clever Algorithms project may help address.
 
-\subsection{Problems with Algorithm Names}
-not all algorithms are equal, some are more heuristics than true procedures
-not all have well defined names
-algorithms are renamed
-self references boost numbers
-time of publication, new algorithms get lower ranks, older get higher
-
-\subsection{Problems with Algorithm Names}
+% Scoring
+\subsection{Algorithm Scoring}
 measures from different domains are absolute, not relative
 arbitrary weighting factors
+time of publication, new algorithms get lower ranks, older get higher
 
 some data points that would be nice but were not used
 some nice data points would include: objective efficiency, efficacy, quality of research, and maybe even scope of innovation
 
+% Selection
+\subsection{Algorithm Selection}
+Algorithm popularity may be useful for determining the ordering by which algorithms are described in the project (for marketing and discoverability purposes for example), although may not be appropriate for the ordering by which algorithms are listed in deliverable outcomes of the project, such as a book or website. A more appropriate ordering for these cases may be a logical progression through algorithm complexity, determined by difficulty (time) required to understand and/or implement a given algorithm.  
+
+% 
+% Selected Algorithms
+% 
 \section{Selected Algorithms}
 \label{sec:selection}
 This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into sub-domains that are expected to represent Chapters in the final work. Each algorithm is listed with at least one primary or seminal source to verify the existence of the approach.
@@ -181,19 +184,26 @@ composition must be large, diverse, interesting.
 selection based on a filtered version of the ranked listings
 
 \subsection{Stochastic Algorithms}
+todo
 
 \subsection{Evolutionary Algorithms}
+todo
 
 \subsection{Swarm Algorithms}
+todo
 
 \subsection{Immune Algorithms}
+todo
 
 \subsection{Probabilistic Algorithms}
+todo
 
 \subsection{Physical Algorithms}
+todo
 
-
-% summarise the document message and areas for future consideration
+% 
+% Conclusions
+% 
 \section{Conclusions}
 \label{sec:conclusions}
 This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
