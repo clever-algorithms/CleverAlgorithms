@@ -109,21 +109,33 @@ def get_approx_scirus_results(keyword)
 end
 
 def get_results(algorithm_name)  
-  # spaces to plus, quote using %22 - good for all search services used
+  # spaces to plus, lowercase, quote using %22 - good for all search services used
   keyword = algorithm_name.gsub(/ /, "+")
-  keyword = "%22#{keyword}%22"
+  keyword = "%22#{keyword.downcase}%22"
   
-  scores = {}
+  # scores = {}
+  # # Google Web Search
+  # scores['google_web'] = get_approx_google_web_results(keyword)
+  # # Google Book Search
+  # scores['google_book'] = get_approx_google_book_results(keyword)
+  # # Google Scholar Search
+  # scores['google_scholar'] = get_approx_google_scholar_results(keyword)
+  # # Springer Article Search
+  # scores['springer'] = get_approx_springer_results(keyword)
+  # # Scirus Search
+  # scores['scirus'] = get_approx_scirus_results(keyword)
+  
+  scores = []
   # Google Web Search
-  scores['google_web'] = get_approx_google_web_results(keyword)
+  scores << get_approx_google_web_results(keyword)
   # Google Book Search
-  scores['google_book'] = get_approx_google_book_results(keyword)
+  scores << get_approx_google_book_results(keyword)
   # Google Scholar Search
-  scores['google_scholar'] = get_approx_google_scholar_results(keyword)
+  scores << get_approx_google_scholar_results(keyword)
   # Springer Article Search
-  scores['springer'] = get_approx_springer_results(keyword)
+  scores << get_approx_springer_results(keyword)
   # Scirus Search
-  scores['scirus'] = get_approx_scirus_results(keyword)
+  scores << get_approx_scirus_results(keyword)
   
   return scores
 end
@@ -133,31 +145,6 @@ def timer
   yield
   Time.now - start
 end
-
-def rank_algorithm(name)
-  # score algorithm
-  scores = nil
-  scores=get_results(name)
-  # rank algorithm
-  rank = 0
-  # weighted sum, insert factors and exponents, it's a party
-  scores.each_pair do |key, value| 
-    # boost 'academic' sources
-    if ['google_scholar', 'springer', 'scirus', 'google_book'].include?(key) 
-      rank += (value.to_f * 1.5);
-    else
-      rank += (value.to_f * 1.0);
-    end    
-  end  
-  # add rank to scores
-  scores['rank'] = rank
-  return scores
-end
-
-# rank testing
-# rank = rank_algorithm("artificial intelligence")
-# puts "rank: #{rank}"
-# exit
 
 # calculate results
 if File.exists?("./results.txt") 
@@ -171,11 +158,9 @@ else
   
   algorithms_list.each_with_index do |line, i|
     algorithm_name, scores = line.split(',')[1].strip, nil
-    # calculate
-    clock = timer{scores = rank_algorithm(algorithm_name)}
-    # write (for safety, at least we get something)
-    line = "#{line.strip},#{scores['google_web']},#{scores['google_book']},#{scores['google_scholar']},#{scores['springer']},#{scores['scirus']},#{scores['rank']}"    
-    results.puts(line)
+    # calculate scores
+    clock = timer{scores = get_results(algorithm_name)}
+    results.puts("#{line.strip},#{scores.join(",")}")
     results.flush
     puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{scores['rank']}")
   end
@@ -184,17 +169,59 @@ else
 end
 
 
+# normalization
+if File.exists?("./results_normalized.txt") 
+  puts " > skipping normalization results, already exists"  
+else
+  puts " > outputting normalization results"
+  
+  raw = IO.readlines("./results.txt")
+  # array of arrays
+  algorithms_list = []
+  raw.each { |line| algorithms_list<<line.split(',')}
+  Infinity = 1.0/0
+  normalized_scores = Array.new(5) {|i| [10000.0, 0.0]} 
+  algorithms_list.each do |row|
+    # calculate min/max
+    row[2..6].each_with_index do |v, i|
+      normalized_scores[i-1][0] = v if v.to_f < normalized_scores[i-1][0].to_f
+      normalized_scores[i-1][1] = v if v.to_f > normalized_scores[i-1][1].to_f
+    end
+  end
+  
+  # output normalized results
+  results = File.new("./results_normalized.txt", "w")
+  algorithms_list.each do |algorithm|
+    scores = []
+    algorithm[2..6].each_with_index do |v,i|
+      # (v-min)/(max-min) 
+      scores << (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
+    end
+    # calculate rank
+    rank = scores.inject {|sum, n| sum + n } 
+    results.puts("#{algorithm[0]},#{algorithm[1]},#{scores.join(",")},#{rank}")
+  end  
+  results.close
+end
 
 
-
-# generate stats
+# The Fisher-Yates shuffle: http://en.wikipedia.org/wiki/Knuth_shuffle
+def shuffle!(array)
+  n = array.length
+  for i in 0...n
+    r = rand(n-i) + i
+    array[r], array[i] = array[i], array[r]
+  end
+  return array
+end
 
 
 # prepare data structures
-raw = IO.readlines("./results.txt")
+raw = IO.readlines("./results_normalized.txt")
 # array of arrays
 algorithms_list = []
 raw.each { |line| algorithms_list<<line.split(',')}
+shuffle!(algorithms_list)
 # hash of arrays by kingdom
 data = {}
 algorithms_list.each do |row|
@@ -203,6 +230,7 @@ algorithms_list.each do |row|
   data[row[0]] << row[1..7]
 end
 
+# normalization
 
 # organized results, suitable for presenting
 if File.exists?("./results_organized.txt") 
