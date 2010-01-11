@@ -195,7 +195,9 @@ else
     scores = []
     algorithm[2..6].each_with_index do |v,i|
       # (v-min)/(max-min) 
-      scores << (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
+      a = (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
+      scores << a
+      puts "ERROR!!!! v=#{v}, min=#{normalized_scores[i][0]}, max=#{normalized_scores[i][1]}" if a>1.0||a<0.0
     end
     # calculate rank
     rank = scores.inject {|sum, n| sum + n } 
