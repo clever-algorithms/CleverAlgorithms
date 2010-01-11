@@ -25,6 +25,13 @@
 # Sample code.Python. Perl. Language Ajax api. Post method. 5000. api limit http://osdir.com/ml/GoogleAJAXAPIs/2009-05/msg00118.html
 # Hpricot Basics: http://wiki.github.com/whymirror/hpricot/hpricot-basics
 
+# method:
+# 1. prepare algorithm list
+# 2. assign kingdoms (maybe?)
+# 3. calculate scores (add lots of search sources)
+# 4. normalize results?
+# 5. output results (by kingdom)
+# 6. output selections (top 10's)
 
 
 require 'rubygems'
@@ -142,7 +149,9 @@ def rank_algorithm(name)
       rank += (value.to_f * 1.0);
     end    
   end  
-  return rank
+  # add rank to scores
+  scores['rank'] = rank
+  return scores
 end
 
 # rank testing
@@ -150,7 +159,7 @@ end
 # puts "rank: #{rank}"
 # exit
 
-# prepare results
+# calculate results
 if File.exists?("./results.txt") 
   puts "Results already available, not generating."
 else
@@ -161,29 +170,63 @@ else
   results = File.new("./results.txt", "w")
   
   algorithms_list.each_with_index do |line, i|
-    algorithm_name, rank = line.split(',')[1].strip, 0
-    # rank
-    clock = timer{rank = rank_algorithm(algorithm_name)}
+    algorithm_name, scores = line.split(',')[1].strip, nil
+    # calculate
+    clock = timer{scores = rank_algorithm(algorithm_name)}
     # write (for safety, at least we get something)
-    results.puts("#{line.strip},#{rank}")
+    line = "#{line.strip},#{scores['google_web']},#{scores['google_book']},#{scores['google_scholar']},#{scores['springer']},#{scores['scirus']},#{scores['rank']}"    
+    results.puts(line)
     results.flush
-    puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{rank}")
+    puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds, rank=#{scores['rank']}")
   end
   
   results.close
 end
 
+
+
+
+
 # generate stats
-puts "Generating statistics..."
-puts "------------------------------"
-# load
+
+
+# prepare data structures
 raw = IO.readlines("./results.txt")
-# split into something useful
+# array of arrays
 algorithms_list = []
 raw.each { |line| algorithms_list<<line.split(',')}
+# hash of arrays by kingdom
+data = {}
+algorithms_list.each do |row|
+  row.collect! {|v| v.strip}
+  data[row[0]] = [] if !data.has_key?(row[0])
+  data[row[0]] << row[1..7]
+end
+
+
+# organized results, suitable for presenting
+if File.exists?("./results_organized.txt") 
+  puts " > skipping organized results, already exists"  
+else
+  puts " > outputting organized results"
+  results = File.new("./results_organized.txt", "w")
+  data.each_pair do |key, value| 
+    value.sort {|x,y| y[7].to_f <=> x[7].to_f} # descending by rank
+    results.puts "\nKingdom: #{key}"
+    value.each_with_index do |v, i|
+      results.puts v.join(" & ")
+    end
+  end
+  
+  results.close
+end
+
+
+puts "Generating statistics..."
+puts "------------------------------"
 # overall top algorithms
 puts "Top 10 Algorithms, Overall:"
-algorithms_list.sort {|x,y| y[2].to_f <=> x[2].to_f} # descending by rank
+algorithms_list.sort {|x,y| y[7].to_f <=> x[7].to_f} # descending by rank
 top = 0
 algorithms_list.each_with_index do |v, i|
   break if top>=10 # bounded
@@ -193,15 +236,10 @@ algorithms_list.each_with_index do |v, i|
   end
 end
 puts "------------------------------"
-# organize by kingdom
-data = {}
-algorithms_list.each do |row|
-  data[row[0].strip] = [] if !data.has_key?(row[0].strip)
-  data[row[0].strip] << [row[1].strip, row[2].strip]
-end
+
 # process each kingdom
 data.each_pair do |key, value| 
-  value.sort {|x,y| y[1].to_f <=> x[1].to_f} # descending by rank
+  value.sort {|x,y| y[2].to_f <=> x[2].to_f} # descending by rank
   # print top 10
   puts "Top 10 Algorithms for #{key}: (of #{value.size})"
   value.each_with_index do |v, i|
