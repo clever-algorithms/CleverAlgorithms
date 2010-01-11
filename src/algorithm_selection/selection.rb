@@ -13,7 +13,7 @@
 # Never Use It. (use my results) I Ran it once, collected the results, and analyze forever.
 
 
-# Development Sources (i hacked this together):
+# Development Sources (i hacked this program together):
 # Screen Scraping Google with Hpricot and Watir: http://refactormycode.com/codes/673-screen-scraping-google-with-hpricot-and-watir
 # Scraping with style: scrAPI toolkit for Ruby: http://labnotes.org/2006/07/11/scraping-with-style-scrapi-toolkit-for-ruby/
 # How to get the number of results found for a keyword in google: http://stackoverflow.com/questions/1809976/how-to-get-the-number-of-results-found-for-a-keyword-in-google

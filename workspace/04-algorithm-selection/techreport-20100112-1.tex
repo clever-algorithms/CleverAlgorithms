@@ -43,49 +43,26 @@ This is the abstract. Consider writing a one sentence summary of each major sect
 % project
 The Clever Algorithms project aims to describe a large number of algorithms from the field of Artificial Intelligence in a complete, consistent, and centralized way to improve the accessibility of the methods \cite{Brownlee2010}. 
 % report
-This report\ldots
-
-the selection and organization of algorithms that appear in the book is a very big deal, it may even be more important than the algorithm descriptions themselves.
-
+This report focuses on the methodology for selecting algorithms that appear in the project and provides a preliminary suggested listing of algorithms to describe. 
 % breakdown
-Section~\ref{sec:methodology}\ldots
-Section~\ref{sec:results}\ldots
-Section~\ref{sec:analysis}\ldots
-Section~\ref{sec:selection}\ldots
-Section~\ref{sec:conclusions}\ldots
+Section~\ref{sec:methodology} describes a data-driven methodology for organizing, evaluating, and selecting algorithms. Section~\ref{sec:results} summarizes the raw results of applying the methodology in terms of the ranked algorithms. Section~\ref{sec:analysis} analyzes the presented results and comments on areas for improvement in the methodology. Section~\ref{sec:selection} provides a preliminary listing of algorithms selected to be described in the Clever Algorithms project. The listing is not final, rather it is presented as a first draft to be refined over the lifetime of the project. Section~\ref{sec:conclusions} reviews the findings of the process, and highlights some areas for future consideration.
 
 % 
 % Methodology
 % 
 \section{Methodology}
 \label{sec:methodology}
-This section describes the methodology for the selection of algorithms for inclusion in the Clever Algorithms project.
-
-This methodology and its results are based on a blog post by Jason Brownlee on August 2nd 2009 entitled ``What is a good optimization algorithm? A data-driven method for algorithm selection'' located at: \url{http://www.neverreadpassively.com/2009/08/what-is-good-optimization-algorithm.html}.
-
-The previous method was based on the question: \emph{Is it possible to select a diverse, interesting, and useful set of inspired algorithms using a simple data driven method?}
+This section describes the methodology for the selection of algorithms for inclusion in the Clever Algorithms project. This methodology and its results are based on a post on the blog `Never Read Passively' by Jason Brownlee (this author) on August 2nd 2009 entitled ``What is a good optimization algorithm? A data-driven method for algorithm selection''\footnote{Online: \url{http://www.neverreadpassively.com/2009/08/what-is-good-optimization-algorithm.html}}. The method presented in this previous work was based on the question: \emph{Is it possible to select a diverse, interesting, and useful set of inspired algorithms using a simple data driven method?}. The methodology presented in this section is updated to include more sources used for algorithm comparison and use a weighted sum when calculating an algorithms ranking. The application of this methodology was updated to use an automated script, and the listing of algorithms for evaluation was updated and refined. The methodology is presented in terms of the three core tasks in the process: algorithm list, algorithm ranking, and algorithm selection.
 
 % 
 % Algorithm List
 % 
 \subsection{Algorithm List}
-prepare an algorithm list. include name, parent field
-draw from lots of fields, such as computational intelligence algorithms, metaheuristics, biologically inspired algorithms, natural algorithms, biomimetic algorithms
-draw from lots of sources: books, websites, papers, articles, friends
+The first task involve the preparation of a large listing of candidate algorithms. The algorithms may be drawn from the an array of fields under or related to the fields of Biologically Inspired Computation and Computational Intelligence, such as: Metaheuristics, Hyperheuristics, Natural Computation, Biomementics, Swarm Intelligence, Collective Intelligence, and Evolutionary Computation.
 
+The sources for algorithms names should be diverse and may include books, articles, papers, magazines, websites, and software. The specification of the algorithm in the list is important. Algorithm name standardization is an important aspect of the methodology. The algorithm should be listed in their canonical (most common) name, normalized, without acronyms (wherever reasonably possible), and in their full unabbreviated form
 
-Normalized algorithm names to their full unabbreviated form. No acronyms wherever reasonably possible.
-
-Assigned each algorithm a superficial grouping or kingdom (I thought for use in a book chapter structure) based on general observation and intuition. Kingdom names were generally based on the motivation for the methods strategy, including: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
-
-representative of the field
-
-problems
-not all algorithms are equal, some are more heuristics than true procedures
-not all have well defined names
-algorithms are renamed
-self references boost numbers
-time of publication, new algorithms get lower ranks, older get higher
+Each algorithm should be assigned a kingdom for taxonomic reasons. The kingdom is used to group algorithms which defines the scope of competition that the algorithms must survive to be included in the project. Kingdoms may be superficial names (such as the taxonomic names the algorithms may be assigned in book chapters general observation and intuition), such as: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
 
 % 
 % Rank Algorithms
@@ -107,6 +84,10 @@ Calculated the relative algorithm rank metric as the sum of the normalized searc
 % Select Algorithms
 % 
 \subsection{Select Algorithms}
+The selection of the algorithms that are considered in the project is as important, if not more important, than the descriptions of the algorithms themselves. The particular mixture of algorithms must be include popular techniques that readers are expected to lookup, although the pool must be diverse enough to be interesting and promote discovery.
+
+cannot use rank alone
+
 order by rank, filter for interestingness
 organize by field or sub-field or some commonality
 
@@ -135,6 +116,17 @@ list all results? good for completeness
 This section analyses the results of the assessed algorithms for inclusion in the Clever Algorithms project.
 
 common base names boosting some algorithms, like the ga
+
+
+\subsection{Problems with Algorithm Names}
+not all algorithms are equal, some are more heuristics than true procedures
+not all have well defined names
+algorithms are renamed
+self references boost numbers
+time of publication, new algorithms get lower ranks, older get higher
+
+
+
 
 
 \section{Selected Algorithms}
@@ -166,6 +158,8 @@ This is the conclusion. Consider summarizing the message of the document once ag
 The project now has preliminary algorithm chapters and sections.
 this does not have to be maintained, it is just a first attempt at outlining the scope of the project
 
+future books on models, not just algorithms
+use this methodology for selecting other discrete topics for research. popularity based selection method
 
 % bibliography
 \bibliographystyle{plain}
