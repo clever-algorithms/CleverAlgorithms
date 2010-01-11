@@ -58,9 +58,9 @@ This section describes the methodology for the selection of algorithms for inclu
 % Algorithm List
 % 
 \subsection{Algorithm List}
-The first task involve the preparation of a large listing of candidate algorithms. The algorithms may be drawn from the an array of fields under or related to the fields of Biologically Inspired Computation and Computational Intelligence, such as: Metaheuristics, Hyperheuristics, Natural Computation, Biomementics, Swarm Intelligence, Collective Intelligence, and Evolutionary Computation.
+The first task involve the preparation of a large listing of candidate algorithms. The algorithms may be drawn from the an array of fields under or related to the fields of Biologically Inspired Computation and Computational Intelligence, such as: Meta-heuristics, Hyper-heuristics, Natural Computation, Bio-memetics, Swarm Intelligence, Collective Intelligence, and Evolutionary Computation.
 
-The sources for algorithms names should be diverse and may include books, articles, papers, magazines, websites, and software. The specification of the algorithm in the list is important. Algorithm name standardization is an important aspect of the methodology. The algorithm should be listed in their canonical (most common) name, normalized, without acronyms (wherever reasonably possible), and in their full unabbreviated form
+The sources for algorithms names should be diverse and may include books, articles, papers, magazines, websites, and software. The specification of the algorithm in the list is important. Algorithm name standardization is an important aspect of the methodology. The algorithm should be listed in their canonical (most common) name, normalized, without acronyms (wherever reasonably possible), and in their full unabbreviated form. Algorithm names were standardized to American english.
 
 Each algorithm should be assigned a kingdom for taxonomic reasons. The kingdom is used to group algorithms which defines the scope of competition that the algorithms must survive to be included in the project. Kingdoms may be superficial names (such as the taxonomic names the algorithms may be assigned in book chapters general observation and intuition), such as: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
 
@@ -111,8 +111,8 @@ This section describes the configuration under which the data was collected, as 
 
 \begin{itemize}
 	\item The algorithm list was prepared with algorithms collected primarily for optimization rather than model building. These algorithms are referred to as `unconventional optimization algorithms', and subfields that were intentionally neglected include artificial neural networks, fuzzy logic, and statistical machine learning subjects such as kernels.
-	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary, immunological, swarm, physical, probabilistic, and stochastic, with a 7th kingdom used to rank names of related fields (for general interest).
-	\item The search engines included as algorithm measures included: Google Web, Google Book, Google Scholar, Springer Article, and Scirus Article.
+	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
+	\item The search engines included as algorithm measures included: Google Web, Google Book, Google Scholar, Springer Article, Scirus Article, and IEEE Article Search.
 	\item The data collection process was automated with a ruby script that performs the searches, collated the results, and generated the final statistics and ordered listings.
 	\item The measures from the search domains were weighted when combined into the algorithm scoring as follows: todo
 \end{itemize}
@@ -121,21 +121,85 @@ This section describes the configuration under which the data was collected, as 
 % Raw Data
 % 
 \subsection{Raw Data}
-This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 12th 2010.
+This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures, and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
 
 \begin{table}[ht]
-	\centering\small
+	\centering\footnotesize
 		\begin{tabularx}{\textwidth}{Xlllllll}
 		\toprule
 		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
 		\toprule
-		
+
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `physical algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:physical}
+\end{table}
+
+\begin{table}[ht]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `stochastic algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:stochastic}
+\end{table}
+
+\begin{table}[ht]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `immune algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:immune}
+\end{table}
+
+\begin{table}[ht]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+
 		\bottomrule
 		\end{tabularx}	
 	\caption{Raw results for the `evolutionary algorithms' taxonomic kingdom, ordered by score, descending.}
 	\label{tab:evolutionary}
 \end{table}
 
+\begin{table}[ht]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+ 
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `probabilistic algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:probablistic}
+\end{table}
+
+\begin{table}[ht]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `swarm algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:swarm}
+\end{table}
 
 % 
 % Analysis
@@ -156,7 +220,7 @@ Finally, in the same manner that the popularity of algorithms are tested by asse
 \subsection{Algorithm Scoring}
 The number of results returned from each search engine is an approximation with an unknown level of error, both with regard to the service reporting hits from its known index, and to the extent that index is not complete. Another area of concern with the collected measures is that it does not take into account when algorithms were released. For examples, those techniques released many years ago will likely be more popular than those released very recently. This is likely a desirable effect of the method, although may mask new algorithms whose popularity is rising and old algorithms whose popularity is falling. 
 
-Finally, the measures are absolute quantities that are not likely to be comparable between search domains. This was tentatively addressed though the introduction of weighting factors in the calculation of the algorithm scoring. An alternative method may involve normalizing the results for each domain before combining them into a single score.
+Finally, the measures are absolute quantities that are not likely to be comparable between search domains. This was tentatively addressed by normalizing the results for each domain before combining them into a single score. This may be extended through the introduction of weighting factors in the calculation of the algorithm scoring, such as giving additional weight to the popularity of an algorithm name in published book search domains.
 
 Ideally, popularity would not be the basis for algorithm comparison. Some more useful measures may include efficiency, efficacy, quality of research, and scope of innovation. These are all properties that are difficult to quantify and difficulty to measures, especially in using objective and automated means.  
 

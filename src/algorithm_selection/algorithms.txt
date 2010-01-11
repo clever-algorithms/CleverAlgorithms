@@ -25,7 +25,7 @@ Stochastic, Guided Local Search
 Evolutionary, Non-dominated Sorting Genetic Algorithm
 Physical, Adaptive Simulated Annealing
 Stochastic, Greedy Randomized Adaptive Search Procedure
-Stochastic, Variable Neighbourhood Search
+Stochastic, Variable Neighborhood Search
 Evolutionary, Strength Pareto Evolutionary Algorithm
 Stochastic, Reactive Tabu Search
 Swarm, AntNet
@@ -75,7 +75,7 @@ Evolutionary, Crowding Genetic Algorithm
 Swarm, Rank-Based Ant System
 Stochastic, Hill Climbing with Learning
 Swarm, Bee Colony Optimization
-Swarm, Pareto Ant Colony Optimisation
+Swarm, Pareto Ant Colony Optimization
 Evolutionary, Cooperative Coevolutionary Genetic Algorithm
 Probabilistic, Mutual Information Maximization for Input Clustering
 Evolutionary, CHC Genetic Algorithm
@@ -99,7 +99,7 @@ Stochastic, Localized Random Search
 Probabilistic, Estimation of Gaussian Networks Algorithm
 Swarm, Waves of Swarm Particles
 Evolutionary, Genetic Algorithm with Punctuated Equilibria
-Swarm, MONACO: multi-objective network optimisation based on ACO
+Swarm, MONACO: multi-objective network optimization based on ACO
 Swarm, Wasp Swarm Algorithm
 Swarm, Firefly Algorithm
 Swarm, Virtual Bee Algorithm

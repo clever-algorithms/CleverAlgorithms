@@ -34,6 +34,13 @@ require 'json'
 require 'net/http'
 require 'hpricot'
 
+# monkey patch for float
+class Float
+  def round_to(x)
+    (self * 10**x).round.to_f / 10**x
+  end
+end
+
 # Google REST (ajax) API: http://code.google.com/apis/ajaxsearch/documentation/#fonje
 def get_approx_google_web_results(keyword)
   http = Net::HTTP.new('ajax.googleapis.com', 80)
@@ -201,8 +208,9 @@ def normalize_results
         scores << (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
       end
       # calculate rank
-      rank = scores.inject(0) {|sum, n| sum + n.to_f } 
-      results << "#{row[0]},#{row[1]},#{scores.join(",")},#{rank}\n"
+      rank = scores.inject(0.0) {|sum, n| sum + n.to_f } 
+      # results << "#{row[0]},#{row[1]},#{scores.join(",")},#{rank}\n"
+      results << "#{row.join(",").strip},#{rank.round_to(3)}\n"
     end  
     File.open("./results_normalized.txt", "w") { |f| f.printf(results) }
   end
@@ -223,7 +231,7 @@ def generate_organized_results
     # hash of arrays by kingdom
     data = {}
     algorithms_list.each do |row|
-      row.collect! {|v| v.strip}
+      row.collect! {|v| v.strip.downcase}
       data[row[0]] = [] if !data.has_key?(row[0])
       data[row[0]] << row[1..row.length-1]
     end
