@@ -29,7 +29,7 @@
 # 1. prepare algorithm list
 # 2. assign kingdoms (maybe?)
 # 3. calculate scores (add lots of search sources)
-# 4. normalize results?
+# 4. normalize results
 # 5. output results (by kingdom)
 # 6. output selections (top 10's)
 
@@ -184,8 +184,8 @@ else
   algorithms_list.each do |row|
     # calculate min/max
     row[2..6].each_with_index do |v, i|
-      normalized_scores[i-1][0] = v if v.to_f < normalized_scores[i-1][0].to_f
-      normalized_scores[i-1][1] = v if v.to_f > normalized_scores[i-1][1].to_f
+      normalized_scores[i][0] = v if v.to_f < normalized_scores[i][0].to_f
+      normalized_scores[i][1] = v if v.to_f > normalized_scores[i][1].to_f
     end
   end
   
@@ -193,14 +193,14 @@ else
   results = File.new("./results_normalized.txt", "w")
   algorithms_list.each do |algorithm|
     scores = []
-    algorithm[2..6].each_with_index do |v,i|
+    algorithm[2..6].each_with_index do |v,i|      
       # (v-min)/(max-min) 
       a = (v.to_f - normalized_scores[i][0].to_f) / ( normalized_scores[i][1].to_f - normalized_scores[i][0].to_f)
       scores << a
-      puts "ERROR!!!! v=#{v}, min=#{normalized_scores[i][0]}, max=#{normalized_scores[i][1]}" if a>1.0||a<0.0
+      puts "ERROR!!!! i=#{i} v=#{v}, min=#{normalized_scores[i][0]}, max=#{normalized_scores[i][1]}" if a>1.0||a<0.0
     end
     # calculate rank
-    rank = scores.inject {|sum, n| sum + n } 
+    rank = scores.inject(0) {|sum, n| sum + n.to_f } 
     results.puts("#{algorithm[0]},#{algorithm[1]},#{scores.join(",")},#{rank}")
   end  
   results.close
@@ -241,13 +241,9 @@ else
   puts " > outputting organized results"
   results = File.new("./results_organized.txt", "w")
   data.each_pair do |key, value| 
-    value.sort {|x,y| y[7].to_f <=> x[7].to_f} # descending by rank
     results.puts "\nKingdom: #{key} (#{value.size})"
-    value.each_with_index do |v, i|
-      results.puts v.join(" & ")
-    end
+    value.sort {|x,y| y[6].to_f <=> x[6].to_f}.each { |v| results.puts v.join(" & ") }
   end
-  
   results.close
 end
 
@@ -256,23 +252,21 @@ puts "Generating statistics..."
 puts "------------------------------"
 # overall top algorithms
 puts "Top 10 Algorithms, Overall:"
-algorithms_list.sort {|x,y| y[7].to_f <=> x[7].to_f} # descending by rank
 top = 0
-algorithms_list.each_with_index do |v, i|
+algorithms_list.sort {|x,y| y[7].to_f <=> x[7].to_f}.each_with_index do |v, i|
   break if top>=10 # bounded
   if v[0] != "Subfield" 
     puts "#{(top+1)} #{v[1]}"
-    top +=1
+    top += 1
   end
 end
 puts "------------------------------"
 
 # process each kingdom
 data.each_pair do |key, value| 
-  value.sort {|x,y| y[2].to_f <=> x[2].to_f} # descending by rank
   # print top 10
   puts "Top 10 Algorithms for #{key}: (of #{value.size})"
-  value.each_with_index do |v, i|
+  value.sort {|x,y| y[6].to_f <=> x[6].to_f}.each_with_index do |v, i|
     break if i>=10
     puts "#{(i+1)} #{v[0]}"
   end
