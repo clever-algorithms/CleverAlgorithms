@@ -65,25 +65,30 @@ The sources for algorithms names should be diverse and may include books, articl
 Each algorithm should be assigned a kingdom for taxonomic reasons. The kingdom is used to group algorithms which defines the scope of competition that the algorithms must survive to be included in the project. Kingdoms may be superficial names (such as the taxonomic names the algorithms may be assigned in book chapters general observation and intuition), such as: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
 
 % 
-% Rank Algorithms
+% Algorithm Rankings
 % 
-\subsection{Rank Algorithms}
-some nice data points would include: objective efficiency, efficacy, quality of research, and maybe even scope of innovation
+\subsection{Algorithm Rankings}
+Each algorithm in the prepared listing must be evaluated, assigned a scoring, and ranked to allow selection decisions to be made. A data-driven popularity-based approach is proposed for algorithm evaluation. Each algorithm name is submitted to an array of different domain specific search engines and the total approximated number of results reported by the search services are taken as measures. The submission of the algorithm name is standardized such that it is surrounded by quotes to ensure that the search is specific and the algorithm name is converted to lower case. 
 
-simple ranking principle: \emph{An algorithm or method is as good its name, as useful and interesting as it is abundant.}
+Some example search domains to which algorithm names may be submitted include:
+\begin{itemize}
+	\item \emph{Google Web Search}: Search of webpage on the internet index by Google.
+	\item \emph{Google Book Search}: Search of books index by Google.
+	\item \emph{Google Scholar Search}: Search of the academic publications and patents index by Google.
+	\item \emph{Springer Article Search}: Search of the articles and papers published by Springer.
+	\item \emph{Scirus Article Search}: Search of the articles and papers index by Scirus.
+\end{itemize}
 
-more specifically: An algorithm that is used (written about) is an algorithm that is useful (worth knowing about).
+The collected measures are representative of how often an algorithm name appears in a particular search domain, and inferred to represent the popularity to which a given algorithm is written about and studied. This data-driven algorithm evaluation strategy may be simply stated as \emph{An algorithm or method is as good its name, as useful and interesting as it is abundant}, or more specifically, an algorithm that is used (written about) is an algorithm that is useful (worth knowing about). 
 
-tally the number of search results for an algorithm across a number of domains
+The collected measures are then combined to produce a scoring for a given algorithm name. The combination may be a weighted sum of the measures, where different weighting factors may be used to increase the influence of a particular search domain. For example an algorithms's occurrence in published books may have more importance than an algorithms occurrence on webpages. 
 
-Recorded the estimated-total number of search results for the exact algorithm name (quoted) in Google Web Search, Google Scholar Search, Google Book Search, Springer Search, and Scirus Search.
-
-Calculated the relative algorithm rank metric as the sum of the normalized search result measures.
+Finally, the calculated algorithms scores are used to compare algorithms. Algorithm comparisons may be direct, or may be scoped, such as by using an algorithms allocated taxonomic kingdom.
 
 % 
-% Select Algorithms
+% Algorithm Selection
 % 
-\subsection{Select Algorithms}
+\subsection{Algorithm Selection}
 The selection of the algorithms that are considered in the project is as important, if not more important, than the descriptions of the algorithms themselves. The particular mixture of algorithms must be include popular techniques that readers are expected to lookup, although the pool must be diverse enough to be interesting and promote discovery.
 
 cannot use rank alone
@@ -125,9 +130,12 @@ algorithms are renamed
 self references boost numbers
 time of publication, new algorithms get lower ranks, older get higher
 
+\subsection{Problems with Algorithm Names}
+measures from different domains are absolute, not relative
+arbitrary weighting factors
 
-
-
+some data points that would be nice but were not used
+some nice data points would include: objective efficiency, efficacy, quality of research, and maybe even scope of innovation
 
 \section{Selected Algorithms}
 \label{sec:selection}
