@@ -14,9 +14,9 @@ A listing of outcomes from the project.
 
 h3. Book Manuscripts
 
-* Milestone 1: Draft book structure including title, parts, chapters, sections, and subsections. (_in progress_)
-* Milestone 2: Draft preface and background chapters. (_next_)
-* Milestone 3: Draft ten algorithm descriptions. (_future_)
+* _Milestone 1_: Draft book structure including title, parts, chapters, sections, and subsections. (_in progress_)
+* _Milestone 2_: Draft preface and background chapters. (_next_)
+* _Milestone 3_: Draft ten algorithm descriptions. (_future_)
 * ...
 
 h3. Technical Reports
@@ -26,6 +26,10 @@ h3. Technical Reports
 * Jason Brownlee. "The Clever Algorithms Project: Inspiring Works":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100109-1.pdf. Technical Report CA-TR-20100109-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Data-Driven Optimization Algorithm Selection":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100112-1.pdf. Technical Report CA-TR-20100112-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * ...
+
+h3. Software
+
+* _Algorithm Selection_: A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings.
 
 h2. Breakdown
 
