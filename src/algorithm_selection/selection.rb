@@ -239,7 +239,15 @@ def generate_organized_results
     results = ""
     data.each_pair do |key, value| 
       results << "\nKingdom: #{key} (#{value.size})\n"
-      value.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each { |v| results << "#{v.join(" & ")}\n" }
+      value.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each { |v| results << "#{v.join(" & ")} \\\\\n" }
+    end
+    # top 10 overall
+    results << "\nKingdom: Top 10 Algorithms (10)\n"
+    top = 0
+    algorithms_list.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each_with_index do |v, i|
+      break if top>=10 # bounded
+      results << "#{v.join(" & ")} \\\\\n"
+      top += 1
     end
     File.open("./results_organized.txt", "w") { |f| f.printf(results) }
   end
