@@ -123,8 +123,6 @@ This section describes the configuration under which the data was collected, as 
 \subsection{Raw Data}
 This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures, and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
 
-% \subsubsection{Evolutionary Algorithms}
-
 \begin{table}[htp]
 	\centering\footnotesize
 		\begin{tabularx}{\textwidth}{Xlllllll}
@@ -173,9 +171,6 @@ This section described the raw data collected as a result of following the exper
 	\label{tab:evolutionary}
 \end{table}
 
-
-% \subsubsection{Probabilistic Algorithms}
-
 \begin{table}[htp]
 	\centering\footnotesize
 		\begin{tabularx}{\textwidth}{Xlllllll}
@@ -204,9 +199,6 @@ This section described the raw data collected as a result of following the exper
 	\caption{Raw results for the `probabilistic algorithms' taxonomic kingdom, ordered by score, descending.}
 	\label{tab:probablistic}
 \end{table}
-
-
-% \subsubsection{Swarm Algorithms}
 
 \begin{table}[htp]
 	\centering\footnotesize
@@ -241,8 +233,6 @@ This section described the raw data collected as a result of following the exper
 	\caption{Raw results for the `swarm algorithms' taxonomic kingdom, ordered by score, descending.}
 	\label{tab:swarm}
 \end{table}
-
-% \subsubsection{Stochastic Algorithms}
 
 \begin{table}[htp]
 	\centering\footnotesize
@@ -279,8 +269,6 @@ This section described the raw data collected as a result of following the exper
 	\label{tab:stochastic}
 \end{table}
 
-% \subsubsection{Physical Algorithms}
-
 \begin{table}[htp]
 	\centering\footnotesize
 		\begin{tabularx}{\textwidth}{Xlllllll}
@@ -302,8 +290,6 @@ This section described the raw data collected as a result of following the exper
 	\label{tab:physical}
 \end{table}
 
-% \subsubsection{Immune Algorithms}
-
 \begin{table}[htp]
 	\centering\footnotesize
 		\begin{tabularx}{\textwidth}{Xlllllll}
@@ -322,9 +308,6 @@ This section described the raw data collected as a result of following the exper
 	\label{tab:immune}
 \end{table}
 
-
-
-% \subsubsection{Overall Top 10 Algorithms}
 
 \begin{table}[htp]
 	\centering\footnotesize
@@ -380,14 +363,15 @@ Algorithm popularity may be useful for determining the ordering by which algorit
 % 
 \section{Selected Algorithms}
 \label{sec:selection}
-This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into taxonomic kingdoms. Each algorithm is listed with at least one primary or seminal source to verify the existence of the approach. This listing of algorithms is not final, rather, it is a preliminary draft based on the best information available at the time of writing. It is expected that the specific algorithms described in the Clever Algorithms project will differ as the project unfolds. This preliminary listing is suggested as a starting point for breakdown for the project deliverable outcomes, such as book chapters and sections.
+This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into taxonomic kingdoms. 
 
-what filtering?
-those kingdoms that had 10 or less, i picked the top 5
-those that had >10, i picked the top 10
+This listing of algorithms is not final, rather, it is a preliminary draft based on the best information available at the time of writing. It is expected that the specific algorithms described in the Clever Algorithms project will differ as the project unfolds. This preliminary listing is suggested as a starting point for breakdown for the project deliverable outcomes, such as book chapters and sections.
+
+A simple high-level filtering method was applied, where those kingdoms with $\leq 10$ algorithms were constraints to 5, and those with $>10$ algorithms were constrained to 10 algorithms.
 
 \subsection{Stochastic Algorithms}
-\begin{itemize}
+
+\begin{enumerate}
 	\item Random Search
 	\item Tabu Search
 	\item Reactive search optimization
@@ -398,10 +382,10 @@ those that had >10, i picked the top 10
 	\item Reactive Tabu Search
 	\item Greedy Randomized Adaptive Search
 	\item Guided Local Search
-\end{itemize}
+\end{enumerate}
 
 \subsection{Evolutionary Algorithms}
-\begin{itemize}
+\begin{enumerate}
 	\item Genetic Algorithm
 	\item Genetic Programming
 	\item Evolutionary Programming
@@ -412,10 +396,10 @@ those that had >10, i picked the top 10
 	\item Non-dominated Sorting Genetic Algorithm
 	\item Strength Pareto Evolutionary Algorithm
 	\item Genitor Algorithm
-\end{itemize}
+\end{enumerate}
 
 \subsection{Swarm Algorithms}
-\begin{itemize}
+\begin{enumerate}
 	\item Particle Swarm Optimization
 	\item Ant System
 	\item Ant Colony System
@@ -426,19 +410,19 @@ those that had >10, i picked the top 10
 	\item Rank-Based Ant System
 	\item Bees Algorithms
 	\item Population-based Ant Colony Optimization
-\end{itemize}
+\end{enumerate}
 
 \subsection{Immune Algorithms}
-\begin{itemize}
+\begin{enumerate}
 	\item Clonal Selection Algorithm
 	\item Negative Selection Algorithm
 	\item Artificial Immune Recognition System
 	\item Immune Network Algorithm
 	\item B-Cell Algorithm
-\end{itemize}
+\end{enumerate}
 
 \subsection{Probabilistic Algorithms}
-\begin{itemize}
+\begin{enumerate}
 	\item Expectation-maximization algorithm
 	\item Population-based incremental learning
 	\item Cross-entropy method
@@ -449,16 +433,16 @@ those that had >10, i picked the top 10
 	\item Hierarchical Bayesian Optimization Algorithm
 	\item Extended Compact Genetic Algorithm
 	\item Bivariate Marginal Distribution Algorithm
-\end{itemize}
+\end{enumerate}
 
 \subsection{Physical Algorithms}
-\begin{itemize}
+\begin{enumerate}
 	\item Simulated Annealing
 	\item Memetic Algorithm
 	\item Adaptive Simulated Annealing
 	\item Extremal Optimization
 	\item Cultural Algorithm
-\end{itemize}
+\end{enumerate}
 
 % 
 % Conclusions
