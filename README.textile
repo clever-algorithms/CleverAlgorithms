@@ -29,7 +29,7 @@ h3. Technical Reports
 
 h3. Software
 
-* _Algorithm Selection_: A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings.
+* _Algorithm Selection_: A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. ("link":http://github.com/jbrownlee/CleverAlgorithms/blob/master/src/algorithm_selection/selection.rb)
 
 h2. Breakdown
 
