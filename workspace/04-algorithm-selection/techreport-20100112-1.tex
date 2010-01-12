@@ -43,7 +43,7 @@ Although the designed methodology produced reasonable and intuitive results, a n
 A diverse and interesting selection of 50 algorithms is made from the results and proposed as a first draft for the listing of algorithms to be described by the Clever Algorithms project. 
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Algorithm, Selection, Methodology}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Selection, Methodology, Results}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -54,24 +54,24 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % report
 This report focuses on the methodology for selecting algorithms that appear in the project and provides a preliminary suggested listing of algorithms to describe. 
 % breakdown
-Section~\ref{sec:methodology} describes a data-driven methodology for organizing, evaluating, and selecting algorithms. Section~\ref{sec:results} summarizes the raw results of applying the methodology in terms of the ranked algorithms. Section~\ref{sec:analysis} analyzes the presented results and comments on areas for improvement in the methodology. Section~\ref{sec:selection} provides a preliminary listing of algorithms selected to be described in the Clever Algorithms project. The listing is not final, rather it is presented as a first draft to be refined over the lifetime of the project. Section~\ref{sec:conclusions} reviews the findings of the process, and highlights some areas for future consideration.
+Section~\ref{sec:methodology} describes a data-driven methodology for organizing, evaluating, and selecting algorithms. Section~\ref{sec:results} summarizes the raw results of applying the methodology in terms of the ranked algorithms. Section~\ref{sec:analysis} analyzes the presented results and comments on areas for improvement in the methodology. Section~\ref{sec:selection} provides a preliminary listing of algorithms selected to be described in the Clever Algorithms project. Section~\ref{sec:conclusions} reviews the findings of the process, and highlights some areas for future consideration.
 
 % 
 % Methodology
 % 
 \section{Methodology}
 \label{sec:methodology}
-This section describes the methodology for the selection of algorithms for inclusion in the Clever Algorithms project. This methodology and its results are based on a post on the blog `Never Read Passively' by Jason Brownlee (this author) on August 2nd 2009 entitled ``What is a good optimization algorithm? A data-driven method for algorithm selection''\footnote{Online: \url{http://www.neverreadpassively.com/2009/08/what-is-good-optimization-algorithm.html}}. The method presented in this previous work was based on the question: \emph{Is it possible to select a diverse, interesting, and useful set of inspired algorithms using a simple data driven method?}. The methodology presented in this section is updated to include more sources used for algorithm comparison and use a weighted sum when calculating an algorithms ranking. The application of this methodology was updated to use an automated script, and the listing of algorithms for evaluation was updated and refined. The methodology is presented in terms of the three core tasks in the process: algorithm list, algorithm ranking, and algorithm selection.
+This section describes the methodology for the selection of algorithms for inclusion in the Clever Algorithms project. This methodology and its results are based on a post on the blog `Never Read Passively' by Jason Brownlee (this author) on August 2nd 2009 entitled ``What is a good optimization algorithm? A data-driven method for algorithm selection''\footnote{Online: \url{http://www.neverreadpassively.com/2009/08/what-is-good-optimization-algorithm.html}}. The method presented in this previous work was based on the question: \emph{Is it possible to select a diverse, interesting, and useful set of inspired algorithms using a simple data driven method?}. The methodology presented in this section is updated to include more sources used for algorithm comparison and uses a weighted sum of normalized measures when calculating an algorithms score. The application of this methodology was updated to use an automated script and the listing of algorithms for evaluation was updated and refined. The methodology is presented in terms of the three core tasks in the process: algorithm list, algorithm ranking, and algorithm selection.
 
 % 
 % Algorithm List
 % 
 \subsection{Algorithm List}
-The first task involve the preparation of a large listing of candidate algorithms. The algorithms may be drawn from the an array of fields under or related to the fields of Biologically Inspired Computation and Computational Intelligence, such as: Meta-heuristics, Hyper-heuristics, Natural Computation, Bio-memetics, Swarm Intelligence, Collective Intelligence, and Evolutionary Computation.
+The first task involves the preparation of a large listing of candidate algorithms. The algorithms may be drawn from the an array of fields under or related to the fields of Biologically Inspired Computation and Computational Intelligence, such as: Meta-heuristics, Hyper-heuristics, Natural Computation, Bio-memetics, Swarm Intelligence, Collective Intelligence, and Evolutionary Computation.
 
-The sources for algorithms names should be diverse and may include books, articles, papers, magazines, websites, and software. The specification of the algorithm in the list is important. Algorithm name standardization is an important aspect of the methodology. The algorithm should be listed in their canonical (most common) name, normalized, without acronyms (wherever reasonably possible), and in their full unabbreviated form. Algorithm names were standardized to American english.
+The sources for algorithms names should be diverse and may include books, articles, papers, magazines, websites, and software. Algorithm name standardization is an important aspect of the methodology. Algorithms should be listed using their canonical (most common) name, normalized, without acronyms (wherever reasonably possible), and in their full unabbreviated form. The language used to to list algorithm names should be standardized, such as to American English.
 
-Each algorithm should be assigned a kingdom for taxonomic reasons. The kingdom is used to group algorithms which defines the scope of competition that the algorithms must survive to be included in the project. Kingdoms may be superficial names (such as the taxonomic names the algorithms may be assigned in book chapters general observation and intuition), such as: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
+Each algorithm should be assigned a kingdom for taxonomic reasons. The kingdom is used to group algorithms which defines the scope of competition that the algorithms must survive to be included in the project. Kingdoms may be superficial names (taxonomic names the algorithms may be assigned based on general observation and intuition), such as: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
 
 % 
 % Algorithm Rankings
@@ -93,7 +93,7 @@ Some example search domains to which algorithm names may be submitted include:
 	\item \emph{Amazon Book Search}: Search of the books indexed and sold by Amazon.
 \end{itemize}
 
-The collected measures are representative of how often an algorithm name appears in a particular search domain, and inferred to represent the popularity to which a given algorithm is written about and studied. This data-driven algorithm evaluation strategy may be simply stated as \emph{An algorithm or method is as good its name, as useful and interesting as it is abundant}, or more specifically, an algorithm that is used (written about) is an algorithm that is useful (worth knowing about). 
+The collected measures are representative of how often an algorithm name appears in a particular search domain, and inferred to represent the popularity to which a given algorithm is written about and studied. This data-driven algorithm evaluation strategy may be simply stated as: ``\emph{An algorithm or method is as good its name, as useful and interesting as it is abundant}'', or more specifically, an algorithm that is used (written about) is an algorithm that is useful (worth knowing about). 
 
 The collected measures are then combined to produce a scoring for a given algorithm name. The combination may be a weighted sum of the measures, where different weighting factors may be used to increase the influence of a particular search domain. For example an algorithms occurrence in published books may have more importance than an algorithms occurrence on webpages. 
 
@@ -103,7 +103,7 @@ Finally, the calculated algorithms scores are used to compare algorithms. Algori
 % Algorithm Selection
 % 
 \subsection{Algorithm Selection}
-The selection of the algorithms that are considered in the project is as important, if not more important, than the descriptions of the algorithms themselves. The particular mixture of algorithms must be include popular techniques that readers are expected to lookup, although the pool must be diverse enough to be interesting and promote discovery. As such, the selection of algorithms may not rely upon the ranking of algorithms alone. Algorithms may be sorted by ranking and kingdom which provide an indication of algorithm popularity. The sorted ranked algorithms may then filtered using using indicators for algorithm interestingness and diversity. Such measures are difficult to quantify and automate and so may rely on the subjective human assessments of an expert. The popularity-based ordering imposed by the list sorted by ranking may not be appropriate for presentation in the project. 
+The selection of the algorithms that are considered in the project is as important, if not more important, than the descriptions of the algorithms themselves. The particular mixture of algorithms must include popular techniques that readers are expected to lookup, although the pool must be diverse enough to be interesting and promote discovery. As such, the selection of algorithms may not rely upon the popularity-based ranking of algorithms alone. Algorithms may be sorted by ranking and kingdom which provide an indication of algorithm popularity. The sorted ranked algorithms may then be filtered using using indicators for algorithm interestingness and diversity. Such measures are difficult to quantify and automate and so may rely on the subjective human assessments of an expert. 
 
 % 
 % Results
@@ -121,18 +121,18 @@ This section describes the configuration under which the data was collected, as 
 \begin{itemize}
 	\item The algorithm list was prepared with 113 algorithms collected primarily for optimization rather than model building. These algorithms are referred to as `unconventional optimization algorithms', and subfields that were intentionally neglected include artificial neural networks, fuzzy logic, and statistical machine learning subjects such as kernels.
 	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary (36), immunological (6), swarm (22), physical (9), probabilistic (17), and stochastic (23).
-	\item The search engines included as algorithm measures included: Google Web, Google Book, Google Scholar, Springer Article, Scirus Article, and IEEE Article Search.
-	\item The data collection process was automated with a ruby script that performs the searches, collated the results, and generated the final statistics and ordered listings.
-	\item The measures from the search domains were weighted when combined into the algorithm scoring as follows: todo
+	\item The search engines used as algorithm measures were: Google Web, Google Book, Google Scholar, Springer Article, Scirus Article, and IEEE Article Search.
+	\item The data collection process was automated with a ruby script that performed the searches, collated the results, and generated the final statistics and ordered listings (the Ruby script is available from \url{http://www.CleverAlgorithms.com}).
+	\item The measures from the search domains were combined into the algorithm scoring by first normalizing the results for ah measure and summing the measures together. No weighting factors were used in the calculation of the algorithm scores.
 \end{itemize}
 
 % 
 % Raw Data
 % 
 \subsection{Raw Data}
-This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures (unnormalized), and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
+This section described the raw data collected as a result of following the experimental methodology. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures (unnormalized), and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
 
-Table~\ref{tab:top} highlights the top 10 most popular algorithms overall. The remaining tables of results present the raw results for each kingdom.
+Table~\ref{tab:top} highlights the top 10 most popular algorithms overall. The remaining tables present the raw results for each kingdom.
 
 \begin{table}[htp]
 	\centering\footnotesize
@@ -152,7 +152,7 @@ Table~\ref{tab:top} highlights the top 10 most popular algorithms overall. The r
 		evolutionary & differential evolution & 17400 & 868 & 11300 & 934 & 10562 & 803 & 0.459 \\
 		\bottomrule
 		\end{tabularx}	
-	\caption{The top 10 most highest ranking algorithms.}
+	\caption{The top 10 highest ranking algorithms.}
 	\label{tab:top}
 \end{table}
 
@@ -342,9 +342,6 @@ Table~\ref{tab:top} highlights the top 10 most popular algorithms overall. The r
 \end{table}
 
 
-
-
-
 % 
 % Analysis
 % 
@@ -356,21 +353,21 @@ This section analyses the results of the assessed algorithms for inclusion in th
 \subsection{Algorithm Names}
 Not all algorithm names are created equal, and as such, using algorithm names alone to compare the popularity of algorithmic techniques provides an opportunity for improvement. For some algorithm names, such as the `genetic algorithm', the name represents a base name (and typically a base technique) for a family techniques. This results in artificially inflated popularity scorings. Additionally, some techniques are renamed one or more times throughout their life, and some techniques are better known by abbreviations or acronyms then their full unabbreviated names.
 
-Names are commonly used to delineate areas of research, not necessarily specific algorithmic techniques intended for application. For example, there is no `canonical genetic algorithm', there is instead a general procedure and a number of variant operators that may be applied at each step. Although, in this case, there does happen to be a `simple genetic algorithm' that could be considered canonical, and separately, a `canonical genetic algorithm' may be deduced from the best practice realization of each operator in the procedure. This is both an exemplar that highlights both the confusion in the field and an opportunity that that Clever Algorithms project may help address.
+Names are commonly used to delineate areas of research, not necessarily specific algorithmic techniques intended for application. For example, there is no `canonical genetic algorithm', there is instead a general procedure and a number of variant operators that may be applied at each step. Although, in this case, there does happen to be a `simple genetic algorithm' that could be considered canonical, and separately, a `canonical genetic algorithm' may be deduced from the best practice realization of each operator in the procedure. This is an exemplar case that highlights both the confusion in the field and an opportunity that that Clever Algorithms project may help address.
 
-Finally, in the same manner that the popularity of algorithms are tested by assessing their names, the popular association of an algorithm and a field or taxonomic kingdom may be determined using a data-driven method. A set of field names may be defined and the popularity of each algorithm name with each field name may be calculated, scored, and ranked. A similar method may be used to select one algorithm name for evaluating from a collection of aliases and abbreviations.
+Finally, in the same manner that the popularity of algorithms are tested by assessing their names, the popular association of an algorithm and a field or taxonomic kingdom may be determined using a data-driven method. A set of field names may be defined and the popularity of each algorithm name with each field name may be calculated, scored, and ranked. A similar method may be used to select one algorithm name for a given technique from a collection of aliases and abbreviations.
 
 % Scoring
 \subsection{Algorithm Scoring}
-The number of results returned from each search engine is an approximation with an unknown level of error, both with regard to the service reporting hits from its known index, and to the extent that index is not complete. Another area of concern with the collected measures is that it does not take into account when algorithms were released. For examples, those techniques released many years ago will likely be more popular than those released very recently. This is likely a desirable effect of the method, although may mask new algorithms whose popularity is rising and old algorithms whose popularity is falling. 
+The number of results returned from each search engine is an approximation with an unknown level of error, both with regard to the service reporting hits from its known index, and to the extent that index is not complete. Another area of concern with the collected measures is that it does not take into account when algorithms were released. For example, those techniques released many years ago will likely be more popular than those released very recently. This is likely a desirable effect of the method, although may mask new algorithms whose popularity is rising and old algorithms whose popularity is falling. This may be addressed by collecting algorithm popularity trends over an extended period of time (years).
 
 Finally, the measures are absolute quantities that are not likely to be comparable between search domains. This was tentatively addressed by normalizing the results for each domain before combining them into a single score. This may be extended through the introduction of weighting factors in the calculation of the algorithm scoring, such as giving additional weight to the popularity of an algorithm name in published book search domains.
 
-Ideally, popularity would not be the basis for algorithm comparison. Some more useful measures may include efficiency, efficacy, quality of research, and scope of innovation. These are all properties that are difficult to quantify and difficulty to measures, especially in using objective and automated means.  
+Ideally, popularity would not be the basis for algorithm comparison. Some more useful measures may include efficiency, efficacy, quality of research, and scope of innovation. These are all properties that are difficult to quantify and ultimately difficult to measure using objective and automated means.  
 
 % Selection
 \subsection{Algorithm Selection}
-Algorithm popularity may be useful for determining the ordering by which algorithms are described in the project (for marketing and discoverability purposes for example), although may not be appropriate for the ordering by which algorithms are listed in deliverable outcomes of the project, such as a book or website. A more appropriate ordering for these cases may be a logical progression through algorithm complexity, determined by difficulty (time) required to understand and/or implement a given algorithm.  
+Algorithm popularity may be useful for determining the ordering by which algorithms are described in the project (for marketing and discoverability purposes for example), although may not be appropriate for the ordering by which algorithms are listed in deliverable outcomes of the project, such as a book or website. A more appropriate ordering in these cases may be a logical progression through algorithm complexity, determined by difficulty (time) required to understand and/or implement a given algorithm.  
 
 % 
 % Selected Algorithms
@@ -379,13 +376,13 @@ Algorithm popularity may be useful for determining the ordering by which algorit
 \label{sec:selection}
 This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into taxonomic kingdoms. The algorithms are presented in a suggested ordering, both with regard to the kingdoms and the algorithms within each kingdom (roughly in order of increasing complexity). 
 
-A simple high-level filtering method was applied, where those kingdoms with $\leq 10$ algorithms were constraints to 5, and those with $>10$ algorithms were constrained to 10 algorithms.
+A simple high-level filtering method was applied, where those kingdoms with $\leq 10$ algorithms were constrained to 5, and those with $>10$ algorithms were constrained to 10 algorithms.
 
 This listing of algorithms is not final, rather, it is a preliminary draft based on the best information available at the time of writing. It is expected that the specific algorithms described in the Clever Algorithms project will differ as the project unfolds. This preliminary listing is suggested as a starting point for breakdown for the project deliverable outcomes, such as book chapters and sections.
 
 
 \subsection{Stochastic Algorithms}
-The algorithms are presented from random search, through variations with neighborhoods and adaptations. 
+The algorithms are presented from random search, through variations with neighborhoods and adaptation. 
 
 \begin{enumerate}
 	\item Random Search
@@ -401,7 +398,7 @@ The algorithms are presented from random search, through variations with neighbo
 \end{enumerate}
 
 \subsection{Physical Algorithms}
-A focus on algorithms inspired by physical and social systems with an upfront focus on the famous simulated annealing algorithm.
+A focus on algorithms inspired by physical and social systems with an upfront focus on the simulated annealing algorithm.
 
 \begin{enumerate}
 	\item Simulated Annealing
@@ -428,7 +425,7 @@ A focus on the classical evolutionary algorithms, followed by some newer and pop
 \end{enumerate}
 
 \subsection{Probabilistic Algorithms}
-Those techniques concerned with managing a probabilistic model of a domain, most an extension of algorithms from evolutionary computation.
+Those techniques concerned with managing a probabilistic model of a domain, most of which are extensions of algorithms from evolutionary computation.
 
 \begin{enumerate}
 	\item Cross-entropy method
@@ -460,7 +457,7 @@ Approaches related to the principle of collective intelligence such as particle 
 \end{enumerate}
 
 \subsection{Immune Algorithms}
-Algorithms from the field of Artificial Immune Systems, mostly clonal selection approaches.
+Algorithms from the field of Artificial Immune Systems.
 
 \begin{enumerate}
 	\item Clonal Selection Algorithm
@@ -477,7 +474,7 @@ Algorithms from the field of Artificial Immune Systems, mostly clonal selection 
 \label{sec:conclusions}
 This report proposed a data-driven methodology for selecting algorithms based on popularity. This methodology was applied for the proposes of selecting algorithms to describes in the Clever Algorithms project. The raw results were presented for posterity, and a preliminary set of 50 algorithms were selected for the project. This listing of algorithms is not expected to be maintained within this document, although is expected to represent a first draft for breakdown for the deliverable outcomes of the Clever Algorithms project, such as a book and website. 
 
-There is desire to describe more than 50 algorithms, especially including more approaches from the evolutionary and swarm kingdoms. Such additions may be made after the first 50 algorithms are completed and/or after the first draft of the outcome deliverables (book and website). For example, a second edition may be released with an additional 20 algorithm descriptions as well as fixed errata from the first edition.
+There is desire to describe more than 50 algorithms, especially including more approaches from the evolutionary and swarm kingdoms. Such additions may be made after the first 50 algorithms are completed and/or after the first draft of the outcome deliverables (book and website) are completed. For example, a second edition may be released with an additional 20 algorithm descriptions as well as fixed errata from the first edition.
 
 The listing focused on so-called `unconventional optimization algorithms', intentionally neglecting model-based algorithms such as artificial neural networks and fuzzy logic systems. If the Clever Algorithms project proves successful, the effort may consider the preparation of a second volume (book) that shifts the focus of the project from optimization algorithms to model-creating algorithms and address neural network, fuzzy logic, and some statistical machine learning algorithms that fit within the scope of the project.
 
