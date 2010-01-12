@@ -31,7 +31,16 @@
 
 % write a summary sentence for each major section
 \section*{Abstract} 
-This is the abstract. Consider writing a one sentence summary of each major section in the report.
+% project
+The Clever Algorithms project proposes to describe a large number of algorithms from the fields of Computational Intelligence and Biologically Inspired Computation in a complete, consistent, and centralized manner in order to improve the accessibility of the approaches.
+% report
+This report proposes a data-driven methodology for selecting algorithms to describe in the Clever Algorithms project based on objective algorithm popularity in search engines across a number of domains. 
+% resutls
+An automated script is used to evaluate a prepared listing of unconventional optimization algorithms against six different search domains. The collected measures are used to produce a scoring for each algorithm, and the algorithms are ranked.
+% analysis
+Although the designed methodology produced reasonable and intuitive results, a number of areas in the process are highlighted as opportunities for future improvement such as the use of algorithm names to compare techniques, the assignment of algorithms to taxonomic kingdoms, and the introduction of biasing measures based on their source in the scoring of algorithms.
+% selection
+A diverse and interesting selection of 50 algorithms is made from the results and proposed as a first draft for the listing of algorithms to be described by the Clever Algorithms project. 
 
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Algorithm, Selection, Methodology}}
@@ -110,8 +119,8 @@ This section summarizes the results of assessing algorithms for inclusion in the
 This section describes the configuration under which the data was collected, as follows: 
 
 \begin{itemize}
-	\item The algorithm list was prepared with algorithms collected primarily for optimization rather than model building. These algorithms are referred to as `unconventional optimization algorithms', and subfields that were intentionally neglected include artificial neural networks, fuzzy logic, and statistical machine learning subjects such as kernels.
-	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary, immunological, swarm, physical, probabilistic, and stochastic.
+	\item The algorithm list was prepared with 113 algorithms collected primarily for optimization rather than model building. These algorithms are referred to as `unconventional optimization algorithms', and subfields that were intentionally neglected include artificial neural networks, fuzzy logic, and statistical machine learning subjects such as kernels.
+	\item The algorithms were divided into 6 taxonomic kingdoms: evolutionary (36), immunological (6), swarm (22), physical (9), probabilistic (17), and stochastic (23).
 	\item The search engines included as algorithm measures included: Google Web, Google Book, Google Scholar, Springer Article, Scirus Article, and IEEE Article Search.
 	\item The data collection process was automated with a ruby script that performs the searches, collated the results, and generated the final statistics and ordered listings.
 	\item The measures from the search domains were weighted when combined into the algorithm scoring as follows: todo
@@ -121,7 +130,99 @@ This section describes the configuration under which the data was collected, as 
 % Raw Data
 % 
 \subsection{Raw Data}
-This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures, and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
+This section described the raw data collected as a result of following the experimental methodology in terms of the algorithm kingdom, standardized algorithm name, specific measures from different search domains, and the allocated ranking. The results were collected from the specified search engines on January 11th 2010. The results show the collected measures (unnormalized), and the score (rounded to three decimal places) calculated as the sum of the normalized measures.
+
+Table~\ref{tab:top} highlights the top 10 most popular algorithms overall. The remaining tables of results present the raw results for each kingdom.
+
+\begin{table}[htp]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{lXlllllll}
+		\toprule
+		\textbf{Kingdom} & \textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+		evolutionary & genetic algorithm & 282000 & 4149 & 380000 & 18352 & 179189 & 16411 & 6.0 \\
+		physical & simulated annealing & 132000 & 3680 & 307000 & 10493 & 135676 & 4191 & 3.747 \\
+		stochastic & random search & 161000 & 1509 & 32400 & 2855 & 121802 & 405 & 1.88 \\
+		evolutionary & genetic programming & 64000 & 1469 & 38700 & 4699 & 67457 & 1223 & 1.39 \\
+		stochastic & tabu search & 42800 & 1399 & 35400 & 4208 & 36146 & 1035 & 1.076 \\
+		swarm & particle swarm optimization & 49200 & 722 & 24600 & 2151 & 15566 & 3999 & 0.861 \\
+		stochastic & reactive search optimization & 53 & 3543 & 4 & 0 & 45 & 0 & 0.854 \\
+		evolutionary & evolutionary programming & 19400 & 974 & 17500 & 1933 & 15421 & 706 & 0.584 \\
+		probabilistic & expectation-maximization algorithm & 13700 & 727 & 14400 & 1182 & 15345 & 1460 & 0.501 \\
+		evolutionary & differential evolution & 17400 & 868 & 11300 & 934 & 10562 & 803 & 0.459 \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{The top 10 most highest ranking algorithms.}
+	\label{tab:top}
+\end{table}
+
+\begin{table}[htp]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+		simulated annealing & 132000 & 3680 & 307000 & 10493 & 135676 & 4191 & 3.747 \\ 
+		memetic algorithm & 4070 & 416 & 2850 & 601 & 2963 & 182 & 0.182 \\ 
+		adaptive simulated annealing & 2770 & 589 & 1640 & 147 & 2493 & 51 & 0.181 \\ 
+		extremal optimization & 1290 & 242 & 658 & 103 & 729 & 19 & 0.075 \\ 
+		cultural algorithm & 1090 & 188 & 559 & 72 & 329 & 76 & 0.061 \\ 
+		quantum annealing & 2660 & 154 & 415 & 36 & 1007 & 2 & 0.055 \\ 
+		simplex-simulated annealing & 405 & 84 & 299 & 17 & 234 & 8 & 0.025 \\ 
+		harmony search algorithm & 884 & 50 & 266 & 44 & 150 & 21 & 0.02 \\ 
+		stochastic tunneling algorithm & 42 & 3 & 15 & 3 & 9 & 0 & 0.001 \\ 
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `physical algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:physical}
+\end{table}
+
+\begin{table}[htp]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+		clonal selection algorithm & 2120 & 183 & 1260 & 209 & 668 & 132 & 0.078 \\
+		negative selection algorithm & 1320 & 173 & 937 & 168 & 563 & 74 & 0.065 \\
+		artificial immune recognition system & 580 & 53 & 331 & 35 & 352 & 18 & 0.02 \\
+		immune network algorithm & 378 & 41 & 167 & 29 & 115 & 20 & 0.015 \\
+		b-cell algorithm & 102 & 29 & 60 & 20 & 70 & 4 & 0.009 \\
+		dendritic cell algorithm & 241 & 16 & 98 & 31 & 211 & 2 & 0.008 \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `immune algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:immune}
+\end{table}
+
+\begin{table}[htp]
+	\centering\footnotesize
+		\begin{tabularx}{\textwidth}{Xlllllll}
+		\toprule
+		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
+		\toprule
+ 		expectation-maximization algorithm & 13700 & 727 & 14400 & 1182 & 15345 & 1460 & 0.501 \\
+		population-based incremental learning & 1510 & 294 & 1110 & 190 & 1157 & 60 & 0.099 \\
+		cross-entropy method & 1840 & 293 & 1110 & 113 & 1505 & 49 & 0.097 \\
+		bayesian optimization algorithm & 1780 & 251 & 1060 & 207 & 1599 & 24 & 0.091 \\
+		compact genetic algorithm & 1310 & 145 & 726 & 118 & 1576 & 45 & 0.059 \\
+		univariate marginal distribution algorithm & 484 & 117 & 378 & 86 & 364 & 15 & 0.038 \\
+		probabilistic incremental program evolution & 357 & 84 & 189 & 54 & 293 & 10 & 0.027 \\
+		hierarchical bayesian optimization algorithm & 431 & 69 & 215 & 64 & 430 & 5 & 0.025 \\
+		extended compact genetic algorithm & 447 & 52 & 249 & 44 & 1093 & 8 & 0.024 \\
+		bivariate marginal distribution algorithm & 211 & 55 & 172 & 33 & 157 & 2 & 0.017 \\
+		gaussian adaptation & 175 & 33 & 41 & 4 & 27 & 2 & 0.009 \\
+		mutual information maximization for input clustering & 52 & 23 & 67 & 12 & 56 & 1 & 0.007 \\
+		stochastic hill climbing with learning by vectors of normal distributions & 45 & 20 & 39 & 12 & 29 & 0 & 0.006 \\
+		estimation of bayesian networks algorithm & 44 & 15 & 44 & 14 & 34 & 0 & 0.005 \\
+		graduated optimization & 110 & 5 & 24 & 2 & 30 & 2 & 0.002 \\
+		estimation of multivariate normal algorithm & 47 & 8 & 30 & 3 & 33 & 0 & 0.002 \\
+		estimation of gaussian networks algorithm & 17 & 9 & 30 & 5 & 8 & 0 & 0.002 \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{Raw results for the `probabilistic algorithms' taxonomic kingdom, ordered by score, descending.}
+	\label{tab:probablistic}
+\end{table}
 
 \begin{table}[htp]
 	\centering\footnotesize
@@ -169,35 +270,6 @@ This section described the raw data collected as a result of following the exper
 		\end{tabularx}	
 	\caption{Raw results for the `evolutionary algorithms' taxonomic kingdom, ordered by score, descending.}
 	\label{tab:evolutionary}
-\end{table}
-
-\begin{table}[htp]
-	\centering\footnotesize
-		\begin{tabularx}{\textwidth}{Xlllllll}
-		\toprule
-		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
-		\toprule
- 		expectation-maximization algorithm & 13700 & 727 & 14400 & 1182 & 15345 & 1460 & 0.501 \\
-		population-based incremental learning & 1510 & 294 & 1110 & 190 & 1157 & 60 & 0.099 \\
-		cross-entropy method & 1840 & 293 & 1110 & 113 & 1505 & 49 & 0.097 \\
-		bayesian optimization algorithm & 1780 & 251 & 1060 & 207 & 1599 & 24 & 0.091 \\
-		compact genetic algorithm & 1310 & 145 & 726 & 118 & 1576 & 45 & 0.059 \\
-		univariate marginal distribution algorithm & 484 & 117 & 378 & 86 & 364 & 15 & 0.038 \\
-		probabilistic incremental program evolution & 357 & 84 & 189 & 54 & 293 & 10 & 0.027 \\
-		hierarchical bayesian optimization algorithm & 431 & 69 & 215 & 64 & 430 & 5 & 0.025 \\
-		extended compact genetic algorithm & 447 & 52 & 249 & 44 & 1093 & 8 & 0.024 \\
-		bivariate marginal distribution algorithm & 211 & 55 & 172 & 33 & 157 & 2 & 0.017 \\
-		gaussian adaptation & 175 & 33 & 41 & 4 & 27 & 2 & 0.009 \\
-		mutual information maximization for input clustering & 52 & 23 & 67 & 12 & 56 & 1 & 0.007 \\
-		stochastic hill climbing with learning by vectors of normal distributions & 45 & 20 & 39 & 12 & 29 & 0 & 0.006 \\
-		estimation of bayesian networks algorithm & 44 & 15 & 44 & 14 & 34 & 0 & 0.005 \\
-		graduated optimization & 110 & 5 & 24 & 2 & 30 & 2 & 0.002 \\
-		estimation of multivariate normal algorithm & 47 & 8 & 30 & 3 & 33 & 0 & 0.002 \\
-		estimation of gaussian networks algorithm & 17 & 9 & 30 & 5 & 8 & 0 & 0.002 \\
-		\bottomrule
-		\end{tabularx}	
-	\caption{Raw results for the `probabilistic algorithms' taxonomic kingdom, ordered by score, descending.}
-	\label{tab:probablistic}
 \end{table}
 
 \begin{table}[htp]
@@ -269,67 +341,9 @@ This section described the raw data collected as a result of following the exper
 	\label{tab:stochastic}
 \end{table}
 
-\begin{table}[htp]
-	\centering\footnotesize
-		\begin{tabularx}{\textwidth}{Xlllllll}
-		\toprule
-		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
-		\toprule
-		simulated annealing & 132000 & 3680 & 307000 & 10493 & 135676 & 4191 & 3.747 \\ 
-		memetic algorithm & 4070 & 416 & 2850 & 601 & 2963 & 182 & 0.182 \\ 
-		adaptive simulated annealing & 2770 & 589 & 1640 & 147 & 2493 & 51 & 0.181 \\ 
-		extremal optimization & 1290 & 242 & 658 & 103 & 729 & 19 & 0.075 \\ 
-		cultural algorithm & 1090 & 188 & 559 & 72 & 329 & 76 & 0.061 \\ 
-		quantum annealing & 2660 & 154 & 415 & 36 & 1007 & 2 & 0.055 \\ 
-		simplex-simulated annealing & 405 & 84 & 299 & 17 & 234 & 8 & 0.025 \\ 
-		harmony search algorithm & 884 & 50 & 266 & 44 & 150 & 21 & 0.02 \\ 
-		stochastic tunneling algorithm & 42 & 3 & 15 & 3 & 9 & 0 & 0.001 \\ 
-		\bottomrule
-		\end{tabularx}	
-	\caption{Raw results for the `physical algorithms' taxonomic kingdom, ordered by score, descending.}
-	\label{tab:physical}
-\end{table}
-
-\begin{table}[htp]
-	\centering\footnotesize
-		\begin{tabularx}{\textwidth}{Xlllllll}
-		\toprule
-		\textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
-		\toprule
-		clonal selection algorithm & 2120 & 183 & 1260 & 209 & 668 & 132 & 0.078 \\
-		negative selection algorithm & 1320 & 173 & 937 & 168 & 563 & 74 & 0.065 \\
-		artificial immune recognition system & 580 & 53 & 331 & 35 & 352 & 18 & 0.02 \\
-		immune network algorithm & 378 & 41 & 167 & 29 & 115 & 20 & 0.015 \\
-		b-cell algorithm & 102 & 29 & 60 & 20 & 70 & 4 & 0.009 \\
-		dendritic cell algorithm & 241 & 16 & 98 & 31 & 211 & 2 & 0.008 \\
-		\bottomrule
-		\end{tabularx}	
-	\caption{Raw results for the `immune algorithms' taxonomic kingdom, ordered by score, descending.}
-	\label{tab:immune}
-\end{table}
 
 
-\begin{table}[htp]
-	\centering\footnotesize
-		\begin{tabularx}{\textwidth}{lXlllllll}
-		\toprule
-		\textbf{Kingdom} & \textbf{Name} & \textbf{g-web} & \textbf{g-book} & \textbf{g-scho} & \textbf{Springer} & \textbf{Scirus} & \textbf{IEEE} & \textbf{Score} \\ 
-		\toprule
-		evolutionary & genetic algorithm & 282000 & 4149 & 380000 & 18352 & 179189 & 16411 & 6.0 \\
-		physical & simulated annealing & 132000 & 3680 & 307000 & 10493 & 135676 & 4191 & 3.747 \\
-		stochastic & random search & 161000 & 1509 & 32400 & 2855 & 121802 & 405 & 1.88 \\
-		evolutionary & genetic programming & 64000 & 1469 & 38700 & 4699 & 67457 & 1223 & 1.39 \\
-		stochastic & tabu search & 42800 & 1399 & 35400 & 4208 & 36146 & 1035 & 1.076 \\
-		swarm & particle swarm optimization & 49200 & 722 & 24600 & 2151 & 15566 & 3999 & 0.861 \\
-		stochastic & reactive search optimization & 53 & 3543 & 4 & 0 & 45 & 0 & 0.854 \\
-		evolutionary & evolutionary programming & 19400 & 974 & 17500 & 1933 & 15421 & 706 & 0.584 \\
-		probabilistic & expectation-maximization algorithm & 13700 & 727 & 14400 & 1182 & 15345 & 1460 & 0.501 \\
-		evolutionary & differential evolution & 17400 & 868 & 11300 & 934 & 10562 & 803 & 0.459 \\
-		\bottomrule
-		\end{tabularx}	
-	\caption{The top 10 most highest ranking algorithms.}
-	\label{tab:top}
-\end{table}
+
 
 % 
 % Analysis
@@ -398,7 +412,7 @@ A focus on algorithms inspired by physical and social systems with an upfront fo
 \end{enumerate}
 
 \subsection{Evolutionary Algorithms}
-A focus on the classical evolutionary algorithms, followed by some newer and popular approaches and some for multiple objective optimization. I'd really like to present many more algorithms from this kingdom such as island, cellular, and niching approaches.
+A focus on the classical evolutionary algorithms, followed by some newer and popular approaches and some for multiple objective optimization. I'd really like to present many more algorithms from this kingdom such as gene expression, messy, cellular, and niching approaches. 
 
 \begin{enumerate}
 	\item Genetic Algorithm
@@ -406,11 +420,11 @@ A focus on the classical evolutionary algorithms, followed by some newer and pop
 	\item Evolutionary Programming
 	\item Evolution Strategies
 	\item Learning Classifier System
-	\item Genitor Algorithm
 	\item Differential Evolution
 	\item Grammatical Evolution
 	\item Non-dominated Sorting Genetic Algorithm
 	\item Strength Pareto Evolutionary Algorithm
+	\item Island Population Genetic Algorithm
 \end{enumerate}
 
 \subsection{Probabilistic Algorithms}
@@ -441,8 +455,8 @@ Approaches related to the principle of collective intelligence such as particle 
 	\item Ant Colony System
 	\item Multiple Ant Colony System
 	\item Population-based Ant Colony Optimization
-	\item Pareto Ant Colony Optimization
 	\item Bees Algorithms
+	\item Bacterial Foraging Optimization Algorithm
 \end{enumerate}
 
 \subsection{Immune Algorithms}
@@ -453,7 +467,7 @@ Algorithms from the field of Artificial Immune Systems, mostly clonal selection 
 	\item Negative Selection Algorithm
 	\item Artificial Immune Recognition System
 	\item Immune Network Algorithm
-	\item B-Cell Algorithm
+	\item Dendritic Cell Algorithm
 \end{enumerate}
 
 % 
@@ -462,6 +476,8 @@ Algorithms from the field of Artificial Immune Systems, mostly clonal selection 
 \section{Conclusions}
 \label{sec:conclusions}
 This report proposed a data-driven methodology for selecting algorithms based on popularity. This methodology was applied for the proposes of selecting algorithms to describes in the Clever Algorithms project. The raw results were presented for posterity, and a preliminary set of 50 algorithms were selected for the project. This listing of algorithms is not expected to be maintained within this document, although is expected to represent a first draft for breakdown for the deliverable outcomes of the Clever Algorithms project, such as a book and website. 
+
+There is desire to describe more than 50 algorithms, especially including more approaches from the evolutionary and swarm kingdoms. Such additions may be made after the first 50 algorithms are completed and/or after the first draft of the outcome deliverables (book and website). For example, a second edition may be released with an additional 20 algorithm descriptions as well as fixed errata from the first edition.
 
 The listing focused on so-called `unconventional optimization algorithms', intentionally neglecting model-based algorithms such as artificial neural networks and fuzzy logic systems. If the Clever Algorithms project proves successful, the effort may consider the preparation of a second volume (book) that shifts the focus of the project from optimization algorithms to model-creating algorithms and address neural network, fuzzy logic, and some statistical machine learning algorithms that fit within the scope of the project.
 
