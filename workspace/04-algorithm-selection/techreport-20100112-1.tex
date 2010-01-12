@@ -363,85 +363,97 @@ Algorithm popularity may be useful for determining the ordering by which algorit
 % 
 \section{Selected Algorithms}
 \label{sec:selection}
-This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into taxonomic kingdoms. 
-
-This listing of algorithms is not final, rather, it is a preliminary draft based on the best information available at the time of writing. It is expected that the specific algorithms described in the Clever Algorithms project will differ as the project unfolds. This preliminary listing is suggested as a starting point for breakdown for the project deliverable outcomes, such as book chapters and sections.
+This section provides a listing of 50 algorithms selected for description in the Clever Algorithms Project. The presentation of this list of algorithms is partitioned into taxonomic kingdoms. The algorithms are presented in a suggested ordering, both with regard to the kingdoms and the algorithms within each kingdom (roughly in order of increasing complexity). 
 
 A simple high-level filtering method was applied, where those kingdoms with $\leq 10$ algorithms were constraints to 5, and those with $>10$ algorithms were constrained to 10 algorithms.
 
+This listing of algorithms is not final, rather, it is a preliminary draft based on the best information available at the time of writing. It is expected that the specific algorithms described in the Clever Algorithms project will differ as the project unfolds. This preliminary listing is suggested as a starting point for breakdown for the project deliverable outcomes, such as book chapters and sections.
+
+
 \subsection{Stochastic Algorithms}
+The algorithms are presented from random search, through variations with neighborhoods and adaptations. 
 
 \begin{enumerate}
 	\item Random Search
-	\item Tabu Search
-	\item Reactive search optimization
-	\item Hill Climbing Search
-	\item Scatter Search
 	\item Adaptive Random Search
-	\item Variable Neighborhood Search
-	\item Reactive Tabu Search
-	\item Greedy Randomized Adaptive Search
+	\item Hill Climbing Search
 	\item Guided Local Search
+	\item Variable Neighborhood Search
+	\item Reactive search optimization
+	\item Greedy Randomized Adaptive Search
+	\item Scatter Search
+	\item Tabu Search
+	\item Reactive Tabu Search
+\end{enumerate}
+
+\subsection{Physical Algorithms}
+A focus on algorithms inspired by physical and social systems with an upfront focus on the famous simulated annealing algorithm.
+
+\begin{enumerate}
+	\item Simulated Annealing
+	\item Adaptive Simulated Annealing
+	\item Memetic Algorithm	
+	\item Extremal Optimization
+	\item Cultural Algorithm
 \end{enumerate}
 
 \subsection{Evolutionary Algorithms}
+A focus on the classical evolutionary algorithms, followed by some newer and popular approaches and some for multiple objective optimization. I'd really like to present many more algorithms from this kingdom such as island, cellular, and niching approaches.
+
 \begin{enumerate}
 	\item Genetic Algorithm
 	\item Genetic Programming
 	\item Evolutionary Programming
-	\item Differential Evolution
 	\item Evolution Strategies
 	\item Learning Classifier System
+	\item Genitor Algorithm
+	\item Differential Evolution
 	\item Grammatical Evolution
 	\item Non-dominated Sorting Genetic Algorithm
 	\item Strength Pareto Evolutionary Algorithm
-	\item Genitor Algorithm
+\end{enumerate}
+
+\subsection{Probabilistic Algorithms}
+Those techniques concerned with managing a probabilistic model of a domain, most an extension of algorithms from evolutionary computation.
+
+\begin{enumerate}
+	\item Cross-entropy method
+	\item Population-based incremental learning
+	\item Probabilistic Incremental Program Evolution
+	\item Compact Genetic Algorithm
+	\item Extended Compact Genetic Algorithm
+	\item Bayesian Optimization Algorithm
+	\item Hierarchical Bayesian Optimization Algorithm
+	\item Univariate Marginal Distribution Algorithm
+	\item Bivariate Marginal Distribution Algorithm
+	\item Gaussian Adaptation
 \end{enumerate}
 
 \subsection{Swarm Algorithms}
+Approaches related to the principle of collective intelligence such as particle swarm, ant colony, bee, wasp, and bacterial algorithms. 
+
 \begin{enumerate}
 	\item Particle Swarm Optimization
-	\item Ant System
-	\item Ant Colony System
 	\item AntNet
+	\item Ant System
 	\item MAX-MIN Ant System
-	\item Multiple Ant Colony System
-	\item Pareto Ant Colony Optimization
 	\item Rank-Based Ant System
-	\item Bees Algorithms
+	\item Ant Colony System
+	\item Multiple Ant Colony System
 	\item Population-based Ant Colony Optimization
+	\item Pareto Ant Colony Optimization
+	\item Bees Algorithms
 \end{enumerate}
 
 \subsection{Immune Algorithms}
+Algorithms from the field of Artificial Immune Systems, mostly clonal selection approaches.
+
 \begin{enumerate}
 	\item Clonal Selection Algorithm
 	\item Negative Selection Algorithm
 	\item Artificial Immune Recognition System
 	\item Immune Network Algorithm
 	\item B-Cell Algorithm
-\end{enumerate}
-
-\subsection{Probabilistic Algorithms}
-\begin{enumerate}
-	\item Expectation-maximization algorithm
-	\item Population-based incremental learning
-	\item Cross-entropy method
-	\item Bayesian Optimization Algorithm
-	\item Compact Genetic Algorithm
-	\item Univariate Marginal Distribution Algorithm
-	\item Probabilistic Incremental Program Evolution
-	\item Hierarchical Bayesian Optimization Algorithm
-	\item Extended Compact Genetic Algorithm
-	\item Bivariate Marginal Distribution Algorithm
-\end{enumerate}
-
-\subsection{Physical Algorithms}
-\begin{enumerate}
-	\item Simulated Annealing
-	\item Memetic Algorithm
-	\item Adaptive Simulated Annealing
-	\item Extremal Optimization
-	\item Cultural Algorithm
 \end{enumerate}
 
 % 
