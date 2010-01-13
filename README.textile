@@ -14,10 +14,16 @@ A listing of outcomes from the project.
 
 h3. Book Manuscripts
 
-* Milestone 1: Draft book structure including title, parts, chapters, sections, and subsections. ( "done":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone1-20100113.pdf )
-* Milestone 2: Draft preface and background chapters. (_in progress_)
-* Milestone 3: Draft ten algorithm descriptions. (_next_)
-* Milestone 4: Draft twenty algorithm descriptions. (_future_)
+* Milestone 01: Draft book structure including title, parts, chapters, sections, and subsections. ( "done":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone1-20100113.pdf )
+* Milestone 02: Draft preface and background chapters. (_in progress_)
+* Milestone 03: Draft 10 algorithm descriptions. (_next_)
+* Milestone 04: Draft 20 algorithm descriptions. (_future_)
+* Milestone 05: Draft 30 algorithm descriptions.
+* Milestone 06: Draft 40 algorithm descriptions.
+* Milestone 07: Draft 50 algorithm descriptions.
+* Milestone 08: Draft extension chapters.
+* Milestone 09: Edit the first complete draft.
+* Milestone 10: Send out complete draft for third-party editing & review.
 * ...
 
 h3. Technical Reports
