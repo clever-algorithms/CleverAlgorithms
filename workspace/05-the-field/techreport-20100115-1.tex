@@ -73,13 +73,15 @@ Scruffy AI approaches are defined as relatively simple procedures that result in
 % 
 \section{Natural Computation}
 \label{sec:natural_computation}
-An important perspective on scruffy Artificial Intelligence is the motivation and inspiration for the core information processing strategy of a given technique. Computers can only do what they are instructed, therefore a consideration of Computational Intelligence is to distill information principles and strategies from other fields of study, such as the physical world and biology. The study of biologically motivated Computational Intelligence may be called Biologically Inspired Computing \cite{Castro2005a}, and is one of three related fields of Natural Computing \cite{Forbes2000, Forbes2005, Paton1994}. Natural Computing is an interdisciplinary field concerned with the relationship of computation and biology, which in addition to Biologically Inspired Computing also comprises of Computationally Motivated Biology and Computing with Biology \cite{Paun2005, Marrow2000}. Therefore, the field of Artificial Intelligence, specifically the scruffy variety of Computational Intelligence motivates this work from the perspective of an intelligent problem-solving strategy in computer science, whereas the field of Natural Computing, specifically the Biological Inspired Computation variety motivates the actual principles and information processing capabilities of the strategy.
+An important perspective on scruffy Artificial Intelligence is the motivation and inspiration for the core information processing strategy of a given technique. Computers can only do what they are instructed, therefore a consideration of Computational Intelligence is to distill information principles and strategies from other fields of study, such as the physical world and biology. The study of biologically motivated Computational Intelligence may be called Biologically Inspired Computing \cite{Castro2005a}, and is one of three related fields of Natural Computing \cite{Forbes2000, Forbes2005, Paton1994}. 
+
+Natural Computing is an interdisciplinary field concerned with the relationship of computation and biology, which in addition to Biologically Inspired Computing also comprises of Computationally Motivated Biology and Computing with Biology \cite{Paun2005, Marrow2000}. Therefore, the field of Artificial Intelligence, specifically the scruffy variety of Computational Intelligence motivates this work from the perspective of an intelligent problem-solving strategy in computer science, whereas the field of Natural Computing, specifically the Biological Inspired Computation variety motivates the actual principles and information processing capabilities of the strategy.
 
 \subsection{Biologically Inspired Computation}
 Computation inspired by biological metaphor, also referred to as \emph{Biomimicry}, and \emph{Biomemetics} in other engineering disciplines \cite{Castro2005, Benyus1998}. The intent is to devise mathematical or engineering tools to address problem domains. Biologically Inspired Computation fits into this category, as do other non-computational areas of problem solving not discussed. At its simplest, its using solutions (a procedure for finding solutions is considered a solution) found in the biological environment.
 
-\subsection{Computational Biology}
-Investigating biology with computers. The intent of this area is to use information sciences and simulation to model biological systems in digital computers with the aim to replicate and better understand behaviors in biological systems. The field facilitates the ability to better understand life-as-it-is and investigate life-as-it-could-be. Typically, work in this sub-field is not concerned with the construction of mathematical and engineering tools, rather it is focused on simulating natural phenomena. Common examples include digital ecosystems, simulation, Artificial Life, Fractal Geometry (L-systems, Iterative Function Systems, Particle Systems, Brownian motion), and Cellular Automata.
+\subsection{Computationally Motivated Biology}
+Investigating biology with computers. The intent of this area is to use information sciences and simulation to model biological systems in digital computers with the aim to replicate and better understand behaviors in biological systems. The field facilitates the ability to better understand life-as-it-is and investigate life-as-it-could-be. Typically, work in this sub-field is not concerned with the construction of mathematical and engineering tools, rather it is focused on simulating natural phenomena. Common examples include Artificial Life, Fractal Geometry (L-systems, Iterative Function Systems, Particle Systems, Brownian motion), and Cellular Automata. A related field is that of Computational Biology generally concerned with modeling biological systems and the application of statistical methods such as in the sub-field of bioinformatics.
 
 \subsection{Computation with Biology}
 The investigation of substrates other than silicon in which to implement computation \cite{Aaronson2005}. Common examples include molecular or DNA Computing and Quantum Computing.
@@ -89,13 +91,13 @@ The investigation of substrates other than silicon in which to implement computa
 % 
 \section{Computational Intelligence}
 \label{sec:computationl_intelligence}
-A modern name for the sub-field of AI concerned with sub-symbolic (messy, scruffy, soft) mechanisms is Computational Intelligence. This name provides a banner which groups four principle approaches: Fuzzy Intelligence, Connectionist Intelligence, Evolutionary Intelligence, and Swarm Intelligence \cite{Engelbrecht2007, Pedrycz1997}. Generally, Computational Intelligence describes techniques that focus on \emph{strategy} and \emph{outcome}. The following provides a summary of the four primary areas of study in Computational Intelligence:
+A modern name for the sub-field of AI concerned with sub-symbolic (messy, scruffy, soft) mechanisms is Computational Intelligence. This name provides a banner which groups four principle approaches: Fuzzy Intelligence, Connectionist Intelligence, Evolutionary Intelligence, and Swarm Intelligence \cite{Engelbrecht2007, Pedrycz1997}. Generally, Computational Intelligence describes techniques that focus on \emph{strategy} and \emph{outcome}. This section provides a summary of the four primary areas of study in Computational Intelligence.
 
 \subsection{Evolutionary Computation} 
-A paradigm that is concerned with the investigation of systems inspired by the neo-Darwinian theory of evolution by means of natural selection. Popular evolutionary algorithms include the Genetic Algorithm, Evolution Strategy, Genetic and Evolutionary Programming, and Differential Evolution. The evolutionary process is considered an adaptive strategy and is typically applied to search and optimization domains.
+A paradigm that is concerned with the investigation of systems inspired by the neo-Darwinian theory of evolution by means of natural selection. Popular evolutionary algorithms include the Genetic Algorithm, Evolution Strategy, Genetic and Evolutionary Programming, and Differential Evolution \cite{Baeck2000, Baeck2000a}. The evolutionary process is considered an adaptive strategy and is typically applied to search and optimization domains \cite{Goldberg1989, Holland1975}.
 
 \subsection{Swarm Intelligence} 
-A paradigm that considers collective intelligence emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields (1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the stigmergy and foraging behavior of ants, and (2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish. Like evolutionary computation, swarm intelligences are considered adaptive strategies and are typically applied to search and optimization domains.
+A paradigm that considers collective intelligence emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields (1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the stigmergy and foraging behavior of ants \cite{Bonabeau1999, Dorigo2004}, and (2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish \cite{Shi2001}. Like evolutionary computation, swarm intelligences are considered adaptive strategies and are typically applied to search and optimization domains.
 
 \subsection{Connectionist Intelligence}
 An approach that is concerned with the investigation of architectures and learning strategies inspired by the modeling of neurons in the brain called Artificial Neural Networks. Learning strategies are typically divided into supervised and unsupervised which manage environmental feedback in different ways. Neural network learning processes are considered adaptive learning and are typically applied to function approximation and pattern recognition domains.
@@ -108,25 +110,23 @@ An approach that is concerned with the investigation of fuzzy logic which is a f
 % 
 \section{Metaheuristics}
 \label{sec:metaheuristics}
-A second popular and general name for the strategy-outcome perspective of scruffy AI is Metaheuristics, which evolved from the neater field of heuristics methods applied in Operations Research. A metaheuristic is defined as a general algorithmic framework which can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem [48]. Another important perspective is that provided by the field of Machine Learning that focuses on the learning properties of Artificial Intelligence. The term is commonly used to describe inductive model building techniques (that generalize from specific observations) that are applied to ‘learn’ relationships in data sets (the application of which is referred to as Data Mining [433]), with or without supervision (corrective behavior) [293].
-
-
-Approaches embody the the adaptive principles of natural and biological systems and also fall into the field of \emph{Machine Learning}. This is a sub-field of AI primarily concerned with investigating statistical computational learning as well as learning strategies and algorithms. A final and more recent perspective for such approaches is \emph{Metaheuristics} that proposes such strategies guide simpler problem specific heuristics for problem solving.
-
-classical paper on the topic \cite{Blum2003}
+Another popular and general name for the strategy-outcome perspective of scruffy AI is \emph{Metaheuristics} that evolved from the neater field of heuristics methods applied in Operations Research. A metaheuristic is defined as a general algorithmic framework which can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Blum2003}. 
 
 \subsection{Heuristics}
+classical heuristics
 
 \subsection{Meta-Heuristics}
+todo
 
 \subsection{Hyper-Heuristics}
-
+todo
 
 % 
 % Machine Learning
 % 
 \section{Machine Learning}
 \label{sec:machine_learning}
+Another important perspective is that provided by the field of Machine Learning that focuses on the learning properties of Artificial Intelligence. The term is commonly used to describe inductive model building techniques (that generalize from specific observations) that are applied to ‘learn’ relationships in data sets (the application of which is referred to as Data Mining [433]), with or without supervision (corrective behavior) [293].
 
 \subsection{Statistical Machine Learning}
 
