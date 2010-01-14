@@ -27,9 +27,6 @@
 
 
 require 'rubygems'
-module JSON
-  VARIANT_BINARY = false # hack - god knows why i need it (I get a VARIANT_BINARY undefined error)
-end
 require 'json'
 require 'net/http'
 require 'hpricot'
