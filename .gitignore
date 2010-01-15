@@ -4,6 +4,7 @@ book/*.pdf
 book/*.toc
 book/*.out
 book/*.log
+book/*.synctex.gz
 workspace/**/*.bbl
 workspace/**/*.blg
 workspace/**/*.toc
@@ -12,6 +13,7 @@ workspace/**/*.pdf
 workspace/**/*.out
 workspace/**/*.log
 workspace/*.bak
+workspace/**/*.synctex.gz
 deprecated/**/*.toc
 deprecated/**/*.aux
 deprecated/**/*.pdf
