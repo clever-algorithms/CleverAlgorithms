@@ -32,7 +32,8 @@ h3. Technical Reports
 * Jason Brownlee. "A Template for Standardized Algorithm Descriptions":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100107-1.pdf. Technical Report CA-TR-20100107-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "The Clever Algorithms Project: Inspiring Works":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100109-1.pdf. Technical Report CA-TR-20100109-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Data-Driven Optimization Algorithm Selection":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100112-1.pdf. Technical Report CA-TR-20100112-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
-* ...
+* Jason Brownlee. "A Gentle Introduction to AI: Natural Computation, Computational Intelligence and Metaheuristics":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100115-1.pdf. Technical Report CA-TR-20100115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
+* ...
 
 h3. Software
 
