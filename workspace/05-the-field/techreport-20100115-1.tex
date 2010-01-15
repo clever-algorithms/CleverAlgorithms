@@ -106,22 +106,32 @@ An approach that is concerned with the investigation of architectures and learni
 An approach that is concerned with the investigation of fuzzy logic which is a form of logic that is not constrained to true and false like propositional logic, but rather functions which define approximate truth or degree’s of truth \cite{Zadeh1996}. Fuzzy logic and fuzzy systems are a logic system used as a reasoning strategy and are typically applied to expert system and control system domains.
 
 % 
-% Metaheuristics - based on some copy from my thesis
+% Metaheuristics
 % 
 \section{Metaheuristics}
 \label{sec:metaheuristics}
-Another popular and general name for the strategy-outcome perspective of scruffy AI is \emph{Metaheuristics} that evolved from the neater field of heuristics methods applied in Operations Research. A metaheuristic is defined as a general algorithmic framework which can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Blum2003}. 
+Another popular and general name for the strategy-outcome perspective of scruffy AI is \emph{Metaheuristics}. 
+% heuristics
+A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct \cite{Michalewicz2004}. Heuristic methods trade of concerns such as precision, quality, and accuracy in favor of computational effort (space and time). Some examples of heuristic methods include enumerative and greedy search procedures.
 
-\subsection{Heuristics}
-classical heuristics
+% meta
+Like heuristics, metaheuristic may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem. The difference is that Metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is black-box in that it little if any prior knowledge is known about it by the meta-heuristic and as such it may be replaced with a different procedure. Procedures may be as simple as a manipulation of a representation, to as complex as another metaheuristic \cite{Glover2003, Talbi2009}. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
 
-\subsection{Meta-Heuristics}
-todo
+Blum and Roli outline nine properties of metaheuristics \cite{Blum2003}, as follows: 
+\begin{itemize}
+	\item Metaheuristics are strategies that ``guide'' the search process.
+	\item The goal is to efficiently explore the search space in order to find (near-)optimal solutions.
+	\item Techniques which constitute metaheuristic algorithms range from simple local search procedures to complex learning processes.
+	\item Metaheuristic algorithms are approximate and usually non-deterministic.
+	\item They may incorporate mechanisms to avoid getting trapped in confined areas of the search space.
+	\item The basic concepts of metaheuristics permit an abstract level description.
+	\item Metaheuristics are not problem-specific.
+	\item Metaheuristics may make use of domain-specific knowledge in the form of heuristics that are controlled by the upper level strategy.
+	\item Todays more advanced metaheuristics use search experience (embodied in some form of memory) to guide the search.
+\end{itemize}
 
-see \cite{Glover2003} and \cite{Talbi2009}
-
-\subsection{Hyper-Heuristics}
-todo
+% hyper
+Hyperheuristics are yet another extension that focus on heuristics that modify their parameters (online or offline) to improve the efficacy of solution or efficiency of the computation. Hyperheuristics provide high-level strategies that may employ machine learning and adapt their search behavior by modifying the application of the sub-procedures or even which procedures are used (operating on the space of heuristics which in turn operate within the problem domain) \cite{Burke2003a, Burke2003}. 
 
 % 
 % Machine Learning
