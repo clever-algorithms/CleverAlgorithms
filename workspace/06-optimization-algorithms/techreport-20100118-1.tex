@@ -31,28 +31,86 @@
 
 % write a summary sentence for each major section
 \section*{Abstract} 
-This is the abstract. Consider writing a one sentence summary of each major section in the report.
+todo
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Keywords, Go, Here}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Unconventional, Optimization}}
 \end{description} 
 
 % summarise the document breakdown with cross references
 \section{Introduction}
 \label{sec:introduction}
-This is the introduction. Consider summarizing the message of the document, then provide a breakdown of the sections of the document with cross references.
+% project
 
-\section{A Section}
-\label{sec:a_section}
-Write things!
+% report
 
-\subsection{A SubSection}
-Write more things!
+% breakdown
 
-% summarise the document message and areas for future consideration
+What do we need to know about this general class of algorithms: unconventional optimization
+nomenclature
+
+% 
+% Black-Box Methods
+% 
+\section{Black-Box Methods}
+\label{sec:black_box}
+They make little or few assumptions about the problem domain
+
+
+% 
+% Randomness
+% 
+\section{Randomness}
+The are stochastic processes.
+
+stochastic global optimization
+
+% 
+% State Space
+% 
+\section{State Space}
+The typically require the problem to be phrased as a search space which is traversed and sampled.
+We care about the size of moves, the patters of sampling and re-sampling, the number of samples managed.
+
+% 
+% Induction
+% 
+\section{Induction}
+The typically learn by doing (trial and error)
+generate, guess, revise
+
+
+% 
+% No Free Lunch
+% 
+\section{No Free Lunch}
+\label{sec:nfl}
+all the same across all problems with no prior info
+
+
+% 
+%  Problems
+% 
+\section{Problems}
+\label{sec:problems}
+lots of hard problems
+a book out there has a summary of the general properties of problems to which these techniques are suited
+
+What types of computational problems are we solving with these algorithms?
+Give example classes for each, give canonical instances for each (all covered in this book)
+
+\subsection{Function Optimization}
+Generate a set of parameters (continuous) or something like a permutation (combinatorial).
+
+\subsection{Function Approximation}
+Generate a representation that produces outputs in the presence of inputs.
+
+% 
+% Conclusions: summarise the document message and areas for future consideration
+% 
 \section{Conclusions}
 \label{sec:conclusions}
-This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
+todo
 
 % bibliography
 \bibliographystyle{plain}
