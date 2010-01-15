@@ -31,7 +31,13 @@
 
 % write a summary sentence for each major section
 \section*{Abstract} 
-todo
+The Clever Algorithms project is concerned with the complete, consistent, and centralized description of a number of algorithms from the field of Artificial Intelligence.
+% AI
+Artificial Intelligence is a large and diverse field concerned with the study of intelligent systems, and as such, may be considered a confluence of may other disciplines.
+% report
+This report provides a gentle introduction to the field of AI focusing on the classical neat and the newer scruffy pursuits. These two streams provide a context for a high-level introduction to the fields from which the techniques from the Clever Algorithms are drawn, namely: Natural Computation, Computational Intelligence, and Metaheuristics.
+% future
+The report ends with a discussion on the selection and intention of the phrase `clever algorithms' used in the project as well as some ares for future consideration.
 
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Artificial, Intelligence, Computational, Metaheuristics}}
@@ -120,7 +126,7 @@ Another popular and general name for the strategy-outcome perspective of scruffy
 A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct \cite{Michalewicz2004}. Heuristic methods trade of concerns such as precision, quality, and accuracy in favor of computational effort (space and time). Some examples of heuristic methods include enumerative and greedy search procedures.
 
 % meta
-Like heuristics, metaheuristic may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem. The difference is that Metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is black-box in that it little if any prior knowledge is known about it by the meta-heuristic and as such it may be replaced with a different procedure. Procedures may be as simple as a manipulation of a representation, to as complex as another metaheuristic \cite{Glover2003, Talbi2009}. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
+Like heuristics, metaheuristic may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Glover2003, Talbi2009}. The difference is that Metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is black-box in that it little if any prior knowledge is known about it by the meta-heuristic and as such it may be replaced with a different procedure. Procedures may be as simple as a manipulation of a representation, to as complex as another metaheuristic. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
 
 Blum and Roli outline nine properties of metaheuristics \cite{Blum2003}, as follows: 
 \begin{itemize}
@@ -143,18 +149,16 @@ Hyperheuristics are yet another extension that focus on heuristics that modify t
 % 
 \section{Clever Algorithms}
 \label{sec:clever_algorithms}
-This books is concerned with the algorithms, their general strategies, and their inspiration drawn from across these sub-fields of Artificial Intelligence and Computer Science. The term \emph{Clever Algorithms} is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner: \emph{algorithms drawn from the field of artificial intelligence whose strategies are inspired by a natural or physical systems}. The term is intended for accessibility, not as a new branch of study, a branch that perhaps already has too many names.
+% algorithm soures
+The Clever Algorithms project is concerned with algorithm drawn from across many sub-fields of Artificial Intelligence not limited to the scruff fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics. 
+% focus
+The current set of algorithms selected to be described in the project may generally be referred to as `unconventional optimization algorithms' (for example, see \cite{Corne1999}), as optimization is the main form of computation provided by the listed approaches \cite{Brownlee2010b}. A technically more appropriate name for these approaches is Stochastic Global Optimization (for example, see \cite{Weise2007} and \cite{Luke2009}).
 
-Really, the project is currently focused on `unconventional optimization algorithms' from Artificial Intelligence.
+% the name
+The term \emph{Clever Algorithms} is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner. An alternative name (\emph{Inspired Algorithms}) was considered although ultimately rejected given that not all of the algorithms to be described in the project have an inspiration (specifically a biological or physical inspiration) for their computational strategy. The term `Clever Algorithms' was chosen for accessibility and not as a new branch of study (a branch that perhaps already has too many names). It is general enough that it may be used to describe any so-called `intelligent systems', and sufficiently underutilized (from a marketing perspective) that it may be specialized as needed, such as its current application to unconventional optimization algorithms. The generality also mans that project may be extended into a series and cover model-generating algorithms such as fuzzy systems and artificial neural networks without ambiguity.
 
-so where do clever algorithms fit into all of this?
-all and any really
-
-
-\subsection{Global Optimization}
-global search, local search, MCMC, other techniques
-search using bits of randomness
-
+% furure
+This gentle introduction to Artificial Intelligence was not exhaustive, focusing only on the duality of scruffy and neat approaches as a context for discussing the three areas of interest for the Clever Algorithms Project. A useful extension to this work would be an explicit listing (annotated bibliography) of reference books and articles that may be used by interested readers to gain a deeper understanding of each of the fields introduced in this report. Additional future efforts may consider the relationship of Statistical Machine Learning to artificial intelligence and the difference of the perspective on intelligent systems compared to those considered in this report, especially considering that there exists some overlap of approaches. 
 
 % bibliography
 \bibliographystyle{plain}
