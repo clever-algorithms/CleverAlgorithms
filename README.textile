@@ -10,7 +10,7 @@ This is a repository for the Clever Algorithms project for hosting, versioning, 
 
 h2. Outcomes
 
-A listing of outcomes from the project.
+A listing of outcomes and deliverables from the project.
 
 h3. Book Manuscripts
 
@@ -39,6 +39,7 @@ h3. Technical Reports
 h3. Software
 
 * "Algorithm Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithm_selection/ : A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. 
+* ...
 
 h2. Breakdown
 
