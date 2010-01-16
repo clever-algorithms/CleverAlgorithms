@@ -41,13 +41,12 @@ todo
 \section{Introduction}
 \label{sec:introduction}
 % project
-
+The Clever Algorithms project aims to describe a large number of Computational Intelligence and Natural Computation algorithms in a complete, consistent, and centralized manner \cite{Brownlee2010}.
 % report
-
+This report provides an overview of so-called `unconventional optimization algorithms'. These are stochastic global optimization algorithms drawn from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheurustics \cite{Brownlee2010c}.
 % breakdown
+This overview provides a context for stochastic global optimization\ldots
 
-What do we need to know about this general class of algorithms: unconventional optimization
-nomenclature
 
 % 
 % Black-Box Methods
@@ -58,52 +57,157 @@ They make little or few assumptions about the problem domain
 
 
 % 
+% No Free Lunch - based on copy from my thesis
+% 
+\subsection{No Free Lunch}
+
+Wolpert and Macready's \emph{No Free Lunch Theorem} of search and optimization has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms \cite{Wolpert1997, Wolpert1995}. In simplest terms, the theory indicates that when searching for an extremum of a cost function, \emph{all algorithms perform the same when averaged over all possible cost functions}. The implication is that the often perused general-purpose optimization algorithm is theoretically impossible. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for benchmarking cynicism is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
+
+% more
+The theorem is an important contribution to computer science, although its implications are theoretical. The original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to \emph{bound claims of applicability}. Wolpert and Macready encouraged effort be put into devising practical problem classes and the matching of suitable algorithms to problem classes. Further they compelled practitioners to exploit domain knowledge in optimization algorithm application, now an axiom in the field.
+
+
+% 
 % Randomness
 % 
 \section{Randomness}
 The are stochastic processes.
-
 stochastic global optimization
 
-% 
-% State Space
-% 
-\section{State Space}
-The typically require the problem to be phrased as a search space which is traversed and sampled.
-We care about the size of moves, the patters of sampling and re-sampling, the number of samples managed.
+The interaction with the problem and the resultant adaptation have an inherent element of randomness that promotes approximation of acquired information, general robustness of the system to noise, and flexibility of the system to unexpected events. 
+
 
 % 
 % Induction
 % 
-\section{Induction}
+\subsection{Induction}
 The typically learn by doing (trial and error)
 generate, guess, revise
 
+Information is acquired and generalised from discrete and specific examples provided by the problem.
+
+% generally
+The cellular algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behaviour is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
+% k-bandit
+This method of simultaneously improving information and optimising decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989a}.
 
 % 
-% No Free Lunch
+% Stochastic Optimization
 % 
-\section{No Free Lunch}
-\label{sec:nfl}
-all the same across all problems with no prior info
+\subsection{Adaptation}
+The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modelled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov chain Monte Carlo method \cite{Andrieu2003, Clark2005} (sampling from a target distribution function using a Markov chain mechanism). This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data. 
+
+
+
+% 
+% Adaptation
+% 
+\subsection{Adaptation}
 
 
 % 
-%  Problems
+% Satisficing
+% 
+\subsection{Satisficing}
+
+% online
+Finally, the induction is performed in a piece-wise or \emph{online} manner satisficing the concerns of \emph{real-time} data, with potentially \emph{dynamic} changes that may be benign or \emph{adversarial} with regard to the internal model.
+
+
+% 
+% State Space
+% 
+\subsection{State Space}
+The typically require the problem to be phrased as a search space which is traversed and sampled.
+We care about the size of moves, the patters of sampling and re-sampling, the number of samples managed.
+
+
+
+
+
+
+% 
+%  Problems - based on copy from my thesis
 % 
 \section{Problems}
 \label{sec:problems}
 lots of hard problems
 a book out there has a summary of the general properties of problems to which these techniques are suited
-
 What types of computational problems are we solving with these algorithms?
 Give example classes for each, give canonical instances for each (all covered in this book)
 
-\subsection{Function Optimization}
+
+
+% 
+%  Function Optimization - based on copy from my thesis
+%
+\section{Function Optimization}
 Generate a set of parameters (continuous) or something like a permutation (combinatorial).
 
-\subsection{Function Approximation}
+
+% relation to ai and ci
+Real-world optimisation problems and generalisations thereof can be drawn from most fields of science, engineering, and information technology (for a sample see \cite{Ali1997, Toern1999}). Importantly, optimisation problems have had a long tradition in the fields of Artificial Intelligence and Computational Intelligence in motivating basic research into new problem solving techniques, and for investigating and verifying systemic behaviour against benchmark problem instances.
+% this section
+This section considers the \emph{Function Optimisation Formalism} and related specialisations as a general motivating problem for demonstrating the suitability of the applicability of clonal selection algorithms from across the hierarchical framework.
+% specifically
+This is achieved firstly with a review of the problem formalism, nomenclature, and related sub-fields. Selected Artificial and Computational Intelligence research is reviewed that demonstrate feature overlap with concerns from at least one of the three clonal selection paradigms, highlighting relevant problem features that such algorithms may exploit. Finally, the Cellular, Tissue, and Host Clonal Sselection Paradigms are mapped onto general cases of Function Optimisation problems to which they are suited.
+
+%
+% Sub-fields
+%
+\subsubsection{Sub-Fields of Study}
+% general taxonomy
+The study of optimisation is comprised of many specialised sub-fields, generally based on an overlapping taxonomy that focuses on the principle concerns in the general formalism. 
+% general fields
+For example, with regard to the decision variables, one may consider univariate and multivariate optimisation problems. The type of decision variables promotes the specialities for continuous, discrete, and permutations of variables. Dependencies between decision variables under a cost function defines the fields of Linear Programming, Quadratic Programming, and Nonlinear Programming. A large class of optimisation problems can be reduced to discrete sets, which are considered in the field of Combinatorial Optimisation, to which many theoretical properties are known, most importantly that many interesting and relevant problems cannot be solved by an approach with polynomial time complexity (so-called NP-complete, for example see \cite{Papadimitriou1998}).
+
+% need for more complex models
+The topography of the response surface for the decision variables under the cost function may be convex, which is an important class of functions to which many important theoretical findings have been made, not limited to the fact that location of the local optimal configuration also means the global optimal configuration of decisional variables has been located \cite{Boyd2004}. Many interesting and real-world optimisation problems produce cost surfaces that are non-convex or so called multi-modal\footnote{Taken from statistics referring to the centres of mass in distributions, although in optimisation it refers to `regions of interest' in the search space, in particular valleys in minimisation, and peaks in maximisation cost surfaces.} (rather than uni-modal) suggesting that there are multiple peaks and valleys. Further, many real-world optimisation problems with continuous decision variables cannot be differentiated given their complexity or limited information availability meaning that derivative-based gradient decent methods that are well understood are not applicable, requiring the use of so-called `direct search' (sample or pattern-based) methods \cite{Lewis2000}. Further, real-world objective function evaluation may be noisy, non-continuous, and dynamic, and the constraints of real-world problem solving may require a viable or approximate solution in limited time or resources, motivating the need for inductive model-generation based approaches.
+
+
+% 
+%  Function Approximation - based on copy from my thesis
+%
+\section{Function Approximation}
 Generate a representation that produces outputs in the presence of inputs.
+
+
+% relation to ai and ci
+The phrasing of real-world problems in the Function Approximation formalism are among the most computationally difficult considered in the broader field of Artificial Intelligence for reasons including: incomplete information, high-dimensionality, noise in the sample observations, and non-linearities in the target function.
+% this section
+This section considers the \emph{Function Approximation Formalism} and related specialisations as a general motivating problem for demonstrating the suitability of the applicability of clonal selection algorithms from across the hierarchical framework.
+% specifically
+Firstly the general problem is reviewed including standard nomenclature and a summary of sub- and related fields of study. Selected Artificial and Computational Intelligence research is reviewed that demonstrate feature overlap with concerns from at least one of the three clonal selection paradigms, highlighting relevant problem features that such algorithms may exploit. Finally, the Cellular, Tissue, and Host Clonal Selection Paradigms are mapped onto general cases of Function Approximation problems to which that are proposed to be well suited.
+
+%
+% Problem Definition
+%
+\subsubsection{Problem Description}
+% definition
+Function Approximation (in the mathematical sense) is an \emph{inductive problem} of finding a function ($f$) that approximates a target function ($g$), where typically the approximated function is selected based on a sample of observations ($x$, also referred to as the \emph{training set}) taken from the unknown target function.
+% ML
+In machine learning, the function approximation formalism is used to describe general problem types commonly referred to as \emph{pattern recognition}, such as classification, clustering, and curve fitting (so-called decision or discrimination function). Specifically, such general problem types are described in terms of approximating an unknown Probability Density Function (PDF), which underlies the relationships in the problem space, and represented to some degree in the sample data. This function approximation perspective of such problems is commonly referred to as \emph{statistical machine learning} and/or density estimation \cite{Fukunaga1990, Bishop1995}.
+
+
+%
+% Sub-Fields of Study
+%
+\subsubsection{Sub-Fields of Study}
+% really hard
+The function approximation formalism can be used to phrase some of the hardest problems faced by Computer Science, and Artificial Intelligence in particular such as natural language processing and computer vision. 
+% general process
+The general process focuses on (1) the collection and preparation of the observations from the target function, (2) the selection and/or preparation of a model of the target function, and (3) the application and ongoing refinement of the prepared model. 
+% important problem types 
+Some important problem-based sub-fields include: \emph{Feature Selection} where a feature is considered an aggregation of attributes, where only those features that have meaning in the context of the target function are necessary to the modelling process \cite{Kudo2000, Guyon2003}, \emph{Classification} where observations are inherently organised into labelled groups (classes) and a supervised process models an underlying discrimination function to classify unobserved samples, \emph{Clustering} where observations may be organised into inherent groups based on common features although the groups are unlabelled requiring a process to model an underlying discrimination function without corrective feedback, and \emph{Curve or Surface Fitting} where a model is prepared that provides a `best-fit' (or regression) for a set of observations that may be used for \emph{interpolation} over known observations and \emph{extrapolation} for observations outside what has been observed.
+
+% optimisation
+The field of Function Optimisation is related to Function Approximation, as many-sub-problems of Function Approximation may be defined as optimisation problems. As such many of the inductive modelling paradigms are differentiated based on the representation used and/or the optimisation process used to minimise error or maximise effectiveness on a given approximation problem. 
+% problems
+The difficulty of Function Approximation problems centre around (1) the nature of the unknown relationships between attributes and features, (2) the number (dimensionality) of of attributes and features, and (3) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
+% other problems
+Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling and skewing of features).
+
+
 
 % 
 % Conclusions: summarise the document message and areas for future consideration
