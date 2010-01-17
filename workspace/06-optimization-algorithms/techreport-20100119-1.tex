@@ -90,8 +90,34 @@ stochastic global optimization
 
 The interaction with the problem and the resultant adaptation have an inherent element of randomness that promotes approximation of acquired information, general robustness of the system to noise, and flexibility of the system to unexpected events. 
 
+Monte Carlo methods
+selecting a statistical sample to approximate a function
+initially used in statistical physics
+draw a set of samples from a target density function (high dimensional space)
+can involve rejection sampling - not including samples into the set - rejecting them based on criteria
+can bias sampling based on importance of variables
+
+approximate a function with a set of samples. 
+draw samples sequentially
+
+Markov Chain Processes
+about probabilistically performing state transitions in a discrete space domain
+should not get trapped in cycles
+all about state transition probabilities
+
+MCMC
+used to solve integration and optimization problems in large dimensional spaces
+generate samples while exploring a high-dimensional space using a Markov chain process - configured so that the chain spends more time in the most important regions of the space - biased sampling
+physics, statistics, economics, decision analysis
+algorithms: Metropolis-Hastings algorithms, Simulated annealing for global optimization, the Gibbs sampler
+
+samples are not drawn sequentially, they are drawn in an order determined by a Markov chain process
+
+great overview of algorithms \cite{Andrieu2003}
+
+
 % stochastic 
-The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003, Clark2005}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data.
+The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data.
 
 
 % 
