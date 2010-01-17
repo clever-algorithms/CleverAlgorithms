@@ -55,6 +55,9 @@ Finally, Section~\ref{sec:conclusions} relates the introduction of stochastic gl
 % Global Optimization
 % 
 \section{Global Optimization}
+This selection provides an overview of so-named `Clever Algorithms' which have been described as unconventional optimization algorithms drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
+
+
 \label{sec:global_optimization}
 what is global optimization all about?
 there is also local optimization
@@ -84,40 +87,19 @@ The theorem is an important contribution to computer science, although its impli
 % 
 % Randomness
 % 
-\section{Randomness}
-The are stochastic processes.
-stochastic global optimization
+\subsection{Randomness}
+% Stochastic
+Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. Although the algorithms exploit randomness, they are not random. Rather, they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
+% mcmc
+A class of techniques that focus on the stochastic sampling of a domain are called Markov Chain Monte Carlo (MCMC) that provide good average performance, quickly, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. MCMC approaches involve sampling from a target distribution function stochastically similar to Monte Carlo simulation methods) using a process that resembles a biased Markov chain.
 
-The interaction with the problem and the resultant adaptation have an inherent element of randomness that promotes approximation of acquired information, general robustness of the system to noise, and flexibility of the system to unexpected events. 
+% Monte Carlo
+Monte Carlo methods are used for selecting a statistical sample to approximate a given target probability density function and are traditionally used in statistical physics. Samples are drawn sequentially and the process may include criteria for rejecting samples and biasing the sampling locations within high-dimensional spaces. 
+% Markov Chian
+Markov Chain processes provide a probabilistic model for state transitions or moves within a discrete domain called a walk or a chain of steps. A Markov system is only dependent on the position in the domain in order to probabilistically determine the next step in the walk. 
 
-Monte Carlo methods
-selecting a statistical sample to approximate a function
-initially used in statistical physics
-draw a set of samples from a target density function (high dimensional space)
-can involve rejection sampling - not including samples into the set - rejecting them based on criteria
-can bias sampling based on importance of variables
-
-approximate a function with a set of samples. 
-draw samples sequentially
-
-Markov Chain Processes
-about probabilistically performing state transitions in a discrete space domain
-should not get trapped in cycles
-all about state transition probabilities
-
-MCMC
-used to solve integration and optimization problems in large dimensional spaces
-generate samples while exploring a high-dimensional space using a Markov chain process - configured so that the chain spends more time in the most important regions of the space - biased sampling
-physics, statistics, economics, decision analysis
-algorithms: Metropolis-Hastings algorithms, Simulated annealing for global optimization, the Gibbs sampler
-
-samples are not drawn sequentially, they are drawn in an order determined by a Markov chain process
-
-great overview of algorithms \cite{Andrieu2003}
-
-
-% stochastic 
-The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data.
+% mcmc
+MCMC techniques combine these two approaches to solve integration and optimization problems in large dimensional spaces by generating samples while exploring the space using a Markov chain process rather than sequentially or independently \cite{Andrieu2003}. The step generation is configured to bias sampling in more important regions of the domain. Three examples of MCMC techniques include the Metropolis-Hastings algorithm, Simulated annealing for global optimization, and the Gibbs sampler which are commonly employed in the fields of physics, chemistry, statistics, and economics. 
 
 
 % 
