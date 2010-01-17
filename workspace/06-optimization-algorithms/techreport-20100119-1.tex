@@ -80,35 +80,31 @@ The interaction with the problem and the resultant adaptation have an inherent e
 % 
 % Induction
 % 
-\subsection{Induction}
+\subsection{Adaptive Induction}
 The typically learn by doing (trial and error)
 generate, guess, revise
 
-Information is acquired and generalised from discrete and specific examples provided by the problem.
+Information is acquired and generalized from discrete and specific examples provided by the problem.
 
 % generally
-The cellular algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behaviour is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
+These algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behavior is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. 
+
+% inductive learning
+The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
+
 % k-bandit
-This method of simultaneously improving information and optimising decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989a}.
+This method of simultaneously improving information and optimizing decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989}.
 
 % 
 % Stochastic Optimization
 % 
 \subsection{Adaptation}
-The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modelled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov chain Monte Carlo method \cite{Andrieu2003, Clark2005} (sampling from a target distribution function using a Markov chain mechanism). This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data. 
+
+% stochastic 
+The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003, Clark2005}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data. 
 
 
 
-% 
-% Adaptation
-% 
-\subsection{Adaptation}
-
-
-% 
-% Satisficing
-% 
-\subsection{Satisficing}
 
 % online
 Finally, the induction is performed in a piece-wise or \emph{online} manner satisficing the concerns of \emph{real-time} data, with potentially \emph{dynamic} changes that may be benign or \emph{adversarial} with regard to the internal model.
@@ -131,7 +127,11 @@ We care about the size of moves, the patters of sampling and re-sampling, the nu
 % 
 \section{Problems}
 \label{sec:problems}
-Two problem formalisms that embody many of the most difficult problems faced by Artificial and Computational Intelligence are reviewed: Function Optimization in Section~\ref{subsec:function_optimization} and Function Approximation in Section~\ref{subsec:function_approximation}. Each formalism is described in terms of its general properties, a formalism, and a set of specialized sub-problems. These problem classes provide a tangible framing if algorithmic techniques drawn from the fields of Computational Intelligence, Natural Computing, and Metaheuristics.
+% properties of problems - from that book
+
+
+% classes
+Two problem formalisms that embody many of the most difficult problems faced by Artificial and Computational Intelligence are introduced: Function Optimization in Section~\ref{subsec:function_optimization} and Function Approximation in Section~\ref{subsec:function_approximation}. Each formalism is described in terms of its general properties, a formalism, and a set of specialized sub-problems. These problem classes provide a tangible framing if algorithmic techniques drawn from the fields of Computational Intelligence, Natural Computing, and Metaheuristics.
 
 % 
 %  Function Optimization - based on copy from my thesis
@@ -145,7 +145,7 @@ Real-world optimization problems and generalizations thereof can be drawn from m
 %
 \subsubsection{Problem Description}
 % definition
-Optimization (in the mathematical sense), is defined as the search for a combination of parameters commonly referred to as \emph{decision variables} ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an \emph{objective function} or \emph{cost function} ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x\prime) \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space or cost space. In applied mathematics the field may be referred to as \emph{Mathematical Programming}. More generally the field may be referred to as \emph{Global} or \emph{Function Optimization} given the focus on the objective function (for more general information on optimization, see \cite{Horst2000, Project1995}). 
+Optimization (in the mathematical sense), is defined as the search for a combination of parameters commonly referred to as \emph{decision variables} ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an \emph{objective function} or \emph{cost function} ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x\prime) \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space or cost space. In applied mathematics the field may be referred to as \emph{Mathematical Programming}. More generally the field may be referred to as \emph{Global} or \emph{Function Optimization} given the focus on the objective function (for more general information on optimization, see \cite{Horst2000}). 
 
 %
 % Sub-fields
