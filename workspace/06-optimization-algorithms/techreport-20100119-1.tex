@@ -18,7 +18,7 @@
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
-\newcommand{\myreportdate}{20100118}
+\newcommand{\myreportdate}{20100119}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. All Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -44,22 +44,36 @@ todo
 The Clever Algorithms project aims to describe a large number of Computational Intelligence and Natural Computation algorithms in a complete, consistent, and centralized manner \cite{Brownlee2010}.
 % report
 This report provides an overview of so-called `unconventional optimization algorithms'. These are stochastic global optimization algorithms drawn from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheurustics \cite{Brownlee2010c}.
-% breakdown
-This overview provides a context for stochastic global optimization\ldots
+% global optimization
+Section~\ref{sec:global_optimization} provides an introduction to stochastic global optimization that introduces subjects such as black box methods, the `no free lunch theorem' of search and optimization, the importance of randomness, an and general strategy of inductive learning. 
+% problems
+Section~\ref{sec:problems} provides an overview of the general features that make computational problems difficult in the fields of Computational Intelligence and Metaheuristics and introduces two general classes of problem: function optimization and function approximation.
+% conclusions
+Finally, Section~\ref{sec:conclusions} relates the introduction of stochastic global optimization to the so-named `clever algorithms' from the Clever Algorithms project, and highlights some ares for future consideration.
+
+% 
+% Global Optimization
+% 
+\section{Global Optimization}
+\label{sec:global_optimization}
+what is global optimization all about?
+there is also local optimization
 
 
 % 
-% Black-Box Methods
+% Black Box Methods
 % 
-\section{Black-Box Methods}
-\label{sec:black_box}
-They make little or few assumptions about the problem domain
+\subsection{Black Box Methods}
+they make few assumptions about the problem domain
+generalized problem solvers
+
 
 
 % 
 % No Free Lunch - based on copy from my thesis
 % 
 \subsection{No Free Lunch}
+The `no free lunch theorem' of search is \ldots
 
 Wolpert and Macready's \emph{No Free Lunch Theorem} of search and optimization has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms \cite{Wolpert1997, Wolpert1995}. In simplest terms, the theory indicates that when searching for an extremum of a cost function, \emph{all algorithms perform the same when averaged over all possible cost functions}. The implication is that the often perused general-purpose optimization algorithm is theoretically impossible. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for benchmarking cynicism is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
 
@@ -75,6 +89,9 @@ The are stochastic processes.
 stochastic global optimization
 
 The interaction with the problem and the resultant adaptation have an inherent element of randomness that promotes approximation of acquired information, general robustness of the system to noise, and flexibility of the system to unexpected events. 
+
+% stochastic 
+The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003, Clark2005}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data.
 
 
 % 
@@ -94,30 +111,6 @@ The method of acquiring information is called \emph{inductive learning} (learnin
 
 % k-bandit
 This method of simultaneously improving information and optimizing decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989}.
-
-% 
-% Stochastic Optimization
-% 
-\subsection{Adaptation}
-
-% stochastic 
-The acquired information is generally \emph{approximate}, and is done so using a \emph{stochastic method}. The general method is called Monte Carlo in which randomness is exploited to provide good average performance, quickly, and with a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. The selection method by which induction occurs may be modeled as a series of parallel random walks that exploit gradients in the underlying cost surface (directly, without derivatives), and as such is known as a Markov Chain Monte Carlo (MCMC) method \cite{Andrieu2003, Clark2005}. Generally, MCMC approaches involve sampling from a target distribution function using a process that resembles a Markov Chain. This highlights that the robustness of the approach extends to the induction process itself with regard to an improving approximation in the face of potentially incomplete, incorrect and inconsistent sampled data. 
-
-
-
-
-% online
-Finally, the induction is performed in a piece-wise or \emph{online} manner satisficing the concerns of \emph{real-time} data, with potentially \emph{dynamic} changes that may be benign or \emph{adversarial} with regard to the internal model.
-
-
-% 
-% State Space
-% 
-\subsection{State Space}
-The typically require the problem to be phrased as a search space which is traversed and sampled.
-We care about the size of moves, the patters of sampling and re-sampling, the number of samples managed.
-
-
 
 
 
@@ -205,7 +198,14 @@ Additional difficulties include the incorporation of prior knowledge (such as im
 % 
 \section{Conclusions}
 \label{sec:conclusions}
-todo
+relationship to clever algorithms, what aspects do we care about?
+what is an unconventional optimization algorithm?
+model building compared to search - func approximation compared to func optimization
+
+what other areas could be look at?
+state space, search, adaptation, satisificing
+
+
 
 % bibliography
 \bibliographystyle{plain}
