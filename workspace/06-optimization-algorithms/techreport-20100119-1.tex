@@ -152,7 +152,7 @@ Unconventional optimization algorithms are designed for the more difficult probl
 % 
 % Black Box Methods
 % 
-\subsection{Black Box Methods}
+\subsection{Black Box Algorithms}
 \label{subsec:black_box}
 % overview
 Black Box optimization algorithms are those that exploit little, if any, information from a problem domain in devising a solution. They are generalized problem solving procedures that may be applied to a range of problems with very little modification \cite{Droste2006}.
@@ -192,33 +192,22 @@ Markov Chain processes provide a probabilistic model for state transitions or mo
 % mcmc
 MCMC techniques combine these two approaches to solve integration and optimization problems in large dimensional spaces by generating samples while exploring the space using a Markov chain process rather than sequentially or independently \cite{Andrieu2003}. The step generation is configured to bias sampling in more important regions of the domain. Three examples of MCMC techniques include the Metropolis-Hastings algorithm, Simulated annealing for global optimization, and the Gibbs sampler which are commonly employed in the fields of physics, chemistry, statistics, and economics. 
 
-
 % 
 % Induction
 % 
-\subsection{Adaptive Induction}
+\subsection{Inductive Learning}
 \label{subsec:induction}
-The typically learn by doing (trial and error)
-generate, guess, revise
-
-non-parametric
-
-Information is acquired and generalized from discrete and specific examples provided by the problem.
-
-% generally
-These algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behavior is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. 
+% adaptation
+Many unconventional optimization algorithms employ a process of iterative improvement of candidate solutions against an objective cost function. This process of adaptation is generally a method by which the process obtains characteristics that improve the system's (candidate solution) relative performance in an environment (cost function). This adaptive behavior is commonly achieved through a `selectionist process' of iterative generation, test, and modification. The use of non-deterministic processes mean that the sampling or learning is typically non-parametric, although biased, typically guided by past experience. 
 
 % inductive learning
-The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
+The method of acquiring information is called inductive learning or learning from example, where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Many unconventional optimization approaches maintain a single candidate solution, a population of samples, or a compression thereof that provides both an instantaneous representation of all of information acquired by the process and the basis for future learning. 
 
 % k-bandit
-This method of simultaneously improving information and optimizing decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989}.
+This method of simultaneously acquiring and improving information from the domain and the optimization of decision making (where to direct future effort) is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making or game theory \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This formalism considers the capability of a strategy to allocate available resources proportional to the expected payoff the strategy is expected to receive. The classic example is the 2-armed bandit problem used by Goldberg to describe the behavior of the genetic algorithm \cite{Goldberg1989} where an agent learns about which slot machine provides more return by pulling the handle of each (sampling the domain) and basing which handle to pull proportional to the expected utility (experience with the past distribution of payoff). This formalism may also be used to understand the properties of inductive learning demonstrated by the adaptive behavior of most unconventional optimization algorithms.
 
-
-
-
-
-
+% +/-
+The limited use of prior knowledge from the domain (black box) coupled with the stochastic sampling process mean that adapted solutions created without without top-down insight or instruction can sometimes be interesting, innovative, and even competitive with decades of human expertise \cite{Koza2003}. The stochastic iterative process of generate and test can be computationally wasteful, potentially re-searching areas of the problem space already searched, and requiring many trials or samples in order to achieve a `good enough' solution.
 
 % 
 % Conclusions: summarise the document message and areas for future consideration
