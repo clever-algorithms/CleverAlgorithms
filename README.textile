@@ -38,7 +38,7 @@ h3. Technical Reports
 
 h3. Software
 
-* "Algorithm Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithm_selection/ : A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. 
+* "Algorithm Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithm_selection/ : A ruby script to apply the 'data driven optimization algorithm selection' methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. Also see the tag for the "tech report version":http://github.com/jbrownlee/CleverAlgorithms/tree/alg_selection-techreport_v20100112-1
 * ...
 
 h2. Breakdown
