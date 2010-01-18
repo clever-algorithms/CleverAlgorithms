@@ -142,7 +142,7 @@ Additional difficulties include the incorporation of prior knowledge (such as im
 \section{Unconventional Optimization}
 \label{sec:unconventional_optimization}
 % context
-This selection provides an overview of so-named \emph{unconventional algorithms} for the function optimization class of problem. These types of algorithms comprise the majority of approaches selected for description in the Clever Algorithms project drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
+This selection provides an overview of so-named \emph{unconventional algorithms} for the function optimization class of problem. These types of algorithms comprise the majority of approaches selected for description in the Clever Algorithms project drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics \cite{Brownlee2010b}. 
 % unconventional
 These algorithms are referred to as `unconventional' to differentiate them from the more traditional approaches, not limited to mathematical optimization algorithms (such as Newton's method and Gradient descent that uses derivatives to locate a local minimum) and the later direct search methods (such as the Simplex method and the Nelder-Mead method that use a search pattern to locate optima).
 
@@ -154,19 +154,22 @@ Unconventional optimization algorithms are designed for the more difficult probl
 % 
 \subsection{Black Box Methods}
 \label{subsec:black_box}
-they make few assumptions about the problem domain
-generalized problem solvers
+% overview
+Black Box optimization algorithms are those that exploit little, if any, information from a problem domain in devising a solution. They are generalized problem solving procedures that may be applied to a range of problems with very little modification \cite{Droste2006}.
 
-
+% more detail - use info if avaiable
+Domain specific knowledge refers to making use of known relationships between solution representations and the objective cost function. Generally speaking, the less domain specific information incorporated into a technique, the more flexible the technique, although the less efficient it will be for a given problem. For example, `random search' is the most general black box approach and is also the most flexible requiring only the generation of random solutions for a given problem, but its worst case behavior is worse than enumerating an entire search domain. As such, the more information available about a problem, the more that should be exploited by a technique in order to efficiently determine a solution for the problem, heuristically or otherwise. Black box methods are those methods suitable for those problems where little information from the problem domain is available to be used by a problem solving approach.  
 
 % 
 % No Free Lunch - based on copy from my thesis
 % 
 \subsection{No Free Lunch}
 \label{subsec:nfl}
-The \emph{No Free Lunch Theorem} of search and optimization proposed by Wolpert and Macready has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms \cite{Wolpert1997, Wolpert1995}.
+% intro
+The \emph{No Free Lunch Theorem} of search and optimization by Wolpert and Macready proposes that all black box optimization algorithms are the same for searching for the extremum of a cost function when averaged over all possible functions \cite{Wolpert1997, Wolpert1995}. The theorem has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms.
+
 % overview
-In simplest terms, the theory indicates that when searching for an extremum of a cost function, \emph{all algorithms perform the same when averaged over all possible cost functions}. The implication is that the often perused general-purpose optimization algorithm is theoretically impossible. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for cynicism related to algorithm benchmarking is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
+The implication of the theorem is that searching for the `best' general-purpose black box optimization algorithm is theoretically impossible, as no such procedure exists. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for cynicism related to algorithm benchmarking is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
 
 % more
 The theorem is an important contribution to computer science, although its implications are theoretical. The original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to \emph{bound claims of applicability} for optimization algorithms. Wolpert and Macready encouraged effort be put into devising practical problem classes and the matching of suitable algorithms to problem classes. Further they compelled practitioners to exploit domain knowledge in optimization algorithm application, now an axiom in the field.
@@ -197,6 +200,8 @@ MCMC techniques combine these two approaches to solve integration and optimizati
 \label{subsec:induction}
 The typically learn by doing (trial and error)
 generate, guess, revise
+
+non-parametric
 
 Information is acquired and generalized from discrete and specific examples provided by the problem.
 
