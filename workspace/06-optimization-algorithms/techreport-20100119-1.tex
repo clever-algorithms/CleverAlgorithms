@@ -45,20 +45,21 @@ The Clever Algorithms project aims to describe a large number of Computational I
 % report
 This report provides an overview of so-called `unconventional optimization algorithms'. These are stochastic global optimization algorithms drawn from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheurustics \cite{Brownlee2010c}.
 % global optimization
-Section~\ref{sec:global_optimization} provides an introduction to stochastic global optimization that introduces subjects such as black box methods, the `no free lunch theorem' of search and optimization, the importance of randomness, an and general strategy of inductive learning. 
+Section~\ref{sec:unconventional_optimization} provides an introduction to unconventional optimization that introduces subjects such as black box methods, the `no free lunch theorem' of search and optimization, the importance of randomness, an and general strategy of inductive learning. 
 % problems
 Section~\ref{sec:problems} provides an overview of the general features that make computational problems difficult in the fields of Computational Intelligence and Metaheuristics and introduces two general classes of problem: function optimization and function approximation.
 % conclusions
 Finally, Section~\ref{sec:conclusions} relates the introduction of stochastic global optimization to the so-named `clever algorithms' from the Clever Algorithms project, and highlights some ares for future consideration.
 
 % 
-% Global Optimization
+% Unconventional Optimization
 % 
-\section{Global Optimization}
-This selection provides an overview of so-named `Clever Algorithms' which have been described as unconventional optimization algorithms drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
+\section{Unconventional Optimization}
+\label{sec:unconventional_optimization}
+% context
+This selection provides an overview of so-named `Unconventional Optimization Algorithms' which comprise the approaches selected for description in the Clever Algorithms project. These algorithms were drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
 
 
-\label{sec:global_optimization}
 what is global optimization all about?
 there is also local optimization
 
@@ -87,9 +88,9 @@ The theorem is an important contribution to computer science, although its impli
 % 
 % Randomness
 % 
-\subsection{Randomness}
+\subsection{Stochastic Optimization}
 % Stochastic
-Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. Although the algorithms exploit randomness, they are not random. Rather, they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
+Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. Algorithms from the fields of Computational Intelligence, Natural Computation, and Metaheuristics may be considered sub-fields of stochastic optimization. Algorithms that exploit randomness, are not random in behavior. Rather, they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
 % mcmc
 A class of techniques that focus on the stochastic sampling of a domain are called Markov Chain Monte Carlo (MCMC) that provide good average performance, quickly, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. MCMC approaches involve sampling from a target distribution function stochastically similar to Monte Carlo simulation methods) using a process that resembles a biased Markov chain.
 
@@ -129,6 +130,17 @@ This method of simultaneously improving information and optimizing decisions is 
 \section{Problems}
 \label{sec:problems}
 % properties of problems - from that book
+Unconventional optimization algorithms are applied to difficult problems that 
+
+% problem types
+Michalewicz and Fogel propose five reasons why problems may be difficult \cite{Michalewicz2004} (page 11):
+\begin{itemize}
+	\item The number of possible solutions in the search space is so large as to forbid an exhaustive search for the best answer.
+	\item The problem is so complicated that just to facilitate any answer at all, we have to use such simplified models of the problem that any result is essentially useless.
+	\item The evaluation function that describes the quality of any proposed solution is noisy or varies with time, thereby requiring not just a single solution but an entire series of solutions.
+	\item The possible solutions that are so heavily constrained that constructing even one feasible answer is difficult, let alone searching for an optimal solution.
+	\item The person solving the problem is inadequately prepared or imagines some psychological barrier that prevents them from discovering a solution.
+\end{itemize}
 
 
 % classes
