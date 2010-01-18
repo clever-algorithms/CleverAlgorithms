@@ -51,77 +51,6 @@ Section~\ref{sec:problems} provides an overview of the general features that mak
 % conclusions
 Finally, Section~\ref{sec:conclusions} relates the introduction of stochastic global optimization to the so-named `clever algorithms' from the Clever Algorithms project, and highlights some ares for future consideration.
 
-% 
-% Unconventional Optimization
-% 
-\section{Unconventional Optimization}
-\label{sec:unconventional_optimization}
-% context
-This selection provides an overview of so-named `Unconventional Optimization Algorithms' which comprise the approaches selected for description in the Clever Algorithms project. These algorithms were drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
-
-
-what is global optimization all about?
-there is also local optimization
-
-
-% 
-% Black Box Methods
-% 
-\subsection{Black Box Methods}
-they make few assumptions about the problem domain
-generalized problem solvers
-
-
-
-% 
-% No Free Lunch - based on copy from my thesis
-% 
-\subsection{No Free Lunch}
-The `no free lunch theorem' of search is \ldots
-
-Wolpert and Macready's \emph{No Free Lunch Theorem} of search and optimization has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms \cite{Wolpert1997, Wolpert1995}. In simplest terms, the theory indicates that when searching for an extremum of a cost function, \emph{all algorithms perform the same when averaged over all possible cost functions}. The implication is that the often perused general-purpose optimization algorithm is theoretically impossible. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for benchmarking cynicism is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
-
-% more
-The theorem is an important contribution to computer science, although its implications are theoretical. The original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to \emph{bound claims of applicability}. Wolpert and Macready encouraged effort be put into devising practical problem classes and the matching of suitable algorithms to problem classes. Further they compelled practitioners to exploit domain knowledge in optimization algorithm application, now an axiom in the field.
-
-
-% 
-% Randomness
-% 
-\subsection{Stochastic Optimization}
-% Stochastic
-Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. Algorithms from the fields of Computational Intelligence, Natural Computation, and Metaheuristics may be considered sub-fields of stochastic optimization. Algorithms that exploit randomness, are not random in behavior. Rather, they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
-% mcmc
-A class of techniques that focus on the stochastic sampling of a domain are called Markov Chain Monte Carlo (MCMC) that provide good average performance, quickly, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. MCMC approaches involve sampling from a target distribution function stochastically similar to Monte Carlo simulation methods) using a process that resembles a biased Markov chain.
-
-% Monte Carlo
-Monte Carlo methods are used for selecting a statistical sample to approximate a given target probability density function and are traditionally used in statistical physics. Samples are drawn sequentially and the process may include criteria for rejecting samples and biasing the sampling locations within high-dimensional spaces. 
-% Markov Chian
-Markov Chain processes provide a probabilistic model for state transitions or moves within a discrete domain called a walk or a chain of steps. A Markov system is only dependent on the position in the domain in order to probabilistically determine the next step in the walk. 
-
-% mcmc
-MCMC techniques combine these two approaches to solve integration and optimization problems in large dimensional spaces by generating samples while exploring the space using a Markov chain process rather than sequentially or independently \cite{Andrieu2003}. The step generation is configured to bias sampling in more important regions of the domain. Three examples of MCMC techniques include the Metropolis-Hastings algorithm, Simulated annealing for global optimization, and the Gibbs sampler which are commonly employed in the fields of physics, chemistry, statistics, and economics. 
-
-
-% 
-% Induction
-% 
-\subsection{Adaptive Induction}
-The typically learn by doing (trial and error)
-generate, guess, revise
-
-Information is acquired and generalized from discrete and specific examples provided by the problem.
-
-% generally
-These algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behavior is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. 
-
-% inductive learning
-The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
-
-% k-bandit
-This method of simultaneously improving information and optimizing decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989}.
-
-
 
 
 % 
@@ -129,9 +58,7 @@ This method of simultaneously improving information and optimizing decisions is 
 % 
 \section{Problems}
 \label{sec:problems}
-% properties of problems - from that book
-Unconventional optimization algorithms are applied to difficult problems that 
-
+Algorithms from the fields of Computational Intelligence, Natural Computing, and Metaheuristics are applied to difficult problems, to which more traditional approaches may not be suited.
 % problem types
 Michalewicz and Fogel propose five reasons why problems may be difficult \cite{Michalewicz2004} (page 11):
 \begin{itemize}
@@ -142,9 +69,8 @@ Michalewicz and Fogel propose five reasons why problems may be difficult \cite{M
 	\item The person solving the problem is inadequately prepared or imagines some psychological barrier that prevents them from discovering a solution.
 \end{itemize}
 
-
 % classes
-Two problem formalisms that embody many of the most difficult problems faced by Artificial and Computational Intelligence are introduced: Function Optimization in Section~\ref{subsec:function_optimization} and Function Approximation in Section~\ref{subsec:function_approximation}. Each formalism is described in terms of its general properties, a formalism, and a set of specialized sub-problems. These problem classes provide a tangible framing if algorithmic techniques drawn from the fields of Computational Intelligence, Natural Computing, and Metaheuristics.
+This section introduces two problem formalisms that embody many of the most difficult problems faced by Artificial and Computational Intelligence. They are: Function Optimization (in Section~\ref{subsec:function_optimization}) and Function Approximation (in Section~\ref{subsec:function_approximation}). Each class of problem is described in terms of its general properties, a formalism, and a set of specialized sub-problems. These problem classes provide a tangible framing if algorithmic techniques drawn from the fields of Computational Intelligence, Natural Computing, and Metaheuristics.
 
 % 
 %  Function Optimization - based on copy from my thesis
@@ -192,7 +118,6 @@ Function Approximation is an \emph{inductive problem} of finding a function ($f$
 % ML
 In machine learning, the function approximation formalism is used to describe general problem types commonly referred to as \emph{pattern recognition}, such as classification, clustering, and curve fitting (so-called decision or discrimination function). Specifically, such general problem types are described in terms of approximating an unknown Probability Density Function (PDF), which underlies the relationships in the problem space, and represented to some degree in the sample data. This function approximation perspective of such problems is commonly referred to as \emph{statistical machine learning} and/or density estimation \cite{Fukunaga1990, Bishop1995}.
 
-
 %
 % Sub-Fields of Study
 %
@@ -207,9 +132,88 @@ Some important problem-based sub-fields include: \emph{Feature Selection} where 
 % optimisation
 The field of Function Optimization is related to Function Approximation, as many-sub-problems of Function Approximation may be defined as optimization problems. As such many of the inductive modeling paradigms are differentiated based on the representation used and/or the optimization process used to minimize error or maximize effectiveness on a given approximation problem. 
 % problems
-The difficulty of Function Approximation problems centre around (1) the nature of the unknown relationships between attributes and features, (2) the number (dimensionality) of of attributes and features, and (3) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
+The difficulty of Function Approximation problems centre around (i) the nature of the unknown relationships between attributes and features, (ii) the number (dimensionality) of of attributes and features, and (iii) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
 % other problems
 Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling and skewing of features).
+
+
+% 
+% Unconventional Optimization
+% 
+\section{Unconventional Optimization}
+\label{sec:unconventional_optimization}
+% context
+This selection provides an overview of so-named \emph{unconventional algorithms} for the function optimization class of problem. These types of algorithms comprise the majority of approaches selected for description in the Clever Algorithms project drawn from the fields of Computational Intelligence, Natural Computation, and Metaheuristics. 
+% unconventional
+These algorithms are referred to as `unconventional' to differentiate them from the more traditional approaches, not limited to mathematical optimization algorithms (such as Newton's method and Gradient descent that uses derivatives to locate a local minimum) and the later direct search methods (such as the Simplex method and the Nelder-Mead method that use a search pattern to locate optima).
+
+% section
+Unconventional optimization algorithms are designed for the more difficult problem instances, the attributes of which were introduced in Section~\ref{subsec:function_optimization}. This section introduces some common attributes of this class of algorithm including: black box methods (Section~\ref{subsec:black_box}), the no-free-lunch theorem (Section~\ref{subsec:nfl}), the broader field of stochastic optimization (Section~\ref{subsec:stochastic}), and general approach of inductive learning (Section~\ref{subsec:induction}).
+
+% 
+% Black Box Methods
+% 
+\subsection{Black Box Methods}
+\label{subsec:black_box}
+they make few assumptions about the problem domain
+generalized problem solvers
+
+
+
+% 
+% No Free Lunch - based on copy from my thesis
+% 
+\subsection{No Free Lunch}
+\label{subsec:nfl}
+The `no free lunch theorem' of search is \ldots
+
+Wolpert and Macready's \emph{No Free Lunch Theorem} of search and optimization has caused a lot of pessimism and misunderstanding, particularly in related to the evaluation and comparison of computational intelligence algorithms \cite{Wolpert1997, Wolpert1995}. In simplest terms, the theory indicates that when searching for an extremum of a cost function, \emph{all algorithms perform the same when averaged over all possible cost functions}. The implication is that the often perused general-purpose optimization algorithm is theoretically impossible. The theory applies to stochastic and deterministic optimization algorithms, and to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used as well as the representation selected. Perhaps the catalyst for benchmarking cynicism is a comment accompanying the proof suggesting that: ``\ldots \emph{comparisons reporting the performance of a particular algorithm with a particular parameter setting on a few sample problems are of limited utility}'' \cite{Wolpert1997}.
+
+% more
+The theorem is an important contribution to computer science, although its implications are theoretical. The original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to \emph{bound claims of applicability}. Wolpert and Macready encouraged effort be put into devising practical problem classes and the matching of suitable algorithms to problem classes. Further they compelled practitioners to exploit domain knowledge in optimization algorithm application, now an axiom in the field.
+
+
+% 
+% Randomness
+% 
+\subsection{Stochastic Optimization}
+\label{subsec:stochastic}
+% Stochastic
+Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. Algorithms from the fields of Computational Intelligence, Natural Computation, and Metaheuristics may be considered sub-fields of stochastic optimization. Algorithms that exploit randomness, are not random in behavior. Rather, they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
+% mcmc
+A class of techniques that focus on the stochastic sampling of a domain are called Markov Chain Monte Carlo (MCMC) that provide good average performance, quickly, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large high-dimensional spaces. MCMC approaches involve sampling from a target distribution function stochastically similar to Monte Carlo simulation methods) using a process that resembles a biased Markov chain.
+
+% Monte Carlo
+Monte Carlo methods are used for selecting a statistical sample to approximate a given target probability density function and are traditionally used in statistical physics. Samples are drawn sequentially and the process may include criteria for rejecting samples and biasing the sampling locations within high-dimensional spaces. 
+% Markov Chian
+Markov Chain processes provide a probabilistic model for state transitions or moves within a discrete domain called a walk or a chain of steps. A Markov system is only dependent on the position in the domain in order to probabilistically determine the next step in the walk. 
+
+% mcmc
+MCMC techniques combine these two approaches to solve integration and optimization problems in large dimensional spaces by generating samples while exploring the space using a Markov chain process rather than sequentially or independently \cite{Andrieu2003}. The step generation is configured to bias sampling in more important regions of the domain. Three examples of MCMC techniques include the Metropolis-Hastings algorithm, Simulated annealing for global optimization, and the Gibbs sampler which are commonly employed in the fields of physics, chemistry, statistics, and economics. 
+
+
+% 
+% Induction
+% 
+\subsection{Adaptive Induction}
+\label{subsec:induction}
+The typically learn by doing (trial and error)
+generate, guess, revise
+
+Information is acquired and generalized from discrete and specific examples provided by the problem.
+
+% generally
+These algorithms are \emph{adaptive} which is interpreted as their general capability of obtaining characteristics that improve the systems relative performance in an environment. This adaptive behavior is achieved through a \emph{selectionist process} of iterative selection and descent with modification. The discrete cell-based architecture is inherently \emph{parallel} allowing for concurrent selection processes, and is \emph{robust} providing redundancy of information and flexibility in terms of resource allocation. 
+
+% inductive learning
+The method of acquiring information is called \emph{inductive learning} (learning from example), where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Generally, cellular approaches maintain a population of samples that provide both a representation for acquired information, and the basis for further induction.
+
+% k-bandit
+This method of simultaneously improving information and optimizing decisions is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making \cite{Robbins1952} (for a contemporary treatment see \cite{Bergemann2006}). This class of problem has had a long tradition of as a formalism for considering genetic algorithms and niching variants with regard to the adaptive processes capability of the `automatic' allocation of resources proportional to expected payoff \cite{Goldberg1989}.
+
+
+
+
 
 
 
