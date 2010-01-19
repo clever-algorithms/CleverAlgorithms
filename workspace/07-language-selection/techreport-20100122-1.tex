@@ -61,15 +61,32 @@ Finally, the findings are discussed in Section~\ref{sec:findings} and the Ruby P
 % 
 \section{Language Selection}
 \label{sec:language_selection}
-what languages and why?
+This section considers the importance of the programming language used in implementation examples, and looks at some languages and the attributes of programming languages that may be relevant.
 
 % 
 % Languages
 %
 \subsection{Languages}
-implement an algorithm in js, lua, python, and ruby and assess. best you can do really.
-java? c? cpp? too bloated?
-lisp? too hard?
+A introduction to programming languages is beyond the scope of this report, rather this section provides a brief overview of some programming language features, nomenclature and taxonomy suitable to make general comparisons between popular programming languages.
+
+An important concern of programming language is the organizational paradigm that includes the methodology, abstractions, style, and structures. Some common examples include:
+
+\begin{itemize}
+	\item \emph{Logical}: Involves the use of mathematical logic (such as propositional or predicate logic) for computer programming. Programs are comprised of declarative logical statements or proposition that may be used to describe a rule-based reasoning or knowledge representation system. Some examples include Prolog. 
+	\item \emph{Functional}: Focuses on the execution of mathematical functions (from lambda calculus) and avoid state and mutable data. The difference between a mathematical function and an imperative function is that the latter may have side effects (modify state beyond the scope of the function), where as the former may not. Some examples include LISP, Scheme, Erlang, and Haskell.	
+	\item \emph{Procedural}: Also referred to as imperative programming that is concerned with organizing code into procedures (also called subroutines or functions). Procedures are defined in terms of a series expressions, some of which may in themselves be calls to procedures. Some common examples include: Pascal and C.
+	\item \emph{Object-Oriented}: Models problems using objects that are comprised of data and procedures (also called methods) and may have an abstract definition (a class) and may be instantiated within a program. Objects can interact with each other by passing messages between the objects, such as one object invoking a method on another object. Some examples include C++, Java and C\#.
+	\item \emph{Other}: There are many programming language paradigms not listed here, not limited to reflective, declarative, agent-oriented, aspect-oriented, event-driven, and meta programming. Most modern programming languages are not constrained to a single programming paradigm (called multi-paradigm), such as Java (imperative, object-oriented, generic, reflective) and Ruby (imperative, object-oriented, aspect-oriented, reflective, functional).
+\end{itemize}
+
+Another consideration of a programming language is whether or not it is statically defined (compiled) or dynamically defined (interpreted).
+\begin{itemize}
+	\item \emph{Static}: asdf
+	\item \emph{Dynamic}: Dynamic languages are high-level languages that are instead execute at runtime rather than requiring compilation to machine code before execution. They can be more productive for small specific tasks given the typically high-levels of abstraction and language features provided (such as dynamic typing and meta programming), although they can be relatively slower during exception compared to equivalent complied languages\footnote{Just-in-time compilation can improve the dynamic runtime of a program by compiling to a native format at runtime, and is offered by some dynamic and interpreted languages.}.
+\end{itemize}
+
+
+
 
 
 % 
@@ -78,6 +95,24 @@ lisp? too hard?
 \subsection{Languages Attributes}
 what properties are important?
 random numbers, multi-paradigm, etc
+
+
+
+Some properties:
+\begin{itemize}
+	\item \emph{Static or Dynamically Typed}
+	\item \emph{Compiled or Interpreted}
+	\item \emph{Single or Multi-paradigms}
+\end{itemize}
+
+
+
+The following are come language attributes that may be important in algorithm selection:
+\begin{itemize}
+	\item What languages are most commonly used by practitioners in industry and/or academia?
+	\item What language paradigms are most commonly used in algorithm implementations?
+	\item Which languages provide the most appropriate functionalities in their standard library (such as random number generation, vector manipulation, etc.)?
+\end{itemize}
 
 
 debate on this topic:
@@ -117,6 +152,21 @@ top 4 languages?
 compare on conciseness, compactness, communication qualities - accessibility, etc. readability
 
 rank or score on a set of properties, subjective, but a starting point
+
+The measures to be collected for each implementation are as follows:
+
+\begin{table}[ht]
+	\centering
+		\begin{tabularx}{\textwidth}{lX}
+		\toprule
+		\textbf{Measure} & \textbf{Description} \\ 
+		\toprule
+		LOC & The number of lines of code in the listing \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{Algorithm programming language listing measures.}
+	\label{tab:measures}
+\end{table}
 
 
 % 
