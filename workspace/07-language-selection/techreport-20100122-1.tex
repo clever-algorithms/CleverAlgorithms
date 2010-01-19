@@ -61,12 +61,15 @@ Finally, the findings are discussed in Section~\ref{sec:findings} and the Ruby P
 % 
 \section{Language Selection}
 \label{sec:language_selection}
-This section considers the importance of the programming language used in implementation examples, and looks at some languages and the attributes of programming languages that may be relevant.
+This section considers the importance of the programming language used in implementation examples in general, and looks at some languages and the attributes of programming languages that may be relevant.
 
 % 
 % Languages
 %
 \subsection{Languages}
+% overview
+Programming languages provide a means for a human to specify a computation, procedure, or application in a form and structure that can be understood and executed by a computer.
+% scope
 A introduction to programming languages is beyond the scope of this report, rather this section provides a brief overview of some programming language features, nomenclature and taxonomy suitable to make general comparisons between popular programming languages.
 
 An important concern of programming language is the organizational paradigm that includes the methodology, abstractions, style, and structures. Some common examples include:
@@ -79,40 +82,48 @@ An important concern of programming language is the organizational paradigm that
 	\item \emph{Other}: There are many programming language paradigms not listed here, not limited to reflective, declarative, agent-oriented, aspect-oriented, event-driven, and meta programming. Most modern programming languages are not constrained to a single programming paradigm (called multi-paradigm), such as Java (imperative, object-oriented, generic, reflective) and Ruby (imperative, object-oriented, aspect-oriented, reflective, functional).
 \end{itemize}
 
-Another consideration of a programming language is whether or not it is statically defined (compiled) or dynamically defined (interpreted).
-\begin{itemize}
-	\item \emph{Static}: asdf
-	\item \emph{Dynamic}: Dynamic languages are high-level languages that are instead execute at runtime rather than requiring compilation to machine code before execution. They can be more productive for small specific tasks given the typically high-levels of abstraction and language features provided (such as dynamic typing and meta programming), although they can be relatively slower during exception compared to equivalent complied languages\footnote{Just-in-time compilation can improve the dynamic runtime of a program by compiling to a native format at runtime, and is offered by some dynamic and interpreted languages.}.
-\end{itemize}
+% compiled versus interprted
+Another consideration of a programming language is implementation and whether or not it is compiled or interpreted (dynamic). 
+% compiled
+Compiled languages are those which employ a compiler to transform a higher-level language to a lower-level language. The compilation process can introduce various forms of static structure and type checking that may improve the quality of software produced, although the added steps between source code and execution may affect the speed and momentum of development. Some examples of compiled languages include C and C++ that compile to machine code, and Java and C\# that compile to bytecode and intermediate language respectively (incidentally, the latter two examples represent compilation to an intermediate language that is interpreted by a virtual machine).
 
+% dynamic
+Dynamic languages are high-level languages that are instead execute at runtime rather than requiring compilation to machine code before execution. They can be more productive for small specific tasks given the typically high-levels of abstraction and language features provided (such as dynamic typing and meta programming), although they can be relatively slower during exception compared to equivalent complied languages\footnote{Just-in-time compilation can improve the dynamic runtime of a program by compiling to a native format at runtime, and is offered by some dynamic and interpreted languages.}.
 
-
-
+% types
+An additional aspects of a computer programming languages that may be relevant include types, and whether the language is typed or untyped, and if typed whether the typing is static or dynamic.
 
 % 
 % Languages Attributes
 %
 \subsection{Languages Attributes}
-what properties are important?
-random numbers, multi-paradigm, etc
+% overview of problem
+The programming language attributes that are important for describing algorithms in a book or website medium are different from those concerns for selecting a language for implementing an application, although there is some overlap.
+% traditional properites
+Traditional language selection concerns such as \emph{Static or Dynamically Typed}, \emph{Compiled or Interpreted}, and \emph{Single or Multi-paradigms} may be resolved by higher-level concerns such as popularity and commonality in the field and appropriateness in the industry or by communication concerns such as compactness and readability.
 
+% practioner questions
+\subsubsection{Practitioner}
+The practitioner is concerned with the usability of the example, either directly in a language that can be exploited in a current project, or indirectly in a language or format that can easily be adapted for a current project. Practitioners are most likely using the common languages in the industry for scientific and application computer programming, such as C, C++, C\#, Java, and potentially dynamic languages such as Python and Ruby. The following questions motivate language selection from the perspective of the practitioner:
 
-
-Some properties:
-\begin{itemize}
-	\item \emph{Static or Dynamically Typed}
-	\item \emph{Compiled or Interpreted}
-	\item \emph{Single or Multi-paradigms}
-\end{itemize}
-
-
-
-The following are come language attributes that may be important in algorithm selection:
 \begin{itemize}
 	\item What languages are most commonly used by practitioners in industry and/or academia?
 	\item What language paradigms are most commonly used in algorithm implementations?
 	\item Which languages provide the most appropriate functionalities in their standard library (such as random number generation, vector manipulation, etc.)?
 \end{itemize}
+
+% communication questions
+\subsubsection{Communication}
+The communication perspective on implementation examples is concerned with less practical concerns than usability, such as understandably, readability, and accessibility. The following questions motivate language selection from the perspective of implementation communication:
+
+\begin{itemize}
+	\item Given the varied background of the readership, is the average reader likely to easily understand the example?
+	\item How large (number of printed lines or pages) is an an average implementation example take up?
+	\item How readable (perhaps aesthetics such as balanced composition) is a given implementation example?	
+\end{itemize}
+
+
+
 
 
 debate on this topic:
