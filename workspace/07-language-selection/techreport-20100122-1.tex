@@ -36,7 +36,7 @@
 todo
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Keywords, Go, Here}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Language, Selection, Optimization}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -44,10 +44,17 @@ todo
 \label{sec:introduction}
 % project
 The Clever Algorithms project aims to describe a large number of optimization algorithms from the fields of Computational Intelligence, Natural Computation, and Metaheuristics in a complete, consistent, and centralized manner \cite{Brownlee2010}
+% overview 
+The standardized description of algorithms in the project requires an example implementation of each technique in a tutorial and potentially a code listing format \cite{Brownlee2010a}.
 % report
+This report addresses the problem of which language to use for describing algorithm implementation examples, and recommends a specific language to be used.
 
 % breakdown
-
+Section~\ref{sec:language_selection} considers the problem of language selection focusing on the types of languages that could be used and examples, as well as a consideration of attributes that might be important when selecting a language.
+Section~\ref{sec:methodology} proposes a methodology for evaluating and comparing languages for use in implementation examples for the standardized algorithm description, specifying an algorithm to use in the comparison, a set of languages to be considered, and the specific properties that will be measured and compared.
+Four languages are considered: Javascript in Section~\ref{sec:javascript}, Lua in Section~\ref{sec:lua}, Python in Section~\ref{sec:python} and Ruby in Section~\ref{sec:ruby}.
+The results of the comparison are reviewed in Section~\ref{sec:analysis} highlighting areas for improvement in the language selection methodology and in the execution of the comparison. 
+Finally, the findings are discussed in Section~\ref{sec:findings} and the Ruby Programming Language is selected for use in the Clever Algorithms project.
 
 % 
 % Language Selection
@@ -144,12 +151,21 @@ todo
 todo
 
 
+% 
+% Analysis
+% 
+\section{Analysis}
+\label{sec:analysis}
+
+how could the methodology be improved?
+how could the execution be improved?
+
 
 % 
 % Findings
 % 
 \section{Findings}
-\label{sec:conclusions}
+\label{sec:findings}
 % report
 
 % findings
