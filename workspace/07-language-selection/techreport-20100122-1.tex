@@ -10,6 +10,7 @@
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -147,9 +148,54 @@ The algorithm used for comparison must be representative of the algorithms that 
 
 The genetic algorithm provides a suitable representative algorithm in that it is not only popular, but also involves a number of non-trivial operators (compared to random or tabu search), although is relatively compact (compared to genetic programming that involves management of tree structures). Simulated annealing also provides a suitable representative algorithm, and may be used in followup and/or confirmatory studies. 
 
-The following algorithm listing provides an abstract representation of a standardized genetic algorithm in pseudo code.
+Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a standardized genetic algorithm in pseudo code.
 
-[[TODO]]
+\begin{algorithm}[ht]
+  \SetLine  
+  
+  \SetKwData{Pop}{Population}
+  \SetKwData{Length}{numBits}
+  \SetKwData{PopSize}{popSize}
+  \SetKwData{BoutSize}{boutSize}
+  \SetKwFunction{StopCondition}{StopCondition}
+  \SetKwFunction{Mutate}{Mutate}
+  \SetKwFunction{Fitness}{Fitness}
+  \SetKwFunction{TournamentSelection}{TournamentSelection}
+  \SetKwFunction{Crossover}{Crossover}
+  \SetKwFunction{Replace}{Replace}
+  \SetKwFunction{InitializeRandomBitstrings}{InitializeRandomBitstrings}  
+  
+  \KwIn{\PopSize, \Length, $p_{crossover}$, $p_{mutation}$}		
+  \KwOut{\Pop}
+  	
+	\Pop $\leftarrow$ \InitializeRandomBitstrings{\PopSize, \Length}\;
+	
+	\While{$\neg$\StopCondition{}}
+	{
+	 \ForEach{$p_i \in$ \Pop}
+	 {
+	 	\Fitness{$p_i$}\;
+	 }
+	 $Population_{children} \leftarrow$ 0\;
+	 \While{$Population_{children}$.size()$\neq$\PopSize}
+	{
+		$parent_1 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
+		$parent_2 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
+		$child_1$, $child_2 \leftarrow$ \Crossover{$p_2$, $p_2$, $p_{crossover}$}\;
+		$Population_{children} \leftarrow child_1$\;
+		$Population_{children} \leftarrow child_2$\;
+	}
+	 \ForEach{$p_i \in Population_{children}$}
+	 {
+    	\Mutate{$p_i$, $p_{mutation}$}\;
+	 }	 
+	 \Replace{\Pop, $Population_{children}$}\;
+	}
+	\Return{\Pop}\;
+	
+	\caption{Pseudo Code for the Genetic Algorithm.}
+	\label{alg:genetic_algorithm}
+\end{algorithm}
 
 
 % 
@@ -195,7 +241,7 @@ search across domains for language name and optimization
 		python & 7490 & 61 & 1040 & 0.192 \\
 		perl & 6060 & 120 & 1370 & 0.191 \\
 		mathematica & 3040 & 249 & 1540 & 0.18 \\
-		c# & 5280 & 34 & 1870 & 0.154 \\
+		c\# & 5280 & 34 & 1870 & 0.154 \\
 		ansi c & 0 & 372 & 0 & 0.133 \\
 		ruby & 3810 & 59 & 331 & 0.103 \\
 		erlang & 1330 & 107 & 412 & 0.072 \\
