@@ -45,46 +45,62 @@ def get_approx_google_book_results(keyword)
 end
 
 # http://scholar.google.com.au/scholar?q=%22genetic+algorithm%22&hl=en&btnG=Search&as_sdt=2001&as_sdtp=on
+# http://scholar.google.com.au/scholar?hl=en&q="c+programming+language"+AND+"genetic+algorithm"&btnG=Search&as_sdt=2000&as_ylo=&as_vis=0
 def get_approx_google_scholar_results(keyword)
   http = Net::HTTP.new('scholar.google.com.au', 80)
-  header = {}
-  path = "/scholar?q=#{keyword}&hl=en&btnG=Search&as_sdt=2001&as_sdtp=on"
+  header = {'User-Agent'=>'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1', 'content-type'=>'application/x-www-form-urlencoded', 'charset'=>'UTF-8'}
+  path = "/scholar?hl=en&q=#{keyword}&btnG=Search&as_sdt=2000&as_ylo=&as_vis=0"
   resp, data = http.request_get(path, header)
   doc = Hpricot(data)
   rs = doc.search("//td[@bgcolor='#dcf6db']/font/b")
+  puts doc
   return 0 if rs.nil? or rs.size!=5 # no results or unexpected results
   rs = rs[3].inner_html.gsub(',', '') # strip comma    
   return rs
 end
 
+def prep_keyword(keyword)
+  # pluses
+  keyword = keyword.gsub('+', "%2B")
+  # quotes
+  keyword = keyword.gsub(/"/, "%22")
+  # sharps
+  keyword = keyword.gsub('#', "%23")  
+  # spaces
+  keyword = keyword.gsub(/ /, "+")
+  
+  return keyword
+end
 
-def get_results(algorithm_name)  
-  # spaces to plus, lowercase, quote using %22 - good for all search services used
-  keyword = algorithm_name.gsub(/ /, "+")
-  keyword1 = "%22#{keyword.downcase}%22"
-  keyword2 = "%22#{keyword.downcase}%22+optimization"
+def get_results(name)  
+  domain = "genetic algorithm"
+  scope = "programming language"
+  keyword = prep_keyword "\"#{name.downcase} #{scope}\" AND \"#{domain}\""
+  puts " > searching for: #{keyword}"
   
   # 
   # dear future self, you can keep adding measures here and the pipeline should make use of them
   # 
   
   scores = []
-  # Google Web Search
-  scores << get_approx_google_web_results(keyword1)
-  # Google Book Search
-  scores << get_approx_google_book_results(keyword1)
-  # Google Scholar Search
-  scores << get_approx_google_scholar_results(keyword1)
   
   # Google Web Search
-  scores << get_approx_google_web_results(keyword2)
+  scores << get_approx_google_web_results(keyword)
   # Google Book Search
-  scores << get_approx_google_book_results(keyword2)
+  scores << get_approx_google_book_results(keyword)
   # Google Scholar Search
-  scores << get_approx_google_scholar_results(keyword2)
-  
+  scores << get_approx_google_scholar_results(keyword)
+
   return scores
 end
+
+# puts get_results("c")
+q = "%22c+programming+language%22+AND+%22genetic+algorithm%22"
+q = "\"c programming language\" AND \"genetic algorithm\"".gsub(/ /, "%20").gsub(/"/, "%22")
+q = "genetic+algorithm"
+puts "Query: #{q}"
+puts get_approx_google_web_results(q)
+exit
 
 def timer
   start = Time.now
@@ -129,7 +145,7 @@ def normalize_results
     raw = IO.readlines("./results.txt")
     languages_list = []
     raw.each { |line| languages_list << line.split(',')}
-    normalized_scores = Array.new(languages_list[0].length-1) {|i| [10000.0, 0.0]} 
+    normalized_scores = Array.new(languages_list[0].length-1) {|i| [100000000.0, 0.0]} 
     # calculate min/max
     languages_list.each do |row|      
       row[1..row.length-1].each_with_index do |v, i|
@@ -169,7 +185,7 @@ def generate_organized_results
     results = ""
     results << "\nLanguages by rank (#{languages_list.size})\n"
     languages_list.sort {|x,y| y[y.length-1].to_f <=> x[x.length-1].to_f}.each_with_index do |v, i|
-      results << "#{v.join(" & ")} \\\\\n"
+      results << "#{v.join(" & ").strip} \\\\\n"
     end
     File.open("./results_organized.txt", "w") { |f| f.printf(results) }
   end

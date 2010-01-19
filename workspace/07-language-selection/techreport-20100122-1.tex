@@ -161,10 +161,55 @@ Implementing an algorithm in a range of different programming languages is time 
 % strategy
 This section considers algorithm popularity as a heuristic in a similar manner to the way in which algorithms were selected for description in the Clever Algorithms project. A listing of common and popular languages was prepared and a script written to measure the number of search results for each language across a range of search domains: Google web, book, and scholar. This process was then repeated for the language name in conjunction with the phrase `optimization' to assess the specific use of the language (Section~\ref{subsubsec:popularity}). Finally, a subset of popular algorithms were selected for comparison (Section~\ref{subsubsec:selection}).
 
+\subsubsection{Language Requirements}
+\label{subsubsec:requirements}
+
+\begin{itemize}
+	\item The language shall allow programming in the procedural paradigm.
+	\item The language shall be interpreted.
+	\item The language shall be freely available and accessible (acquire and use at no cost).
+\end{itemize}
+
 \subsubsection{Language Popularity}
 \label{subsubsec:popularity}
 search across domains for language name
 search across domains for language name and optimization
+
+\begin{table}[ht]
+	\centering
+		\begin{tabularx}{\textwidth}{llXXXX}
+		\toprule
+		\textbf{Language} & \textbf{Google Web} & \textbf{Google Book} & \textbf{Google Scholar} & \textbf{Score} \\ 
+		\toprule
+		scheme & 49900 & 1011 & 51400 & 2.363 \\
+		matlab & 26700 & 684 & 18600 & 1.142 \\
+		visual basic & 0 & 2783 & 0 & 1.0 \\
+		java & 21200 & 659 & 9660 & 0.849 \\
+		php & 31200 & 114 & 2350 & 0.711 \\
+		c++ & 19100 & 669 & 147 & 0.625 \\
+		fortran & 4490 & 641 & 4900 & 0.415 \\
+		pascal & 6950 & 548 & 2690 & 0.388 \\
+		lisp & 3710 & 625 & 2620 & 0.349 \\
+		ada & 6310 & 457 & 1360 & 0.317 \\
+		javascript & 8840 & 47 & 380 & 0.201 \\
+		python & 7490 & 61 & 1040 & 0.192 \\
+		perl & 6060 & 120 & 1370 & 0.191 \\
+		mathematica & 3040 & 249 & 1540 & 0.18 \\
+		c# & 5280 & 34 & 1870 & 0.154 \\
+		ansi c & 0 & 372 & 0 & 0.133 \\
+		ruby & 3810 & 59 & 331 & 0.103 \\
+		erlang & 1330 & 107 & 412 & 0.072 \\
+		smalltalk & 1010 & 127 & 338 & 0.072 \\
+		haskell & 1500 & 67 & 304 & 0.059 \\
+		scala & 1630 & 51 & 463 & 0.059 \\
+		lua & 1070 & 25 & 216 & 0.034 \\
+		objective-c & 0 & 52 & 0 & 0.018 \\
+		ocaml & 636 & 2 & 44 & 0.014 \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{Algorithm programming language listing measures.}
+	\label{tab:results}
+\end{table}
 
 \subsubsection{Selected Languages}
 \label{subsubsec:selection}
@@ -188,6 +233,7 @@ The measures to be collected for each implementation are as follows:
 		\textbf{Measure} & \textbf{Description} \\ 
 		\toprule
 		LOC & The number of lines of code in the listing \\
+		bytes & The number of bytes in the code listing \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Algorithm programming language listing measures.}
