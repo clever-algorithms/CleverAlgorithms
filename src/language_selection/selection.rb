@@ -53,13 +53,14 @@ def get_approx_google_scholar_results(keyword)
   resp, data = http.request_get(path, header)
   doc = Hpricot(data)
   rs = doc.search("//td[@bgcolor='#dcf6db']/font/b")
-  puts doc
   return 0 if rs.nil? or rs.size!=5 # no results or unexpected results
   rs = rs[3].inner_html.gsub(',', '') # strip comma    
   return rs
 end
 
 def prep_keyword(keyword)
+  # lower case
+  keyword = keyword.downcase
   # pluses
   keyword = keyword.gsub('+', "%2B")
   # quotes
@@ -75,7 +76,7 @@ end
 def get_results(name)  
   domain = "genetic algorithm"
   scope = "programming language"
-  keyword = prep_keyword "\"#{name.downcase} #{scope}\" AND \"#{domain}\""
+  keyword = prep_keyword "\"#{name} #{scope}\" AND \"#{domain}\""
   puts " > searching for: #{keyword}"
   
   # 
@@ -94,13 +95,11 @@ def get_results(name)
   return scores
 end
 
-# puts get_results("c")
-q = "%22c+programming+language%22+AND+%22genetic+algorithm%22"
-q = "\"c programming language\" AND \"genetic algorithm\"".gsub(/ /, "%20").gsub(/"/, "%22")
-q = "genetic+algorithm"
-puts "Query: #{q}"
-puts get_approx_google_web_results(q)
-exit
+# FOR TESTING PURPOSES
+# q = prep_keyword "\"java programming language\" and \"genetic algorithm\""
+# puts "Query: #{q}"
+# puts get_approx_google_web_results(q)
+# exit
 
 def timer
   start = Time.now
