@@ -106,7 +106,11 @@ Traditional language selection concerns such as \emph{Static or Dynamically Type
 
 % practioner questions
 \subsubsection{Practitioner}
-The practitioner is concerned with the usability of the example, either directly in a language that can be exploited in a current project, or indirectly in a language or format that can easily be adapted for a current project. Practitioners are most likely using the common languages in the industry for scientific and application computer programming, such as C, C++, C\#, Java, and potentially dynamic languages such as Python and Ruby. The following questions motivate language selection from the perspective of the practitioner:
+The practitioner is concerned with the usability of the example, either directly in a language that can be exploited in a current project, or indirectly in a language or format that can easily be adapted for a current project.
+% examples
+Practitioners are most likely using the common languages in the industry for scientific and application computer programming, such as C, C++, C\#, Java, and potentially dynamic languages such as Python and Ruby. Paradigms used by practitioners are mostly likely Object-Oriented programming (OO), and Procedural programming only because it is subsumed by OO.
+% questions
+The following questions motivate language selection from the perspective of the practitioner:
 
 \begin{itemize}
 	\item What languages are most commonly used by practitioners in industry and/or academia?
@@ -116,7 +120,11 @@ The practitioner is concerned with the usability of the example, either directly
 
 % communication questions
 \subsubsection{Communication}
-The communication perspective on implementation examples is concerned with less practical concerns than usability, such as understandably, readability, and accessibility. The following questions motivate language selection from the perspective of implementation communication:
+The communication perspective on implementation examples is concerned with less practical concerns than usability, such as understandably, readability, and accessibility. 
+% examples
+Given a varied readership of amateurs, scientists, and developers, procedural programming examples would be the most easy to understand (modules of steps of expressions) and potentially object-oriented programming. System programming languages (such as C) are likely to be concise, although scripting programming languages such as Lua, Ruby, and Python are likely to provide compact source code listings.
+% questions
+The following questions motivate language selection from the perspective of implementation communication:
 
 \begin{itemize}
 	\item Given the varied background of the readership, is the average reader likely to easily understand the example?
@@ -129,20 +137,25 @@ The communication perspective on implementation examples is concerned with less 
 %
 \section{Methodology}
 \label{sec:methodology}
-
-implement one algorithm in a range of scripting languages and compare
+This section presents a methodology for comparing programming languages for presenting optimization (and similar) heuristic methods from the fields of Computational Intelligence, Natural Computation, and Metaheuristics in a book and/or website medium. The methodology is empirical, requiring a selection of a representative algorithm, the selection of some candidate programming languages for the selected algorithm to be programmed in, and the identification of some measures that may be collected from each implementation such that they can be compared.
 
 % 
 %  Algorithm
 % 
 \subsection{Algorithm}
-a genetic algorithm, non trivial, small, easy to compare
+The algorithm used for comparison must be representative of the algorithms that require implementation examples. A first-draft of all algorithms to be described in the Clever Algorithms project has been defined \cite{Brownlee2010a}. In that definition, popularity of each technique was measured against popular search engines. Algorithm popularity provides a reasonable basis for representation. The top five popular algorithms were: genetic algorithm, simulated annealing, random search, genetic programming, and tabu search.
+
+The genetic algorithm provides a suitable representative algorithm in that it is not only popular, but also involves a number of non-trivial operators (compared to random or tabu search), although is relatively compact (compared to genetic programming that involves management of tree structures). Simulated annealing also provides a suitable representative algorithm, and may be used in followup and/or confirmatory studies. 
+
+The following algorithm listing provides an abstract representation of a standardized genetic algorithm in pseudo code.
+
+TODO.
 
 
 % 
-% Implementation
+% Implementations
 % 
-\subsection{Implementation}
+\subsection{Implementations}
 procedural, 4 dynamic languages
 js, lua, python, and ruby
 
