@@ -55,9 +55,9 @@ This report addresses the problem of which language to use for describing algori
 % breakdown
 Section~\ref{sec:language_selection} considers the problem of language selection focusing on the types of languages that could be used and examples, as well as a consideration of attributes that might be important when selecting a language.
 Section~\ref{sec:methodology} proposes a methodology for evaluating and comparing languages for use in implementation examples for the standardized algorithm description, specifying an algorithm to use in the comparison, a set of languages to be considered, and the specific properties that will be measured and compared.
-Four languages are considered: Javascript in Section~\ref{sec:javascript}, Lua in Section~\ref{sec:lua}, Python in Section~\ref{sec:python} and Ruby in Section~\ref{sec:ruby}.
+Four languages are considered: Python in Section~\ref{sec:python}, Perl in Section~\ref{sec:perl}, Ruby in Section~\ref{sec:ruby} and Lua in Section~\ref{sec:lua}.
 The results of the comparison are reviewed in Section~\ref{sec:analysis} highlighting areas for improvement in the language selection methodology and in the execution of the comparison. 
-Finally, the findings are discussed in Section~\ref{sec:findings} and the Ruby Programming Language is selected for use in the Clever Algorithms project.
+Finally, the findings are discussed in Section~\ref{sec:findings} and the XXXXXXXX Programming Language is selected for use in the Clever Algorithms project.
 
 % 
 % Language Selection
@@ -205,25 +205,20 @@ Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a s
 % overview
 Implementing an algorithm in a range of different programming languages is time consuming. Heuristics are required to reduce the set of possible languages down to a manageable number that can be compared.
 % strategy
-This section considers algorithm popularity as a heuristic in a similar manner to the way in which algorithms were selected for description in the Clever Algorithms project. A listing of common and popular languages was prepared and a script written to measure the number of search results for each language across a range of search domains: Google web, book, and scholar. This process was then repeated for the language name in conjunction with the phrase `optimization' to assess the specific use of the language (Section~\ref{subsubsec:popularity}). Finally, a subset of popular algorithms were selected for comparison (Section~\ref{subsubsec:selection}).
+This section considers algorithm popularity as a heuristic in a similar manner to the way in which algorithms were selected for description in the Clever Algorithms project. A listing of common and popular languages was prepared and a script written to measure the number of search results for each language across a range of search domains: Google web, book, and scholar. This process was then repeated for the language name in conjunction with the phrase `optimization' to assess the specific use of the language (Section~\ref{subsubsec:popularity}). The requirements for a selected language are described based on generalizations from language classes (from Section~\ref{sec:language_selection}) and from the needs of the readership (Section~\ref{subsubsec:requirements}). Finally, a subset of popular algorithms were selected for comparison (Section~\ref{subsubsec:selection}).
 
-\subsubsection{Language Requirements}
-\label{subsubsec:requirements}
-
-\begin{itemize}
-	\item The language shall allow programming in the procedural paradigm.
-	\item The language shall be interpreted.
-	\item The language shall be freely available and accessible (acquire and use at no cost).
-\end{itemize}
-
+% 
+% Language Popularity
+% 
 \subsubsection{Language Popularity}
 \label{subsubsec:popularity}
-search across domains for language name
-search across domains for language name and optimization
+This section lists the results of measuring the popularity of 24 popular programming languages. 
+% collection 
+The measures were taken from the Google web, book, and scholar search services on January 20th 2010 for the phrase `\emph{``NAME programming language'' AND ``genetic algorithm''}' (where `NAME' is replaced with each specific language name). The results are listed in Table~\ref{tab:results} that shows algorithm name, a raw approximation of the number of results from each service and the score as the sum of the normalized approximate measures. Results are ordered by score, descending.
 
 \begin{table}[ht]
 	\centering
-		\begin{tabularx}{\textwidth}{llXXXX}
+		\begin{tabularx}{\textwidth}{lXXXX}
 		\toprule
 		\textbf{Language} & \textbf{Google Web} & \textbf{Google Book} & \textbf{Google Scholar} & \textbf{Score} \\ 
 		\toprule
@@ -257,9 +252,32 @@ search across domains for language name and optimization
 	\label{tab:results}
 \end{table}
 
+% 
+% Language Requirements
+% 
+\subsubsection{Language Requirements}
+\label{subsubsec:requirements}
+This section lists the requirements for selecting a language.
+
+\begin{itemize}
+	\item The language shall allow programming in the procedural paradigm.
+	\item The language shall be interpreted.
+	\item The language shall be freely available and accessible (acquire and use at no cost).
+\end{itemize}
+
+% 
+% Selected Languages
+% 
 \subsubsection{Selected Languages}
 \label{subsubsec:selection}
-those languages selected for comparison
+The following are the languages selected for comparison based on the popularity heuristics and the language selection requirements:
+
+\begin{itemize}
+	\item The Python Programming Language
+	\item The Perl Programming Language
+	\item The Ruby Programming Language
+	\item The Lua Programming Language
+\end{itemize}
 
 
 % 
@@ -288,11 +306,27 @@ The measures to be collected for each implementation are as follows:
 
 
 % 
-% Javascript
+% Python
 % 
-\section{Javascript}
-\label{sec:javascript}
+\section{Python}
+\label{sec:python}
 todo
+
+% 
+% Perl
+% 
+\section{Perl}
+\label{sec:perl}
+todo
+
+
+% 
+% Ruby
+% 
+\section{Ruby}
+\label{sec:ruby}
+todo
+
 
 
 % 
@@ -303,20 +337,6 @@ todo
 todo
 
 
-% 
-% Python
-% 
-\section{Python}
-\label{sec:python}
-todo
-
-
-% 
-% Ruby
-% 
-\section{Ruby}
-\label{sec:ruby}
-todo
 
 
 % 
