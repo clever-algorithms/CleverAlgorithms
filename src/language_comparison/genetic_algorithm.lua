@@ -64,9 +64,30 @@ function crossover(parent1, parent2)
     parent2.bitstring:sub(0,cut)..parent1.bitstring:sub(cut,NUM_BITS)
 end
 
+-- todo
+def evolve
+  population = Array.new(POP_SIZE) do |i|
+    Solution.new((0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
+  end
+  population.each{|c| c.fitness = onemax(c.bitstring)}
+  gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
+  while best.fitness!=NUM_BITS and (gen+=1)<NUM_GENERATIONS
+    children = []
+    while children.size < POP_SIZE
+      s1, s2 = crossover(tournament(population), tournament(population))
+      children << Solution.new(mutation(s1))
+      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
+    end
+    children.each{|c| c.fitness = onemax(c.bitstring)}
+    children.sort!{|x,y| y.fitness <=> x.fitness}
+    best = children.first if children.first.fitness > best.fitness
+    population = children
+    puts " > gen #{gen}, best: #{best}"
+  end  
+  return best
+end
 
-
- 
+io.write(string.format("done! Solution: %s\n", evolve()))
 
 
 
@@ -134,4 +155,4 @@ function evolve()
 	return bestString
 end
  
-io.write(string.format("done! Solution: %s\n", evolve()))
+
