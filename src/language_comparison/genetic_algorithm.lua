@@ -56,8 +56,8 @@ function crossover(parent1, parent2)
     return ""..parent1.bitstring, ""..parent2.bitstring
   end
   local cut = math.random(NUM_BITS-2) + 1
-  return parent1.bitstring:sub(0,cut)..parent2.bitstring:sub(cut,NUM_BITS),
-    parent2.bitstring:sub(0,cut)..parent1.bitstring:sub(cut,NUM_BITS)
+  return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS),
+    parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)
 end
 
 function random_bitstring()
@@ -81,29 +81,28 @@ function evolve()
 		candidate.fitness = onemax(candidate.bitstring)
 	end
 	table.sort(population, function(a,b) return a.fitness<b.fitness end)
-  	local gen, best = 0, population[POP_SIZE-1]
+  	local gen, best = 0, population[POP_SIZE]
 	while best.fitness<NUM_BITS and gen<NUM_GENERATIONS do
 		local children = {}
 		while #children < POP_SIZE do
-	      local s1, s2 = crossover(tournament(population), tournament(population))
-	      table.insert(children, {bitstring=mutation(s1),fitness=0}) 
-		  if #children < POP_SIZE then
-			table.insert(children, {bitstring=mutation(s2),fitness=0}) 
-		  end
-	    end
+			local s1, s2 = crossover(tournament(population), tournament(population))
+			table.insert(children, {bitstring=mutation(s1),fitness=0}) 
+			if #children < POP_SIZE then
+				table.insert(children, {bitstring=mutation(s2),fitness=0}) 
+			end
+		end
 		for i,candidate in ipairs(children) do 
 			candidate.fitness = onemax(candidate.bitstring)
 		end
-	    table.sort(children, function(a,b) return a.fitness<b.fitness end)
-		if(children[POP_SIZE-1].fitness > best.fitness) then
-			best = children[POP_SIZE-1]
+		table.sort(children, function(a,b) return a.fitness<b.fitness end)
+		if(children[POP_SIZE].fitness > best.fitness) then
+			best = children[POP_SIZE]
 		end
-	    population = children
-		io.write(string.format(" > gen %d, best: %s\n", best.fitness, best.bitstring))
+		population = children
+		io.write(string.format(" > gen %d, best: %s\n", gen, best.bitstring))
 		gen = gen + 1
 	end
-
-  return best
+	return best
 end
 
 best = evolve()
