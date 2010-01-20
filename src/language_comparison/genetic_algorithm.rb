@@ -10,6 +10,7 @@ POP_SIZE = 100
 NUM_BITS = 64
 P_CROSSOVER = 0.98
 P_MUTATION = 1.0/NUM_BITS
+HALF = 0.5
 
 class Solution 
   attr_reader :bitstring
@@ -45,7 +46,7 @@ def mutation(source)
     if rand<P_MUTATION
       string << ((bit=='1') ? "0" : "1")
     else 
-      string << bit.to_s
+      string << "#{bit}"
     end
   end
   return string
@@ -62,7 +63,7 @@ end
 
 def evolve
   population = Array.new(POP_SIZE) do |i|
-    Solution.new((0..NUM_BITS).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")})
+    Solution.new((0..NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
   end
   population.each{|c| c.fitness = onemax(c.bitstring)}
   gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
@@ -70,9 +71,8 @@ def evolve
     children = []
     while children.size < POP_SIZE
       s1, s2 = crossover(tournament(population), tournament(population))
-      s1, s2 = mutation(s1), mutation(s2)
-      children << Solution.new(s1)
-      children << Solution.new(s2) if children.size < POP_SIZE
+      children << Solution.new(mutation(s1))
+      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
     end
     children.each{|c| c.fitness = onemax(c.bitstring)}
     children.sort!{|x,y| y.fitness <=> x.fitness}
