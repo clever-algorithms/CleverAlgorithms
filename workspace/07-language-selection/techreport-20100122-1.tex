@@ -13,7 +13,8 @@
 \usepackage[ruled, linesnumbered]{../algorithm2e}
 \usepackage{listings} 
 \usepackage{textcomp}
-\lstset{basicstyle=\small,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false}
+\usepackage{../upquote}
+\lstset{basicstyle=\small,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -426,12 +427,12 @@ puts "done! Solution: #{evolve()}"
 % 
 \section{Lua}
 \label{sec:lua}
-Algorithm Listing~\ref{rubyga} provides an example of the Genetic Algorithm implemented in the Lua Programming Language. Tested against the Lua interpreter version 5.1.4.
+Algorithm Listing~\ref{luaga} provides an example of the Genetic Algorithm implemented in the Lua Programming Language. Tested against the Lua interpreter version 5.1.4.
 
 % use lua
 \input{../lua.def}
 \lstset{language=lua}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Genetic Algorithm in the Lua Programming Language},label=luaga]
 NUM_GENERATIONS = 100
 NUM_BOUTS = 3
 POP_SIZE = 100
