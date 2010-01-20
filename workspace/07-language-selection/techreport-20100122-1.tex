@@ -263,9 +263,9 @@ The measures were taken from the Google web, book, and scholar search services o
 This section lists the requirements for selecting a language.
 
 \begin{itemize}
-	\item The language shall allow programming in the procedural paradigm.
-	\item The language shall be interpreted.
-	\item The language shall be freely available and accessible (acquire and use at no cost).
+	\item The language shall allow programming in the procedural paradigm. (simple and transferable. oo is likely most common paradigm, procedural to oo is easy, cannot easily presume object entities - algorithm and problem likely a bad fit in practice in industry)
+	\item The language shall be interpreted. (reduce steps, compilation is a step)
+	\item The language shall be freely available and accessible (acquire and use at no cost). (need access to language)
 \end{itemize}
 
 % 
@@ -282,6 +282,9 @@ The following are the languages selected for comparison based on the popularity 
 	\item The Lua Programming Language
 \end{itemize}
 
+languages are popular, interpreted, free, and support procedural programming. lua is technically compiled, but at runtime - practically still a scripting language.
+
+some good guidelines: all procedural, no objects, promote readability over fancy language tricks, >80 chars per line, try and implement the same procedure in each language, aim for <100 lines per example, avoid magic numbers (use constants), avoid compressing flow control expressions (if,while,etc), same number of procedures and constants.
 
 % 
 % Comparison
@@ -299,8 +302,9 @@ The measures to be collected for each implementation are as follows:
 		\toprule
 		\textbf{Measure} & \textbf{Description} \\ 
 		\toprule
-		LOC & The number of lines of code in the listing \\
-		bytes & The number of bytes in the code listing \\
+		LOC & The number of lines of code in the listing. \\
+		bytes & The number of bytes in the code listing. \\
+		CPL & The average number of characters per line. \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Algorithm programming language listing measures.}
@@ -327,10 +331,8 @@ todo
 % Ruby
 % 
 \section{Ruby}
-
-
 \label{sec:ruby}
-todo
+Algorithm Listing~\ref{rubyga} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language. Tested against the ruby interpreter version 1.8 and 1.9.
 
 \lstset{language=Ruby}
 \begin{lstlisting}[caption={Genetic Algorithm in the Ruby Programming Language},label=rubyga]
@@ -424,7 +426,27 @@ puts "done! Solution: #{evolve()}"
 \label{sec:lua}
 todo
 
+% 
+% Results
+% 
+\section{Results}
+\label{sec:results}
 
+\begin{table}[ht]
+	\centering
+		\begin{tabularx}{\textwidth}{lXXX}
+		\toprule
+		\textbf{Algorithm} & \textbf{LOC} & \textbf{Bytes} & \textbf{CPL} \\ 
+		\toprule
+		Perl & 0 & 0 & 0 \\
+		Python & 0 & 0 & 0 \\
+		Ruby & 80 & 0 & 0 \\
+		Lua & 0 & 0 & 0 \\
+		\bottomrule
+		\end{tabularx}	
+	\caption{Algorithm programming language listing measures.}
+	\label{tab:implementation_results}
+\end{table}
 
 
 % 
@@ -432,9 +454,17 @@ todo
 % 
 \section{Analysis}
 \label{sec:analysis}
-
 how could the methodology be improved?
 how could the execution be improved?
+
+
+\subsection{Methodology}
+this is a hard problem
+consider compiled languages
+
+
+\subsection{Implementation}
+hard to implement similar procedures across languages
 
 
 % 
