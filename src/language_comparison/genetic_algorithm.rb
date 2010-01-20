@@ -83,6 +83,4 @@ def evolve
   return best
 end
 
-
-best = evolve()
-puts "done! Solution: #{best}"
+puts "done! Solution: #{evolve()}"
