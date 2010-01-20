@@ -13,54 +13,65 @@ P_CROSSOVER = 0.98
 P_MUTATION = 1.0/NUM_BITS
 HALF = 0.5
  
-function printf(...)
-	io.write(string.format(...))
-end
- 
-function crossover(a, b) 
-	if math.random() > crossoverRate then
-		return ""..a
-	end
-	local cut = math.random(a:len()-1)
-	local s = ""
-	for i=1, cut do
-		s = s..a:sub(i,i)
-	end
-	for i=cut+1, b:len() do
-		s = s..b:sub(i,i)
-	end		
-	return s
-end
- 
-function mutation(bitstring)
-	local s = ""
+-- DONE THIS ONE
+function onemax(bitstring)
+  local sum = 0
 	for i=1, bitstring:len() do
-		local c = bitstring:sub(i,i)
-		if math.random() < mutationRate then		 
-			if c == "0" 
-			then s = s.."1"
-			else s = s.."0" end
-		else s = s..c end
-	end
-	return s
-end
- 
-function selection(population, fitnesses)
-	local pop = {}
-	repeat
-		local bestString = nil
-		local bestFitness = 0
-		for i=1, selectionTournamentSize do
-			local selection = math.random(#fitnesses)
-			if fitnesses[selection] > bestFitness then
-				bestFitness = fitnesses[selection]
-				bestString = population[selection]
-			end
+		if(bitstring:sub(i,i) == "1") then 
+			sum = sum+1 
 		end
-		table.insert(pop, bestString)
-	until #pop == #population
-	return pop
+	end
+  return sum
 end
+
+-- DONE THIS ONE
+function tournament(population)
+  local best = nil
+  for i=1, NUM_BOUTS do
+    local other = population[math.random(#population)]
+	if(best==nil or other.fitness > best.fitness) then
+		best = other
+	end
+  end
+  return best
+end
+
+-- DONE THIS ONE
+function mutation(source)
+  local string = ""
+  for i=1, bitstring:len() do
+	local c = bitstring:sub(i,i)
+    if math.random() < P_MUTATION then
+		if c == "0" then 
+			string = string.."1"
+		else 
+			string = string.."0" 
+		end
+    else 
+      string = string..c
+    end
+  end
+  return string
+end
+
+-- DONE THIS ONE
+function crossover(parent1, parent2)
+  if math.random() < P_CROSSOVER then
+    return ""..parent1.bitstring, ""..parent2.bitstring
+  end
+  local cut = math.random(NUM_BITS-2) + 1
+  return parent1.bitstring:sub(0,cut)..parent2.bitstring:sub(cut,NUM_BITS),
+    parent2.bitstring:sub(0,cut)..parent1.bitstring:sub(cut,NUM_BITS)
+end
+
+
+
+ 
+
+
+
+
+
  
 function reproduce(selected)
 	local pop = {}
@@ -74,14 +85,7 @@ function reproduce(selected)
 	return pop
 end
  
-function fitness(bitstring)
-	local cost = 0
-	for i=1, bitstring:len() do
-		local c = bitstring:sub(i,i)
-		if(c == "1") then cost = cost + 1 end
-	end
-	return cost
-end
+
  
 function random_bitstring(length)
 	local s = ""
@@ -125,9 +129,9 @@ function evolve()
 		tmpPop = selection(population, fitnesses)		
 		-- reproduce
 		population = reproduce(tmpPop)
-		printf(">gen %d, best cost=%d [%s]\n", i, fitness(bestString), bestString)
+		io.write(string.format(">gen %d, best cost=%d [%s]\n", i, fitness(bestString), bestString))
 	end	
 	return bestString
 end
  
-printf("done! Solution: %s\n", evolve())
+io.write(string.format("done! Solution: %s\n", evolve()))
