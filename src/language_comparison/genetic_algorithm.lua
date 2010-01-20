@@ -4,7 +4,6 @@
 -- (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 -- This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-
 NUM_GENERATIONS = 100
 NUM_BOUTS = 3
 POP_SIZE = 100
@@ -55,7 +54,7 @@ function crossover(parent1, parent2)
   if math.random() < P_CROSSOVER then
     return ""..parent1.bitstring, ""..parent2.bitstring
   end
-  local cut = math.random(NUM_BITS-2) + 1
+  local cut = math.random(NUM_BITS-2) + 2
   return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS),
     parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)
 end
@@ -99,11 +98,11 @@ function evolve()
 			best = children[POP_SIZE]
 		end
 		population = children
-		io.write(string.format(" > gen %d, best: %s\n", gen, best.bitstring))
+		io.write(" > gen "..gen..", best: "..best.bitstring.."\n")
 		gen = gen + 1
 	end
 	return best
 end
 
 best = evolve()
-io.write(string.format("done! Solution:f=%d, s=%s\n", best.fitness, best.bitstring))
+io.write("done! Solution:f="..best.fitness..", s="..best.bitstring.."\n")
