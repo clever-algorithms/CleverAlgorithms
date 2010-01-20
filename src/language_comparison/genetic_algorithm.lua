@@ -12,8 +12,7 @@ NUM_BITS = 64
 P_CROSSOVER = 0.98
 P_MUTATION = 1.0/NUM_BITS
 HALF = 0.5
- 
--- DONE THIS ONE
+
 function onemax(bitstring)
   local sum = 0
 	for i=1, bitstring:len() do
@@ -24,7 +23,6 @@ function onemax(bitstring)
   return sum
 end
 
--- DONE THIS ONE
 function tournament(population)
   local best = nil
   for i=1, NUM_BOUTS do
@@ -36,8 +34,7 @@ function tournament(population)
   return best
 end
 
--- DONE THIS ONE
-function mutation(source)
+function mutation(bitstring)
   local string = ""
   for i=1, bitstring:len() do
 	local c = bitstring:sub(i,i)
@@ -54,7 +51,6 @@ function mutation(source)
   return string
 end
 
--- DONE THIS ONE
 function crossover(parent1, parent2)
   if math.random() < P_CROSSOVER then
     return ""..parent1.bitstring, ""..parent2.bitstring
@@ -64,95 +60,51 @@ function crossover(parent1, parent2)
     parent2.bitstring:sub(0,cut)..parent1.bitstring:sub(cut,NUM_BITS)
 end
 
--- todo
-def evolve
-  population = Array.new(POP_SIZE) do |i|
-    Solution.new((0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
-  end
-  population.each{|c| c.fitness = onemax(c.bitstring)}
-  gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
-  while best.fitness!=NUM_BITS and (gen+=1)<NUM_GENERATIONS
-    children = []
-    while children.size < POP_SIZE
-      s1, s2 = crossover(tournament(population), tournament(population))
-      children << Solution.new(mutation(s1))
-      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
-    end
-    children.each{|c| c.fitness = onemax(c.bitstring)}
-    children.sort!{|x,y| y.fitness <=> x.fitness}
-    best = children.first if children.first.fitness > best.fitness
-    population = children
-    puts " > gen #{gen}, best: #{best}"
-  end  
-  return best
-end
-
-io.write(string.format("done! Solution: %s\n", evolve()))
-
-
-
-
-
- 
-function reproduce(selected)
-	local pop = {}
-	for i, p1 in ipairs(selected) do
-		local p2 = nil
-		if (i%2)==0 then p2=selected[i-1] else p2=selected[i+1] end
-		child = crossover(p1, p2)
-		mutantChild = mutation(child)
-		table.insert(pop, mutantChild);
-	end
-	return pop
-end
- 
-
- 
-function random_bitstring(length)
+function random_bitstring()
 	local s = ""
-	while s:len() < length do
-		if math.random() < 0.5
-		then s = s.."0"
-		else s = s.."1" end
+	for i=1, NUM_BITS do
+		if math.random() < HALF then 
+			s = s.."0"
+		else 
+			s = s.."1" 
+		end
 	end 
 	return s
 end
- 
-function getBest(currentBest, population, fitnesses) 	
-	local bestScore = currentBest==nil and 0 or fitness(currentBest)
-	local best = currentBest
-	for i,f in ipairs(fitnesses) do
-		if(f > bestScore) then
-			bestScore = f
-			best = population[i]
-		end
-	end
-	return best
-end
- 
+
 function evolve()
 	local population = {}
-	local bestString = nil
-	-- initialize the popuation random pool
-	for i=1, populationSize do
-		table.insert(population, random_bitstring(problemSize))
+	for i=1, POP_SIZE do
+		table.insert(population, {bitstring=random_bitstring(),fitness=0})
 	end
-	-- optimize the population (fixed duration)
-	for i=1, maxGenerations do
-		-- evaluate
-		fitnesses = {}
-		for i,v in ipairs(population) do
-			table.insert(fitnesses, fitness(v))
+	for i,candidate in ipairs(population) do 
+		candidate.fitness = onemax(candidate.bitstring)
+	end
+	table.sort(population, function(a,b) return a.fitness<b.fitness end)
+  	local gen, best = 0, population[POP_SIZE-1]
+	while best.fitness<NUM_BITS and gen<NUM_GENERATIONS do
+		local children = {}
+		while #children < POP_SIZE do
+	      local s1, s2 = crossover(tournament(population), tournament(population))
+	      table.insert(children, {bitstring=mutation(s1),fitness=0}) 
+		  if #children < POP_SIZE then
+			table.insert(children, {bitstring=mutation(s2),fitness=0}) 
+		  end
+	    end
+		for i,candidate in ipairs(children) do 
+			candidate.fitness = onemax(candidate.bitstring)
 		end
-		-- update best
-		bestString = getBest(bestString, population, fitnesses)
-		-- select
-		tmpPop = selection(population, fitnesses)		
-		-- reproduce
-		population = reproduce(tmpPop)
-		io.write(string.format(">gen %d, best cost=%d [%s]\n", i, fitness(bestString), bestString))
-	end	
-	return bestString
-end
- 
+	    table.sort(children, function(a,b) return a.fitness<b.fitness end)
+		if(children[POP_SIZE-1].fitness > best.fitness) then
+			best = children[POP_SIZE-1]
+		end
+	    population = children
+		io.write(string.format(" > gen %d, best: %s\n", best.fitness, best.bitstring))
+		gen = gen + 1
+	end
 
+  return best
+end
+
+best = evolve()
+io.write(string.format("done! Solution:f=%d, s=%s\n", best.fitness, best.bitstring))
