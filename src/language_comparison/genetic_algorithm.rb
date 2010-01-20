@@ -57,13 +57,13 @@ def crossover(parent1, parent2)
     return String.new(parent1.bitstring), String.new(parent2.bitstring)
   end
   cut = rand(NUM_BITS-2) + 1
-  return parent1.bitstring[0..cut]+parent2.bitstring[cut..NUM_BITS],
-    parent2.bitstring[0..cut]+parent1.bitstring[cut..NUM_BITS]
+  return parent1.bitstring[0...cut]+parent2.bitstring[cut...NUM_BITS],
+    parent2.bitstring[0...cut]+parent1.bitstring[cut...NUM_BITS]
 end
 
 def evolve
   population = Array.new(POP_SIZE) do |i|
-    Solution.new((0..NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
+    Solution.new((0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
   end
   population.each{|c| c.fitness = onemax(c.bitstring)}
   gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
