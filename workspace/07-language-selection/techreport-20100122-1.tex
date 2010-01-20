@@ -11,6 +11,9 @@
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
 \usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\lstset{basicstyle=\small,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -324,9 +327,94 @@ todo
 % Ruby
 % 
 \section{Ruby}
+
+
 \label{sec:ruby}
 todo
 
+\lstset{language=Ruby}
+\begin{lstlisting}[caption={Genetic Algorithm in the Ruby Programming Language},label=rubyga]
+NUM_GENERATIONS = 100
+NUM_BOUTS = 3
+POP_SIZE = 100
+NUM_BITS = 64
+P_CROSSOVER = 0.98
+P_MUTATION = 1.0/NUM_BITS
+HALF = 0.5
+
+class Solution 
+  attr_reader :bitstring
+  attr_accessor :fitness
+  
+  def initialize(string)
+    @bitstring = string
+  end
+  
+  def to_s
+    "f=#{@fitness}, s=#{@bitstring}"
+  end
+end
+
+def onemax(bitstring)
+  sum = 0
+  bitstring.each_char {|x| sum+=1 if x=='1'}
+  return sum
+end
+
+def tournament(population)
+  best = nil
+  NUM_BOUTS.times do    
+    other = population[rand(population.size)]
+    best = other if best.nil? or other.fitness>best.fitness
+  end
+  return best
+end
+
+def mutation(source)
+  string = ""
+  source.each_char do |bit|
+    if rand<P_MUTATION
+      string << ((bit=='1') ? "0" : "1")
+    else 
+      string << "#{bit}"
+    end
+  end
+  return string
+end
+
+def crossover(parent1, parent2)
+  if rand < P_CROSSOVER
+    return String.new(parent1.bitstring), String.new(parent2.bitstring)
+  end
+  cut = rand(NUM_BITS-2) + 1
+  return parent1.bitstring[0...cut]+parent2.bitstring[cut...NUM_BITS],
+    parent2.bitstring[0...cut]+parent1.bitstring[cut...NUM_BITS]
+end
+
+def evolve
+  population = Array.new(POP_SIZE) do |i|
+    Solution.new((0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
+  end
+  population.each{|c| c.fitness = onemax(c.bitstring)}
+  gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
+  while best.fitness!=NUM_BITS and (gen+=1)<NUM_GENERATIONS
+    children = []
+    while children.size < POP_SIZE
+      s1, s2 = crossover(tournament(population), tournament(population))
+      children << Solution.new(mutation(s1))
+      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
+    end
+    children.each{|c| c.fitness = onemax(c.bitstring)}
+    children.sort!{|x,y| y.fitness <=> x.fitness}
+    best = children.first if children.first.fitness > best.fitness
+    population = children
+    puts " > gen #{gen}, best: #{best}"
+  end  
+  return best
+end
+
+puts "done! Solution: #{evolve()}"
+\end{lstlisting}
 
 
 % 
