@@ -55,8 +55,7 @@ end
 def crossover(parent1, parent2)
   if rand < P_CROSSOVER
     cut = rand(NUM_BITS-2) + 1
-    return parent1.bitstring[0...cut]+parent2.bitstring[cut...NUM_BITS],
-      parent2.bitstring[0...cut]+parent1.bitstring[cut...NUM_BITS]
+    return parent1.bitstring[0...cut]+parent2.bitstring[cut...NUM_BITS], parent2.bitstring[0...cut]+parent1.bitstring[cut...NUM_BITS]
   end
   return String.new(parent1.bitstring), String.new(parent2.bitstring)
 end
