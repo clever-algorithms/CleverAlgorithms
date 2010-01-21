@@ -39,7 +39,9 @@ sub mutation {
 }
 
 sub crossover {
-	my ($parent1, $parent2) = ($_[1], $_[3]);
+	my ($parent1, $parent2) = ($_[0], $_[1]);
+	$bs = ${$_[0]}{'bitstring'};
+	print "crossover: ".$bs."\n";
 	if(rand() < P_CROSSOVER) {
 		my $cut = int(rand(NUM_BITS-2)) + 1;
 		my @p1 = split(//,$parent1);
@@ -61,15 +63,34 @@ sub random_bitstring {
 	return $string;
 }
 
+sub tournament {
+	my @population = @{$_[0]};
+  	$best = '';
+	for my $p (0..(NUM_BOUTS-1)) {	
+		$i = int(rand(@population));
+		if($best == '' or $population[$i]{fitness}>$best{fitness}){
+			$best = $population[$i];
+		}
+	}
+	return $best;
+}
 
 # testing...
 print(onemax("001111100")."\n");
 print(mutation("11111111")."\n");
 print("random string: ".random_bitstring()."\n");
 
-%s1 = (bitstring => '111111111');
-%s2 = (bitstring => '000000000');
-my ($c1, $c2) = crossover(%s1, %s2);
+%s1 = {bitstring=>'111111111', fitness=>1};
+%s2 = {bitstring=>'000000000', fitness=>2};
+my ($c1, $c2) = crossover($s1, $s2);
 print("rs1: ".$c1."\n");
 print("rs2: ".$c2."\n");
 
+print "new test!!!\n";
+@population = ({bitstring=>'111111111', fitness=>1}, {bitstring=>'000000000', fitness=>2});
+print "array size: ". @population ."\n";
+print "array data: ". $population[0]{bitstring} ."\n";
+
+%v = tournament(\@population);
+print "rs: ". $v ."\n";
+print "rs: ". $v{'bitstring'} ."\n";
