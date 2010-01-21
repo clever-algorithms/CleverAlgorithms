@@ -45,7 +45,7 @@ def crossover(parent1, parent2):
 	if random.random() < P_CROSSOVER:
 		cut = random.randint(1, NUM_BITS-1)
 		return parent1['bitstring'][0:cut]+parent2['bitstring'][cut:NUM_BITS], parent2['bitstring'][0:cut]+parent1['bitstring'][cut:NUM_BITS]
-	return {'bitstring':''+parent1['bitstring'],'fitness':0}, {'bitstring':''+parent2['bitstring'],'fitness':0}
+	return ''+parent1['bitstring'], ''+parent2['bitstring']
 
 def random_bitstring():
 	s = ''
