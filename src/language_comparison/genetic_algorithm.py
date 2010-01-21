@@ -72,11 +72,11 @@ def evolve():
 			children.append({'bitstring':mutation(s1), 'fitness':0})
 			if len(children) < POP_SIZE:
 				children.append({'bitstring':mutation(s2), 'fitness':0})
-		for candidate in population:
+		for candidate in children:
 			candidate['fitness'] = onemax(candidate['bitstring'])
-		population.sort(lambda x, y: x['fitness']-y['fitness'])
-		if population[POP_SIZE-1]['fitness'] > best['fitness']:
-			best = population[POP_SIZE-1]
+		children.sort(lambda x, y: x['fitness']-y['fitness'])
+		if children[POP_SIZE-1]['fitness'] > best['fitness']:
+			best = children[POP_SIZE-1]
 		population = children
 		gen += 1
 		print "gen %d, best: %d, %s" % (gen, best['fitness'], best['bitstring'])
