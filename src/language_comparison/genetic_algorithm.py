@@ -63,7 +63,7 @@ def evolve():
 		population.append({'bitstring':random_bitstring(), 'fitness':0})
 	for candidate in population:
 		candidate['fitness'] = onemax(candidate['bitstring'])
-	population.sort(key=lambda x:x['fitness'])
+	population.sort(lambda x, y: x['fitness']-y['fitness'])
 	gen, best = 0, population[POP_SIZE-1]
 	while best['fitness']!=NUM_BITS and gen<NUM_GENERATIONS:
 		children = []
@@ -74,7 +74,7 @@ def evolve():
 				children.append({'bitstring':mutation(s2), 'fitness':0})
 		for candidate in population:
 			candidate['fitness'] = onemax(candidate['bitstring'])
-		population.sort(key=lambda x:x['fitness'])
+		population.sort(lambda x, y: x['fitness']-y['fitness'])
 		if population[POP_SIZE-1]['fitness'] > best['fitness']:
 			best = population[POP_SIZE-1]
 		population = children
