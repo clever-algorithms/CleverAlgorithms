@@ -5,6 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 import random
+import sys
 
 NUM_GENERATIONS = 100
 NUM_BOUTS = 3
@@ -50,37 +51,37 @@ def crossover(parent1, parent2):
 
 def random_bitstring():
 	s = ''
-	for 0 in range(NUM_BITS):
+	for x in range(NUM_BITS):
 		if random.random < HALF:
 			s += '0'
-		else
+		else:
 			s += '1' 
 	return s
-end
 
 def evolve():
 	population = []
-	for 0 in range(POP_SIZE):
-		population.append({'bitstring':random_bitstring(), 'fitness'=0})
-
-
-  population.each{|c| c.fitness = onemax(c.bitstring)}
-  gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
-  while best.fitness!=NUM_BITS and (gen+=1)<NUM_GENERATIONS
-    children = []
-    while children.size < POP_SIZE
-      s1, s2 = crossover(tournament(population), tournament(population))
-      children << Solution.new(mutation(s1))
-      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
-    end
-    children.each{|c| c.fitness = onemax(c.bitstring)}
-    children.sort!{|x,y| y.fitness <=> x.fitness}
-    best = children.first if children.first.fitness > best.fitness
-    population = children
-    puts " > gen #{gen}, best: #{best}"
-  end  
-  return best
-end
+	for x in range(POP_SIZE):
+		population.append({'bitstring':random_bitstring(), 'fitness':0})
+	for candidate in population:
+		candidate['fitness'] = onemax(candidate['bitstring'])
+	population.sort(key=lambda x:x['fitness'])
+	gen, best = 0, population[POP_SIZE-1]
+	while best['fitness']!=NUM_BITS and gen<NUM_GENERATIONS:
+		children = []
+		while len(children) < POP_SIZE:
+			s1, s2 = crossover(tournament(population), tournament(population))
+			children.append({'bitstring':mutation(s1), 'fitness':0})
+			if len(children) < POP_SIZE:
+				children.append({'bitstring':mutation(s2), 'fitness':0})
+		for candidate in population:
+			candidate['fitness'] = onemax(candidate['bitstring'])
+		population.sort(key=lambda x:x['fitness'])
+		if population.last['fitness'] > best['fitness']:
+			best = population[POP_SIZE-1]
+		population = children
+		gen += 1
+		print "gen %d, best: %d, %s" % (gen, best['fitness'], best['bitstring'])
+	return best
 
 best = evolve()
-print 'done! Solution: f='+best['fitness']+', s='+best['bitstring']'
+print "done! Solution: f=%d, s=%s" % (best['fitness'], best['bitstring'])

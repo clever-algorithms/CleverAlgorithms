@@ -66,7 +66,7 @@ def evolve
   end
   population.each{|c| c.fitness = onemax(c.bitstring)}
   gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
-  while best.fitness!=NUM_BITS and (gen+=1)<NUM_GENERATIONS
+  while best.fitness!=NUM_BITS and gen<NUM_GENERATIONS
     children = []
     while children.size < POP_SIZE
       s1, s2 = crossover(tournament(population), tournament(population))
@@ -77,6 +77,7 @@ def evolve
     children.sort!{|x,y| y.fitness <=> x.fitness}
     best = children.first if children.first.fitness > best.fitness
     population = children
+    gen += 1
     puts " > gen #{gen}, best: #{best}"
   end  
   return best
