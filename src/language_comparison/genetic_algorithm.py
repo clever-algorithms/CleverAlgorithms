@@ -11,8 +11,7 @@ NUM_GENERATIONS = 100
 NUM_BOUTS = 3
 POP_SIZE = 100
 NUM_BITS = 64
-P_CROSSOVER = 1
-# 0.98
+P_CROSSOVER = 0.98
 P_MUTATION = 1.0/NUM_BITS
 HALF = 0.5
 
@@ -26,7 +25,7 @@ def onemax(bitstring):
 def tournament(population):
 	best = None
 	for i in range(NUM_BOUTS):
-		other = population[random.randint(0, len(population))]
+		other = population[random.randint(0, len(population)-1)]
 		if best==None or other['fitness']>best['fitness']:
 			best = other
 	return best
@@ -34,7 +33,7 @@ def tournament(population):
 def mutation(bitstring):
 	string = ''
 	for c in bitstring:
-		if random.random<P_MUTATION:
+		if random.random()<P_MUTATION:
 			if c=='1':
 				string += '0'
 			else:
@@ -44,7 +43,7 @@ def mutation(bitstring):
 	return string
 
 def crossover(parent1, parent2):
-	if random.random < P_CROSSOVER:
+	if random.random() < P_CROSSOVER:
 		cut = random.randint(1, NUM_BITS-1)
 		return parent1['bitstring'][0:cut]+parent2['bitstring'][cut:NUM_BITS], parent2['bitstring'][0:cut]+parent1['bitstring'][cut:NUM_BITS]
 	return {'bitstring':''+parent1['bitstring'],'fitness':0}, {'bitstring':''+parent2['bitstring'],'fitness':0}
@@ -52,7 +51,7 @@ def crossover(parent1, parent2):
 def random_bitstring():
 	s = ''
 	for x in range(NUM_BITS):
-		if random.random < HALF:
+		if random.random() < HALF:
 			s += '0'
 		else:
 			s += '1' 
@@ -76,7 +75,7 @@ def evolve():
 		for candidate in population:
 			candidate['fitness'] = onemax(candidate['bitstring'])
 		population.sort(key=lambda x:x['fitness'])
-		if population.last['fitness'] > best['fitness']:
+		if population[POP_SIZE-1]['fitness'] > best['fitness']:
 			best = population[POP_SIZE-1]
 		population = children
 		gen += 1
