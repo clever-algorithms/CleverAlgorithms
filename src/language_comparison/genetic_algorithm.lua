@@ -52,11 +52,11 @@ end
 
 function crossover(parent1, parent2)
   if math.random() < P_CROSSOVER then
-    return ""..parent1.bitstring, ""..parent2.bitstring
+	local cut = math.random(NUM_BITS-2) + 2
+	  return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS),
+	    parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)  
   end
-  local cut = math.random(NUM_BITS-2) + 2
-  return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS),
-    parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)
+  return ""..parent1.bitstring, ""..parent2.bitstring
 end
 
 function random_bitstring()
