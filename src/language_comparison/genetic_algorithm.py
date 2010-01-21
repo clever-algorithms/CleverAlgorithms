@@ -22,6 +22,21 @@ def onemax(bitstring):
 			sum = sum + 1
 	return sum
 			
-			
-print onemax("01010010")
+
+def mutation(bitstring):
+	string = ''
+	for c in bitstring:
+		if random.random()<P_MUTATION:
+			if c=='1':
+				string += '0'
+			else:
+				string += '1'
+		else:
+			string += c
+	return string
+
+
+
+
+print mutation('0000')
 
