@@ -8,7 +8,7 @@ use constant NUM_GENERATIONS => 100;
 use constant NUM_BOUTS => 3;
 use constant POP_SIZE => 100;
 use constant NUM_BITS => 64;
-use constant P_CROSSOVER => 0.98;
+use constant P_CROSSOVER => 1;
 use constant P_MUTATION => (1.0/NUM_BITS);
 use constant HALF => 0.5;
 
@@ -24,7 +24,7 @@ sub onemax {
 
 sub mutation {
 	$string = "";
-	while ($_[0]=~ /(.)/gs) {
+	while ($_[0]=~ /(.)/g) {
 		if(rand() < P_MUTATION) {
 			if($1=='1') {
 				$string = $string . "0"
@@ -38,5 +38,39 @@ sub mutation {
   return $string;
 }
 
-# print(onemax("001111100")."\n");
+sub crossover {
+	my ($parent1, $parent2) = ($_[1], $_[3]);
+	if(rand() < P_CROSSOVER) {
+		$cut = int(rand(NUM_BITS-2)) + 1;
+		print $cut."\n";
+		my @p1 = split(//,$parent1);
+		my @p2 = split(//,$parent2);
+		return (join('',@p1[0..$cut-1],@p2[$cut..NUM_BITS-1]), join('',@p2[0..$cut-1],@p1[$cut..NUM_BITS-1]));
+	}
+	return ("".$parent1, "".$parent2);
+}
+
+sub random_bitstring {
+	$string = "";
+	for my $p (0..(NUM_BITS-1)) {
+		if(rand() < HALF) {
+			$string = $string."0";
+		}else{
+			$string = $string."1";
+		}
+	}
+	return $string;
+}
+
+# 
+print(onemax("001111100")."\n");
 print(mutation("11111111")."\n");
+print("random string: ".random_bitstring()."\n");
+
+
+%s1 = (bitstring => '111111111');
+%s2 = (bitstring => '000000000');
+my ($c1, $c2) = crossover(%s1, %s2);
+print("rs1: ".$c1."\n");
+print("rs2: ".$c2."\n");
+
