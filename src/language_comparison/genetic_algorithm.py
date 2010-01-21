@@ -5,7 +5,6 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 import random
-import sys
 
 NUM_GENERATIONS = 100
 NUM_BOUTS = 3
