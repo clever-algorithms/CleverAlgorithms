@@ -19,7 +19,7 @@ def onemax(bitstring):
 	sum = 0
 	for c in bitstring:
 		if(c=='1'):
-			sum = sum + 1
+			sum += 1
 	return sum
 			
 
@@ -38,5 +38,5 @@ def mutation(bitstring):
 
 
 
-print mutation('0000')
+print onemax('0000')
 
