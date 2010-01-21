@@ -82,7 +82,7 @@ print("random string: ".random_bitstring()."\n");
 
 %s1 = {bitstring=>'111111111', fitness=>1};
 %s2 = {bitstring=>'000000000', fitness=>2};
-my ($c1, $c2) = crossover($s1, $s2);
+my ($c1, $c2) = crossover(\$s1, \$s2);
 print("rs1: ".$c1."\n");
 print("rs2: ".$c2."\n");
 
@@ -91,6 +91,6 @@ print "new test!!!\n";
 print "array size: ". @population ."\n";
 print "array data: ". $population[0]{bitstring} ."\n";
 
-%v = tournament(\@population);
+$v = tournament(\@population);
 print "rs: ". $v ."\n";
 print "rs: ". $v{'bitstring'} ."\n";
