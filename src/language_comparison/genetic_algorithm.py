@@ -78,7 +78,7 @@ def evolve():
 			best = children[POP_SIZE-1]
 		population = children
 		gen += 1
-		print "gen %d, best: %d, %s" % (gen, best['fitness'], best['bitstring'])
+		print " > gen %d, best: %d, %s" % (gen, best['fitness'], best['bitstring'])
 	return best
 
 best = evolve()

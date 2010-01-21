@@ -12,19 +12,6 @@ P_CROSSOVER = 0.98
 P_MUTATION = 1.0/NUM_BITS
 HALF = 0.5
 
-class Solution 
-  attr_reader :bitstring
-  attr_accessor :fitness
-  
-  def initialize(string)
-    @bitstring = string
-  end
-  
-  def to_s
-    "f=#{@fitness}, s=#{@bitstring}"
-  end
-end
-
 def onemax(bitstring)
   sum = 0
   bitstring.each_char {|x| sum+=1 if x=='1'}
@@ -35,7 +22,7 @@ def tournament(population)
   best = nil
   NUM_BOUTS.times do    
     other = population[rand(population.size)]
-    best = other if best.nil? or other.fitness>best.fitness
+    best = other if best.nil? or other[:fitness]>best[:fitness]
   end
   return best
 end
@@ -55,32 +42,37 @@ end
 def crossover(parent1, parent2)
   if rand < P_CROSSOVER
     cut = rand(NUM_BITS-2) + 1
-    return parent1.bitstring[0...cut]+parent2.bitstring[cut...NUM_BITS], parent2.bitstring[0...cut]+parent1.bitstring[cut...NUM_BITS]
+    return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...NUM_BITS], parent2[:bitstring][0...cut]+parent1[:bitstring][cut...NUM_BITS]
   end
-  return String.new(parent1.bitstring), String.new(parent2.bitstring)
+  return ""+parent1[:bitstring], ""+parent2[:bitstring]
+end
+
+def random_bitstring
+  return (0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")}
 end
 
 def evolve
   population = Array.new(POP_SIZE) do |i|
-    Solution.new((0...NUM_BITS).inject(""){|s,i| s<<((rand<HALF) ? "1" : "0")})
+    {:bitstring=>random_bitstring, :fitness=>0}
   end
-  population.each{|c| c.fitness = onemax(c.bitstring)}
-  gen, best = 0, population.sort{|x,y| y.fitness <=> x.fitness}.first  
-  while best.fitness!=NUM_BITS and gen<NUM_GENERATIONS
+  population.each{|c| c[:fitness] = onemax(c[:bitstring])}
+  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  while best[:fitness]!=NUM_BITS and gen<NUM_GENERATIONS
     children = []
     while children.size < POP_SIZE
       s1, s2 = crossover(tournament(population), tournament(population))
-      children << Solution.new(mutation(s1))
-      children << Solution.new(mutation(s2)) if children.size < POP_SIZE
+      children << {:bitstring=>mutation(s1), :fitness=>0}
+      children << {:bitstring=>mutation(s2), :fitness=>0} if children.size < POP_SIZE
     end
-    children.each{|c| c.fitness = onemax(c.bitstring)}
-    children.sort!{|x,y| y.fitness <=> x.fitness}
-    best = children.first if children.first.fitness > best.fitness
+    children.each{|c| c[:fitness] = onemax(c[:bitstring])}
+    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
+    best = children.first if children.first[:fitness] > best[:fitness]
     population = children
     gen += 1
-    puts " > gen #{gen}, best: #{best}"
+    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
   end  
   return best
 end
 
-puts "done! Solution: #{evolve()}"
+best = evolve()
+puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
