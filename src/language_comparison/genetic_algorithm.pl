@@ -13,7 +13,7 @@ use constant P_MUTATION => (1.0/NUM_BITS);
 use constant HALF => 0.5;
 
 sub onemax {
-	$sum = 0;
+	my $sum = 0;
 	while ($_[0]=~ /(.)/g) {
 		if($1 == '1') {
 			$sum = $sum + 1;
@@ -23,7 +23,7 @@ sub onemax {
 }
 
 sub mutation {
-	$string = "";
+	my $string = "";
 	while ($_[0]=~ /(.)/g) {
 		if(rand() < P_MUTATION) {
 			if($1=='1') {
@@ -41,8 +41,7 @@ sub mutation {
 sub crossover {
 	my ($parent1, $parent2) = ($_[1], $_[3]);
 	if(rand() < P_CROSSOVER) {
-		$cut = int(rand(NUM_BITS-2)) + 1;
-		print $cut."\n";
+		my $cut = int(rand(NUM_BITS-2)) + 1;
 		my @p1 = split(//,$parent1);
 		my @p2 = split(//,$parent2);
 		return (join('',@p1[0..$cut-1],@p2[$cut..NUM_BITS-1]), join('',@p2[0..$cut-1],@p1[$cut..NUM_BITS-1]));
@@ -51,7 +50,7 @@ sub crossover {
 }
 
 sub random_bitstring {
-	$string = "";
+	my $string = "";
 	for my $p (0..(NUM_BITS-1)) {
 		if(rand() < HALF) {
 			$string = $string."0";
@@ -62,11 +61,11 @@ sub random_bitstring {
 	return $string;
 }
 
-# 
+
+# testing...
 print(onemax("001111100")."\n");
 print(mutation("11111111")."\n");
 print("random string: ".random_bitstring()."\n");
-
 
 %s1 = (bitstring => '111111111');
 %s2 = (bitstring => '000000000');
