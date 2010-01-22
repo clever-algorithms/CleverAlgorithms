@@ -76,22 +76,22 @@ sub tournament {
 sub evolve {
 	my @population = ();
 	for my $p (0..(POP_SIZE-1)) {	
-		push @population {bitstring=>random_bitstring(), fitness=>0};
+		push @population, {bitstring=>random_bitstring(), fitness=>0};
 	}
 	for $candidate (@population) {
 		$candidate->{fitness} = onemax($candidate->{bitstring});
 	}
 	my @sorted = sort{$b->{fitness} <=> $a->{fitness}} @population;
 	my ($gen, $best) = 0, @sorted[0];
-	while($best{fitness}!=NUM_BITS and gen<NUM_GENERATIONS) {
+	while($best{fitness}!=NUM_BITS and $gen<NUM_GENERATIONS) {
 		my @children = ();
 		while(@children < POP_SIZE) {
 			$p1 = tournament(\@population);
 			$p2 = tournament(\@population);
 			my ($c1, $c2) = crossover(${$p1}{bitstring}, ${$p2}{bitstring});
-			push @children {bitstring=>$c1, fitness=>0};
+			push @children, {bitstring=>$c1, fitness=>0};
 			if(@children < POP_SIZE) {
-				push @children {bitstring=>$c2, fitness=>0};
+				push @children, {bitstring=>$c2, fitness=>0};
 			}
 		}
 		for $candidate (@children) {
@@ -102,8 +102,8 @@ sub evolve {
 			$best = $sorted[0];
 		}
 		@population = @children;
-		gen += 1;
-		print " > gen ".gen.", best: ".$best{fitness}.", ".$best{bitstring}."\n";
+		$gen = $gen + 1;
+		print " > gen ".$gen.", best: ".$best{fitness}.", ".$best{bitstring}."\n";
 	}
 
 	return $best;
@@ -131,4 +131,4 @@ sub evolve {
 # print "rs: ". ${$v}{bitstring} ."\n";
 
 $best = evolve();
-puts "done! Solution: best: ".$best{fitness}.", ".$best{bitstring}."\n";
+print "done! Solution: best: ".$best{fitness}.", ".$best{bitstring}."\n";
