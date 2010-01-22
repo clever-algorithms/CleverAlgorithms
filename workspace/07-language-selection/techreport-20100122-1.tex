@@ -38,10 +38,18 @@
 
 % write a summary sentence for each major section
 \section*{Abstract} 
-todo
+% project
+The Clever Algorithms project aims to describe a large number of optimization algorithms from the field of Artificial Intelligence in a complete, consistent, and centralized manner.
+% report
+Source code examples will be included in the algorithm descriptions, and as such a suitable programming language must be selected for use throughout the project.
+% method
+A methodology for selecting a suitable programming language is propose, involving first an assessment of commonly used languages by their popularity of use with a typical optimization algorithm. A set of requirements for language selection are proposed, and a practical algorithm comparison strategy is adopted where a typical optimization algorithm is implemented and compared between for candidate programming languages. 
+% results
+Results show the four candidate languages (Python, Perl, Ruby, and Lua) are generally very similar in function and syntax, although the Ruby programming language is potentially more expressive and concise, although there are clearly cited biases in the comparison.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Language, Selection, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Programming, Language, Selection, Optimization, \\
+	Python, Perl, Ruby, Lua, Methodology}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -60,8 +68,7 @@ This report addresses the problem of which language to use for describing algori
 Section~\ref{sec:language_selection} considers the problem of language selection focusing on the types of languages that could be used and examples, as well as a consideration of attributes that might be important when selecting a language.
 Section~\ref{sec:methodology} proposes a methodology for evaluating and comparing languages for use in implementation examples for the standardized algorithm description, specifying an algorithm to use in the comparison, a set of languages to be considered, and the specific properties that will be measured and compared.
 Four languages are considered: Python in Section~\ref{sec:python}, Perl in Section~\ref{sec:perl}, Ruby in Section~\ref{sec:ruby} and Lua in Section~\ref{sec:lua}.
-The results of the comparison are reviewed in Section~\ref{sec:analysis} highlighting areas for improvement in the language selection methodology and in the execution of the comparison. 
-Finally, the findings are discussed in Section~\ref{sec:findings} and the XXXXXXXX Programming Language is selected for use in the Clever Algorithms project.
+Finally, the results of the comparison are reviewed in Section~\ref{sec:analysis} highlighting areas for improvement in the language selection methodology and in the execution of the comparison. The Ruby Programing Language was selected as the programming language to be used for code examples throughout the Clever Algorithms project.
 
 % 
 % Language Selection
@@ -151,7 +158,7 @@ This section presents a methodology for comparing programming languages for pres
 The algorithm used for comparison must be representative of the algorithms that require implementation examples. A first-draft of all algorithms to be described in the Clever Algorithms project has been defined \cite{Brownlee2010a}. In that definition, popularity of each technique was measured against popular search engines. Algorithm popularity provides a reasonable basis for representation. The top five popular algorithms were: genetic algorithm, simulated annealing, random search, genetic programming, and tabu search.
 
 The genetic algorithm provides a suitable representative algorithm in that it is not only popular, but also involves a number of non-trivial operators (compared to random or tabu search), although is relatively compact (compared to genetic programming that involves management of tree structures). Simulated annealing also provides a suitable representative algorithm, and may be used in followup and/or confirmatory studies. 
-
+% algorithm
 Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a standardized genetic algorithm in pseudo code.
 
 \begin{algorithm}[ht]
@@ -403,6 +410,7 @@ The biases introduced by using a single author with variable experience across t
 % varied algorithm imp
 In addition to language experience, the algorithm may also be restructured to make it easier to implement across the selected languages, or for a specific language, within the readability constraints. This avenue may be explored by exploring alternative functional decompositions for the algorithm, and potentially consulting language experts. 
 
+Features like meta-programming and postfix loops and conditions (such as \texttt{a=b if condition}) provide readability improvements over classical functional programming and are considered an advantage of using modern interpreted languages like those candidates considered. 
 % some bad languages
 Although implementation guidelines were provided and generally adopted, there are examples of where the code examples are not necessarily readable. Two examples include the use of regular expressions in the Perl example (lines 12 and 18), and the use of a one-liner in the Ruby example on line 45. A readability concern that is obvious across all four implementations is the relative long-length and high-density of the \texttt{evolve()} function.
 % iterate
