@@ -16,7 +16,7 @@ sub onemax {
 	my $bitstring = $_[0];
 	my $sum = 0;
 	while($bitstring =~ /(.)/g) {
-		if($1 == '1') {
+		if($1 eq '1') {
 			$sum = $sum + 1;
 		}		
 	}
@@ -28,7 +28,7 @@ sub mutation {
 	my $string = "";
 	while($bitstring =~ /(.)/g) {
 		if(rand() < P_MUTATION) {
-			if($1=='1') {
+			if($1 eq '1') {
 				$string = $string . "0"
 			}else{
 				$string = $string . "1"
@@ -67,8 +67,8 @@ sub tournament {
 	my @population = @{$_[0]};
   	my $best = '';
 	for my $p (0..(NUM_BOUTS-1)) {	
-		$i = int(rand(@population));
-		if($best == '' or $population[$i]{fitness}>$best{fitness}){
+		$i = int(rand(@population));		
+		if($best eq '' or $population[$i]{fitness} > ${$best}{fitness}){
 			$best = $population[$i];
 		}
 	}
@@ -86,7 +86,7 @@ sub evolve {
 	my @sorted = sort{$b->{fitness} <=> $a->{fitness}} @population;
 	my $gen = 0;
 	my $best = $sorted[0];
-	while($best{fitness}!=NUM_BITS and $gen<NUM_GENERATIONS) {
+	while(${$best}{fitness}<NUM_BITS and $gen<NUM_GENERATIONS) {
 		my @children;
 		while(@children < POP_SIZE) {
 			$p1 = tournament(\@population);
