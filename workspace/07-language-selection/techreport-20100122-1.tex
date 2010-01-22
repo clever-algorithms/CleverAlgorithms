@@ -292,12 +292,14 @@ The following specifics guidelines for the algorithm implementations across the 
 	\item Procedural (imperative) programming paradigm (functions and data structures, no objects).
 	\item Promote readability over fancy language tricks (such as Regex and obscure one-liners).
 	\item Strive toward $<80$ characters per line (code listings wrap automatically at whitespace break points).
-	\item Use the same general procedures (algorithm decomposition) 
+	\item Use the same general procedures (algorithm decomposition) across language implementations, for consistency.
+	\item Target $<100$ lines per implementation example.
+	\item Avoid the use of magic numbers, prefer the use of constants.
+	\item Avoid compressing flow control structures to one or fewer lines (if-else,while,for).
+	\item No comments in implementations.
 \end{itemize}
 
-some good guidelines: all procedural, no objects, promote readability over fancy language tricks, >80 chars per line, try and implement the same procedure in each language, aim for <100 lines per example, avoid magic numbers (use constants), avoid compressing flow control expressions (if,while,etc), same number of procedures and constants.
-
-specifics: no comments, string structure for bitstring, onemax problem, tournament selection, point mutation, 2-point crossover
+The algorithm implements across the languages should use the same number of procedures with the same functionality, and the the same constants. The algorithm shall use a bit-string (string data type) implementation, one-point crossover, point mutation, tournament selection and be applied to a 64-bit instance of the One-Max problem. 
 
 % 
 % Comparison
@@ -370,7 +372,7 @@ The results are provided in Table~\ref{tab:implementation_results} and show some
 		\textbf{Algorithm} & \textbf{Total Lines} & \textbf{Total Chars} & \textbf{Avg Chars/Line} \\ 
 		\toprule
 		Python & 79 & 1959 & 25 \\
-		Perl & 110 & 2335 & 21 \\		
+		Perl & 87 & 2130 & 24 \\		
 		Ruby & 72 & 1764 & 25 \\
 		Lua & 101 & 2202 & 22 \\
 		\bottomrule
@@ -399,6 +401,7 @@ hard to implement similar procedures across languages
 basic bias because of the authors experience
 guidelines for implementation can be used during the writing of the book
 
+there are still one liners in there, some perl is as unreadable as some ruby
 
 % 
 % Findings
