@@ -157,11 +157,7 @@ This section presents a methodology for comparing programming languages for pres
 \subsection{Algorithm}
 The algorithm used for comparison must be representative of the algorithms that require implementation examples. A first-draft of all algorithms to be described in the Clever Algorithms project has been defined \cite{Brownlee2010a}. In that definition, popularity of each technique was measured against popular search engines. Algorithm popularity provides a reasonable basis for representation. The top five popular algorithms were: genetic algorithm, simulated annealing, random search, genetic programming, and tabu search.
 
-The genetic algorithm provides a suitable representative algorithm in that it is not only popular, but also involves a number of non-trivial operators (compared to random or tabu search), although is relatively compact (compared to genetic programming that involves management of tree structures). Simulated annealing also provides a suitable representative algorithm, and may be used in followup and/or confirmatory studies. 
-% algorithm
-Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a standardized genetic algorithm in pseudo code.
-
-\begin{algorithm}[ht]
+\begin{algorithm}[htp]
   \SetLine  
   
  \SetKwData{Best}{Best}
@@ -213,6 +209,8 @@ Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a s
 	\label{alg:genetic_algorithm}
 \end{algorithm}
 
+The genetic algorithm provides a suitable representative algorithm in that it is not only popular, but also involves a number of non-trivial operators (compared to random or tabu search), although is relatively compact (compared to genetic programming that involves management of tree structures). Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a standardized genetic algorithm in pseudo code. Simulated annealing also provides a suitable representative algorithm, and may be used in followup and/or confirmatory studies. 
+
 
 % 
 % Implementations
@@ -228,11 +226,9 @@ This section considers algorithm popularity as a heuristic in a similar manner t
 % 
 \subsubsection{Language Popularity}
 \label{subsubsec:popularity}
-This section lists the results of measuring the popularity of 24 popular programming languages. 
-% collection 
-The measures were taken from the Google web, book, and scholar search services on January 20th 2010 for the phrase `\emph{``NAME programming language'' AND ``genetic algorithm''}' (where `NAME' is replaced with each specific language name). The results are listed in Table~\ref{tab:results} that shows algorithm name, a raw approximation of the number of results from each service and the score as the sum of the normalized approximate measures. Results are ordered by score, descending.
+Table~\ref{tab:results} lists the results of measuring the popularity of 24 popular programming languages. 
 
-\begin{table}[ht]
+\begin{table}[htp]
 	\centering
 		\begin{tabularx}{\textwidth}{lXXXX}
 		\toprule
@@ -267,6 +263,9 @@ The measures were taken from the Google web, book, and scholar search services o
 	\caption{Algorithm programming language listing measures.}
 	\label{tab:results}
 \end{table}
+
+% collection 
+The measures were taken from the Google web, book, and scholar search services on January 20th 2010 for the phrase `\emph{``NAME programming language'' AND ``genetic algorithm''}' (where `NAME' is replaced with each specific language name). The table of results show algorithm name, a raw approximation of the number of results from each service and the score as the sum of the normalized approximate measures. Results are ordered by score, descending.
 
 % 
 % Language Requirements
@@ -400,7 +399,7 @@ It can be difficult implement the same computation across different languages, a
 Three of the four languages are syntactically and functionally very similar (Python, Ruby, and Lua), with Perl representing marked differences. As a result, the computational differences between Perl and the other language are quite noticeable, specifically in the smaller utility functions.
 
 % results
-The results in Table~\ref{tab:implementation_results} show that the Ruby example was implemented in fewer lines and character than the other programming languages, with similar per-line character density. This highlights the expressive power of the language compared to the other language, and/or the biases of the author of the examples in wielding the respective languages. Either way, compactness and conciseness under the constraints of readability and accessibility are the primary desirable properties for algorithm implementation examples in the Clever Algorithms project. As such,\textbf{ the Ruby Programming Language has been selected for all code examples in the Clever Algorithms project}. 
+The results in Table~\ref{tab:implementation_results} show that the Ruby example was implemented in fewer lines and character than the other programming languages, with similar per-line character density. This highlights the expressive power of the language compared to the other language, and/or the biases of the author of the examples in wielding the respective languages. Either way, compactness and conciseness under the constraints of readability and accessibility are the primary desirable properties for algorithm implementation examples in the Clever Algorithms project. \textbf{The Ruby Programming Language has been selected for all code examples in the Clever Algorithms project}. 
 
 % bias
 It may also be apparent to those familiar with the respective languages used in the comparison that the Ruby implementation is slightly more advanced than the other examples. This was because the Ruby example was implemented first and ported to the other languages. This fact may have introduced a bias into the comparison, beyond the inherent experience biases of the author of the examples.
