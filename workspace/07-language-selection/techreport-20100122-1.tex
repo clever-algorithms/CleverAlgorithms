@@ -1,4 +1,4 @@
-% Programming Language Selection for Introducing Unconventional Optimization Algorithms
+% Programming Language Selection for Optimization Algorithms
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -21,7 +21,6 @@
 
 % Dear template user: fill these in
 \newcommand{\myreporttitle}{Programming Language Selection for Optimization Algorithms}
-% \newcommand{\myreportsubtitle}{}
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
@@ -31,7 +30,6 @@
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
 % leave this alone, it's templated baby!
-% \title{{\myreporttitle}: {\myreportsubtitle}\footnote{\myreportlicense}}
 \title{{\myreporttitle}\footnote{\myreportlicense}}
 \author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
 \date{\myreportfulldate\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
@@ -159,6 +157,7 @@ Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a s
 \begin{algorithm}[ht]
   \SetLine  
   
+ \SetKwData{Best}{Best}
   \SetKwData{Pop}{Population}
   \SetKwData{Length}{numBits}
   \SetKwData{PopSize}{popSize}
@@ -166,38 +165,42 @@ Algorithm~\ref{alg:genetic_algorithm} provides an abstract representation of a s
   \SetKwFunction{StopCondition}{StopCondition}
   \SetKwFunction{Mutate}{Mutate}
   \SetKwFunction{Fitness}{Fitness}
+ \SetKwFunction{Sort}{Sort}
   \SetKwFunction{TournamentSelection}{TournamentSelection}
   \SetKwFunction{Crossover}{Crossover}
   \SetKwFunction{Replace}{Replace}
   \SetKwFunction{InitializeRandomBitstrings}{InitializeRandomBitstrings}  
   
   \KwIn{\PopSize, \Length, $p_{crossover}$, $p_{mutation}$}		
-  \KwOut{\Pop}
+  \KwOut{\Best}
   	
 	\Pop $\leftarrow$ \InitializeRandomBitstrings{\PopSize, \Length}\;
-	
-	\While{$\neg$\StopCondition{}}
-	{
 	 \ForEach{$p_i \in$ \Pop}
 	 {
 	 	\Fitness{$p_i$}\;
 	 }
+	\Best $\leftarrow$ \Sort{Population}.Last\;
+	\While{$\neg$\StopCondition{}}
+	{
 	 $Population_{children} \leftarrow$ 0\;
 	 \While{$Population_{children}$.size()$\neq$\PopSize}
 	{
 		$parent_1 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
 		$parent_2 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
 		$child_1$, $child_2 \leftarrow$ \Crossover{$p_2$, $p_2$, $p_{crossover}$}\;
-		$Population_{children} \leftarrow child_1$\;
-		$Population_{children} \leftarrow child_2$\;
+		$mutant_1 \leftarrow$ \Mutate{$child_1$, $p_{mutation}$}\;
+		$mutant_2 \leftarrow$ \Mutate{$child_2$, $p_{mutation}$}\;
+		$Population_{children} \leftarrow mutant_1$\;
+		$Population_{children} \leftarrow mutant_2$\;
 	}
-	 \ForEach{$p_i \in Population_{children}$}
+	 \ForEach{$p_i \in$ \Pop}
 	 {
-    	\Mutate{$p_i$, $p_{mutation}$}\;
-	 }	 
-	 \Replace{\Pop, $Population_{children}$}\;
+	 	\Fitness{$p_i$}\;
+	 }
+	 \Best $\leftarrow$ \Sort{Population}.Last\;
+	 \Replace{\Pop, $Population_{children}$}\;	 
 	}
-	\Return{\Pop}\;
+	\Return{\Best}\;
 	
 	\caption{Pseudo Code for the Genetic Algorithm.}
 	\label{alg:genetic_algorithm}
@@ -370,31 +373,47 @@ This section analyses both the methodology and the results of the language compa
 % Methodology
 % 
 \subsection{Methodology}
-this is a hard problem
-consider compiled languages
+% problem
+Language comparison is notoriously difficult because of the syntactic characteristics and functional capabilities can differ so wildly from language to language. 
+% future
+The proposed methodology considered algorithm popularity as a starting point for considering languages, and refined the listing using the imposed constraints of procedural, interpreted, and free. These constraints were based on heuristics, although were not supported with direct evidence. 
+% compiled
+It is possible, even likely that popular compiled languages used in industry such as C\#, Java, and C++ would be the most relevant for the target audience for the Clever Algorithms Project. 
+% benefits
+The benefits of the imposed constraints are that algorithm examples presented in an procedural, interpreted, and free language can easily be ported to such languages.
+
 
 % 
 % Implementation
 % 
 \subsection{Implementation}
-hard to implement similar procedures across languages
+% overview
+It can be difficult implement the same computation across different languages, and the four examples in this report demonstrate this fact. 
+% perl is different
+Three of the four languages are syntactically and functionally very similar (Python, Ruby, and Lua), with Perl representing marked differences. As a result, the computational differences between Perl and the other language are quite noticeable, specifically in the smaller utility functions.
 
-basic bias because of the authors experience
-guidelines for implementation can be used during the writing of the book
+% results
+The results in Table~\ref{tab:implementation_results} show that the Ruby example was implemented in fewer lines and character than the other programming languages, with similar per-line character density. This highlights the expressive power of the language compared to the other language, and/or the biases of the author of the examples in wielding the respective languages. Either way, compactness and conciseness under the constraints of readability and accessibility are the primary desirable properties for algorithm implementation examples in the Clever Algorithms project. As such,\textbf{ the Ruby Programming Language has been selected for all code examples in the Clever Algorithms project}. 
 
-there are still one liners in there, some perl is as unreadable as some ruby
+% bias
+It may also be apparent to those familiar with the respective languages used in the comparison that the Ruby implementation is slightly more advanced than the other examples. This was because the Ruby example was implemented first and ported to the other languages. This fact may have introduced a bias into the comparison, beyond the inherent experience biases of the author of the examples.
+
+% vaied implementation
+The biases introduced by using a single author with variable experience across the selected languages may addressed by submitting the code examples to peer-review and refinement by language experts. This process was initially explored with the Perl code example where a language expert was consulted. For such a comparison to be meaningful, such code reviews are required.
+% varied algorithm imp
+In addition to language experience, the algorithm may also be restructured to make it easier to implement across the selected languages, or for a specific language, within the readability constraints. This avenue may be explored by exploring alternative functional decompositions for the algorithm, and potentially consulting language experts. 
+
+% some bad languages
+Although implementation guidelines were provided and generally adopted, there are examples of where the code examples are not necessarily readable. Two examples include the use of regular expressions in the Perl example (lines 12 and 18), and the use of a one-liner in the Ruby example on line 45. A readability concern that is obvious across all four implementations is the relative long-length and high-density of the \texttt{evolve()} function.
+% iterate
+These examples highlight the need for iteration and revision of code examples in order to identify and refine specific functionality in code examples throughout the Clever Algorithms project.
 
 % 
-% Findings
+% Acknowledgments
 % 
-\section{Findings}
-\label{sec:findings}
-% report
-todo
-% findings
-
-% future
-
+\section{Acknowledgments}
+\label{sec:acknowledgments}
+Thank-you to Paul Maisano for his review and suggestions for the Perl programming language code example used in this work.
 
 % bibliography
 \bibliographystyle{plain}
