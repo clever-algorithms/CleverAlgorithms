@@ -63,7 +63,7 @@ sub random_bitstring {
 
 sub tournament {
 	my @population = @{$_[0]};
-  	$best = '';
+  	my $best = '';
 	for my $p (0..(NUM_BOUTS-1)) {	
 		$i = int(rand(@population));
 		if($best == '' or $population[$i]{fitness}>$best{fitness}){
@@ -85,21 +85,21 @@ sub evolve {
 	my $gen = 0;
 	my $best = $sorted[0];
 	while($best{fitness}!=NUM_BITS and $gen<NUM_GENERATIONS) {
-		my @children = ();
+		my @children;
 		while(@children < POP_SIZE) {
 			$p1 = tournament(\@population);
 			$p2 = tournament(\@population);
 			my ($c1, $c2) = crossover(${$p1}{bitstring}, ${$p2}{bitstring});
-			push @children, {bitstring=>$c1, fitness=>0};
+			push @children, {bitstring=>mutation($c1), fitness=>0};
 			if(@children < POP_SIZE) {
-				push @children, {bitstring=>$c2, fitness=>0};
+				push @children, {bitstring=>mutation($c2), fitness=>0};
 			}
 		}
 		for $candidate (@children) {
 			$candidate->{fitness} = onemax($candidate->{bitstring});
 		}
 		@sorted = sort{$b->{fitness} <=> $a->{fitness}} @children;
-		if($sorted[0]{fitness}>$best{fitness}) {
+		if($sorted[0]{fitness}>${$best}{fitness}) {
 			$best = $sorted[0];
 		}
 		@population = @children;
