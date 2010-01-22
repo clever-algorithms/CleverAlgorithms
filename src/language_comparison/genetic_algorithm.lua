@@ -23,39 +23,39 @@ function onemax(bitstring)
 end
 
 function tournament(population)
-  local best = nil
-  for i=1, NUM_BOUTS do
-    local other = population[math.random(#population)]
-	if(best==nil or other.fitness > best.fitness) then
-		best = other
+	local best = nil
+	for i=1, NUM_BOUTS do
+		local other = population[math.random(#population)]
+		if(best==nil or other.fitness > best.fitness) then
+			best = other
+		end
 	end
-  end
-  return best
+	return best
 end
 
 function mutation(bitstring)
-  local string = ""
-  for i=1, bitstring:len() do
-	local c = bitstring:sub(i,i)
-    if math.random() < P_MUTATION then
-		if c == "0" then 
-			string = string.."1"
+	local string = ""
+	for i=1, bitstring:len() do
+		local c = bitstring:sub(i,i)
+		if math.random() < P_MUTATION then
+			if c == "0" then 
+				string = string.."1"
+			else 
+				string = string.."0" 
+			end
 		else 
-			string = string.."0" 
+			string = string..c
 		end
-    else 
-      string = string..c
-    end
-  end
-  return string
+	end
+	return string
 end
 
 function crossover(parent1, parent2)
-  if math.random() < P_CROSSOVER then
-	local cut = math.random(NUM_BITS-2) + 2
-	  return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS), parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)  
-  end
-  return ""..parent1.bitstring, ""..parent2.bitstring
+	if math.random() < P_CROSSOVER then
+		local cut = math.random(NUM_BITS-2) + 2
+		return parent1.bitstring:sub(1,cut-1)..parent2.bitstring:sub(cut,NUM_BITS), parent2.bitstring:sub(1,cut-1)..parent1.bitstring:sub(cut,NUM_BITS)  
+	end
+	return ""..parent1.bitstring, ""..parent2.bitstring
 end
 
 function random_bitstring()

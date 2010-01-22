@@ -42,7 +42,7 @@ sub random_bitstring {
 
 sub tournament {
 	my @population = @{$_[0]};
-  	my $best = '';
+	my $best = '';
 	for my $p (0..(NUM_BOUTS-1)) {	
 		$i = int(rand(@population));		
 		if($best eq '' or $population[$i]{fitness} > ${$best}{fitness}){
