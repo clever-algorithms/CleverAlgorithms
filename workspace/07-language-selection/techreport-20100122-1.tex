@@ -302,31 +302,6 @@ The following specifics guidelines for the algorithm implementations across the 
 The algorithm implements across the languages should use the same number of procedures with the same functionality, and the the same constants. The algorithm shall use a bit-string (string data type) implementation, one-point crossover, point mutation, tournament selection and be applied to a 64-bit instance of the One-Max problem. 
 
 % 
-% Comparison
-% 
-\subsection{Comparison}
-compare on conciseness, compactness, communication qualities - accessibility, etc. readability
-
-rank or score on a set of properties, subjective, but a starting point
-
-The measures to be collected for each implementation are as follows:
-
-\begin{table}[ht]
-	\centering
-		\begin{tabularx}{\textwidth}{lX}
-		\toprule
-		\textbf{Measure} & \textbf{Description} \\ 
-		\toprule
-		LOC & The number of lines of code in the listing. \\
-		CHARS & The number of characters in the code listing. \\
-		CPL & The average number of characters per line. \\
-		\bottomrule
-		\end{tabularx}	
-	\caption{Algorithm programming language listing measures.}
-	\label{tab:measures}
-\end{table}
-
-% 
 % Python
 % 
 \section{Python}
@@ -363,7 +338,10 @@ Algorithm Listing~\ref{luaga} provides an example of the Genetic Algorithm imple
 % 
 \section{Results}
 \label{sec:results}
-The results are provided in Table~\ref{tab:implementation_results} and show some basic analytics of the source files for each of the four algorithm implementations.
+% overview
+Three measures were collected over the for algorithm-language implementations, including: \emph{Total lines} that assess the absolute readable length of an example, \emph{Total Chars} that provides some information about the expressiveness of the language, and \emph{Avg Cars/Line} that provides an indication of the density of the example. Smaller numbers are better for all three measures, although the guidelines from section \ref{subsubsec:selection} apply.
+% results
+The results are provided in Table~\ref{tab:implementation_results} and show the basic analytics of the source files for each of the four algorithm implementations.
 
 \begin{table}[ht]
 	\centering
@@ -386,15 +364,18 @@ The results are provided in Table~\ref{tab:implementation_results} and show some
 % 
 \section{Analysis}
 \label{sec:analysis}
-how could the methodology be improved?
-how could the execution be improved?
+This section analyses both the methodology and the results of the language comparison.
 
-
+% 
+% Methodology
+% 
 \subsection{Methodology}
 this is a hard problem
 consider compiled languages
 
-
+% 
+% Implementation
+% 
 \subsection{Implementation}
 hard to implement similar procedures across languages
 
