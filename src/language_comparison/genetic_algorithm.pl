@@ -9,13 +9,13 @@ use constant NUM_BOUTS => 3;
 use constant POP_SIZE => 100;
 use constant NUM_BITS => 64;
 use constant P_CROSSOVER => 0.98;
-use constant P_MUTATION => 0.05;
-# (1.0/NUM_BITS);
+use constant P_MUTATION => (1.0/NUM_BITS);
 use constant HALF => 0.5;
 
 sub onemax {
+	my $bitstring = $_[0];
 	my $sum = 0;
-	while($_[0]=~ /(.)/g) {
+	while($bitstring =~ /(.)/g) {
 		if($1 == '1') {
 			$sum = $sum + 1;
 		}		
@@ -24,8 +24,9 @@ sub onemax {
 }
 
 sub mutation {
+	my $bitstring = $_[0];
 	my $string = "";
-	while($_[0]=~ /(.)/g) {
+	while($bitstring =~ /(.)/g) {
 		if(rand() < P_MUTATION) {
 			if($1=='1') {
 				$string = $string . "0"
@@ -103,7 +104,7 @@ sub evolve {
 		if($sorted[0]{fitness}>${$best}{fitness}) {
 			$best = $sorted[0];
 		}
-		@population = @children;
+		@population = @children;		
 		$gen = $gen + 1;
 		print " > gen $gen, best: ${$best}{fitness}, ${$best}{bitstring}\n";
 	}
