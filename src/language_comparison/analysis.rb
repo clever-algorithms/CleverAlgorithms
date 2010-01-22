@@ -18,12 +18,13 @@ def process_file(name)
   total_lines = lines.length
   
   lines.each do |line|
-    total_cahrs += line.strip.count
+    total_chars += line.strip.size
   end
 
+  puts "--------------------------"
   puts "Report: #{name}"
-  puts "lines: #{total_lines}"
-  puts "chars: #{total_chars}"
+  puts "lines:        #{total_lines}"
+  puts "chars:        #{total_chars}"
   puts "avg per line: #{(total_chars.to_f/total_lines.to_f)}"
 end
 
