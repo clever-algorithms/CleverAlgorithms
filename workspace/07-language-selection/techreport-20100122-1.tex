@@ -266,9 +266,9 @@ The measures were taken from the Google web, book, and scholar search services o
 This section lists the requirements for selecting a language.
 
 \begin{itemize}
-	\item The language shall allow programming in the procedural paradigm. (simple and transferable. oo is likely most common paradigm, procedural to oo is easy, cannot easily presume object entities - algorithm and problem likely a bad fit in practice in industry)
-	\item The language shall be interpreted. (reduce steps, compilation is a step)
-	\item The language shall be freely available and accessible (acquire and use at no cost). (need access to language)
+	\item \emph{The language shall allow programming in the procedural paradigm.} A procedural representation is expected to provide the most transferrable instantiation of an algorithm. Many languages support the procedural paradigm and procedural code examples can be easily ported to popular paradigms such as object-oriented and functional.
+	\item \emph{The language shall be interpreted.} The compilation of a program is an additional step to the reader in executing a provided code example. In some languages this step is minimal, in others it may require an understanding of the intermediate process and linking. An interpreted program can be executed by an interpret in a single step, useful for modification and tweaking by the reader.
+	\item \emph{The language shall be available and accessible at no monetary cost.} Some languages require a proprietary framework or application to compile or interpret the source code (such as .NET), some of which must be purchased (such as Mathematica and Matlab). There may be exceptions and open source equivalents, although the main distribution for the language shall require no monetary cost to acquire and use.
 \end{itemize}
 
 % 
@@ -277,15 +277,23 @@ This section lists the requirements for selecting a language.
 \subsubsection{Selected Languages}
 \label{subsubsec:selection}
 The following are the languages selected for comparison based on the popularity heuristics and the language selection requirements:
-
-\begin{itemize}
+\begin{enumerate}
 	\item The Python Programming Language
 	\item The Perl Programming Language
 	\item The Ruby Programming Language
 	\item The Lua Programming Language
-\end{itemize}
+\end{enumerate}
 
-languages are popular, interpreted, free, and support procedural programming. lua is technically compiled, but at runtime - practically still a scripting language.
+% overview
+The selected languages are listed in order of popularity from Table~\ref{tab:results}. The languages are interpreted (dynamic),  available at no cost, and support the procedural programming paradigm. The Lua programming language is technically compiled, although the compilation process occurs at execution time and therefor remains a functionally an interpreted language.
+% guideliens
+The following specifics guidelines for the algorithm implementations across the four languages. 
+\begin{itemize}
+	\item Procedural (imperative) programming paradigm (functions and data structures, no objects).
+	\item Promote readability over fancy language tricks (such as Regex and obscure one-liners).
+	\item Strive toward $<80$ characters per line (code listings wrap automatically at whitespace break points).
+	\item Use the same general procedures (algorithm decomposition) 
+\end{itemize}
 
 some good guidelines: all procedural, no objects, promote readability over fancy language tricks, >80 chars per line, try and implement the same procedure in each language, aim for <100 lines per example, avoid magic numbers (use constants), avoid compressing flow control expressions (if,while,etc), same number of procedures and constants.
 
@@ -387,6 +395,9 @@ consider compiled languages
 
 \subsection{Implementation}
 hard to implement similar procedures across languages
+
+basic bias because of the authors experience
+guidelines for implementation can be used during the writing of the book
 
 
 % 

@@ -15,51 +15,28 @@ use constant HALF => 0.5;
 sub onemax {
 	my $bitstring = $_[0];
 	my $sum = 0;
-	while($bitstring =~ /(.)/g) {
-		if($1 eq '1') {
-			$sum = $sum + 1;
-		}		
-	}
+	$sum += $1 while $bitstring =~ s/^(.)//;
   	return $sum;
 }
 
 sub mutation {
 	my $bitstring = $_[0];
-	my $string = "";
-	while($bitstring =~ /(.)/g) {
-		if(rand() < P_MUTATION) {
-			if($1 eq '1') {
-				$string = $string . "0"
-			}else{
-				$string = $string . "1"
-			}
-		} else { 
-      		$string = $string . $1;
-		}
-  }
-  return $string;
+	$bitstring =~ s/(.)/rand() < P_MUTATION ? $1^1 : $1/ge;
+	return $bitstring;
 }
 
 sub crossover {
 	my ($parent1, $parent2) = ($_[0], $_[1]);
 	if(rand() < P_CROSSOVER) {
 		my $cut = int(rand(NUM_BITS-2)) + 1;
-		my @p1 = split(//,$parent1);
-		my @p2 = split(//,$parent2);
-		return (join('',@p1[0..$cut-1],@p2[$cut..NUM_BITS-1]), join('',@p2[0..$cut-1],@p1[$cut..NUM_BITS-1]));
+		return (substr($parent1, 0, $cut).substr($parent2, $cut), substr($parent2, 0, $cut).substr($parent1, $cut));
 	}
 	return ("".$parent1, "".$parent2);
 }
 
 sub random_bitstring {
-	my $string = "";
-	for my $p (0..(NUM_BITS-1)) {
-		if(rand() < HALF) {
-			$string = $string."0";
-		}else{
-			$string = $string."1";
-		}
-	}
+	my $string = "-" x NUM_BITS;	# start at correct length
+	$string =~ s/(.)/rand() < HALF ? 0 : 1/ge;
 	return $string;
 }
 
