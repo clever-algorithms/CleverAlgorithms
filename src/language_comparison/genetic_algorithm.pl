@@ -14,7 +14,7 @@ use constant HALF => 0.5;
 
 sub onemax {
 	my $sum = 0;
-	while ($_[0]=~ /(.)/g) {
+	while($_[0]=~ /(.)/g) {
 		if($1 == '1') {
 			$sum = $sum + 1;
 		}		
@@ -24,7 +24,7 @@ sub onemax {
 
 sub mutation {
 	my $string = "";
-	while ($_[0]=~ /(.)/g) {
+	while($_[0]=~ /(.)/g) {
 		if(rand() < P_MUTATION) {
 			if($1=='1') {
 				$string = $string . "0"
@@ -73,22 +73,62 @@ sub tournament {
 	return $best;
 }
 
+sub evolve {
+	my @population = ();
+	for my $p (0..(POP_SIZE-1)) {	
+		push @population {bitstring=>random_bitstring(), fitness=>0};
+	}
+	for $candidate (@population) {
+		$candidate->{fitness} = onemax($candidate->{bitstring});
+	}
+	my @sorted = sort{$b->{fitness} <=> $a->{fitness}} @population;
+	my ($gen, $best) = 0, @sorted[0];
+	while($best{fitness}!=NUM_BITS and gen<NUM_GENERATIONS) {
+		my @children = ();
+		while(@children < POP_SIZE) {
+			$p1 = tournament(\@population);
+			$p2 = tournament(\@population);
+			my ($c1, $c2) = crossover(${$p1}{bitstring}, ${$p2}{bitstring});
+			push @children {bitstring=>$c1, fitness=>0};
+			if(@children < POP_SIZE) {
+				push @children {bitstring=>$c2, fitness=>0};
+			}
+		}
+		for $candidate (@children) {
+			$candidate->{fitness} = onemax($candidate->{bitstring});
+		}
+		@sorted = sort{$b->{fitness} <=> $a->{fitness}} @population;
+		if($sorted[0]{fitness}>$best{fitness}) {
+			$best = $sorted[0];
+		}
+		@population = @children;
+		gen += 1;
+		print " > gen ".gen.", best: ".$best{fitness}.", ".$best{bitstring}."\n";
+	}
+
+	return $best;
+}
+
+
 # testing...
-print(onemax("001111100")."\n");
-print(mutation("11111111")."\n");
-print("random string: ".random_bitstring()."\n");
+# print(onemax("001111100")."\n");
+# print(mutation("11111111")."\n");
+# print("random string: ".random_bitstring()."\n");
+# 
+# %s1 = (bitstring=>'111111111', fitness=>1);
+# %s2 = (bitstring=>'000000000', fitness=>2);
+# ($c1, $c2) = crossover($s1{bitstring}, $s2{bitstring});
+# print("rs1: ".$c1."\n");
+# print("rs2: ".$c2."\n");
+# 
+# print "new test!!!\n";
+# @population = ({bitstring=>'111111111', fitness=>1}, {bitstring=>'000000000', fitness=>0});
+# print "array size: ". @population ."\n";
+# print "array data: ". $population[0]{bitstring} ."\n";
+# 
+# $v = tournament(\@population);
+# print "rs: ". $v ."\n";
+# print "rs: ". ${$v}{bitstring} ."\n";
 
-%s1 = (bitstring=>'111111111', fitness=>1);
-%s2 = (bitstring=>'000000000', fitness=>2);
-($c1, $c2) = crossover($s1{bitstring}, $s2{bitstring});
-print("rs1: ".$c1."\n");
-print("rs2: ".$c2."\n");
-
-print "new test!!!\n";
-@population = ({bitstring=>'111111111', fitness=>1}, {bitstring=>'000000000', fitness=>0});
-print "array size: ". @population ."\n";
-print "array data: ". $population[0]{bitstring} ."\n";
-
-$v = tournament(\@population);
-print "rs: ". $v ."\n";
-print "rs: ". ${$v}{bitstring} ."\n";
+$best = evolve();
+puts "done! Solution: best: ".$best{fitness}.", ".$best{bitstring}."\n";
