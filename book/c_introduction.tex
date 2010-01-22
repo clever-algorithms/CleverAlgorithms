@@ -301,7 +301,8 @@ The limited use of prior knowledge from the domain (black box) coupled with the 
 % 
 \section{Book Organization}
 \label{intro:sec:organization}
-The book is organized into three parts: \emph{Background} that provides a gentle introduction to the field of Artificial Intelligence and what constitutes a clever algorithm, \emph{Algorithms} that describes a large number of techniques in a complete and a consistent manner organized into a rough algorithm groups, and \emph{Extensions} that
+% overview
+The book is organized into three parts: \emph{Background} that provides a gentle introduction to the field of Artificial Intelligence and what constitutes a clever algorithm, \emph{Algorithms} that describes a large number of techniques in a complete and a consistent manner organized into a rough algorithm groups, and \emph{Extensions} that reviews more advanced topics suitable for when a number of algorithms have been mastered.
 
 % 
 % Background
@@ -313,8 +314,25 @@ Provide you with enough information to understand the presented algorithms.
 % Algorithms
 %
 \subsection{Algorithms}
-The presentation of all the algorithms, partitioned by a taxonomy. 
-About the kingdoms, about the standardized algorithm description template.
+% taxonomy
+Algorithms are presented in six groups or kingdoms distilled from the broader fields of study each in their own chapter, as follows: stochastic, physical, evolutionary, probabilistic, swarm, and immune algorithms.  
+% requirements
+A given algorithm is more than just a procedure or code listing. Each approach is an island of research and the meta-information that define the context of a technique are just as important to understanding and application as abstract recipes and concrete implementations. A standardized algorithm description was adopted to provide a consistent presentation of algorithms with a mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.  
+
+% template
+The standardized algorithm description template covers the following subjects:
+\begin{itemize}
+	\item \emph{Name}: The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
+	\item \emph{Taxonomy}: The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relationships between algorithms.
+	\item \emph{Inspiration}: (optional) The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique.
+	\item \emph{Metaphor}: (optional) The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the `inspiration' element, which represents a loose dependency for this element.
+	\item \emph{Strategy}: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.
+	\item \emph{Procedure}: The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the computation, data structures, and representations. 
+	\item \emph{Heuristics}: The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances).
+	\item \emph{Tutorial}: The tutorial description provides a guide to realizing the technique using a programming language. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tutorial description provides explanations as to the design decisions and rationale for the way the technique is implemented.
+	\item \emph{References}: The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites.
+\end{itemize}
+
 
 % 
 % Extensions
