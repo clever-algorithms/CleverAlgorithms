@@ -25,7 +25,7 @@ def process_file(name)
   puts "Report: #{name}"
   puts "lines:        #{total_lines}"
   puts "chars:        #{total_chars}"
-  puts "avg per line: #{(total_chars.to_f/total_lines.to_f)}"
+  puts "avg per line: #{(total_chars.to_f/total_lines.to_f).round}"
 end
 
 FILES.each{|name| process_file(name)}

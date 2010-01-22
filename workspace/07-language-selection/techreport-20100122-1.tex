@@ -308,14 +308,13 @@ The measures to be collected for each implementation are as follows:
 		\textbf{Measure} & \textbf{Description} \\ 
 		\toprule
 		LOC & The number of lines of code in the listing. \\
-		bytes & The number of bytes in the code listing. \\
+		CHARS & The number of characters in the code listing. \\
 		CPL & The average number of characters per line. \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Algorithm programming language listing measures.}
 	\label{tab:measures}
 \end{table}
-
 
 % 
 % Python
@@ -354,23 +353,23 @@ Algorithm Listing~\ref{luaga} provides an example of the Genetic Algorithm imple
 % 
 \section{Results}
 \label{sec:results}
+The results are provided in Table~\ref{tab:implementation_results} and show some basic analytics of the source files for each of the four algorithm implementations.
 
 \begin{table}[ht]
 	\centering
 		\begin{tabularx}{\textwidth}{lXXX}
 		\toprule
-		\textbf{Algorithm} & \textbf{LOC} & \textbf{Bytes} & \textbf{CPL} \\ 
+		\textbf{Algorithm} & \textbf{Total Lines} & \textbf{Total Chars} & \textbf{Avg Chars/Line} \\ 
 		\toprule
-		Perl & 0 & 0 & 0 \\
-		Python & 0 & 0 & 0 \\
-		Ruby & 80 & 0 & 0 \\
-		Lua & 102 & 0 & 0 \\
+		Python & 79 & 1959 & 25 \\
+		Perl & 110 & 2335 & 21 \\		
+		Ruby & 72 & 1764 & 25 \\
+		Lua & 101 & 2202 & 22 \\
 		\bottomrule
 		\end{tabularx}	
 	\caption{Algorithm programming language listing measures.}
 	\label{tab:implementation_results}
 \end{table}
-
 
 % 
 % Analysis
