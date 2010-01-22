@@ -35,7 +35,7 @@ sub crossover {
 }
 
 sub random_bitstring {
-	my $string = "-" x NUM_BITS;	# start at correct length
+	my $string = "-" x NUM_BITS;
 	$string =~ s/(.)/rand() < HALF ? 0 : 1/ge;
 	return $string;
 }
