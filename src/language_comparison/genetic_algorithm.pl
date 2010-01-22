@@ -8,8 +8,9 @@ use constant NUM_GENERATIONS => 100;
 use constant NUM_BOUTS => 3;
 use constant POP_SIZE => 100;
 use constant NUM_BITS => 64;
-use constant P_CROSSOVER => 1;
-use constant P_MUTATION => (1.0/NUM_BITS);
+use constant P_CROSSOVER => 0.98;
+use constant P_MUTATION => 0.05;
+# (1.0/NUM_BITS);
 use constant HALF => 0.5;
 
 sub onemax {
@@ -104,11 +105,11 @@ sub evolve {
 		}
 		@population = @children;
 		$gen = $gen + 1;
-		print " > gen ".$gen.", best: ".${$best}{fitness}.", ".${$best}{bitstring}."\n";
+		print " > gen $gen, best: ${$best}{fitness}, ${$best}{bitstring}\n";
 	}
 
 	return $best;
 }
 
 $best = evolve();
-print "done! Solution: best: ".${$best}{fitness}.", ".${$best}{bitstring}."\n";
+print "done! Solution: best: ${$best}{fitness}, ${$best}{bitstring}\n";
