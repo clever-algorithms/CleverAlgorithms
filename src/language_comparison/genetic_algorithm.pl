@@ -98,7 +98,7 @@ sub evolve {
 		for $candidate (@children) {
 			$candidate->{fitness} = onemax($candidate->{bitstring});
 		}
-		@sorted = sort{$b->{fitness} <=> $a->{fitness}} @population;
+		@sorted = sort{$b->{fitness} <=> $a->{fitness}} @children;
 		if($sorted[0]{fitness}>$best{fitness}) {
 			$best = $sorted[0];
 		}
@@ -109,27 +109,6 @@ sub evolve {
 
 	return $best;
 }
-
-
-# testing...
-# print(onemax("001111100")."\n");
-# print(mutation("11111111")."\n");
-# print("random string: ".random_bitstring()."\n");
-# 
-# %s1 = (bitstring=>'111111111', fitness=>1);
-# %s2 = (bitstring=>'000000000', fitness=>2);
-# ($c1, $c2) = crossover($s1{bitstring}, $s2{bitstring});
-# print("rs1: ".$c1."\n");
-# print("rs2: ".$c2."\n");
-# 
-# print "new test!!!\n";
-# @population = ({bitstring=>'111111111', fitness=>1}, {bitstring=>'000000000', fitness=>0});
-# print "array size: ". @population ."\n";
-# print "array data: ". $population[0]{bitstring} ."\n";
-# 
-# $v = tournament(\@population);
-# print "rs: ". $v ."\n";
-# print "rs: ". ${$v}{bitstring} ."\n";
 
 $best = evolve();
 print "done! Solution: best: ".${$best}{fitness}.", ".${$best}{bitstring}."\n";
