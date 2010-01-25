@@ -4,8 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-NUM_ITERATIONS = 1000
-PROBLEM_SIZE = 5
+NUM_ITERATIONS = 100
+PROBLEM_SIZE = 2
 SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
 
 def cost_function(candidate_vector)
