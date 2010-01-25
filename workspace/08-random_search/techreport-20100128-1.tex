@@ -10,6 +10,12 @@
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -96,7 +102,34 @@ A textual description of the information processing strategy.
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random Search Algorithm for minimizing a cost function.
+
+\begin{algorithm}[htp]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{NumIterations}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Best}{Best}
+	\SetKwData{Null}{Null}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow 0$\;
+	\ForEach{$iter_i \in$ \NumIterations} {
+		$candidate_i$ = \RandomSolution{\ProblemSize}\;
+		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ $candidate_i$\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code Listing for the Random Search Algorithm.}
+	\label{alg:random_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -105,6 +138,15 @@ A pseudo code description of the algorithms procedure.
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 A bullet-point listing of best practice usage.
+
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\section{Code Listing}
+\label{sec:code}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Algorithm Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
+
+\lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../../src/algorithms/stochastic/random_search.rb}
 
 % Tutorial: Guided implementation
 % The tutorial description provides a guide to realizing the technique using a programming lan- guage. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tuto- rial description provides explanations as to the design decisions and rationale for the way the technique is implemented. The tutorial description is textual, providing a narrative with an objective, a series of steps, and outcome that may be interspersed with source code examples.
