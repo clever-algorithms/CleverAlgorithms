@@ -149,8 +149,9 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 % How is a technique applied to a concrete problem instance?
 Algorithm Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
 % about the algorithm
-
+In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. Random candidate solution construction involves creating a vector in the problem space one dimension at a time.
 % about the problem
+The example problem is an instance of a continuous function optimization $\sum_{i=1}^n x_{i}^2$ where $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots v_{n-1})=0.0$.
 
 \lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../../src/algorithms/stochastic/random_search.rb}
 
@@ -160,16 +161,17 @@ Algorithm Listing~\ref{random_search} provides an example of the Random Search A
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-A bullet-point annotated reference list of primary sources and useful resources.
+todo
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
 % 
 \section{Conclusions}
 \label{sec:conclusions}
-what else would i like to talk about or did i think about while writing this?
-
-I dropped tutorial, moved to a code listing with basic description
+% technique
+This report introduced the Random Search technique as a baseline procedure suitable a default technique for a difficult problem, and a minimal method suitable for calibrating solution construction and evaluation procedures.
+% template
+The description of this technique did not cover inspiration and metaphor as these topics were not relevant to the algorithm. The description deviated from the standardized template (\cite{Brownlee2010a}) in that a \emph{code listing} was provided with a brief description, instead of a \emph{tutorial}. It is believed that a minimal code listing and small context-setting description are more suitable for the Clever Algorithms project, and this change is suggested for all algorithm descriptions to be prepared for the Clever Algorithms project. 
 
 where does directed random search fit in, and adaptive search?
 where does controlled random search fit in?
