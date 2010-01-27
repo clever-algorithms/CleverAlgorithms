@@ -74,3 +74,5 @@ h2. License
 </a>
 
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
+
+Why release everything openly and under a permissive license? Because I agree that "_obscurity is a far greater threat to authors and creative artists than piracy_" -- "Tim O'Reilly":http://openp2p.com/lpt/a/3015  
