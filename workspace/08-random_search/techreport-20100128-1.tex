@@ -59,7 +59,7 @@ This report describes the `Random Search' algorithm using the standardized algor
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Random Search, RS.
+Random Search, RS, Blind Random Search, Blind Search.
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -67,8 +67,10 @@ Random Search, RS.
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
 Random search belongs to the fields of Stochastic Optimization and Global Optimization.
+% type
+Random search is also called a direct search method as it does not require derivatives to search a continuous domain.
 % What are the closely related approaches to a technique?
-This base approach is related to techniques that provide small improvements such as Directed Random Search, and Adaptive Random Search.
+This base approach is related to techniques that provide small improvements such as Directed Random Search, and Adaptive Random Search. 
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -94,7 +96,7 @@ N/A
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The strategy of Random Search is to sample the problem space using an unbiased (uniform) probability distribution. Each future sample is independent of the samples that come before it.
+The strategy of Random Search is to sample the problem space using a uniform probability distribution. Each future sample is independent of the samples that come before it.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -140,6 +142,11 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 \begin{itemize}
 	\item Random search is minimal in that it only requires a candidate solution construction routine and a candidate solution evaluation routine.
 	\item Random Search is a default technique to try before any other heuristic method to calibrate solution construction and evaluation.
+	\item The worst case performance for Random Search is worse than an Enumeration of the search domain ($O(n)$), given that Random Search has no memory and can blindly resample.
+	\item Random Search can return a reasonable approximation of the optimal solution within a reasonable time under low problem dimensionality, although the approach does not scale well. (references???) - the number of samples to take of the domain may be estimated to provide assurances about information coverage in the domain (probabilistic model???)
+	\item Care must be taken with some problem domains to ensure that random candidate solution construction is in fact uniformly random (unbiased)
+	\item The Random Search algorithm is the parent of all stochastic optimization methods that may be seen to introduce models that bias the sampling of the domain away from a uniform probability, and potentially introduce sample rejection criteria.
+	\item The results of a Random Search can be used to seed another search technique, like a local search technique (such as a hill climbing algorithm) that can be used to locate the best solution in the neighborhood of the candidate solution.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -147,12 +154,13 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Algorithm Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
+Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
 % about the algorithm
 In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. Random candidate solution construction involves creating a vector in the problem space one dimension at a time.
 % about the problem
 The example problem is an instance of a continuous function optimization $\sum_{i=1}^n x_{i}^2$ where $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots v_{n-1})=0.0$.
 
+% the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../../src/algorithms/stochastic/random_search.rb}
 
 % References: Deeper understanding
@@ -163,6 +171,17 @@ The example problem is an instance of a continuous function optimization $\sum_{
 % What are the suggested reference sources for learning more about a technique?
 todo
 
+some random notes as i research...
+\begin{itemize}
+	\item Handbook of Computational Statistics - chapter 6 - \url{http://math.u-bourgogne.fr/monge/bibliotheque/ebooks/csa/htmlbook/node51.html}
+	\item random search: Karnopp, D.C. (1963), Random Search Techniques for Optimization Problems, Automatica, vol. 1, pp. 111-121.
+	\item random search: Kolda, T.G., Lewis, R.M., and Torczon, V. (2003), Optimization by Direct Search: New Perspectives on Some Classical and Modern Methods, SIAM Review, vol. 45, pp. 385-482.
+	\item reference on stochastic optimization: Zhigljavsky, A.A. (1991), Theory of Global Random Search, Kluwer Academic, Boston.
+	\item reference on stochastic optimization: Solis, F.J. and Wets, J.B. (1981), Minimization by Random Search Techniques, Mathematics of Operations Research, vol. 6, pp. 19-30.
+	\item on the convergence of random search (pages 40-41): Spall, J.C. (2003), Introduction to Stochastic Search and Optimization: Estimation, Simulation, and Control, Wiley, Hoboken, NJ.
+\end{itemize}
+
+
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
 % 
@@ -171,11 +190,11 @@ todo
 % technique
 This report introduced the Random Search technique as a baseline procedure suitable a default technique for a difficult problem, and a minimal method suitable for calibrating solution construction and evaluation procedures.
 % template
-The description of this technique did not cover inspiration and metaphor as these topics were not relevant to the algorithm. The description deviated from the standardized template (\cite{Brownlee2010a}) in that a \emph{code listing} was provided with a brief description, instead of a \emph{tutorial}. It is believed that a minimal code listing and small context-setting description are more suitable for the Clever Algorithms project, and this change is suggested for all algorithm descriptions to be prepared for the Clever Algorithms project. 
+The description of this technique did not cover inspiration and metaphor as these topics were not relevant to the algorithm. The description deviated from the standardized template in that a \emph{code listing} was provided with a brief description, instead of a \emph{tutorial} \cite{Brownlee2010a}. It is believed that a minimal code listing and small context-setting description are more suitable for the Clever Algorithms project, and this change is suggested for all algorithm descriptions to be prepared for the Clever Algorithms project. 
 
-where does directed random search fit in, and adaptive search?
-where does controlled random search fit in?
-where does hill climbing fit in?
+% related
+Random Search is closely related to \emph{Localized Random Search} (use of a step size), \emph{Adaptive Random Search} (use of a adaptive step size), and \emph{Directed Random Search} (sometimes a synonym for Localized and/or Adaptive Random Search) techniques, all of which appear in the data-driven algorithm selection results, and some of which have been selected for inclusion in the Clever Algorithms project \cite{Brownlee2010b}.
+Some additional techniques uncovered during research include: \emph{Controlled Random Search}.
 
 % bibliography
 \bibliographystyle{plain}
