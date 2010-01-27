@@ -59,7 +59,7 @@ This report describes the `Random Search' algorithm using the standardized algor
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Random Search, RS, Blind Random Search, Blind Search.
+Random Search, RS, Blind Random Search, Blind Search, Pure Random Search, PRS.
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -158,7 +158,7 @@ Listing~\ref{random_search} provides an example of the Random Search Algorithm i
 % about the algorithm
 In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. Random candidate solution construction involves creating a vector in the problem space one dimension at a time.
 % about the problem
-The example problem is an instance of a continuous function optimization $\sum_{i=1}^n x_{i}^2$ where $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots v_{n-1})=0.0$.
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots v_{n-1})=0.0$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../../src/algorithms/stochastic/random_search.rb}
@@ -171,6 +171,9 @@ The example problem is an instance of a continuous function optimization $\sum_{
 % What are the suggested reference sources for learning more about a technique?
 todo
 
+consider breaking refs into seminal, intros, and general books intros to the field
+consider discussion rather than bullet point references - more useful.
+
 some random notes as i research...
 \begin{itemize}
 	\item Handbook of Computational Statistics - chapter 6 - \url{http://math.u-bourgogne.fr/monge/bibliotheque/ebooks/csa/htmlbook/node51.html}
@@ -178,7 +181,14 @@ some random notes as i research...
 	\item random search: Kolda, T.G., Lewis, R.M., and Torczon, V. (2003), Optimization by Direct Search: New Perspectives on Some Classical and Modern Methods, SIAM Review, vol. 45, pp. 385-482.
 	\item reference on stochastic optimization: Zhigljavsky, A.A. (1991), Theory of Global Random Search, Kluwer Academic, Boston.
 	\item reference on stochastic optimization: Solis, F.J. and Wets, J.B. (1981), Minimization by Random Search Techniques, Mathematics of Operations Research, vol. 6, pp. 19-30.
-	\item on the convergence of random search (pages 40-41): Spall, J.C. (2003), Introduction to Stochastic Search and Optimization: Estimation, Simulation, and Control, Wiley, Hoboken, NJ.
+	\item on the convergence of random search - good book for topic - generally, also: (pages 40-41): Spall, J.C. (2003), Introduction to Stochastic Search and Optimization: Estimation, Simulation, and Control, Wiley, Hoboken, NJ.
+	\item another seminal work: Random-search algorithm for extrema in functional space under conditions of partial uncertainty
+	\item general intro to stochastic search (course notes for subject: IndE 516 Applications of Optimization in Engineering Design), 2009, Random Search Algorithms, Zabinsky
+	\item seminal for `random search': Brooks, S. H. (1958), A Discussion of Random Methods for Seeking Maxima, Opera- tions Research, 6, 244-251.
+	\item important (and the follow up: 2): Dixon, L. C. W., and Szego, G. P. (1975), Towards Global Optimization, North-Holland, Amsterdam.
+	\item book on general topic: Zabinsky, Z. B. (2003), Stochastic adaptive search for global optimization, Kluwer Aca- demic Publishers, Boston.
+	\item maybe seminal: An average-case analysis for continuous random search algorithm (1985)
+	
 \end{itemize}
 
 
@@ -191,10 +201,12 @@ some random notes as i research...
 This report introduced the Random Search technique as a baseline procedure suitable a default technique for a difficult problem, and a minimal method suitable for calibrating solution construction and evaluation procedures.
 % template
 The description of this technique did not cover inspiration and metaphor as these topics were not relevant to the algorithm. The description deviated from the standardized template in that a \emph{code listing} was provided with a brief description, instead of a \emph{tutorial} \cite{Brownlee2010a}. It is believed that a minimal code listing and small context-setting description are more suitable for the Clever Algorithms project, and this change is suggested for all algorithm descriptions to be prepared for the Clever Algorithms project. 
+% focus
+It is also apparent that the Clever Algorithms project takes a very practical approach to algorithm description, not directly considering mathematical descriptions of algorithms or the expected behavior.  
 
 % related
 Random Search is closely related to \emph{Localized Random Search} (use of a step size), \emph{Adaptive Random Search} (use of a adaptive step size), and \emph{Directed Random Search} (sometimes a synonym for Localized and/or Adaptive Random Search) techniques, all of which appear in the data-driven algorithm selection results, and some of which have been selected for inclusion in the Clever Algorithms project \cite{Brownlee2010b}.
-Some additional techniques uncovered during research include: \emph{Controlled Random Search}.
+Some additional techniques uncovered during research include: \emph{Controlled Random Search} \cite{Price1977}.
 
 % bibliography
 \bibliographystyle{plain}
