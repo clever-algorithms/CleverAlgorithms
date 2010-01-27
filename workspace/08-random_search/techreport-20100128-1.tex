@@ -96,7 +96,7 @@ N/A
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The strategy of Random Search is to sample the problem space using a uniform probability distribution. Each future sample is independent of the samples that come before it.
+The strategy of Random Search is to sample solutions using a uniform probability distribution from across the entire search space. Each future sample is independent of the samples that come before it.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -169,27 +169,24 @@ The example problem is an instance of a continuous function optimization that se
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-todo
 
-consider breaking refs into seminal, intros, and general books intros to the field
-consider discussion rather than bullet point references - more useful.
+% 
+% Primary Sources
+% 
+\subsection{Primary Sources}
+There is no seminal specification of the Random Search algorithm, rather there are discussions of the general approach and related random search methods from the 1950's 60's and 70's around the time that pattern and direct search methods were actively researched.
+% seminal
+Brooks is credited with the so-called `pure random search' \cite{Brooks1958}. Some seminal reviewing `random search methods' of the time, include: Kul'chitskii \cite{Kul'chitskii1976} and Karnopp \cite{Karnopp1963}.
 
-some random notes as i research...
-\begin{itemize}
-	\item Handbook of Computational Statistics - chapter 6 - \url{http://math.u-bourgogne.fr/monge/bibliotheque/ebooks/csa/htmlbook/node51.html}
-	\item random search: Karnopp, D.C. (1963), Random Search Techniques for Optimization Problems, Automatica, vol. 1, pp. 111-121.
-	\item random search: Kolda, T.G., Lewis, R.M., and Torczon, V. (2003), Optimization by Direct Search: New Perspectives on Some Classical and Modern Methods, SIAM Review, vol. 45, pp. 385-482.
-	\item reference on stochastic optimization: Zhigljavsky, A.A. (1991), Theory of Global Random Search, Kluwer Academic, Boston.
-	\item reference on stochastic optimization: Solis, F.J. and Wets, J.B. (1981), Minimization by Random Search Techniques, Mathematics of Operations Research, vol. 6, pp. 19-30.
-	\item on the convergence of random search - good book for topic - generally, also: (pages 40-41): Spall, J.C. (2003), Introduction to Stochastic Search and Optimization: Estimation, Simulation, and Control, Wiley, Hoboken, NJ.
-	\item another seminal work: Random-search algorithm for extrema in functional space under conditions of partial uncertainty
-	\item general intro to stochastic search (course notes for subject: IndE 516 Applications of Optimization in Engineering Design), 2009, Random Search Algorithms, Zabinsky
-	\item seminal for `random search': Brooks, S. H. (1958), A Discussion of Random Methods for Seeking Maxima, Opera- tions Research, 6, 244-251.
-	\item important (and the follow up: 2): Dixon, L. C. W., and Szego, G. P. (1975), Towards Global Optimization, North-Holland, Amsterdam.
-	\item book on general topic: Zabinsky, Z. B. (2003), Stochastic adaptive search for global optimization, Kluwer Aca- demic Publishers, Boston.
-	\item maybe seminal: An average-case analysis for continuous random search algorithm (1985)
-	\item overview? A survey of random methods for parameter optimization, 1971
-\end{itemize}
+
+% 
+% Learn More
+% 
+\subsection{Learn More}
+% random search methods
+For overviews of into Random Search Methods see Zhigljavsky \cite{Zhigljavsky1991}, Solis and Wets Solis \cite{Solis1981}, and White \cite{White1971} who provides an excellent review article.
+% stochastic
+Spall provides a detailed overview of the field of Stochastic Optimization, including the Random Search method \cite{Spall2003} (for example, see Chapter 2). For a shorter introduction by Spall, see \cite{Spall2004} (specifically Section 6.2). Also see Zabinsky for another detailed review of the broader field \cite{Zabinsky2003}.
 
 
 % 
@@ -209,7 +206,7 @@ This further highlights that the ideals of the Clever Algorithms project are in 
 
 % related
 Random Search is closely related to \emph{Localized Random Search} (use of a step size), \emph{Adaptive Random Search} (use of a adaptive step size), and \emph{Directed Random Search} (sometimes a synonym for Localized and/or Adaptive Random Search) techniques, all of which appear in the data-driven algorithm selection results, and some of which have been selected for inclusion in the Clever Algorithms project \cite{Brownlee2010b}.
-Some additional techniques uncovered during research include: \emph{Controlled Random Search} \cite{Price1977}.
+Some additional techniques uncovered during research include: \emph{Controlled Random Search} \cite{Price1977}, \emph{Creeping Random Search} \cite{Rastrigin1963}.
 
 % bibliography
 \bibliographystyle{plain}
