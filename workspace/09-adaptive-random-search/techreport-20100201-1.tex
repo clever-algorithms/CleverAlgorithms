@@ -10,6 +10,12 @@
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -18,7 +24,7 @@
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
-\newcommand{\myreportdate}{2010MMDD}
+\newcommand{\myreportdate}{20100201}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -31,27 +37,35 @@
 
 % write a summary sentence for each major section
 \section*{Abstract} 
-This is the abstract. Consider writing a one sentence summary of each major section in the report.
+todo
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Keywords, Go, Here}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Adaptive, Random, Search, Optimization}}
 \end{description} 
+
+\section{Introduction} 
+\label{sec:intro}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+This report describes the `Adaptive Random Search' algorithm using the standardized algorithm description template. 
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
-\section{Algorithm Name} 
+\section{Name} 
 \label{sec:name}
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-The heading and alternate headings for the algorithm description.
+% The heading and alternate headings for the algorithm description.
+Adaptive Random Search, ARS.
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-% To what fields of study does a technique belong?
-% What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+todo
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -60,7 +74,7 @@ A small tree diagram showing related fields and algorithms.
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
+N/A
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -69,7 +83,7 @@ A textual description of the inspiring system.
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+N/A
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -77,7 +91,7 @@ A textual description of the algorithm by analogy.
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+todo
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -85,7 +99,35 @@ A textual description of the information processing strategy.
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Adaptive Random Search Algorithm for minimizing a cost function.
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{NumIterations}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{SearchSpace}{SearchSpace}
+	\SetKwData{Best}{Best}
+	\SetKwData{Null}{Null}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow 0$\;
+	\ForEach{$iter_i \in$ \NumIterations} {
+		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
+		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ $candidate_i$\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code Listing for the Random Search Algorithm.}
+	\label{alg:random_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -93,15 +135,23 @@ A pseudo code description of the algorithms procedure.
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item todo
+\end{itemize}
 
-% Tutorial: Guided implementation
-% The tutorial description provides a guide to realizing the technique using a programming lan- guage. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tuto- rial description provides explanations as to the design decisions and rationale for the way the technique is implemented. The tutorial description is textual, providing a narrative with an objective, a series of steps, and outcome that may be interspersed with source code examples.
-\section{Tutorial}
-\label{sec:tutorial}
-% What is the rationale when implementing a technique as an executable program?
-% What is the rationale when applying a technique to a concrete problem instance?
-A textural narrative for realizing the algorithm with complete source code.
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\section{Code Listing}
+\label{sec:code}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{adaptive_random_search} provides an example of the Adaptive Random Search Algorithm implemented in the Ruby Programming Language. 
+% about the algorithm
+In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. 
+% about the problem
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Adaptive Random Search Algorithm in the Ruby Programming Language, label=adaptive_random_search]{../../src/algorithms/stochastic/adaptive_random_search.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -109,7 +159,41 @@ A textural narrative for realizing the algorithm with complete source code.
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-A bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsection{Primary Sources}
+todo
+
+
+% 
+% Learn More
+% 
+\subsection{Learn More}
+todo
+
+
+% 
+% Conclusions: What the reader or what thre author learned by completing this this report.
+% 
+\section{Conclusions}
+\label{sec:conclusions}
+todo
+
+% 
+% Contribute
+% 
+\section{Contribute}
+\label{sec:contribute}
+% simple
+Found a typo or a bug in the source code? 
+% advanced 
+Are you an expert in this technique and know some facts that could improve the algorithm description for all?
+% incentive
+Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
+% advice
+Please contact the author via email \url{jasonb@CleverAlgorithms.com} or visit the project website at \url{http://www.CleverAlgorithms.com} and let us know how we can improve this work.
 
 % bibliography
 \bibliographystyle{plain}
