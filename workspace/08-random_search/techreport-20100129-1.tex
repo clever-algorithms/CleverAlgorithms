@@ -38,7 +38,7 @@
 % write a summary sentence for each major section
 \section*{Abstract} 
 % project
-The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent and centralized manner.
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner.
 % algorithm
 This report describes the Random Search algorithm using a standardized algorithm description template.
 % outcomes
@@ -53,11 +53,11 @@ As the first algorithm description in the project, a few modifications are sugge
 % project
 The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
 % description
-The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the collection of specific information about the technique \cite{Brownlee2010a}.
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
 This report describes the `Random Search' algorithm using the standardized algorithm description template. 
 % conclusions 
-Section~\ref{sec:conclusions} summarizes some changes to the standardized description template, comments on the limits the projects ideals, and highlights some related algorithms that may be considered for inclusion in the project.
+Section~\ref{sec:conclusions} summarizes some suggested changes to the standardized description template, comments on the limits the projects ideals, and highlights some related algorithms that may be considered for inclusion in the project.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -75,7 +75,7 @@ Random Search, RS, Blind Random Search, Blind Search, Pure Random Search, PRS.
 % To what fields of study does a technique belong?
 Random search belongs to the fields of Stochastic Optimization and Global Optimization.
 % type
-Random search is also called a direct search method as it does not require derivatives to search a continuous domain.
+Random search is a direct search method as it does not require derivatives to search a continuous domain.
 % What are the closely related approaches to a technique?
 This base approach is related to techniques that provide small improvements such as Directed Random Search, and Adaptive Random Search. 
 
@@ -148,10 +148,10 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Random search is minimal in that it only requires a candidate solution construction routine and a candidate solution evaluation routine, both of which may be calibrated using the approach.
-	\item The worst case performance for Random Search is worse than an Enumeration of the search domain, given that Random Search has no memory and can blindly resample.
+	\item The worst case performance for Random Search for locating the optima is worse than an Enumeration of the search domain, given that Random Search has no memory and can blindly resample.
 	\item Random Search can return a reasonable approximation of the optimal solution within a reasonable time under low problem dimensionality, although the approach does not scale well with problem size (such as the number of dimensions).
 	\item Care must be taken with some problem domains to ensure that random candidate solution construction is  unbiased
-	\item The results of a Random Search can be used to seed another search technique, like a local search technique (such as a hill climbing algorithm) that can be used to locate the best solution in the neighborhood of the `good' candidate solution.
+	\item The results of a Random Search can be used to seed another search technique, like a local search technique (such as the Hill Climbing algorithm) that can be used to locate the best solution in the neighborhood of the `good' candidate solution.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -161,9 +161,9 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
 % about the algorithm
-In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. Random candidate solution construction involves creating a vector in the problem space one dimension at a time.
+In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. 
 % about the problem
-The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots v_{n-1})=0.0$.
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../../src/algorithms/stochastic/random_search.rb}
@@ -189,7 +189,7 @@ Brooks is credited with the so-called `pure random search' \cite{Brooks1958}. Tw
 % 
 \subsection{Learn More}
 % random search methods
-For overviews of into Random Search Methods see Zhigljavsky \cite{Zhigljavsky1991}, Solis and Wets \cite{Solis1981}, and White \cite{White1971} who provides an excellent review article.
+For overviews of into Random Search Methods see Zhigljavsky \cite{Zhigljavsky1991}, Solis and Wets \cite{Solis1981}, and also White \cite{White1971} who provides an excellent review article.
 % stochastic
 Spall provides a detailed overview of the field of Stochastic Optimization, including the Random Search method \cite{Spall2003} (for example, see Chapter 2). For a shorter introduction by Spall, see \cite{Spall2004} (specifically Section 6.2). Also see Zabinsky for another detailed review of the broader field \cite{Zabinsky2003}.
 
@@ -203,15 +203,31 @@ Spall provides a detailed overview of the field of Stochastic Optimization, incl
 This report introduced the Random Search technique as a baseline procedure suitable as a default technique for a difficult problem, and a minimal method suitable for calibrating solution construction and evaluation procedures.
 % template
 The description of this technique did not cover inspiration and metaphor as these topics were not relevant to the algorithm. The description deviated from the standardized template in that a \emph{code listing} was provided with a brief description, instead of a \emph{tutorial} \cite{Brownlee2010a}. It is believed that a minimal code listing and small context-setting description are more suitable for the Clever Algorithms project, and this change is suggested for all algorithm descriptions to be prepared for the Clever Algorithms project. 
+% structure
+It is also suggested that the same general structure and layout (such as function names) be used between the pseudo code algorithm and the source code listing to ensure consistency.
 
 % focus
 It is apparent that the Clever Algorithms project takes a very practical approach to algorithm description, not directly considering mathematical descriptions of algorithms or their expected behavior.  
 % bounded
-This further highlights that the ideals of the Clever Algorithms project are in fact bounded by default \cite{Brownlee2010}. Specifically, the project will describe algorithms in a complete, consistent and centralized manner, although the descriptions will be `complete enough' for a practitioner to understand and use them, they will be `consistent enough' to ensure continuity between algorithm descriptions, and the descriptions will be `centralized enough' to be consumed in a book and website format. These clear bounds on the project ideals must be specified in the introductory information provided with the descriptions, such as the introduction chapter of the book.
+This further highlights that the ideals of the Clever Algorithms project are in fact bounded by default \cite{Brownlee2010}. Specifically, the project will describe algorithms in a complete, consistent and centralized manner, although the descriptions will be `complete enough' for a practitioner to understand and use them. They will be `consistent enough' to ensure continuity between algorithm descriptions, and the descriptions will be `centralized enough' to be consumed in a book and website format. These clear bounds on the project ideals must be specified in the introductory information provided with the descriptions, such as the introduction chapter of the book.
 
 % related
 Random Search is closely related to \emph{Localized Random Search} (use of a step size), \emph{Adaptive Random Search} (use of a adaptive step size), and the \emph{Directed Random Search} (sometimes a synonym for Localized and/or Adaptive Random Search) techniques, all of which appear in the data-driven algorithm selection results, and some of which have been selected for inclusion in the Clever Algorithms project \cite{Brownlee2010b}.
-Some additional techniques uncovered during research and may be considered for inclusion the project include: \emph{Controlled Random Search} \cite{Price1977}, \emph{Creeping Random Search} \cite{Rastrigin1963}.
+Some additional techniques uncovered during research that may be considered for inclusion the project include: \emph{Controlled Random Search} \cite{Price1977}, and \emph{Creeping Random Search} \cite{Rastrigin1963}.
+
+% 
+% Contribute
+% 
+\section{Contribute}
+\label{sec:contribute}
+% simple
+Found a typo or a bug in the source code? 
+% advanced 
+Are you an expert in this technique and know some facts that could improve the algorithm description for all?
+% incentive
+Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
+% advice
+Please contact the author via email \url{jasonb@CleverAlgorithms.com} or visit the project website at \url{http://www.CleverAlgorithms.com} and let us know how we can improve this work.
 
 % bibliography
 \bibliographystyle{plain}

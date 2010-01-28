@@ -8,22 +8,22 @@ NUM_ITERATIONS = 100
 PROBLEM_SIZE = 2
 SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
 
-def cost_function(candidate_vector)
+def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_float(min, max)
-  min + ((max - min) * rand)
+def random_solution()
+  return Array.new(PROBLEM_SIZE) do |i|      
+    SEARCH_SPACE[i][0] + ((SEARCH_SPACE[i][1] - SEARCH_SPACE[i][0]) * rand)
+  end
 end
 
 def search
   best = nil
   NUM_ITERATIONS.times do |iter|
     candidate = {}
-    candidate[:vector] = Array.new(PROBLEM_SIZE) do |i|      
-      random_float(SEARCH_SPACE[i][0], SEARCH_SPACE[i][1])
-    end
-    candidate[:cost] = cost_function(candidate[:vector])
+    candidate[:vector] = random_solution
+    candidate[:cost] = cost(candidate[:vector])
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{iter} c=#{best[:cost]}, v=#{best[:vector].inspect}"
   end
