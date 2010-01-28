@@ -118,18 +118,19 @@ Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random S
 	% data
 	\SetKwData{NumIterations}{NumIterations}
 	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{SearchSpace}{SearchSpace}
 	\SetKwData{Best}{Best}
 	\SetKwData{Null}{Null}
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{RandomSolution}{RandomSolution}
   	% I/O
-	\KwIn{\NumIterations, \ProblemSize}
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
 	\KwOut{\Best}
   	% Algorithm
 	\Best $\leftarrow 0$\;
 	\ForEach{$iter_i \in$ \NumIterations} {
-		$candidate_i$ = \RandomSolution{\ProblemSize}\;
+		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
 		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
 			\Best $\leftarrow$ $candidate_i$\;
 		}
