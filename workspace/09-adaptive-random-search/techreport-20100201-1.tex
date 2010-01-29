@@ -172,33 +172,25 @@ The example problem is an instance of a continuous function optimization that se
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-\begin{itemize}
-	\item S. F. Masri and G. Bekey, Global Optimization Algorithm Using Adaptive Random Search. Applied Mathematics and Computation 7, pages 353-375. 1980
-	\item maybe: Optimized relative step size random searches 1976
-	\item look at: Solis, F.J and Wets, R.J (1981), Minimization by random search techniques, Mathematics of operations research, vol 6, no 1, pp 19-30
-\end{itemize}
-
-
 Many works in the 1960s and 1970s experimented with variable step sizes for Random Search methods. 
-% historical reviews
-White reviews extensions to Rastrigin's `Creeping Random Search' \cite{Rastrigin1963} (fixed step size) that use probabilistic step sizes drawn stochastically from uniform and probabilistic distributions \cite{White1971}. White also reviews works that propose dynamic control strategies for the step size, such as Karnopp \cite{Karnopp1963} who proposes increases and decreases to the step size based on performance over very small numbers of trials, as well as other related works.
 % seminal
 Schummer and Steiglitz are commonly credited the adaptive step size procedure, which they called `Adaptive Step-Size Random Search' \cite{Schumer1968}. Their approach only modifies the step size based on an approximation of the optimal step size required to reach the global optima.
-% others
+% a second early approach
 Kregting and White review adaptive random search methods and propose an approach called `Adaptive Directional Random Search' that modifies both the algorithms step size and direction in response to the cost function \cite{Kregting1971}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-todo
+% historical reviews
+White reviews extensions to Rastrigin's `Creeping Random Search' \cite{Rastrigin1963} (fixed step size) that use probabilistic step sizes drawn stochastically from uniform and probabilistic distributions \cite{White1971}. White also reviews works that propose dynamic control strategies for the step size, such as Karnopp \cite{Karnopp1963} who proposes increases and decreases to the step size based on performance over very small numbers of trials, as well as other related works.
+% anothe early work
+Schrack and Choit review random search methods that modify their step size in order to approximate optimal moves while searching, including the property of reversal \cite{Schrack1976}.
+% another
+Masri, et al. describe an adaptive random search strategy that alternates between periods of fixed and variable step sizes \cite{Masri1980}.
+% recent
+% \cite{Kumar2004}.
 
-\begin{itemize}
-	\item Andrei A. Prudius, Adaptive Random Search Methods for Simulation Optimization. Ph.D. Thesis, Georgia Institute of Technology. 2007
-	\item Rajeeva Kumar, Pierre T. Kabamba, David C. Hyland, Analysis and parameter selection for an adaptive random search algorithm. Mathematics and Computers in Simulation 68(2), pages 95-103. 2005
-\end{itemize}
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
