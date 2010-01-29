@@ -10,3 +10,7 @@ Adaptive Random Search
 - Global Optimization Algorithm Using Adaptive Random Search: NO LINK
 - Optimized relative step size random searches: http://www.springerlink.com/content/m17363j776052h30/
 - Analysis and parameter selection for an adaptive random search algorithm: http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=1429654
+
+
+
+
