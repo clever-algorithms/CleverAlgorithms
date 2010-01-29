@@ -58,9 +58,11 @@ This project is partitioned into five efforts:
 * *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
 * *deprecated/*: A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
 
-h2. How to Contribute
+h2. Contribute
 
-Have you found a typo in some copy? Don't agree with some statements in the content? Found a bug in the sample source code? Want to suggest an algorithm to include? Want to contribute a description of an algorithm or background content for the book?
+Found a typo or a bug in the source code? Are you an expert in this technique and know some facts that could improve the algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
+
+Two pillars of this effort are i) that the domain experts are those people outside of the project, and ii) that the work is wrong by default. Help us make this work less wrong.
 
 You may want to:
 * Email the author: "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com
