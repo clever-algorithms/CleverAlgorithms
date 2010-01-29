@@ -1,4 +1,10 @@
-A listing of research papers and articles I would like to acquire and read.
+A listing of research papers and articles I would like to acquire in an electronic format and read.
 
+Random Search
+- A discussion of random methods for seeking maxima: http://opres.highwire.org/cgi/content/abstract/6/2/244
+- Random search techniques for optimization problems: http://www.sciencedirect.com/science?_ob=ArticleURL&_udi=B6V21-47TG0D1-3Y&_user=10&_coverDate=08/31/1963&_rdoc=1&_fmt=high&_orig=search&_sort=d&_docanchor=&view=c&_acct=C000050221&_version=1&_urlVersion=0&_userid=10&md5=b1873715b8c27498e3c3fb0830f24a83
+- Random-search algorithm for extrema in functional space under conditions of partial uncertainty: http://www.springerlink.com/content/r1p1384p02822605/
+- A controlled random search procedure for global optimisation: http://comjnl.oxfordjournals.org/cgi/content/abstract/20/4/367
+- Minimization by Random Search Techniques: http://mathor.highwire.org/cgi/content/abstract/6/1/19
 
-
+Adaptive Random Search
