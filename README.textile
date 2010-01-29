@@ -60,7 +60,7 @@ This project is partitioned into five efforts:
 
 h2. Contribute
 
-Found a typo in some content or a bug in the source code? Are you an expert in this technique and know some facts that could improve the algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
+Found a typo in some content or a bug in the source code? Are you an expert in a and know some facts that could improve an algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
 
 Two pillars of this effort are i) that the domain experts are those people outside of the project, and ii) that the work is wrong by default. Help us make this work less wrong.
 
