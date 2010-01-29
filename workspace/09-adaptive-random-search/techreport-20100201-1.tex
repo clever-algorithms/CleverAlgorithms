@@ -59,7 +59,7 @@ This report describes the `Adaptive Random Search' algorithm using the standardi
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Adaptive Random Search, ARS, Adaptive Step-Size Random Search, ASSRS, Variable Step-Size Random Search.
+Adaptive Random Search, ARS, Adaptive Step-Size Random Search, ASSRS, Adaptive Directional Random Search, ADRS, Variable Step-Size Random Search.
 
 (Pure Adaptive Search?)
 
@@ -175,8 +175,6 @@ The example problem is an instance of a continuous function optimization that se
 todo
 
 \begin{itemize}
-	\item (proposes a practical random search with adaptive direction and step size) Matyas, J (1965), Random optimization, Automation and remote control, vol 26, pp 246-253
-	\item (analysis of optimal step size and optimal direction, proposal a practical method: adaptive directional random search - ADRS) J Kregting, RC White Jr - 1971, Adaptive random search (extension of Matyas)
 	\item S. F. Masri and G. Bekey, Global Optimization Algorithm Using Adaptive Random Search. Applied Mathematics and Computation 7, pages 353-375. 1980
 	\item maybe: Optimized relative step size random searches 1976
 	\item look at: Solis, F.J and Wets, R.J (1981), Minimization by random search techniques, Mathematics of operations research, vol 6, no 1, pp 19-30
@@ -187,9 +185,9 @@ Many works in the 1960s and 1970s experimented with variable step sizes for Rand
 % historical reviews
 White reviews extensions to Rastrigin's `Creeping Random Search' \cite{Rastrigin1963} (fixed step size) that use probabilistic step sizes drawn stochastically from uniform and probabilistic distributions \cite{White1971}. White also reviews works that propose dynamic control strategies for the step size, such as Karnopp \cite{Karnopp1963} who proposes increases and decreases to the step size based on performance over very small numbers of trials, as well as other related works.
 % seminal
-Schummer and Steiglitz are commonly credited the adaptive step size procedure, which they called `Adaptive Step-Size Random Search' \cite{Schumer1968}. Their approach modified the step size based on an approximation of the optimal step size required to reach the global optima.
-
- 
+Schummer and Steiglitz are commonly credited the adaptive step size procedure, which they called `Adaptive Step-Size Random Search' \cite{Schumer1968}. Their approach only modifies the step size based on an approximation of the optimal step size required to reach the global optima.
+% others
+Kregting and White review adaptive random search methods and propose an approach called `Adaptive Directional Random Search' that modifies both the algorithms step size and direction in response to the cost function \cite{Kregting1971}.
 
 % 
 % Learn More
@@ -211,6 +209,7 @@ todo
 need a due diligence procedure for investigating a technique
 
 need a review or differentiation between local search and global search 
+
 
 
 % related new approaches?

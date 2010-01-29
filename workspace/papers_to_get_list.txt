@@ -4,9 +4,10 @@ Random Search
 - A discussion of random methods for seeking maxima: http://opres.highwire.org/cgi/content/abstract/6/2/244
 - Random search techniques for optimization problems: http://www.sciencedirect.com/science?_ob=ArticleURL&_udi=B6V21-47TG0D1-3Y&_user=10&_coverDate=08/31/1963&_rdoc=1&_fmt=high&_orig=search&_sort=d&_docanchor=&view=c&_acct=C000050221&_version=1&_urlVersion=0&_userid=10&md5=b1873715b8c27498e3c3fb0830f24a83
 - Random-search algorithm for extrema in functional space under conditions of partial uncertainty: http://www.springerlink.com/content/r1p1384p02822605/	
+- Recent Advances in Finding Best Operating Conditions: (maybe) http://sim.sagepub.com/cgi/pdf_extract/8/6/350
 
 Adaptive Random Search
-- Random optimization, Automation and remote control: NO LINK
+- Random optimization: (Adaptive random optimization method for several variables): NO LINK
 - Global Optimization Algorithm Using Adaptive Random Search: NO LINK
 - Optimized relative step size random searches: http://www.springerlink.com/content/m17363j776052h30/
 - Analysis and parameter selection for an adaptive random search algorithm: http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=1429654
