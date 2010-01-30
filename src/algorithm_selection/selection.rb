@@ -31,6 +31,11 @@ require 'json'
 require 'net/http'
 require 'hpricot'
 
+ALGORITHMS_LIST = "algorithms.txt"
+ALGORITHM_RESULTS = "results.txt"
+NORMALIZED_RESULTS = "results_normalized.txt"
+ORGANIZED_RESULTS = "results_organized.txt"
+
 # monkey patch for float
 class Float
   def round_to(x)
@@ -162,11 +167,11 @@ def shuffle!(array)
 end
 
 def generate_results
-  if File.exists?("./results.txt") 
+  if File.exists?(ALGORITHM_RESULTS) 
     puts "Results already available, not generating."
   else
     puts "No existing results, generating...(will take a while - upto 10sec per algorithm)"
-    algorithms_list = IO.readlines("./algorithms.txt")
+    algorithms_list = IO.readlines(ALGORITHMS_LIST)
     # remove any bias in the way the file was put together (exposes sorting problems later)
     shuffle!(algorithms_list)
     results = ""
@@ -176,16 +181,16 @@ def generate_results
       results << "#{line.strip},#{scores.join(",")}\n"
       puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds")
     end
-    File.open("./results.txt", "w") { |f| f.printf(results) }
+    File.open(ALGORITHM_RESULTS, "w") { |f| f.printf(results) }
   end
 end
 
 def normalize_results
-  if File.exists?("./results_normalized.txt") 
+  if File.exists?(NORMALIZED_RESULTS) 
     puts "Skipping normalization results, already exists"  
   else
     puts "Outputting normalization results..."
-    raw = IO.readlines("./results.txt")
+    raw = IO.readlines(ALGORITHM_RESULTS)
     algorithms_list = []
     raw.each { |line| algorithms_list << line.split(',')}
     normalized_scores = Array.new(algorithms_list[0].length-2) {|i| [10000.0, 0.0]} 
@@ -206,22 +211,21 @@ def normalize_results
       end
       # calculate rank
       rank = scores.inject(0.0) {|sum, n| sum + n.to_f } 
-      # results << "#{row[0]},#{row[1]},#{scores.join(",")},#{rank}\n"
       results << "#{row.join(",").strip},#{rank.round_to(3)}\n"
     end  
-    File.open("./results_normalized.txt", "w") { |f| f.printf(results) }
+    File.open(NORMALIZED_RESULTS, "w") { |f| f.printf(results) }
   end
 end
 
 
 # organized results, suitable for presenting in latex tables
 def generate_organized_results  
-  if File.exists?("./results_organized.txt") 
+  if File.exists?(ORGANIZED_RESULTS) 
     puts "Skipping organized results, already exists"  
   else
     puts "Outputting organized results"
     # prepare data structures
-    raw = IO.readlines("./results_normalized.txt")
+    raw = IO.readlines(NORMALIZED_RESULTS)
     # array of arrays
     algorithms_list = []
     raw.each { |line| algorithms_list<<line.split(',')}    
@@ -246,14 +250,14 @@ def generate_organized_results
       results << "#{v.join(" & ")} \\\\\n"
       top += 1
     end
-    File.open("./results_organized.txt", "w") { |f| f.printf(results) }
+    File.open(ORGANIZED_RESULTS, "w") { |f| f.printf(results) }
   end
 end
 
 
 def display_pretty_results
   # prepare data structures
-  raw = IO.readlines("./results_normalized.txt")
+  raw = IO.readlines(NORMALIZED_RESULTS)
   # array of arrays
   algorithms_list = []
   raw.each { |line| algorithms_list<<line.split(',')}
