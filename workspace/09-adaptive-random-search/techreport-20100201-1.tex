@@ -59,7 +59,7 @@ This report describes the `Adaptive Random Search' algorithm using the standardi
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Adaptive Random Search, ARS, Adaptive Step-Size Random Search, ASSRS, Adaptive Directional Random Search, ADRS, Variable Step-Size Random Search.
+Adaptive Random Search, ARS, Adaptive Step Size Random Search, ASSRS, Adaptive Directional Random Search, ADRS, Variable Step-Size Random Search.
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -94,8 +94,7 @@ N/A
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-random search, search local neighborhood, vary size of neighborhood dynamically, approximate the optimal step size to converge to the optima
-likely to have an adaptive or variable direction as well
+The strategy for Adaptive Random Search is to continually approximate the optimal step size required to reach the global optima in the search space. This is achieved by trialling and adopting smaller or larger step sizes only if they result in an improvement in the search performance.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -178,6 +177,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudo-code listing of the
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Adaptive Random Search was designed for continuous function optimization problem domains.
+	\item 
 	\item Adaptive Random Search may adapt the search direction in addition to the step size.
 	\item The step size may be adapted for all parameters, or for each parameter individually.
 \end{itemize}

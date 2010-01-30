@@ -47,7 +47,7 @@ def search(numIterations, problemSize, searchSpace)
     biggerStepSize = stepSize * STEP_FACTOR_LARGE if iter.modulo(STEP_FACTOR_LARGE_MULTIPLE)
     biggerStep[:vector] = take_step(problemSize, searchSpace, current[:vector], biggerStepSize)
     biggerStep[:cost] = cost(biggerStep[:vector])    
-    if step[:cost] < current[:cost] or biggerStep[:cost] < current[:cost]
+    if step[:cost] <= current[:cost] or biggerStep[:cost] <= current[:cost]
       if biggerStep[:cost] < step[:cost]
         stepSize, current = biggerStepSize, biggerStep
       else
