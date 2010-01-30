@@ -57,7 +57,7 @@ The project requires all algorithms to be described using a standardized templat
 % this report
 This report describes the `Adaptive Random Search' algorithm using the standardized algorithm description template. 
 % conclusions
-Section~\ref{sec:conclusions} comments on the due diligence required for minimally investigate an algorithm for the Cleve Algorithms project, and highlights some related algorithms discovered while preparing the description in this report.
+Section~\ref{sec:conclusions} comments on the due diligence required for minimally investigate an algorithm for the Clever Algorithms project, and highlights some related algorithms discovered while preparing the description in this report.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -73,9 +73,9 @@ Adaptive Random Search, ARS, Adaptive Step Size Random Search, ASSRS, Variable S
 \section{Taxonomy}
 \label{sec:taxonomy}
 % field
-The Adaptive Random Search algorithm belongs to the general set of approaches known as Stochastic Optimization and Global Optimization. It is a direct search method in that it does not require derivatives of the search space.
+The Adaptive Random Search algorithm belongs to the general set of approaches known as Stochastic Optimization and Global Optimization. It is a direct search method in that it does not require derivatives to navigate the search space.
 % related
-Adaptive Random Search is an extension of Random Search and Localized Random Search algorithms.
+Adaptive Random Search is an extension of the Random Search and Localized Random Search algorithms.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -83,10 +83,10 @@ Adaptive Random Search is an extension of Random Search and Localized Random Sea
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The Adaptive Random Search algorithm was designed to address the limitations of Localized (fixed step size) Random Search. The strategy for Adaptive Random Search is to continually approximate the optimal step size required to reach the global optima in the search space. This is achieved by trialling and adopting smaller or larger step sizes only if they result in an improvement in the search performance.
+The Adaptive Random Search algorithm was designed to address the limitations of the fixed step size in the Localized Random Search algorithm. The strategy for Adaptive Random Search is to continually approximate the optimal step size required to reach the global optimum in the search space. This is achieved by trialling and adopting smaller or larger step sizes only if they result in an improvement in the search performance.
 
 % adaptive step size random search
-THe Strategy of the Adaptive Step Size Random Search algorithm is to trial a larger step in addition to an adopted step each iteration and adopt the larger step if it results in an improved result. Very large step sizes are trialled in the same manner with although with a much lower frequency. This strategy of preferring large moves is intended to allow the technique to escape local optimal. Smaller step sizes are adopted if no improvement is made for an extended period. 
+The Strategy of the Adaptive Step Size Random Search algorithm (the specific technique reviewed) is to trial a larger step in each iteration and adopt the larger step if it results in an improved result. Very large step sizes are trialled in the same manner although with a much lower frequency. This strategy of preferring large moves is intended to allow the technique to escape local optimal. Smaller step sizes are adopted if no improvement is made for an extended period. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -147,7 +147,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudo-code listing of the
 			$nochng_{count} \leftarrow 0$\;
 		} 
 		\Else {
-			$nochng_{count} \leftarrow noimprov_{count} + 1$\;
+			$nochng_{count} \leftarrow nochng_{count} + 1$\;
 			% step size modification
 			\If{$nochng_{count} > \MaxIterNoImprovement$} {
 				$nochng_{count} \leftarrow 0$\;
@@ -169,7 +169,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudo-code listing of the
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Adaptive Random Search was designed for continuous function optimization problem domains.
-	\item Candidates with equal cost should be considered improvements to allow the algorithm to make progress across plateau's in the response surface.
+	\item Candidates with equal cost should be considered improvements to allow the algorithm to make progress across plateaus in the response surface.
 	\item Adaptive Random Search may adapt the search direction in addition to the step size.
 	\item The step size may be adapted for all parameters, or for each parameter individually.
 \end{itemize}
@@ -183,7 +183,7 @@ Listing~\ref{adaptive_random_search} provides an example of the Adaptive Random 
 % about the algorithm
 In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. 
 % about the problem
-The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0 < x_i < 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Adaptive Random Search Algorithm in the Ruby Programming Language, label=adaptive_random_search]{../../src/algorithms/stochastic/adaptive_random_search.rb}
@@ -210,7 +210,7 @@ Kregting and White review adaptive random search methods and propose an approach
 % 
 \subsection{Learn More}
 % historical reviews
-White reviews extensions to Rastrigin's `Creeping Random Search' \cite{Rastrigin1963} (fixed step size) that use probabilistic step sizes drawn stochastically from uniform and probabilistic distributions \cite{White1971}. White also reviews works that propose dynamic control strategies for the step size, such as Karnopp \cite{Karnopp1963} who proposes increases and decreases to the step size based on performance over very small numbers of trials, as well as other related works.
+White reviews extensions to Rastrigin's `Creeping Random Search' \cite{Rastrigin1963} (fixed step size) that use probabilistic step sizes drawn stochastically from uniform and probabilistic distributions \cite{White1971}. White also reviews works that propose dynamic control strategies for the step size, such as Karnopp \cite{Karnopp1963} who proposes increases and decreases to the step size based on performance over very small numbers of trials.
 % anothe early work
 Schrack and Choit review random search methods that modify their step size in order to approximate optimal moves while searching, including the property of reversal \cite{Schrack1976}.
 % another
@@ -227,11 +227,11 @@ Masri, et al. describe an adaptive random search strategy that alternates betwee
 % report
 This work described the Adaptive Random Search algorithm, specifically the seminal Adaptive Step Size Random Search algorithm that seeks an approximation of the optimal step size required to reach the global optimum.
 % local/global
-A feature of function optimization highlighted in this report was the need to differentiate between local and global optima, and optimization strategies that aware of this differentiation. It is suggested that response surface modality and local and global optima and the difference between strategies that seek them be discussed in documentation that accompanies the algorithm descriptions, such as the introductory chapter of the proposed book.
+A feature of function optimization highlighted in this report was the need to differentiate between local and global optima, and optimization strategies that are aware of this differentiation. It is suggested that response surface modality and local and global optima and the difference between strategies that seek them be discussed in documentation that accompanies the algorithm descriptions, such as the introductory chapter of the proposed book.
 
 % Due diligence
 \subsection{Due Diligence}
-An aspect that was highlighted while preparing this report was the need for a clear definition of what constitutes `due diligence' for investigating a an algorithm. Minimum requirements are needed to provide some assurance that both and useful references are discovered and communicated in an algorithm description. Table~\ref{tab:due_diligence} provides a listing of online sources that (as a minimum) must be consulted for a given algorithm to locate first-pass\footnote{Subsequent passes are generated by references collected from sources discovered in the first pass.} references. Specifically the technique must be searched for by name and aliases against each of the listed search domains. Effort may be eased through use of tools such as \emph{Google Custom Search}\footnote{Google Custom Search: \url{http://www.google.com/cse}} that allow a number of sites to be searched in parallel for a given query.
+An aspect that was highlighted while preparing this report was the need for a clear definition of what constitutes `due diligence' for investigating a an algorithm. Minimum requirements are needed to provide some assurance that both seminal and useful references are discovered and communicated in an algorithm description. Table~\ref{tab:due_diligence} provides a listing of online sources that (as a minimum) must be consulted for a given algorithm to locate first-pass\footnote{Subsequent passes are generated by references collected from sources discovered in the first pass.} references. Specifically the technique must be searched for by name and aliases against each of the listed search domains. Effort may be eased through use of tools such as \emph{Google Custom Search}\footnote{Google Custom Search: \url{http://www.google.com/cse}} that allow a number of sites to be searched in parallel for a given query.
 
 \begin{table}[htp]
 	\centering
