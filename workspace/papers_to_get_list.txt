@@ -13,5 +13,6 @@ Adaptive Random Search
 - Analysis and parameter selection for an adaptive random search algorithm: http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?arnumber=1429654
 - A general-purpose global optimizer: implementation and applications: http://portal.acm.org/citation.cfm?id=2048.2050
 
-
-
+Pure Adaptive Search (?)
+- On the performance of pure adaptive search: http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?tp=&arnumber=478757&isnumber=10228
+- Towards Pure Adaptive Search: http://www.springerlink.com/content/w61524136877645x/
