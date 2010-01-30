@@ -94,7 +94,10 @@ N/A
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The strategy for Adaptive Random Search is to continually approximate the optimal step size required to reach the global optima in the search space. This is achieved by trialling and adopting smaller or larger step sizes only if they result in an improvement in the search performance.
+The Adaptive Random Search algorithm was designed to address the limitations of Localized (fixed step size) Random Search. The strategy for Adaptive Random Search is to continually approximate the optimal step size required to reach the global optima in the search space. This is achieved by trialling and adopting smaller or larger step sizes only if they result in an improvement in the search performance.
+
+% adaptive step size random search
+THe Strategy of the Adaptive Step Size Random Search algorithm is to trial a larger step in addition to an adopted step each iteration and adopt the larger step if it results in an improved result. Very large step sizes are trialled in the same manner with although with a much lower frequency. This strategy of preferring large moves is intended to allow the technique to escape local optimal. Smaller step sizes are adopted if no improvement is made for an extended period. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
