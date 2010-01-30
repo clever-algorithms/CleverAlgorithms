@@ -31,7 +31,12 @@ require 'json'
 require 'net/http'
 require 'hpricot'
 
-ALGORITHMS_LIST = "algorithms.txt"
+# this is the original list for the tech report
+# ALGORITHMS_LIST = "algorithms.txt"
+
+# dynamically updated based on names found in papers/books
+ALGORITHMS_LIST = "algorithms2.txt"
+
 ALGORITHM_RESULTS = "results.txt"
 NORMALIZED_RESULTS = "results_normalized.txt"
 ORGANIZED_RESULTS = "results_organized.txt"
