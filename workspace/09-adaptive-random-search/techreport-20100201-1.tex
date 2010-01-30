@@ -105,73 +105,65 @@ likely to have an adaptive or variable direction as well
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:adaptive_random_search} provides a pseudo-code listing of the Adaptive Random Search Algorithm for minimizing a cost function based on the specification for `Adaptive Step-Size Random Search' by Schummer and Steiglitz \cite{Schumer1968}.
 
-\begin{algorithm}[ht]
+\begin{algorithm}[htp]
 	\SetLine
 	% data
-	\SetKwData{NumIterations}{NumIterations}
+	\SetKwData{NumIterations}{$Iter_{max}$}
 	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{SearchSpace}{SearchSpace}
-	\SetKwData{InitialStepSizeFactor}{InitialStepSizeFactor}
-	\SetKwData{SmallStepSizeFactor}{SmallStepSizeFactor}
-	\SetKwData{LargeStepSizeFactor}{LargeStepSizeFactor}
-	\SetKwData{LargeStepSizeFactorIter}{LargeStepSizeFactorIter}
-	\SetKwData{MaxIterNoImprovement}{MaxIterNoImprovement}
-	
+	\SetKwData{InitialStepSizeFactor}{$StepSize_{init}$}
+	\SetKwData{SmallStepSizeFactor}{$StepSizeF_{small}$}
+	\SetKwData{LargeStepSizeFactor}{$StepSizeF_{large}$}
+	\SetKwData{LargeStepSizeFactorIter}{$StepSizeIter_{large}$}
+	\SetKwData{MaxIterNoImprovement}{$NoChng_{max}$}
 	\SetKwData{Current}{Current}
-
-	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{RandomSolution}{RandomSolution}
 	\SetKwFunction{InitializeStepSize}{InitializeStepSize}
 	\SetKwFunction{TakeStep}{TakeStep}
-	
   	% I/O
-	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace, \InitialStepSizeFactor, \SmallStepSizeFactor, \LargeStepSizeFactor, \LargeStepSizeFactorIter, \MaxIterNoImprovement}
 	\KwOut{\Current}
   	% Algorithm
-
 	% init
-	$noimprov_{count} \leftarrow 0$\;
+	$nochng_{count} \leftarrow 0$\;
 	$step_{size} \leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
 	\Current $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
-	
 	% main loop
 	\ForEach{$iter_i \in$ \NumIterations} {
 		% small step
-		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace \Current, $step_{size}$}\;		
-		$largesize_{step} \leftarrow 0$\;
+		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace, \Current, $step_{size}$}\;		
+		$largestep_{size} \leftarrow 0$\;
 		% bigger step
-		\If{$iter_i \% $ \LargeStepSizeFactorIter} {
-			$largesize_{step} \leftarrow$ $step_{size} \times$\LargeStepSizeFactor\;
+		\If{$iter_i \bmod{\LargeStepSizeFactorIter}$} {
+			$largestep_{size} \leftarrow$ $step_{size} \times \LargeStepSizeFactor$\;
 		} 
 		\Else {
-			$largesize_{step} \leftarrow$ $step_{size} \times$\SmallStepSizeFactor\;
+			$largestep_{size} \leftarrow$ $step_{size} \times \SmallStepSizeFactor$\;
 		}
-		$candidate_2 \leftarrow$ \TakeStep{\SearchSpace \Current, $largesize_{step}$}\;
+		$candidate_2 \leftarrow$ \TakeStep{\SearchSpace, \Current, $largestep_{size}$}\;
 		
 		% step size selection
 		\If{\Cost{$candidate_1$}$<$\Cost{\Current} or \Cost{$candidate_2$}$<$\Cost{\Current}} {
 			\If{\Cost{$candidate_2$}$<$\Cost{$candidate_1$}} {
 				\Current $\leftarrow candidate_2$\; 
-				$step_{size} \leftarrow largesize_{step}$\;
+				$step_{size} \leftarrow largestep_{size}$\;
 			}
 			\Else {
 				\Current $\leftarrow candidate_1$\;
 			}
-			$noimprov_{count} \leftarrow 0$\;
+			$nochng_{count} \leftarrow 0$\;
 		} 
 		\Else {
-			$noimprov_{count} \leftarrow noimprov_{count} + 1$\;
-			\If{$noimprov_{count} > $ \MaxIterNoImprovement} {
-				$noimprov_{count} \leftarrow 0$\;
+			$nochng_{count} \leftarrow noimprov_{count} + 1$\;
+			% step size modification
+			\If{$nochng_{count} > \MaxIterNoImprovement$} {
+				$nochng_{count} \leftarrow 0$\;
 				$step_{size} \leftarrow \frac{step_{size}}{\SmallStepSizeFactor}$
 			}
 		}
-		
-		% step size modification
 	}
-	
 	\Return{\Current}\;
 	% caption
 	\caption{Pseudo Code Listing for the Adaptive Random Search Algorithm.}
