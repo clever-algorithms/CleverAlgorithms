@@ -15,7 +15,7 @@ def random_solution(problemSize)
   return Array.new(problemSize){|i| (rand<0.5) ? "1" : "0"}
 end
 
-def mutation(bitstring)  
+def take_step(bitstring)  
   mutant = Array.new(bitstring)
   pos = rand(bitstring.length)
   mutant[pos] = (mutant[pos]=='1') ? '0' : '1'
@@ -28,11 +28,11 @@ def search(numIterations, problemSize)
   candidate[:cost] = cost(candidate[:vector])
   numIterations.times do |iter|
     mutant = {}
-    mutant[:vector] = mutation(candidate[:vector])
+    mutant[:vector] = take_step(candidate[:vector])
     mutant[:cost] = cost(mutant[:vector])
     candidate = mutant if mutant[:cost] > candidate[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{candidate[:cost]}, v=#{candidate[:vector].join}"
-    break if candidate[:cost] == PROBLEM_SIZE
+    break if candidate[:cost] == problemSize
   end 
   return candidate
 end
