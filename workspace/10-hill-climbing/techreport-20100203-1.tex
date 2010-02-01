@@ -220,24 +220,15 @@ it is for combinatorial search domains (discrete!!!), like bits or tsp, if you w
 also look at `local beam search', basically a parallel stochastic hill climber
 
 \begin{itemize}
-	\item related to parallel hill climbing (perhaps a heuristic or variant for discussion)
-	\item (maybe useful) how easy is local search? (1988)
-	\item (studies random hill climber) an empirical study of bit vector function optimization 
-	\item holland - classical works mention the need for mutation operator for hill climbing.
-	\item (classical forerunner to RMHC) Bit-climbing, representational bias, and test suite design 
-	\item (forerunner to RMHC?) Evolution in time and space - the parallel genetic algorithm (Muhlenbein)
-	\item (1+1 ES) - continuos domain, discuss on ES description
+	\item parallel hillclimbing: A Comparison of Parallel and Sequential Niching Methods
 \end{itemize}
 
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-
 % RMHC
-Forrest and Mitchell proposed the Random Mutation Hill Climbing (RMHC) algorithm (with communication from Richard Palmer) in a study that investigated the behavior of the genetic algorithm on a deceptive class of (discrete) bit-string optimization problem called `royal road' functions. \cite{Forrest1993}. The RMHC was compared to two other hill climbing algorithms in addition to the genetic algorithm, specifically: the Steepest-ascent hill climber, and the next-ascent hill climber. This study was then followed up by Mitchell and Holland \cite{Mitchell1993}
+Perhaps the most popular implementation of the Stochastic Hill Climbing algorithm is by Forrest and Mitchell, who proposed the Random Mutation Hill Climbing (RMHC) algorithm (with communication from Richard Palmer) in a study that investigated the behavior of the genetic algorithm on a deceptive class of (discrete) bit-string optimization problem called `royal road' functions \cite{Forrest1993}. The RMHC was compared to two other hill climbing algorithms in addition to the genetic algorithm, specifically: the Steepest-ascent hill climber, and the next-ascent hill climber. This study was then followed up by Mitchell and Holland \cite{Mitchell1993}
 
 % early approach
 Jules and Wattenberg were also early to consider stochastic hill climbing as an approach to compare to the genetic algorithm \cite{Juels1994}.
@@ -250,8 +241,8 @@ Skalak applied the RMHC algorithm to a single long bit-string that represented a
 % 
 \subsection{Learn More}
 % historical reviews
-
-
+% bit climbers
+The Stochastic Hill Climbing algorithm is related to the genetic algorithm without crossover. Simplified version's of the approach are investigated for bit-string based optimization problems with the population size of the genetic algorithm reduced to one. The general technique has been investigated under the names Iterated Hillclimbing \cite{Muhlenbein1991}, ES(1+1,m,hc) \cite{Muhlenbein1992}, Random Bit Climber \cite{Davis1991}, and (1+1)-Genetic Algorithm \cite{Back1993}. This main difference between RMHC and ES(1+1) is that the latter uses a fixed probability of a mutation for each discrete element of a solution (meaning the neighborhood size is probabilistic), whereas RMHC will only stochastically modify one element.
 
 
 

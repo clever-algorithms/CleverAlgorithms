@@ -19,3 +19,7 @@ Pure Adaptive Search (?)
 
 Stochastic Hill Climbing
 - Instance Selection by Encoding Length Heuristic with Random Mutation Hill Climbing: NO LINK
+- An empirical study of bit vector function optimization: NO LINK
+- Stochastic hill climbing as a baseline method for evaluating genetic algorithms: NO LINK
+- Probabilistic hill-climbing algorithms: properties and applications: NO LINK
+- Bit-climbing, representational bias, and test suite design: NO LINK
