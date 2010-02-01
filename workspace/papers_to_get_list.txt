@@ -16,3 +16,6 @@ Adaptive Random Search
 Pure Adaptive Search (?)
 - On the performance of pure adaptive search: http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?tp=&arnumber=478757&isnumber=10228
 - Towards Pure Adaptive Search: http://www.springerlink.com/content/w61524136877645x/
+
+Stochastic Hill Climbing
+- Instance Selection by Encoding Length Heuristic with Random Mutation Hill Climbing: NO LINK

@@ -1,4 +1,4 @@
-% Stochastic Climbing Algorithm
+% Stochastic Hill Climbing
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -19,7 +19,7 @@
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
-\newcommand{\myreporttitle}{Stochastic Hill Climbing Algorithm}
+\newcommand{\myreporttitle}{Stochastic Hill Climbing}
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
@@ -55,7 +55,8 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Stochastic Hill Climbing algorithm using the standardized template.
+% conclusions?
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,7 +65,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Stochastic Hill Climbing Algorithm, SHCA, Random Hill Climbing, RHC, Random Mutation Hill Climbing, RMHC 
+Stochastic Hill Climbing, SHC, Random Hill Climbing, RHC, Random Mutation Hill Climbing, RMHC 
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -104,7 +105,7 @@ make random moves in the local neighborhood and accept improving moves
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing Algorithm for minimizing a cost function.
+Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing algorithm for minimizing a cost function.
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -167,7 +168,7 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of t
 	}
 	\Return{\Current}\;
 	% caption
-	\caption{Pseudo Code Listing for the Stochastic Hill Climbing Algorithm.}
+	\caption{Pseudo Code Listing for the Stochastic Hill Climbing algorithm.}
 	\label{alg:stochastic_hill_climbing}
 \end{algorithm}
 
@@ -189,12 +190,12 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of t
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{stochastic_hill_climbing} provides an example of the Stochastic Hill Climbing Algorithm implemented in the Ruby Programming Language.
+Listing~\ref{stochastic_hill_climbing} provides an example of the Stochastic Hill Climbing algorithm implemented in the Ruby Programming Language.
 % more?
 todo
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Stochastic Hill Climbing Algorithm in the Ruby Programming Language, label=stochastic_hill_climbing]{../../src/algorithms/stochastic/stochastic_hill_climbing.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Stochastic Hill Climbing algorithm in the Ruby Programming Language, label=stochastic_hill_climbing]{../../src/algorithms/stochastic/stochastic_hill_climbing.rb}
 
 
 % References: Deeper understanding
@@ -210,9 +211,6 @@ variants:
 	\item steepest ascent hill climbing: test all neighbors, take best. similar in concept to best-first search (greedy search?)
 	\item Stochastic hill climbing: test random neighbors, take best
 	\item Random-restart hill climbing (Shotgun hill climbing): restart the search when no improvements can be made
-	\item RMHC: Random Mutation Hill Climbing - same as stochastic, used for bit climbing
-	\item dynamic hill climbing?
-	\item search for (aliases): random hill climbing, mutation hill climbing, also `random search is simulated annealing at zero temp'
 \end{itemize}
 
 classic approach gets stuck in local optima, stochastic addresses this, so does random-restart, the others are classical techniques and out of scope.
@@ -222,21 +220,12 @@ it is for combinatorial search domains (discrete!!!), like bits or tsp, if you w
 also look at `local beam search', basically a parallel stochastic hill climber
 
 \begin{itemize}
-	\item (maybe links to seminal HL algos): When Will a Genetic Algorithm Outperform Hill Climbing?
-	\item (see for seminal refs, compare classical HC algos against ga, devise RMHC): Relative building-block fitness and the building-block hypothesis
 	\item related to parallel hill climbing (perhaps a heuristic or variant for discussion)
-	\item (theory???) On the convergence of generalized hill climbing algorithms, and: A class of convergent generalized hill climbing algorithms
-	\item Probabilistic Hill-Climbing Algorithms ?
-	\item look at AI:AMA page 124!
-	\item stochastic hill-climbing as a baseline method for evaluating genetic algorithms (tech report, 1994)
-	\item (might have some good refs?) A study on hill climbing algorithms for neural network training
-	\item (might have refs) Planning by Guided Hill-Climbing
 	\item (maybe useful) how easy is local search? (1988)
 	\item (studies random hill climber) an empirical study of bit vector function optimization 
 	\item holland - classical works mention the need for mutation operator for hill climbing.
-	\item (potentially seminal for RMHC): Prototype and feature selection by sampling and random mutation hill climbing algorithms
 	\item (classical forerunner to RMHC) Bit-climbing, representational bias, and test suite design 
-	\item (forerunner to RMHC?) Evolution in time and space
+	\item (forerunner to RMHC?) Evolution in time and space - the parallel genetic algorithm (Muhlenbein)
 	\item (1+1 ES) - continuos domain, discuss on ES description
 \end{itemize}
 
@@ -246,12 +235,24 @@ also look at `local beam search', basically a parallel stochastic hill climber
 \subsection{Primary Sources}
 todo
 
+
+% RMHC
+Forrest and Mitchell proposed the Random Mutation Hill Climbing (RMHC) algorithm (with communication from Richard Palmer) in a study that investigated the behavior of the genetic algorithm on a deceptive class of (discrete) bit-string optimization problem called `royal road' functions. \cite{Forrest1993}. The RMHC was compared to two other hill climbing algorithms in addition to the genetic algorithm, specifically: the Steepest-ascent hill climber, and the next-ascent hill climber. This study was then followed up by Mitchell and Holland \cite{Mitchell1993}
+
+% early approach
+Jules and Wattenberg were also early to consider stochastic hill climbing as an approach to compare to the genetic algorithm \cite{Juels1994}.
+% prototype vectors
+Skalak applied the RMHC algorithm to a single long bit-string that represented a number of prototype vectors for use in classification \cite{Skalak1994}.
+
+
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % historical reviews
-todo
+
+
+
 
 
 % 
@@ -266,6 +267,9 @@ todo
 a practitioner will want to apply a technique to a problem - how do they do that?
 write an advanced section on this, or explain how in the intro material
 search for general class of problem and technique, or determine it. is it discrete or continuous, what problems is it like - model it like those
+
+% related techniques
+Some additional technique names discovered during the investigation of this work include: \emph{Dynamic Hill Climbing} \cite{Yuret1993}, investigation of a theoretical abstraction of hill climbing algorithms called \emph{Generalized Hill Climbing} \cite{Johnson2002, Sullivan2001}, \emph{Probabilistic Hill Climbing} \cite{Romeo1984} and a second probabilistic hill climbing algorithm called Probably Approximate Locally Optimal (PALO) \cite{Cohen1994}.
 
 
 % 
