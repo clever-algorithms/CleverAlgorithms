@@ -131,6 +131,17 @@ todo
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
+variants:
+\begin{itemize}
+	\item simple hill climbing: accept first improved move
+	\item steepest ascent hill climbing: test all neighbours, take best. similar in concept to best-first search (greedy search?)
+	\item Stochastic hill climbing: test random neighbours, take best
+	\item Random-restart hill climbing (Shotgun hill climbing): restart the search when no improvements can be made
+\end{itemize}
+
+classic approach gets stuck in local optima, stochastic addresses this, so does random-restart, the others are classical techniques and out of scope.
+
+
 % 
 % Primary Sources
 % 
