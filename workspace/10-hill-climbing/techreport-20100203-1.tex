@@ -113,7 +113,10 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item they can get stuck in local optima
+	\item restart the process
+	\item make them parallel, like doing restart
+	\item for discrete domains, same principle can be used in continuous domains using step sizes (localized random search, etc)
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -138,6 +141,8 @@ variants:
 	\item Stochastic hill climbing: test random neighbors, take best
 	\item Random-restart hill climbing (Shotgun hill climbing): restart the search when no improvements can be made
 	\item RMHC: Random Mutation Hill Climbing - same as stochastic, used for bit climbing
+	\item dynamic hill climbing?
+	\item search for (aliases): random hill climbing, mutation hill climbing, also `random search is simulated annealing at zero temp'
 \end{itemize}
 
 classic approach gets stuck in local optima, stochastic addresses this, so does random-restart, the others are classical techniques and out of scope.
@@ -153,7 +158,12 @@ also look at `local beam search', basically a parallel stochastic hill climber
 	\item (theory???) On the convergence of generalized hill climbing algorithms, and: A class of convergent generalized hill climbing algorithms
 	\item Probabilistic Hill-Climbing Algorithms ?
 	\item look at AI:AMA page 124!
-	\item search for: random hill climbing, mutation hill climbing
+	\item stochastic hill-climbing as a baseline method for evaluating genetic algorithms (tech report, 1994)
+	\item (might have some good refs?) A study on hill climbing algorithms for neural network training
+	\item (might have refs) Planning by Guided Hill-Climbing
+	\item (maybe useful) how easy is local search? (1988)
+	\item (studies random hill climber) an empirical study of bit vector function optimization 
+	\item holland - classical works mention the need for mutation operator for hill climbing.
 \end{itemize}
 
 % 
