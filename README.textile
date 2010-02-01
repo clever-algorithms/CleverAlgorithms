@@ -25,7 +25,6 @@ h3. Book Manuscripts
 ** Milestone 08 : Draft extension chapters.
 ** Milestone 09 : Edit the first complete draft.
 ** Milestone 10 : Send out complete draft for third-party editing & review.
-* ...
 
 h3. Technical Reports
 
@@ -46,7 +45,10 @@ h3. Software
 * "Algorithm Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithm_selection/ : A ruby script to apply the _data driven optimization algorithm selection_ methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. The script was prepared for the _Data-Driven Optimization Algorithm Selection_ technical report. Also see the tag for the "tech report version":http://github.com/jbrownlee/CleverAlgorithms/tree/alg_selection-techreport_v20100112-1
 * "Programming Language Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/language_selection/ : A ruby script to evaluate the popularity of a list of programming languages for their use in implementing a typical optimization algorithm. Popularity is measured against a range of search engines and the results are summarized. The script was prepared for the _Programming Language Selection for Optimization Algorithms_ technical report.
 * "Programming Language Comparison Scripts":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/language_comparison/ : A set of scripts that implement the genetic algorithm in four different dynamic languages (Python, Perl, Ruby, and Lua), as well as a ruby script for analyzing the implementations. The scripts were prepared for the _Programming Language Selection for Optimization Algorithms_ technical report.
-* ...
+
+h3. Other
+
+* "Clever Algorithms Paper Search":http://www.google.com/cse/home?cx=008815027030234776554:pwu9jj_wkb8 An aggregate search using Google's 'custom search' service. Searches across the whole internet, biased towards google scholar, google books, IEEE explore, springer link, ACM digital library, and scirus. Useful for searching for all useful sources for a given technique name.
 
 h2. Breakdown
 
