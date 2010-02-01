@@ -104,7 +104,72 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing Algorithm for minimizing a cost function.
+
+\begin{algorithm}[htp]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{$Iter_{max}$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{SearchSpace}{SearchSpace}
+	\SetKwData{InitialStepSizeFactor}{$StepSize_{init}$}
+	\SetKwData{SmallStepSizeFactor}{$StepSizeF_{small}$}
+	\SetKwData{LargeStepSizeFactor}{$StepSizeF_{large}$}
+	\SetKwData{LargeStepSizeFactorIter}{$StepSizeIter_{large}$}
+	\SetKwData{MaxIterNoImprovement}{$NoChng_{max}$}
+	\SetKwData{Current}{Current}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+	\SetKwFunction{InitializeStepSize}{InitializeStepSize}
+	\SetKwFunction{TakeStep}{TakeStep}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace, \InitialStepSizeFactor, \SmallStepSizeFactor, \LargeStepSizeFactor, \LargeStepSizeFactorIter, \MaxIterNoImprovement}
+	\KwOut{\Current}
+  	% Algorithm
+	% init
+	$nochng_{count} \leftarrow 0$\;
+	$step_{size} \leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
+	\Current $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
+	% main loop
+	\ForEach{$iter_i \in$ \NumIterations} {
+		% small step
+		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace, \Current, $step_{size}$}\;		
+		$largestep_{size} \leftarrow 0$\;
+		% bigger step
+		\If{$iter_i \bmod{\LargeStepSizeFactorIter}$} {
+			$largestep_{size} \leftarrow$ $step_{size} \times \LargeStepSizeFactor$\;
+		} 
+		\Else {
+			$largestep_{size} \leftarrow$ $step_{size} \times \SmallStepSizeFactor$\;
+		}
+		$candidate_2 \leftarrow$ \TakeStep{\SearchSpace, \Current, $largestep_{size}$}\;
+		
+		% step size selection
+		\If{\Cost{$candidate_1$}$\leq$\Cost{\Current} or \Cost{$candidate_2$}$\leq$\Cost{\Current}} {
+			\If{\Cost{$candidate_2$}$<$\Cost{$candidate_1$}} {
+				\Current $\leftarrow candidate_2$\; 
+				$step_{size} \leftarrow largestep_{size}$\;
+			}
+			\Else {
+				\Current $\leftarrow candidate_1$\;
+			}
+			$nochng_{count} \leftarrow 0$\;
+		} 
+		\Else {
+			$nochng_{count} \leftarrow nochng_{count} + 1$\;
+			% step size modification
+			\If{$nochng_{count} > \MaxIterNoImprovement$} {
+				$nochng_{count} \leftarrow 0$\;
+				$step_{size} \leftarrow \frac{step_{size}}{\SmallStepSizeFactor}$
+			}
+		}
+	}
+	\Return{\Current}\;
+	% caption
+	\caption{Pseudo Code Listing for the Stochastic Hill Climbing Algorithm.}
+	\label{alg:stochastic_hill_climbing}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
