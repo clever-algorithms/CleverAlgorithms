@@ -107,7 +107,38 @@ designed to sit on top of hill climbing algorithms
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:guided_local_search} provides a pseudo-code listing of the Guided Local Search algorithm for \ldots todo
+
+\begin{algorithm}[htp]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{$Iter_{max}$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Current}{Current}
+	\SetKwData{Candidate}{Candidate}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+	\SetKwFunction{RandomNeighbor}{RandomNeighbor}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize}
+	\KwOut{\Current}
+  	% Algorithm
+	% init
+	\Current $\leftarrow$ \RandomSolution{\ProblemSize}\;
+	% main loop
+	\ForEach{$iter_i \in$ \NumIterations} {
+		% small step
+		$\Candidate \leftarrow$ \RandomNeighbor{\Current}\;		
+		\If{\Cost{\Candidate} $\geq$ \Cost{\Current}} {
+			\Current $\leftarrow$ \Candidate\;
+		}
+	}
+	\Return{\Current}\;
+	% caption
+	\caption{Pseudo Code Listing for the Guided Local Search algorithm.}
+	\label{alg:guided_local_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
