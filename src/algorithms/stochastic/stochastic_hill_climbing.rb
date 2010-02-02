@@ -27,10 +27,10 @@ def search(numIterations, problemSize)
   candidate[:vector] = random_solution(problemSize)
   candidate[:cost] = cost(candidate[:vector])
   numIterations.times do |iter|
-    mutant = {}
-    mutant[:vector] = take_step(candidate[:vector])
-    mutant[:cost] = cost(mutant[:vector])
-    candidate = mutant if mutant[:cost] >= candidate[:cost]
+    neighbor = {}
+    neighbor[:vector] = take_step(candidate[:vector])
+    neighbor[:cost] = cost(neighbor[:vector])
+    candidate = neighbor if neighbor[:cost] >= candidate[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{candidate[:cost]}, v=#{candidate[:vector].join}"
     break if candidate[:cost] == problemSize
   end 
