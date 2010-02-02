@@ -159,26 +159,6 @@ The algorithm is executed for a fixed number of iterations and is applied to a b
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-variants:
-\begin{itemize}
-	\item simple hill climbing: accept first improved move
-	\item steepest ascent hill climbing: test all neighbors, take best. similar in concept to best-first search (greedy search?)
-	\item Stochastic hill climbing: test random neighbors, take best
-	\item Random-restart hill climbing (Shotgun hill climbing): restart the search when no improvements can be made
-\end{itemize}
-
-classic approach gets stuck in local optima, stochastic addresses this, so does random-restart, the others are classical techniques and out of scope.
-
-it is for combinatorial search domains (discrete!!!), like bits or tsp, if you want continuous then go for stochastic gradient descent (approximate gradient descent) or localized random search (equiv of stochastic hill climbing)
-
-also look at `local beam search', basically a parallel stochastic hill climber
-
-\begin{itemize}
-	\item parallel hillclimbing: A Comparison of Parallel and Sequential Niching Methods
-\end{itemize}
-
-
-
 % 
 % Primary Sources
 % 
@@ -191,7 +171,6 @@ Jules and Wattenberg were also early to consider stochastic hill climbing as an 
 % prototype vectors
 Skalak applied the RMHC algorithm to a single long bit-string that represented a number of prototype vectors for use in classification \cite{Skalak1994}.
 
-
 % 
 % Learn More
 % 
@@ -199,7 +178,6 @@ Skalak applied the RMHC algorithm to a single long bit-string that represented a
 % historical reviews
 % bit climbers
 The Stochastic Hill Climbing algorithm is related to the genetic algorithm without crossover. Simplified version's of the approach are investigated for bit-string based optimization problems with the population size of the genetic algorithm reduced to one. The general technique has been investigated under the names Iterated Hillclimbing \cite{Muhlenbein1991}, ES(1+1,m,hc) \cite{Muhlenbein1992}, Random Bit Climber \cite{Davis1991}, and (1+1)-Genetic Algorithm \cite{Back1993}. This main difference between RMHC and ES(1+1) is that the latter uses a fixed probability of a mutation for each discrete element of a solution (meaning the neighborhood size is probabilistic), whereas RMHC will only stochastically modify one element.
-
 
 
 % 
