@@ -1,123 +1,134 @@
-Probabilistic, Extended Compact Genetic Algorithm,466,53,253,44,1051,8
-Evolutionary, Differential Evolution,18400,852,11500,937,10588,847
-Stochastic, Adaptive Random Search with Intensification and Diversification,67,1,11,0,9,6
-Evolutionary, Cellular Genetic Algorithm,529,135,304,69,348,22
-Stochastic, Creeping Random Search,60,96,39,3,26,0
-Evolutionary, Genetic Algorithm with Punctuated Equilibria,11,16,19,1,8,1
-Swarm, Particle Swarm Optimization,48700,716,25700,2173,15738,4195
-Swarm, Pareto Ant Colony Optimization,174,31,128,36,75,1
-Swarm, Multiple ant colony system,498,121,459,81,308,2
-Physical, Simplex-Simulated annealing,398,84,304,17,241,8
-Probabilistic, Hierarchical Bayesian Optimization Algorithm,445,68,219,64,430,5
-Swarm, Crowding Population-based Ant Colony Optimization,3,1,3,0,0,0
-Swarm, Artificial Bee Colony Optimization,26,6,15,1,6,4
-Stochastic, Scatter Search,4440,484,3340,546,2972,63
-Probabilistic, Population-based incremental learning,1480,294,1130,191,1154,61
-Stochastic, Directed Random Search,374,224,396,46,231,7
-Physical, Cultural Algorithm,1050,188,569,73,328,76
-Evolutionary, Grammatical Evolution,2800,526,1030,211,1663,33
-Evolutionary, Sequential Niching Genetic Algorithm,0,295,0,0,1,0
-Evolutionary, Learning Classifier System,2500,522,1730,146,2239,88
-Evolutionary, CHC Genetic Algorithm,71,13,49,7,37,4
-Swarm, Ant System,9820,559,7510,943,4924,160
-Probabilistic, Expectation-maximization algorithm,14100,729,14500,1191,15336,1470
-Probabilistic, Stochastic hill climbing with learning by vectors of normal distributions,45,21,39,12,29,0
-Swarm, Elitist Ant System,136,13,101,11,60,2
-Swarm, Ant Colony System,6560,590,4310,612,2597,207
-Swarm, Firefly Algorithm,157,7,43,4,40,1
-Swarm, AntNet,4940,459,1330,178,1194,29
-Swarm, Waves of Swarm Particles,20,5,14,7,16,2
-Evolutionary, Cooperative Coevolutionary Genetic Algorithm,256,23,80,17,27,8
-Swarm, Wasp Swarm Algorithm,11,2,4,2,6,0
-Probabilistic, Bayesian Optimization Algorithm,1760,255,1080,207,1589,26
-Evolutionary, Non-dominated Sorting Genetic Algorithm,2170,410,2580,419,1350,84
-Swarm, Repulsive Particle Swarm Optimization,137,6,32,2,39,3
-Probabilistic, Probabilistic Incremental Program Evolution,339,86,189,54,296,10
-Stochastic, Sequential Random Search,92,72,73,5,33,0
-Stochastic, Variable Depth Search,562,213,421,65,417,5
-Stochastic, Blind Search,12300,781,4480,327,4840,28
-Evolutionary, Crowding Genetic Algorithm,132,38,57,12,71,1
-Swarm, Rank-Based Ant System,251,32,143,18,61,7
-Stochastic, Iterated Local Search,2120,292,1670,319,1705,29
-Swarm, Population-based Ant Colony Optimization,132,20,66,12,326,4
-Stochastic, Random Restart Hill Climbing,274,36,0,6,248,0
-Probabilistic, Bivariate Marginal Distribution Algorithm,206,56,0,33,157,2
-Stochastic, Parallel Hill-Climbing Algorithm,65,7,0,5,36,3
-Physical, Stochastic Tunneling Algorithm,39,3,0,4,10,0
-Evolutionary, Linkage Learning Genetic Algorithm,216,51,0,31,201,4
-Evolutionary, Simple Genetic Algorithm,5890,727,0,747,4703,239
-Evolutionary, Deterministic Crowding Algorithm,38,20,0,7,31,1
-Immunological, Artificial Immune Recognition System,548,53,0,35,353,18
-Swarm, Bees Algorithm,812,13,0,10,208,11
-Evolutionary, Evolutionary Programming,19700,1032,0,1940,15428,717
-Evolutionary, Covariance Matrix Adaptation Evolution Strategy,283,35,0,45,198,19
-Evolutionary, Indicator Based Evolutionary Algorithm,60,19,0,26,21,1
-Physical, Simulated Annealing,133000,3420,0,10537,135507,4237
-Probabilistic, Graduated optimization,102,5,0,2,30,2
-Evolutionary, Coevolutionary Genetic Algorithm,658,107,0,58,188,38
-Stochastic, Greedy Randomized Adaptive Search Procedure,1390,408,0,279,1202,30
-Stochastic, Random-Mutation Hill Climbing,444,139,0,47,368,7
-Evolutionary, Strength Pareto Evolutionary Algorithm,1580,380,0,415,985,65
-Probabilistic, Compact Genetic Algorithm,1260,145,0,119,1531,47
-Stochastic, Tabu Search,43800,1420,0,4231,36060,1045
-Physical, Harmony Search Algorithm,1080,50,0,59,151,27
+Evolutionary, Restricted Tournament Selection,266,84,256,50,211,2
+Swarm, Artificial Bee Colony Optimization,27,6,15,1,6,4
+Swarm, Pareto Ant Colony Optimization,171,31,129,36,74,1
+Evolutionary, Crowding Genetic Algorithm,135,38,57,12,71,1
+Stochastic, Random Bit Climber,49,17,33,6,24,1
+Swarm, Bee Colony Optimization,377,17,121,19,56,18
+Evolutionary, Messy Genetic Algorithm,956,346,836,93,715,20
+Stochastic, Stochastic gradient descent algorithm,508,207,428,38,404,25
+Stochastic, Directed Random Search,364,223,400,46,231,7
+Evolutionary, Gene Expression Programming,3150,222,1140,140,1256,100
+Stochastic, Random Restart Hill Climbing,257,36,109,6,248,0
+Stochastic, Mutation Hill Climbing Algorithm,46,16,34,7,15,1
+Swarm, Repulsive Particle Swarm Optimization,146,6,33,2,39,3
+Evolutionary, Deterministic Crowding Algorithm,36,20,35,7,31,1
+Immunological, Artificial Immune Recognition System,567,53,339,35,355,18
+Stochastic, Dynamic Hill Climbing,191,60,150,16,159,1
+Immunological, Negative Selection Algorithm,1330,176,977,168,569,78
+Swarm, Population-based Ant Colony Optimization,134,20,66,12,326,4
+Physical, Cultural Algorithm,1030,188,580,73,329,76
+Probabilistic, Graduated optimization,108,5,24,2,30,2
+Evolutionary, Dependency Structure Matrix Driven Genetic Algorithm,37,15,37,10,61,0
+Probabilistic, Probabilistic Incremental Program Evolution,348,84,191,54,296,10
+Evolutionary, Cellular Genetic Algorithm,529,135,306,69,348,22
+Physical, Stochastic Tunneling Algorithm,43,3,16,4,10,0
+Evolutionary, Speciation Genetic Algorithm,41,1,1,0,7,1
+Immunological, Clonal Selection Algorithm,2140,185,1320,209,675,136
+Evolutionary, Double Diploid Genetic Algorithm,0,170,0,0,0,0
+Probabilistic, Cross-entropy method,1870,294,1140,115,1507,50
+Stochastic, Hill Climbing Search,2410,649,2980,320,2869,10
+Evolutionary, Evolution Strategies,12800,873,12000,1637,11008,290
+Evolutionary, CHC Genetic Algorithm,71,13,50,7,37,4
+Physical, Quantum Annealing,2550,155,432,37,1031,2
+Swarm, Virtual Bee Algorithm,23,7,19,7,3,1
+Physical, Simplex-Simulated annealing,397,84,311,17,241,8
+Swarm, AntNet,5100,457,1350,178,1193,29
+Evolutionary, Simple Genetic Algorithm,5840,726,7020,748,4703,239
+Probabilistic, Gaussian adaptation,162,34,42,4,27,2
+Evolutionary, Shuffled complex evolution,1170,142,1240,27,932,8
+Stochastic, Localized Random Search,36,9,25,3,14,1
+Stochastic, Reactive Tabu Search,1630,435,1420,188,1365,44
+Probabilistic, Hierarchical Bayesian Optimization Algorithm,459,69,221,64,430,5
+Stochastic, ES(1+1,m),89100,1880,9480,960,10219,0
+Stochastic, Generalized Hill Climbing,377,87,211,33,202,3
+Swarm, Ant Colony System,6580,590,4400,612,2599,207
+Stochastic, Random Search,206000,1512,32800,2874,122062,413
+Physical, Adaptive Simulated Annealing,2890,590,1680,148,2494,52
+Swarm, MAX-MIN Ant System,1820,259,1690,283,992,53
+Immunological, B-Cell Algorithm,100,28,64,20,72,4
+Swarm, Bees Algorithm,765,13,172,10,208,11
+Evolutionary, Differential Evolution,18300,868,11700,937,10601,847
+Probabilistic, Extended Compact Genetic Algorithm,454,53,257,44,1051,8
+Swarm, Rank-Based Ant System,231,32,144,18,61,7
+Evolutionary, Strength Pareto Evolutionary Algorithm,1570,379,2040,416,990,65
+Stochastic, Adaptive Random Search with Intensification and Diversification,73,1,11,0,9,6
+Stochastic, Hill Climbing with Learning,108,31,73,14,80,0
+Probabilistic, Univariate Marginal Distribution Algorithm,471,118,386,87,362,17
+Evolutionary, Indicator Based Evolutionary Algorithm,59,19,61,26,22,1
+Stochastic, Controlled Random Search,986,493,938,73,614,11
+Swarm, Multiple ant colony system,499,121,465,81,307,2
+Evolutionary, Probabilistic Crowding Genetic Algorithm,3,1,3,2,2,0
 Swarm, MONACO: multi-objective network optimization based on ACO,1,2,0,0,0,0
-Evolutionary, Messy Genetic Algorithm,973,341,0,93,715,20
-Immunological, Immune Network Algorithm,373,41,0,29,116,21
-Stochastic, Hill Climbing with Learning,111,31,0,14,80,0
-Stochastic, Hill Climbing Search,2400,649,0,320,2869,10
-Stochastic, Localized Random Search,35,9,0,3,14,1
-Evolutionary, Island Genetic Algorithm,345,39,0,24,171,9
-Stochastic, Random Search,184000,1526,0,2870,122054,413
-Stochastic, Pure Random Search,666,415,0,118,480,4
-Evolutionary, Probabilistic Crowding Genetic Algorithm,3,1,0,2,2,0
-Evolutionary, Vector Evaluated Genetic Algorithm,577,234,0,123,361,4
-Stochastic, Mutation Hill Climbing Algorithm,47,16,0,7,15,1
-Stochastic, Multiple Restart Algorithm,2,1,0,1,1,0
-Swarm, Bacterial Foraging Optimization Algorithm,116,6,0,7,31,7
-Evolutionary, Speciation Genetic Algorithm,49,1,0,0,7,1
-Stochastic, Reactive search optimization,71,2974,0,0,45,0
-Immunological, Dendritic Cell Algorithm,258,16,0,31,212,2
-Evolutionary, Restricted Tournament Selection,272,84,0,50,211,2
-Immunological, B-Cell Algorithm,102,28,0,20,71,4
-Evolutionary, GENITOR algorithm,929,395,0,100,793,0
-Evolutionary, Shuffled complex evolution,1160,140,0,27,927,8
-Stochastic, Pure Adaptive Search,243,106,0,30,171,1
-Immunological, Clonal Selection Algorithm,2140,182,0,209,672,136
-Physical, Extremal Optimization,1280,239,0,103,733,21
-Swarm, Honey Bee Algorithm,388,8,0,5,7,0
-Evolutionary, Genetic Programming,63200,1532,0,4708,67500,1238
-Stochastic, Reactive Tabu Search,1610,432,0,187,1364,44
-Stochastic, Stochastic gradient descent algorithm,509,209,0,38,406,25
-Swarm, MAX-MIN Ant System,1830,258,0,283,993,53
-Probabilistic, Gaussian adaptation,167,34,0,4,27,2
-Physical, Memetic Algorithm,4080,426,0,604,2972,190
-Probabilistic, Estimation of Gaussian Networks Algorithm,20,9,0,5,8,0
-Stochastic, Adaptive Directional Random Search,1,1081,0,0,0,0
-Probabilistic, Estimation of Bayesian Networks Algorithm,45,16,0,14,34,0
-Probabilistic, Estimation of Multivariate Normal Algorithm,49,8,0,3,33,0
-Immunological, Negative Selection Algorithm,1310,176,0,168,569,78
-Evolutionary, Dependency Structure Matrix Driven Genetic Algorithm,39,15,0,10,61,0
-Evolutionary, Nested Evolution Strategy,12,2,0,1,6,1
-Stochastic, Stochastic Diffusion Search,301,15,0,9,553,3
-Physical, Quantum Annealing,2540,153,0,37,1031,2
-Stochastic, Random Bit Climbing,37,21,0,3,12,0
-Evolutionary, Interactive Genetic Algorithm,2470,247,0,119,683,53
-Stochastic, Guided Local Search,1710,329,0,242,1984,12
-Stochastic, Variable Neighborhood Search,3180,439,0,461,3091,43
-Evolutionary, Niching Genetic Algorithm,479,49,0,33,255,31
-Stochastic, Adaptive Random Search,948,628,0,70,656,17
-Probabilistic, Univariate Marginal Distribution Algorithm,459,119,0,87,362,17
-Evolutionary, Fitness Sharing Genetic Algorithm,60,3,0,4,5,2
-Swarm, Virtual Bee Algorithm,23,7,0,7,3,1
-Evolutionary, Gene Expression Programming,3180,226,0,140,1256,100
-Swarm, Bee Colony Optimization,386,17,0,19,56,18
-Evolutionary, Genetic Algorithm,277000,4010,0,18449,179454,16706
-Evolutionary, Evolution Strategies,12600,865,0,1637,11008,290
-Evolutionary, Double Diploid Genetic Algorithm,0,166,0,0,0,0
-Stochastic, Blind Random Search,171,117,0,18,157,2
-Stochastic, Controlled Random Search,993,494,0,72,613,11
-Probabilistic, Cross-entropy method,1830,297,0,114,1507,50
-Physical, Adaptive Simulated Annealing,2860,589,0,148,2491,52
-Stochastic, Adaptive Step-Size Random Search,90,195,0,6,50,3
-Probabilistic, Mutual Information Maximization for Input Clustering,54,24,0,12,56,1
+Swarm, Waves of Swarm Particles,19,5,14,7,16,2
+Stochastic, Variable Neighborhood Search,3220,442,2810,462,3094,43
+Swarm, Honey Bee Algorithm,367,8,28,5,7,0
+Stochastic, Random Hill Climbing,172,91,153,22,117,0
+Evolutionary, Vector Evaluated Genetic Algorithm,569,233,769,124,362,4
+Stochastic, Iterated Hill Climbing,139,78,150,21,101,1
+Stochastic, Pure Adaptive Search,237,105,131,30,171,1
+Swarm, Particle Swarm Optimization,49500,724,27800,2178,15752,4195
+Evolutionary, Niching Genetic Algorithm,490,49,329,33,255,31
+Immunological, Dendritic Cell Algorithm,263,16,104,32,214,2
+Evolutionary, Genetic Programming,62800,1467,39400,4711,67511,1238
+Probabilistic, Estimation of Multivariate Normal Algorithm,49,8,30,3,33,0
+Evolutionary, Island Genetic Algorithm,360,39,223,24,171,9
+Stochastic, Variable Depth Search,561,215,425,65,418,5
+Swarm, Wasp Swarm Algorithm,11,2,4,2,6,0
+Stochastic, ES(1+1,m,hc),89200,1880,9480,960,10219,0
+Evolutionary, Coevolutionary Genetic Algorithm,654,106,317,58,189,38
+Stochastic, Guided Local Search,1770,330,1340,242,1990,12
+Probabilistic, Estimation of Bayesian Networks Algorithm,47,16,46,14,34,0
+Evolutionary, Genetic Algorithm,277000,3950,381000,18477,179575,16706
+Swarm, Crowding Population-based Ant Colony Optimization,3,1,3,0,0,0
+Stochastic, Adaptive Random Search,947,627,893,70,656,17
+Stochastic, Blind Random Search,164,117,194,18,157,2
+Stochastic, Adaptive Step-Size Random Search,88,196,73,6,50,3
+Stochastic, Blind Search,12100,778,4510,327,4839,28
+Stochastic, Stochastic Diffusion Search,301,15,96,9,553,3
+Swarm, Bacterial Foraging Optimization Algorithm,115,6,54,7,31,7
+Evolutionary, Learning Classifier System,2510,523,1740,146,2240,88
+Physical, Simulated Annealing,132000,3400,301000,10550,135606,4237
+Evolutionary, Nested Evolution Strategy,14,2,4,1,6,1
+Evolutionary, Interactive Genetic Algorithm,2500,245,911,119,683,53
+Probabilistic, Stochastic hill climbing with learning by vectors of normal distributions,45,21,39,12,29,0
+Probabilistic, Bayesian Optimization Algorithm,1770,257,1090,207,1589,26
+Stochastic, Adaptive Directional Random Search,0,1084,1,0,0,0
+Stochastic, Stochastic Hill Climbing,905,360,830,96,923,5
+Stochastic, Pure Random Search,673,415,753,118,480,4
+Stochastic, Probably Approximate Locally Optimal,0,8438,0,0,0,0
+Evolutionary, Grammatical Evolution,2760,522,1030,211,1663,33
+Stochastic, Random Mutation Hill Climbing,435,139,415,47,369,6
+Probabilistic, Estimation of Gaussian Networks Algorithm,20,9,30,5,8,0
+Probabilistic, Mutual Information Maximization for Input Clustering,56,23,69,12,56,1
+Evolutionary, Linkage Learning Genetic Algorithm,216,50,140,31,201,4
+Stochastic, Creeping Random Search,62,96,40,3,26,0
+Evolutionary, Evolutionary Programming,19700,1031,17800,1940,15426,717
+Swarm, Elitist Ant System,138,13,103,11,60,2
+Stochastic, Parallel Hill Climbing,174,73,137,18,147,1
+Probabilistic, Compact Genetic Algorithm,1260,147,742,120,1531,47
+Probabilistic, Expectation-maximization algorithm,14100,727,14600,1194,15338,1470
+Evolutionary, Non-dominated Sorting Genetic Algorithm,2160,406,2610,420,1354,84
+Immunological, Immune Network Algorithm,376,41,175,29,116,21
+Probabilistic, Population-based incremental learning,1500,294,1140,191,1154,61
+Stochastic, Greedy Randomized Adaptive Search Procedure,1390,400,1760,279,1206,30
+Swarm, Firefly Algorithm,159,7,45,4,40,1
+Stochastic, Reactive search optimization,71,2976,7,0,45,0
+Stochastic, (1+1)-Genetic Algorithm,18,25,25,10,88,3
+Stochastic, Sequential Random Search,93,73,73,5,33,0
+Stochastic, Probabilistic Hill Climbing,400,307,402,22,365,5
+Evolutionary, Cooperative Coevolutionary Genetic Algorithm,258,23,80,17,27,8
+Stochastic, Iterated Local Search,2140,288,1690,321,1708,29
+Evolutionary, Genetic Algorithm with Punctuated Equilibria,11,16,19,1,8,1
+Evolutionary, GENITOR algorithm,926,393,965,100,793,0
+Evolutionary, Covariance Matrix Adaptation Evolution Strategy,290,34,221,45,198,19
+Stochastic, Multiple Restart Algorithm,2,1,2,1,1,0
+Probabilistic, Bivariate Marginal Distribution Algorithm,209,57,179,33,157,2
+Physical, Memetic Algorithm,4070,439,2930,606,2972,190
+Stochastic, Scatter Search,4410,516,3380,547,2974,63
+Physical, Extremal Optimization,1270,242,678,103,737,21
+Evolutionary, Sequential Niching Genetic Algorithm,0,296,0,0,1,0
+Evolutionary, Fitness Sharing Genetic Algorithm,65,3,22,4,5,2
+Swarm, Ant System,9850,582,7600,943,4928,160
+Stochastic, Random Bit Climbing,31,21,25,3,12,0
+Stochastic, Tabu Search,43600,1434,36200,4239,36106,1045
+Physical, Harmony Search Algorithm,1100,50,300,59,151,27

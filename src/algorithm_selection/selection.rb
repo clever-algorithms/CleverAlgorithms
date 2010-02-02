@@ -171,7 +171,29 @@ def shuffle!(array)
   return array
 end
 
+
 def generate_results
+  # updated to only calculate for those new additions to the list (avoid spamming google)
+  # not yet....
+  
+  # algorithms_list = IO.readlines(ALGORITHMS_LIST)
+  # # remove any bias in the way the file was put together (exposes sorting problems later)
+  # shuffle!(algorithms_list)
+  # result_list = []
+  # if File.exists?(ALGORITHM_RESULTS) 
+  #   raw = IO.readlines(ALGORITHM_RESULTS)
+  #   raw.each { |line| result_list << line.split(',')}
+  # end
+  # 
+  # # process algorithms
+  # algorithms_list.each_with_index do |line, i|
+  #   algorithm_name, scores = line.split(',')[1].strip, nil
+  #   clock = timer{scores = get_results(algorithm_name)}
+  #   results << "#{line.strip},#{scores.join(",")}\n"
+  #   puts(" > #{(i+1)}/#{algorithms_list.size}: #{algorithm_name}, #{clock.to_i} seconds")
+  # end
+  
+  
   if File.exists?(ALGORITHM_RESULTS) 
     puts "Results already available, not generating."
   else
