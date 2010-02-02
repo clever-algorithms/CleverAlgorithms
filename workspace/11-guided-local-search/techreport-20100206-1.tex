@@ -70,7 +70,9 @@ Guided Local Search, GLS
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-todo
+metaheuristic for local search
+an extension to hill climbing
+related to tabu search (penalties)
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -172,22 +174,31 @@ todo
 % What are the suggested reference sources for learning more about a technique?
 
 came from: GENET
-is: GLS
-extensions: extended guided local search
-
-
 \begin{itemize}
 	\item GLS is an extension of GENET
 	\item homepage for the algorithm: \url{http://www.bracil.net/CSP/gls.html}
 	\item GENET applied to a binary problem: SOLVING CONSTRAINT SATISFACTION PROBLEMS USING NEURAL NETWORKS (1991)
 	\item GENET extended beyond binary problems: A Generic Neural Network Approach For Constraint Satisfaction Problems (1992)
 	\item Extensions and evaluation of GENET in Constraint satisfaction (1996)
+\end{itemize}
+
+is: GLS
+\begin{itemize}
+	\item can use first improvement or best improvement local search techniques
+	\item guided local search (tech report) (1995)
 	\item (seminal!) GENET generalized to Guided Local Search for Combinatorial Optimisation Problems (1997)
 	\item (seminal!): Partial Constraint Satisfaction Problems and Guided Local Search (1996)
 	\item (seminal?): Fast local search and guided local search and their application to British Telecom's workforce scheduling problem (1997)
 	\item Guided local search joins the elite in discrete optimisation (1998)
-	\item Solving the Radio Link Frequency Assignment Problem using Guided Local Searc (1998)
+	\item Solving the Radio Link Frequency Assignment Problem using Guided Local Search (1998)
 	\item Guided local search applied to the satisfiability (SAT) problem (1999)
+	\item Guided Local Search and its application to the Travelling Salesman Problem (1999)
+	\item Guided local search (2003) in Glovers metaheuristic book
+\end{itemize}
+
+
+extensions: extended guided local search, guided genetic search
+\begin{itemize}
 	\item characterized and extended GLS: Extensions To Guided Local Search (2002)
 	\item extension: Guided Genetic Algorithm (GGA) (ga + GLS): Guided Genetic Algorithm (1999)
 	\item extensions: Applying an Extended Guided Local Search on the Quadratic Assignment Problem (2003)
@@ -205,7 +216,8 @@ todo
 % 
 \subsection{Learn More}
 % historical reviews
-todo
+
+article in glover's book provides a contemporary overview of the technique and its areas of application, and provides a detailed example of the approach allied to the TSP, quadratic assignment, workforce scheduling, and the radio link frequency assignment problem.
 
 
 % 
