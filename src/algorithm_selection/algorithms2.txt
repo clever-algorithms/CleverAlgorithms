@@ -50,7 +50,7 @@ Physical, Cultural Algorithm
 Evolutionary, Cellular Genetic Algorithm
 Evolutionary, Linkage Learning Genetic Algorithm
 Stochastic, Stochastic gradient descent algorithm
-Stochastic, Random-Mutation Hill Climbing
+Stochastic, Random Mutation Hill Climbing
 Swarm, Multiple ant colony system
 Stochastic, Directed Random Search
 Evolutionary, Coevolutionary Genetic Algorithm
@@ -82,7 +82,7 @@ Evolutionary, CHC Genetic Algorithm
 Probabilistic, Estimation of Bayesian Networks Algorithm
 Probabilistic, Gaussian adaptation
 Swarm, Elitist Ant System
-Stochastic, Parallel Hill-Climbing Algorithm
+Stochastic, Parallel Hill Climbing
 Probabilistic, Stochastic hill climbing with learning by vectors of normal distributions
 Evolutionary, Deterministic Crowding Algorithm
 Evolutionary, Indicator Based Evolutionary Algorithm
@@ -121,3 +121,14 @@ Stochastic, Adaptive Directional Random Search
 Stochastic, Pure Adaptive Search
 Stochastic, Sequential Random Search
 Stochastic, Adaptive Random Search with Intensification and Diversification
+Stochastic, Stochastic Hill Climbing
+Stochastic, Random Hill Climbing
+Stochastic, Iterated Hill Climbing
+Stochastic, ES(1+1,m,hc)
+Stochastic, ES(1+1,m)
+Stochastic, Random Bit Climber
+Stochastic, (1+1)-Genetic Algorithm
+Stochastic, Dynamic Hill Climbing
+Stochastic, Generalized Hill Climbing
+Stochastic, Probabilistic Hill Climbing
+Stochastic, Probably Approximate Locally Optimal
