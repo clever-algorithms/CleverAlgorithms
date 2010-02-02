@@ -182,24 +182,9 @@ came from: GENET
 	\item Extensions and evaluation of GENET in Constraint satisfaction (1996)
 \end{itemize}
 
-is: GLS
-\begin{itemize}
-	\item can use first improvement or best improvement local search techniques
-	\item guided local search (tech report) (1995)
-	\item (seminal!) GENET generalized to Guided Local Search for Combinatorial Optimisation Problems (1997)
-	\item (seminal!): Partial Constraint Satisfaction Problems and Guided Local Search (1996)
-	\item (seminal?): Fast local search and guided local search and their application to British Telecom's workforce scheduling problem (1997)
-	\item Guided local search joins the elite in discrete optimisation (1998)
-	\item Solving the Radio Link Frequency Assignment Problem using Guided Local Search (1998)
-	\item Guided local search applied to the satisfiability (SAT) problem (1999)
-	\item Guided Local Search and its application to the Travelling Salesman Problem (1999)
-	\item Guided local search (2003) in Glovers metaheuristic book
-\end{itemize}
-
 
 extensions: extended guided local search, guided genetic search
 \begin{itemize}
-	\item characterized and extended GLS: Extensions To Guided Local Search (2002)
 	\item extension: Guided Genetic Algorithm (GGA) (ga + GLS): Guided Genetic Algorithm (1999)
 	\item extensions: Applying an Extended Guided Local Search on the Quadratic Assignment Problem (2003)
 \end{itemize}
@@ -209,16 +194,24 @@ extensions: extended guided local search, guided genetic search
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
+% based on GNET
+Guided Local Search emerged from an approach called GENET, which is a connectionist approach to constraint satisfaction.
+% seminal papers
+Guided Local Search was presented by Voudouris and Tsang in a series of technical reports (that were later published) that described the technique and provided example applications of it to constraint satisfaction \cite{Voudouris1994}, combinatorial optimization \cite{Voudouris1995b, Voudouris1995}, and function optimization \cite{Voudouris1995a}.
+% thesis
+The seminal work on the technique was Voudouris' PhD dissertation \cite{Voudouris1997}.
+
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-
-article in glover's book provides a contemporary overview of the technique and its areas of application, and provides a detailed example of the approach allied to the TSP, quadratic assignment, workforce scheduling, and the radio link frequency assignment problem.
-
+% review
+Voudouris and Tsang provide a high-level introduction to the technique \cite{Voudouris1998}, and a contemporary summary of the approach in Glover and Kochenberger's `Handbook of metaheuristics' \cite{Glover2003a} that includes a review of the technique, application areas, and demonstration applications on a diverse set of problem instances.
+% Mills' extensions
+Mills, et al. elaborated on the approach, devising an `Extended Guided Local Search' (EGLS) technique that add `aspiration criteria' and random moves to the procedure \cite{Mills2003}, work which culminated in Mills' PhD dissertation \cite{Mills2002}.  
+% Lau's extensions
+Lau and Tsang further extended the approach by integrating it with a Genetic Algorithm, called the `Guided Genetic Algorithm' (GGA) \cite{Lau1998}, that also culminated in a PhD dissertation \cite{Lau1999}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
