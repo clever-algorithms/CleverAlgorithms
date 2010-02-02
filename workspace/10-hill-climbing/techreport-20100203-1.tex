@@ -105,65 +105,31 @@ make random moves in the local neighborhood and accept improving moves
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing algorithm for minimizing a cost function.
+Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing algorithm for minimizing a cost function, specifically the Random Mutation Hill Climbing algorithm described by Forrest and Mitchell \cite{Forrest1993} applied to a maximization optimization problem.
 
 \begin{algorithm}[htp]
 	\SetLine
 	% data
 	\SetKwData{NumIterations}{$Iter_{max}$}
 	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{SearchSpace}{SearchSpace}
-	\SetKwData{InitialStepSizeFactor}{$StepSize_{init}$}
-	\SetKwData{SmallStepSizeFactor}{$StepSizeF_{small}$}
-	\SetKwData{LargeStepSizeFactor}{$StepSizeF_{large}$}
-	\SetKwData{LargeStepSizeFactorIter}{$StepSizeIter_{large}$}
-	\SetKwData{MaxIterNoImprovement}{$NoChng_{max}$}
 	\SetKwData{Current}{Current}
+	\SetKwData{Candidate}{Candidate}
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{RandomSolution}{RandomSolution}
-	\SetKwFunction{InitializeStepSize}{InitializeStepSize}
-	\SetKwFunction{TakeStep}{TakeStep}
+	\SetKwFunction{RandomNeighbor}{RandomNeighbor}
   	% I/O
-	\KwIn{\NumIterations, \ProblemSize, \SearchSpace, \InitialStepSizeFactor, \SmallStepSizeFactor, \LargeStepSizeFactor, \LargeStepSizeFactorIter, \MaxIterNoImprovement}
+	\KwIn{\NumIterations, \ProblemSize}
 	\KwOut{\Current}
   	% Algorithm
 	% init
-	$nochng_{count} \leftarrow 0$\;
-	$step_{size} \leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
-	\Current $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
+	\Current $\leftarrow$ \RandomSolution{\ProblemSize}\;
 	% main loop
 	\ForEach{$iter_i \in$ \NumIterations} {
 		% small step
-		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace, \Current, $step_{size}$}\;		
-		$largestep_{size} \leftarrow 0$\;
-		% bigger step
-		\If{$iter_i \bmod{\LargeStepSizeFactorIter}$} {
-			$largestep_{size} \leftarrow$ $step_{size} \times \LargeStepSizeFactor$\;
-		} 
-		\Else {
-			$largestep_{size} \leftarrow$ $step_{size} \times \SmallStepSizeFactor$\;
-		}
-		$candidate_2 \leftarrow$ \TakeStep{\SearchSpace, \Current, $largestep_{size}$}\;
-		
-		% step size selection
-		\If{\Cost{$candidate_1$}$\leq$\Cost{\Current} or \Cost{$candidate_2$}$\leq$\Cost{\Current}} {
-			\If{\Cost{$candidate_2$}$<$\Cost{$candidate_1$}} {
-				\Current $\leftarrow candidate_2$\; 
-				$step_{size} \leftarrow largestep_{size}$\;
-			}
-			\Else {
-				\Current $\leftarrow candidate_1$\;
-			}
-			$nochng_{count} \leftarrow 0$\;
-		} 
-		\Else {
-			$nochng_{count} \leftarrow nochng_{count} + 1$\;
-			% step size modification
-			\If{$nochng_{count} > \MaxIterNoImprovement$} {
-				$nochng_{count} \leftarrow 0$\;
-				$step_{size} \leftarrow \frac{step_{size}}{\SmallStepSizeFactor}$
-			}
+		$\Candidate \leftarrow$ \RandomNeighbor{\Current}\;		
+		\If{\Cost{\Candidate} $\geq$ \Cost{\Current}} {
+			\Current $\leftarrow$ \Candidate\;
 		}
 	}
 	\Return{\Current}\;
@@ -190,10 +156,9 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of t
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{stochastic_hill_climbing} provides an example of the Stochastic Hill Climbing algorithm implemented in the Ruby Programming Language.
-% more?
-todo
-
+Listing~\ref{stochastic_hill_climbing} provides an example of the Stochastic Hill Climbing algorithm implemented in the Ruby Programming Language, specifically the Random Mutation Hill Climbing algorithm described by Forrest and Mitchell \cite{Forrest1993}.
+% problem
+The algorithm is executed for a fixed number of iterations and is applied to a binary string optimization problem called `One Max'. The objective of this problem is to prepare a string of all `1' bits, where the cost function only reports the number of bits in a given string (maximization).
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Stochastic Hill Climbing algorithm in the Ruby Programming Language, label=stochastic_hill_climbing]{../../src/algorithms/stochastic/stochastic_hill_climbing.rb}
 
@@ -222,6 +187,8 @@ also look at `local beam search', basically a parallel stochastic hill climber
 \begin{itemize}
 	\item parallel hillclimbing: A Comparison of Parallel and Sequential Niching Methods
 \end{itemize}
+
+
 
 % 
 % Primary Sources
