@@ -15,7 +15,7 @@ def random_solution(problemSize)
   return Array.new(problemSize){|i| (rand<0.5) ? "1" : "0"}
 end
 
-def take_step(bitstring)  
+def random_neighbor(bitstring)  
   mutant = Array.new(bitstring)
   pos = rand(bitstring.length)
   mutant[pos] = (mutant[pos]=='1') ? '0' : '1'
@@ -28,7 +28,7 @@ def search(numIterations, problemSize)
   candidate[:cost] = cost(candidate[:vector])
   numIterations.times do |iter|
     neighbor = {}
-    neighbor[:vector] = take_step(candidate[:vector])
+    neighbor[:vector] = random_neighbor(candidate[:vector])
     neighbor[:cost] = cost(neighbor[:vector])
     candidate = neighbor if neighbor[:cost] >= candidate[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{candidate[:cost]}, v=#{candidate[:vector].join}"

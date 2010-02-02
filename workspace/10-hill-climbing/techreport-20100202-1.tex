@@ -57,7 +57,7 @@ The project requires all algorithms to be described using a standardized templat
 % this report
 This report describes the Stochastic Hill Climbing algorithm using the standardized template.
 % conclusions
-todo
+Section~\ref{sec:conclusions} highlights some additional and related techniques discovered during the research of this work, and considers the problem of a practitioner requiring guidance to apply a given technique to a problem different to the problem instances presented in the Clever Algorithm project code examples.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -73,7 +73,7 @@ Stochastic Hill Climbing, SHC, Random Hill Climbing, RHC, Random Mutation Hill C
 \section{Taxonomy}
 \label{sec:taxonomy}
 % general
-The Stochastic Hill Climbing algorithm is a Stochastic and Local Optimization algorithm. It is a direct search technique, as it does not require derivatives of the search space.
+The Stochastic Hill Climbing algorithm is a Stochastic Optimization algorithm and is a Local Optimization algorithm (contrasted to Global Optimization). It is a direct search technique, as it does not require derivatives of the search space.
 % related
 Stochastic Hill Climbing is an extension of deterministic hill climbing algorithms such as Simple Hill Climbing (first-best neighbor), Steepest-Ascent Hill Climbing (best neighbor), and a parent of approaches such as Parallel Hill Climbing and Random-Restart Hill Climbing.
 
@@ -83,7 +83,7 @@ Stochastic Hill Climbing is an extension of deterministic hill climbing algorith
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The strategy of the Stochastic Hill Climbing algorithm is iterate the process of randomly selecting a neighbor for a candidate solution and accepting it if it results in an improvement.
+The strategy of the Stochastic Hill Climbing algorithm is iterate the process of randomly selecting a neighbor for a candidate solution and only accept it if it results in an improvement.
 % why
 The strategy was proposed to address the limitations of deterministic hill climbing techniques that were likely to get stuck in local optima due to their greedy acceptance of neighboring moves. 
 
@@ -93,7 +93,7 @@ The strategy was proposed to address the limitations of deterministic hill climb
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing algorithm for minimizing a cost function, specifically the Random Mutation Hill Climbing algorithm described by Forrest and Mitchell \cite{Forrest1993} applied to a maximization optimization problem.
+Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of the Stochastic Hill Climbing algorithm for minimizing a cost function, specifically the Random Mutation Hill Climbing algorithm described by Forrest and Mitchell applied to a maximization optimization problem \cite{Forrest1993}.
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -133,13 +133,13 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of t
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Stochastic Hill Climbing was designed to be used in discrete domains with explicit neighbors such as combinatorial optimization, compared to continuous function optimization. 
-	\item The algorithm's strategy may be applied to continuous domains by making use of a step-size to define candidate-solution neighbors (such as Localized Random Search, and Fixed Step-Size Random Search).
-	\item Stochastic Hill Climbing is a local search technique (compared to global search) and is designed for refining a result after the execution of a global search algorithm.
+	\item Stochastic Hill Climbing was designed to be used in discrete domains with explicit neighbors such as combinatorial optimization (compared to continuous function optimization). 
+	\item The algorithm's strategy may be applied to continuous domains by making use of a step-size to define candidate-solution neighbors (such as Localized Random Search and Fixed Step-Size Random Search).
+	\item Stochastic Hill Climbing is a local search technique (compared to global search) and may be used to refine a result after the execution of a global search algorithm.
 	\item Even though the technique uses a stochastic process, it can still get stuck in local optima.
-	\item Neighbors with better or equal cost should be accepted, allowing the technique to navigate plateaus in the response surface.
+	\item Neighbors with better or equal cost should be accepted, allowing the technique to navigate across plateaus in the response surface.
 	\item The algorithm can be restarted and repeated a number of times after it converges to provide an improved result (called Multiple Restart Hill Climbing).
-	\item The procedure can be applied to multiple candidate solutions concurrently, allowing a multiple algorithm runs to be performed at the same time (called Parallel Hill Climbing).
+	\item The procedure can be applied to multiple candidate solutions concurrently, allowing multiple algorithm runs to be performed at the same time (called Parallel Hill Climbing).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -149,7 +149,7 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudo-code listing of t
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{stochastic_hill_climbing} provides an example of the Stochastic Hill Climbing algorithm implemented in the Ruby Programming Language, specifically the Random Mutation Hill Climbing algorithm described by Forrest and Mitchell \cite{Forrest1993}.
 % problem
-The algorithm is executed for a fixed number of iterations and is applied to a binary string optimization problem called `One Max'. The objective of this problem is to prepare a string of all `1' bits, where the cost function only reports the number of bits in a given string (maximization).
+The algorithm is executed for a fixed number of iterations and is applied to a binary string optimization problem called `One Max'. The objective of this maximization problem is to prepare a string of all `1' bits, where the cost function only reports the number of bits in a given string.
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Stochastic Hill Climbing algorithm in the Ruby Programming Language, label=stochastic_hill_climbing]{../../src/algorithms/stochastic/stochastic_hill_climbing.rb}
 
@@ -166,7 +166,7 @@ The algorithm is executed for a fixed number of iterations and is applied to a b
 % 
 \subsection{Primary Sources}
 % RMHC
-Perhaps the most popular implementation of the Stochastic Hill Climbing algorithm is by Forrest and Mitchell, who proposed the Random Mutation Hill Climbing (RMHC) algorithm (with communication from Richard Palmer) in a study that investigated the behavior of the genetic algorithm on a deceptive class of (discrete) bit-string optimization problem called `royal road' functions \cite{Forrest1993}. The RMHC was compared to two other hill climbing algorithms in addition to the genetic algorithm, specifically: the Steepest-ascent hill climber, and the next-ascent hill climber. This study was then followed up by Mitchell and Holland \cite{Mitchell1993}
+Perhaps the most popular implementation of the Stochastic Hill Climbing algorithm is by Forrest and Mitchell, who proposed the Random Mutation Hill Climbing (RMHC) algorithm (with communication from Richard Palmer) in a study that investigated the behavior of the genetic algorithm on a deceptive class of (discrete) bit-string optimization problem called `royal road' functions \cite{Forrest1993}. The RMHC was compared to two other hill climbing algorithms in addition to the genetic algorithm, specifically: the Steepest-Ascent Hill Climber, and the Next-Ascent Hill Climber. This study was then followed up by Mitchell and Holland \cite{Mitchell1993}
 
 % early approach
 Jules and Wattenberg were also early to consider stochastic hill climbing as an approach to compare to the genetic algorithm \cite{Juels1994}.
@@ -189,10 +189,10 @@ The Stochastic Hill Climbing algorithm is related to the genetic algorithm witho
 % report
 This report described the Stochastic Hill Climbing algorithm as a strategy for addressing some of the limitations of deterministic hill climbing methods.
 % related techniques
-Some additional technique names discovered during the investigation of this work include: \emph{Dynamic Hill Climbing} \cite{Yuret1993}, investigation of a theoretical abstraction of hill climbing algorithms called \emph{Generalized Hill Climbing} \cite{Johnson2002, Sullivan2001}, \emph{Probabilistic Hill Climbing} \cite{Romeo1984} and a second probabilistic hill climbing algorithm called Probably Approximate Locally Optimal (PALO) \cite{Cohen1994}.
+Some additional technique names discovered during the investigation of this work include: \emph{Dynamic Hill Climbing} \cite{Yuret1993}, the investigation of a theoretical abstraction of hill climbing algorithms called \emph{Generalized Hill Climbing} \cite{Johnson2002, Sullivan2001}, \emph{Probabilistic Hill Climbing} \cite{Romeo1984} and a second probabilistic hill climbing algorithm called Probably Approximate Locally Optimal (PALO) \cite{Cohen1994}.
 
 % making use of algorithms
-A concern highlighted in the research for this report was the guidance needed for a practitioner to apply a technique to a specific problem that differences from the class of problem presented. Guidance may be in the form of a process where articles and papers on or related to the selected problem are identified, or problem transformations are sort to map the instance to something that can be addressed by a the chosen technique. This may be included as an advanced topic in the Clever Algorithms project or included in the introductory material.
+A concern highlighted in the research for this report was the guidance needed for a practitioner to apply a technique to a specific problem that differences from the class of problem presented. Guidance may be in the form of a process where articles and papers on, or related to the selected problem are identified, or problem transformations used to map the instance to something that can be addressed by a the chosen technique. This may be included as an advanced topic in the Clever Algorithms project or included in the introductory material.
 
 % 
 % Contribute
