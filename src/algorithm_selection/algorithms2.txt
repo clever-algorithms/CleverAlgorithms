@@ -124,8 +124,7 @@ Stochastic, Adaptive Random Search with Intensification and Diversification
 Stochastic, Stochastic Hill Climbing
 Stochastic, Random Hill Climbing
 Stochastic, Iterated Hill Climbing
-Stochastic, ES(1+1,m,hc)
-Stochastic, ES(1+1,m)
+Stochastic, ES(1+1)
 Stochastic, Random Bit Climber
 Stochastic, (1+1)-Genetic Algorithm
 Stochastic, Dynamic Hill Climbing
