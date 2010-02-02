@@ -30,7 +30,7 @@ def search(numIterations, problemSize)
     mutant = {}
     mutant[:vector] = take_step(candidate[:vector])
     mutant[:cost] = cost(mutant[:vector])
-    candidate = mutant if mutant[:cost] > candidate[:cost]
+    candidate = mutant if mutant[:cost] >= candidate[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{candidate[:cost]}, v=#{candidate[:vector].join}"
     break if candidate[:cost] == problemSize
   end 
