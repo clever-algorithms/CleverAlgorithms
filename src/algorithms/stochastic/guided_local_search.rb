@@ -5,6 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 NUM_ITERATIONS = 100
+MAX_NO_MPROVEMENTS = 10
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
  [845,680],[725,370],[145,665],[415,635],[510,875],[560,365],[300,465],
@@ -14,10 +15,7 @@ BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],[595,360],
  [1340,725],[1740,245]]
  
-# 7542
-OPTIMAL_TOUR = [1,49,32,45,19,41,8,9,10,43,33,51,11,52,14,13,47,26,
-     27,28,12,25,4,6,15,5,24,48,38,37,40,39,36,35,34,44,46,16,29,50,20,
-     23,30,2,7,42,21,17,3,18,31,22]
+# remember, optima is: 7542
      
 def euc_2d(c1, c2)
   Math::sqrt((c1[0] - c2[0])**2 + (c1[1] - c2[1])**2).round
@@ -53,22 +51,35 @@ def two_opt(permutation)
   return perm
 end
 
-def search(numIterations, cities)
+def local_search(cities, maxNoImprovements)
   best = {}
   best[:vector] = random_permutation(cities)
-  # best[:vector] = OPTIMAL_TOUR
-  # best[:vector] = Array.new(best[:vector].length){|x|best[:vector][x]-1}
-  
   best[:cost] = cost(best[:vector], cities)
-  numIterations.times do |iter|
+  noImprovements = 0
+  begin
     candidate = {}
     candidate[:vector] = two_opt(best[:vector])
     candidate[:cost] = cost(candidate[:vector], cities)
-    best = candidate if best.nil? or candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+    if candidate[:cost] < best[:cost]
+      noImprovements, best = 0, candidate
+    else
+      noImprovements += 1      
+    end
+  end until noImprovements >= maxNoImprovements
+  return best
+end
+
+def search(numIterations, cities, maxNoImprovements)
+  best = nil
+  numIterations.times do |iter|
+    candidate = local_search(cities, maxNoImprovements)
+    if(best.nil? or candidate[:cost] < best[:cost])
+      best = candidate
+    end
+    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}}"
   end
   return best
 end
 
-best = search(NUM_ITERATIONS, BERLIN52)
+best = search(NUM_ITERATIONS, BERLIN52, MAX_NO_MPROVEMENTS)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
