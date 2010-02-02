@@ -64,7 +64,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Guided Local Search, GLS
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -96,7 +96,10 @@ todo
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+metaheuristic to guide local search
+penalize specific features in candidate solutions, modifies the response surface for the local search technique
+designed to sit on top of hill climbing algorithms
+
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -121,7 +124,13 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
+Listing~\ref{guided_local_search} provides an example of the Guided Local Search algorithm implemented in the Ruby Programming Language.
+
+% problem
 todo
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Guided Local Search algorithm in the Ruby Programming Language, label=guided_local_search]{../../src/algorithms/stochastic/guided_local_search.rb}
 
 
 % References: Deeper understanding
@@ -130,6 +139,16 @@ todo
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
+
+\begin{itemize}
+	\item GLS is an extension of GENET
+	\item homepage for the algorithm: \url{http://www.bracil.net/CSP/gls.html}
+	\item GLS applied to a binary problem: SOLVING CONSTRAINT SATISFACTION PROBLEMS USING NEURAL NETWORKS (1991)
+	\item GLS extended beyond binary problems: A Generic Neural Network Approach For Constraint Satisfaction Problems (1992)
+	\item 
+	
+\end{itemize}
+
 
 % 
 % Primary Sources
