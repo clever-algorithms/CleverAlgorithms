@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 NUM_ITERATIONS = 100
-MAX_NO_MPROVEMENTS = 10
+MAX_NO_MPROVEMENTS = 15
 REGULARISATION_PARAMETER=0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
@@ -22,16 +22,13 @@ def euc_2d(c1, c2)
   Math::sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
 
-def shuffle!(array)
-  for i in 0...array.length
-    r = rand(array.length-i) + i
-    array[r], array[i] = array[i], array[r]
-  end
-  return array
-end
-
 def random_permutation(cities)
-  return shuffle!(Array.new(cities.length){|i|i})
+  perm = Array.new(cities.length){|i|i}
+  for i in 0...perm.length
+    r = rand(perm.length-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
 end
 
 def two_opt(permutation)
@@ -55,22 +52,20 @@ def augmented_cost(permutation, penalties, cities, lambda)
   return distance, augmented
 end
 
-def local_search(cities, penalties, maxNoImprovements, lambda)
-  best = {}
-  best[:vector] = random_permutation(cities)
-  best[:cost], best[:acost] = augmented_cost(best[:vector], penalties, cities, lambda)
+def local_search(current, cities, penalties, maxNoImprovements, lambda)
+  current[:cost], current[:acost] = augmented_cost(current[:vector], penalties, cities, lambda)
   noImprovements = 0
   begin
     perm = {}
-    perm[:vector] = two_opt(best[:vector])
+    perm[:vector] = two_opt(current[:vector])
     perm[:cost], perm[:acost] = augmented_cost(perm[:vector], penalties, cities, lambda)
-    if perm[:acost] < best[:acost]
-      noImprovements, best = 0, perm
+    if perm[:acost] < current[:acost]
+      noImprovements, current = 0, perm
     else
       noImprovements += 1      
     end
   end until noImprovements >= maxNoImprovements
-  return best
+  return current
 end
 
 def update_penalties!(penalties, cities, permutation)
@@ -83,13 +78,14 @@ def update_penalties!(penalties, cities, permutation)
 end
 
 def search(numIterations, cities, maxNoImprovements, lambda)
-  best = nil
+  best, current = nil, {}  
+  current[:vector] = random_permutation(cities)
   penalties = Array.new(cities.length){Array.new(cities.length,0)}
   numIterations.times do |iter|
-    candidate = local_search(cities, penalties, maxNoImprovements, lambda)
-    update_penalties!(penalties, cities, candidate[:vector])
-    if(best.nil? or candidate[:cost] < best[:cost])
-      best = candidate
+    current = local_search(current, cities, penalties, maxNoImprovements, lambda)
+    update_penalties!(penalties, cities, current[:vector])
+    if(best.nil? or current[:cost] < best[:cost])
+      best = current
     end
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
