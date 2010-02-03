@@ -4,7 +4,7 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-NUM_ITERATIONS = 100
+NUM_ITERATIONS = 200
 MAX_NO_MPROVEMENTS = 15
 ALPHA = 0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
