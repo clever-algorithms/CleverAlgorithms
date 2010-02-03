@@ -134,7 +134,8 @@ Algorithm~\ref{alg:guided_local_search} provides a pseudo-code listing of the Gu
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item equation for setting lambda for TSP problems: $\lambda = \alpha\cdot\frac{cost(optima)}{N}$ where $N$ is the number of cities, and $cost(optima)$ is the cost of a local optimum found by a local search and $\alpha\in (0,1]$ (around 0.3 for TSP and 2-opt)
+	\item algorithm run for hundreds of thousands of iterations on TSP
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.

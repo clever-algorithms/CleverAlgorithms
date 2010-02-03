@@ -6,7 +6,8 @@
 
 NUM_ITERATIONS = 100
 MAX_NO_MPROVEMENTS = 15
-REGULARISATION_PARAMETER=0.3
+# REGULARISATION_PARAMETER=0.3
+ALPHA = 0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
  [845,680],[725,370],[145,665],[415,635],[510,875],[560,365],[300,465],
@@ -92,5 +93,6 @@ def search(numIterations, cities, maxNoImprovements, lambda)
   return best
 end
 
-best = search(NUM_ITERATIONS, BERLIN52, MAX_NO_MPROVEMENTS, REGULARISATION_PARAMETER)
+lambda = ALPHA * (15000.0/BERLIN52.length)
+best = search(NUM_ITERATIONS, BERLIN52, MAX_NO_MPROVEMENTS, lambda)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
