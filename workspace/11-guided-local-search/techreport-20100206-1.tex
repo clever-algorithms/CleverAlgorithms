@@ -164,13 +164,15 @@ The utility for a feature is calculated as $U_{feature}=\frac{C_{feature}}{1+P_{
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{guided_local_search} provides an example of the Guided Local Search algorithm implemented in the Ruby Programming Language. 
 % probem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem, taken from the TSPLIB. The problem seeks a permutation of the order to visit cities called a tour that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542.
-% algorithm
-todo... Berlin 52 symmetrical TSP, optima is , 2-opt local search
-
-equation for setting lambda for TSP problems: $\lambda = \alpha\cdot\frac{cost(optima)}{N}$ where $N$ is the number of cities, and $cost(optima)$ is the cost of a local optimum found by a local search and $\alpha\in (0,1]$ (around 0.3 for TSP and 2-opt)
-
-penalty utility function for TSP is: $U_{edge}=\frac{D_{edge}}{1+P_{edge}}$ where $U_{edge}$ is the utility for penalizing an edge (maximizing), $D_{edge}$ is the cost of the edge (distance between vectors) and $P_{edge}$ is the current penalty for the edge
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities called a tour that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542.
+% source
+The implementation of the algorithm for the TSP was based on the configuration specified by Voudouris in \cite{Voudouris1997}.
+% local search
+A TSP-specific local search algorithm is used called 2-opt that selects two points in a permutation and reconnects the tour, potentially untwisting the tour at the selected points.
+% setting lambda
+The equation for setting $\lamda$ for TSP instances is $\lambda = \alpha\cdot\frac{cost(optima)}{N}$, where $N$ is the number of cities, and $cost(optima)$ is the cost of a local optimum found by a local search and $\alpha\in (0,1]$ (around 0.3 for TSP and 2-opt). The cost of a local optima was fixed to the approximated value of 15000 for the Berlin52 instance. 
+% utility
+The utility function for features (edges) in the TSP is $U_{edge}=\frac{D_{edge}}{1+P_{edge}}$, where $U_{edge}$ is the utility for penalizing an edge (maximizing), $D_{edge}$ is the cost of the edge (distance between cities) and $P_{edge}$ is the current penalty for the edge.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Guided Local Search algorithm in the Ruby Programming Language, label=guided_local_search]{../../src/algorithms/stochastic/guided_local_search.rb}
