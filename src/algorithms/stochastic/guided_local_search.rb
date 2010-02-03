@@ -6,6 +6,7 @@
 
 NUM_ITERATIONS = 100
 MAX_NO_MPROVEMENTS = 10
+REGULARISATION_PARAMETER=0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
  [845,680],[725,370],[145,665],[415,635],[510,875],[560,365],[300,465],
@@ -51,17 +52,29 @@ def two_opt(permutation)
   return perm
 end
 
-def local_search(cities, maxNoImprovements)
+def augmented_cost(permutation, cities, penalties)
+  distance, augmented = 0, 0
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c1, c2 = c2, c1 if c2 < c1
+    d = euc_2d(cities[c1], cities[c2])
+    distance += d
+    augmented += d + REGULARISATION_PARAMETER * (permutation[c1][c2])
+  end
+  return distance, augmented
+end
+
+def local_search(cities, penalties, maxNoImprovements)
   best = {}
   best[:vector] = random_permutation(cities)
-  best[:cost] = cost(best[:vector], cities)
+  best[:cost], best[:acost] = augmented_cost(best[:vector], penalties, cities)
   noImprovements = 0
   begin
-    candidate = {}
-    candidate[:vector] = two_opt(best[:vector])
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] < best[:cost]
-      noImprovements, best = 0, candidate
+    perm = {}
+    perm[:vector] = two_opt(best[:vector])
+    perm[:cost], perm[:acost] = augmented_cost(perm[:vector], penalties, cities)
+    if perm[:acost] < best[:acost]
+      noImprovements, best = 0, perm
     else
       noImprovements += 1      
     end
@@ -69,14 +82,25 @@ def local_search(cities, maxNoImprovements)
   return best
 end
 
+def update_penalties!(penalties, cities, permutation)
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c1, c2 = c2, c1 if c2 < c1
+    penalties[c1][c2] += 1
+  end
+  return penalties
+end
+
 def search(numIterations, cities, maxNoImprovements)
   best = nil
+  penalties = Array.new(cities.length){Array.new(cities.length,0)}
   numIterations.times do |iter|
-    candidate = local_search(cities, maxNoImprovements)
+    candidate = local_search(cities, penalties, maxNoImprovements)
+    update_penalties!(penalties, cities, candidate[:vector])
     if(best.nil? or candidate[:cost] < best[:cost])
       best = candidate
     end
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}}"
+    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
 end
