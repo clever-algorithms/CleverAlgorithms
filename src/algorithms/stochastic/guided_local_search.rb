@@ -22,14 +22,14 @@ def euc_2d(c1, c2)
   Math::sqrt((c1[0] - c2[0])**2 + (c1[1] - c2[1])**2).round
 end
 
-def cost(permutation, cities)
-  distance = 0
-  permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
-    distance += euc_2d(cities[c1], cities[c2])
-  end
-  return distance
-end
+# def cost(permutation, cities)
+#   distance = 0
+#   permutation.each_with_index do |c1, i|
+#     c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+#     distance += euc_2d(cities[c1], cities[c2])
+#   end
+#   return distance
+# end
 
 def shuffle!(array)
   for i in 0...array.length
@@ -52,14 +52,14 @@ def two_opt(permutation)
   return perm
 end
 
-def augmented_cost(permutation, cities, penalties)
+def augmented_cost(permutation, penalties, cities)
   distance, augmented = 0, 0
   permutation.each_with_index do |c1, i|
     c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
     d = euc_2d(cities[c1], cities[c2])
     distance += d
-    augmented += d + REGULARISATION_PARAMETER * (permutation[c1][c2])
+    augmented += d + (REGULARISATION_PARAMETER * (permutation[c1][c2]))
   end
   return distance, augmented
 end
