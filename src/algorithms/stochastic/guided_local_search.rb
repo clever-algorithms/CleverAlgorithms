@@ -6,7 +6,6 @@
 
 NUM_ITERATIONS = 100
 MAX_NO_MPROVEMENTS = 15
-# REGULARISATION_PARAMETER=0.3
 ALPHA = 0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
@@ -16,9 +15,7 @@ BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],[875,920],
  [700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],[595,360],
  [1340,725],[1740,245]]
- 
-# remember, optima is: 7542
-     
+
 def euc_2d(c1, c2)
   Math::sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
@@ -69,11 +66,22 @@ def local_search(current, cities, penalties, maxNoImprovements, lambda)
   return current
 end
 
-def update_penalties!(penalties, cities, permutation)
+def calculate_feature_utilities(penalties, cities, permutation)
+  utilities = Array.new(permutation.length,0)
   permutation.each_with_index do |c1, i|
     c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
-    penalties[c1][c2] += 1
+    utilities[i] = euc_2d(cities[c1], cities[c2]) / (1.0 + penalties[c1][c2])
+  end
+  return utilities
+end
+
+def update_penalties!(penalties, cities, permutation, utilities)
+  max = utilities.max()
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c1, c2 = c2, c1 if c2 < c1
+    penalties[c1][c2] += 1 if utilities[i] == max
   end
   return penalties
 end
@@ -84,7 +92,8 @@ def search(numIterations, cities, maxNoImprovements, lambda)
   penalties = Array.new(cities.length){Array.new(cities.length,0)}
   numIterations.times do |iter|
     current = local_search(current, cities, penalties, maxNoImprovements, lambda)
-    update_penalties!(penalties, cities, current[:vector])
+    utilities = calculate_feature_utilities(penalties, cities, current[:vector])
+    update_penalties!(penalties, cities, current[:vector], utilities)
     if(best.nil? or current[:cost] < best[:cost])
       best = current
     end
