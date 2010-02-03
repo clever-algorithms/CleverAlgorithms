@@ -150,15 +150,11 @@ The utility for a feature is calculated as $U_{feature}=\frac{C_{feature}}{1+P_{
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 
-TODO: move TSP-specific stuff down into code listing annotation, they are not genera heuristics, rather they are specific to one class of problems.
-
 \begin{itemize}
-	\item equation for setting lambda for TSP problems: $\lambda = \alpha\cdot\frac{cost(optima)}{N}$ where $N$ is the number of cities, and $cost(optima)$ is the cost of a local optimum found by a local search and $\alpha\in (0,1]$ (around 0.3 for TSP and 2-opt)
-	\item algorithm run for hundreds of thousands of iterations on TSP
-	\item can use any local search technique
-	\item designed for discrete optimization problems, combinatorial, has been applied to functional optimization
-	\item penalty utility function for TSP is: $U_{edge}=\frac{D_{edge}}{1+P_{edge}}$ where $U_{edge}$ is the utility for penalizing an edge (maximizing), $D_{edge}$ is the cost of the edge (distance between vectors) and $P_{edge}$ is the current penalty for the edge
-	\item the $\lambda$ parameter is a scaling factor that must be in the same proportion to the costs in the domain - and as such meaningful when included (added for minimization, subtracted for maximization) in the augmented cost function
+	\item The Guided Local Search procedure is independent of the Local Search procedure embedded within it. A suitable domain-specific search procedure should be identified and employed.
+	\item The Guided Local Search procedure may need to be executed for thousands to hundreds of thousands of iterations, each iteration of which assumes a run of a Local Search algorithm to convergence.
+	\item The algorithm was designed for discrete optimization problems where a solution is comprised of independently assessable `features' such as Combinatorial Optimization, although it has been applied to continuous function optimization modeled as binary strings.
+	\item The $\lambda$ parameter is a scaling factor for feature penalization that must be in the same proportion to the candidate solution costs from the specific problem instance to which the algorithm is being applied. As such, the value for $\lambda$ must be meaningful when used within the augmented cost function (such as when it is added to a candidate solution cost in minimization and subtracted from a cost in the case of a maximization problem).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -171,6 +167,10 @@ Listing~\ref{guided_local_search} provides an example of the Guided Local Search
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem, taken from the TSPLIB. The problem seeks a permutation of the order to visit cities called a tour that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542.
 % algorithm
 todo... Berlin 52 symmetrical TSP, optima is , 2-opt local search
+
+equation for setting lambda for TSP problems: $\lambda = \alpha\cdot\frac{cost(optima)}{N}$ where $N$ is the number of cities, and $cost(optima)$ is the cost of a local optimum found by a local search and $\alpha\in (0,1]$ (around 0.3 for TSP and 2-opt)
+
+penalty utility function for TSP is: $U_{edge}=\frac{D_{edge}}{1+P_{edge}}$ where $U_{edge}$ is the utility for penalizing an edge (maximizing), $D_{edge}$ is the cost of the edge (distance between vectors) and $P_{edge}$ is the current penalty for the edge
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Guided Local Search algorithm in the Ruby Programming Language, label=guided_local_search]{../../src/algorithms/stochastic/guided_local_search.rb}
