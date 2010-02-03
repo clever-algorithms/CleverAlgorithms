@@ -81,12 +81,9 @@ It is an extension to Local Search algorithms (such as Hill Climbing) and is sim
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The strategy for the Guided Local Search algorithm is to use penalties to encourage a Local Search to escape local optima and discover the global optima.
 % What is a techniques plan of action?
-metaheuristic to guide local search
-penalize specific features in candidate solutions, modifies the response surface for the local search technique
-designed to sit on top of hill climbing algorithms
-
-run local search until it gets stuck in a local optima, record the position, update the cost function to penalize the search for heading toward the local optima, repeat
+A Local Search algorithm is run until it gets stuck in a local optima. The features from the local optima are evaluated and penalized, the results of which are used in an augmented cost function employed by the Local Search procedure. The Local Search is repeated a number of times using the last local optima discovered and the augmented cost function that promotes exploration away from solutions with features present in already discovered local optima.
 
 
 % Procedure: Abstract computation
