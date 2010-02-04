@@ -86,7 +86,37 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:variable_neighborhood_search} provides a pseudo-code listing of the Variable Neighborhood Search algorithm for minimizing a cost function.
+
+todo!
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{NumIterations}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{SearchSpace}{SearchSpace}
+	\SetKwData{Best}{Best}
+	\SetKwData{Null}{Null}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow 0$\;
+	\ForEach{$iter_i \in$ \NumIterations} {
+		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
+		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ $candidate_i$\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code Listing for the Variable Neighborhood Search algorithm.}
+	\label{alg:variable_neighborhood_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
