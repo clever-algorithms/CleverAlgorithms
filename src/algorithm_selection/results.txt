@@ -39,7 +39,7 @@ Evolutionary, Shuffled complex evolution,1170,142,1240,27,932,8
 Stochastic, Localized Random Search,36,9,25,3,14,1
 Stochastic, Reactive Tabu Search,1630,435,1420,188,1365,44
 Probabilistic, Hierarchical Bayesian Optimization Algorithm,459,69,221,64,430,5
-Stochastic, ES(1+1),89100,1880,9480,960,10219,0
+Evolutionary, ES(1+1),89100,1880,9480,960,10219,0
 Stochastic, Generalized Hill Climbing,377,87,211,33,202,3
 Swarm, Ant Colony System,6580,590,4400,612,2599,207
 Stochastic, Random Search,206000,1512,32800,2874,122062,413
@@ -131,3 +131,7 @@ Swarm, Ant System,9850,582,7600,943,4928,160
 Stochastic, Random Bit Climbing,31,21,25,3,12,0
 Stochastic, Tabu Search,43600,1434,36200,4239,36106,1045
 Physical, Harmony Search Algorithm,1100,50,300,59,151,27
+Stochastic, Extended Guided Local Search,48,18,38,10,27,0
+Stochastic, GENET,1630000,19289,1630000,84589,1023168,35
+Stochastic, Guided Genetic Algorithm,490,62,245,40,316,13
+Stochastic, Fast Local Search,991,154,612,83,533,17
