@@ -162,10 +162,11 @@ The pseudo code shows that the series of neighborhoods are search for each chang
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{variable_neighborhood_search} provides an example of the Variable Neighborhood Search algorithm implemented in the Ruby Programming Language. 
-% probem
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
-
-approach: TSP, Berlin52, stochastic 2-opt as the local search, number of applications of the procedure as the neighbourhood structure. stop condition will be the number iterations without improvement. just a demonstration of the strategy.
+% algorithm
+The Variable Neighborhood Search uses a stochastic 2-opt procedure as the embedded local search. The procedure deletes two edges and reverses the sequence in-between, potentially removing `twists' in the tour. The neighborhood structure used in the search is the number of times the 2-opt procedure is performed on a permutation, between 1 and 20 times. The stopping condition for the local search procedure is a maximum number of iterations without improvement. The same stop condition is employed by the higher-order Variable Neighborhood Search procedure, although with a lower boundary on the number of non-improving iterations.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Variable Neighborhood Search algorithm in the Ruby Programming Language, label=variable_neighborhood_search]{../../src/algorithms/stochastic/variable_neighborhood_search.rb}
@@ -208,8 +209,6 @@ There are many extensions to Variable Neighborhood Search. Some more popular exa
 % report
 This report described the Variable Neighborhood Search algorithm for global optimization and highlighted the family of extensions and applications that have sprung up around it.
 
-% other approaches
-Some names of additional techniques encountered while researching this report include: \emph{Adaptive Multi-start}, \emph{Variable Depth Search}, 
 
 % 
 % Contribute
