@@ -86,9 +86,9 @@ iterative explores neighborhoods of growing size - locates a local optima, keeps
 
 strategy is all about search sub-spaces with both stochastic and deterministic elements
 
-three principles: (quoted from any review paper) A local minimum with respect to one neighbourhood structure is not necessary so for another; A global minimum is a local minimum with respect to all possible neighbourhood structures.  For many problems local minima with respect to one or several neighbourhoods are relatively close to each other.
+three principles: (quoted from any review paper) A local minimum with respect to one neighborhood structure is not necessary so for another; A global minimum is a local minimum with respect to all possible neighborhood structures.  For many problems local minima with respect to one or several neighborhoods are relatively close to each other.
 
-the benefit of VNS seems to come from the fact that local optima are empirically commonly close to global optima n some problems under some neighbourhood types 
+the benefit of VNS seems to come from the fact that local optima are empirically commonly close to global optima n some problems under some neighborhood types 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -183,31 +183,25 @@ i'm thinking a TSP with 2-opt
 % 
 \subsection{Primary Sources}
 % initial
-Variable Neighborhood Search was initially proposed in an abstract by Mladenovic \cite{Mladenovic1995}.
+The seminal paper for describing Variable Neighborhood Search was by Mladenovic and Hansen in 1997 \cite{Mladenovic1997}, although an early abstract by Mladenovic is sometimes cited \cite{Mladenovic1995}.
 % names
-The approach is explained in terms of three different variations on the general theme. Variable Neighborhood Descent (VND) refers to the use of a Local Search procedure and the deterministic (as opposed to stochastic or probabilistic) change of neighborhood size. Reduced Variable Neighborhood Search (RVNS) involves performing a stochastic random search within a neighborhood and no refinement via a local search technique. Basic Variable Neighborhood Descent is the canonical approach described by Mladenovic and Hansen in the seminal paper on the approach \cite{Mladenovic1997}.
+The approach is explained in terms of three different variations on the general theme. Variable Neighborhood Descent (VND) refers to the use of a Local Search procedure and the deterministic (as opposed to stochastic or probabilistic) change of neighborhood size. Reduced Variable Neighborhood Search (RVNS) involves performing a stochastic random search within a neighborhood and no refinement via a local search technique. Basic Variable Neighborhood Descent is the canonical approach described by Mladenovic and Hansen in the seminal paper.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
+There are a large number of papers published on Variable Neighborhood Search, its application and variations.
 % overview
-Hansen and Mladenovic provide an overview of the approach that includes its recent history, extensions and a detailed review of the numerous areas of application \cite{Hansen2003}.
+Hansen and Mladenovic provide an overview of the approach that includes its recent history, extensions and a detailed review of the numerous areas of application \cite{Hansen2003}. 
+% other
+For some additional useful overviews of the technique, its principles, and applications, see \cite{Hansen1998, Hansen2001a, Hansen2002}.
 
 % extensions
-There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelize the local search of a neighborhood or parallelize the searching of the neighborhood themselves.
+There are many extensions to Variable Neighborhood Search. Some more popular examples include: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelize the local search of a neighborhood or parallelize the searching of the neighborhood themselves.
 
 
-NOTES
 
-\begin{itemize}
-	\item Mladenovic and Hansen
-	\item (seminal) A variable neighbourhood algorithm for solving the continuous location-allocation problem (1996)
-	\item (overview) An introduction to Variable neighborhood search (1999)
-	\item (overview?) Variable neighbourhood search: Principles and applications (2001)
-	\item (overview) Developments of variable neighborhood search (2001)
-	\item (overview?) Variable neighbourhood search (2002)
-\end{itemize}
 
 \begin{itemize}
 	\item VARIABLE NEIGHBOURHOOD SEARCH: VNS for Training Neural Networks (chapter 5) (2006) - good overview of some of the different variations on the theme of VNS
