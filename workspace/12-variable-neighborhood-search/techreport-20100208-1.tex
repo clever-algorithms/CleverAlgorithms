@@ -126,6 +126,7 @@ todo!
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Variable Neighborhood Descent (VND) can be embedded in the Variable Neighborhood Search as a the Local Search procedure and has been shown to be most effective. 
+	\item Approximation methods (such as stochastic hill climbing) are suggested for use as the Local Search procedure for large problem instances in order to reduce the running time.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -191,10 +192,11 @@ Hansen and Mladenovic provide an in-depth overview of the approach that includes
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
+% reviews
 
 
-
+% extensions
+There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, Parallel Variable Neighborhood Search (PVNS), and x.
 
 
 
