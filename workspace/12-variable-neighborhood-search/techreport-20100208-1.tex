@@ -97,29 +97,44 @@ the benefit of VNS seems to come from the fact that local optima are empirically
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:variable_neighborhood_search} provides a pseudo-code listing of the Variable Neighborhood Search algorithm for minimizing a cost function.
-
-todo!
+% explaination
+The pseudo code shows that the series of neighborhoods are search for each change to the local optimum. A systematic search of expanding neighborhoods for a local optimum is abandoned when an global improvement is achieved, shown in the pseudo code with the \texttt{Break} jump.
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
-	\SetKwData{NumIterations}{NumIterations}
-	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{SearchSpace}{SearchSpace}
-	\SetKwData{Best}{Best}
-	\SetKwData{Null}{Null}
+	\SetKwData{Neighborhoods}{Neighborhoods}
+	\SetKwData{CurrentNeighborhood}{$Neighborhood_{i}$}
+	\SetKwData{Neighborhood}{$Neighborhood_{curr}$}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
 	% functions
+	\SetKwFunction{Break}{Break}
 	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{CalculateNeighborhood}{CalculateNeighborhood}
 	\SetKwFunction{RandomSolution}{RandomSolution}
-  	% I/O
-	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
+	\SetKwFunction{RandomSolutionInNeighborhood}{RandomSolutionInNeighborhood}
+  	\SetKwFunction{LocalSearch}{LocalSearch}
+
+	% I/O
+	\KwIn{\Neighborhoods}
 	\KwOut{\Best}
   	% Algorithm
-	\Best $\leftarrow 0$\;
-	\ForEach{$iter_i \in$ \NumIterations} {
-		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
-		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
-			\Best $\leftarrow$ $candidate_i$\;
+	\Best $\leftarrow$ \RandomSolution{}\;
+	\While{$\neg$ \StopCondition{}} {
+		\ForEach{\CurrentNeighborhood $\in$ \Neighborhoods} {
+			% determine neighbourhood
+			\Neighborhood $\leftarrow$ \CalculateNeighborhood{\Best, \CurrentNeighborhood}\;
+			% starting point
+			\Candidate $\leftarrow$ \RandomSolutionInNeighborhood{\Neighborhood}\;
+			% local search
+			\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+			% keep best
+			\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
+				\Best $\leftarrow$ \Candidate\;
+				\Break\;
+			}
 		}
 	}
 	\Return{\Best}\;
