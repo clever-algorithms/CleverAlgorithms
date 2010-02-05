@@ -39,6 +39,7 @@ h3. Technical Reports
 * Jason Brownlee. "Adaptive Random Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100131-1.pdf. Technical Report CA-TR-20100131-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Stochastic Hill Climbing":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100202-1.pdf. Technical Report CA-TR-20100202-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Guided Local Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100204-1.pdf. Technical Report CA-TR-20100204-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
+* Jason Brownlee. "Variable Neighbourhood Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100206-1.pdf. Technical Report CA-TR-20100206-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * ...
 
 h3. Software
