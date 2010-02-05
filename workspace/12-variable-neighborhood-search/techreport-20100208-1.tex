@@ -45,7 +45,7 @@ The project makes use of a standardized algorithm description template that uses
 This report describes the Variable Neighborhood Search algorithm using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Variable, Neighborhood, Search}}
 \end{description} 
 
 \section{Introduction} 
@@ -70,7 +70,10 @@ Variable Neighborhood Search, VNS
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-todo
+% what is it
+its a metaheuristic, it a global search technique that embeds a local search technique
+% related
+related to iterative local search
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -78,7 +81,12 @@ todo
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+define a set of neighborhoods and search them systematically using a local search procedure
+expanding the neighborhood over time
+
+strategy is all about search sub-spaces with both stochastic and deterministic elements
+
+
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -127,6 +135,7 @@ todo!
 \begin{itemize}
 	\item The Variable Neighborhood Descent (VND) can be embedded in the Variable Neighborhood Search as a the Local Search procedure and has been shown to be most effective. 
 	\item Approximation methods (such as stochastic hill climbing) are suggested for use as the Local Search procedure for large problem instances in order to reduce the running time.
+	\item Variable Neighborhood Search has been applied to a very wide array of combinatorial optimization problems as well as clustering and continuous function optimization problems.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -137,6 +146,8 @@ todo!
 Listing~\ref{variable_neighborhood_search} provides an example of the Variable Neighborhood Search algorithm implemented in the Ruby Programming Language. 
 % probem
 todo
+
+i'm thinking a TSP with 2-opt
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Variable Neighborhood Search algorithm in the Ruby Programming Language, label=variable_neighborhood_search]{../../src/algorithms/stochastic/variable_neighborhood_search.rb}
@@ -151,7 +162,6 @@ todo
 
 notes:
 \begin{itemize}
-	\item for constrained non-linear programming problems (continuous function optimization)
 	\item iterative explores neighborhoods of growing size - locates a local optima, keeps searching and expanding neighborhood size until an improved local optima is found, then the process is repeated
 	\item applied to continuous and combinatorial problems
 	\item makes use of a local search technique, should be problem specific - this is a metaheuristic for global search that uses a local search
@@ -171,12 +181,16 @@ notes:
 % initial
 Variable Neighborhood Search was initially proposed in an abstract by Mladenovic \cite{Mladenovic1995}.
 % names
-The approach is explained in terms of three different variations on the general theme. Variable Neighborhood Descent (VND) refers to the use of a Local Search procedure and the deterministic (as opposed to stochastic or probabilistic) change of neighborhood size. Reduced Variable Neighborhood Search (RVNS) involves performing a stochastic random search within a neighborhood and no refinement via a local search technique. Basic Variable Neighborhood Descent is the canonical approach described by Mladenovic and Hansen \cite{Mladenovic1997}.
+The approach is explained in terms of three different variations on the general theme. Variable Neighborhood Descent (VND) refers to the use of a Local Search procedure and the deterministic (as opposed to stochastic or probabilistic) change of neighborhood size. Reduced Variable Neighborhood Search (RVNS) involves performing a stochastic random search within a neighborhood and no refinement via a local search technique. Basic Variable Neighborhood Descent is the canonical approach described by Mladenovic and Hansen in the seminal paper on the approach \cite{Mladenovic1997}.
 
+% 
+% Learn More
+% 
+\subsection{Learn More}
+% reviews
 
 % overview
 Hansen and Mladenovic provide an in-depth overview of the approach that includes its recent history, extensions and areas of application \cite{Hansen2003}.
-
 
 \begin{itemize}
 	\item Mladenovic and Hansen
@@ -188,15 +202,8 @@ Hansen and Mladenovic provide an in-depth overview of the approach that includes
 \end{itemize}
 
 
-% 
-% Learn More
-% 
-\subsection{Learn More}
-% reviews
-
-
 % extensions
-There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, Parallel Variable Neighborhood Search (PVNS), and x.
+There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelize the local search of a neighborhood or parallelize the searching of the neighborhood themselves.
 
 
 
