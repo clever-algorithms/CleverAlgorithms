@@ -140,3 +140,4 @@ Stochastic, Skewed Variable Neighborhood Search
 Stochastic, Parallel Variable Neighborhood Search
 Stochastic, Reactive Local Search
 Stochastic, Reactive Search
+Stochastic, Stochastic Local Search

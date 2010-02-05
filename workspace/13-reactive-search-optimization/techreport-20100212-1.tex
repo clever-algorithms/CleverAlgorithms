@@ -70,7 +70,13 @@ Reactive Search Optimization, RSO, Reactive Search
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-todo
+Reactive Search Optimization is a general class of techniques.
+
+some examples include Reactive Tabu Search and Reactive Local Search
+
+
+intelligent optimization - a superset of reactive search optimization for online and offline schemes - broader study
+
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -79,7 +85,8 @@ todo
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-todo
+
+inspired by qualities of the human brain
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -88,7 +95,22 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+
+
+explained in terms of cognitive qualities:
+
+\begin{itemize}
+	\item learning on the job - future decision making based on past experiences - motivates the use of online machine learning techniques
+	\item learning from past experience
+	\item rapid analysis of alternatives - also generation of alternatives for analysis. 
+	\item ability to cope with incomplete information
+	\item quick adaptation to new situations and events
+	\item flexible decision support - incorporate feedback from the user, preliminary exploratory phase
+	\item diversity of solutions - let the user choose
+	\item anytime solutions - let the user decide when to stop
+\end{itemize}
+
+seems to be automating, then pushing a lot of decision making back onto the user. 
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -98,6 +120,8 @@ todo
 % What is a techniques plan of action?
 todo
 
+
+
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
@@ -106,12 +130,15 @@ todo
 % What are the data structures and representations used in a technique?
 todo
 
+
+
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \section{Heuristics}
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
+
 \begin{itemize}
 	\item todo
 \end{itemize}
@@ -121,7 +148,9 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+
+reactive tabu search
+
 
 
 % References: Deeper understanding
@@ -140,7 +169,7 @@ NOTES
 	\item inspired by `learning on the job'
 	\item seeks to automate the process of tuning the parameters of a technique
 	\item claims to belong to the study of `intelligent optimization' - a new approach of using machine learning to guide optimization
-	
+	\item 
 \end{itemize}
 
 % 
@@ -165,6 +194,7 @@ todo
 
 \begin{itemize}
 	\item (book) \cite{Battiti2008}
+	\item great contemporary overview of the whole movement \cite{Battiti2009}
 \end{itemize}
 
 

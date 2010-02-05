@@ -1,5 +1,5 @@
 
-Kingdom: stochastic (51)
+Kingdom: stochastic (52)
 genet & 1630000 & 19289 & 1630000 & 84589 & 1023168 & 35 & 5.002 \\
 probably approximate locally optimal & 0 & 8438 & 0 & 0 & 0 & 0 & 0.437 \\
 random search & 206000 & 1512 & 32800 & 2874 & 122062 & 413 & 0.403 \\
@@ -9,20 +9,21 @@ blind search & 12100 & 778 & 4510 & 327 & 4839 & 28 & 0.061 \\
 adaptive directional random search & 0 & 1084 & 1 & 0 & 0 & 0 & 0.056 \\
 scatter search & 4410 & 516 & 3380 & 547 & 2974 & 63 & 0.045 \\
 hill climbing search & 2410 & 649 & 2980 & 320 & 2869 & 10 & 0.044 \\
+stochastic local search & 3170 & 482 & 2300 & 452 & 3634 & 25 & 0.039 \\
 variable neighborhood search & 3220 & 442 & 2810 & 462 & 3094 & 43 & 0.038 \\
 adaptive random search & 947 & 627 & 893 & 70 & 656 & 17 & 0.036 \\
 reactive tabu search & 1630 & 435 & 1420 & 188 & 1365 & 44 & 0.031 \\
 controlled random search & 986 & 493 & 938 & 73 & 614 & 11 & 0.029 \\
 greedy randomized adaptive search procedure & 1390 & 400 & 1760 & 279 & 1206 & 30 & 0.029 \\
-guided local search & 1770 & 330 & 1340 & 242 & 1990 & 12 & 0.024 \\
 pure random search & 673 & 415 & 753 & 118 & 480 & 4 & 0.024 \\
 iterated local search & 2140 & 288 & 1690 & 321 & 1708 & 29 & 0.024 \\
+guided local search & 1770 & 330 & 1340 & 242 & 1990 & 12 & 0.024 \\
 stochastic hill climbing & 905 & 360 & 830 & 96 & 923 & 5 & 0.022 \\
 reactive search & 1030 & 325 & 477 & 73 & 744 & 3 & 0.019 \\
 probabilistic hill climbing & 400 & 307 & 402 & 22 & 365 & 5 & 0.017 \\
 stochastic gradient descent algorithm & 508 & 207 & 428 & 38 & 404 & 25 & 0.014 \\
-variable depth search & 561 & 215 & 425 & 65 & 418 & 5 & 0.013 \\
 directed random search & 364 & 223 & 400 & 46 & 231 & 7 & 0.013 \\
+variable depth search & 561 & 215 & 425 & 65 & 418 & 5 & 0.013 \\
 fast local search & 991 & 154 & 612 & 83 & 533 & 17 & 0.011 \\
 adaptive step-size random search & 88 & 196 & 73 & 6 & 50 & 3 & 0.011 \\
 random mutation hill climbing & 435 & 139 & 415 & 47 & 369 & 6 & 0.009 \\
@@ -30,24 +31,24 @@ blind random search & 164 & 117 & 194 & 18 & 157 & 2 & 0.007 \\
 pure adaptive search & 237 & 105 & 131 & 30 & 171 & 1 & 0.006 \\
 generalized hill climbing & 377 & 87 & 211 & 33 & 202 & 3 & 0.006 \\
 creeping random search & 62 & 96 & 40 & 3 & 26 & 0 & 0.005 \\
-iterated hill climbing & 139 & 78 & 150 & 21 & 101 & 1 & 0.005 \\
+reactive local search & 310 & 65 & 198 & 46 & 307 & 1 & 0.005 \\
 guided genetic algorithm & 490 & 62 & 245 & 40 & 316 & 13 & 0.005 \\
 random hill climbing & 172 & 91 & 153 & 22 & 117 & 0 & 0.005 \\
-reactive local search & 310 & 65 & 198 & 46 & 307 & 1 & 0.005 \\
+iterated hill climbing & 139 & 78 & 150 & 21 & 101 & 1 & 0.005 \\
 dynamic hill climbing & 191 & 60 & 150 & 16 & 159 & 1 & 0.004 \\
-sequential random search & 93 & 73 & 73 & 5 & 33 & 0 & 0.004 \\
 parallel hill climbing & 174 & 73 & 137 & 18 & 147 & 1 & 0.004 \\
+sequential random search & 93 & 73 & 73 & 5 & 33 & 0 & 0.004 \\
 variable neighborhood decomposition search & 195 & 43 & 169 & 42 & 559 & 0 & 0.003 \\
-(1+1)-genetic algorithm & 18 & 25 & 25 & 10 & 88 & 3 & 0.002 \\
+stochastic diffusion search & 301 & 15 & 96 & 9 & 553 & 3 & 0.002 \\
 random restart hill climbing & 257 & 36 & 109 & 6 & 248 & 0 & 0.002 \\
 hill climbing with learning & 108 & 31 & 73 & 14 & 80 & 0 & 0.002 \\
-stochastic diffusion search & 301 & 15 & 96 & 9 & 553 & 3 & 0.002 \\
 parallel variable neighborhood search & 140 & 23 & 90 & 23 & 77 & 0 & 0.002 \\
+(1+1)-genetic algorithm & 18 & 25 & 25 & 10 & 88 & 3 & 0.002 \\
+localized random search & 36 & 9 & 25 & 3 & 14 & 1 & 0.001 \\
 extended guided local search & 48 & 18 & 38 & 10 & 27 & 0 & 0.001 \\
+mutation hill climbing algorithm & 46 & 16 & 34 & 7 & 15 & 1 & 0.001 \\
 random bit climbing & 31 & 21 & 25 & 3 & 12 & 0 & 0.001 \\
 random bit climber & 49 & 17 & 33 & 6 & 24 & 1 & 0.001 \\
-mutation hill climbing algorithm & 46 & 16 & 34 & 7 & 15 & 1 & 0.001 \\
-localized random search & 36 & 9 & 25 & 3 & 14 & 1 & 0.001 \\
 adaptive random search with intensification and diversification & 73 & 1 & 11 & 0 & 9 & 6 & 0.0 \\
 skewed variable neighborhood search & 6 & 4 & 9 & 3 & 2 & 1 & 0.0 \\
 multiple restart algorithm & 2 & 1 & 2 & 1 & 1 & 0 & 0.0 \\
