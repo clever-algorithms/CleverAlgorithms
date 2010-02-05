@@ -163,9 +163,9 @@ The pseudo code shows that the series of neighborhoods are search for each chang
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{variable_neighborhood_search} provides an example of the Variable Neighborhood Search algorithm implemented in the Ruby Programming Language. 
 % probem
-todo
 
-i'm thinking a TSP with 2-opt
+
+approach: TSP, Berlin52, stochastic 2-opt as the local search, number of applications of the procedure as the neighbourhood structure. stop condition will be the number iterations without improvement. just a demonstration of the strategy.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Variable Neighborhood Search algorithm in the Ruby Programming Language, label=variable_neighborhood_search]{../../src/algorithms/stochastic/variable_neighborhood_search.rb}
@@ -207,6 +207,9 @@ There are many extensions to Variable Neighborhood Search. Some more popular exa
 \label{sec:conclusions}
 % report
 This report described the Variable Neighborhood Search algorithm for global optimization and highlighted the family of extensions and applications that have sprung up around it.
+
+% other approaches
+Some names of additional techniques encountered while researching this report include: \emph{Adaptive Multi-start}, \emph{Variable Depth Search}, 
 
 % 
 % Contribute
