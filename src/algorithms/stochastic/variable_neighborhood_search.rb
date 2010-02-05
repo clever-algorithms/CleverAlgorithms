@@ -4,9 +4,9 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-MAX_NO_MPROVEMENTS = 15
-LOCAL_SEARCH_NO_IMPROVEMENTS = 20
-NEIGHBORHOODS = [1...10]
+MAX_NO_MPROVEMENTS = 50
+LOCAL_SEARCH_NO_IMPROVEMENTS = 100
+NEIGHBORHOODS = 0...20
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -49,7 +49,7 @@ def local_search(best, cities, maxNoImprovements, neighbourhood)
   begin
     candidate = {}
     candidate[:vector] = Array.new(best[:vector])
-    neighbourhood.times{stochastic_two_opt(candidate[:vector])}
+    neighbourhood.times{stochastic_two_opt!(candidate[:vector])}
     candidate[:cost] = cost(candidate[:vector], cities)
     if candidate[:cost] < best[:cost]
       noImprovements, best = 0, candidate
@@ -61,23 +61,28 @@ def local_search(best, cities, maxNoImprovements, neighbourhood)
 end
 
 def search(cities, neighbourhoods, maxNoImprovements, maxNoImprovementsLS)
-  best = nil
+  best = {}
+  best[:vector] = random_permutation(cities)
+  best[:cost] = cost(best[:vector], cities)
   iter, noImprovements = 0, 0
   begin
     neighbourhoods.each do |neighbourhood|
       candidate = {}
-      candidate[:vector] = Array.new(best)
-      neighbourhood.times{stochastic_two_opt(candidate[:vector])}
-      candidate = local_search(candidate, cities, maxNoImprovementsLS, neighbourhood)
-      if(best.nil? or candidate[:cost] < best[:cost])
-        best = current
+      candidate[:vector] = Array.new(best[:vector])      
+      neighbourhood.times{stochastic_two_opt!(candidate[:vector])}
+      candidate[:cost] = cost(candidate[:vector], cities)
+      candidate = local_search(candidate, cities, maxNoImprovementsLS, neighbourhood)      
+      puts " > iteration #{(iter+1)}, neighborhood=#{neighbourhood}, best: c=#{best[:cost]}"
+      iter += 1
+      if(candidate[:cost] < best[:cost])
+        best = candidate
         noImprovements = 0
+        puts "New best, restarting neighbourhood search."
+        break
       else
         noImprovements += 1
       end
-      puts " > iteration #{(iter+1)}, neighborhood=#{neighbourhood}, best: c=#{best[:cost]}"
-      iter += 1
-    end    
+    end  
   end until noImprovements >= maxNoImprovements
   return best
 end
