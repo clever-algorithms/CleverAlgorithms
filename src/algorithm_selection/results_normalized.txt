@@ -135,3 +135,8 @@ Stochastic, Extended Guided Local Search,48,18,38,10,27,0,0.001
 Stochastic, GENET,1630000,19289,1630000,84589,1023168,35,5.002
 Stochastic, Guided Genetic Algorithm,490,62,245,40,316,13,0.005
 Stochastic, Fast Local Search,991,154,612,83,533,17,0.011
+Stochastic, Reactive Search,1030,325,477,73,744,3,0.019
+Stochastic, Variable Neighborhood Decomposition Search,195,43,169,42,559,0,0.003
+Stochastic, Reactive Local Search,310,65,198,46,307,1,0.005
+Stochastic, Skewed Variable Neighborhood Search,6,4,9,3,2,1,0.0
+Stochastic, Parallel Variable Neighborhood Search,140,23,90,23,77,0,0.002

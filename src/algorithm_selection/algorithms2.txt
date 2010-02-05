@@ -135,3 +135,8 @@ Stochastic, GENET
 Stochastic, Fast Local Search
 Stochastic, Extended Guided Local Search
 Stochastic, Guided Genetic Algorithm
+Stochastic, Variable Neighborhood Decomposition Search
+Stochastic, Skewed Variable Neighborhood Search
+Stochastic, Parallel Variable Neighborhood Search
+Stochastic, Reactive Local Search
+Stochastic, Reactive Search
