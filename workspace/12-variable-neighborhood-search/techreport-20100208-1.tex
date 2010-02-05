@@ -80,15 +80,9 @@ related to iterative local search
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The strategy for the Variable Neighborhood Search involves iterative exploration of larger and larger neighborhoods for a given local optima until an improvement is located after which time the process of search across expanding neighborhoods is repeated. 
 % What is a techniques plan of action?
-
-iterative explores neighborhoods of growing size - locates a local optima, keeps searching and expanding neighborhood size until an improved local optima is found, then the process is repeated
-
-strategy is all about search sub-spaces with both stochastic and deterministic elements
-
-three principles: (quoted from any review paper) A local minimum with respect to one neighborhood structure is not necessary so for another; A global minimum is a local minimum with respect to all possible neighborhood structures.  For many problems local minima with respect to one or several neighborhoods are relatively close to each other.
-
-the benefit of VNS seems to come from the fact that local optima are empirically commonly close to global optima n some problems under some neighborhood types 
+The strategy is motivated on three principles: i) a local minimum for one neighborhood structure may not be a local minimum for a different neighborhood structure, ii) a global minimum is a local minimum for all possible neighborhood structures, and iii) local minimum are relatively close to global minimum for many problem classes.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
