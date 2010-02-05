@@ -81,12 +81,14 @@ related to iterative local search
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-define a set of neighborhoods and search them systematically using a local search procedure
-expanding the neighborhood over time
+
+iterative explores neighborhoods of growing size - locates a local optima, keeps searching and expanding neighborhood size until an improved local optima is found, then the process is repeated
 
 strategy is all about search sub-spaces with both stochastic and deterministic elements
 
+three principles: (quoted from any review paper) A local minimum with respect to one neighbourhood structure is not necessary so for another; A global minimum is a local minimum with respect to all possible neighbourhood structures.  For many problems local minima with respect to one or several neighbourhoods are relatively close to each other.
 
+the benefit of VNS seems to come from the fact that local optima are empirically commonly close to global optima n some problems under some neighbourhood types 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -136,6 +138,7 @@ todo!
 	\item The Variable Neighborhood Descent (VND) can be embedded in the Variable Neighborhood Search as a the Local Search procedure and has been shown to be most effective. 
 	\item Approximation methods (such as stochastic hill climbing) are suggested for use as the Local Search procedure for large problem instances in order to reduce the running time.
 	\item Variable Neighborhood Search has been applied to a very wide array of combinatorial optimization problems as well as clustering and continuous function optimization problems.
+	\item The embedded Local Search technique should be specialized to the problem type and instance to which the technique is being applied. 
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -160,20 +163,6 @@ i'm thinking a TSP with 2-opt
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-notes:
-\begin{itemize}
-	\item iterative explores neighborhoods of growing size - locates a local optima, keeps searching and expanding neighborhood size until an improved local optima is found, then the process is repeated
-	\item applied to continuous and combinatorial problems
-	\item makes use of a local search technique, should be problem specific - this is a metaheuristic for global search that uses a local search
-	\item define sets of neighbors, explore each one, escape local optima, locate global optima
-	\item appears to perform a stochastic local search in each neighborhood (shaking), then refine (local search), accept change only if it is improvement (acceptance criteria)
-	\item motivated by (quoted): A local minimum with respect to one neighbourhood structure is not necessary so for another; A global minimum is a local minimum with respect to all possible neighbourhood structures.  For many problems local minima with respect to one or several neighbourhoods are relatively close to each other.
-	\item the benefit of VNS seems to come from the fact that local optima are empirically commonly close to global optima n some problems under some neighbourhood types - a fact exploited by reduced VNS (RVNS) - generalized case is called basic VNS (BVNS)
-	\item a fixed neighbourhood results in a procedure that resembles Iterated Local Search
-	
-\end{itemize}
-
-
 % 
 % Primary Sources
 % 
@@ -187,10 +176,14 @@ The approach is explained in terms of three different variations on the general 
 % Learn More
 % 
 \subsection{Learn More}
-% reviews
-
 % overview
-Hansen and Mladenovic provide an in-depth overview of the approach that includes its recent history, extensions and areas of application \cite{Hansen2003}.
+Hansen and Mladenovic provide an overview of the approach that includes its recent history, extensions and a detailed review of the numerous areas of application \cite{Hansen2003}.
+
+% extensions
+There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelize the local search of a neighborhood or parallelize the searching of the neighborhood themselves.
+
+
+NOTES
 
 \begin{itemize}
 	\item Mladenovic and Hansen
@@ -200,12 +193,6 @@ Hansen and Mladenovic provide an in-depth overview of the approach that includes
 	\item (overview) Developments of variable neighborhood search (2001)
 	\item (overview?) Variable neighbourhood search (2002)
 \end{itemize}
-
-
-% extensions
-There are many extensions to Variable Neighborhood Search, not limited to the following: Variable Neighborhood Decomposition Search (VNDS) involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure \cite{Hansen2001}, Skewed Variable Neighborhood Search (SVNS) encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelize the local search of a neighborhood or parallelize the searching of the neighborhood themselves.
-
-
 
 \begin{itemize}
 	\item VARIABLE NEIGHBOURHOOD SEARCH: VNS for Training Neural Networks (chapter 5) (2006) - good overview of some of the different variations on the theme of VNS
