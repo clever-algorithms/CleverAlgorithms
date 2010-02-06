@@ -1,4 +1,4 @@
-% Greedy Random Adaptive Search Procedure
+% Greedy Randomized Adaptive Search Procedure
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -19,12 +19,12 @@
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
-\newcommand{\myreporttitle}{Greedy Random Adaptive Search Procedure}
+\newcommand{\myreporttitle}{Greedy Randomized Adaptive Search Procedure}
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100215}
+\newcommand{\myreportdate}{20100209}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+This report describe the Greedy Randomized Adaptive Search Procedure using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Greedy, Randomized, Adaptive, Search, Procedure, GRASP}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Greedy Randomized Adaptive Search Procedure using the standardized template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,13 +64,16 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Greedy Randomized Adaptive Search Procedure, GRASP
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-todo
+
+it is a metaheuristic
+it is a global search technique that guides a local search
+
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -104,7 +107,52 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
+
+TODO 
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Neighborhoods}{Neighborhoods}
+	\SetKwData{CurrentNeighborhood}{$Neighborhood_{i}$}
+	\SetKwData{Neighborhood}{$Neighborhood_{curr}$}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	% functions
+	\SetKwFunction{Break}{Break}
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{CalculateNeighborhood}{CalculateNeighborhood}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+	\SetKwFunction{RandomSolutionInNeighborhood}{RandomSolutionInNeighborhood}
+  	\SetKwFunction{LocalSearch}{LocalSearch}
+
+	% I/O
+	\KwIn{\Neighborhoods}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \RandomSolution{}\;
+	\While{$\neg$ \StopCondition{}} {
+		\ForEach{\CurrentNeighborhood $\in$ \Neighborhoods} {
+			% determine neighbourhood
+			\Neighborhood $\leftarrow$ \CalculateNeighborhood{\Best, \CurrentNeighborhood}\;
+			% starting point
+			\Candidate $\leftarrow$ \RandomSolutionInNeighborhood{\Neighborhood}\;
+			% local search
+			\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+			% keep best
+			\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
+				\Best $\leftarrow$ \Candidate\;
+				\Break\;
+			}
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code Listing for the Greedy Randomized Adaptive Search Procedure.}
+	\label{alg:grasp}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -113,7 +161,7 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item applied to combinatorial optimization problems
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -121,7 +169,15 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
+Listing~\ref{grasp} provides an example of the Greedy Randomized Adaptive Search Procedure implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+
+% algorithm
 todo
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Greedy Randomized Adaptive Search Procedure algorithm in the Ruby Programming Language, label=grasp]{../../src/algorithms/stochastic/grasp.rb}
 
 
 % References: Deeper understanding
@@ -131,11 +187,22 @@ todo
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
+NOTES: 
+\begin{itemize}
+	\item 
+\end{itemize}
+
+
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
 todo
+
+\begin{itemize}
+	\item (seminal - introduced) \cite{Feo1989}
+	\item (seminal review) \cite{Feo1995}
+\end{itemize}
 
 % 
 % Learn More
@@ -143,6 +210,11 @@ todo
 \subsection{Learn More}
 % historical reviews
 todo
+
+\begin{itemize}
+	\item good review articles \cite{Pitsoulis2002} and \cite{Resende2003}
+	\item annotated bibliography \cite{Festa2002}
+\end{itemize}
 
 
 % 
