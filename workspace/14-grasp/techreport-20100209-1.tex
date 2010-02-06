@@ -72,6 +72,7 @@ Greedy Randomized Adaptive Search Procedure, GRASP
 \label{sec:taxonomy}
 
 it is a metaheuristic
+initially claimed to be a technique for the operational research practitioner
 it is a global search technique that guides a local search
 
 
@@ -114,38 +115,31 @@ TODO
 \begin{algorithm}[ht]
 	\SetLine
 	% data
-	\SetKwData{Neighborhoods}{Neighborhoods}
-	\SetKwData{CurrentNeighborhood}{$Neighborhood_{i}$}
-	\SetKwData{Neighborhood}{$Neighborhood_{curr}$}
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{RCL}{$RCL$}
+	\SetKwData{RCLSize}{$RCL_{size}$}
 	% functions
-	\SetKwFunction{Break}{Break}
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{CalculateNeighborhood}{CalculateNeighborhood}
-	\SetKwFunction{RandomSolution}{RandomSolution}
-	\SetKwFunction{RandomSolutionInNeighborhood}{RandomSolutionInNeighborhood}
+	\SetKwFunction{ConstructRandomSolution}{ConstructRandomSolution}
+	\SetKwFunction{ConstructGreedyRandomizedSolution}{ConstructGreedyRandomizedSolution}
   	\SetKwFunction{LocalSearch}{LocalSearch}
 
 	% I/O
-	\KwIn{\Neighborhoods}
+	\KwIn{\RCLSize}
 	\KwOut{\Best}
   	% Algorithm
-	\Best $\leftarrow$ \RandomSolution{}\;
+	\RCL $\leftarrow 0$\;
+	\Best $\leftarrow$ \ConstructRandomSolution{}\;
 	\While{$\neg$ \StopCondition{}} {
-		\ForEach{\CurrentNeighborhood $\in$ \Neighborhoods} {
-			% determine neighbourhood
-			\Neighborhood $\leftarrow$ \CalculateNeighborhood{\Best, \CurrentNeighborhood}\;
-			% starting point
-			\Candidate $\leftarrow$ \RandomSolutionInNeighborhood{\Neighborhood}\;
-			% local search
-			\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
-			% keep best
-			\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
-				\Best $\leftarrow$ \Candidate\;
-				\Break\;
-			}
+		% greedy randomized solution
+		\Candidate $\leftarrow$ \ConstructGreedyRandomizedSolution{\RCL, \RCLSize}\;
+		% local search
+		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+		% keep best
+		\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ \Candidate\;
 		}
 	}
 	\Return{\Best}\;
@@ -162,6 +156,7 @@ TODO
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item applied to combinatorial optimization problems
+	\item the size of the RCL defines the greediness of the algorithm, too small = too greedy, too large = not greedy enough
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -189,7 +184,7 @@ todo
 
 NOTES: 
 \begin{itemize}
-	\item 
+	\item 2 phase: first construct a solution using an adaptive randomized greedy process, then improve it using a local search technique
 \end{itemize}
 
 
@@ -200,8 +195,10 @@ NOTES:
 todo
 
 \begin{itemize}
-	\item (seminal - introduced) \cite{Feo1989}
-	\item (seminal review) \cite{Feo1995}
+	\item (seminal - introduced) \cite{Feo1989} - set covering, greedy and a probabilistic phase
+	\item seminal application \cite{Feo1991}
+	\item defined in a series of technical reports \cite{Feo1993} later published as \cite{Bard1996}, and \cite{Feo1994} later published as \cite{Feo1996}
+
 \end{itemize}
 
 % 
@@ -212,6 +209,7 @@ todo
 todo
 
 \begin{itemize}
+	\item (seminal review) technique, example application, review of applications \cite{Feo1995}
 	\item good review articles \cite{Pitsoulis2002} and \cite{Resende2003}
 	\item annotated bibliography \cite{Festa2002}
 \end{itemize}
