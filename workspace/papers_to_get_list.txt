@@ -28,5 +28,5 @@ GRASP
 - A GRASP for a difficult single machine scheduling problem (1991): NO LINK
 - A GRASP for scheduling printed wiring board assembly (1993 or 1996): NO LINK
 - A GRASP for single machine scheduling with sequence dependent setup costs and linear delay penalties (1994, or 1996): http://www.sciencedirect.com/science?_ob=ArticleURL&_udi=B6VC5-3VW8HN3-5&_user=10&_coverDate=09/30/1996&_rdoc=1&_fmt=high&_orig=search&_sort=d&_docanchor=&view=c&_searchStrId=1196413001&_rerunOrigin=scholar.google&_acct=C000050221&_version=1&_urlVersion=0&_userid=10&md5=b891d1de00c4e653653f5817b9f96f08
-
+- Semi-greedy heuristics: An empirical study: NO LINK
 
