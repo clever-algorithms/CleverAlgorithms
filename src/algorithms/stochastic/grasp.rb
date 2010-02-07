@@ -6,7 +6,7 @@
 
 MAX_ITERATIONS = 50
 LOCAL_SEARCH_NO_IMPROVEMENTS = 100
-MAX_RCL_SIZE = 5
+GREEDINESS_FACTOR = 0.3
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -56,25 +56,25 @@ def local_search(best, cities, maxNoImprovements)
   return best
 end
 
-def construct_randomized_greedy_solution(cities, maxRCLSize)
+def construct_randomized_greedy_solution(cities, alpha)
   candidate = {}
   candidate[:vector] = [rand(cities.length)]
   allCities = Array.new(cities.length) {|i| i}
   while candidate[:vector].length < cities.length
-    rcl = allCities - candidate[:vector]
-    last = candidate[:vector].last
-    rcl.sort! {|i,j| euc_2d(cities[last], cities[i]) <=> euc_2d(cities[last], cities[j])}
-    rcl.pop until rcl.length <= maxRCLSize
+    candidates = allCities - candidate[:vector]
+    costs = Array.new(candidates.length){|i| euc_2d(cities[candidate[:vector].last], cities[i])}
+    rcl, max, min = [], costs.max, costs.min
+    costs.each_with_index { |c,i| rcl<<candidates[i] if c <= (min + alpha*(max-min)) }  
     candidate[:vector] << rcl[rand(rcl.length)]
   end
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate
 end
 
-def search(cities, maxIterations, maxNoImprovementsLS, maxRCLSize)
+def search(cities, maxIterations, maxNoImprovementsLS, alpha)
   best = nil
   maxIterations.times do |iter|
-    candidate = construct_randomized_greedy_solution(cities, maxRCLSize);
+    candidate = construct_randomized_greedy_solution(cities, alpha);
     candidate = local_search(candidate, cities, maxNoImprovementsLS)
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
@@ -82,5 +82,5 @@ def search(cities, maxIterations, maxNoImprovementsLS, maxRCLSize)
   return best
 end
 
-best = search(BERLIN52, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS, MAX_RCL_SIZE)
+best = search(BERLIN52, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS, GREEDINESS_FACTOR)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
