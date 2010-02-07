@@ -110,7 +110,7 @@ todo
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
 
-TODO 
+can bound RCL using size or an $\alpha \in [0,1]$ on the cost ranges 
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -186,6 +186,7 @@ NOTES:
 \begin{itemize}
 	\item 2 phase: first construct a solution using an adaptive randomized greedy process, then improve it using a local search technique
 	\item sometimes presented as a multi-start procedure, like iterative local search
+	\item small alpha (RCL size) results in a very greedy, larger alpha (1) or larger RCL size results in less greedy. control convergence rates.
 \end{itemize}
 
 
@@ -212,7 +213,7 @@ todo
 
 \begin{itemize}
 
-	\item good review articles \cite{Pitsoulis2002} and \cite{Resende2003}
+	\item good review articles \cite{Pitsoulis2002} and \cite{Resende2003} which provides a good overview of greedy construction process with alpha instead of a fixed size for controlling the process.
 	\item annotated bibliography \cite{Festa2002}
 \end{itemize}
 
