@@ -154,6 +154,21 @@ immune network algorithm & 376 & 41 & 175 & 29 & 116 & 21 & 0.004 \\
 dendritic cell algorithm & 263 & 16 & 104 & 32 & 214 & 2 & 0.002 \\
 b-cell algorithm & 100 & 28 & 64 & 20 & 72 & 4 & 0.002 \\
 
+Kingdom: classical (13)
+steepest descent & 49500 & 2570 & 54200 & 4410 & 46142 & 822 & 0.343 \\
+line search & 63500 & 1610 & 33000 & 2490 & 51285 & 215 & 0.235 \\
+conjugate gradient method & 29900 & 1524 & 34400 & 2504 & 27115 & 551 & 0.207 \\
+newton-raphson method & 19400 & 1670 & 27400 & 1597 & 20955 & 805 & 0.203 \\
+simplex algorithm & 26000 & 1600 & 20600 & 1665 & 21420 & 198 & 0.164 \\
+quasi-newton method & 9310 & 827 & 11500 & 865 & 10179 & 138 & 0.084 \\
+method of steepest descent & 4610 & 990 & 7200 & 385 & 4601 & 69 & 0.072 \\
+gauss-newton algorithm & 2510 & 690 & 3950 & 226 & 2730 & 79 & 0.05 \\
+downhill simplex method & 3080 & 630 & 3640 & 215 & 3007 & 26 & 0.044 \\
+broyden's method & 1140 & 650 & 680 & 87 & 1434 & 16 & 0.038 \\
+nelder-mead method & 1010 & 361 & 1240 & 121 & 1186 & 15 & 0.024 \\
+nonlinear conjugate gradient method & 781 & 172 & 548 & 67 & 572 & 7 & 0.011 \\
+levenberg-marquarft & 8 & 2 & 7 & 2 & 0 & 0 & 0.0 \\
+
 Kingdom: Top 10 Algorithms (10)
 stochastic & genet & 1630000 & 19289 & 1630000 & 84589 & 1023168 & 35 & 5.002 \\
 evolutionary & genetic algorithm & 277000 & 3950 & 381000 & 18477 & 179575 & 16706 & 2.002 \\
@@ -161,7 +176,7 @@ physical & simulated annealing & 132000 & 3400 & 301000 & 10550 & 135606 & 4237 
 stochastic & probably approximate locally optimal & 0 & 8438 & 0 & 0 & 0 & 0 & 0.437 \\
 stochastic & random search & 206000 & 1512 & 32800 & 2874 & 122062 & 413 & 0.403 \\
 swarm & particle swarm optimization & 49500 & 724 & 27800 & 2178 & 15752 & 4195 & 0.377 \\
+classical & steepest descent & 49500 & 2570 & 54200 & 4410 & 46142 & 822 & 0.343 \\
 evolutionary & genetic programming & 62800 & 1467 & 39400 & 4711 & 67511 & 1238 & 0.334 \\
 stochastic & tabu search & 43600 & 1434 & 36200 & 4239 & 36106 & 1045 & 0.271 \\
-evolutionary & es(1+1) & 89100 & 1880 & 9480 & 960 & 10219 & 0 & 0.179 \\
-probabilistic & expectation-maximization algorithm & 14100 & 727 & 14600 & 1194 & 15338 & 1470 & 0.172 \\
+classical & line search & 63500 & 1610 & 33000 & 2490 & 51285 & 215 & 0.235 \\

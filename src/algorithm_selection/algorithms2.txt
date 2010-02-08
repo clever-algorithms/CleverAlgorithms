@@ -141,3 +141,16 @@ Stochastic, Parallel Variable Neighborhood Search
 Stochastic, Reactive Local Search
 Stochastic, Reactive Search
 Stochastic, Stochastic Local Search
+Classical, Steepest Descent
+Classical, Newton-Raphson method
+Classical, Levenberg-Marquarft
+Classical, Conjugate gradient method
+Classical, Quasi-Newton method
+Classical, Broyden's method
+Classical, method of steepest descent
+Classical, Nonlinear conjugate gradient method
+Classical, Gauss-Newton algorithm
+Classical, Line search
+Classical, Simplex algorithm
+Classical, Nelder-Mead method
+Classical, downhill simplex method

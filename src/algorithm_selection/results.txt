@@ -141,3 +141,16 @@ Stochastic, Reactive Local Search,310,65,198,46,307,1
 Stochastic, Skewed Variable Neighborhood Search,6,4,9,3,2,1
 Stochastic, Parallel Variable Neighborhood Search,140,23,90,23,77,0
 Stochastic, Stochastic Local Search,3170,482,2300,452,3634,25
+Classical, Steepest Descent,49500,2570,54200,4410,46142,822
+Classical, Line search,63500,1610,33000,2490,51285,215
+Classical, downhill simplex method,3080,630,3640,215,3007,26
+Classical, Broyden's method,1140,650,680,87,1434,16
+Classical, Levenberg-Marquarft,8,2,7,2,0,0
+Classical, Quasi-Newton method,9310,827,11500,865,10179,138
+Classical, Newton-Raphson method,19400,1670,27400,1597,20955,805
+Classical, Simplex algorithm,26000,1600,20600,1665,21420,198
+Classical, Gauss-Newton algorithm,2510,690,3950,226,2730,79
+Classical, Nelder-Mead method,1010,361,1240,121,1186,15
+Classical, Nonlinear conjugate gradient method,781,172,548,67,572,7
+Classical, Conjugate gradient method,29900,1524,34400,2504,27115,551
+Classical, method of steepest descent,4610,990,7200,385,4601,69
