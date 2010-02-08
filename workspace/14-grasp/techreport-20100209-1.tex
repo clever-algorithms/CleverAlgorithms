@@ -183,8 +183,9 @@ Algorithm~\ref{alg:construction} provides the pseudo-code the Greedy Randomized 
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item applied to combinatorial optimization problems
-	\item the size of the RCL defines the greediness of the algorithm, too small = too greedy, too large = not greedy enough
+	\item The $\alpha$ threshold defines the amount of greediness of the construction mechanism, where values close to 0 may be too greedy, and values close to 1 may be too generalized.
+	\item As an alternative to using the $\alpha$ threshold, the RCL can be constrained to the top $N\%$ of candidate features that may be included each construction cycle.
+	\item The technique was designed for discrete problem classes such as combinatorial optimization problems.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
