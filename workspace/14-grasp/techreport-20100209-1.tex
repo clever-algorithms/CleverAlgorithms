@@ -184,7 +184,7 @@ Algorithm~\ref{alg:construction} provides the pseudo-code the Greedy Randomized 
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The $\alpha$ threshold defines the amount of greediness of the construction mechanism, where values close to 0 may be too greedy, and values close to 1 may be too generalized.
-	\item As an alternative to using the $\alpha$ threshold, the RCL can be constrained to the top $N\%$ of candidate features that may be included each construction cycle.
+	\item As an alternative to using the $\alpha$ threshold, the RCL can be constrained to the top $n\%$ of candidate features that may be included each construction cycle.
 	\item The technique was designed for discrete problem classes such as combinatorial optimization problems.
 \end{itemize}
 
@@ -198,7 +198,9 @@ Listing~\ref{grasp} provides an example of the Greedy Randomized Adaptive Search
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-todo
+The stochastic and greedy step-wise construction of a tour involves evaluating candidate cities by the the cost they contribute as being the next city in the tour. 
+% local search
+The algorithm uses a stochastic 2-opt procedure for the Local Search with a fixed number of non-improving iterations as the stopping condition.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Greedy Randomized Adaptive Search Procedure algorithm in the Ruby Programming Language, label=grasp]{../../src/algorithms/stochastic/grasp.rb}
