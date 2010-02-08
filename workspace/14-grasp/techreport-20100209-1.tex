@@ -73,7 +73,7 @@ Greedy Randomized Adaptive Search Procedure, GRASP
 % where
 The Greedy Randomized Adaptive Search Procedure is a Metaheuristic and Global Optimization algorithm, originally proposed for the Operations Research practitioners.
 % relations
-The iterative application of an embedded Local Search relate the approach to Iterative Local Search.
+The iterative application of an embedded Local Search relate the approach to Iterative Local Search and Multi-Start techniques.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -213,43 +213,25 @@ The algorithm uses a stochastic 2-opt procedure for the Local Search with a fixe
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-NOTES: 
-\begin{itemize}
-	\item 2 phase: first construct a solution using an adaptive randomized greedy process, then improve it using a local search technique
-	\item sometimes presented as a multi-start procedure, like iterative local search
-	\item small alpha (RCL size) results in a very greedy, larger alpha (1) or larger RCL size results in less greedy. control convergence rates.
-\end{itemize}
-
-
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-\begin{itemize}
-	\item (seminal - introduced) \cite{Feo1989} - set covering, greedy and a probabilistic phase
-	\item seminal application \cite{Feo1991}
-	\item defined in a series of technical reports \cite{Feo1993} later published as \cite{Bard1996}, and \cite{Feo1994} later published as \cite{Feo1996}
-	\item (seminal review!) technique, example application, review of applications \cite{Feo1995}
-	\item adaptive randomized greedy procedure uses greedy heuristics \cite{Hart1987}
-\end{itemize}
+% seminal
+The seminal paper that introduces the general approach of stochastic and greedy step-wise construction of candidate solutions is by Feo and Resende \cite{Feo1989}. The general apporach was inspired by greedy heuristics by Hart and Shogan \cite{Hart1987}. The seminal review paper that is cited with the preliminary paper is by Feo and Resende \cite{Feo1995} and provides the first coherent description of the GRASP technique, an example, and review of early applications.
+% early papers
+An early application was by Feo, Venkatraman and Bard for a machine scheduling problem \cite{Feo1991}. Other early applications to scheduling problems include technical reports \cite{Feo1993} (later published as \cite{Bard1996}) and \cite{Feo1994} (also later published as \cite{Feo1996}).
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-todo
-
-\begin{itemize}
-
-	\item good review articles \cite{Pitsoulis2002} and \cite{Resende2003} which provides a good overview of greedy construction process with alpha instead of a fixed size for controlling the process.
-	\item annotated bibliography \cite{Festa2002}
-\end{itemize}
-
-lots of extensions, such as Reactive GRASP for adapting $\alpha$ \cite{Prais2000}, the use of long term memory to allow the technique to learn from candidate solutions discovered in previous iterations, and parallel implementations of the GRASP such as \cite{Pardalos1995} 
-
+% overview
+There are a vast number of review, application, and extension papers for GRASP.
+% reviews
+Pitsoulis and Resende provide an extensive contemporary overview of the field as a review chapter \cite{Pitsoulis2002}, as does Resende and Ribeiro that includes a clear presentation of the use of the $\alpha$ threshold parameter instead of a fixed size for the RCL. Festa and Resende provide an annotated bibliography as a review chapter that provides some needed insight into large amount of study that has gone into the approach \cite{Festa2002}.
+% extensions
+There are numerous extensions to GRASP, not limited to the popular Reactive GRASP for adapting $\alpha$ \cite{Prais2000}, the use of long term memory to allow the technique to learn from candidate solutions discovered in previous iterations, and parallel implementations of the procedure such as `Parallel GRASP' \cite{Pardalos1995} .
 
 
 % 
@@ -258,7 +240,7 @@ lots of extensions, such as Reactive GRASP for adapting $\alpha$ \cite{Prais2000
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Greedy Randomized Adaptive Search Procedure for combinatorial optimization domains that uses an iterative process of stochastic and greedy step-wise construction of candidate solutions, followed by refinement with a Local Search procedure.
 
 % 
 % Contribute
