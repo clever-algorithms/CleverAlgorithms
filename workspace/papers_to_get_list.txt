@@ -23,7 +23,6 @@ Variable Neighborhood Search
 - A variable neighbourhood algorithm for solving the continuous location-allocation problem (1996): NO LINK
 - Developments of variable neighborhood search (2001): NO LINK
 
-
 GRASP
 - A GRASP for a difficult single machine scheduling problem (1991): NO LINK
 - A GRASP for scheduling printed wiring board assembly (1993 or 1996): NO LINK
