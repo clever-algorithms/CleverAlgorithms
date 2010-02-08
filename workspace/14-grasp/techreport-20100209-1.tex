@@ -94,12 +94,48 @@ greedy stochastic construction of a candidate solution followed by a process of 
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
 
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{Alpha}{$\alpha$}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{GreedyRandomizedConstruction}{GreedyRandomizedConstruction}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{ConstructRandomSolution}{ConstructRandomSolution}
+  	\SetKwFunction{LocalSearch}{LocalSearch}
+	% I/O
+	\KwIn{\Alpha}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \ConstructRandomSolution{}\;
+	\While{$\neg$ \StopCondition{}} {
+		% greedy randomized solution
+		\Candidate $\leftarrow$ \GreedyRandomizedConstruction{\Alpha}\;
+		% local search
+		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+		% keep best
+		\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ \Candidate\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code for the Greedy Randomized Adaptive Search Procedure.}
+	\label{alg:grasp}
+\end{algorithm}
+
+Algorithm~\ref{alg:construction} provides the pseudo-code the Greedy Randomized Construction function.
+
+what is the RCL
+what is the process?
 can bound RCL using size or an $\alpha \in [0,1]$ on the cost ranges 
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
-	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Candidate}{$S_{candidate}$}
 	\SetKwData{RCL}{RCL}
 	\SetKwData{Alpha}{$\alpha$}
@@ -110,56 +146,41 @@ can bound RCL using size or an $\alpha \in [0,1]$ on the cost ranges
 	\SetKwData{ProblemFeatureMinCost}{$Fcost_{min}$}
 	\SetKwData{ProblemFeatureMaxCost}{$Fcost_{max}$}
 	\SetKwData{SelectedFeature}{$F_{selected}$}	
-		
 	% functions
-	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{MinCost}{MinCost}
 	\SetKwFunction{MaxCost}{MaxCost}
 	\SetKwFunction{CostImpactOfFeature}{CostOfAddingFeatureToSolution}
 	\SetKwFunction{SelectRandomFeature}{SelectRandomFeature}
-	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{ConstructRandomSolution}{ConstructRandomSolution}
-  	\SetKwFunction{LocalSearch}{LocalSearch}
 
 	% I/O
-	\KwIn{\ProblemSize, \Alpha}
-	\KwOut{\Best}
-  	% Algorithm
-	\RCL $\leftarrow 0$\;
-	\Best $\leftarrow$ \ConstructRandomSolution{}\;
-	\While{$\neg$ \StopCondition{}} {
-		% greedy randomized solution
-		\Candidate $\leftarrow 0$\;
-		\While{\Candidate $\neq$ \ProblemSize} {
-			% calculate
-			\FeatureCosts $\leftarrow 0$\;
-			\For{\ProblemFeature $\notin$ \Candidate}{
-				\FeatureCosts $\leftarrow$ \CostImpactOfFeature{\Candidate, \ProblemFeature}\;
-			}
-			% build RCL
-			\ProblemFeatureMinCost $\leftarrow$ \MinCost{\FeatureCosts}\;
-			\ProblemFeatureMaxCost $\leftarrow$ \MaxCost{\FeatureCosts}\;
-			\For{\ProblemFeatureCost $\in$ \FeatureCosts} {
-				\If{\ProblemFeature $\leq$ $\ProblemFeatureMinCost + \alpha \cdot (\ProblemFeatureMaxCost - \ProblemFeatureMinCost)$ } {
-					\RCL $\leftarrow$ \ProblemFeature\;
-				}
-			}
-			
-			\SelectedFeature $\leftarrow$ \SelectRandomFeature{\RCL}\;
-			\Candidate $\leftarrow$ \SelectedFeature\;
+	\KwIn{\Alpha}
+	\KwOut{\Candidate}
+	% greedy randomized solution
+	\Candidate $\leftarrow 0$\;
+	\While{\Candidate $\neq$ \ProblemSize} {
+		% calculate
+		\FeatureCosts $\leftarrow 0$\;
+		\For{\ProblemFeature $\notin$ \Candidate}{
+			\FeatureCosts $\leftarrow$ \CostImpactOfFeature{\Candidate, \ProblemFeature}\;
 		}
-		% local search
-		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
-		% keep best
-		\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
-			\Best $\leftarrow$ \Candidate\;
+		% build RCL
+		\ProblemFeatureMinCost $\leftarrow$ \MinCost{\FeatureCosts}\;
+		\ProblemFeatureMaxCost $\leftarrow$ \MaxCost{\FeatureCosts}\;
+		\For{\ProblemFeatureCost $\in$ \FeatureCosts} {
+			\If{\ProblemFeature $\leq$ $\ProblemFeatureMinCost + \alpha \cdot (\ProblemFeatureMaxCost - \ProblemFeatureMinCost)$ } {
+				\RCL $\leftarrow$ \ProblemFeature\;
+			}
 		}
+		% select
+		\SelectedFeature $\leftarrow$ \SelectRandomFeature{\RCL}\;
+		\Candidate $\leftarrow$ \SelectedFeature\;
 	}
-	\Return{\Best}\;
+	\Return{\Candidate}\;
 	% caption
-	\caption{Pseudo Code Listing for the Greedy Randomized Adaptive Search Procedure.}
-	\label{alg:grasp}
+	\caption{Pseudo Code Listing for the Greedy Randomized Construction function.}
+	\label{alg:construction}
 \end{algorithm}
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
