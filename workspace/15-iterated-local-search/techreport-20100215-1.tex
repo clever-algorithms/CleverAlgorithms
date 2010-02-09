@@ -157,9 +157,18 @@ Algorithm~\ref{alg:iterative_local_search} provides a pseudo-code listing of the
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
+Listing~\ref{iterated_local_search} provides an example of the Iterated Local Search algorithm implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
+% algorithm
 
-double bridge move is suggested as the perturbation, and 2-opt for the local search for TSP in \cite{Ramalhinho-Lourenco2003}
+double bridge move is discussed as the perturbation, and 2-opt for the local search for TSP in \cite{Ramalhinho-Lourenco2003}
+simple first-pass approach
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Iterated Local Search algorithm in the Ruby Programming Language, label=iterated_local_search]{../../src/algorithms/stochastic/iterated_local_search.rb}
+
 
 
 

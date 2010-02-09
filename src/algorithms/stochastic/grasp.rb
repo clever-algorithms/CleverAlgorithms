@@ -27,11 +27,6 @@ def cost(permutation, cities)
   return distance
 end
 
-def random_permutation(cities)
-  all = Array.new(cities.length) {|i| i}
-  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
-end
-
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.length), rand(perm.length)
