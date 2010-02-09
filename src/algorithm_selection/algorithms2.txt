@@ -154,3 +154,4 @@ Classical, Line search
 Classical, Simplex algorithm
 Classical, Nelder-Mead method
 Classical, downhill simplex method
+Stochastic, Random Restart Algorithm
