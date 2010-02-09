@@ -157,15 +157,12 @@ Listing~\ref{iterated_local_search} provides an example of the Iterated Local Se
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-
-double bridge move is discussed as the perturbation, and 2-opt for the local search for TSP in \cite{Ramalhinho-Lourenco2003}
-simple first-pass approach
-
-double-bridge move (4-opt), break into 4 parts (a,b,c,d), the put it back together (a,d,c,b)
+The Iterative Local Search runs for a fixed number of iterations. The implementation is based on a common algorithm configuration for the TSP, where a `double-bridge move' (4-opt) is used as the perturbation technique, and a stochastic 2-opt is used as the embedded Local Search heuristic.
+% 4 opt
+The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,d) and putting it back together in a specific and jumbled ordering (a,d,c,b)
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Iterated Local Search algorithm in the Ruby Programming Language, label=iterated_local_search]{../../src/algorithms/stochastic/iterated_local_search.rb}
-
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
