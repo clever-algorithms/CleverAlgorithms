@@ -159,7 +159,7 @@ The algorithm is applied to the Berlin52 instance of the Traveling Salesman Prob
 % algorithm
 The Iterative Local Search runs for a fixed number of iterations. The implementation is based on a common algorithm configuration for the TSP, where a `double-bridge move' (4-opt) is used as the perturbation technique, and a stochastic 2-opt is used as the embedded Local Search heuristic.
 % 4 opt
-The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,d) and putting it back together in a specific and jumbled ordering (a,d,c,b)
+The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,d) and putting it back together in a specific and jumbled ordering (a,d,c,b).
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Iterated Local Search algorithm in the Ruby Programming Language, label=iterated_local_search]{../../src/algorithms/stochastic/iterated_local_search.rb}
@@ -171,29 +171,15 @@ The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-NOTES
-\begin{itemize}
-	\item proposed to be a the iterative application of an embedded heuristic to create a sequence of solutions, better than if one were to use repeated random trials with the same heuristic
-	\item more intelligent starting points for local search than stochastically selected points
-	\item \cite{Ramalhinho-Lourenco2003} suggest that the general approach has been used by many authors and in many specialized cases: iterated descent, large-step Markov chains, iterated Lin-Kernighan, chained local optimization
-	\item \cite{Ramalhinho-Lourenco2003} propose constraints on what is an iterative local search: i) a single chain of solutions, the search for improved solutions occurs within a reduced space provided by a black-box heuristic.
-	
-\end{itemize}
-
 
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-\begin{itemize}
-	\item early technical report \cite{Stuetzle1999} for QAP
-	\item another early tech report \cite{Stutzle1998a} permutation flow shop problem
-	\item (seminal?) introductory conference paper \cite{Lourenco2001} - review of related techniques, outlines the framework
-	\item defined in his thesis \cite{Stutzle1998}
-	\item early assessment of TSP for ILS \cite{Stutzle1999}
-\end{itemize}
+% thesis
+The definition and framework for Iterated Local Search was described by St\"utzle in his PhD dissertation \cite{Stutzle1998}. Specifically he proposed constrains on what constitutes an Iterative Local Search algorithm as i) a single chain of candidate solutions, and ii) the method used to improve candidate solutions occurs within a reduced space by a black-box heuristic.
+% does not ref self
+St\"utzle does not take credit for the approach, instead highlighting specific instances of his Iterated Local Search from the literature, such as \ldots
 
 % 
 % Learn More
@@ -203,7 +189,24 @@ todo
 todo
 
 \begin{itemize}
+	\item early technical report \cite{Stuetzle1999} for QAP
+	\item another early tech report \cite{Stutzle1998a} permutation flow shop problem
+	\item (seminal?) introductory conference paper \cite{Lourenco2001} - review of related techniques, outlines the framework
+
+	\item early assessment of TSP for ILS \cite{Stutzle1999}
+\end{itemize}
+
+\begin{itemize}
 	\item great review article \cite{Ramalhinho-Lourenco2003} - framework for the general approach, considers examples of generating initial solutions, perturbation techniques, local search techniques, and acceptance criterion. examples with TSP, QAP, 
+\end{itemize}
+
+NOTES
+\begin{itemize}
+	\item proposed to be a the iterative application of an embedded heuristic to create a sequence of solutions, better than if one were to use repeated random trials with the same heuristic
+	\item more intelligent starting points for local search than stochastically selected points
+	\item \cite{Ramalhinho-Lourenco2003} suggest that the general approach has been used by many authors and in many specialized cases: iterated descent, large-step Markov chains, iterated Lin-Kernighan, chained local optimization
+
+	
 \end{itemize}
 
 % 
