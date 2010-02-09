@@ -4,8 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-MAX_ITERATIONS = 50
-LOCAL_SEARCH_NO_IMPROVEMENTS = 100
+MAX_ITERATIONS = 100
+LOCAL_SEARCH_NO_IMPROVEMENTS = 50
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -55,15 +55,27 @@ def local_search(best, cities, maxNoImprovements)
   return best
 end
 
-def perturbation(cities, candidate)
-  
+def double_bridge_move(perm)
+  pos1 = 1 + rand(perm.length / 4)
+  pos2 = pos1 + 1 + rand(perm.length / 4)
+  pos3 = pos2 + 1 + rand(perm.length / 4)
+  return perm[0...pos1] + perm[pos3..perm.length] + perm[pos2...pos3] + perm[pos1...pos2]
 end
 
-def search(cities, maxIterations, maxNoImprovementsLS, alpha)
+def perturbation(cities, best)
+  candidate = {}
+  candidate[:vector] = double_bridge_move(best[:vector])
+  candidate[:cost] = cost(candidate[:vector], cities)
+  return candidate
+end
+
+def search(cities, maxIterations, maxNoImprovementsLS)
   best = {}
-  candidate[:vector] = random_permutation()
+  best[:vector] = random_permutation(cities)
+  best[:cost] = cost(best[:vector], cities)
+  best = local_search(best, cities, maxNoImprovementsLS)
   maxIterations.times do |iter|
-    candidate = construct_randomized_greedy_solution(cities, alpha);
+    candidate = perturbation(cities, best)
     candidate = local_search(candidate, cities, maxNoImprovementsLS)
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
@@ -71,5 +83,5 @@ def search(cities, maxIterations, maxNoImprovementsLS, alpha)
   return best
 end
 
-best = search(BERLIN52, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS, GREEDINESS_FACTOR)
+best = search(BERLIN52, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
