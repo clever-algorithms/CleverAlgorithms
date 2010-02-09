@@ -166,6 +166,8 @@ The algorithm is applied to the Berlin52 instance of the Traveling Salesman Prob
 double bridge move is discussed as the perturbation, and 2-opt for the local search for TSP in \cite{Ramalhinho-Lourenco2003}
 simple first-pass approach
 
+double-bridge move (4-opt), break into 4 parts (a,b,c,d), the put it back together (a,d,c,b)
+
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Iterated Local Search algorithm in the Ruby Programming Language, label=iterated_local_search]{../../src/algorithms/stochastic/iterated_local_search.rb}
 
@@ -192,6 +194,10 @@ NOTES
 % 
 \subsection{Primary Sources}
 todo
+
+\begin{itemize}
+	\item early technical report \cite{Stuetzle1999}
+\end{itemize}
 
 % 
 % Learn More
