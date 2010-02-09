@@ -80,14 +80,9 @@ It is an extension of Mutli-Restart Search and may be considered a parent of man
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of Iterative Local Search is to improve upon stochastic Mutli-Restart Search by sampling in the broader neighborhood of candidate solutions and using a Local Search technique to refine solutions to their local optima.
 % What is a techniques plan of action?
-
-proposed to be a the iterative application of an embedded heuristic to create a sequence of solutions, better than if one were to use repeated random trials with the same heuristic
-
-more intelligent starting points for local search than stochastically selected points
-
-it is an extension to random restart for a local search
-restarts are made by making stochastic perturbations to the current best solution
+Iterative Local Search explores a sequence of solutions created as perturbations of the current best solution, the result of which is refined using an embedded heuristic, most commonly a Local Search algorithm.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -96,7 +91,6 @@ restarts are made by making stochastic perturbations to the current best solutio
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:iterative_local_search} provides a pseudo-code listing of the Iterative Local Search algorithm for minimizing a cost function.
-
 
 \begin{algorithm}[ht]
 	\SetLine
