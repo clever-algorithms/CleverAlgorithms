@@ -137,15 +137,14 @@ Algorithm~\ref{alg:iterative_local_search} provides a pseudo-code listing of the
 % What are the guidelines for the application of a technique to a problem instance?
 
 \begin{itemize}
-	\item the perturbation should not easily be undone
-	\item the local search technique should be problem specific
-	\item can use random initial solution, or a heuristically created solution, like NN
-	\item perturbation - random move in a local neighborhood bigger than the one considered by the local search
-	\item perturbations can be deterministic, stochastic, or probabilistic (adaptive), prefer the latter two
-	\item can store as much or little history as possible. no history is the most common, more history may mean more improvement in the search (more information known about problem space). no history is a random walk in a larger neighborhood.
-	\item simplest acceptance criteria is improvement in quality of the result, could use more advanced things like probabilistic acceptance, etc.
-	\item perturbations that are too small makes the algorithm too greedy, too large and the search becomes more random - control of exploration/exploitation
-	\item there is a balance between perturbation and acceptance criteria as to how much exploration/exploitation the algorithm performs
+	\item Iterative Local Search was designed and has been predominately applied to discrete domains, such as classes of combinatorial optimization problems.
+	\item The perturbation of the current best solution should be in a neighborhood beyond the reach of the embedded heuristic and should not be easily undone.
+	\item Perturbations that are too small make the algorithm too greedy, perturbations that are too large make the algorithm too stochastic.
+	\item The embedded heuristic is most commonly a problem-specific local search technique.
+	\item The starting point for the search may be a randomly constructed candidate solution, or constructed using a problem-specific heuristic (such as nearest neighbor).
+	\item Perturbations can be made deterministically, although stochastic and probabilistic (adaptive based on history) are the most common.
+	\item The procedure may store as much or as little history as needed to be used during perturbation and acceptance criteria. No history represents a random walk in a larger neighborhood of the  best solution and is the most common implementation of the approach.
+	\item The simplest and most common acceptance criteria is an improvement in the cost of constructed candidate solutions.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
