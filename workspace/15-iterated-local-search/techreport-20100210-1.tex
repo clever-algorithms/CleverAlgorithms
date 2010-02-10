@@ -179,35 +179,18 @@ The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,
 % thesis
 The definition and framework for Iterated Local Search was described by St\"utzle in his PhD dissertation \cite{Stutzle1998}. Specifically he proposed constrains on what constitutes an Iterative Local Search algorithm as i) a single chain of candidate solutions, and ii) the method used to improve candidate solutions occurs within a reduced space by a black-box heuristic.
 % does not ref self
-St\"utzle does not take credit for the approach, instead highlighting specific instances of his Iterated Local Search from the literature, such as \ldots
+St\"utzle does not take credit for the approach, instead highlighting specific instances of his Iterated Local Search from the literature, such as `iterated descent' \cite{Baum1986}, `large-step Markov chains' \cite{Martin1991}, `iterated Lin-Kernighan' \cite{Johnson1990}, `chained local optimization' \cite{Martin1996}, as well as \cite{Baxter1981} that introduces the principle, and \cite{Johnson1997} that summarizes it (list taken from \cite{Ramalhinho-Lourenco2003})
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-todo
-
-\begin{itemize}
-	\item early technical report \cite{Stuetzle1999} for QAP
-	\item another early tech report \cite{Stutzle1998a} permutation flow shop problem
-	\item (seminal?) introductory conference paper \cite{Lourenco2001} - review of related techniques, outlines the framework
-
-	\item early assessment of TSP for ILS \cite{Stutzle1999}
-\end{itemize}
-
-\begin{itemize}
-	\item great review article \cite{Ramalhinho-Lourenco2003} - framework for the general approach, considers examples of generating initial solutions, perturbation techniques, local search techniques, and acceptance criterion. examples with TSP, QAP, 
-\end{itemize}
-
-NOTES
-\begin{itemize}
-	\item proposed to be a the iterative application of an embedded heuristic to create a sequence of solutions, better than if one were to use repeated random trials with the same heuristic
-	\item more intelligent starting points for local search than stochastically selected points
-	\item \cite{Ramalhinho-Lourenco2003} suggest that the general approach has been used by many authors and in many specialized cases: iterated descent, large-step Markov chains, iterated Lin-Kernighan, chained local optimization
-
-	
-\end{itemize}
+% early applications
+Two early technical reports by St\"utzle that present applications of Iterated Local Search include \cite{Stuetzle1999} on the Quadratic Assignment Problem, and \cite{Stutzle1998a} on the permutation flow shop problem. An early published paper is by St\"utzle and Hoos studying Iterated Local Search for to the TSP \cite{Stutzle1999}. 
+% review
+Lourenco, Martin, and St\"utzle provides a concise presentation of the technique, related techniques and the framework much as it is presented in St\"utzle's dissertation \cite{Lourenco2001}.
+% best review
+The same author's preset an authoritative summary of the approach and its applications as a book chapter \cite{Ramalhinho-Lourenco2003}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
