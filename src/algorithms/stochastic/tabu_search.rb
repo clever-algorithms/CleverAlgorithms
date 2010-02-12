@@ -4,8 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-MAX_ITERATIONS = 100
-LOCAL_SEARCH_NO_IMPROVEMENTS = 50
+MAX_ITERATIONS = 200
+LOCAL_SEARCH_NO_IMPROVEMENTS = 100
 TABU_LIST_SIZE = 10
 CANDIDATE_LIST_SIZE = 20
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
@@ -86,7 +86,7 @@ def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovem
   tabuList = Array.new(tabuListSize * 2)
   maxIterations.times do |iter|
     candidates = Array.new(candidateListSize) {|i| generate_candidate(best, tabuList, cities)}
-    candidates.sort! {|x,y| y.first[:cost] <=> x.first[:cost]}
+    candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     bestCandidate = candidates.first[0]
     bestCandidateEdges = candidates.first[1]
     if(bestCandidate[:cost] < best[:cost])
