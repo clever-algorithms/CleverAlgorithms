@@ -80,8 +80,9 @@ Tabu Search is a parent for a large family of derivative approaches that introdu
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective for the Tabu Search algorithm is to constrain an embedded heuristic from visiting already visited areas of the search space repeatedly. 
 % What is a techniques plan of action?
-todo
+The strategy of the approach is to maintain a short term memory of the specific changes of recent moves within the search space and preventing future moves from undoing those changes. Additional intermediate term structures may be introduced to bias moves toward promising areas of the search space, as well as longer term memory structures that promote a general diversity in the search across the search space. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
