@@ -77,7 +77,7 @@ def search(cities, maxIterations, maxNoImprovementsLS)
   maxIterations.times do |iter|
     candidate = perturbation(cities, best)
     candidate = local_search(candidate, cities, maxNoImprovementsLS)
-    best = candidate if best.nil? or candidate[:cost] < best[:cost]
+    best = candidate if candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
