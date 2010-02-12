@@ -4,10 +4,10 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-MAX_ITERATIONS = 200
-LOCAL_SEARCH_NO_IMPROVEMENTS = 100
-TABU_LIST_SIZE = 10
-CANDIDATE_LIST_SIZE = 20
+MAX_ITERATIONS = 100
+LOCAL_SEARCH_NO_IMPROVEMENTS = 50
+TABU_LIST_SIZE = 15
+CANDIDATE_LIST_SIZE = 50
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -51,7 +51,7 @@ def generate_initial_solution(cities, maxNoImprovements)
     candidate = {}
     candidate[:vector] = stochastic_two_opt(best[:vector])[0]
     candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] < best[:cost]
+    if candidate[:cost] <= best[:cost]
       noImprovements, best = 0, candidate
     else
       noImprovements += 1      
@@ -83,7 +83,7 @@ end
 
 def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovementsLS)
   best = generate_initial_solution(cities, maxNoImprovementsLS)
-  tabuList = Array.new(tabuListSize * 2)
+  tabuList = Array.new(tabuListSize)
   maxIterations.times do |iter|
     candidates = Array.new(candidateListSize) {|i| generate_candidate(best, tabuList, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
