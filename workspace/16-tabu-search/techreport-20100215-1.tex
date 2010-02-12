@@ -159,14 +159,25 @@ Algorithm~\ref{alg:tabu_search} provides a pseudo-code listing of the Tabu Searc
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{tabu_search} provides an example of the Iterated Local Search algorithm implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
+% algorithm
 seminal papers on tabu search for TSP: Knox \cite{Knox1994} based on his dissertation work
 considering a parallel version \cite{Fiechter1994}
 
+
+initialized with a stochastic local search - stochastic 2-opt
 it is about the moves made by the search. tabu the edges that are deleted in a 2-opt so they cannot be re-added again for a while
+neighborhood is stochastic - 2-opt moves
+fixed tabu list size 
+fixed candidate list size
 
 
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Tabu Search algorithm in the Ruby Programming Language, label=tabu_search]{../../src/algorithms/stochastic/tabu_search.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
