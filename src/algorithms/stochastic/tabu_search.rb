@@ -6,6 +6,7 @@
 
 MAX_ITERATIONS = 100
 LOCAL_SEARCH_NO_IMPROVEMENTS = 50
+TABU_LIST_SIZE = 10
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -37,7 +38,7 @@ def stochastic_two_opt(permutation)
   c2 = rand(perm.length) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
-  return perm
+  return perm, [c1,c2]
 end
 
 def local_search(best, cities, maxNoImprovements)
@@ -55,20 +56,32 @@ def local_search(best, cities, maxNoImprovements)
   return best
 end
 
-def search(cities, maxIterations, maxNoImprovementsLS)
+def generate_candidate(best)
+  candidate = {}
+  candidate[:vector], edge = stochastic_two_opt(best[:vector])
+  candidate[:cost] = cost(candidate[:vector], cities)
+  return candidate, edge
+end
+
+def search(cities, listSize, maxIterations, maxNoImprovementsLS)
   best = {}
   best[:vector] = random_permutation(cities)
   best[:cost] = cost(best[:vector], cities)
   best = local_search(best, cities, maxNoImprovementsLS)
-  tabu_list = []
+  tabu_list = Array.new(listSize)
   maxIterations.times do |iter|
+    candidate, edge = generate_candidate(best)
+    if(candidate[:cost] < best[:cost])
+      best = candidate
+    else
+      
+    end
     
     
-    best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
 end
 
-best = search(BERLIN52, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS)
+best = search(BERLIN52, TABU_LIST_SIZE, MAX_ITERATIONS, LOCAL_SEARCH_NO_IMPROVEMENTS)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
