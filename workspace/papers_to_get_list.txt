@@ -34,3 +34,4 @@ Tabu Search
 - A parallel tabu search algorithm for large traveling salesman problems: http://www.sciencedirect.com/science?_ob=ArticleURL&_udi=B6TYW-45DHW2M-11&_user=10&_coverDate=07/06/1994&_rdoc=1&_fmt=high&_orig=search&_sort=d&_docanchor=&view=c&_acct=C000050221&_version=1&_urlVersion=0&_userid=10&md5=1624e3d394eaf14cfb448d12ee921b70
 Serial and parallel search techniques for the traveling salesman problem: NO LINK
 - A user's guide to tabu search: http://www.springerlink.com/content/k607q47112622n45/
+- Some Convergence Results for Probabilistic Tabu Search: http://joc.journal.informs.org/cgi/content/abstract/4/1/32
