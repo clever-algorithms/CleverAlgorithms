@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100219}
+\newcommand{\myreportdate}{20100215}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -131,11 +131,27 @@ todo
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
+NOTES
+\begin{itemize}
+	\item adds memory to the search, penalizes exploring the same solutions in the search space, encourages exploration
+	\item proposed to prevent cycling of candidate solutions when using a local search with restart (multi-search)
+	\item tabu list - memory of solutions visited, or components, held for a fixed tabu tenure 
+	\item can have short, medium, and long term memory added to the search
+	\item designed for combinatorial optimization
+\end{itemize}
+
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
 todo
+
+\begin{itemize}
+	\item (initially proposed) using surrogate constraints on integer programming problems \cite{Glover1977}
+	\item (seminal) applied to scheduling employees to duty rosters \cite{Glover1986a}
+	\item (seminal) introduced and applied to the TSP \cite{Glover1986}, proposed as a meta-heuristic
+	\item (seminal overview) \cite{Glover1989} (follow up to seminal!) \cite{Glover1990}
+\end{itemize}
 
 % 
 % Learn More
@@ -143,6 +159,11 @@ todo
 \subsection{Learn More}
 % historical reviews
 todo
+
+\begin{itemize}
+	\item even published in Science \cite{Cvijovic1995} - considers continuous function optimization
+	\item the book `Tabu Search' is the place for more info \cite{Glover1998} - principles of the technique in detail, applications in detail
+\end{itemize}
 
 
 % 
