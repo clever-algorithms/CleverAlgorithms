@@ -162,6 +162,8 @@ Algorithm~\ref{alg:tabu_search} provides a pseudo-code listing of the Tabu Searc
 % What are the guidelines for the application of a technique to a problem instance?
 
 \begin{itemize}
+	\item intermediate memory (recency) can be used to focus the search on interesting areas of the search space (intensification)
+	\item long term memory can be used to encourage more useful exploration (diversification) - forcing new solutions with rarely used components, add biases away from the most commonly used components such as based on overall usage frequencies
 	\item candidates may be selected deterministically (entire neighborhood) or stochastically with a fixed size (trade-off of accuracy and efficiency)
 \end{itemize}
 
@@ -234,7 +236,7 @@ todo
 	\item even published in Science \cite{Cvijovic1995} - considers continuous function optimization
 	\item a high-level introduction to the technique \cite{Glover1990a} - a tutorial
 	\item the book `Tabu Search' is the place for more info \cite{Glover1998} - principles of the technique in detail, applications in detail
-	\item a contemporary review \cite{Gendreau2003}
+	\item a contemporary review \cite{Gendreau2003} - good overview of best practice usage and lessons learned
 \end{itemize}
 
 
@@ -245,6 +247,10 @@ todo
 \label{sec:conclusions}
 % report
 todo
+
+
+% usage
+\cite{Gendreau2003}  provides some good heuristics for applying a previously unknown technique to a problem - can be generalized for all metaheuristics. useful for basis of advanced topics in this project
 
 % 
 % Contribute
