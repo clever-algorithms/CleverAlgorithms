@@ -10,7 +10,7 @@ This is a repository for the Clever Algorithms project for hosting, versioning, 
 
 h2. Outcomes
 
-A listing of outcomes and deliverables from the project.
+This section contains a listing of outcomes and deliverables from the project.
 
 h3. Book Manuscripts
 
@@ -54,23 +54,24 @@ h3. Software
 
 h3. Other
 
-* "Clever Algorithms Paper Search":http://www.google.com/cse/home?cx=008815027030234776554:pwu9jj_wkb8 An aggregate search using Google's 'custom search' service. Searches across the whole internet, biased towards google scholar, google books, IEEE explore, springer link, ACM digital library, and scirus. Useful for searching for all useful sources for a given technique name.
+* "Clever Algorithms Paper Search":http://www.google.com/cse/home?cx=008815027030234776554:pwu9jj_wkb8 : An aggregate search using Google's 'custom search' service. Searches across the whole internet, biased towards google scholar, google books, IEEE explore, springer link, ACM digital library, and scirus. Useful for searching for all useful sources for a given technique name.
 
 h2. Breakdown
 
 This project is partitioned into five efforts:
-
-* *workspace/* A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
-* *book/* The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
-* *web/* A webpage used to promote the project with a specialized content management system tailored to the content of the book.
-* *src/* Complete source code for the examples provided in the book. Examples are provided in the Ruby programming language.
-* *deprecated/*: A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
+* "book/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/book/ : The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
+* "web/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/web/ : A webpage used to promote the project with a specialized content management system tailored to the content of the book.
+* "deprecated/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/deprecated/ : A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
+* "src/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/ : Complete source code for the examples provided in the book as well as programs prepared during the development of the content for the book. Algorithm examples are provided in the Ruby programming language.
+* "workspace/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace/ : A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
 
 h2. Contribute
 
-Found a typo in some content or a bug in the source code? Are you an expert in a and know some facts that could improve an algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
+Found a typo in some content or a bug in the source code? Are you an expert in a given area and know some facts that could improve an algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
 
-Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is wrong by default. Please help to make this work less wrong!
+Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is wrong by default. 
+
+*Please help to make this work less wrong!*
 
 You may want to:
 * Email the author: "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com
@@ -87,4 +88,4 @@ h2. License
 
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
 
-Why release everything openly and under a permissive license? Because I agree that "_obscurity is a far greater threat to authors and creative artists than piracy_" -- "Tim O'Reilly":http://openp2p.com/lpt/a/3015  
+Why would I release all of the work product from this project under a permissive license? Because I agree with "Tim O'Reilly":http://openp2p.com/lpt/a/3015 that "_obscurity is a far greater threat to authors and creative artists than piracy_". It is more important to me that the outcomes of this project are read and used than be treated as a revenue generating commodity.
