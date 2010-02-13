@@ -64,31 +64,16 @@ This report describes the Scatter Search algorithm using the standardized templa
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Scatter Search, SS
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-todo
+metaheuristic, global optimization, evolutionary algorithm (population-based)
 
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\section{Inspiration}
-\label{sec:inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-todo
+a sibling of tabu search 
 
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\section{Metaphor}
-\label{sec:metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -113,7 +98,8 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item prefer small population sizes (such as 20 solutions or less)
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -133,7 +119,12 @@ todo
 
 NOTES
 \begin{itemize}
-	\item 
+	\item general form is called path relinking (different technique?), claimed to be an evolutionary method
+	\item for combinatorial optimization as well as non-linear programming 
+	\item a population-based approach - maintains a set of `reference solutions' - algorithm operates on a reference set, generating new solutions that are assessed, some of which replace members of the reference set
+	\item uses a linear crossover algorithm to create new samples
+	\item selects two or more candidates from the reference set to create a new sample
+	\item can partition the reference set into tiers, apply rules for recombining from different tiers, as well as replacement
 \end{itemize}
 
 % 
@@ -142,12 +133,22 @@ NOTES
 \subsection{Primary Sources}
 todo
 
+\begin{itemize}
+	\item (seminal) proposal of technique: surrogate constraints for integer programming problems - knapsack problem, Glover \cite{Glover1977} - same source as Tabu Search!?. approach actually named, based on work in 1967 (Heuristics in Integer Programming)
+	\item 
+\end{itemize}
+
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % historical reviews
 todo
+
+\begin{itemize}
+	\item the based reference work is the book \cite{Laguna2003} including principles of the approach, tutorial applications to standard problems (nonlinear optimization, knapsack, linear ordering - sample code in the C programming language), advanced topics and review of applications
+	\item a template for specializing the technique \cite{Glover1998a}
+\end{itemize}
 
 
 % 
