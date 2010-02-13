@@ -150,7 +150,7 @@ Algorithm~\ref{alg:tabu_search} provides a pseudo-code listing of the Tabu Searc
 	\item Tabu search was designed to manage an embedded hill climbing heuristic, although may be adapted to manage any solution neighborhood exploration heuristic.
 	\item Tabu search was designed for, and has predominately been applied to discrete domains such as combinatorial optimization problems.
 	\item Candidates for neighboring moves can be generated deterministically for the entire neighborhood or the neighborhood can be stochastically sampled to a fixed size, trading off accuracy for efficiency. 
-	\item Intermediate-term memory structures can be introduced (complementing the short-term memory) to focus the search on promising areas of the search space, called intensification.
+	\item Intermediate-term memory structures can be introduced (complementing the short-term memory) to focus the search on promising areas of the search space, called aspiration or intensification.
 	\item Long-term memory structures can be introduced (complementing the short-term memory) to encourage useful exploration of the broader search space, called diversification. Strategies may include generating solutions with rarely used components and biasing generation away from the most commonly used solution components.
 \end{itemize}
 
@@ -176,46 +176,25 @@ The algorithm is an implementation of the simple Tabu Search with a short term m
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-NOTES
-\begin{itemize}
-	\item adds memory to the search, penalizes exploring the same solutions in the search space, encourages exploration
-	\item proposed to prevent cycling of candidate solutions when using a local search with restart (multi-search)
-	\item tabu list - memory of solutions visited, or components, held for a fixed tabu tenure 
-	\item can have short, medium, and long term memory added to the search
-	\item designed for combinatorial optimization
-	\item focuses of components or attributes of solutions
-	\item flexible memory structures, strategic restrictions, aspiration levels
-	\item it is a technique for improving the efficiency of the search, also escaping local optima
-\end{itemize}
-
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-\begin{itemize}
-	\item (initially proposed ideas) using surrogate constraints on integer programming problems \cite{Glover1977}
-	\item (seminal) applied to scheduling employees to duty rosters \cite{Glover1986a}
-	\item (seminal) introduced and applied to the TSP \cite{Glover1986}, proposed as a meta-heuristic
-	\item (seminal overview) \cite{Glover1989} (follow up to seminal!) \cite{Glover1990} - advanced topics
-\end{itemize}
+% seminal
+Tabu Search was introduced by Glover applied to scheduling employees to duty rosters \cite{Glover1986a} and a more general overview in the context of the TSP \cite{Glover1986}, based on his previous work on surrogate constraints on integer programming problems \cite{Glover1977}.
+% seminal reviews
+Glover provided a seminal overview of the algorithm in a two-part journal article, the first of which introduced the algorithm, and reviewed then-recent applications \cite{Glover1989}, and the second which focused on advanced topics and open areas of research \cite{Glover1990}. 
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % historical reviews
-todo
-
-\begin{itemize}
-	\item a practical introduction to the technique \cite{Glover1993} - user's guide
-	\item even published in Science \cite{Cvijovic1995} - considers continuous function optimization
-	\item a high-level introduction to the technique \cite{Glover1990a} - a tutorial
-	\item the book `Tabu Search' is the place for more info \cite{Glover1998} - principles of the technique in detail, applications in detail
-	\item a contemporary review \cite{Gendreau2003} - good overview of best practice usage and lessons learned
-\end{itemize}
-
+Glover provides a high-level introduction to Tabu Search in the form of a practical tutorial \cite{Glover1990a}, as does Glover and Taillard in a user guide format \cite{Glover1993}. 
+% best 
+The best source of information for Tabu Search is the book dedicated to the approach by Glover and Laguna that covers the principles of the technique in detail as well as an in-depth review of applications \cite{Glover1998}.
+% other
+The approach appeared in Science that considered an modification for application to continuous function optimization problems \cite{Cvijovic1995}. Finally, Gendreau provides an excellent contemporary review of the algorithm, highlighting best practices and application heuristics collected from across the field of study \cite{Gendreau2003}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
