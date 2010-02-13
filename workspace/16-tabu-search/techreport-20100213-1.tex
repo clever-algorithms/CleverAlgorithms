@@ -146,11 +146,12 @@ Algorithm~\ref{alg:tabu_search} provides a pseudo-code listing of the Tabu Searc
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-
 \begin{itemize}
-	\item intermediate memory (recency) can be used to focus the search on interesting areas of the search space (intensification)
-	\item long term memory can be used to encourage more useful exploration (diversification) - forcing new solutions with rarely used components, add biases away from the most commonly used components such as based on overall usage frequencies
-	\item candidates may be selected deterministically (entire neighborhood) or stochastically with a fixed size (trade-off of accuracy and efficiency)
+	\item Tabu search was designed to manage an embedded hill climbing heuristic, although may be adapted to manage any solution neighborhood exploration heuristic.
+	\item Tabu search was designed for, and has predominately been applied to discrete domains such as combinatorial optimization problems.
+	\item Candidates for neighboring moves can be generated deterministically for the entire neighborhood or the neighborhood can be stochastically sampled to a fixed size, trading off accuracy for efficiency. 
+	\item Intermediate-term memory structures can be introduced (complementing the short-term memory) to focus the search on promising areas of the search space, called intensification.
+	\item Long-term memory structures can be introduced (complementing the short-term memory) to encourage useful exploration of the broader search space, called diversification. Strategies may include generating solutions with rarely used components and biasing generation away from the most commonly used solution components.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -163,17 +164,7 @@ Listing~\ref{tabu_search} provides an example of the Iterated Local Search algor
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-seminal papers on tabu search for TSP: Knox \cite{Knox1994} based on his dissertation work
-considering a parallel version \cite{Fiechter1994}
-
-
-initialized with a stochastic local search - stochastic 2-opt
-it is about the moves made by the search. tabu the edges that are deleted in a 2-opt so they cannot be re-added again for a while
-neighborhood is stochastic - 2-opt moves
-fixed tabu list size
-fixed candidate list size
-simple tabu search
-
+The algorithm is an implementation of the simple Tabu Search with a short term memory structure that executes for a fixed number of iterations. The starting point for the search is prepared using a random permutation that is refined using a stochastic 2-opt Local Search procedure. The stochastic 2-opt procedure is used as the embedded hill climbing heuristic with a fixed sized candidate list. The two edges that are deleted in each 2-opt move are stored on the tabu list. This general approach is similar to that used by Knox in his work on Tabu Search for symmetrical TSP \cite{Knox1994} and Fiechter for the Parallel Tabu search for the TSP \cite{Fiechter1994}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Tabu Search algorithm in the Ruby Programming Language, label=tabu_search]{../../src/algorithms/stochastic/tabu_search.rb}
