@@ -93,41 +93,63 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 
 scatter search does not have a specific form - rather it describes an abstract procedure. can specify it with operator and domain specific functions
 
-this section presents the abstract form of the approach.
+this section presents the abstract form of the approach based on the template \cite{Glover1998a}
 
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
-	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Candidate}{$S_{candidate}$}
-	\SetKwData{SearchHistory}{SearchHistory}
+	\SetKwData{ithCandidate}{$S_{i}$}
+	\SetKwData{ithCandidatePrime}{$S\prime_{i}$}
+	\SetKwData{CandidatePrime}{$S\prime_{candidate}$}
+	\SetKwData{CandidatePrimePrime}{$S\prime\prime_{candidate}$}
+	\SetKwData{ReferenceSet}{ReferenceSet}
+	\SetKwData{ReferenceSetSize}{$ReferenceSet_{size}$}
+	\SetKwData{ReferenceSubset}{ReferenceSubset}
+	\SetKwData{RecombinedSet}{RecombinedSet}
+	\SetKwData{CandidateSet}{CandidateSet}
+	
 	% functions
 	\SetKwFunction{Cost}{Cost}
-	\SetKwFunction{Perturbation}{Perturbation}
+	\SetKwFunction{DiversifySolution}{DiversifySolution}
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
   	\SetKwFunction{LocalSearch}{LocalSearch}
-	\SetKwFunction{AcceptanceCriterion}{AcceptanceCriterion}
+	\SetKwFunction{SelectSubset}{SelectSubset}
+	\SetKwFunction{Recombine}{Recombine}
+	\SetKwFunction{SelectBest}{SelectBest}
+	
 	% I/O
-	\KwIn{}
-	\KwOut{\Best}
+	\KwIn{\ReferenceSetSize}
+	\KwOut{\ReferenceSet}
   	% Algorithm
-	\Best $\leftarrow$ \ConstructInitialSolution{}\;
-	\Best $\leftarrow$ \LocalSearch{}\;
-	\SearchHistory $\leftarrow$ \Best\;
-	\While{$\neg$ \StopCondition{}} {
-		% greedy randomized solution
-		\Candidate $\leftarrow$ \Perturbation{\Best, \SearchHistory}\;
-		% local search
-		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
-		\SearchHistory $\leftarrow$ \Candidate\;
-		% keep best
-		\If{\AcceptanceCriterion{\Best, \Candidate, \SearchHistory}} {
-			\Best $\leftarrow$ \Candidate\;
-		}
+	\While{\ReferenceSet $<$ \ReferenceSetSize} {
+		% generate seed
+		\Candidate $\leftarrow$ \ConstructInitialSolution{}\;
+		% diversify seed
+		\CandidatePrime $\leftarrow$ \DiversifySolution{\Candidate}\;
+		% refine
+		\CandidatePrimePrime $\leftarrow$ \LocalSearch{\CandidatePrime}\;
+		% store
+		\ReferenceSet $\leftarrow$ \CandidatePrimePrime\;
 	}
-	\Return{\Best}\;
+	% loop
+	\While{$\neg$ \StopCondition{}} {
+		% select subset of reference set
+		\ReferenceSubset $\leftarrow$ \SelectSubset{\ReferenceSet}\;
+		% recombine  
+		\RecombinedSet $\leftarrow$ \Recombine{\ReferenceSubset}\;
+		% improve
+		\CandidateSet $\leftarrow 0$\;
+		\For{\ithCandidate $\in$ \RecombinedSet}{
+			\ithCandidatePrime $\leftarrow$ \LocalSearch{\ithCandidate}\;
+			\CandidateSet $\leftarrow$ \ithCandidatePrime\;
+		}
+		% update reference set
+		\ReferenceSubset $\leftarrow$ \SelectBest{\ReferenceSubset, \CandidateSet, \ReferenceSetSize}\;
+	}
+	\Return{\ReferenceSet}\;
 	% caption
 	\caption{Pseudo Code for the Scatter Search algorithm.}
 	\label{alg:scatter_search}
@@ -196,9 +218,12 @@ principles
 	\item combine many elite solutions together - exploits more information
 \end{itemize}
 
-what is path relinking? why is it relevant?
+what is path relinking? why is it relevant? \cite{Glover1994a} - combining, also introducing path relinking strategy
 \begin{itemize}
-	\item 
+	\item linear combinations of solutions - paths between solutions
+	\item paths in neighborhood space, rather than Euclidean space
+	\item an alternative and more flexible way of navigating a neighborhood space than the traditional one-move on a graph approach
+	
 \end{itemize}
 
 
