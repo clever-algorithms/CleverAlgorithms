@@ -89,12 +89,7 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function.
-
-scatter search does not have a specific form - rather it describes an abstract procedure. can specify it with operator and domain specific functions
-
-this section presents the abstract form of the approach based on the template \cite{Glover1998a}
-
+Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function, based on the abstract form presented by Glover as a template for the general class of technique \cite{Glover1998a}.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -109,7 +104,6 @@ this section presents the abstract form of the approach based on the template \c
 	\SetKwData{ReferenceSubset}{ReferenceSubset}
 	\SetKwData{RecombinedSet}{RecombinedSet}
 	\SetKwData{CandidateSet}{CandidateSet}
-	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{DiversifySolution}{DiversifySolution}
@@ -119,11 +113,11 @@ this section presents the abstract form of the approach based on the template \c
 	\SetKwFunction{SelectSubset}{SelectSubset}
 	\SetKwFunction{Recombine}{Recombine}
 	\SetKwFunction{SelectBest}{SelectBest}
-	
 	% I/O
 	\KwIn{\ReferenceSetSize}
 	\KwOut{\ReferenceSet}
   	% Algorithm
+	% init
 	\While{\ReferenceSet $<$ \ReferenceSetSize} {
 		% generate seed
 		\Candidate $\leftarrow$ \ConstructInitialSolution{}\;
@@ -163,8 +157,12 @@ this section presents the abstract form of the approach based on the template \c
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item prefer small population sizes (such as 20 solutions or less)
-	
+	\item prefer small population sizes (such as  $\leq 20$ solutions or less)
+	\item recombination can use two or more solutions
+	\item recombination should promote good solutions, rather than crossover in ga that is random (guy has no clue)
+	\item a lack of changes to the reference set is a good stopping condition
+	\item diversification is concerned with diversity of the set, no objective function evaluations
+	\item set selection: 1: all 2-pair sets or random pairs, 2: 1 plus best not in set, 3: 2 plus best not in set, 4: 5 best elements in set
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -179,6 +177,8 @@ an example of a practical explanation of scatter search applied to TSP and compa
 template approach describes core algorithms with binary string based examples \cite{Glover1998a}
 
 overview of technique, presentation with application to nonlinear programming (binary strings i think) \cite{Glover2003b}
+tutorial for unconstrained non-linear optimization problems
+initial solutions are a stratified sample of the search space
 
 
 % problem
