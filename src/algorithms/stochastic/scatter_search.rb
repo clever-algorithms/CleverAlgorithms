@@ -73,10 +73,7 @@ def diversify(oldReferenceSet, numElite)
   referenceSet = Array.new(numElite){|i| oldReferenceSet[i]}
   remainder = oldReferenceSet - referenceSet
   remainder.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
-  remainder.each do |v|
-    referenceSet << v
-    break if referenceSet.length == oldReferenceSet.length
-  end
+  referenceSet = referenceSet + remainder[0..(oldReferenceSet.length-referenceSet.length)]
   return referenceSet, referenceSet[0]
 end
 
