@@ -7,9 +7,10 @@
 NUM_ITERATIONS = 100
 PROBLEM_SIZE = 3
 SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
-STEP_SIZE = (SEARCH_SPACE[0][1]-SEARCH_SPACE[0][0])*0.05
-LS_MAX_NO_IMPROVEMENTS = 50
+STEP_SIZE = (SEARCH_SPACE[0][1]-SEARCH_SPACE[0][0])*0.005
+LS_MAX_NO_IMPROVEMENTS = 30
 REF_SET_SIZE = 10
+DIVERSE_SET_SIZE = 20
 NO_ELITE = 5
 
 def cost(candidate_vector)
@@ -42,45 +43,45 @@ def local_search(best, searchSpace, maxNoImprovements, stepSize)
     if candidate[:cost] < best[:cost]
       noImprovements, best = 0, candidate
     else
-      noImprovements += 1      
+      noImprovements += 1
     end
   end until noImprovements >= maxNoImprovements
   return best
 end
 
-def construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
-  referenceSet = []
+def construct_initial_set(problemSize, searchSpace, divSetSize, maxNoImprovements, stepSize)
+  diverseSet = []
   begin
     candidate = {}
     candidate[:vector] = random_solution(problemSize, searchSpace)
     candidate[:cost] = cost(candidate[:vector])
     candidate = local_search(candidate, searchSpace, maxNoImprovements, stepSize)
-    referenceSet << candidate if !referenceSet.any? {|x| x[:vector]==candidate[:vector]}
-  end until referenceSet.length == refSetSize
-  return referenceSet
+    diverseSet << candidate if !diverseSet.any? {|x| x[:vector]==candidate[:vector]}
+  end until diverseSet.length == divSetSize
+  return diverseSet
 end
 
 def euclidean(v1, v2)
-  sum = 0
+  sum = 0.0
   v1.each_with_index {|v, i| sum += (v**2.0 - v2[i]**2.0) }
-  # return Math.sqrt(sum)
-  return sum
+  sum = sum + (0.0-sum) if sum < 0.0
+  return Math.sqrt(sum)
 end
 
 def distance(vector1, referenceSet)
-  sum = 0
+  sum = 0.0
   referenceSet.each do |s|
     sum += euclidean(vector1, s[:vector])
   end
   return sum
 end
 
-def diversify(oldReferenceSet, numElite)
-  oldReferenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}
-  referenceSet = Array.new(numElite){|i| oldReferenceSet[i]}
-  remainder = oldReferenceSet - referenceSet
+def diversify(diverseSet, numElite, refSetSize)
+  diverseSet.sort!{|x,y| x[:cost] <=> y[:cost]}
+  referenceSet = Array.new(numElite){|i| diverseSet[i]}
+  remainder = diverseSet - referenceSet
   remainder.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
-  referenceSet = referenceSet + remainder[0..(oldReferenceSet.length-referenceSet.length)]
+  referenceSet = referenceSet + remainder[0..(refSetSize-referenceSet.length)]
   return referenceSet, referenceSet[0]
 end
 
@@ -110,15 +111,14 @@ def recombine(subset, problemSize, searchSpace)
   return [c1, c2]
 end
 
-def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize, noElite)
-  referenceSet = construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
-  referenceSet, best = diversify(referenceSet, noElite)
+def search(problemSize, searchSpace, numIterations, refSetSize, divSetSize, maxNoImprovements, stepSize, noElite)
+  diverseSet = construct_initial_set(problemSize, searchSpace, divSetSize, maxNoImprovements, stepSize)
+  referenceSet, best = diversify(diverseSet, noElite, refSetSize)
   referenceSet.each{|c| c[:new] = true}
   numIterations.times do |iter|
     wasChange = false
     subsets = select_subsets(referenceSet)
     referenceSet.each{|c| c[:new] = false}
-    puts "subsets: #{subsets.length}"
     subsets.each do |subset|
       candidates = recombine(subset, problemSize, searchSpace)
       improved = Array.new(candidates.length) {|i| local_search(candidates[i], searchSpace, maxNoImprovements, stepSize)}
@@ -130,7 +130,6 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
             referenceSet.delete(referenceSet.last)
             referenceSet << c
             wasChange = true
-            puts "change!"
           end
         end
       end
@@ -138,10 +137,10 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
     referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}
     best = referenceSet[0] if referenceSet[0][:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
-    # break if !wasChange
+    break if !wasChange
   end
   return best
 end
 
-best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE, NO_ELITE)
+best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, DIVERSE_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE, NO_ELITE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
