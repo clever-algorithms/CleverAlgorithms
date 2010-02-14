@@ -5,11 +5,11 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 NUM_ITERATIONS = 100
-PROBLEM_SIZE = 10
+PROBLEM_SIZE = 3
 SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
 STEP_SIZE = (SEARCH_SPACE[0][1]-SEARCH_SPACE[0][0])*0.05
 LS_MAX_NO_IMPROVEMENTS = 50
-DIVERSET_SET_SIZE = 10
+REF_SET_SIZE = 10
 
 def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
@@ -54,15 +54,15 @@ def construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoI
     candidate[:vector] = random_solution(problemSize, searchSpace)
     candidate[:cost] = cost(candidate[:vector])
     candidate = local_search(candidate, searchSpace, maxNoImprovements, stepSize)
-    referenceSet << candidate if !diverseSet.any? {|x| x[:vector]==candidate[:vector]}
-  until referenceSet.length == refSetSize
+    referenceSet << candidate if !referenceSet.any? {|x| x[:vector]==candidate[:vector]}
+  end until referenceSet.length == refSetSize
   return referenceSet
 end
 
 def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize)
   referenceSet = construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   best = referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}[0]
-  numIterations.times do |i|
+  numIterations.times do |iter|
     
     
     
@@ -71,5 +71,5 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
   return best
 end
 
-best = search(NUM_ITERATIONS, PROBLEM_SIZE, SEARCH_SPACE)
+best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
