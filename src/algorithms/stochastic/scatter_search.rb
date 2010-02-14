@@ -10,6 +10,7 @@ SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
 STEP_SIZE = (SEARCH_SPACE[0][1]-SEARCH_SPACE[0][0])*0.05
 LS_MAX_NO_IMPROVEMENTS = 50
 REF_SET_SIZE = 10
+NO_ELITE = 5
 
 def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
@@ -46,7 +47,7 @@ def local_search(best, searchSpace, maxNoImprovements, stepSize)
   end until noImprovements >= maxNoImprovements
   return best
 end
-  
+
 def construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet = []
   begin
@@ -59,9 +60,29 @@ def construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoI
   return referenceSet
 end
 
-def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize)
+def distance(vector1, referenceSet)
+  sum = 0
+  referenceSet.each do |s|
+    vector1.each_with_index {|v, i| sum += (v**2.0 - s[:vector][i]**2.0) }
+  end
+  return sum
+end
+
+def diversify(oldReferenceSet, numElite)
+  oldReferenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}
+  referenceSet = Array.new(numElite){|i| oldReferenceSet[i]}
+  remainder = oldReferenceSet - referenceSet
+  remainder.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
+  remainder.each do |v|
+    referenceSet << v
+    break if referenceSet.length == oldReferenceSet.length
+  end
+  return referenceSet, referenceSet[0]
+end
+
+def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize, noElite)
   referenceSet = construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
-  best = referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}[0]
+  referenceSet, best = diversify(referenceSet, noElite)
   numIterations.times do |iter|
     
     
@@ -71,5 +92,5 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
   return best
 end
 
-best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE)
+best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE, NO_ELITE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
