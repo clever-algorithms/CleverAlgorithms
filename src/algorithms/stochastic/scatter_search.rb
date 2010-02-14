@@ -101,7 +101,7 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
   referenceSet = construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet, best = diversify(referenceSet, noElite)
   numIterations.times do |iter|
-    wasChange = false    
+    wasChange = false
     referenceSet.each{|c| c[:new] = false}
     subsets = select_subsets(referenceSet, maxSubsets)
     subsets.each do |subset|
@@ -114,18 +114,19 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
             referenceSet.remove(referenceSet.last)
             referenceSet << c
             wasChange = true
-          else
-            referenceSet.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
-            if distance(c[:vector], referenceSet) > distance(referenceSet.last[:vector], referenceSet)
-              referenceSet.remove(referenceSet.last)
-              referenceSet << c
-              wasChange = true
-            end
+          # else
+          #   referenceSet.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
+          #   if distance(c[:vector], referenceSet) > distance(referenceSet.last[:vector], referenceSet)
+          #     referenceSet.remove(referenceSet.last)
+          #     referenceSet << c
+          #     wasChange = true
+          #   end
           end
         end
       end
     end
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
+    break if !wasChange
   end
   return best
 end
