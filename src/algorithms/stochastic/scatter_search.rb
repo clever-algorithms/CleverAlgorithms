@@ -47,35 +47,26 @@ def local_search(best, searchSpace, maxNoImprovements, stepSize)
   return best
 end
   
-def construct_reference_set(refSetSize, diversetSetSize, problemSize, searchSpace, maxNoImprovements, stepSize)
+def construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet = []
-  
   begin
-    diverseSet = []
-    diversetSetSize.times do |i|
-      candidate = {}
-      candidate[:vector] = random_solution(problemSize, searchSpace)
-      candidate[:cost] = cost(candidate[:vector])
-      candidate = local_search(candidate, searchSpace, maxNoImprovements, stepSize)
-      if(!)
-        diverseSet << candidate
-      end
-    end
-    diverseSet.sort!{|x,y| x[:cost] <=> y[:cost]}
-    
-  end until referenceSet.length == refSetSize
-  
-  return referenceSet
-end
-
-def search(numIterations, problemSize, searchSpace)
-  best = nil
-  numIterations.times do |iter|
     candidate = {}
     candidate[:vector] = random_solution(problemSize, searchSpace)
     candidate[:cost] = cost(candidate[:vector])
-    best = candidate if best.nil? or candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+    candidate = local_search(candidate, searchSpace, maxNoImprovements, stepSize)
+    referenceSet << candidate if !diverseSet.any? {|x| x[:vector]==candidate[:vector]}
+  until referenceSet.length == refSetSize
+  return referenceSet
+end
+
+def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize)
+  referenceSet = construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
+  best = referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}[0]
+  numIterations.times do |i|
+    
+    
+    
+    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
 end
