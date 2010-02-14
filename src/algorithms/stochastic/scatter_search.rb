@@ -60,10 +60,17 @@ def construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovement
   return referenceSet
 end
 
+def euclidean(v1, v2)
+  sum = 0
+  v1.each_with_index {|v, i| sum += (v**2.0 - v2[i]**2.0) }
+  # return Math.sqrt(sum)
+  return sum
+end
+
 def distance(vector1, referenceSet)
   sum = 0
   referenceSet.each do |s|
-    vector1.each_with_index {|v, i| sum += (v**2.0 - s[:vector][i]**2.0) }
+    sum += euclidean(vector1, s[:vector])
   end
   return sum
 end
@@ -80,50 +87,58 @@ end
 def select_subsets(referenceSet)
   additions = referenceSet.select{|c| c[:new]}
   remainder = referenceSet - additions
+  remainder = additions if remainder.empty?
   subsets = []
-  additions.each{|a| remainder.each{|r| subsets << [a,r]}}
+  additions.each{|a| remainder.each{|r| subsets << [a,r] if a!=r}}
   return subsets
 end
 
-def recombine(subset, problemSize)
-  candidates = []
-  
-  subset.each do |subset|
-    vector = []
-    problemSize.each do |i|
-      
-    end
-    candidate = {}
-    candidate[:vector] = vector
-    candidate[:cost] = cost(candidate[:vector])
-    candidates << candidate
+def recombine(subset, problemSize, searchSpace)
+  a, b = subset
+  d = rand(euclidean(a[:vector], b[:vector]))/2.0
+  v1, v2 = Array.new(problemSize), Array.new(problemSize)
+  v1.each_with_index do |m, i| 
+    v1[i] = (a[:vector][i]-d < searchSpace[i][0]) ? searchSpace[i][0] : a[:vector][i]-d
+    v2[i] = (b[:vector][i]+d > searchSpace[i][1]) ? searchSpace[i][1] : b[:vector][i]+d
   end
-  return candidates
+  c1 = {}
+  c1[:vector] = v1
+  c1[:cost] = cost(c1[:vector])
+  c2 = {}
+  c2[:vector] = v2
+  c2[:cost] = cost(c2[:vector])
+  return [c1, c2]
 end
 
 def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize, noElite)
   referenceSet = construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet, best = diversify(referenceSet, noElite)
+  referenceSet.each{|c| c[:new] = true}
   numIterations.times do |iter|
     wasChange = false
-    referenceSet.each{|c| c[:new] = false}
     subsets = select_subsets(referenceSet)
+    referenceSet.each{|c| c[:new] = false}
+    puts "subsets: #{subsets.length}"
     subsets.each do |subset|
-      candidates = recombine(subset, problemSize)
-      improved = Array.new(candidates.length) {|c| local_search(c, searchSpace, maxNoImprovements, stepSize)}
+      candidates = recombine(subset, problemSize, searchSpace)
+      improved = Array.new(candidates.length) {|i| local_search(candidates[i], searchSpace, maxNoImprovements, stepSize)}
       improved.each do |c|
         if !referenceSet.any? {|x| x[:vector]==c[:vector]}
           c[:new] = true
-          if referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]} and c[:cost]<referenceSet.last[:cost]
-            referenceSet.remove(referenceSet.last)
+          referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}
+          if c[:cost]<referenceSet.last[:cost]
+            referenceSet.delete(referenceSet.last)
             referenceSet << c
             wasChange = true
+            puts "change!"
           end
         end
       end
     end
+    referenceSet.sort!{|x,y| x[:cost] <=> y[:cost]}
+    best = referenceSet[0] if referenceSet[0][:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
-    break if !wasChange
+    # break if !wasChange
   end
   return best
 end
