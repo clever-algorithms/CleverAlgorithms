@@ -11,7 +11,6 @@ STEP_SIZE = (SEARCH_SPACE[0][1]-SEARCH_SPACE[0][0])*0.05
 LS_MAX_NO_IMPROVEMENTS = 50
 REF_SET_SIZE = 10
 NO_ELITE = 5
-MAX_SUBSET = 3
 
 def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
@@ -49,7 +48,7 @@ def local_search(best, searchSpace, maxNoImprovements, stepSize)
   return best
 end
 
-def construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
+def construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet = []
   begin
     candidate = {}
@@ -78,34 +77,39 @@ def diversify(oldReferenceSet, numElite)
   return referenceSet, referenceSet[0]
 end
 
-def select_subsets(referenceSet, maxSubsets)
+def select_subsets(referenceSet)
   additions = referenceSet.select{|c| c[:new]}
   remainder = referenceSet - additions
   subsets = []
   additions.each{|a| remainder.each{|r| subsets << [a,r]}}
-  subsets.delete_at(rand(subsets.length)) until subsets.length == maxSubsets
   return subsets
 end
 
-def recombine(subset)
-  # TODO
+def recombine(subset, problemSize)
+  candidates = []
   
-  candidate = {}
-  candidate[:vector] = random_solution(problemSize, searchSpace)
-  candidate[:cost] = cost(candidate[:vector])
-  
-  return [candidate]
+  subset.each do |subset|
+    vector = []
+    problemSize.each do |i|
+      
+    end
+    candidate = {}
+    candidate[:vector] = vector
+    candidate[:cost] = cost(candidate[:vector])
+    candidates << candidate
+  end
+  return candidates
 end
 
-def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize, noElite, maxSubsets)
-  referenceSet = construct_initial_reference_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
+def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovements, stepSize, noElite)
+  referenceSet = construct_initial_set(problemSize, searchSpace, refSetSize, maxNoImprovements, stepSize)
   referenceSet, best = diversify(referenceSet, noElite)
   numIterations.times do |iter|
     wasChange = false
     referenceSet.each{|c| c[:new] = false}
-    subsets = select_subsets(referenceSet, maxSubsets)
+    subsets = select_subsets(referenceSet)
     subsets.each do |subset|
-      candidates = recombine(subset)
+      candidates = recombine(subset, problemSize)
       improved = Array.new(candidates.length) {|c| local_search(c, searchSpace, maxNoImprovements, stepSize)}
       improved.each do |c|
         if !referenceSet.any? {|x| x[:vector]==c[:vector]}
@@ -114,13 +118,6 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
             referenceSet.remove(referenceSet.last)
             referenceSet << c
             wasChange = true
-          # else
-          #   referenceSet.sort!{|x,y| distance(y[:vector], referenceSet) <=> distance(x[:vector], referenceSet)}
-          #   if distance(c[:vector], referenceSet) > distance(referenceSet.last[:vector], referenceSet)
-          #     referenceSet.remove(referenceSet.last)
-          #     referenceSet << c
-          #     wasChange = true
-          #   end
           end
         end
       end
@@ -131,5 +128,5 @@ def search(problemSize, searchSpace, numIterations, refSetSize, maxNoImprovement
   return best
 end
 
-best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE, NO_ELITE, MAX_SUBSET)
+best = search(PROBLEM_SIZE, SEARCH_SPACE, NUM_ITERATIONS, REF_SET_SIZE, LS_MAX_NO_IMPROVEMENTS, STEP_SIZE, NO_ELITE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
