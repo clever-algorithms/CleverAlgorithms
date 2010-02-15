@@ -155,6 +155,7 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item Scatter search is suitable for both discrete domains such as combinatorial optimization as well as continuous domains such as non-linear programming (continuous function optimization).
 	\item Small set sizes are preferred for the \texttt{ReferenceSet}, such as 10 or 20 members.
 	\item Subset sizes can be 2,3,4 or more members that are all recombined to produce viable candidate solutions within the neighborhood of the members of the subset.
 	\item Each subset should comprise at least one member added to the set in the previous algorithm iteration.
@@ -174,7 +175,7 @@ Listing~\ref{scatter_search} provides an example of the Scatter Search algorithm
 The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_1,\ldots,v_{n})=0.0$.
 
 % algorithm
-The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors in the presented example, rather than stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic for simplicity.
+The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors in the presented example, rather than stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic that uses a stochastic step size in the range of half a percent of the search space.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Scatter Search algorithm in the Ruby Programming Language, label=scatter_search]{../../src/algorithms/stochastic/scatter_search.rb}
