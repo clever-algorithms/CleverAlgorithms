@@ -80,8 +80,9 @@ Scatter Search is a sibling of Tabu Search, developed by the same author and bas
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of Scatter Search is to maintain a set of diverse and high-quality candidate solutions.
 % What is a techniques plan of action?
-todo
+The strategy involves the explicit preparation of an initial set of diverse and high-quality candidate solutions that are partitioned into subsets and linearly recombined, the results of which are refined using an embedded heuristic and assessed in the context of the maintained set of solutions as to whether or not they are retained. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -149,7 +150,6 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 	\label{alg:scatter_search}
 \end{algorithm}
 
-
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \section{Heuristics}
@@ -203,6 +203,8 @@ using random point to initialize the set
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
+
+
 
 NOTES
 \begin{itemize}
