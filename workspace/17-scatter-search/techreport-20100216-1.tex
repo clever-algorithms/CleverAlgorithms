@@ -155,13 +155,11 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item prefer small population sizes (such as  $\leq 20$ solutions or less)
-	\item recombination can use two or more solutions
-	\item recombination should promote good solutions, rather than crossover in ga that is random (guy has no clue)
-	\item a lack of changes to the reference set is a good stopping condition
-	\item diversification is concerned with diversity of the set, no objective function evaluations
-	\item set selection: 1: all 2-pair sets or random pairs, 2: 1 plus best not in set, 3: 2 plus best not in set, 4: 5 best elements in set
+	\item Small set sizes are preferred for the \texttt{ReferenceSet}, such as 10 or 20 members.
+	\item Subset sizes can be 2,3,4 or more members that are all recombined to produce viable candidate solutions within the neighborhood of the members of the subset.
+	\item A lack of changes to the \texttt{ReferenceSet} may be used as a signal to stop the current search, and potentially restart the search with a newly initialized \texttt{ReferenceSet}.	
 \end{itemize}
+
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \section{Code Listing}
