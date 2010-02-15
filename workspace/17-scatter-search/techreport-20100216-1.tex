@@ -90,59 +90,57 @@ The strategy involves the explicit preparation of an initial set of diverse and 
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function, based on the abstract form presented by Glover as a template for the general class of technique \cite{Glover1998a}.
+Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function, based on the abstract form presented by Glover as a template for the general class of technique \cite{Glover1998a} with influence from an application to function optimization by Glover \cite{Glover1998a}.
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
-	\SetKwData{Candidate}{$S_{candidate}$}
+	% \SetKwData{Candidate}{$S_{candidate}$}
 	\SetKwData{ithCandidate}{$S_{i}$}
-	\SetKwData{ithCandidatePrime}{$S\prime_{i}$}
-	\SetKwData{CandidatePrime}{$S\prime_{candidate}$}
-	\SetKwData{CandidatePrimePrime}{$S\prime\prime_{candidate}$}
-	\SetKwData{ReferenceSet}{ReferenceSet}
+	\SetKwData{ithCandidateSet}{$CandidateSet_{i}$}
+	\SetKwData{Subsets}{Subsets}
 	\SetKwData{ReferenceSetSize}{$ReferenceSet_{size}$}
-	\SetKwData{ReferenceSubset}{ReferenceSubset}
+	\SetKwData{DiverseSetSize}{$DiverseSet_{size}$}
+	\SetKwData{ReferenceSet}{ReferenceSet}
+	\SetKwData{InitialSet}{InitialSet}
+	\SetKwData{RefinedSet}{RefinedSet}
 	\SetKwData{RecombinedSet}{RecombinedSet}
 	\SetKwData{CandidateSet}{CandidateSet}
+	\SetKwData{RecombinedCandidates}{RecombinedCandidates}
 	% functions
 	\SetKwFunction{Cost}{Cost}
-	\SetKwFunction{DiversifySolution}{DiversifySolution}
+	\SetKwFunction{SelectInitialReferenceSet}{SelectInitialReferenceSet}
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
   	\SetKwFunction{LocalSearch}{LocalSearch}
 	\SetKwFunction{SelectSubset}{SelectSubset}
-	\SetKwFunction{Recombine}{Recombine}
-	\SetKwFunction{SelectBest}{SelectBest}
+	\SetKwFunction{RecombineMembers}{RecombineMembers}
+	\SetKwFunction{Select}{Select}
 	% I/O
-	\KwIn{\ReferenceSetSize}
+	\KwIn{\DiverseSetSize, \ReferenceSetSize}
 	\KwOut{\ReferenceSet}
   	% Algorithm
-	% init
-	\While{\ReferenceSet $<$ \ReferenceSetSize} {
-		% generate seed
-		\Candidate $\leftarrow$ \ConstructInitialSolution{}\;
-		% diversify seed
-		\CandidatePrime $\leftarrow$ \DiversifySolution{\Candidate}\;
-		% refine
-		\CandidatePrimePrime $\leftarrow$ \LocalSearch{\CandidatePrime}\;
-		% store
-		\ReferenceSet $\leftarrow$ \CandidatePrimePrime\;
-	}
+	\InitialSet $\leftarrow$ \ConstructInitialSolution{\DiverseSetSize}\;
+	\RefinedSet $\leftarrow 0$\;
+	\For{\ithCandidate $\in$ \InitialSet}{
+		\RefinedSet $\leftarrow$ \LocalSearch{\ithCandidate}\;
+	} 
+	\ReferenceSet $\leftarrow$ \SelectInitialReferenceSet{\ReferenceSetSize}\;
 	% loop
 	\While{$\neg$ \StopCondition{}} {
-		% select subset of reference set
-		\ReferenceSubset $\leftarrow$ \SelectSubset{\ReferenceSet}\;
-		% recombine  
-		\RecombinedSet $\leftarrow$ \Recombine{\ReferenceSubset}\;
-		% improve
+		% select subsets
+		\Subsets $\leftarrow$ \SelectSubset{\ReferenceSet}\;
+		% recombine subsets
 		\CandidateSet $\leftarrow 0$\;
-		\For{\ithCandidate $\in$ \RecombinedSet}{
-			\ithCandidatePrime $\leftarrow$ \LocalSearch{\ithCandidate}\;
-			\CandidateSet $\leftarrow$ \ithCandidatePrime\;
+		\For{\ithCandidateSet $\in$ \Subsets}{
+			\RecombinedCandidates $\leftarrow$ \RecombineMembers{\ithCandidateSet}\;
+			% improve
+			\For{\ithCandidate $\in$ \RecombinedCandidates}{
+				\CandidateSet $\leftarrow$ \LocalSearch{\ithCandidate}\;
+			}
 		}
 		% update reference set
-		\ReferenceSubset $\leftarrow$ \SelectBest{\ReferenceSubset, \CandidateSet, \ReferenceSetSize}\;
+		\ReferenceSet $\leftarrow$ \Select{\ReferenceSet, \CandidateSet, \ReferenceSetSize}\;
 	}
 	\Return{\ReferenceSet}\;
 	% caption
