@@ -170,30 +170,14 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{scatter_search} provides an example of the Scatter Search algorithm implemented in the Ruby Programming Language. 
-
-an example of a practical explanation of scatter search applied to TSP and compared with the GA \cite{Marti2005}
-
-template approach describes core algorithms with binary string based examples \cite{Glover1998a}
-
-overview of technique, presentation with application to nonlinear programming (binary strings i think) \cite{Glover2003b}
-tutorial for unconstrained non-linear optimization problems
-initial solutions are a stratified sample of the search space
-
-
 % problem
-% The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_1,\ldots,v_{n})=0.0$.
 
 % algorithm
-implemented the two short cuts - no restart and no diversity maintenance
-can add these back in as heuristics during application
-
-using random step size as the local search
-using random point to initialize the set
-
+The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors in the presented example, rather than stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic for simplicity.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Scatter Search algorithm in the Ruby Programming Language, label=scatter_search]{../../src/algorithms/stochastic/scatter_search.rb}
-
 
 
 % References: Deeper understanding
