@@ -157,9 +157,12 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 \begin{itemize}
 	\item Small set sizes are preferred for the \texttt{ReferenceSet}, such as 10 or 20 members.
 	\item Subset sizes can be 2,3,4 or more members that are all recombined to produce viable candidate solutions within the neighborhood of the members of the subset.
+	\item Each subset should comprise at least one member added to the set in the previous algorithm iteration.
+	\item The Local Search procedure should be a problem-specific improvement heuristic. 
+	\item The selection of members for the \texttt{ReferenceSet} at the end of each iteration favor solutions with higher quality and may also promote diversity.
+	\item The \texttt{ReferenceSet} may be updated dynamically as candidates are created, rather than at the end of the cycle (a so-called steady state population in some evolutionary computation literature).
 	\item A lack of changes to the \texttt{ReferenceSet} may be used as a signal to stop the current search, and potentially restart the search with a newly initialized \texttt{ReferenceSet}.	
 \end{itemize}
-
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \section{Code Listing}
