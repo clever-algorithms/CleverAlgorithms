@@ -80,9 +80,9 @@ Scatter Search is a sibling of Tabu Search, developed by the same author and bas
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of Scatter Search is to maintain a set of diverse and high-quality candidate solutions.
+The objective of Scatter Search is to maintain a set of diverse and high-quality candidate solutions. The principle of the approach is that useful information about the global optima is stored in a diverse and elite set of solutions (the reference set) and that recombining samples from the set can exploit this information.
 % What is a techniques plan of action?
-The strategy involves the explicit preparation of an initial set of diverse and high-quality candidate solutions that are partitioned into subsets and linearly recombined to create weighted centroids of sample-based neighborhoods. The result are refined using an embedded heuristic and assessed in the context of the maintained set of solutions as to whether or not they are retained. 
+The strategy involves the explicit preparation of an initial set of diverse and high-quality candidate solutions that are partitioned into subsets and linearly recombined to create weighted centroids of sample-based neighborhoods. The results of recombination are refined using an embedded heuristic and assessed in the context of the reference set as to whether or not they are retained. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -187,22 +187,6 @@ The algorithm is an implementation of Scatter Search as described in an applicat
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-
-principles
-\begin{itemize}
-	\item useful information about the optima is stored in multiple elite solutions (reference set)
-	\item recombine elite examples to exploit such information
-	\item recombination process must be able to explore within the region of elite solutions as well as out side it (diversity and quality)
-	\item combine many elite solutions together - exploits more information
-\end{itemize}
-
-what is path relinking? why is it relevant? \cite{Glover1994a} - combining, also introducing path relinking strategy
-\begin{itemize}
-	\item linear combinations of solutions - paths between solutions
-	\item paths in neighborhood space, rather than Euclidean space
-	\item an alternative and more flexible way of navigating a neighborhood space than the traditional one-move on a graph approach
-\end{itemize}
-
 
 % 
 % Primary Sources
