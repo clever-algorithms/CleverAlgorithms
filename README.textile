@@ -43,6 +43,7 @@ h3. Technical Reports
 * Jason Brownlee. "Greedy Randomized Adaptive Search Procedure":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100209-1.pdf. Technical Report CA-TR-20100209-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Iterated Local Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100210-1.pdf. Technical Report CA-TR-20100210-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Tabu Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100213-1.pdf. Technical Report CA-TR-20100213-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
+* Jason Brownlee. "Scatter Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100216-1.pdf. Technical Report CA-TR-20100216-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * ...
 
 h3. Software
