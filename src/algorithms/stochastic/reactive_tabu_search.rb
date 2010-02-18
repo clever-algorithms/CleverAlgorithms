@@ -70,13 +70,9 @@ def is_tabu?(permutation, tabuList)
   return false
 end
 
-def generate_candidate(best, tabuList, cities)  
-  permutation, edges = nil, nil
-  begin
-    permutation, edges = stochastic_two_opt(best[:vector])
-  end while is_tabu?(permutation, tabuList)
+def generate_candidate(best, cities)
   candidate = {}
-  candidate[:vector] = permutation
+  candidate[:vector], edge = stochastic_two_opt(best[:vector])
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate, edges
 end
@@ -86,16 +82,17 @@ def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovem
   current = best
   tabuList = Array.new(tabuListSize)
   maxIterations.times do |iter|
-    candidates = Array.new(candidateListSize) {|i| generate_candidate(current, tabuList, cities)}
+    candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
-    bestCandidate = candidates.first[0]
-    bestCandidateEdges = candidates.first[1]
+    bestCandidate, bestCandidateEdges = candidates.first[0], candidates.first[1]
+    
+    
     if bestCandidate[:cost] < current[:cost]
       current = bestCandidate
       best = bestCandidate if bestCandidate[:cost] < best[:cost]
-      bestCandidateEdges.each do |edge|
-        tabuList.pop
-        tabuList.push(edge)
+      bestCandidateEdges.each {|edge| tabuList.push(edge)}
+      tabuList.pop while tabuList.length > tabuListSize
+        
       end
     end
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
