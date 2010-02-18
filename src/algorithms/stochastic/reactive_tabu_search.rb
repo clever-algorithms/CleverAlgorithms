@@ -5,9 +5,8 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 MAX_ITERATIONS = 100
-MAX_NO_IMPROVEMENTS = 50
-TABU_LIST_SIZE = 15
 MAX_CANDIDATES = 50
+CYCLE_MAX = 50
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -42,21 +41,10 @@ def stochastic_two_opt(permutation)
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
 end
 
-def generate_initial_solution(cities, maxNoImprovements)
+def generate_initial_solution(cities)
   best = {}
   best[:vector] = random_permutation(cities)
   best[:cost] = cost(best[:vector], cities)
-  noImprovements = 0
-  begin
-    candidate = {}
-    candidate[:vector] = stochastic_two_opt(best[:vector])[0]
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] <= best[:cost]
-      noImprovements, best = 0, candidate
-    else
-      noImprovements += 1      
-    end
-  end until noImprovements >= maxNoImprovements
   return best
 end
 
@@ -70,15 +58,23 @@ def is_tabu?(permutation, tabuList)
   return false
 end
 
+def make_tabu(tabuList, edge, iteration)
+  entry = {}
+  entry[:edge] = edge
+  entry[:iteration] = iteration
+  tabuList << entry
+end
+
 def generate_candidate(best, cities)
   candidate = {}
-  candidate[:vector], edge = stochastic_two_opt(best[:vector])
+  candidate[:vector], edges = stochastic_two_opt(best[:vector])
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate, edges
 end
 
-def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovementsLS)
-  best = generate_initial_solution(cities, maxNoImprovementsLS)
+def search(cities, candidateListSize, maxIterations)
+  tabuListSize, stepsSinceLastChange, avg = 1, 0, 0
+  best = generate_initial_solution(cities)
   current = best
   tabuList = Array.new(tabuListSize)
   maxIterations.times do |iter|
@@ -86,19 +82,33 @@ def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovem
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     bestCandidate, bestCandidateEdges = candidates.first[0], candidates.first[1]
     
+    # check for escape
+    escape = false
     
-    if bestCandidate[:cost] < current[:cost]
-      current = bestCandidate
-      best = bestCandidate if bestCandidate[:cost] < best[:cost]
-      bestCandidateEdges.each {|edge| tabuList.push(edge)}
-      tabuList.pop while tabuList.length > tabuListSize
-        
+    if escape
+      
+    else
+      if bestCandidate[:cost] < current[:cost]
+        current = bestCandidate
+        best = bestCandidate if bestCandidate[:cost] < best[:cost]
+        bestCandidateEdges.each {|edge| make_tabu(tabuList, edge, iter)}
+        tabuList.pop while tabuList.length > tabuListSize
       end
     end
+    
+    
+    
+    if is_tabu?(bestCandidate[:vector], tabuList)
+    
+    end
+    
+    
+
+    
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
 end
 
-best = search(BERLIN52, TABU_LIST_SIZE, MAX_CANDIDATES, MAX_ITERATIONS, MAX_NO_IMPROVEMENTS)
+best = search(BERLIN52, MAX_CANDIDATES, MAX_ITERATIONS)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
