@@ -83,14 +83,16 @@ end
 
 def search(cities, tabuListSize, candidateListSize, maxIterations, maxNoImprovementsLS)
   best = generate_initial_solution(cities, maxNoImprovementsLS)
+  current = best
   tabuList = Array.new(tabuListSize)
   maxIterations.times do |iter|
-    candidates = Array.new(candidateListSize) {|i| generate_candidate(best, tabuList, cities)}
+    candidates = Array.new(candidateListSize) {|i| generate_candidate(current, tabuList, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     bestCandidate = candidates.first[0]
     bestCandidateEdges = candidates.first[1]
-    if(bestCandidate[:cost] < best[:cost])
-      best = bestCandidate
+    if bestCandidate[:cost] < current[:cost]
+      current = bestCandidate
+      best = bestCandidate if bestCandidate[:cost] < best[:cost]
       bestCandidateEdges.each do |edge|
         tabuList.pop
         tabuList.push(edge)
