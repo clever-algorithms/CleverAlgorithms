@@ -90,7 +90,57 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:reactive_tabu_search} provides a pseudo-code listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
+
+todo...
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{TabuList}{TabuList}
+	\SetKwData{TabuListSize}{$TabuList_{size}$}
+	\SetKwData{CandidateList}{CandidateList}
+	\SetKwData{CandidateNeighborhood}{$Sbest_{neighborhood}$}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{DeleteFeature}{DeleteFeature}
+	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
+  	\SetKwFunction{LocateBestCandidate}{LocateBestCandidate}
+	\SetKwFunction{FeatureDifferences}{FeatureDifferences}
+	\SetKwFunction{ContainsAnyFeatures}{ContainsAnyFeatures}
+	% I/O
+	\KwIn{\TabuListSize}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \ConstructInitialSolution{}\;
+	\TabuList $\leftarrow$ 0\;
+	\While{$\neg$ \StopCondition{}} {
+		% generate non-tabu candidates
+		\CandidateList $\leftarrow$ 0\;
+		\For{\Candidate $\in$ \CandidateNeighborhood}{
+			\If{$\neg$ \ContainsAnyFeatures{\Candidate, \TabuList}}{
+				\CandidateList $\leftarrow$ \Candidate\;
+			}
+		}
+		% locate best candidate
+		\Candidate $\leftarrow$ \LocateBestCandidate{\CandidateList}\;
+		% update tabu list
+		\If{\Cost{\Candidate} $\leq$ \Cost{\Best}}{
+			\Best $\leftarrow$ \Candidate\;
+			\TabuList $\leftarrow$ \FeatureDifferences{\Candidate, \Best}\;
+			\While{\TabuList $>$ \TabuListSize} {
+				\DeleteFeature{\TabuList}\;
+			}
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code for the Reactive Tabu Search algorithm.}
+	\label{alg:reactive_tabu_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -131,7 +181,8 @@ NOTES
 	\item tabu search: sub-optimal moves (where hill climbing stops) are better starting points than random
 	\item reason for RTS: straight tabu (fixed tabu) can be too slow in some situations
 	\item reactive tabu is also about making tabu more efficient - using more efficient data structures (hash tables, etc)
-	\item 
+	\item RTS provides a fully automated way of adapting the tabu list size to the problem
+	\item also adds an escape strategy - the diversify the search when the tabu list is not enough
 \end{itemize}
 
 reactive tabu search
