@@ -97,18 +97,17 @@ end
 def recombine(subset, problemSize, searchSpace)
   a, b = subset
   d = rand(euclidean(a[:vector], b[:vector]))/2.0
-  v1, v2 = Array.new(problemSize), Array.new(problemSize)
-  v1.each_with_index do |m, i| 
-    v1[i] = (a[:vector][i]-d < searchSpace[i][0]) ? searchSpace[i][0] : a[:vector][i]-d
-    v2[i] = (b[:vector][i]+d > searchSpace[i][1]) ? searchSpace[i][1] : b[:vector][i]+d
+  children = []
+  subset.each do |p|
+    step = (rand<0.5) ? +d : -d
+    child = {}
+    child[:vector] = Array.new(problemSize){|i| p[:vector][i]+step}
+    child[:vector].each_with_index {|m,i| child[:vector][i]=searchSpace[i][0] if m<searchSpace[i][0]}
+    child[:vector].each_with_index {|m,i| child[:vector][i]=searchSpace[i][1] if m>searchSpace[i][1]}
+    child[:cost] = cost(child[:vector])
+    children << child
   end
-  c1 = {}
-  c1[:vector] = v1
-  c1[:cost] = cost(c1[:vector])
-  c2 = {}
-  c2[:vector] = v2
-  c2[:cost] = cost(c2[:vector])
-  return [c1, c2]
+  return children
 end
 
 def search(problemSize, searchSpace, numIterations, refSetSize, divSetSize, maxNoImprovements, stepSize, noElite)

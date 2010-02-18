@@ -71,18 +71,18 @@ Scatter Search, SS
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-Scatter search is a Metaheuristic and a Global Optimization algorithm. It is also sometimes associated with the field of Evolutionary Computation given some of the similarities in the structure of the technique.
+Scatter search is a Metaheuristic and a Global Optimization algorithm. It is also sometimes associated with the field of Evolutionary Computation given the use of a population and recombination in the structure of the technique.
 % What are the closely related approaches to a technique?
-Scatter Search is a sibling of Tabu Search, developed by the same author and based on similar principles.
+Scatter Search is a sibling of Tabu Search, developed by the same author and based on similar origins.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of Scatter Search is to maintain a set of diverse and high-quality candidate solutions.
+The objective of Scatter Search is to maintain a set of diverse and high-quality candidate solutions. The principle of the approach is that useful information about the global optima is stored in a diverse and elite set of solutions (the reference set) and that recombining samples from the set can exploit this information.
 % What is a techniques plan of action?
-The strategy involves the explicit preparation of an initial set of diverse and high-quality candidate solutions that are partitioned into subsets and linearly recombined, the results of which are refined using an embedded heuristic and assessed in the context of the maintained set of solutions as to whether or not they are retained. 
+The strategy involves an iterative process, where a population of diverse and high-quality candidate solutions that are partitioned into subsets and linearly recombined to create weighted centroids of sample-based neighborhoods. The results of recombination are refined using an embedded heuristic and assessed in the context of the reference set as to whether or not they are retained. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -90,14 +90,14 @@ The strategy involves the explicit preparation of an initial set of diverse and 
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function, based on the abstract form presented by Glover as a template for the general class of technique \cite{Glover1998a} with influence from an application to function optimization by Glover \cite{Glover1998a}.
+Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter Search algorithm for minimizing a cost function. The procedure is based on the abstract form presented by Glover as a template for the general class of technique \cite{Glover1998a}, with influences from an application of the technique to function optimization by Glover \cite{Glover1998a}.
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
 	% \SetKwData{Candidate}{$S_{candidate}$}
 	\SetKwData{ithCandidate}{$S_{i}$}
-	\SetKwData{ithCandidateSet}{$CandidateSet_{i}$}
+	\SetKwData{ithCandidateSet}{$Subset_{i}$}
 	\SetKwData{Subsets}{Subsets}
 	\SetKwData{ReferenceSetSize}{$ReferenceSet_{size}$}
 	\SetKwData{DiverseSetSize}{$DiverseSet_{size}$}
@@ -155,12 +155,13 @@ Algorithm~\ref{alg:scatter_search} provides a pseudo-code listing of the Scatter
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item Scatter search is suitable for both discrete domains such as combinatorial optimization as well as continuous domains such as non-linear programming (continuous function optimization).
 	\item Small set sizes are preferred for the \texttt{ReferenceSet}, such as 10 or 20 members.
 	\item Subset sizes can be 2,3,4 or more members that are all recombined to produce viable candidate solutions within the neighborhood of the members of the subset.
 	\item Each subset should comprise at least one member added to the set in the previous algorithm iteration.
 	\item The Local Search procedure should be a problem-specific improvement heuristic. 
-	\item The selection of members for the \texttt{ReferenceSet} at the end of each iteration favor solutions with higher quality and may also promote diversity.
-	\item The \texttt{ReferenceSet} may be updated dynamically as candidates are created, rather than at the end of the cycle (a so-called steady state population in some evolutionary computation literature).
+	\item The selection of members for the \texttt{ReferenceSet} at the end of each iteration favors solutions with higher quality and may also promote diversity.
+	\item The \texttt{ReferenceSet} may be updated at the end of an iteration, or dynamically as candidates are created (a so-called steady-state population in some evolutionary computation literature).
 	\item A lack of changes to the \texttt{ReferenceSet} may be used as a signal to stop the current search, and potentially restart the search with a newly initialized \texttt{ReferenceSet}.	
 \end{itemize}
 
@@ -174,7 +175,7 @@ Listing~\ref{scatter_search} provides an example of the Scatter Search algorithm
 The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_1,\ldots,v_{n})=0.0$.
 
 % algorithm
-The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors in the presented example, rather than stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic for simplicity.
+The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors, as opposed to stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic that uses a stochastic step size in the range of half a percent of the search space.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Scatter Search algorithm in the Ruby Programming Language, label=scatter_search]{../../src/algorithms/stochastic/scatter_search.rb}
@@ -186,65 +187,25 @@ The algorithm is an implementation of Scatter Search as described in an applicat
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-
-
-NOTES
-\begin{itemize}
-	\item general form is called path relinking (different technique?), claimed to be an evolutionary method
-	\item for combinatorial optimization as well as non-linear programming 
-	\item a population-based approach - maintains a set of `reference solutions' - algorithm operates on a reference set, generating new solutions that are assessed, some of which replace members of the reference set
-	\item uses a linear crossover algorithm to create new samples
-	\item selects two or more candidates from the reference set to create a new sample
-	\item can partition the reference set into tiers, apply rules for recombining from different tiers, as well as replacement
-	\item combinations are designed to create weighted centroids of defined sub-regions
-\end{itemize}
-
-principles
-\begin{itemize}
-	\item useful information about the optima is stored in multiple elite solutions (reference set)
-	\item recombine elite examples to exploit such information
-	\item recombination process must be able to explore within the region of elite solutions as well as out side it (diversity and quality)
-	\item combine many elite solutions together - exploits more information
-\end{itemize}
-
-what is path relinking? why is it relevant? \cite{Glover1994a} - combining, also introducing path relinking strategy
-\begin{itemize}
-	\item linear combinations of solutions - paths between solutions
-	\item paths in neighborhood space, rather than Euclidean space
-	\item an alternative and more flexible way of navigating a neighborhood space than the traditional one-move on a graph approach
-	
-\end{itemize}
-
-
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
-
-\begin{itemize}
-	\item (seminal) proposal of technique: surrogate constraints for integer programming problems - knapsack problem, Glover \cite{Glover1977} - same source as Tabu Search!?. approach actually named, based on work in 1967 (Heuristics in Integer Programming)
-	\item (seminal!?) combination of scatter search with tabu search \cite{Glover1994a}
-	\item review of scatter search and relationship to genetic algorithms \cite{Glover1994}
-	\item a template for specializing the technique \cite{Glover1998a} - main reference for scatter search
-\end{itemize}
+% seminal
+A form of the Scatter Search algorithm was proposed by Glover for integer programming \cite{Glover1977}, based on Glover's earlier work on surrogate constraints.
+% update
+The approach remained idle until it was revisited by Glover and combined with Tabu Search \cite{Glover1994a}.
+% modern
+The modern canonical reference of the approach was proposed by Glover who provides a abstract template of the procedure that may be specialized for a given application domain \cite{Glover1998a}. 
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % historical reviews
-todo
-
-there are a lot of generic review chapters for the approach - basically all the same
-
-\begin{itemize}
-	\item the based reference work is the book \cite{Laguna2003} including principles of the approach, tutorial applications to standard problems (nonlinear optimization, knapsack, linear ordering - sample code in the C programming language), advanced topics and review of applications
-	\item overview, fundamentals of SS and path linking \cite{Glover2000} very much like the template paper
-	\item another generic overview paper - perhaps more recent \cite{Martia2006} review chapter
-	\item another generic presentation, knapsack problem demo \cite{Laguna2002} review chapter
-	\item a good and detailed overview of the technique \cite{Glover1999} another review chapter - new ideas in optimization
-\end{itemize}
+The primary reference for the approach is the book by Laguna and Mart\'i that reviews the principles of the approach in detail and presents tutorials on applications of the approach on standard problems using the C programming language \cite{Laguna2003}.
+% review
+There are many review articles and chapters on Scatter Search that may be used to supplement an understanding of the approach, such as a detailed review chapter by Glover \cite{Glover1999}, a review of the fundamentals of the approach and its relationship to an abstraction called `path linking' by Glover, Laguna, and Mart\'i \cite{Glover2000}, and a modern overview of the technique by Mart\'i, Lagunab, and Glover \cite{Martia2006}.
 
 
 % 
@@ -253,10 +214,10 @@ there are a lot of generic review chapters for the approach - basically all the 
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Scatter Search algorithm as a procedure that maintains a diverse and high-quality set of candidate solutions that are recombined to create new candidate solutions.
 
-this is an overly obtuse technique that is very poorly communicated.
-
+% bad algo
+This preparation of this report was particularly difficult compared to recent reports. The reason for this (as proposed by the author) was because of the vagueness of the description of the algorithm in the literature and the over use of poor pseudo code listings in review articles and chapters. It is hoped that experts in the field may be consulted and/or improved descriptions of the approach can be identified.
 
 % 
 % Contribute
