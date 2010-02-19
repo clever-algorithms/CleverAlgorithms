@@ -29,17 +29,17 @@ def generate_initial_solution(cities)
   return best
 end
 
-def is_tabu?(edges, tabuList, iteration)
+def is_tabu?(edges, tabuList, iteration, prohibitionPeriod)
   tabuList.each do |entry|
     if entry[:edge] == edges
-      if entry[:iteration] >= iteration-tabuList.size
-        return true, entry
+      if entry[:iteration] >= iteration-prohibitionPeriod
+        return true
       else 
-        return false, entry
+        return false
       end
     end
   end
-  return false, nil
+  return false
 end
 
 def bestNonTabuMove(candidates, tabuList, iteration)
@@ -65,7 +65,6 @@ def make_tabu(tabuList, edge, iteration)
   return entry
 end
 
-
 def swap(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.length), rand(perm.length)
@@ -81,31 +80,13 @@ def generate_candidate(best, cities)
   return candidate, edges
 end
 
-def escape()
-  # clean hashing memory structure?
-  # visits? whole tabu lost?
-  
-  steps = 1 + (1+rand)*movingAvg/2
-  
-  steps.times do |i|
-    # random move
-    # tabu
-    # update current best
-    # search neighbourhood?
-  end
-  
-end
-
-def search(cities, candidateListSize, maxIterations, cycleMax, rep, chaos, increase, decrease)
-  chaotic = 0
-  movingAvg = 0
-  tabuListSize = 1
-  stepsSinceLastChange = 0
-
-
+def search(cities, candidateListSize, maxIterations, cycleMax, increase, decrease)
   best = generate_initial_solution(cities)
   current = best
-  tabuList = Array.new(tabuListSize)
+  tabuList, prohibitionPeriod = Array.new(tabuListSize), 1
+  
+  avgLength = 0
+  
   maxIterations.times do |iter|
     
     # todo, check for duplicates - new func
@@ -113,51 +94,49 @@ def search(cities, candidateListSize, maxIterations, cycleMax, rep, chaos, incre
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     bestCandidate, bestCandidateEdges = candidates.first[0], candidates.first[1]
 
-    tabu = is_tabu?(bestCandidate[:vector], tabuList, iteration)
+    tabu = is_tabu?(bestCandidateEdges, tabuList, iteration, prohibitionPeriod)
     entry = make_tabu(tabuList, bestCandidateEdges, iter)
-    stepsSinceLastChange += 1
-    doEscape = false    
-    if tabu and entry[:visited] > rep
-      chaotic += 1
-      doEscape, chaotic = true, 0 if chaotic > chaos
+    
+    
+    # if permutation seen before?
+    if tabu
+      
+      # length of time since permutation last seen?
+      if iter-entry[:iteration] < 2*(cities.length-1)
+        avgLength = 0.1*(iter-entry[:iteration]) + 0.9*avgLength
+        prohibitionPeriod = prohibitionPeriod*increase
+      end
+      
     end
 
-    if doEscape
-      escape()
-    else
-      if tabu and iteration-entry[:iteration] < cycleMax
-        movingAvg = 0.1*iteration-entry[:iteration] + 0.9*movingAvg
-        tabuListSize, stepsSinceLastChange = tabuListSize*increase, 0
-      end
-      bestChanged = false
-      best, bestChanged = bestCandidate, true if bestCandidate[:cost] < best[:cost]
-      if tabu 
-        # this is crap, because above we are tabu'ing a different move
-        current = bestNonTabuMove(candidates, tabuList, iter)
-        if current.nil?
-          current = bestCandidate
-          tabuListSize = tabuListSize*decrese
-        end
-              
-      else
-        current = bestCandidate if bestCandidate[:cost]<current[:cost]
-      end    
+
+    
+    if tabu and  < cycleMax
+      
     end
     
-    tabuList.pop while tabuList.size > tabuListSize
+    bestChanged = false
+    best, bestChanged = bestCandidate, true if bestCandidate[:cost] < best[:cost]
+    if tabu 
+      # this is crap, because above we are tabu'ing a different move
+      current = bestNonTabuMove(candidates, tabuList, iter)
+      if current.nil?
+        current = bestCandidate
+        prohibitionPeriod = prohibitionPeriod*decrese
+      end
+    else
+      current = bestCandidate if bestCandidate[:cost]<current[:cost]
+    end
     
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
 end
 
-
-# 
-# NOTE: remove the escape mechanism - it is a tabu search extension, i think reactive tabus search is about adaptive list size?
-# 
-
 MAX_ITERATIONS = 100
 MAX_CANDIDATES = 50
+INCREASE = 1.3
+DECREASE = 0.9
 CYCLE_MAX = 50
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
@@ -166,5 +145,5 @@ BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],[875,920],[700,500],
  [555,815],[830,485],[1170,65],[830,610],[605,625],[595,360],[1340,725],[1740,245]]
 
-best = search(BERLIN52, MAX_CANDIDATES, MAX_ITERATIONS)
+best = search(BERLIN52, MAX_CANDIDATES, MAX_ITERATIONS, CYCLE_MAX, INCREASE, DECREASE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
