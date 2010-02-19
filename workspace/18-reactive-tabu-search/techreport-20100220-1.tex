@@ -164,6 +164,8 @@ The algorithm is applied to the Berlin52 instance of the Traveling Salesman Prob
 % algorithm
 todo... based on description presented in \cite{Battiti1994}
 
+take a good look at \cite{Battiti1995a} for the algorithm
+
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Reactive Tabu Search algorithm in the Ruby Programming Language, label=reactive_tabu_search]{../../src/algorithms/stochastic/reactive_tabu_search.rb}
 
@@ -189,17 +191,13 @@ tabu search requires the a priori setting of the tabu list size, a size that def
 it is a tabu search that is augmented to detect the occurrence of cycles in the search and adapt the tabu list size accordingly
 it reacts to the occurrence of repetitions
 
+(automated tabu tenure)
+
 also escaping mechanism seems to be core
 
-reactive search optimization
-\begin{itemize}
-	\item (seminal?) tech report (reactive local search) \cite{Battiti1995}
-	\item (seminal?) motivating paper \cite{Battiti1996}
-	\item related to the development of reactive tabu search - is this algorithm a superset?
-	\item (book) \cite{Battiti2008}
-	\item great contemporary overview of the whole movement \cite{Battiti2009}
-	\item `Reactive Local Search' \cite{Battiti2001}
-\end{itemize}
+strategy for reactive local search - automating the process by which a practioner configures an algorithm for a problem instance - use a feedback loop and automate it
+
+
 
 % 
 % Primary Sources
@@ -208,13 +206,18 @@ reactive search optimization
 % seminal 
 Reactive Tabu Search was proposed by Battiti and Tecchiolli as an extension to Tabu Search demonstrated on the knapsack problem that included an adaptive tabu list size in addition to a diversification mechanism \cite{Battiti1994}. The technique also used efficient memory structures that were based on an earlier work by Battiti and Tecchiolli that considered a parallel tabu search that may be considered a pre-cursor of Reactive Tabu Search \cite{Battiti1992}.
 % secondary 
-Some early application papers by Battiti and Tecchiolli include a comparison to Simulated Annealing applied to the Quadratic Assignment Problem  \cite{Battiti1994a}, benchmarked on instances of the knapsack problem and N-K models and compared with Repeated Local Minima Search, Simulated Annealing, and Genetic Algorithms \cite{Battiti1995a}, and training neural networks \cite{Battiti1995b}.
+Some early application papers by Battiti and Tecchiolli include a comparison to Simulated Annealing applied to the Quadratic Assignment Problem  \cite{Battiti1994a}, benchmarked on instances of the knapsack problem and N-K models and compared with Repeated Local Minima Search, Simulated Annealing, and Genetic Algorithms \cite{Battiti1995a}, and training neural networks on an array of problems \cite{Battiti1995b}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-
+% overviews of RTS
+% none?
+% reactive local search
+Reactive Tabu Search was abstracted to a form called Reactive Local Search that consider adaptive methods that learn suitable parameters for heuristics that manage a local search technique \cite{Battiti1995, Battiti2001}. Under this abstraction, the Reactive Tabu Search algorithm is single example of the Reactive Local Search principle applied to the Tabu Search. 
+% reactive search optimization
+This framework was further extended to the use of any adaptive machine learning techniques to adapt the parameters of an algorithm by reacting to algorithm outcomes online while solving a problem, called Reactive Search \cite{Battiti1996}. The best reference for this general framework is the book on Reactive Search Optimization by Battiti, Brunato, and Mascia\cite{Battiti2008}. Additionally, the review chapter by Battiti and Brunato provides a contemporary description \cite{Battiti2009}.
 
 
 % 
