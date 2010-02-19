@@ -82,7 +82,9 @@ related to reactive GRASP
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+The objective of Tabu Search is to avoid cycles while applying a local search technique. The Reactive Tabu Search addresses this objective by explicitly monitoring the search and reacting to the occurrence of cycles and their repetition by adapting the tabu tenure (tabu list size).
+% reactive search
+The strategy of the broader field of Reactive Search Optimization is to automate the process by which a practitioner configures a search procedure by monitoring online behavior and use machine learning techniques to adapt the configuration.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -149,7 +151,9 @@ todo...
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item Reactive Tabu Search is an extension of Tabu Search and as such should exploit the best practices used for the parent algorithm.
+	\item Reactive Tabu Search was designed for discrete domains such as combinatorial optimization, although has been applied to continuos function optimization.
+	\item todo...
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -176,28 +180,6 @@ take a good look at \cite{Battiti1995a} for the algorithm
 \label{sec:references}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-
-NOTES
-\begin{itemize}
-	\item should the report be for reactive tabu search or for reactive search optimization? my gut says the former.
-	\item tabu search: sub-optimal moves (where hill climbing stops) are better starting points than random
-	\item reason for RTS: straight tabu (fixed tabu) can be too slow in some situations
-	\item reactive tabu is also about making tabu more efficient - using more efficient data structures (hash tables, etc)
-	\item RTS provides a fully automated way of adapting the tabu list size to the problem
-	\item also adds an escape strategy - the diversify the search when the tabu list is not enough
-\end{itemize}
-
-tabu search requires the a priori setting of the tabu list size, a size that defines the maximum length of cycles that can be avoided. cannot possibly know the optimal size, fixed may not be appropriate.
-it is a tabu search that is augmented to detect the occurrence of cycles in the search and adapt the tabu list size accordingly
-it reacts to the occurrence of repetitions
-
-(automated tabu tenure)
-
-also escaping mechanism seems to be core
-
-strategy for reactive local search - automating the process by which a practioner configures an algorithm for a problem instance - use a feedback loop and automate it
-
-
 
 % 
 % Primary Sources
