@@ -32,15 +32,6 @@ def random_permutation(cities)
   return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
 end
 
-def stochastic_two_opt(permutation)
-  perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
-  c1, c2 = c2, c1 if c2 < c1
-  perm[c1...c2] = perm[c1...c2].reverse
-  return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
-end
-
 def generate_initial_solution(cities)
   best = {}
   best[:vector] = random_permutation(cities)
@@ -48,21 +39,49 @@ def generate_initial_solution(cities)
   return best
 end
 
-def is_tabu?(permutation, tabuList)
-  permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
-    tabuList.each do |forbidden_edge|
-      return true if forbidden_edge == [c1, c2]
+def is_tabu?(edges, tabuList, iteration)
+  tabuList.each do |entry|
+    if entry[:edge] == edges
+      if entry[:iteration] >= iteration-tabuList.size
+        return true, entry
+      else 
+        return false, entry
+      end
     end
   end
-  return false
+  return false, nil
+end
+
+def bestNonTabuMove(candidates, tabuList, iteration)
+  candidates.each do |c| 
+    return c.first if !is_tabu?(c[1], tabuList, iteration)
+  end
+  return nil
 end
 
 def make_tabu(tabuList, edge, iteration)
+  tabuList.each do |entry|
+    if entry[:edge] == edge
+      entry[:iteration] = iteration
+      entry[:visited] += 1
+      return
+    end
+  end
   entry = {}
+  entry[:visited] = 1
   entry[:edge] = edge
   entry[:iteration] = iteration
   tabuList << entry
+  return entry
+end
+
+
+def swap(permutation)
+  perm = Array.new(permutation)
+  c1, c2 = rand(perm.length), rand(perm.length)
+  c2 = rand(perm.length) while c1 == c2
+  perm[c1], perm[c2] = perm[c2], perm[c1]
+  return permutation, [c1, c2]
 end
 
 def generate_candidate(best, cities)
@@ -72,39 +91,68 @@ def generate_candidate(best, cities)
   return candidate, edges
 end
 
-def search(cities, candidateListSize, maxIterations)
-  tabuListSize, stepsSinceLastChange, avg = 1, 0, 0
+def escape()
+  # clean hashing memory structure?
+  # visits? whole tabu lost?
+  
+  steps = 1 + (1+rand)*movingAvg/2
+  
+  steps.times do |i|
+    # random move
+    # tabu
+    # update current best
+    # search neighbourhood?
+  end
+  
+end
+
+def search(cities, candidateListSize, maxIterations, cycleMax, rep, chaos, increase, decrease)
+  chaotic = 0
+  movingAvg = 0
+  tabuListSize = 1
+  stepsSinceLastChange = 0
+
+
   best = generate_initial_solution(cities)
   current = best
   tabuList = Array.new(tabuListSize)
   maxIterations.times do |iter|
+    
+    # todo, check for duplicates - new func
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     bestCandidate, bestCandidateEdges = candidates.first[0], candidates.first[1]
-    
-    # check for escape
-    escape = false
-    
-    if escape
-      
-    else
-      if bestCandidate[:cost] < current[:cost]
-        current = bestCandidate
-        best = bestCandidate if bestCandidate[:cost] < best[:cost]
-        bestCandidateEdges.each {|edge| make_tabu(tabuList, edge, iter)}
-        tabuList.pop while tabuList.length > tabuListSize
-      end
-    end
-    
-    
-    
-    if is_tabu?(bestCandidate[:vector], tabuList)
-    
-    end
-    
-    
 
-    
+    tabu = is_tabu?(bestCandidate[:vector], tabuList, iteration)
+    entry = make_tabu(tabuList, bestCandidateEdges, iter)
+    stepsSinceLastChange += 1
+    doEscape = false    
+    if tabu and entry[:visited] > rep
+      chaotic += 1
+      doEscape, chaotic = true, 0 if chaotic > chaos
+    end
+
+    if doEscape
+      escape()
+    else
+      if tabu and iteration-entry[:iteration] < cycleMax
+        movingAvg = 0.1*iteration-entry[:iteration] + 0.9*movingAvg
+        tabuListSize, stepsSinceLastChange = tabuListSize*increase, 0
+      end
+      bestChanged = false
+      best, bestChanged = bestCandidate, true if bestCandidate[:cost] < best[:cost]
+      if tabu 
+        # this is crap, because above we are tabu'ing a different move
+        current = bestNonTabuMove(candidates, tabuList, iter)
+        if current.nil?
+          current = bestCandidate
+          tabuListSize = tabuListSize*decrese
+        end
+              
+      else
+        current = bestCandidate if bestCandidate[:cost]<current[:cost]
+      end    
+    end
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
