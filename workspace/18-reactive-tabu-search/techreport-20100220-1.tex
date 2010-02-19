@@ -185,13 +185,11 @@ NOTES
 	\item also adds an escape strategy - the diversify the search when the tabu list is not enough
 \end{itemize}
 
-reactive tabu search
-\begin{itemize}
-	\item (seminal) proposal of reactive tabu search \cite{Battiti1994} - explicit checks for repetition. learns (adapts) the size of the tabu list. - knapsack problem and QAP. inspired by complex systems and chaotic attractors
-	\item (seminal) - simulated annealing for QAP - compared \cite{Battiti1994a}
-	\item (seminal?) N-K problem, knapsack problem, (compared with Repeated Local Minima Search, Simulated Annealing, Genetic Algorithms, and Neural Networks) \cite{Battiti1995a}
-	\item early version, maybe parallel version \cite{Battiti1992} - early work that uses hashing for tabu search and looks at making it parallel - not really reactive tabu search.
-\end{itemize}
+tabu search requires the a priori setting of the tabu list size, a size that defines the maximum length of cycles that can be avoided. cannot possibly know the optimal size, fixed may not be appropriate.
+it is a tabu search that is augmented to detect the occurrence of cycles in the search and adapt the tabu list size accordingly
+it reacts to the occurrence of repetitions
+
+also escaping mechanism seems to be core
 
 reactive search optimization
 \begin{itemize}
@@ -207,14 +205,16 @@ reactive search optimization
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
+% seminal 
+Reactive Tabu Search was proposed by Battiti and Tecchiolli as an extension to Tabu Search demonstrated on the knapsack problem that included an adaptive tabu list size in addition to a diversification mechanism \cite{Battiti1994}. The technique also used efficient memory structures that were based on an earlier work by Battiti and Tecchiolli that considered a parallel tabu search that may be considered a pre-cursor of Reactive Tabu Search \cite{Battiti1992}.
+% secondary 
+Some early application papers by Battiti and Tecchiolli include a comparison to Simulated Annealing applied to the Quadratic Assignment Problem  \cite{Battiti1994a}, benchmarked on instances of the knapsack problem and N-K models and compared with Repeated Local Minima Search, Simulated Annealing, and Genetic Algorithms \cite{Battiti1995a}, and training neural networks \cite{Battiti1995b}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-todo
+
 
 
 % 
