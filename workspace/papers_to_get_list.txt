@@ -35,3 +35,6 @@ Tabu Search
 Serial and parallel search techniques for the traveling salesman problem: NO LINK
 - A user's guide to tabu search: http://www.springerlink.com/content/k607q47112622n45/
 - Some Convergence Results for Probabilistic Tabu Search: http://joc.journal.informs.org/cgi/content/abstract/4/1/32
+
+Reactive Tabu Search
+- The reactive tabu search for machine learning: no link
