@@ -93,7 +93,7 @@ The strategy of the broader field of Reactive Search Optimization is to automate
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:reactive_tabu_search} provides a pseudo-code listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
 % specifics
-The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli \cite{Battiti1995a}. The procedure has been modified for brevity to exude the diversification procedure (escape move).
+The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli \cite{Battiti1995a}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the nest know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -109,15 +109,15 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	\SetKwData{MaxIterations}{$Iteration_{max}$}
 	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
 	\SetKwData{ShouldEscape}{ShouldEscape}	
+	\SetKwData{ProblemSize}{ProblemSize}
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
 	\SetKwFunction{GenerateCandidateNeighborhood}{GenerateCandidateNeighborhood}
 	\SetKwFunction{MemoryBasedReaction}{MemoryBasedReaction}
 	\SetKwFunction{BestMove}{BestMove}
-	\SetKwFunction{Escape}{Escape}
 	% I/O
-	\KwIn{\MaxIterations, \Increase, \Decrease}
+	\KwIn{\MaxIterations, \Increase, \Decrease, \ProblemSize}
 	\KwOut{\Best}
   	% Algorithm
 	\Current $\leftarrow$ \ConstructInitialSolution{}\;
@@ -127,21 +127,16 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	
 	\ForEach{\CurrentIteration $\in$ \MaxIterations} {
 		% memory based reaction
-		\ShouldEscape $\leftarrow$ \MemoryBasedReaction{\Current, \Increase, \Decrease, \CurrentIteration}\;
-		\eIf{\ShouldEscape}{
-			% escape
-			\Escape{}\;
-		}{
-			% neighbours
-			\CandidateList $\leftarrow$ \GenerateCandidateNeighborhood{\Current}\;
-			% best move
-			\Current $\leftarrow$ \BestMove{\CandidateList}\;
-			% update tabu list
-			\TabuList $\leftarrow$ \CurrentFeature\;
-			% update best so far
-			\If{\Cost{\Current} $\leq$ \Cost{\Best}}{
-				\Best $\leftarrow$ \Current\;
-			}
+		\MemoryBasedReaction{\Increase, \Decrease, \ProblemSize}\;
+		% neighbours
+		\CandidateList $\leftarrow$ \GenerateCandidateNeighborhood{\Current}\;
+		% best move
+		\Current $\leftarrow$ \BestMove{\CandidateList}\;
+		% update tabu list
+		\TabuList $\leftarrow$ \CurrentFeature\;
+		% update best so far
+		\If{\Cost{\Current} $\leq$ \Cost{\Best}}{
+			\Best $\leftarrow$ \Current\;
 		}
 	}
 	\Return{\Best}\;
@@ -150,22 +145,16 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	\label{alg:reactive_tabu_search}
 \end{algorithm}
 
-Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search.
-
 \begin{algorithm}[pht]
 	\SetLine
 	% data
-	\SetKwData{ShouldEscape}{ShouldEscape}	
 	\SetKwData{Current}{$S_{curr}$}
 	\SetKwData{CurrentVisitTime}{$Scurr_{t}$}
-	\SetKwData{CurrentVisitRepetitions}{$Scurr_{r}$}
 	\SetKwData{Increase}{Increase}
 	\SetKwData{Decrease}{Decrease}
 	\SetKwData{VisitedSolutions}{VisitedSolutions}
 	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
 	\SetKwData{RepetitionInterval}{RepetitionInterval}
-	\SetKwData{REP}{REP}
-	\SetKwData{CHAOS}{CHAOS}
 	\SetKwData{MostVisitedCandidates}{MostVisitedCandidates}
 	\SetKwData{AvgRepetitionInterval}{$RepetitionInterval_{avg}$}
 	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
@@ -174,32 +163,19 @@ Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction th
 	% functions
 	\SetKwFunction{HaveVisitedSolutionBefore}{HaveVisitedSolutionBefore}	
 	\SetKwFunction{RetrieveLastTimeVisited}{RetrieveLastTimeVisited}
-	\SetKwFunction{RetrieveVisitRepetitions}{RetrieveVisitRepetitions}
 	\SetKwFunction{Count}{Count}
 	\SetKwFunction{Empty}{Empty}
 	\SetKwFunction{Max}{Max}
 	
 	% I/O
-	\KwIn{\Increase, \Decrease, \REP, \CHAOS, \ProblemSize}
-	\KwOut{\ShouldEscape}
+	\KwIn{\Increase, \Decrease, \ProblemSize}
+	\KwOut{}
   	% Algorithm
 	\eIf{\HaveVisitedSolutionBefore{\Current, \VisitedSolutions}}{
 		% RepetitionInterval
 		\CurrentVisitTime $\leftarrow$ \RetrieveLastTimeVisited{\VisitedSolutions, \Current}\;
 		\RepetitionInterval $\leftarrow$ \CurrentIteration $-$ \CurrentVisitTime\;
 		\CurrentVisitTime $\leftarrow$ \CurrentIteration\;
-		\CurrentVisitRepetitions $\leftarrow$ \RetrieveVisitRepetitions{\VisitedSolutions, \Current}\;
-		\CurrentVisitRepetitions $\leftarrow$ \CurrentVisitRepetitions + 1\;		
-		% check for too many repetitions
-		\If{\CurrentVisitRepetitions $>$ REP}{
-			\MostVisitedCandidates $\leftarrow$ \Current\;
-			% check for escape
-			\If{\Count{\MostVisitedCandidates} $>$ \CHAOS}{
-				\Empty{\MostVisitedCandidates}\;
-				\ShouldEscape $\leftarrow$ TRUE\;
-				\Return{\ShouldEscape}\;
-			}
-		}
 		% check for increase
 		\If{\RepetitionInterval $<$ $2*\ProblemSize$}{
 			\AvgRepetitionInterval $\leftarrow$ $0.1*\RepetitionInterval + 0.9*\AvgRepetitionInterval$\;
@@ -210,7 +186,6 @@ Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction th
 		% remember solution
 		\VisitedSolutions $\leftarrow$ \Current\;
 		\CurrentVisitTime $\leftarrow$ \CurrentIteration\;
-		\CurrentVisitRepetitions $\leftarrow 1$\;
 	}
 	
 	% check for reduction
@@ -218,15 +193,11 @@ Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction th
 		\ProhibitionPeriod $\leftarrow$ \Max{1, $\ProhibitionPeriod * \Decrease$}\;
 		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
 	}
-	
-	\ShouldEscape $\leftarrow$ FALSE\;
-	\Return{\ShouldEscape}\;
+
 	% caption
 	\caption{Pseudo Code for the \texttt{MemoryBasedReaction} function in the Reactive Tabu Search algorithm.}
 	\label{alg:memory_based_reaction}
 \end{algorithm}
-
-Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the nest know solution and the selected admissible move (called aspiration).
 
 \begin{algorithm}[pht]
 	\SetLine
@@ -252,7 +223,7 @@ Algorithm~\ref{alg:best_move} describes the selection of the best move from a li
   	% Algorithm
 	\AdmissibleCandidateList $\leftarrow$ \GetAdmissibleMoves{\CandidateList}\;
 	\TabuCandidateList $\leftarrow$ \CandidateList $-$ \AdmissibleCandidateList\;
-
+	% modify
 	\If{\Size{\AdmissibleCandidateList} $<$ 2} {
 		\ProhibitionPeriod $\leftarrow$ $\ProblemSize - 2$\;
 		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
@@ -268,9 +239,6 @@ Algorithm~\ref{alg:best_move} describes the selection of the best move from a li
 	\caption{Pseudo Code for the \texttt{BestMove} function in the Reactive Tabu Search algorithm.}
 	\label{alg:best_move}
 \end{algorithm}
-
-
-Algorithm~\ref{alg:tabu} determines whether a given neighborhood moves is tabu based on the current \texttt{ProhibitionPeriod}.
 
 \begin{algorithm}[pht]
 	\SetLine
@@ -296,7 +264,6 @@ Algorithm~\ref{alg:tabu} determines whether a given neighborhood moves is tabu b
 	\caption{Pseudo Code for the \texttt{IsTabu} function in the Reactive Tabu Search algorithm.}
 	\label{alg:tabu}
 \end{algorithm}
-
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
