@@ -148,9 +148,29 @@ end
 def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, decrease)
   current = generate_initial_solution(cities, maxNoImprove)
   best = current
-  tabuList, prohibitionPeriod = [], 10
+  tabuList, prohibitionPeriod = [], 1
   visitedList, avgLength, lastChange = [], 1, 0
   maxIterations.times do |iter|
+    # memory based reaction
+    candidateEntry = get_candidate_entry(visitedList, current[:vector])
+    if !candidateEntry.nil?
+      repetitionInterval = iter - candidateEntry[:iteration]
+      candidateEntry[:iteration] = iter
+      candidateEntry[:visits] += 1
+      if repetitionInterval < 2*(cities.length-1)
+        avgLength = 0.1*(iter-candidateEntry[:iteration]) + 0.9*avgLength
+        prohibitionPeriod = (prohibitionPeriod*increase).round
+        lastChange = iter
+      end
+    else
+      store_permutation(visitedList, current[:vector], iter)
+    end
+    if iter-lastChange > avgLength
+      prohibitionPeriod = [prohibitionPeriod*decrease,1].max.round
+      lastChange = iter
+    end
+    
+    
     
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
@@ -170,36 +190,19 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
     
     # updates
     bestMoveEdges.each {|edge| make_tabu(tabuList, edge, iter)}
-    # puts "tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}"
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
     
     
-    # dear self, i'm in the process of going back to 2opt for the moves, given swap is pox!
     
-    #     # memory based reaction
-    #     candidateEntry = get_candidate_entry(visitedList, current[:vector])
-    #     if !candidateEntry.nil?
-    #       repetitionInterval = iter - candidateEntry[:iteration]
-    #       candidateEntry[:iteration] = iter
-    #       candidateEntry[:visits] += 1
-    #       if repetitionInterval < 2*(cities.length-1)
-    #         avgLength = 0.1*(iter-candidateEntry[:iteration]) + 0.9*avgLength
-    #         prohibitionPeriod = prohibitionPeriod*increase
-    #         lastChange = iter
-    #       end
-    #     else
-    #       store_permutation(visitedList, current[:vector], iter)
-    #     end
-    #     if iter-lastChange > avgLength
-    #       prohibitionPeriod = [prohibitionPeriod*decrease,1].max
-    #       lastChange = iter
-    #     end
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
+    
+
+    
+    puts " > iteration #{(iter+1)}, tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}, best: c=#{best[:cost]}"
   end
   return best
 end
 
-MAX_ITERATIONS = 100
+MAX_ITERATIONS = 300
 MAX_NO_IMPROVE = 50
 MAX_CANDIDATES = 50
 INCREASE = 1.1
