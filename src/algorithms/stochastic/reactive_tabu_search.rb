@@ -56,9 +56,9 @@ def generate_initial_solution(cities, maxNoImprovements)
   return best
 end
 
-def is_tabu?(edges, tabuList, iteration, prohibitionPeriod)
+def is_tabu?(edge, tabuList, iteration, prohibitionPeriod)
   tabuList.each do |entry|
-    if entry[:edge] == edges
+    if entry[:edge] == edge
       if entry[:iteration] >= iteration-prohibitionPeriod
         return true
       else 
@@ -100,17 +100,17 @@ def equivalent_permutations(edgelist1, edgelist2)
   return true
 end
 
-def swap(permutation)
-  perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
-  perm[c1], perm[c2] = perm[c2], perm[c1]
-  return permutation, [c1, c2]
-end
+# def swap(permutation)
+#   perm = Array.new(permutation)
+#   c1, c2 = rand(perm.length), rand(perm.length)
+#   c2 = rand(perm.length) while c1 == c2
+#   perm[c1], perm[c2] = perm[c2], perm[c1]
+#   return permutation, [c1, c2]
+# end
 
 def generate_candidate(best, cities)
   candidate = {}
-  candidate[:vector], edges = swap(best[:vector])
+  candidate[:vector], edges = stochastic_two_opt(best[:vector])
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate, edges
 end
@@ -135,7 +135,8 @@ end
 def sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iteration)
   tabu, admissable = [], []
   candidates.each do |a|
-    if is_tabu?(a[1], tabuList, iteration, prohibitionPeriod)
+    if is_tabu?(a[1][0], tabuList, iteration, prohibitionPeriod) or
+      is_tabu?(a[1][1], tabuList, iteration, prohibitionPeriod)
       tabu << a
     else
       admissable << a
@@ -150,8 +151,10 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
   tabuList, prohibitionPeriod = [], 10
   visitedList, avgLength, lastChange = [], 1, 0
   maxIterations.times do |iter|
+    
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
+    
     # best move
     tabu, admissible = sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iter)
     if admissible.length < 2
@@ -159,15 +162,15 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
       lastChange = iter
     end
     # make move
-    if !admissible.empty?
-      current, bestMoveEdges = admissible.first
-      # current, bestMoveEdges = tabu.first if !tabu.empty? and tabu.first[0][:cost]<current[:cost]
-    else
+    current, bestMoveEdges = admissible.first if !admissible.empty?
+    if !tabu.empty? and tabu.first[0][:cost]<best[:cost] and tabu.first[0][:cost]<current[:cost]
       current, bestMoveEdges = tabu.first
     end
+    
+    
     # updates
-    make_tabu(tabuList, bestMoveEdges, iter)
-    puts "tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}"
+    bestMoveEdges.each {|edge| make_tabu(tabuList, edge, iter)}
+    # puts "tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}"
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
     
     
