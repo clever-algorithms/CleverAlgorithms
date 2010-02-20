@@ -153,14 +153,14 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
     # best move
-    tabu, admissable = sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iter)
-    if admissable.length < 2
+    tabu, admissible = sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iter)
+    if admissible.length < 2
       prohibitionPeriod = cities.length-2
       lastChange = iter
     end
     # make move
-    if !admissable.empty?
-      current, bestMoveEdges = admissable.first
+    if !admissible.empty?
+      current, bestMoveEdges = admissible.first
       # current, bestMoveEdges = tabu.first if !tabu.empty? and tabu.first[0][:cost]<current[:cost]
     else
       current, bestMoveEdges = tabu.first

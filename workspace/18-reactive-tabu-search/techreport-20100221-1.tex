@@ -92,48 +92,55 @@ The strategy of the broader field of Reactive Search Optimization is to automate
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:reactive_tabu_search} provides a pseudo-code listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
-
-todo...
+% specifics
+The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli \cite{Battiti1995a}. The procedure has been modified for brevity to exude the diversification procedure (escape move).
 
 \begin{algorithm}[ht]
 	\SetLine
 	% data
 	\SetKwData{Best}{$S_{best}$}
-	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{Current}{$S_{curr}$}
+	\SetKwData{CurrentFeature}{$Scurr_{feature}$}
 	\SetKwData{TabuList}{TabuList}
-	\SetKwData{TabuListSize}{$TabuList_{size}$}
 	\SetKwData{CandidateList}{CandidateList}
-	\SetKwData{CandidateNeighborhood}{$Sbest_{neighborhood}$}
+	\SetKwData{Increase}{Increase}
+	\SetKwData{Decrease}{Decrease}
+	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
+	\SetKwData{MaxIterations}{$Iteration_{max}$}
+	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{ShouldEscape}{ShouldEscape}	
 	% functions
 	\SetKwFunction{Cost}{Cost}
-	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{DeleteFeature}{DeleteFeature}
 	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
-  	\SetKwFunction{LocateBestCandidate}{LocateBestCandidate}
-	\SetKwFunction{FeatureDifferences}{FeatureDifferences}
-	\SetKwFunction{ContainsAnyFeatures}{ContainsAnyFeatures}
+	\SetKwFunction{GenerateCandidateNeighborhood}{GenerateCandidateNeighborhood}
+	\SetKwFunction{MemoryBasedReaction}{MemoryBasedReaction}
+	\SetKwFunction{BestMove}{BestMove}
+	\SetKwFunction{Escape}{Escape}
 	% I/O
-	\KwIn{\TabuListSize}
+	\KwIn{\MaxIterations, \Increase, \Decrease}
 	\KwOut{\Best}
   	% Algorithm
-	\Best $\leftarrow$ \ConstructInitialSolution{}\;
+	\Current $\leftarrow$ \ConstructInitialSolution{}\;
+	\Best $\leftarrow$ \Current\;
 	\TabuList $\leftarrow$ 0\;
-	\While{$\neg$ \StopCondition{}} {
-		% generate non-tabu candidates
-		\CandidateList $\leftarrow$ 0\;
-		\For{\Candidate $\in$ \CandidateNeighborhood}{
-			\If{$\neg$ \ContainsAnyFeatures{\Candidate, \TabuList}}{
-				\CandidateList $\leftarrow$ \Candidate\;
-			}
-		}
-		% locate best candidate
-		\Candidate $\leftarrow$ \LocateBestCandidate{\CandidateList}\;
-		% update tabu list
-		\If{\Cost{\Candidate} $\leq$ \Cost{\Best}}{
-			\Best $\leftarrow$ \Candidate\;
-			\TabuList $\leftarrow$ \FeatureDifferences{\Candidate, \Best}\;
-			\While{\TabuList $>$ \TabuListSize} {
-				\DeleteFeature{\TabuList}\;
+	\ProhibitionPeriod $\leftarrow$ 1\;
+	
+	\ForEach{\CurrentIteration $\in$ \MaxIterations} {
+		% memory based reaction
+		\ShouldEscape $\leftarrow$ \MemoryBasedReaction{\Current, \Increase, \Decrease, \CurrentIteration}\;
+		\eIf{\ShouldEscape}{
+			% escape
+			\Escape{}\;
+		}{
+			% neighbours
+			\CandidateList $\leftarrow$ \GenerateCandidateNeighborhood{\Current}\;
+			% best move
+			\Current $\leftarrow$ \BestMove{\CandidateList}\;
+			% update tabu list
+			\TabuList $\leftarrow$ \CurrentFeature\;
+			% update best so far
+			\If{\Cost{\Current} $\leq$ \Cost{\Best}}{
+				\Best $\leftarrow$ \Current\;
 			}
 		}
 	}
@@ -142,6 +149,154 @@ todo...
 	\caption{Pseudo Code for the Reactive Tabu Search algorithm.}
 	\label{alg:reactive_tabu_search}
 \end{algorithm}
+
+Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search.
+
+\begin{algorithm}[pht]
+	\SetLine
+	% data
+	\SetKwData{ShouldEscape}{ShouldEscape}	
+	\SetKwData{Current}{$S_{curr}$}
+	\SetKwData{CurrentVisitTime}{$Scurr_{t}$}
+	\SetKwData{CurrentVisitRepetitions}{$Scurr_{r}$}
+	\SetKwData{Increase}{Increase}
+	\SetKwData{Decrease}{Decrease}
+	\SetKwData{VisitedSolutions}{VisitedSolutions}
+	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{RepetitionInterval}{RepetitionInterval}
+	\SetKwData{REP}{REP}
+	\SetKwData{CHAOS}{CHAOS}
+	\SetKwData{MostVisitedCandidates}{MostVisitedCandidates}
+	\SetKwData{AvgRepetitionInterval}{$RepetitionInterval_{avg}$}
+	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
+	\SetKwData{ProhibitionPeriodTime}{$ProhibitionPeriod_{t}$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	% functions
+	\SetKwFunction{HaveVisitedSolutionBefore}{HaveVisitedSolutionBefore}	
+	\SetKwFunction{RetrieveLastTimeVisited}{RetrieveLastTimeVisited}
+	\SetKwFunction{RetrieveVisitRepetitions}{RetrieveVisitRepetitions}
+	\SetKwFunction{Count}{Count}
+	\SetKwFunction{Empty}{Empty}
+	\SetKwFunction{Max}{Max}
+	
+	% I/O
+	\KwIn{\Increase, \Decrease, \REP, \CHAOS, \ProblemSize}
+	\KwOut{\ShouldEscape}
+  	% Algorithm
+	\eIf{\HaveVisitedSolutionBefore{\Current, \VisitedSolutions}}{
+		% RepetitionInterval
+		\CurrentVisitTime $\leftarrow$ \RetrieveLastTimeVisited{\VisitedSolutions, \Current}\;
+		\RepetitionInterval $\leftarrow$ \CurrentIteration $-$ \CurrentVisitTime\;
+		\CurrentVisitTime $\leftarrow$ \CurrentIteration\;
+		\CurrentVisitRepetitions $\leftarrow$ \RetrieveVisitRepetitions{\VisitedSolutions, \Current}\;
+		\CurrentVisitRepetitions $\leftarrow$ \CurrentVisitRepetitions + 1\;		
+		% check for too many repetitions
+		\If{\CurrentVisitRepetitions $>$ REP}{
+			\MostVisitedCandidates $\leftarrow$ \Current\;
+			% check for escape
+			\If{\Count{\MostVisitedCandidates} $>$ \CHAOS}{
+				\Empty{\MostVisitedCandidates}\;
+				\ShouldEscape $\leftarrow$ TRUE\;
+				\Return{\ShouldEscape}\;
+			}
+		}
+		% check for increase
+		\If{\RepetitionInterval $<$ $2*\ProblemSize$}{
+			\AvgRepetitionInterval $\leftarrow$ $0.1*\RepetitionInterval + 0.9*\AvgRepetitionInterval$\;
+			\ProhibitionPeriod $\leftarrow$ $\ProhibitionPeriod * \Increase$\;
+			\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
+		}
+	}{
+		% remember solution
+		\VisitedSolutions $\leftarrow$ \Current\;
+		\CurrentVisitTime $\leftarrow$ \CurrentIteration\;
+		\CurrentVisitRepetitions $\leftarrow 1$\;
+	}
+	
+	% check for reduction
+	\If{\CurrentIteration-\ProhibitionPeriodTime $>$ \AvgRepetitionInterval}{
+		\ProhibitionPeriod $\leftarrow$ \Max{1, $\ProhibitionPeriod * \Decrease$}\;
+		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
+	}
+	
+	\ShouldEscape $\leftarrow$ FALSE\;
+	\Return{\ShouldEscape}\;
+	% caption
+	\caption{Pseudo Code for the \texttt{MemoryBasedReaction} function in the Reactive Tabu Search algorithm.}
+	\label{alg:memory_based_reaction}
+\end{algorithm}
+
+Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the nest know solution and the selected admissible move (called aspiration).
+
+\begin{algorithm}[pht]
+	\SetLine
+	% data	
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{BestTabu}{$Sbest_{tabu}$}
+	\SetKwData{Current}{$S_{curr}$}
+	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
+	\SetKwData{ProhibitionPeriodTime}{$ProhibitionPeriod_{t}$}
+	\SetKwData{CandidateList}{CandidateList}
+	\SetKwData{AdmissibleCandidateList}{$CandidateList_{admissible}$}
+	\SetKwData{TabuCandidateList}{$CandidateList_{tabu}$}
+	% functions
+	\SetKwFunction{Size}{Size}
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{GetAdmissibleMoves}{GetAdmissibleMoves}
+	\SetKwFunction{GetBest}{GetBest}
+	% I/O
+	\KwIn{\ProblemSize}
+	\KwOut{\Current}
+  	% Algorithm
+	\AdmissibleCandidateList $\leftarrow$ \GetAdmissibleMoves{\CandidateList}\;
+	\TabuCandidateList $\leftarrow$ \CandidateList $-$ \AdmissibleCandidateList\;
+
+	\If{\Size{\AdmissibleCandidateList} $<$ 2} {
+		\ProhibitionPeriod $\leftarrow$ $\ProblemSize - 2$\;
+		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
+	}
+	% aspiration
+	\Current $\leftarrow$ \GetBest{\AdmissibleCandidateList}\;
+	\BestTabu $\leftarrow$ \GetBest{\TabuCandidateList}\;
+	\If{\Cost{\BestTabu} $<$ \Cost{\Best} $\wedge$ \Cost{\BestTabu} $<$ \Cost{\Current} }{
+		\Current $\leftarrow$ \BestTabu\;
+	}
+	\Return{\Current}\;
+	% caption
+	\caption{Pseudo Code for the \texttt{BestMove} function in the Reactive Tabu Search algorithm.}
+	\label{alg:best_move}
+\end{algorithm}
+
+
+Algorithm~\ref{alg:tabu} determines whether a given neighborhood moves is tabu based on the current \texttt{ProhibitionPeriod}.
+
+\begin{algorithm}[pht]
+	\SetLine
+	% data	
+	\SetKwData{CurrentFeature}{$Scurr_{feature}$}
+	\SetKwData{CurrentFeatureLastUsed}{$Scurr_{feature}^{t}$}
+	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
+	\SetKwData{Tabu}{Tabu}
+	% functions
+	\SetKwFunction{RetrieveTimeFeatureLastUsed}{RetrieveTimeFeatureLastUsed}
+	% I/O
+	\KwIn{}
+	\KwOut{\Tabu}
+  	% Algorithm
+	\Tabu $\leftarrow$ FALSE\;
+	\CurrentFeatureLastUsed $\leftarrow$ \RetrieveTimeFeatureLastUsed{\CurrentFeature}\;
+	\If{\CurrentFeatureLastUsed $\geq$ \CurrentIteration$-$\ProhibitionPeriod}{
+		\Tabu $\leftarrow$ TRUE\;
+	}
+	\Return{\Tabu}\;
+	% caption
+	\caption{Pseudo Code for the \texttt{IsTabu} function in the Reactive Tabu Search algorithm.}
+	\label{alg:tabu}
+\end{algorithm}
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -154,6 +309,7 @@ todo...
 	\item Reactive Tabu Search was designed for discrete domains such as combinatorial optimization, although has been applied to continuos function optimization.
 	\item Reactive Tabu Search was proposed to use efficient search memory data structures such as hash tables.
 	\item Reactive Tabu Search was proposed to use an long-term memory to diversify the search after a threshold of cycle repetitions has been reached.
+	\item The increase parameter should be greater than one (such as 1.1 or 1.3) and the decrease parameter should be less than one (such as 0.9 or 0.8).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
