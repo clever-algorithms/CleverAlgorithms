@@ -53,16 +53,31 @@ def make_tabu(tabuList, edge, iteration)
   tabuList.each do |entry|
     if entry[:edge] == edge
       entry[:iteration] = iteration
-      entry[:visited] += 1
-      return
+      return entry
     end
   end
   entry = {}
-  entry[:visited] = 1
   entry[:edge] = edge
   entry[:iteration] = iteration
   tabuList.push(entry)
   return entry
+end
+
+def to_edge_list(permutation)
+  list = []
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c1, c2 = c2, c1 if c1 > c2
+    list << [c1, c2]
+  end
+  return list
+end
+
+def equivalent_permutations(edgelist1, edgelist2)
+  edgelist1.each do |edge|
+    return false if !edgelist2.include?(edge)
+  end
+  return true
 end
 
 def swap(permutation)
@@ -75,59 +90,82 @@ end
 
 def generate_candidate(best, cities)
   candidate = {}
-  candidate[:vector], edges = stochastic_two_opt(best[:vector])
+  candidate[:vector], edges = swap(best[:vector])
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate, edges
 end
 
-def search(cities, candidateListSize, maxIterations, cycleMax, increase, decrease)
+def get_candidate_entry(visitedList, permutation)
+  edgeList = to_edge_list(permutation)
+  visitedList.each do |entry|
+    return entry if equivalent_permutations(edgeList, entry[:edgelist])
+  end
+  return nil
+end
+
+def store_permutation(visitedList, permutation, iteration)
+  entry = {}
+  entry[:edgelist] = to_edge_list(permutation)
+  entry[:iteration] = iteration
+  entry[:visits] = 1
+  visitedList.push(entry)
+  return entry
+end
+
+def sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iteration)
+  tabu, admissable = [], []
+  candidates.each do |a|
+    if is_tabu?(a[1], tabuList, iteration, prohibitionPeriod)
+      tabu << a
+    else
+      admissable << a
+    end
+  end
+  return tabu, admissable
+end
+
+def search(cities, candidateListSize, maxIterations, increase, decrease)
   best = generate_initial_solution(cities)
   current = best
-  tabuList, prohibitionPeriod = Array.new(tabuListSize), 1
-  
-  avgLength = 0
-  
+  tabuList, prohibitionPeriod = [], 1
+  visitedList, avgLength, lastChange = [], 1, 0
   maxIterations.times do |iter|
-    
-    # todo, check for duplicates - new func
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
-    candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
-    bestCandidate, bestCandidateEdges = candidates.first[0], candidates.first[1]
-
-    tabu = is_tabu?(bestCandidateEdges, tabuList, iteration, prohibitionPeriod)
-    entry = make_tabu(tabuList, bestCandidateEdges, iter)
-    
-    
-    # if permutation seen before?
-    if tabu
-      
-      # length of time since permutation last seen?
-      if iter-entry[:iteration] < 2*(cities.length-1)
-        avgLength = 0.1*(iter-entry[:iteration]) + 0.9*avgLength
+    candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
+    # best move
+    tabu, admissable = sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iter)
+    if admissable.length < 2
+      prohibitionPeriod = cities.length-2
+      lastChange = iter
+    end
+    # make move
+    if !admissable.empty?
+      current, bestMoveEdges = admissable.first
+      current, bestMoveEdges = tabu.first if !tabu.empty? and tabu.first[0][:cost]<current[:cost]
+    else
+      current, bestMoveEdges =  tabu.first
+    end
+    # updates
+    make_tabu(tabuList, bestMoveEdges, iter)
+    best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
+    # memory based reaction
+    candidateEntry = get_candidate_entry(visitedList, current[:vector])
+    if !candidateEntry.nil?
+      repetitionInterval = iter - candidateEntry[:iteration]
+      candidateEntry[:iteration] = iter
+      candidateEntry[:visits] += 1
+      if repetitionInterval < 2*(cities.length-1)
+        avgLength = 0.1*(iter-candidateEntry[:iteration]) + 0.9*avgLength
         prohibitionPeriod = prohibitionPeriod*increase
-      end
-      
-    end
-
-
-    
-    if tabu and  < cycleMax
-      
-    end
-    
-    bestChanged = false
-    best, bestChanged = bestCandidate, true if bestCandidate[:cost] < best[:cost]
-    if tabu 
-      # this is crap, because above we are tabu'ing a different move
-      current = bestNonTabuMove(candidates, tabuList, iter)
-      if current.nil?
-        current = bestCandidate
-        prohibitionPeriod = prohibitionPeriod*decrese
+        lastChange = iter
       end
     else
-      current = bestCandidate if bestCandidate[:cost]<current[:cost]
+      store_permutation(visitedList, current[:vector], iter)
     end
-    
+    if iter-lastChange > avgLength
+      prohibitionPeriod = [prohibitionPeriod*decrease,1].max
+      lastChange = iter
+    end
     puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
   end
   return best
@@ -135,9 +173,8 @@ end
 
 MAX_ITERATIONS = 100
 MAX_CANDIDATES = 50
-INCREASE = 1.3
+INCREASE = 1.1
 DECREASE = 0.9
-CYCLE_MAX = 50
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
  [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
@@ -145,5 +182,5 @@ BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
  [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],[875,920],[700,500],
  [555,815],[830,485],[1170,65],[830,610],[605,625],[595,360],[1340,725],[1740,245]]
 
-best = search(BERLIN52, MAX_CANDIDATES, MAX_ITERATIONS, CYCLE_MAX, INCREASE, DECREASE)
+best = search(BERLIN52, MAX_CANDIDATES, MAX_ITERATIONS, INCREASE, DECREASE)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
