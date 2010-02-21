@@ -22,13 +22,6 @@ def random_permutation(cities)
   return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
 end
 
-# def generate_initial_solution(cities)
-#   best = {}
-#   best[:vector] = random_permutation(cities)
-#   best[:cost] = cost(best[:vector], cities)
-#   return best
-# end
-
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.length), rand(perm.length)
@@ -100,14 +93,6 @@ def equivalent_permutations(edgelist1, edgelist2)
   return true
 end
 
-# def swap(permutation)
-#   perm = Array.new(permutation)
-#   c1, c2 = rand(perm.length), rand(perm.length)
-#   c2 = rand(perm.length) while c1 == c2
-#   perm[c1], perm[c2] = perm[c2], perm[c1]
-#   return permutation, [c1, c2]
-# end
-
 def generate_candidate(best, cities)
   candidate = {}
   candidate[:vector], edges = stochastic_two_opt(best[:vector])
@@ -151,7 +136,6 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
   tabuList, prohibitionPeriod = [], 1
   visitedList, avgLength, lastChange = [], 1, 0
   maxIterations.times do |iter|
-    # memory based reaction
     candidateEntry = get_candidate_entry(visitedList, current[:vector])
     if !candidateEntry.nil?
       repetitionInterval = iter - candidateEntry[:iteration]
@@ -169,34 +153,19 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
       prohibitionPeriod = [prohibitionPeriod*decrease,1].max.round
       lastChange = iter
     end
-    
-    
-    
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
-    
-    # best move
     tabu, admissible = sort_neighbourhood(candidates, tabuList, prohibitionPeriod, iter)
     if admissible.length < 2
       prohibitionPeriod = cities.length-2
       lastChange = iter
     end
-    # make move
     current, bestMoveEdges = admissible.first if !admissible.empty?
     if !tabu.empty? and tabu.first[0][:cost]<best[:cost] and tabu.first[0][:cost]<current[:cost]
       current, bestMoveEdges = tabu.first
     end
-    
-    
-    # updates
     bestMoveEdges.each {|edge| make_tabu(tabuList, edge, iter)}
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
-    
-    
-    
-    
-
-    
     puts " > iteration #{(iter+1)}, tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}, best: c=#{best[:cost]}"
   end
   return best
