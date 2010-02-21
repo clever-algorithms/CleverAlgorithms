@@ -66,6 +66,12 @@ Section~\ref{sec:outcomes} summarizes the findings from preparing the stochastic
 \subsection{Background}
 background topics / themes
 
+what is common to all the reviewed algorithms?
+
+local search? global search? metaheuristic?
+stochastic local search or a stochastic metaheuristic to manage an embedded local search
+no inspiration or metaphor 
+
 
 % 
 % Described Algorithms
@@ -101,9 +107,9 @@ This section summarizes the stochastic algorithms currently described for inclus
 what was found while preparing the algorithms
 
 \begin{itemize}
-	\item \textbf{Change of Selected Algorithms}: A  collection of 10 stochastic algorithms were previously identified and chosen to be described in the Clever Algorithms project \cite{Brownlee2010b}. N algorithms on that list were removed () and replaced with alternatives (). reasons...
-	\item
-	
+	\item \textbf{Change of Selected Algorithms}: A  collection of 10 stochastic algorithms were previously identified and chosen to be described in the Clever Algorithms project \cite{Brownlee2010b}. One algorithms on that list were removed (Reactive search optimization) and replaced with an alternative (Iterated Local Search). Also, the `Hill Climbing Search' algorithm was renamed to `Stochastic Hill Climbing' to align the technique with the theme of stochastic optimization algorithms.
+	\item \textbf{Additional Algorithm Name}: Many algorithm names were discovered in the preparation of the technical reports. The total number of stochastic algorithms listed in the original algorithm name assessment was 23. This number has ballooned to 52 at the time of writing.
+	\item \textbf{Variable Algorithm Difficulty}: some algorithms are a snap to interpret, other take many days
 \end{itemize}
 
 
@@ -115,7 +121,9 @@ what was found while preparing the algorithms
 what should change going forward?
 
 \begin{itemize}
-	\item todo
+	\item \textbf{Consistent Problem Instances}: present general problem classes early and use consistently throughout all algorithm descriptions (tsp - berlin52 and func opt - basin)
+	\item \textbf{Local and Global Search}: introductory material should cover local and global search strategies, neighborhoods, etc
+	\item \textbf{Review}: code review of implementations, technique review by experts - want to be as useful as possible
 \end{itemize}
 
 % 
@@ -123,8 +131,10 @@ what should change going forward?
 % 
 \section{Conclusions}
 \label{sec:conclusions}
-what was this all about... todo
-
+% overview
+This report provided a point of reflection for the first 10 algorithm descriptions prepared for the Clever Algorithms project. All described algorithms were assigned to the `Stochastic Algorithms' kingdom in the Clever Algorithms project. This report highlighted the commonality for all described stochastic algorithms and provided a definition suitable for use in the proposed book and website.
+%  forward
+The report provided a summary of the interesting findings identified in the preparation of the algorithm descriptions, and provided a set of recommendations for going forward both with future algorithm descriptions and with regard to migrating the existing descriptions into the Clever Algorithms book and website mediums.
 
 % bibliography
 \bibliographystyle{plain}
