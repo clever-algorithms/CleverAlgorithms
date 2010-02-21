@@ -143,14 +143,14 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
       candidateEntry[:visits] += 1
       if repetitionInterval < 2*(cities.length-1)
         avgLength = 0.1*(iter-candidateEntry[:iteration]) + 0.9*avgLength
-        prohibitionPeriod = (prohibitionPeriod*increase).round
+        prohibitionPeriod = (prohibitionPeriod.to_f * increase)
         lastChange = iter
       end
     else
       store_permutation(visitedList, current[:vector], iter)
     end
     if iter-lastChange > avgLength
-      prohibitionPeriod = [prohibitionPeriod*decrease,1].max.round
+      prohibitionPeriod = [prohibitionPeriod*decrease,1].max
       lastChange = iter
     end
     candidates = Array.new(candidateListSize) {|i| generate_candidate(current, cities)}
@@ -166,7 +166,7 @@ def search(cities, maxNoImprove, candidateListSize, maxIterations, increase, dec
     end
     bestMoveEdges.each {|edge| make_tabu(tabuList, edge, iter)}
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod}, best: c=#{best[:cost]}"
+    puts " > iteration #{(iter+1)}, tabuList=#{tabuList.length}, prohibitionPeriod=#{prohibitionPeriod.round}, best: c=#{best[:cost]}"
   end
   return best
 end
@@ -174,7 +174,7 @@ end
 MAX_ITERATIONS = 300
 MAX_NO_IMPROVE = 50
 MAX_CANDIDATES = 50
-INCREASE = 1.1
+INCREASE = 1.3
 DECREASE = 0.9
 BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
  [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
