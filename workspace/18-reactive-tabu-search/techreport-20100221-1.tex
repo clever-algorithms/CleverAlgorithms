@@ -83,7 +83,7 @@ It is an extension of Tabu Search \cite{Brownlee2010f} and the basis for a field
 % What is a techniques plan of action?
 The objective of Tabu Search is to avoid cycles while applying a local search technique. The Reactive Tabu Search addresses this objective by explicitly monitoring the search and reacting to the occurrence of cycles and their repetition by adapting the tabu tenure (tabu list size).
 % reactive search
-The strategy of the broader field of Reactive Search Optimization is to automate the process by which a practitioner configures a search procedure by monitoring online behavior and use machine learning techniques to adapt the configuration.
+The strategy of the broader field of Reactive Search Optimization is to automate the process by which a practitioner configures a search procedure by monitoring its online behavior and to use machine learning techniques to adapt a techniques configuration.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -93,7 +93,7 @@ The strategy of the broader field of Reactive Search Optimization is to automate
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:reactive_tabu_search} provides a pseudo-code listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
 % specifics
-The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the nest know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
+The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -107,7 +107,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	\SetKwData{Decrease}{Decrease}
 	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
 	\SetKwData{MaxIterations}{$Iteration_{max}$}
-	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{CurrentIteration}{$Iteration_{i}$}
 	\SetKwData{ShouldEscape}{ShouldEscape}	
 	\SetKwData{ProblemSize}{ProblemSize}
 	% functions
@@ -153,7 +153,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	\SetKwData{Increase}{Increase}
 	\SetKwData{Decrease}{Decrease}
 	\SetKwData{VisitedSolutions}{VisitedSolutions}
-	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{CurrentIteration}{$Iteration_{i}$}
 	\SetKwData{RepetitionInterval}{RepetitionInterval}
 	\SetKwData{MostVisitedCandidates}{MostVisitedCandidates}
 	\SetKwData{AvgRepetitionInterval}{$RepetitionInterval_{avg}$}
@@ -206,7 +206,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{BestTabu}{$Sbest_{tabu}$}
 	\SetKwData{Current}{$S_{curr}$}
-	\SetKwData{CurrentIteration}{$Iteration_{curr}$}
+	\SetKwData{CurrentIteration}{$Iteration_{i}$}
 	\SetKwData{ProhibitionPeriod}{ProhibitionPeriod}
 	\SetKwData{ProhibitionPeriodTime}{$ProhibitionPeriod_{t}$}
 	\SetKwData{CandidateList}{CandidateList}
@@ -274,9 +274,9 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 \begin{itemize}
 	\item Reactive Tabu Search is an extension of Tabu Search and as such should exploit the best practices used for the parent algorithm.
 	\item Reactive Tabu Search was designed for discrete domains such as combinatorial optimization, although has been applied to continuos function optimization.
-	\item Reactive Tabu Search was proposed to use efficient search memory data structures such as hash tables.
+	\item Reactive Tabu Search was proposed to use efficient memory data structures such as hash tables.
 	\item Reactive Tabu Search was proposed to use an long-term memory to diversify the search after a threshold of cycle repetitions has been reached.
-	\item The increase parameter should be greater than one (such as 1.1 or 1.3) and the decrease parameter should be less than one (such as 0.9 or 0.8).
+	\item The \texttt{increase} parameter should be greater than one (such as 1.1 or 1.3) and the \texttt{decrease} parameter should be less than one (such as 0.9 or 0.8).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -289,7 +289,7 @@ Listing~\ref{reactive_tabu_search} provides an example of the Reactive Tabu Sear
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-The procedure is based on the code listing described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The implementation does not use efficient memory data structures such as hash maps. The algorithm is initialized with a stochastic 2-opt local search, and the neighborhood is generated as a fixed candidate list of stochastic 2-opt moves. The edges selected for changing in the 2-opt move are stored as features in the tabu list. The implementation does not implement the escape procedure for search diversification. 
+The procedure is based on the code listing described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The implementation does not use efficient memory data structures such as hash tables. The algorithm is initialized with a stochastic 2-opt local search, and the neighborhood is generated as a fixed candidate list of stochastic 2-opt moves. The edges selected for changing in the 2-opt move are stored as features in the tabu list. The example does not implement the escape procedure for search diversification. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Reactive Tabu Search algorithm in the Ruby Programming Language, label=reactive_tabu_search]{../../src/algorithms/stochastic/reactive_tabu_search.rb}
@@ -307,9 +307,9 @@ The procedure is based on the code listing described by Battiti and Tecchiolli i
 % 
 \subsection{Primary Sources}
 % seminal 
-Reactive Tabu Search was proposed by Battiti and Tecchiolli as an extension to Tabu Search demonstrated on the knapsack problem that included an adaptive tabu list size in addition to a diversification mechanism \cite{Battiti1994}. The technique also used efficient memory structures that were based on an earlier work by Battiti and Tecchiolli that considered a parallel tabu search that may be considered a pre-cursor of Reactive Tabu Search \cite{Battiti1992}.
+Reactive Tabu Search was proposed by Battiti and Tecchiolli as an extension to Tabu Search that included an adaptive tabu list size in addition to a diversification mechanism \cite{Battiti1994}. The technique also used efficient memory structures that were based on an earlier work by Battiti and Tecchiolli that considered a parallel tabu search \cite{Battiti1992}.
 % secondary 
-Some early application papers by Battiti and Tecchiolli include a comparison to Simulated Annealing applied to the Quadratic Assignment Problem  \cite{Battiti1994a}, benchmarked on instances of the knapsack problem and N-K models and compared with Repeated Local Minima Search, Simulated Annealing, and Genetic Algorithms \cite{Battiti1995a}, and training neural networks on an array of problems \cite{Battiti1995b}.
+Some early application papers by Battiti and Tecchiolli include a comparison to Simulated Annealing applied to the Quadratic Assignment Problem  \cite{Battiti1994a}, benchmarked on instances of the knapsack problem and N-K models and compared with Repeated Local Minima Search, Simulated Annealing, and Genetic Algorithms \cite{Battiti1995a}, and training neural networks on an array of problem instances \cite{Battiti1995b}.
 
 % 
 % Learn More
@@ -318,9 +318,9 @@ Some early application papers by Battiti and Tecchiolli include a comparison to 
 % overviews of RTS
 % none?
 % reactive local search
-Reactive Tabu Search was abstracted to a form called Reactive Local Search that consider adaptive methods that learn suitable parameters for heuristics that manage a local search technique \cite{Battiti1995, Battiti2001}. Under this abstraction, the Reactive Tabu Search algorithm is single example of the Reactive Local Search principle applied to the Tabu Search. 
+Reactive Tabu Search was abstracted to a form called Reactive Local Search that considers adaptive methods that learn suitable parameters for heuristics that manage an embedded local search technique \cite{Battiti1995, Battiti2001}. Under this abstraction, the Reactive Tabu Search algorithm is single example of the Reactive Local Search principle applied to the Tabu Search. 
 % reactive search optimization
-This framework was further extended to the use of any adaptive machine learning techniques to adapt the parameters of an algorithm by reacting to algorithm outcomes online while solving a problem, called Reactive Search \cite{Battiti1996}. The best reference for this general framework is the book on Reactive Search Optimization by Battiti, Brunato, and Mascia\cite{Battiti2008}. Additionally, the review chapter by Battiti and Brunato provides a contemporary description \cite{Battiti2009}.
+This framework was further extended to the use of any adaptive machine learning techniques to adapt the parameters of an algorithm by reacting to algorithm outcomes online while solving a problem, called Reactive Search \cite{Battiti1996}. The best reference for this general framework is the book on Reactive Search Optimization by Battiti, Brunato, and Mascia \cite{Battiti2008}. Additionally, the review chapter by Battiti and Brunato provides a contemporary description \cite{Battiti2009}.
 
 
 % 
@@ -331,10 +331,10 @@ This framework was further extended to the use of any adaptive machine learning 
 % report
 This report described the Reactive Tabu search as an extension of Tabu Search that adapts the tabu tenure based on feedback from the problem instance.
 % difficult
-This algorithm was particularly difficult to describe given the large amount of poorly structured pseudo code examples used in the literature to present the approach. It is believed that with further study and assistance from a domain expert that the description of Reactive Tabu Search presented in this report can be further revised.
+This algorithm was particularly difficult to describe given the large amount detailed pseudo code examples used in the literature to present the approach and the general complexity of the algorithm. 
 
 % pseduo code
-A feature identified in the preparation of this report that me a useful contribution to the Clever Algorithms project was the description of pseudo code elements before the presentation of pseudo code in the Reactive Tabu Search literature. A description of the pseudo code idioms (condition constructs, flow constructs, assuagement, etc) should be described in introductory material for all descriptions, such as an introduction chapter in the book. Additionally, the terms used on each algorithm procedure should be clearly defined to avoid ambiguity.
+A feature identified in the preparation of this report that may be a useful contribution to the Clever Algorithms project was the description of pseudo code elements before the presentation of pseudo code in the Reactive Tabu Search literature. A description of the pseudo code idioms (condition constructs, flow constructs, assuagement, etc) should be described in introductory material for all algorithm descriptions, such as an introduction chapter in the book. Additionally, the terms used on each algorithm procedure should be clearly defined to avoid ambiguity.
 
 % 
 % Contribute
