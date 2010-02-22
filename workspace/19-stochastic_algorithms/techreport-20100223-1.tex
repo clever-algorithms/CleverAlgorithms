@@ -36,7 +36,8 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+todo - provides a point of reflection on the preparation of the first 10 algorithms and the lessons learned and best practices advocated...
+
 
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Stochastic, Optimization}}
@@ -105,14 +106,21 @@ This section summarizes the stochastic algorithms currently described for inclus
 % Findings
 % 
 \subsection{Findings}
-
-what was found while preparing the algorithms
+% overview
+This section summarizes the interesting and relevant observations made while preparing the first ten algorithm descriptions for the Clever Algorithms project. Some of these observations also make specific suggestions for the project. 
 
 \begin{itemize}
+	\item \textbf{Change to Description Template}: The standardized algorithm description template \cite{Brownlee2010a} was varied with the description of the first algorithm in the project (Random Search \cite{Brownlee2010g}). The \emph{Tutorial} element was replaced with a \emph{Code Listing} that provides an implementation in the Ruby Programming Language and a terse summary of the implementation. 
 	\item \textbf{Change of Selected Algorithms}: A  collection of 10 stochastic algorithms were previously identified and chosen to be described in the Clever Algorithms project \cite{Brownlee2010b}. One algorithms on that list were removed (Reactive search optimization) and replaced with an alternative (Iterated Local Search). Also, the `Hill Climbing Search' algorithm was renamed to `Stochastic Hill Climbing' to align the technique with the theme of stochastic optimization algorithms.
 	\item \textbf{Additional Algorithm Name}: Many algorithm names were discovered in the preparation of the technical reports. The total number of stochastic algorithms listed in the original algorithm name assessment was 23. This number has ballooned to 52 at the time of writing.
+
+		
 	\item \textbf{Variable Algorithm Difficulty}: some algorithms are a snap to interpret, other take many days
-	\item \textbf{Change to Description Template}: yep, it changed with the first algorithm. different from \cite{Brownlee2010a} what are the differences?
+
+
+	\item \textbf{Practical Focus}: The Clever Algorithms project takes a practical focus to algorithms, specifically focusing on realization and implementation. This chosen approach explicitly excludes formal and mathematical descriptions of algorithms, a fact that should be emphasized in the introductory material for the project. 
+	\item \textbf{Bounded Claims}: The project aims to describe algorithms in a complete, consistent and centralized manner. These claims of completeness and consistency are bounded: the algorithm descriptions are \emph{complete enough} to cover the proposed standardized algorithm template and consistent enough in that all descriptions in the project conform to the proposed template. The algorithm descriptions in the clever algorithms project are neither absolutely complete nor absolutely consistent, and the specifically chosen bounds on these aims should be emphasized in the introductory material for the project.  
+	\item \textbf{Local vs Global Search}: There is a common taxonomy that separates algorithms into local (or neighborhood searching) techniques and global techniques. A related subject is the abstract description of the structure of the response surface of search spaces, including topics such as hills, valleys, and modality. These subjects are required prior knowledge and context for understanding the stochastic algorithms described as well as the remaining algorithms to be described in the Clever Algorithms project. It is proposed that these subjects be described in the introductory material for the project.
 \end{itemize}
 
 
@@ -120,10 +128,14 @@ what was found while preparing the algorithms
 % Recommendations
 % 
 \subsection{Recommendations}
-
-what should change going forward?
+% overview
+This section lists recommendations for algorithm descriptions to be writing for the Clever Algorithms project in the future and related concerns. 
 
 \begin{itemize}
+	\item \textbf{Function Name Consistency}: The function names used in the \emph{Pseudo Code} listing and the \emph{Code Listing} parts of the description should match or be as close to matching as possible. This will aid in the transferability of understanding from the abstract presentation of a technique to its concrete realization.
+	\item \textbf{Algorithm Research Due Diligence}: A minimum number of sources must be consulted to ensure that sufficient coverage of a given algorithm is achieved. This involves searching for a given algorithm name across a specific set of web based sources. A set of seven sources were identified and suggested as the minimum due diligence while researching a given algorithm name for description in the clever algorithms project \cite{Brownlee2010h}. This list includes: Google Web, Google Books, Google SCholar, IEEE Explore, Springer Link, ACM Digital Library, and Scirus.
+	
+	
 	\item \textbf{Consistent Problem Instances}: present general problem classes early and use consistently throughout all algorithm descriptions (tsp - berlin52 and func opt - basin)
 	\item \textbf{Local and Global Search}: introductory material should cover local and global search strategies, neighborhoods, etc
 	\item \textbf{Formal Reviews}: code review of implementations, technique review by experts - want to be as useful as possible
