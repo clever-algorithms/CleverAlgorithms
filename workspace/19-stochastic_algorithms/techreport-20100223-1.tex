@@ -40,7 +40,6 @@ The first ten algorithms for the project have been described, all of which are c
 % best practices
 This report provides a point of reflection on the preparation of the first ten algorithms to be described for the Clever Algorithms project and summarizes the findings, lessons learned, and recommends some best practices for going forward with the project.
 
-
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Stochastic, Optimization, Findings, Recommendations}}
 \end{description} 
@@ -67,21 +66,24 @@ Section~\ref{sec:outcomes} summarizes the findings from preparing the stochastic
 % Background
 % 
 \subsection{Background}
-background topics / themes
+% broadly
+The algorithms to be described in the Clever Algorithms project are drawn from a diverse set of subfields of Artificial Intelligence, such as Computational Intelligence, Biologically Inspired Computation, and Metaheuristics. The majority of the algorithm selected for description in the project are optimization algorithms \cite{Brownlee2010b}. 
+% unconventional
+This collection of selected algorithms have been referred to as Unconventional Optimization algorithms in order to differentiate them from the more traditional deterministic approaches from operations research and mathematica programming such as Nelder-Mead method \cite{Brownlee2010n}. So-called unconventional optimization algorithms are characterized by the incorporation of stochastic and probabilistic processes and the heuristic or approximate (sub-optimal) nature of the solutions that are designed to achieve. As such, these algorithms can be understood by topics such as black box methods, stochastic optimization, and inductive learning (refer to Brownlee \cite{Brownlee2010n}). 
 
-what is common to all the reviewed algorithms?
+% specific
+The ten algorithms that have been described for the Clever Algorithms project are referred to as Stochastic Algorithms. They are differentiated from the remainder of the algorithms described in the project that have been designated a taxonomy including evolutionary, swarm, probabilistic, physical, and immune \cite{Brownlee2010b}. 
+% differences
+The majority of the algorithms to be described in the Clever Algorithms project are comprised of probabilistic and stochastic processes. What differentiates the designated stochastic algorithms from the other algorithms in the proposed taxonomy is the specific lack of i) an inspiring system, and ii) a metaphorical explanation. Both `inspiration' and `metaphor' refer to the descriptive elements in the standardized algorithm description \cite{Brownlee2010a}.
 
-is any of the content from this report relevant? should it be re-used? \cite{Brownlee2010n}
-
-local search? global search? metaheuristic?
-stochastic local search or a stochastic metaheuristic to manage an embedded local search
-no inspiration or metaphor
-
+% features
+Section~\ref{subsec:algorithms} lists the stochastic algorithms that have been described. The algorithms described are predominately global optimization algorithms and metaheuristics that manage the application of an embedded neighborhood exploring (local) search procedure. As such, with the exception of `Stochastic Hill Climbing' and `Random Search' the algorithms may be considered extensions of the multi-start search (also known as multi-restart search). This set of algorithms proposed various different strategies by which `better' starting points can be generated and issued to a neighborhood searching technique for refinement, a process that is repeated with potentially improving or unexplored areas to search. 
 
 % 
 % Described Algorithms
 % 
 \subsection{Described Algorithms}
+\label{subsec:algorithms}
 % overview
 This section summarizes the stochastic algorithms currently described for inclusion in the Clever Algorithms project. It is proposed that these algorithms will collectively comprise a chapter in the Clever Algorithms book. 
 
