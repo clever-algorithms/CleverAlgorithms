@@ -19,8 +19,19 @@
 % http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
 \usepackage{listings} 
 
-% use colors
-\usepackage{color}
-
 % for ebooks, turn cross references into links
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[ruled, linesnumbered]{styles/algorithm2e}
+\usepackage{textcomp}
+
+% \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+% \else\usepackage[usenames,dvipsnames]{color}
+
+\usepackage[usenames,dvipsnames]{color}
+
+% define the look of the ruby code
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}

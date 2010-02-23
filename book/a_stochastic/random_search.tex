@@ -13,64 +13,108 @@
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Random Search, RS, Blind Random Search, Blind Search, Pure Random Search, PRS}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+Random search belongs to the fields of Stochastic Optimization and Global Optimization.
+% type
+Random search is a direct search method as it does not require derivatives to search a continuous domain.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
-
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\subsection{Inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
-
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\subsection{Metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+This base approach is related to techniques that provide small improvements such as Directed Random Search, and Adaptive Random Search. 
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+The strategy of Random Search is to sample solutions from across the entire search space using a uniform probability distribution. Each future sample is independent of the samples that come before it.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:random_search} provides a pseudo-code listing of the Random Search Algorithm for minimizing a cost function.
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{NumIterations}{NumIterations}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{SearchSpace}{SearchSpace}
+	\SetKwData{Best}{Best}
+	\SetKwData{Null}{Null}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{RandomSolution}{RandomSolution}
+  	% I/O
+	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow 0$\;
+	\ForEach{$iter_i \in$ \NumIterations} {
+		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
+		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ $candidate_i$\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code Listing for the Random Search Algorithm.}
+	\label{alg:random_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item Random search is minimal in that it only requires a candidate solution construction routine and a candidate solution evaluation routine, both of which may be calibrated using the approach.
+	\item The worst case performance for Random Search for locating the optima is worse than an Enumeration of the search domain, given that Random Search has no memory and can blindly resample.
+	\item Random Search can return a reasonable approximation of the optimal solution within a reasonable time under low problem dimensionality, although the approach does not scale well with problem size (such as the number of dimensions).
+	\item Care must be taken with some problem domains to ensure that random candidate solution construction is  unbiased
+	\item The results of a Random Search can be used to seed another search technique, like a local search technique (such as the Hill Climbing algorithm) that can be used to locate the best solution in the neighborhood of the `good' candidate solution.
+\end{itemize}
 
-% Tutorial: Guided implementation
-% The tutorial description provides a guide to realizing the technique using a programming lan- guage. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tuto- rial description provides explanations as to the design decisions and rationale for the way the technique is implemented. The tutorial description is textual, providing a narrative with an objective, a series of steps, and outcome that may be interspersed with source code examples.
-\subsection{Tutorial}
-% What is the rationale when implementing a technique as an executable program?
-% What is the rationale when applying a technique to a concrete problem instance?
-A textural narrative for realizing the algorithm with complete source code.
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\subsection{Code Listing}
+\label{sec:code}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{random_search} provides an example of the Random Search Algorithm implemented in the Ruby Programming Language. 
+% about the algorithm
+In the example, the algorithm runs for a fixed number of iterations and returns the best candidate solution discovered. 
+% about the problem
+The example problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Random Search Algorithm in the Ruby Programming Language, label=random_search]{../src/algorithms/stochastic/random_search.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+There is no seminal specification of the Random Search algorithm, rather there are discussions of the general approach and related random search methods from the 1950's through to the 1970's. This was around the time that pattern and direct search methods were actively researched.
+% seminal
+Brooks is credited with the so-called `pure random search' \cite{Brooks1958}. Two seminal reviews of `random search methods' of the time include: Karnopp \cite{Karnopp1963} and prhaps Kul'chitskii \cite{Kul'chitskii1976}.
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% random search methods
+For overviews of into Random Search Methods see Zhigljavsky \cite{Zhigljavsky1991}, Solis and Wets \cite{Solis1981}, and also White \cite{White1971} who provides an excellent review article.
+% stochastic
+Spall provides a detailed overview of the field of Stochastic Optimization, including the Random Search method \cite{Spall2003} (for example, see Chapter 2). For a shorter introduction by Spall, see \cite{Spall2004} (specifically Section 6.2). Also see Zabinsky for another detailed review of the broader field \cite{Zabinsky2003}.
 
 
