@@ -15,3 +15,8 @@ format: <title>: <subtitle>
 - Clever Algorithms: A Compendium of Messy Artificial Intelligence
 - Clever Algorithms: A Handbook for Modern Artificial Intelligence
 - Clever Algorithms: Modern Artificial Intelligence Recipes
+- Clever Computations: Modern Artificial Intelligence Algorithms
+- Clever Algorithms: Recipes for Modern Metaheuristics 
+- Clever Algorithms: Metaheuristics Recipes in Ruby
+- Clever Algorithms: A Corpus of Metaheuristics Recipes
+- Clever Algorithms: A Compendium of Metaheuristics Recipes
