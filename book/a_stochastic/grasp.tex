@@ -13,64 +13,168 @@
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Greedy Randomized Adaptive Search Procedure, GRASP.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
-
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\subsection{Inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
-
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\subsection{Metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% where
+The Greedy Randomized Adaptive Search Procedure is a Metaheuristic and Global Optimization algorithm, originally proposed for the Operations Research practitioners.
+% relations
+The iterative application of an embedded Local Search technique relate the approach to Iterative Local Search and Multi-Start techniques.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
+The objective of the Greedy Randomized Adaptive Search Procedure is to repeatedly sample stochastically greedy solutions, and then use a local search procedure to refine them to a local optima.
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+The strategy of the procedure is centered on the stochastic and greedy step-wise construction mechanism that constrains the selection and order-of-inclusion of the components of a solution based on the value they are expected to provide.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{Alpha}{$\alpha$}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{GreedyRandomizedConstruction}{GreedyRandomizedConstruction}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{ConstructRandomSolution}{ConstructRandomSolution}
+  	\SetKwFunction{LocalSearch}{LocalSearch}
+	% I/O
+	\KwIn{\Alpha}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \ConstructRandomSolution{}\;
+	\While{$\neg$ \StopCondition{}} {
+		% greedy randomized solution
+		\Candidate $\leftarrow$ \GreedyRandomizedConstruction{\Alpha}\;
+		% local search
+		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+		% keep best
+		\If{\Cost{\Candidate} $<$ \Cost{\Best}} {
+			\Best $\leftarrow$ \Candidate\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code for the Greedy Randomized Adaptive Search Procedure.}
+	\label{alg:grasp}
+\end{algorithm}
+
+Algorithm~\ref{alg:construction} provides the pseudo-code the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The functions works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{RCL}{RCL}
+	\SetKwData{Alpha}{$\alpha$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{FeatureCosts}{$Feature_{costs}$}	
+	\SetKwData{ProblemFeature}{$Feature_{i}$}
+	\SetKwData{ProblemFeatureCost}{$F_{i}cost$}
+	\SetKwData{ProblemFeatureMinCost}{$Fcost_{min}$}
+	\SetKwData{ProblemFeatureMaxCost}{$Fcost_{max}$}
+	\SetKwData{SelectedFeature}{$F_{selected}$}	
+	% functions
+	\SetKwFunction{MinCost}{MinCost}
+	\SetKwFunction{MaxCost}{MaxCost}
+	\SetKwFunction{CostImpactOfFeature}{CostOfAddingFeatureToSolution}
+	\SetKwFunction{SelectRandomFeature}{SelectRandomFeature}
+
+	% I/O
+	\KwIn{\Alpha}
+	\KwOut{\Candidate}
+	% greedy randomized solution
+	\Candidate $\leftarrow 0$\;
+	\While{\Candidate $\neq$ \ProblemSize} {
+		% calculate
+		\FeatureCosts $\leftarrow 0$\;
+		\For{\ProblemFeature $\notin$ \Candidate}{
+			\FeatureCosts $\leftarrow$ \CostImpactOfFeature{\Candidate, \ProblemFeature}\;
+		}
+		% build RCL
+		\RCL $\leftarrow 0$\;
+		\ProblemFeatureMinCost $\leftarrow$ \MinCost{\FeatureCosts}\;
+		\ProblemFeatureMaxCost $\leftarrow$ \MaxCost{\FeatureCosts}\;
+		\For{\ProblemFeatureCost $\in$ \FeatureCosts} {
+			\If{\ProblemFeatureCost $\leq$ $\ProblemFeatureMinCost + \alpha \cdot (\ProblemFeatureMaxCost - \ProblemFeatureMinCost)$ } {
+				\RCL $\leftarrow$ \ProblemFeature\;
+			}
+		}
+		% select
+		\Candidate $\leftarrow$ \SelectRandomFeature{\RCL}\;
+	}
+	\Return{\Candidate}\;
+	% caption
+	\caption{Pseudo Code Listing for the Greedy Randomized Construction function.}
+	\label{alg:construction}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The $\alpha$ threshold defines the amount of greediness of the construction mechanism, where values close to 0 may be too greedy, and values close to 1 may be too generalized.
+	\item As an alternative to using the $\alpha$ threshold, the RCL can be constrained to the top $n\%$ of candidate features that may be selected from each construction cycle.
+	\item The technique was designed for discrete problem classes such as combinatorial optimization problems.
+\end{itemize}
 
-% Tutorial: Guided implementation
-% The tutorial description provides a guide to realizing the technique using a programming lan- guage. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tuto- rial description provides explanations as to the design decisions and rationale for the way the technique is implemented. The tutorial description is textual, providing a narrative with an objective, a series of steps, and outcome that may be interspersed with source code examples.
-\subsection{Tutorial}
-% What is the rationale when implementing a technique as an executable program?
-% What is the rationale when applying a technique to a concrete problem instance?
-A textural narrative for realizing the algorithm with complete source code.
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\subsection{Code Listing}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{grasp} provides an example of the Greedy Randomized Adaptive Search Procedure implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+
+% algorithm
+The stochastic and greedy step-wise construction of a tour involves evaluating candidate cities by the the cost they contribute as being the next city in the tour. 
+% local search
+The algorithm uses a stochastic 2-opt procedure for the Local Search with a fixed number of non-improving iterations as the stopping condition.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Greedy Randomized Adaptive Search Procedure algorithm in the Ruby Programming Language, label=grasp]{../src/algorithms/stochastic/grasp.rb}
+
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The seminal paper that introduces the general approach of stochastic and greedy step-wise construction of candidate solutions is by Feo and Resende \cite{Feo1989}. The general approach was inspired by greedy heuristics by Hart and Shogan \cite{Hart1987}. The seminal review paper that is cited with the preliminary paper is by Feo and Resende \cite{Feo1995}, and provides a coherent description of the GRASP technique, an example, and review of early applications.
+% early papers
+An early application was by Feo, Venkatraman and Bard for a machine scheduling problem \cite{Feo1991}. Other early applications to scheduling problems include technical reports \cite{Feo1993} (later published as \cite{Bard1996}) and \cite{Feo1994} (also later published as \cite{Feo1996}).
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% overview
+There are a vast number of review, application, and extension papers for GRASP.
+% reviews
+Pitsoulis and Resende provide an extensive contemporary overview of the field as a review chapter \cite{Pitsoulis2002}, as does Resende and Ribeiro that includes a clear presentation of the use of the $\alpha$ threshold parameter instead of a fixed size for the RCL \cite{Resende2003}. Festa and Resende provide an annotated bibliography as a review chapter that provides some needed insight into large amount of study that has gone into the approach \cite{Festa2002}.
+% extensions
+There are numerous extensions to GRASP, not limited to the popular Reactive GRASP for adapting $\alpha$ \cite{Prais2000}, the use of long term memory to allow the technique to learn from candidate solutions discovered in previous iterations, and parallel implementations of the procedure such as `Parallel GRASP' \cite{Pardalos1995}.
 
 
