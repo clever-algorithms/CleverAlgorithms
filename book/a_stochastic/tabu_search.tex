@@ -13,64 +13,136 @@
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Tabu Search, TS, Taboo Search.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
-
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\subsection{Inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
-
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\subsection{Metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% To what fields of study does a technique belong?
+Tabu Search is a Global Optimization algorithm and a Metaheuristic or Meta-strategy for controlling an embedded heuristic technique. 
+% What are the closely related approaches to a technique?
+Tabu Search is a parent for a large family of derivative approaches that introduce memory structures in Metaheuristics, such as Reactive Tabu Search and Parallel Tabu Search.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+% What is the information processing objective of a technique?
+The objective for the Tabu Search algorithm is to constrain an embedded heuristic from returning to recently visited areas of the search space, referred to as cycling. 
+% What is a techniques plan of action?
+The strategy of the approach is to maintain a short term memory of the specific changes of recent moves within the search space and preventing future moves from undoing those changes. Additional intermediate-term memory structures may be introduced to bias moves toward promising areas of the search space, as well as longer-term memory structures that promote a general diversity in the search across the search space.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+% What is the computational recipe for a technique?
+% What are the data structures and representations used in a technique?
+Algorithm~\ref{alg:tabu_search} provides a pseudo-code listing of the Tabu Search algorithm for minimizing a cost function. The listing shows the simple Tabu Search algorithm with short term memory, without intermediate and long term memory management. 
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{TabuList}{TabuList}
+	\SetKwData{TabuListSize}{$TabuList_{size}$}
+	\SetKwData{CandidateList}{CandidateList}
+	\SetKwData{CandidateNeighborhood}{$Sbest_{neighborhood}$}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{DeleteFeature}{DeleteFeature}
+	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
+  	\SetKwFunction{LocateBestCandidate}{LocateBestCandidate}
+	\SetKwFunction{FeatureDifferences}{FeatureDifferences}
+	\SetKwFunction{ContainsAnyFeatures}{ContainsAnyFeatures}
+	% I/O
+	\KwIn{\TabuListSize}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \ConstructInitialSolution{}\;
+	\TabuList $\leftarrow$ 0\;
+	\While{$\neg$ \StopCondition{}} {
+		% generate non-tabu candidates
+		\CandidateList $\leftarrow$ 0\;
+		\For{\Candidate $\in$ \CandidateNeighborhood}{
+			\If{$\neg$ \ContainsAnyFeatures{\Candidate, \TabuList}}{
+				\CandidateList $\leftarrow$ \Candidate\;
+			}
+		}
+		% locate best candidate
+		\Candidate $\leftarrow$ \LocateBestCandidate{\CandidateList}\;
+		% update tabu list
+		\If{\Cost{\Candidate} $\leq$ \Cost{\Best}}{
+			\Best $\leftarrow$ \Candidate\;
+			\TabuList $\leftarrow$ \FeatureDifferences{\Candidate, \Best}\;
+			\While{\TabuList $>$ \TabuListSize} {
+				\DeleteFeature{\TabuList}\;
+			}
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code for the Tabu Search algorithm.}
+	\label{alg:tabu_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item Tabu search was designed to manage an embedded hill climbing heuristic, although may be adapted to manage any neighborhood exploration heuristic.
+	\item Tabu search was designed for, and has predominately been applied to discrete domains such as combinatorial optimization problems.
+	\item Candidates for neighboring moves can be generated deterministically for the entire neighborhood or the neighborhood can be stochastically sampled to a fixed size, trading off efficiency for accuracy. 
+	\item Intermediate-term memory structures can be introduced (complementing the short-term memory) to focus the search on promising areas of the search space (intensification), called aspiration criteria.
+	\item Long-term memory structures can be introduced (complementing the short-term memory) to encourage useful exploration of the broader search space, called diversification. Strategies may include generating solutions with rarely used components and biasing generation away from the most commonly used solution components.
+\end{itemize}
 
-% Tutorial: Guided implementation
-% The tutorial description provides a guide to realizing the technique using a programming lan- guage. The result of completing the tutorial is a minimal yet complete implementation of the technique applied to a problem, similar or the same to the source code description. The tuto- rial description provides explanations as to the design decisions and rationale for the way the technique is implemented. The tutorial description is textual, providing a narrative with an objective, a series of steps, and outcome that may be interspersed with source code examples.
-\subsection{Tutorial}
-% What is the rationale when implementing a technique as an executable program?
-% What is the rationale when applying a technique to a concrete problem instance?
-A textural narrative for realizing the algorithm with complete source code.
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\subsection{Code Listing}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{tabu_search} provides an example of the Tabu Search algorithm implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+
+% algorithm
+The algorithm is an implementation of the simple Tabu Search with a short term memory structure that executes for a fixed number of iterations. The starting point for the search is prepared using a random permutation that is refined using a stochastic 2-opt Local Search procedure. The stochastic 2-opt procedure is used as the embedded hill climbing heuristic with a fixed sized candidate list. The two edges that are deleted in each 2-opt move are stored on the tabu list. This general approach is similar to that used by Knox in his work on Tabu Search for symmetrical TSP \cite{Knox1994} and Fiechter for the Parallel Tabu Search for the TSP \cite{Fiechter1994}.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Tabu Search algorithm in the Ruby Programming Language, label=tabu_search]{../src/algorithms/stochastic/tabu_search.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsection{Primary Sources}
+% seminal
+Tabu Search was introduced by Glover applied to scheduling employees to duty rosters \cite{Glover1986a} and a more general overview in the context of the TSP \cite{Glover1986}, based on his previous work on surrogate constraints on integer programming problems \cite{Glover1977}.
+% seminal reviews
+Glover provided a seminal overview of the algorithm in a two-part journal article, the first part of which introduced the algorithm, and reviewed then-recent applications \cite{Glover1989}, and the second which focused on advanced topics and open areas of research \cite{Glover1990}. 
+
+% 
+% Learn More
+% 
+\subsection{Learn More}
+% historical reviews
+Glover provides a high-level introduction to Tabu Search in the form of a practical tutorial \cite{Glover1990a}, as does Glover and Taillard in a user guide format \cite{Glover1993}. 
+% best 
+The best source of information for Tabu Search is the book dedicated to the approach by Glover and Laguna that covers the principles of the technique in detail as well as an in-depth review of applications \cite{Glover1998}.
+% other
+The approach appeared in Science, that considered a modification for its application to continuous function optimization problems \cite{Cvijovic1995}. Finally, Gendreau provides an excellent contemporary review of the algorithm, highlighting best practices and application heuristics collected from across the field of study \cite{Gendreau2003}.
 
 
