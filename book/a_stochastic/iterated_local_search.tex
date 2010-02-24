@@ -1,0 +1,139 @@
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+% This is an algorithm description, see:
+% Jason Brownlee. A Template for Standardized Algorithm Descriptions. Technical Report CA-TR-20100107-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
+
+% Name
+% The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
+\section{Iterated Local Search} 
+\label{sec:iterated_local_search}
+
+% other names
+% What is the canonical name and common aliases for a technique?
+% What are the common abbreviations and acronyms for a technique?
+\emph{Iterated Local Search, ILS.}
+
+% Taxonomy: Lineage and locality
+% The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
+\subsection{Taxonomy}
+% To what fields of study does a technique belong?
+% What are the closely related approaches to a technique?
+% To what fields of study does a technique belong?
+Iterated Local Search is a Metaheuristic and a Global Optimization technique.
+% What are the closely related approaches to a technique?
+It is an extension of Mutli Start Search and may be considered a parent of many two-phase search approaches such as Greedy Randomized Adaptive Search Procedure \cite{Brownlee2010d} and Variable Neighborhood Search \cite{Brownlee2010e}.
+
+% Strategy: Problem solving plan
+% The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
+\subsection{Strategy}
+% What is the information processing objective of a technique?
+The objective of Iterated Local Search is to improve upon stochastic Mutli-Restart Search by sampling in the broader neighborhood of candidate solutions and using a Local Search technique to refine solutions to their local optima.
+% What is a techniques plan of action?
+Iterated Local Search explores a sequence of solutions created as perturbations of the current best solution, the result of which is refined using an embedded heuristic.
+
+% Procedure: Abstract computation
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+\subsection{Procedure}
+% What is the computational recipe for a technique?
+% What are the data structures and representations used in a technique?
+Algorithm~\ref{alg:iterated_local_search} provides a pseudo-code listing of the Iterated Local Search algorithm for minimizing a cost function.
+
+\begin{algorithm}[ht]
+	\SetLine
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Candidate}{$S_{candidate}$}
+	\SetKwData{SearchHistory}{SearchHistory}
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{Perturbation}{Perturbation}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{ConstructInitialSolution}{ConstructInitialSolution}
+  	\SetKwFunction{LocalSearch}{LocalSearch}
+	\SetKwFunction{AcceptanceCriterion}{AcceptanceCriterion}
+	% I/O
+	\KwIn{}
+	\KwOut{\Best}
+  	% Algorithm
+	\Best $\leftarrow$ \ConstructInitialSolution{}\;
+	\Best $\leftarrow$ \LocalSearch{}\;
+	\SearchHistory $\leftarrow$ \Best\;
+	\While{$\neg$ \StopCondition{}} {
+		% greedy randomized solution
+		\Candidate $\leftarrow$ \Perturbation{\Best, \SearchHistory}\;
+		% local search
+		\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+		\SearchHistory $\leftarrow$ \Candidate\;
+		% keep best
+		\If{\AcceptanceCriterion{\Best, \Candidate, \SearchHistory}} {
+			\Best $\leftarrow$ \Candidate\;
+		}
+	}
+	\Return{\Best}\;
+	% caption
+	\caption{Pseudo Code for the Iterated Local Search algorithm.}
+	\label{alg:iterated_local_search}
+\end{algorithm}
+
+% Heuristics: Usage guidelines
+% The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
+\subsection{Heuristics}
+% What are the suggested configurations for a technique?
+% What are the guidelines for the application of a technique to a problem instance?
+
+\begin{itemize}
+	\item Iterated Local Search was designed for and has been predominately applied to discrete domains, such as combinatorial optimization problems.
+	\item The perturbation of the current best solution should be in a neighborhood beyond the reach of the embedded heuristic and should not be easily undone.
+	\item Perturbations that are too small make the algorithm too greedy, perturbations that are too large make the algorithm too stochastic.
+	\item The embedded heuristic is most commonly a problem-specific local search technique.
+	\item The starting point for the search may be a randomly constructed candidate solution, or constructed using a problem-specific heuristic (such as nearest neighbor).
+	\item Perturbations can be made deterministically, although stochastic and probabilistic (adaptive based on history) are the most common.
+	\item The procedure may store as much or as little history as needed to be used during perturbation and acceptance criteria. No history represents a random walk in a larger neighborhood of the  best solution and is the most common implementation of the approach.
+	\item The simplest and most common acceptance criteria is an improvement in the cost of constructed candidate solutions.
+\end{itemize}
+
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\subsection{Code Listing}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{iterated_local_search} provides an example of the Iterated Local Search algorithm implemented in the Ruby Programming Language. 
+% problem
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+
+% algorithm
+The Iterated Local Search runs for a fixed number of iterations. The implementation is based on a common algorithm configuration for the TSP, where a `double-bridge move' (4-opt) is used as the perturbation technique, and a stochastic 2-opt is used as the embedded Local Search heuristic.
+% 4 opt
+The double-bridge move involves partitioning a permutation into 4 pieces (a,b,c,d) and putting it back together in a specific and jumbled ordering (a,d,c,b).
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Iterated Local Search algorithm in the Ruby Programming Language, label=iterated_local_search]{../src/algorithms/stochastic/iterated_local_search.rb}
+
+% References: Deeper understanding
+% The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
+\subsection{References}
+% What are the primary sources for a technique?
+% What are the suggested reference sources for learning more about a technique?
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% thesis
+The definition and framework for Iterated Local Search was described by St\"utzle in his PhD dissertation \cite{Stutzle1998}. Specifically he proposed constrains on what constitutes an Iterated Local Search algorithm as i) a single chain of candidate solutions, and ii) the method used to improve candidate solutions occurs within a reduced space by a black-box heuristic.
+% does not ref self
+St\"utzle does not take credit for the approach, instead highlighting specific instances of Iterated Local Search from the literature, such as `iterated descent' \cite{Baum1986}, `large-step Markov chains' \cite{Martin1991}, `iterated Lin-Kernighan' \cite{Johnson1990}, `chained local optimization' \cite{Martin1996}, as well as \cite{Baxter1981} that introduces the principle, and \cite{Johnson1997} that summarized it (list taken from \cite{Ramalhinho-Lourenco2003})
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% early applications
+Two early technical reports by St\"utzle that present applications of Iterated Local Search include a report on the Quadratic Assignment Problem \cite{Stuetzle1999}, and another on the permutation flow shop problem \cite{Stutzle1998a}. St\"utzle and Hoos also published an early paper studying Iterated Local Search for to the TSP \cite{Stutzle1999}.
+% review
+Lourenco, Martin, and St\"utzle provide a concise presentation of the technique, related techniques and the framework, much as it is presented in St\"utzle's dissertation \cite{Lourenco2001}.
+% best review
+The same author's also preset an authoritative summary of the approach and its applications as a book chapter \cite{Ramalhinho-Lourenco2003}.
+
+
