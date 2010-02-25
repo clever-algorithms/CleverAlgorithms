@@ -160,7 +160,7 @@ def search(cities, max_no_improvements, max_candidates, max_iterations, increase
       prohibition_period = cities.length-2
       last_change = iter
     end
-    current, best_move_edges = admissible.first if !admissible.empty?
+    current, best_move_edges = (admissible.empty?) ? tabu.first : admissible.first
     if !tabu.empty? and tabu.first[0][:cost]<best[:cost] and tabu.first[0][:cost]<current[:cost]
       current, best_move_edges = tabu.first
     end
