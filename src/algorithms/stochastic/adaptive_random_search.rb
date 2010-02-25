@@ -25,6 +25,13 @@ def take_step(problem_size, search_space, current, step_size)
   return step
 end
 
+def large_step_size(step_size, small_factor, large_factor, factor_multiple)
+  if iter.modulo(factor_multiple)
+    return step_size * large_factor
+  end
+  return  step_size * small_factor
+end
+
 def search(max_iterations, problem_size, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
   step_size = (search_space[0][1]-search_space[0][0]) * init_factor
   current, count = {}, 0
@@ -34,8 +41,7 @@ def search(max_iterations, problem_size, search_space, init_factor, small_factor
     step, bigger_step = {}, {}
     step[:vector] = take_step(problem_size, search_space, current[:vector], step_size)
     step[:cost] = cost(step[:vector])
-    bigger_step_size = step_size * small_factor
-    bigger_step_size = step_size * large_factor if iter.modulo(factor_multiple)
+    bigger_step_size = large_step_size(step_size, small_factor, large_factor, factor_multiple)
     bigger_step[:vector] = take_step(problem_size, search_space, current[:vector], bigger_step_size)
     bigger_step[:cost] = cost(bigger_step[:vector])    
     if step[:cost] <= current[:cost] or bigger_step[:cost] <= current[:cost]
