@@ -16,6 +16,13 @@
 \newcommand{\mybookdate}{2010}
 
 
+% new macro for starting a new page and changing the style to empty
+% \newpage == ends the current page. 
+% \thispagestyle == works in the same manner as the \pagestyle, except that it changes the style for the current page only. 
+% empty == Produces empty heads and feet - no page numbers
+\newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
+
+
 % 
 % Packages
 % 
