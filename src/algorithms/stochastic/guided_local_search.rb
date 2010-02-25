@@ -4,17 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-NUM_ITERATIONS = 100
-MAX_NO_MPROVEMENTS = 15
-ALPHA = 0.3
-LOCAL_SEARCH_OPTIMA = 15000.0
-BERLIN52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],[525,1000],
- [580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
- [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],[835,625],[975,580],[1215,245],
- [1320,315],[1250,400],[660,180],[410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
- [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],[875,920],[700,500],
- [555,815],[830,485],[1170,65],[830,610],[605,625],[595,360],[1340,725],[1740,245]]
-
 def euc_2d(c1, c2)
   Math::sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
@@ -49,19 +38,19 @@ def augmented_cost(permutation, penalties, cities, lambda)
   return distance, augmented
 end
 
-def local_search(current, cities, penalties, maxNoImprovements, lambda)
+def local_search(current, cities, penalties, max_no_improvements, lambda)
   current[:cost], current[:acost] = augmented_cost(current[:vector], penalties, cities, lambda)
-  noImprovements = 0
+  count = 0
   begin
     perm = {}
     perm[:vector] = two_opt(current[:vector])
     perm[:cost], perm[:acost] = augmented_cost(perm[:vector], penalties, cities, lambda)
     if perm[:acost] < current[:acost]
-      noImprovements, current = 0, perm
+      count, current = 0, perm
     else
-      noImprovements += 1      
+      count += 1      
     end
-  end until noImprovements >= maxNoImprovements
+  end until count >= max_no_improvements
   return current
 end
 
@@ -85,22 +74,35 @@ def update_penalties!(penalties, cities, permutation, utilities)
   return penalties
 end
 
-def search(numIterations, cities, maxNoImprovements, lambda)
+def search(max_iterations, cities, max_no_improvements, lambda)
   best, current = nil, {}  
   current[:vector] = random_permutation(cities)
   penalties = Array.new(cities.length){Array.new(cities.length,0)}
-  numIterations.times do |iter|
-    current = local_search(current, cities, penalties, maxNoImprovements, lambda)
+  max_iterations.times do |iter|
+    current = local_search(current, cities, penalties, max_no_improvements, lambda)
     utilities = calculate_feature_utilities(penalties, cities, current[:vector])
     update_penalties!(penalties, cities, current[:vector], utilities)
     if(best.nil? or current[:cost] < best[:cost])
       best = current
     end
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}"
+    puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
   return best
 end
 
-lambda = ALPHA * (LOCAL_SEARCH_OPTIMA/BERLIN52.length)
-best = search(NUM_ITERATIONS, BERLIN52, MAX_NO_MPROVEMENTS, lambda)
+max_iterations = 100
+max_no_improvements = 15
+alpha = 0.3
+local_search_optima = 15000.0
+berlin52 = [[565,575],[25,185],[345,750],[945,685],[845,655],[880,660],[25,230],
+ [525,1000],[580,1175],[650,1130],[1605,620],[1220,580],[1465,200],[1530,5],
+ [845,680],[725,370],[145,665],[415,635],[510,875],[560,365],[300,465],
+ [520,585],[480,415],[835,625],[975,580],[1215,245],[1320,315],[1250,400],
+ [660,180],[410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+ [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],
+ [875,920],[700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],
+ [595,360],[1340,725],[1740,245]]
+
+lambda = alpha * (local_search_optima/berlin52.length.to_f)
+best = search(max_iterations, berlin52, max_no_improvements, lambda)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
