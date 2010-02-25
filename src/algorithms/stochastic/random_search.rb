@@ -14,9 +14,9 @@ def random_solution(problem_size, search_space)
   end
 end
 
-def search(num_iterations, problem_size, search_space)
+def search(max_iterations, problem_size, search_space)
   best = nil
-  num_iterations.times do |iter|
+  max_iterations.times do |iter|
     candidate = {}
     candidate[:vector] = random_solution(problem_size, search_space)
     candidate[:cost] = cost(candidate[:vector])
@@ -26,8 +26,9 @@ def search(num_iterations, problem_size, search_space)
   return best
 end
 
-num_iterations = 100
+max_iterations = 100
 problem_size = 2
 search_space = Array.new(problem_size) {|i| [-5, +5]}
-best = search(num_iterations, problem_size, search_space)
+
+best = search(max_iterations, problem_size, search_space)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
