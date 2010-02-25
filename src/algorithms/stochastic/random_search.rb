@@ -4,31 +4,30 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-NUM_ITERATIONS = 100
-PROBLEM_SIZE = 2
-SEARCH_SPACE = Array.new(PROBLEM_SIZE) {|i| [-5, +5]}
-
 def cost(candidate_vector)
-  return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
+  return candidate_vector.inject(0) {|sum, x| sum + (x ** 2.0)}
 end
 
-def random_solution(problemSize, searchSpace)
-  return Array.new(problemSize) do |i|      
-    searchSpace[i][0] + ((searchSpace[i][1] - searchSpace[i][0]) * rand)
+def random_solution(problem_size, search_space)
+  return Array.new(problem_size) do |i|      
+    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
-def search(numIterations, problemSize, searchSpace)
+def search(num_iterations, problem_size, search_space)
   best = nil
-  numIterations.times do |iter|
+  num_iterations.times do |iter|
     candidate = {}
-    candidate[:vector] = random_solution(problemSize, searchSpace)
+    candidate[:vector] = random_solution(problem_size, search_space)
     candidate[:cost] = cost(candidate[:vector])
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, best: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+    puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
   return best
 end
 
-best = search(NUM_ITERATIONS, PROBLEM_SIZE, SEARCH_SPACE)
+num_iterations = 100
+problem_size = 2
+search_space = Array.new(problem_size) {|i| [-5, +5]}
+best = search(num_iterations, problem_size, search_space)
 puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
