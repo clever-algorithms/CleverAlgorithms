@@ -47,9 +47,6 @@ end
 
 
 def get_results(algorithm_name)  
-  # spaces to plus, lowercase, quote using %22 - good for all search services used
-  # keyword = algorithm_name.gsub(/ /, "+")
-  # keyword = "%22#{keyword.downcase}%22"
   
   # prepare the query
   query = prepare_query(algorithm_name)
