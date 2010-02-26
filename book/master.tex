@@ -34,8 +34,11 @@
 	\include{c_advanced}
 
 \backmatter 
+	% to get index and bib in the toc correctly
+	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
+
 	% index
-	\cleardoublepage\phantomsection
+	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{chapter}{Index}
 	\printindex
 	% bibliography
