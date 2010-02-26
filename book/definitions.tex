@@ -2,6 +2,7 @@
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+
 % 
 % Definitions
 % 
@@ -27,33 +28,51 @@
 % Packages
 % 
 
-\usepackage{fancyhdr} % nice headers
-\usepackage{amsmath} %Never write a paper without using amsmath for its many new commands
-\usepackage{amssymb} %Some extra symbols
-\usepackage{makeidx} %If you want to generate an index, automatically
-\usepackage{graphicx} %If you want to include postscript graphics
+% a replacement for fancyheadings
+% http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/
+\usepackage{fancyhdr}
 
-% so i can define the margins explicitly
-% http://www.biochem.ucl.ac.uk/~james/latex/thesis_master_file.html
+% If you want to generate an index, automatically
+% http://en.wikibooks.org/wiki/LaTeX/Indexing
+\usepackage{makeidx} 
+
+% Flexible and easy interface to page dimensions
+% http://www.ctan.org/tex-archive/macros/latex/contrib/geometry/
+% also, bigger pages by default
 \usepackage{geometry}
 
-% code listings
-% http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
-\usepackage{listings} 
-
-% for ebooks, turn cross references into links
-\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
-
-\usepackage{tabularx}
-\usepackage{booktabs}
-\usepackage{url}
-\usepackage[ruled, linesnumbered]{styles/algorithm2e}
+% Supports the Text Companion fonts which provide many text symbols (such as baht, bullet, copyright, musicalnote, onequarter, section, and yen) in the TS1 encoding.
+% http://www.ctan.org/tex-archive/help/Catalogue/entries/textcomp.html
+% needed for listings
 \usepackage{textcomp}
 
-% \ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
-% \else\usepackage[usenames,dvipsnames]{color}
-
+% http://www.maths.adelaide.edu.au/anthony.roberts/LaTeX/ltxusecol.html
+% needed for listings - lots of pretty colors
 \usepackage[usenames,dvipsnames]{color}
 
+% code listings (lots of languages)
+% http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
+\usepackage{listings} 
 % define the look of the ruby code
 \lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
+
+% for ebooks, turn cross references into links
+% http://www.tug.org/applications/hyperref/manual.html
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+
+% modifies the widths of certain columns, rather than the inter column space, to set a table with the requested total width
+% http://www.cs.brown.edu/system/software/latex/doc/tabularx.pdf
+\usepackage{tabularx}
+
+% This package provide some additional commands to enhance the quality of tables in LaTeX.
+% http://www.ctan.org/tex-archive/macros/latex/contrib/booktabs/
+\usepackage{booktabs}
+
+% a form of verbatim command that allows linebreaks at certain characters or combinations of characters
+% http://www.tex.ac.uk/tex-archive/help/Catalogue/entries/url.html
+\usepackage{url}
+
+% Algorithm2e is an environment for writing algorithms in LaTeX2e
+% http://www.ctan.org/tex-archive/macros/latex/contrib/algorithm2e/
+\usepackage[ruled, linesnumbered]{styles/algorithm2e}
+
