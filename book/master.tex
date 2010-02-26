@@ -35,8 +35,12 @@
 
 \backmatter 
 	% index
+	\cleardoublepage\phantomsection
+	\addcontentsline{toc}{chapter}{Index}
 	\printindex
 	% bibliography
+	\cleardoublepage\phantomsection
+	\addcontentsline{toc}{chapter}{Bibliography}
 	\bibliographystyle{plain}
 	\bibliography{../workspace/bibtex}
 \end{document}
