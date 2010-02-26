@@ -155,3 +155,4 @@ Classical, Simplex algorithm
 Classical, Nelder-Mead method
 Classical, downhill simplex method
 Stochastic, Random Restart Algorithm
+Evolutionary, Pareto Archived Evolution Strategy

@@ -154,3 +154,5 @@ Classical, Nelder-Mead method,1010,361,1240,121,1186,15
 Classical, Nonlinear conjugate gradient method,781,172,548,67,572,7
 Classical, Conjugate gradient method,29900,1524,34400,2504,27115,551
 Classical, method of steepest descent,4610,990,7200,385,4601,69
+Stochastic, Random Restart Algorithm,31,8,29,8,25,2583071
+Evolutionary, Pareto Archived Evolution Strategy,876,218,1010,220,558,2583071
