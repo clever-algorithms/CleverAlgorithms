@@ -110,3 +110,21 @@ def get_approx_ieee_results(keyword)
   rs = rs[5]
   return rs
 end
+
+
+# out put a query in the form %22genetic+algorithm%22 given: genetic algorithm
+def prepare_query(query)
+  raise "Query contains invalid characters: #{query}" if query.include?('+') or query.include?('(') or query.include?(')')
+  query = query.strip
+  # replace spaces with '+'
+  query = query.gsub(/ /, '+')
+  # remove '-'
+  query = query.gsub('-', '+')
+  # remove ':'
+  query = query.gsub(':', '')
+  # convert to lower case
+  query = query.downcase
+  # surround with encoded quotes
+  query = "%22#{query}%22"
+  return query
+end

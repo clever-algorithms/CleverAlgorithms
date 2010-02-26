@@ -48,8 +48,11 @@ end
 
 def get_results(algorithm_name)  
   # spaces to plus, lowercase, quote using %22 - good for all search services used
-  keyword = algorithm_name.gsub(/ /, "+")
-  keyword = "%22#{keyword.downcase}%22"
+  # keyword = algorithm_name.gsub(/ /, "+")
+  # keyword = "%22#{keyword.downcase}%22"
+  
+  # prepare the query
+  query = prepare_query(algorithm_name)
   
   # 
   # dear future self, you can keep adding measures here and the pipeline should make use of them
@@ -57,17 +60,17 @@ def get_results(algorithm_name)
   
   scores = []
   # Google Web Search
-  scores << get_approx_google_web_results(keyword)
+  scores << get_approx_google_web_results(query)
   # Google Book Search
-  scores << get_approx_google_book_results(keyword)
+  scores << get_approx_google_book_results(query)
   # Google Scholar Search
-  scores << get_approx_google_scholar_results(keyword)
+  scores << get_approx_google_scholar_results(query)
   # Springer Article Search
-  scores << get_approx_springer_results(keyword)
+  scores << get_approx_springer_results(query)
   # Scirus Search
-  scores << get_approx_scirus_results(keyword)
+  scores << get_approx_scirus_results(query)
   # IEEE Search
-  # scores << get_approx_ieee_results(keyword)
+  # scores << get_approx_ieee_results(query)
   
   return scores
 end
