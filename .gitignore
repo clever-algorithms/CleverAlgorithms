@@ -1,4 +1,7 @@
 .DS_Store
+book/*.idx
+book/*.ilg
+book/*.ind
 book/*.bbl
 book/*.blg
 book/*.aux
