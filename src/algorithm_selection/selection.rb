@@ -67,7 +67,7 @@ def get_results(algorithm_name)
   # Scirus Search
   scores << get_approx_scirus_results(keyword)
   # IEEE Search
-  scores << get_approx_ieee_results(keyword)
+  # scores << get_approx_ieee_results(keyword)
   
   return scores
 end
