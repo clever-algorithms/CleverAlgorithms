@@ -42,7 +42,7 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+This report describes the Genetic Algorithm using the standardized algorithm template.
 
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Genetic Algorithm using the standardized algorithm template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,7 +64,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Genetic Algorithm, GA, Simple Genetic Algorithm, SGA, Canonical Genetic Algorithm, CGA
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -72,7 +72,12 @@ todo
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
 % What are the closely related approaches to a technique?
-todo
+
+for global optimization
+belong to evolutionary computation
+sibling of evolutionary algorithms such as ES, GP, EP, LCS
+parent of a large field of study
+
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -80,8 +85,11 @@ todo
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+population genetics, evolutionary biology
 % Which features of the motivating system are relevant to a technique?
-todo
+process and mechanisms
+
+based on population genetics (heredity and evolution at population level) and mendelian view of the mechanisms (chromosomes, genes), haploid models (single chromosome), or polyploid (multiple chromosomes)
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -97,8 +105,9 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+objective adapt to the environment
 % What is a techniques plan of action?
-todo
+assess, select, recombine 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -106,7 +115,69 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Genetic Algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Current}{$S_{i}$}
+	\SetKwData{CurrentFitness}{$Si_{fitness}$}
+	\SetKwData{Population}{Population}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{BoutSize}{$Bout_{size}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	
+	% functions
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Mutate}{Mutate}
+	\SetKwFunction{EvaluateFitness}{EvaluateFitness}
+	\SetKwFunction{Sort}{Sort}
+	\SetKwFunction{TournamentSelection}{TournamentSelection}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Replace}{Replace}
+	\SetKwFunction{InitializeRandomBitstrings}{InitializeRandomBitstrings}  
+  
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover,\ProbabilityMutate}		
+	\KwOut{\Best}
+  	% Algorithm
+	\Population $\leftarrow$ \InitializeRandomBitstrings{\PopulationSize, \ProblemSize}\;
+	
+	
+	\ForEach{\Current $\in$ \Population}{
+		\CurrentFitness $\leftarrow$ \EvaluateFitness{\Current}\;
+		\If{}{
+		
+		}
+	}	
+	\While{$\neg$\StopCondition{}} {
+	 	$Population_{children} \leftarrow$ 0\;
+		 \While{$Population_{children}$.size()$\neq$\PopSize}{
+			$parent_1 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
+			$parent_2 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
+			$child_1$, $child_2 \leftarrow$ \Crossover{$p_2$, $p_2$, $p_{crossover}$}\;
+			$mutant_1 \leftarrow$ \Mutate{$child_1$, $p_{mutation}$}\;
+			$mutant_2 \leftarrow$ \Mutate{$child_2$, $p_{mutation}$}\;
+			$Population_{children} \leftarrow mutant_1$\;
+			$Population_{children} \leftarrow mutant_2$\;
+		}
+		\ForEach{$p_i \in$ \Pop}{
+		 	\Fitness{$p_i$}\;
+		}
+		\Best $\leftarrow$ \Sort{Population}.Last\;
+		\Replace{\Pop, $Population_{children}$}\;	 
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Genetic Algorithm.}
+	\label{alg:genetic_algorithm}
+\end{algorithm}
+
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -114,8 +185,17 @@ todo
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
+
+
 \begin{itemize}
-	\item todo
+	\item most applications for function optimization, overwhelming, but this is not the only application - they are not inherently function optimizers \cite{Jong1992}
+	\item binary strings are the classical representation, other representations can be used
+	\item gray code can be used to map to binary numbers in addition to binary coded decimal
+	\item a popular explanation for the power of the technique is the schema theorem.
+	\item small mutation
+	\item high amount of recombination
+	\item moderately biased selection, not too string
+	\item enormous variation and extensions	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -133,73 +213,33 @@ todo
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
 
-
-\begin{itemize}
-	\item based on population genetics (heredity and evolution at population level) and mendelian view of the mechanisms (chromosomes, genes), haploid models (single chromosome), or polyploid (multiple chromosomes)
-\end{itemize}
-
 % 
 % Primary Sources
 % 
 \subsection{Primary Sources}
-
 % adaptive plans - adaptive system framework
-Holland on adaptive plans \cite{Holland1962}
-another overview of the early thing \cite{Holland1962a}
+Holland is the grandfather of the field that became Genetic Algorithms. Holland investigated adaptive systems in the late 1960s proposing an adaptive system formalism and adaptive strategies referred to as `adaptive plans' \cite{Holland1962, Holland1962a, Holland1969}. 
+% students
+Holland's theoretical framework was investigated and elaborated by his Ph.D. students at the University of Michigan. Rosenberg investigated an chemical and molecular model of a biological inspired adaptive plan \cite{Rosenberg1967}. Bagley investigated meta environments and a genetic adaptive plan referred to as a genetic algorithm applied to a simple game called hexapawn \cite{Bagley1967}. Cavicchio further elaborated the genetic adaptive plan by proposing numerous variations, referring to some as `reproductive plans' \cite{Cavicchio1970}. Other important contributions were made by Frantz who investigated what were referred to as genetic algorithms for search \cite{Frantz1972}, and Hollstien who investigated genetic plans for adaptive control and function optimization \cite{Hollstien1971}.
+% de Jong
+De Jong performed a seminal investigation of the genetic adaptive model (genetic plans) applied to continuous function optimization and the suite of test problems adopted are still commonly used \cite{Jong1975}.
+% classical book
+Holland wrote the the seminal book on his research focusing on the proposed adaptive systems formalism, the reproductive and genetic adaptive plans, and provided a theoretical framework for the mechanisms used and explanation for the capabilities of what would become genetic algorithms \cite{Holland1975}.
 
-on adaptive plans \cite{Holland1969} - explores reproductive plan theoretically
-
-\emph{adaptive plan} - first by Holland then his students
-
-explored with his PhD students at the University of Michigan
-
-1. Rosenberg \cite{Rosenberg1967} - more biological model than the others, chemical model, molecular model
-
-2. genetic algorithms \cite{Bagley1967} - genetic adaptor - perhaps the first use of the term!?!?!
-
-3. 
-% reproductive plans as a search procedure
-thesis \cite{Cavicchio1970} - framework for adaptive systems, reproductive plans - all the pieces where there
-\cite{Cavicchio1972} - reproductive plans
-\emph{reproductive plan}
-evolving detectors for OCR
-
-4. 
-\cite{Frantz1972} (referred to as genetic algorithms)
-
-
-5.
-Hollstien \cite{Hollstien1971}
-genetic plans, adaptive control, function optimization
-
-6. 
-% de jong - genetic adaptive model
-de jong thesis \cite{Jong1975} - function optimization, adaptive system framework, genetic adaptive model
-also called \emph{genetic plans}
-\emph{genetic adaptive model} - still reproductive plans
-
-
-
-
-% classical books
-holland \cite{Holland1975} - explores adaptive systems, reproductive plans, all theoretically 
-framework, reproductive plans and genetic operators, genetic plans
-refers to his students dissertations for the simulation work 
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
+% overview
+The field of genetic algorithms is very large, resulting in large numbers of variations on the canonical technique and spinoff fields.
 % historical reviews
-todo
+Goldberg provides a classical overview of the field in a review article \cite{Goldberg1994}, as does Mitchell \cite{Mitchell1995}.
+% tutorial
+Whitley describes a classical tutorial for the genetic algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
 
 % good introductions to the ga
-goldberg \cite{Goldberg1989}
-
-
-% good/modern books on the ga
-
-
+The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provdies a modern study of the field, the lessons learned, and reviews the powerful tool set of optimization algorithms that the field has produced \cite{Goldberg2002}.
 
 
 % 
