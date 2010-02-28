@@ -185,7 +185,7 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
 	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution  \cite{Goldberg1992}.
 	\item The Genetic Algorithm is classically configured with a high probability of recombination (such as 95\%-99\% of the selected population) and a low probability of mutation (such as $\frac{1}{L}$ where $L$ is the number of components in a solution) \cite{Muhlenbein1992, Back1993a}.
-	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy nor too random.
+	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy (to avoid the take over of fitter candidate solutions) nor too random.
 	\item The algorithm is highly-modular and a sub-field exists to study each component and problem specific operators are suggested. 
 \end{itemize}
 
@@ -194,12 +194,17 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
+Listing~\ref{genetic_algorithm} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language. 
+% problem
 todo
 
+% algorithm
+todo
 
-conservative: binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator
+The algorithm has a conservative configuration with regard to genetic operators, including binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator.
 
-
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language, label=genetic_algorithm]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
