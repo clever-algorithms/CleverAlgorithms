@@ -105,9 +105,9 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-objective adapt to the environment
+The objective of the Genetic Algorithm is to improve the adaptive fit of a population of candidate solutions to an environment defined by an cost function. 
 % What is a techniques plan of action?
-assess, select, recombine 
+The strategy for the Genetic Algorithm is to repeatedly employ surrogates for the recombination and mutation genetic mechanisms on the population of candidate solutions, where the cost function (also known as objective or fitness function) governs the probabilistic contributions a given candidate solution can make to the subsequent generation of candidate solutions.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -178,7 +178,6 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 \end{algorithm}
 
 
-
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \section{Heuristics}
@@ -220,7 +219,9 @@ todo
 % adaptive plans - adaptive system framework
 Holland is the grandfather of the field that became Genetic Algorithms. Holland investigated adaptive systems in the late 1960s proposing an adaptive system formalism and adaptive strategies referred to as `adaptive plans' \cite{Holland1962, Holland1962a, Holland1969}. 
 % students
-Holland's theoretical framework was investigated and elaborated by his Ph.D. students at the University of Michigan. Rosenberg investigated an chemical and molecular model of a biological inspired adaptive plan \cite{Rosenberg1967}. Bagley investigated meta environments and a genetic adaptive plan referred to as a genetic algorithm applied to a simple game called hexapawn \cite{Bagley1967}. Cavicchio further elaborated the genetic adaptive plan by proposing numerous variations, referring to some as `reproductive plans' \cite{Cavicchio1970}. Other important contributions were made by Frantz who investigated what were referred to as genetic algorithms for search \cite{Frantz1972}, and Hollstien who investigated genetic plans for adaptive control and function optimization \cite{Hollstien1971}.
+Holland's theoretical framework was investigated and elaborated by his Ph.D. students at the University of Michigan. Rosenberg investigated an chemical and molecular model of a biological inspired adaptive plan \cite{Rosenberg1967}. Bagley investigated meta environments and a genetic adaptive plan referred to as a genetic algorithm applied to a simple game called hexapawn \cite{Bagley1967}. Cavicchio further elaborated the genetic adaptive plan by proposing numerous variations, referring to some as `reproductive plans' \cite{Cavicchio1970}. 
+
+Other important contributions were made by Frantz who investigated what were referred to as genetic algorithms for search \cite{Frantz1972}, and Hollstien who investigated genetic plans for adaptive control and function optimization \cite{Hollstien1971}.
 % de Jong
 De Jong performed a seminal investigation of the genetic adaptive model (genetic plans) applied to continuous function optimization and the suite of test problems adopted are still commonly used \cite{Jong1975}.
 % classical book
@@ -237,7 +238,6 @@ The field of genetic algorithms is very large, resulting in large numbers of var
 Goldberg provides a classical overview of the field in a review article \cite{Goldberg1994}, as does Mitchell \cite{Mitchell1995}.
 % tutorial
 Whitley describes a classical tutorial for the genetic algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
-
 % good introductions to the ga
 The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provdies a modern study of the field, the lessons learned, and reviews the powerful tool set of optimization algorithms that the field has produced \cite{Goldberg2002}.
 
