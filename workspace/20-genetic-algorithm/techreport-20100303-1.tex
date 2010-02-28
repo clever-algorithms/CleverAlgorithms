@@ -180,14 +180,15 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 
 
 \begin{itemize}
-	\item most applications for function optimization, overwhelming, but this is not the only application - they are not inherently function optimizers \cite{Jong1992}
-	\item binary strings are the classical representation, other representations can be used
-	\item gray code can be used to map to binary numbers in addition to binary coded decimal
-	\item a popular explanation for the power of the technique is the schema theorem.
-	\item small mutation
-	\item high amount of recombination
-	\item moderately biased selection, not too string
-	\item enormous variation and extensions	
+	\item Binary strings (bitstrings) are the classical representation as they can be decoded to almost any desired representation.
+	\item Continuous variables can be decoded using the binary coded decimal technique, although the gray code method may be more appropriate.
+	\item Problem specific representations and customized genetic operators should be adopted, incorporating as much prior information about the problem domain as possible.
+	\item The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}.
+	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland.
+	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution. The population size may be configured to be a factor of the number of components in the solution.
+	\item The Genetic Algorithm is classically configured with a high probability of recombination (such as 95\%-99\% of the selected population) and a low probability of mutation (such as $\frac{1}{L}$ where $L$ is the number of components in a solution).
+	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy nor too random.
+	\item The algorithm is highly-modular and a sub-field exists to study each component and problem specific operators are suggested, although the following are recommended operators for a binary string representation: Tournament Selection for the selection operator, one-point or two-point crossover for the recombination operator, and point mutations for the mutation operator. 
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
