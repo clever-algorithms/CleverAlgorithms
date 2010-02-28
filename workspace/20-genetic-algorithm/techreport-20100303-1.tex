@@ -122,54 +122,54 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 
 	% data
 	\SetKwData{Best}{$S_{best}$}
-	\SetKwData{Current}{$S_{i}$}
-	\SetKwData{CurrentFitness}{$Si_{fitness}$}
-	\SetKwData{Population}{Population}
-	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{PopulationSize}{$Population_{size}$}
-	\SetKwData{BoutSize}{$Bout_{size}$}
 	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
 	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
-	
+	\SetKwData{Parents}{Parents}
+	\SetKwData{Children}{Children}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{ParentOne}{$Parent_{1}$}
+	\SetKwData{ParentTwo}{$Parent_{2}$}
+	\SetKwData{ChildOne}{$Child_{1}$}
+	\SetKwData{ChildTwo}{$Child_{2}$}	
 	% functions
-	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{Mutate}{Mutate}
-	\SetKwFunction{EvaluateFitness}{EvaluateFitness}
-	\SetKwFunction{Sort}{Sort}
-	\SetKwFunction{TournamentSelection}{TournamentSelection}
-	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectParents}{SelectParents}
 	\SetKwFunction{Replace}{Replace}
-	\SetKwFunction{InitializeRandomBitstrings}{InitializeRandomBitstrings}  
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Mutate}{Mutate}
   
 	% I/O
-	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover,\ProbabilityMutate}		
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
 	\KwOut{\Best}
   	% Algorithm
-	\Population $\leftarrow$ \InitializeRandomBitstrings{\PopulationSize, \ProblemSize}\;
-	
-	
-	\ForEach{\Current $\in$ \Population}{
-		\CurrentFitness $\leftarrow$ \EvaluateFitness{\Current}\;
-		\If{}{
-		
-		}
-	}	
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
 	\While{$\neg$\StopCondition{}} {
-	 	$Population_{children} \leftarrow$ 0\;
-		 \While{$Population_{children}$.size()$\neq$\PopSize}{
-			$parent_1 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
-			$parent_2 \leftarrow$ \TournamentSelection{\Pop, \BoutSize}\;
-			$child_1$, $child_2 \leftarrow$ \Crossover{$p_2$, $p_2$, $p_{crossover}$}\;
-			$mutant_1 \leftarrow$ \Mutate{$child_1$, $p_{mutation}$}\;
-			$mutant_2 \leftarrow$ \Mutate{$child_2$, $p_{mutation}$}\;
-			$Population_{children} \leftarrow mutant_1$\;
-			$Population_{children} \leftarrow mutant_2$\;
+		% select
+		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+		% recombine
+		\Children $\leftarrow 0$\;
+		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
+			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
+			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
 		}
-		\ForEach{$p_i \in$ \Pop}{
-		 	\Fitness{$p_i$}\;
-		}
-		\Best $\leftarrow$ \Sort{Population}.Last\;
-		\Replace{\Pop, $Population_{children}$}\;	 
+		% evaluate
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children}\;
+		% replace
+		\Population $\leftarrow$ \Replace{\Population, \Children}\;
 	}
 	\Return{\Best}\;
 	% end
