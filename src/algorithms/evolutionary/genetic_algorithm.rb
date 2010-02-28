@@ -60,7 +60,7 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
     children = reproduce(selected, population_size, p_crossover, p_mutation)    
     children.each{|c| c[:fitness] = onemax(c[:bitstring])}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] > best[:fitness]
+    best = children.first if children.first[:fitness] >= best[:fitness]
     population = children
     gen += 1
     puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
