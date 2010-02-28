@@ -196,12 +196,10 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{genetic_algorithm} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language. 
 % problem
-todo
+The problem is maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not which bits.
 
 % algorithm
-todo
-
-The algorithm has a conservative configuration with regard to genetic operators, including binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator.
+The Genetic Algorithm is implemented with a conservative configuration including tournament selection for the selection operator, one-point crossover for the recombination operator, and point mutations for the mutation operator.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language, label=genetic_algorithm]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
