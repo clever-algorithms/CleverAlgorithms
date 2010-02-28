@@ -91,7 +91,7 @@ The Genetic Algorithm is inspired by population genetics (including heredity, ge
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Individuals of a population are selected proportional to their suitability to their environment who mate and contribute their genetic material to the next generation through a process of recombination with the introduction of copying errors called mutation. This process results in an improved adaptive-fit between the population of individuals and the environment.
+Individuals of a population are selected proportional to their phenotypes suitability to their environment who mate and contribute their genotype (genetic material) to the next generation through a process of recombination with the introduction of copying errors called mutation. This process results in an improved adaptive-fit between the population of individuals and the environment.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -181,12 +181,12 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 \begin{itemize}
 	\item Binary strings (bitstrings) are the classical representation as they can be decoded to almost any desired representation. Continuous variables can be decoded using the binary coded decimal technique, although the gray code method may be more appropriate .
 	\item Problem specific representations and customized genetic operators should be adopted, incorporating as much prior information about the problem domain as possible.
+	\item The algorithm is highly-modular and a sub-field exists to study each component and problem specific operators are suggested. 
 	\item The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}.
 	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
 	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution  \cite{Goldberg1992}.
 	\item The Genetic Algorithm is classically configured with a high probability of recombination (such as 95\%-99\% of the selected population) and a low probability of mutation (such as $\frac{1}{L}$ where $L$ is the number of components in a solution) \cite{Muhlenbein1992, Back1993a}.
-	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy (to avoid the take over of fitter candidate solutions) nor too random.
-	\item The algorithm is highly-modular and a sub-field exists to study each component and problem specific operators are suggested. 
+	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy (to avoid the takeover of fitter candidate solutions) nor too random.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -199,7 +199,7 @@ Listing~\ref{genetic_algorithm} provides an example of the Genetic Algorithm imp
 The problem is maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not which bits.
 
 % algorithm
-The Genetic Algorithm is implemented with a conservative configuration including tournament selection for the selection operator, one-point crossover for the recombination operator, and point mutations for the mutation operator.
+The Genetic Algorithm is implemented with a conservative configuration including binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language, label=genetic_algorithm]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
