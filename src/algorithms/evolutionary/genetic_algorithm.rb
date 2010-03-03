@@ -68,7 +68,7 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
   return best
 end
 
-max_generations = 500
+max_generations = 100
 population_size = 100
 num_bits = 64
 p_crossover = 0.98

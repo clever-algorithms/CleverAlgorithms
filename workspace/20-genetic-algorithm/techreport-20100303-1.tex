@@ -82,7 +82,7 @@ The Genetic Algorithm is a sibling of other Evolutionary Algorithms such as Gene
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-The Genetic Algorithm is inspired by population genetics (including heredity, gene frequencies), and evolution at the population, as well as the Mendelian understanding of the structure (such as chromosomes, genes, alleles) and mechanisms (such as genetic recombination and genetic mutation). This is the so-called new or modern synthesis of evolutionary biology. 
+The Genetic Algorithm is inspired by population genetics (including heredity and gene frequencies), and evolution at the population level, as well as the Mendelian understanding of the structure (such as chromosomes, genes, alleles) and mechanisms (such as recombination and mutation). This is the so-called new or modern synthesis of evolutionary biology. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -91,7 +91,7 @@ The Genetic Algorithm is inspired by population genetics (including heredity, ge
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Individuals of a population are selected proportional to their phenotypes suitability to their environment who mate and contribute their genotype (genetic material) to the next generation through a process of recombination with the introduction of copying errors called mutation. This process results in an improved adaptive-fit between the population of individuals and the environment.
+Individuals of a population contribute their genetic material (called the genotype) proportional to their suitability of their expressed genome (called their phenotype) to their environment. The next generation is created through a process of mating that involves recombination of two individuals genomes in the population with the introduction of random copying errors (called mutation). This iterative process may result in an improved adaptive-fit between the phenotypes of individuals in a population and the environment.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -100,7 +100,7 @@ Individuals of a population are selected proportional to their phenotypes suitab
 % What is the information processing objective of a technique?
 The objective of the Genetic Algorithm is to maximize the payoff of candidate solutions in the population against a cost function from the problem domain. 
 % What is a techniques plan of action?
-The strategy for the Genetic Algorithm is to repeatedly employ surrogates for the recombination and mutation genetic mechanisms on the population of candidate solutions, where the cost function (also known as objective or fitness function) governs the probabilistic contributions a given candidate solution can make to the subsequent generation of candidate solutions. 
+The strategy for the Genetic Algorithm is to repeatedly employ surrogates for the recombination and mutation genetic mechanisms on the population of candidate solutions, where the cost function (also known as objective or fitness function) applied to a decoded representation of a candidate governs the probabilistic contributions a given candidate solution can make to the subsequent generation of candidate solutions. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -179,9 +179,9 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 % What are the guidelines for the application of a technique to a problem instance?
 
 \begin{itemize}
-	\item Binary strings (bitstrings) are the classical representation as they can be decoded to almost any desired representation. Continuous variables can be decoded using the binary coded decimal technique, although the gray code method may be more appropriate .
+	\item Binary strings (bitstrings) are the classical representation as they can be decoded to almost any desired representation. Real-valued variables can be decoded using the binary coded decimal method or the gray code method, the latter of which is generally preferred.
 	\item Problem specific representations and customized genetic operators should be adopted, incorporating as much prior information about the problem domain as possible.
-	\item The algorithm is highly-modular and a sub-field exists to study each component and problem specific operators are suggested. 
+	\item The algorithm is highly-modular and a sub-field exists to study each sub-process, such as selection, recombination, mutation, and representation. 
 	\item The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}.
 	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
 	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution  \cite{Goldberg1992}.
@@ -196,7 +196,7 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{genetic_algorithm} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not which bits.
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 
 % algorithm
 The Genetic Algorithm is implemented with a conservative configuration including binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator.
@@ -218,11 +218,11 @@ The Genetic Algorithm is implemented with a conservative configuration including
 % adaptive plans - adaptive system framework
 Holland is the grandfather of the field that became Genetic Algorithms. Holland investigated adaptive systems in the late 1960s proposing an adaptive system formalism and adaptive strategies referred to as `adaptive plans' \cite{Holland1962, Holland1962a, Holland1969}. 
 % students
-Holland's theoretical framework was investigated and elaborated by his Ph.D. students at the University of Michigan. Rosenberg investigated an chemical and molecular model of a biological inspired adaptive plan \cite{Rosenberg1967}. Bagley investigated meta environments and a genetic adaptive plan referred to as a genetic algorithm applied to a simple game called hexapawn \cite{Bagley1967}. Cavicchio further elaborated the genetic adaptive plan by proposing numerous variations, referring to some as `reproductive plans' \cite{Cavicchio1970}. 
+Holland's theoretical framework was investigated and elaborated by his Ph.D. students at the University of Michigan. Rosenberg investigated a chemical and molecular model of a biological inspired adaptive plan \cite{Rosenberg1967}. Bagley investigated meta-environments and a genetic adaptive plan referred to as a genetic algorithm applied to a simple game called hexapawn \cite{Bagley1967}. Cavicchio further elaborated the genetic adaptive plan by proposing numerous variations, referring to some as `reproductive plans' \cite{Cavicchio1970}. 
 
 Other important contributions were made by Frantz who investigated what were referred to as genetic algorithms for search \cite{Frantz1972}, and Hollstien who investigated genetic plans for adaptive control and function optimization \cite{Hollstien1971}.
 % de Jong
-De Jong performed a seminal investigation of the genetic adaptive model (genetic plans) applied to continuous function optimization and the suite of test problems adopted are still commonly used \cite{Jong1975}.
+De Jong performed a seminal investigation of the genetic adaptive model (genetic plans) applied to continuous function optimization and his suite of test problems adopted are still commonly used \cite{Jong1975}.
 % classical book
 Holland wrote the the seminal book on his research focusing on the proposed adaptive systems formalism, the reproductive and genetic adaptive plans, and provided a theoretical framework for the mechanisms used and explanation for the capabilities of what would become genetic algorithms \cite{Holland1975}.
 
@@ -232,13 +232,13 @@ Holland wrote the the seminal book on his research focusing on the proposed adap
 % 
 \subsection{Learn More}
 % overview
-The field of genetic algorithms is very large, resulting in large numbers of variations on the canonical technique and spinoff fields.
+The field of genetic algorithms is very large, resulting in large numbers of variations on the canonical technique.
 % historical reviews
 Goldberg provides a classical overview of the field in a review article \cite{Goldberg1994}, as does Mitchell \cite{Mitchell1995}.
 % tutorial
 Whitley describes a classical tutorial for the genetic algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
 % good introductions to the ga
-The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provdies a modern study of the field, the lessons learned, and reviews the powerful tool set of optimization algorithms that the field has produced \cite{Goldberg2002}.
+The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provides a modern study of the field, the lessons learned, and reviews the broader toolset of optimization algorithms that the field has produced \cite{Goldberg2002}.
 
 
 % 
