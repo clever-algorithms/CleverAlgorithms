@@ -71,8 +71,12 @@ todo
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
+evolutionary computation, an instance of an evolutionary algorithm
 % What are the closely related approaches to a technique?
-todo
+sister techniques include ga, es, ep and lcs
+
+descendant techniques include multiple population gp, lots of others
+
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,7 +85,9 @@ todo
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-todo
+
+population biology
+
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,15 +96,17 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+
+pop
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+improve the adaptive fit between a population of candidate programs and an objective function
 % What is a techniques plan of action?
-todo
+evolutionary operations to tree structures that represent a call graph of an executable program
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -115,7 +123,10 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item an adaptive system for improving the performance of a population of candidates and an objective function
+	\item problems are phrased as optimization problems that are solved by a program
+	\item used for machine learning tasks such as function approximation
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -137,7 +148,21 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-Koza is credited with the inception of the field, definitely with the driving force behind the field
+
+early works using tree representations for expressions include 
+
+Cramer \cite{Cramer1985} - a ga with an expression tree
+
+early tech report by Koza \cite{Koza1990} many others
+
+lots of early application papers as well
+
+Koza is responsible for expanding and popularizing the approach and growing the approach into what became the field of gp \cite{Koza1992}
+
+
+TODO: look at some popular general papers and see what they ref
+
+
 
 % 
 % Learn More
@@ -145,10 +170,17 @@ Koza is credited with the inception of the field, definitely with the driving fo
 \subsection{Learn More}
 % historical reviews
 
+% intro papers
+
+intro tutorial \cite{Koza2003a}
+recent overview of the field and technique \cite{Koza2005}
+
+% books
 Koza's series of books, seminal is volume I \cite{Koza1992}, most recent is volume IV \cite{Koza2003}. other volumes include volume II \cite{Koza1994} and volume III \cite{Koza1999}
 
+good general overview books include \cite{Banzhaf1998} and \cite{Langdon2002}
 
-contemporary reference is the field guide to GP \cite{Poli2008}
+contemporary and practical jumpstart is the field guide to GP \cite{Poli2008}
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
