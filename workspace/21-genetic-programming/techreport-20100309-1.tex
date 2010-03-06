@@ -114,7 +114,9 @@ evolutionary operations to tree structures that represent a call graph of an exe
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+
+LISP-like symbolic expressions (s-expressions), or a function graph comprised of branching and terminal nodes.
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -148,39 +150,32 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-
-early works using tree representations for expressions include 
-
-Cramer \cite{Cramer1985} - a ga with an expression tree
-
-early tech report by Koza \cite{Koza1990} many others
-
-lots of early application papers as well
-
-Koza is responsible for expanding and popularizing the approach and growing the approach into what became the field of gp \cite{Koza1992}
-
-
-TODO: look at some popular general papers and see what they ref
-
+% early work
+An early work by Cramer involved the study of a Genetic Algorithm using an expression tree structure for representing computer programs for primitive mathematical operations \cite{Cramer1985}.
+% koza
+Koza is credited with the development of the field of Genetic Programming.
+% early koza
+An early paper by Koza referred to his hierarchical genetic algorithms as an extension to the simple genetic algorithm that use symbolic expressions (S-expressions) as a representation and are applied to a range of induction-style problems \cite{Koza1989}.
+% seminal
+The seminal reference for the field is Koza's 1992 book on Genetic Programming \cite{Koza1992}.
 
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-
-% intro papers
-
-intro tutorial \cite{Koza2003a}
-recent overview of the field and technique \cite{Koza2005}
+% scope
+The field of Genetic Programming is vast, including many books, dedicated conferences and uncounted thousands of publications.
+% koza
+Koza is generally credited with the development and popularizing of the field, publishing a large number of books and papers himself. 
+% intro papers 
+Koza provides a practical introduction to the field as a tutorial \cite{Koza2003a}, and provides recent overview of the broader field and usage of the technique \cite{Koza2005}.
 
 % books
-Koza's series of books, seminal is volume I \cite{Koza1992}, most recent is volume IV \cite{Koza2003}. other volumes include volume II \cite{Koza1994} and volume III \cite{Koza1999}
+In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on automatically defined functions (ADFs) \cite{Koza1994}, volume III providing an update on the field \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical example problem instances.
 
-good general overview books include \cite{Banzhaf1998} and \cite{Langdon2002}
-
-contemporary and practical jumpstart is the field guide to GP \cite{Poli2008}
+% additional books
+Some additional excellent books on the field include Banzhaf, et al's introduction to the field \cite{Banzhaf1998}, Langdon and Poli's detailed look at the technique \cite{Langdon2002}, and Poli, Langdon, and McPhee's contemporary and practical jumpstart is the field guide to Genetic Programming \cite{Poli2008}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
