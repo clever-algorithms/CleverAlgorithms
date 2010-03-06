@@ -114,8 +114,72 @@ evolutionary operations to tree structures that represent a call graph of an exe
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
+Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function. 
 
+todo
 LISP-like symbolic expressions (s-expressions), or a function graph comprised of branching and terminal nodes.
+
+copy of the ga for now...
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{Parents}{Parents}
+	\SetKwData{Children}{Children}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{ParentOne}{$Parent_{1}$}
+	\SetKwData{ParentTwo}{$Parent_{2}$}
+	\SetKwData{ChildOne}{$Child_{1}$}
+	\SetKwData{ChildTwo}{$Child_{2}$}	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectParents}{SelectParents}
+	\SetKwFunction{Replace}{Replace}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Mutate}{Mutate}
+  
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% select
+		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+		% recombine
+		\Children $\leftarrow 0$\;
+		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
+			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
+			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+		}
+		% evaluate
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children}\;
+		% replace
+		\Population $\leftarrow$ \Replace{\Population, \Children}\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Genetic Programming algorithm.}
+	\label{alg:genetic_programming}
+\end{algorithm}
 
 
 % Heuristics: Usage guidelines
