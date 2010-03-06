@@ -108,6 +108,8 @@ improve the adaptive fit between a population of candidate programs and an objec
 % What is a techniques plan of action?
 evolutionary operations to tree structures that represent a call graph of an executable program
 
+cost is determined by executing the program
+
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
@@ -117,7 +119,16 @@ evolutionary operations to tree structures that represent a call graph of an exe
 Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function. 
 
 todo
-LISP-like symbolic expressions (s-expressions), or a function graph comprised of branching and terminal nodes.
+
+programs are data while evolving, then programs and executed for fitness assignment. 
+
+LISP-like symbolic expressions (s-expressions), or a function graph comprised of function and terminal nodes.
+
+depth-first traversal of the graph to execute it
+prefix-notation for expressions
+
+variable sized candidates
+
 
 copy of the ga for now...
 
@@ -189,9 +200,17 @@ copy of the ga for now...
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item The evaluation (fitness assignment) of a candidate solution typically take the structure of the program into account, rewarding parsimony.
+	\item The selection process should be balanced between random selection and greedy selection to bias the search towards fitter candidate solutions (exploitation), whilst promoting useful diversity into the population (exploration).
+	
+	
 	\item an adaptive system for improving the performance of a population of candidates and an objective function
 	\item problems are phrased as optimization problems that are solved by a program
 	\item used for machine learning tasks such as function approximation
+	\item can take input or just generate a result
+	\item functions that return a value should always return a value, for example division by zero should return something useful
+	
+	\item can represent and execute the program as a stack (related to linear representation) \cite{Perkis1994}
 	
 \end{itemize}
 
