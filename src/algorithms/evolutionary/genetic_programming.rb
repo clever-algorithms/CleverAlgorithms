@@ -84,24 +84,22 @@ def copy_program(node)
 end
 
 def get_node(node, node_num, current_node=0)
-  return node,-1 if current_node == node_num
-  current_node = current_node + 1
+  return node,(current_node+1) if current_node == node_num
+  current_node += 1
   return nil,current_node if !node.kind_of? Array
   a1, current_node = get_node(node[1], node_num, current_node)
-  return a1 if !a1.nil?
+  return a1,current_node if !a1.nil?
   a2, current_node = get_node(node[2], node_num, current_node)
-  return a2 if !a2.nil?
-  return nil
+  return a2,current_node if !a2.nil?
+  return nil,current_node
 end
 
 def crossover(parent1, parent2)
-  sensis1, sensis2 = count_nodes(parent1), count_nodes(parent2)
-  point1, point2 = rand(sensis1), rand(sensis2)
-  tree1, tree2 = get_node(parent1, point1), get_node(parent2, point2)
-  # TODO remove this once we're happy!
-  raise "Oh No" if tree1.nil? or tree2.nil?
-  child1, count1 = replace_node(parent1, copy_program(tree1), point1)
-  child2, count2 = replace_node(parent2, copy_program(tree2), point2)
+  point1, point2 = rand(count_nodes(parent1)-2)+1, rand(count_nodes(parent2)-2)+1
+  tree1, c1 = get_node(parent1, point1)
+  tree2, c2 = get_node(parent2, point2)  
+  child1, c1 = replace_node(parent1, copy_program(tree2), point1)
+  child2, c2 = replace_node(parent2, copy_program(tree1), point2)
   return child1, child2
 end
 
@@ -124,16 +122,16 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
       # TODO probabilities
       
       # reproduction
-      # candidate = tournament_selection(population, num_bouts)
+      # parent = tournament_selection(population, num_bouts)
       # child = {}
-      # child[:program] = copy_program(candidate[:program])
+      # child[:program] = copy_program(parent[:program])
       # children << child
     
       # crossover
       # p1 = tournament_selection(population, num_bouts)
       # p2 = tournament_selection(population, num_bouts)
       # child1, child2 = {}, {}
-      # child1[:program], child2[:program] = crossover(p1, p2)
+      # child1[:program], child2[:program] = crossover(p1[:program], p2[:program])
       # children << child1
       # children << child2
     
@@ -149,7 +147,7 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
     children.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
     population = children
     population.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-    best = population.first if population.first[:fitness] < best[:fitness]
+    best = population.first if population.first[:fitness] <= best[:fitness]
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
   end
   return best
@@ -167,10 +165,10 @@ p_alter = 0.01
 terminals = ['X', 'R']
 functions = [:+, :-, :*, :/]
 
-# best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
-# puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
+puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
 
-optima = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
+# optima = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
 # puts print_program(optima)
 # puts print_program(copy_program(optima))
 # puts eval_program(optima, {'X'=>1})
@@ -178,6 +176,6 @@ optima = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
 # puts count_nodes(optima)
 # puts print_program(generate_random_program(max_depth, functions, terminals))
 # puts print_program(mutation(optima,max_depth, functions, terminals))
-c1, c2 = crossover(optima, optima)
-puts print_program(c1)
-puts print_program(c2)
+# c1, c2 = crossover(optima, optima)
+# puts print_program(c1)
+# puts print_program(c2)
