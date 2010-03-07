@@ -61,33 +61,46 @@ def tournament_selection(population, num_bouts)
   return best
 end
 
-def replace_node(node, replacement, node_num, current_func=0)
-  return replacement,(current_func+1) if current_func == node_num
-  return node,(current_func+1) if !node.kind_of? Array
-  a1, current_func = replace_node(node[1], replacement, node_num, current_func+1)
-  a2, current_func = replace_node(node[2], replacement, node_num, current_func)
-  return [node[0], a1, a2], current_func
+def replace_node(node, replacement, node_num, current_node=0)
+  return replacement,(current_node+1) if current_node == node_num
+  return node,(current_node+1) if !node.kind_of? Array
+  a1, current_node = replace_node(node[1], replacement, node_num, current_node+1)
+  a2, current_node = replace_node(node[2], replacement, node_num, current_node)
+  return [node[0], a1, a2], current_node
 end
 
-def reproduction(program)
+def copy_program(node)
   return node if !node.kind_of? Array
-  return [node[0], reproduction(node[1]), reproduction(node[2])]
+  return [node[0], copy_program(node[1]), copy_program(node[2])]
 end
 
-def crossover(program1, program2)
-  
+def get_node(node, node_num, current_node=0)
+  return node,(current_node+1) if current_node == node_num
+  return nil,(current_node+1) if !node.kind_of? Array
+  a1, current_node = getNode(node[1], node_num, current_node+1)
+  return a1 if !a1.nil?
+  a2, current_node = getNode(node[2], node_num, current_node)
+  return a2 if !a2.nil?
+  return nil
+end
+
+def crossover(parent1, parent2)
+  sensis1, sensis2 = program_sensis(parent1), program_sensis(parent2)
+  point1, point2 = rand(sensis1[0]+sensis1[1]), rand(sensis2[0]+sensis2[1])
+  tree1, tree2 = get_node(parent1, point1), get_node(parent2, point2)
+  # TODO remove this once we're happy!
+  raise "Oh No" if tree1.nil? or tree2.nil?
+  child1 = replace_node(parent1, copy_program(tree1), point1)
+  child2 = replace_node(parent2, copy_program(tree2), point2)
+  return child1, child2
 end
 
 def mutation(parent, max_depth, functions, terminals)
   sensis = program_sensis(parent)
   point = rand(sensis[0]+sensis[1])
   random_tree = generate_random_program(max_depth/2, functions, terminals)
-  child, count = replace_node(parent, random_tree, point)
+  child = replace_node(parent, random_tree, point)
   return child
-end
-
-def alter(program)
-  
 end
 
 def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
@@ -97,22 +110,32 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
   population.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
   max_generations.times do |gen|
-    # selected = Array.new(population_size){tournament_selection(population, num_bouts)}
     children = []
     while children.length < population_size
-      
+      # TODO probabilities
       
       # reproduction
-    
-      # crossover
-    
-      # mutation      
       candidate = tournament_selection(population, num_bouts)
       child = {}
-      child[:program] = mutation(candidate[:program], max_depth, functions, terminals)
+      child[:program] = copy_program(candidate[:program])
       children << child
     
-      # TODO alteration
+      # crossover
+      # p1 = tournament_selection(population, num_bouts)
+      # p2 = tournament_selection(population, num_bouts)
+      # child1, child2 = {}, {}
+      # child1[:program], child2[:program] = crossover(p1, p2)
+      # children << child1
+      # children << child2
+    
+      # mutation      
+      # candidate = tournament_selection(population, num_bouts)
+      # child = {}
+      # child[:program] = mutation(candidate[:program], max_depth, functions, terminals)
+      # children << child
+    
+      # TODO alteration???
+      
     end    
     children.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
     population = children
@@ -120,7 +143,6 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
     best = population.first if population.first[:fitness] < best[:fitness]
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
   end
-  
   return best
 end
 
@@ -138,19 +160,3 @@ functions = [:+, :-, :*, :/]
 
 best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
 puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
-
-
-
-# puts "=> optiomal:"
-# optimal = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
-# puts print_program(optimal)
-# puts eval_program(optimal, {'X'=>1.0})
-# puts "optimal fitness: #{fitness(optimal, num_trials)}"
-# 
-# puts "=> /0:"
-# puts eval_program([:/, 'X', 'X'], {'X'=>0.0})
-# 
-# puts "=> random:"
-# r = generate_random_program(max_depth, node_functions, node_terminals)
-# puts print_program(r)
-# puts eval_program(r, {'X'=>1.0})
