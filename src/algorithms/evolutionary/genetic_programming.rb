@@ -24,15 +24,11 @@ def eval_program(node, map)
 end
 
 def generate_random_program(max, funcs, terms, depth=0)
-  if depth == max-1
+  if depth==max-1 or (depth>1 and rand()<0.1)
     t = terms[rand(terms.length)] 
     return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
-  depth += 1
-  if depth>1 and rand() < 0.1
-    t = terms[rand(terms.length)] 
-    return ((t=='R') ? random_num(-5.0, +5.0) : t)
-  end  
+  depth += 1 
   arg1 = generate_random_program(max, funcs, terms, depth)
   arg2 = generate_random_program(max, funcs, terms, depth)
   return [funcs[rand(funcs.length)], arg1, arg2]

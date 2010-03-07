@@ -226,29 +226,22 @@ copy of the ga for now...
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{genetic_programming} provides an example of the Genetic Programming algorithm implemented in the Ruby Programming Language. 
+Listing~\ref{genetic_programming} provides an example of the Genetic Programming algorithm implemented in the Ruby Programming Language based on Koza and Poli's tutorial \cite{Koza2003a}.
+ 
 % problem
-The problem...todo
-
-based on \cite{Koza2003a}
-
-symbolic regression
-x^2+x+1, x in [-1,1]
+The demonstration problem is an instance of a symbolic regression, where a function must be devised to match a set of observations. In this case the target function is $x^2+x+1$ where $x \in [-1,1]$. The observations are generated directly from the target function without noise for the purposes of this example. In practical problems, if one knew and had access to the target function then the genetic program would not be required.
 
 % algorithm
-The algorithm...todo
-
-terminals include input x and R real constant in [-5,5]
-functions include four arimethic operators
-divide will return 0 when a divide by zero is attempted
-fitness is error, likely ABS or RMS
-
-cfg 0.9 for crossover, 0.08 for reproduction?, 0.01 for mutation, 0.01 for architecture altering operations?
-
+The algorithm must devise a program with the function set $\{ +, -, \times, \div \}$ and the terminal set $\{ X, R \}$, where $X$ is the input value, and $R$ is a static random variable generated for a program $X \in [-5,5]$. A division by zero returns a value of one. 
+% fitness
+The fitness of a candidate solution is calculated by evaluating the program on range of random input values and calculating the Root Mean Squared Error (RMSE).
+% config
+The algorithm is configured with a 90\% probability of crossover, 9\% probability of reproduction (copying), and a 2\% probability of mutation.
+% missing
+For brevity, the algorithm does not implement the architecture altering genetic operation and does not bias crossover points towards functions over terminals.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Genetic Programming algorithm in the Ruby Programming Language, label=genetic_programming]{../../src/algorithms/evolutionary/genetic_programming.rb}
-
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
