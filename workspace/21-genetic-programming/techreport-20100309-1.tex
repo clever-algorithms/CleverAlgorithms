@@ -82,9 +82,7 @@ The Genetic Programming algorithm is a sibling to other Evolutionary Algorithms 
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-
-population biology
-
+The Genetic Algorithm is inspired by population genetics (including heredity and gene frequencies), and evolution at the population level, as well as the Mendelian understanding of the structure (such as chromosomes, genes, alleles) and mechanisms (such as recombination and mutation). This is the so-called new or modern synthesis of evolutionary biology. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -93,22 +91,19 @@ population biology
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
+Individuals of a population contribute their genetic material (called the genotype) proportional to their suitability of their expressed genome (called their phenotype) to their environment. The next generation is created through a process of mating that involves recombination of two individuals genomes in the population with the introduction of random copying errors (called mutation). This iterative process may result in an improved adaptive-fit between the phenotypes of individuals in a population and the environment.
 
-pop
+% advanced
+Programs may be evolved and used in a secondary adaptive process, where an assessment of candidates at the end of the secondary adaptive process is fed used for differential reproductive success in the first evolutionary process. This system may be understood as the inter-dependencies experienced in evolutionary development where evolution operates upon an embryo that in turn develops in an environment and eventually may reproduce.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-improve the adaptive fit between a population of candidate programs and an objective function
+The objective of the Genetic Programming algorithm is to use induction to devise a computer program. 
 % What is a techniques plan of action?
-evolutionary operations to tree structures that represent a call graph of an executable program
-
-all about the induction of a computer program
-
-cost is determined by executing the program
-
+This is achieved by using evolutionary operators on candidate programs in a tree structure to improve the adaptive fit between a population of candidate programs and an objective function. An assessment of a candidate solution involves its execution.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
