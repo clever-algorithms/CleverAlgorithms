@@ -26,15 +26,23 @@ def generate_random_program(max, funcs, terms, depth=0)
     return ((rand()<0.5) ? rand() : -rand()) if t == 'R' 
     return t
   end  
+  # if !depth.zero? and rand() < (depth+1/max.to_f)
+  if rand()<0.5
+    t = terms[rand(terms.length)] 
+# TODO range in [-5, +5]
+    return ((rand()<0.5) ? rand() : -rand()) if t == 'R' 
+    return t
+  end  
   arg1 = generate_random_program(max, funcs, terms, depth+1)
   arg2 = generate_random_program(max, funcs, terms, depth+1)
   return [funcs[rand(funcs.length)], arg1, arg2]
 end
 
-def program_sensis(node)
-  return [0, 1] if !node.kind_of? Array
-  a1, a2 = program_sensis(node[1]), program_sensis(node[2])
-  return [1+a1[0]+a2[0], a1[1]+a1[1]]
+def count_nodes(node)
+  return 1 if !node.kind_of? Array
+  a1 = count_nodes(node[1])
+  a2 = count_nodes(node[2])
+  return a1+a2+1
 end
 
 def target_function(input)
@@ -63,8 +71,9 @@ end
 
 def replace_node(node, replacement, node_num, current_node=0)
   return replacement,(current_node+1) if current_node == node_num
-  return node,(current_node+1) if !node.kind_of? Array
-  a1, current_node = replace_node(node[1], replacement, node_num, current_node+1)
+  current_node = current_node + 1
+  return node,current_node if !node.kind_of? Array
+  a1, current_node = replace_node(node[1], replacement, node_num, current_node)
   a2, current_node = replace_node(node[2], replacement, node_num, current_node)
   return [node[0], a1, a2], current_node
 end
@@ -75,18 +84,19 @@ def copy_program(node)
 end
 
 def get_node(node, node_num, current_node=0)
-  return node,(current_node+1) if current_node == node_num
-  return nil,(current_node+1) if !node.kind_of? Array
-  a1, current_node = getNode(node[1], node_num, current_node+1)
+  return node,-1 if current_node == node_num
+  current_node = current_node + 1
+  return nil,current_node if !node.kind_of? Array
+  a1, current_node = get_node(node[1], node_num, current_node)
   return a1 if !a1.nil?
-  a2, current_node = getNode(node[2], node_num, current_node)
+  a2, current_node = get_node(node[2], node_num, current_node)
   return a2 if !a2.nil?
   return nil
 end
 
 def crossover(parent1, parent2)
-  sensis1, sensis2 = program_sensis(parent1), program_sensis(parent2)
-  point1, point2 = rand(sensis1[0]+sensis1[1]), rand(sensis2[0]+sensis2[1])
+  sensis1, sensis2 = count_nodes(parent1), count_nodes(parent2)
+  point1, point2 = rand(sensis1), rand(sensis2)
   tree1, tree2 = get_node(parent1, point1), get_node(parent2, point2)
   # TODO remove this once we're happy!
   raise "Oh No" if tree1.nil? or tree2.nil?
@@ -95,12 +105,10 @@ def crossover(parent1, parent2)
   return child1, child2
 end
 
-def mutation(parent, max_depth, functions, terminals)
-  sensis = program_sensis(parent)
-  point = rand(sensis[0]+sensis[1])
+def mutation(parent, max_depth, functions, terminals)  
   random_tree = generate_random_program(max_depth/2, functions, terminals)
-  child = replace_node(parent, random_tree, point)
-  return child
+  point = rand(count_nodes(parent))
+  return replace_node(parent, random_tree, point)
 end
 
 def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
@@ -115,10 +123,10 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
       # TODO probabilities
       
       # reproduction
-      candidate = tournament_selection(population, num_bouts)
-      child = {}
-      child[:program] = copy_program(candidate[:program])
-      children << child
+      # candidate = tournament_selection(population, num_bouts)
+      # child = {}
+      # child[:program] = copy_program(candidate[:program])
+      # children << child
     
       # crossover
       # p1 = tournament_selection(population, num_bouts)
@@ -129,10 +137,10 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
       # children << child2
     
       # mutation      
-      # candidate = tournament_selection(population, num_bouts)
-      # child = {}
-      # child[:program] = mutation(candidate[:program], max_depth, functions, terminals)
-      # children << child
+      candidate = tournament_selection(population, num_bouts)
+      child = {}
+      child[:program] = mutation(candidate[:program], max_depth, functions, terminals)
+      children << child
     
       # TODO alteration???
       
