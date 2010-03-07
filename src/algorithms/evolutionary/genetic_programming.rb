@@ -29,7 +29,7 @@ def generate_random_program(max, funcs, terms, depth=0)
     return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
   depth += 1
-  if rand()<0.3
+  if depth>1 and rand() < 0.1
     t = terms[rand(terms.length)] 
     return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
@@ -159,9 +159,9 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
 end
 
 max_generations = 100
-max_depth = 20
+max_depth = 7
 population_size = 100
-num_trials = 10
+num_trials = 15
 num_bouts = 5
 p_reproduction = 0.08
 p_crossover = 0.90
