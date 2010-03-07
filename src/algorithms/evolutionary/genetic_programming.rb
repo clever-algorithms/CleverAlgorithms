@@ -4,6 +4,10 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+def random_num(min, max)
+  return min + (max-min)*rand()
+end
+
 def print_program(node)
   return node if !node.kind_of? Array
   return "(#{node[0]}, #{print_program(node[1])}, #{print_program(node[2])})"
@@ -20,21 +24,17 @@ def eval_program(node, map)
 end
 
 def generate_random_program(max, funcs, terms, depth=0)
-  if depth >= max-1
+  if depth == max-1
     t = terms[rand(terms.length)] 
-# TODO range in [-5, +5]
-    return ((rand()<0.5) ? rand() : -rand()) if t == 'R' 
-    return t
+    return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
-  # if !depth.zero? and rand() < (depth+1/max.to_f)
-  if rand()<0.5
+  depth += 1
+  if rand()<0.3
     t = terms[rand(terms.length)] 
-# TODO range in [-5, +5]
-    return ((rand()<0.5) ? rand() : -rand()) if t == 'R' 
-    return t
+    return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
-  arg1 = generate_random_program(max, funcs, terms, depth+1)
-  arg2 = generate_random_program(max, funcs, terms, depth+1)
+  arg1 = generate_random_program(max, funcs, terms, depth)
+  arg2 = generate_random_program(max, funcs, terms, depth)
   return [funcs[rand(funcs.length)], arg1, arg2]
 end
 
@@ -52,8 +52,7 @@ end
 def fitness(program, num_trials)
   sum_error = 0.0
   num_trials.times do |i|
-# TODO range in [-1,1]    
-    input = rand()
+    input = random_num(-1.0, 1.0)
     error = eval_program(program, {'X'=>input}) - target_function(input)
     sum_error += error**2.0
   end
@@ -94,23 +93,38 @@ def get_node(node, node_num, current_node=0)
   return nil,current_node
 end
 
-def crossover(parent1, parent2)
-  point1, point2 = rand(count_nodes(parent1)-2)+1, rand(count_nodes(parent2)-2)+1
-  tree1, c1 = get_node(parent1, point1)
-  tree2, c2 = get_node(parent2, point2)  
-  child1, c1 = replace_node(parent1, copy_program(tree2), point1)
-  child2, c2 = replace_node(parent2, copy_program(tree1), point2)
+def prune(node, max_depth, terms, depth=0)
+  if depth >= max_depth-1
+    t = terms[rand(terms.length)] 
+    return ((t=='R') ? random_num(-5.0, +5.0) : t)
+  end
+  depth += 1
+  return node if !node.kind_of? Array
+  a1 = prune(node[1], max_depth, terms, depth)
+  a2 = prune(node[2], max_depth, terms, depth)
+  return [node[0], a1, a2]
+end
+
+def crossover(parent1, parent2, max_depth, terms)
+  pt1, pt2 = rand(count_nodes(parent1)-2)+1, rand(count_nodes(parent2)-2)+1
+  tree1, c1 = get_node(parent1, pt1)
+  tree2, c2 = get_node(parent2, pt2)  
+  child1, c1 = replace_node(parent1, copy_program(tree2), pt1)
+  child1 = prune(child1, max_depth, terms)
+  child2, c2 = replace_node(parent2, copy_program(tree1), pt2)
+  child2 = prune(child2, max_depth, terms)
   return child1, child2
 end
 
-def mutation(parent, max_depth, functions, terminals)  
-  random_tree = generate_random_program(max_depth/2, functions, terminals)
+def mutation(parent, max_depth, functions, terms)  
+  random_tree = generate_random_program(max_depth/2, functions, terms)
   point = rand(count_nodes(parent))
   child, count = replace_node(parent, random_tree, point)
+  child = prune(child, max_depth, terms)
   return child
 end
 
-def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
+def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
   population = Array.new(population_size) do |i| 
     {:program=>generate_random_program(max_depth, functions, terminals)}
   end
@@ -119,63 +133,41 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
   max_generations.times do |gen|
     children = []
     while children.length < population_size
-      # TODO probabilities
-      
-      # reproduction
-      # parent = tournament_selection(population, num_bouts)
-      # child = {}
-      # child[:program] = copy_program(parent[:program])
-      # children << child
-    
-      # crossover
-      # p1 = tournament_selection(population, num_bouts)
-      # p2 = tournament_selection(population, num_bouts)
-      # child1, child2 = {}, {}
-      # child1[:program], child2[:program] = crossover(p1[:program], p2[:program])
-      # children << child1
-      # children << child2
-    
-      # mutation      
-      candidate = tournament_selection(population, num_bouts)
-      child = {}
-      child[:program] = mutation(candidate[:program], max_depth, functions, terminals)
-      children << child
-    
-      # TODO alteration???
-      
+      operation = rand()
+      parent = tournament_selection(population, num_bouts)
+      child = {}      
+      if operation < p_reproduction
+        child[:program] = copy_program(parent[:program])
+      elsif operation < p_reproduction+p_crossover
+        p2 = tournament_selection(population, num_bouts)
+        c2 = {}
+        child[:program], c2[:program] = crossover(parent[:program], p2[:program], max_depth, terminals)
+        children << c2
+      elsif operation < p_reproduction+p_crossover+p_mutation
+        child[:program] = mutation(parent[:program], max_depth, functions, terminals)      
+      end
+      children << child if children.length < population_size      
     end    
     children.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
     population = children
     population.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = population.first if population.first[:fitness] <= best[:fitness]
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
+    break if best[:fitness] == 0
   end
   return best
 end
 
 max_generations = 100
-max_depth = 5
+max_depth = 20
 population_size = 100
 num_trials = 10
-num_bouts = 7
+num_bouts = 5
 p_reproduction = 0.08
 p_crossover = 0.90
-p_mutation = 0.01
-p_alter = 0.01
+p_mutation = 0.02
 terminals = ['X', 'R']
 functions = [:+, :-, :*, :/]
 
-best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
+best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
 puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
-
-# optima = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
-# puts print_program(optima)
-# puts print_program(copy_program(optima))
-# puts eval_program(optima, {'X'=>1})
-# puts fitness(optima, num_trials)
-# puts count_nodes(optima)
-# puts print_program(generate_random_program(max_depth, functions, terminals))
-# puts print_program(mutation(optima,max_depth, functions, terminals))
-# c1, c2 = crossover(optima, optima)
-# puts print_program(c1)
-# puts print_program(c2)
