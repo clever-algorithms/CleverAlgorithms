@@ -71,7 +71,7 @@ end
 
 def replace_node(node, replacement, node_num, current_node=0)
   return replacement,(current_node+1) if current_node == node_num
-  current_node = current_node + 1
+  current_node += 1
   return node,current_node if !node.kind_of? Array
   a1, current_node = replace_node(node[1], replacement, node_num, current_node)
   a2, current_node = replace_node(node[2], replacement, node_num, current_node)
@@ -100,15 +100,16 @@ def crossover(parent1, parent2)
   tree1, tree2 = get_node(parent1, point1), get_node(parent2, point2)
   # TODO remove this once we're happy!
   raise "Oh No" if tree1.nil? or tree2.nil?
-  child1 = replace_node(parent1, copy_program(tree1), point1)
-  child2 = replace_node(parent2, copy_program(tree2), point2)
+  child1, count1 = replace_node(parent1, copy_program(tree1), point1)
+  child2, count2 = replace_node(parent2, copy_program(tree2), point2)
   return child1, child2
 end
 
 def mutation(parent, max_depth, functions, terminals)  
   random_tree = generate_random_program(max_depth/2, functions, terminals)
   point = rand(count_nodes(parent))
-  return replace_node(parent, random_tree, point)
+  child, count = replace_node(parent, random_tree, point)
+  return child
 end
 
 def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
@@ -166,5 +167,17 @@ p_alter = 0.01
 terminals = ['X', 'R']
 functions = [:+, :-, :*, :/]
 
-best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
-puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+# best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, p_alter, functions, terminals)
+# puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+
+optima = [:+, [:+, [:*, 'X', 'X'], 'X'], 1]
+# puts print_program(optima)
+# puts print_program(copy_program(optima))
+# puts eval_program(optima, {'X'=>1})
+# puts fitness(optima, num_trials)
+# puts count_nodes(optima)
+# puts print_program(generate_random_program(max_depth, functions, terminals))
+# puts print_program(mutation(optima,max_depth, functions, terminals))
+c1, c2 = crossover(optima, optima)
+puts print_program(c1)
+puts print_program(c2)
