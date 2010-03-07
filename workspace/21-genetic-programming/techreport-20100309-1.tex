@@ -108,7 +108,10 @@ improve the adaptive fit between a population of candidate programs and an objec
 % What is a techniques plan of action?
 evolutionary operations to tree structures that represent a call graph of an executable program
 
+all about the induction of a computer program
+
 cost is determined by executing the program
+
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -211,6 +214,10 @@ copy of the ga for now...
 	\item functions that return a value should always return a value, for example division by zero should return something useful
 	
 	\item can represent and execute the program as a stack (related to linear representation) \cite{Perkis1994}
+	\item can use ADFs to evolve functions at the same time as the program is evolving to use the functions
+	\item the operators may be considered transformation programs and evolved with the system - meta level or co-evolved \cite{Angeline1996}
+	
+	\item during crossover - 0.9 of selecting a function, 0.1 of selecting a terminal as the swap point
 	
 \end{itemize}
 
@@ -223,8 +230,21 @@ Listing~\ref{genetic_programming} provides an example of the Genetic Programming
 % problem
 The problem...todo
 
+based on \cite{Koza2003a}
+
+symbolic regression
+x^2+x+1, x in [-1,1]
+
 % algorithm
 The algorithm...todo
+
+terminals include input x and R real constant in [-5,5]
+functions include four arimethic operators
+divide will return 0 when a divide by zero is attempted
+fitness is error, likely ABS or RMS
+
+cfg 0.9 for crossover, 0.08 for reproduction?, 0.01 for mutation, 0.01 for architecture altering operations?
+
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Genetic Programming algorithm in the Ruby Programming Language, label=genetic_programming]{../../src/algorithms/evolutionary/genetic_programming.rb}
