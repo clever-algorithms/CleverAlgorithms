@@ -119,21 +119,10 @@ cost is determined by executing the program
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function. 
+Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimising a cost function, based on Koza and Poli's tutorial \cite{Koza2003a}. 
 
-todo
-
-programs are data while evolving, then programs and executed for fitness assignment. 
-
-LISP-like symbolic expressions (s-expressions), or a function graph comprised of function and terminal nodes.
-
-depth-first traversal of the graph to execute it
-prefix-notation for expressions
-
-variable sized candidates
-
-
-copy of the ga for now...
+% more
+The Genetic Program uses LISP-like symbolic expressions called S-expressions that represent the graph of a program with function nodes and terminal nodes. While the algorithm is running, the programs are treated like data, and when they are evaluated they are executed as programs. The traversal of a program graph is always depth first, and functions must always return a value.
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -142,15 +131,23 @@ copy of the ga for now...
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
 	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{ProbabilityReproduction}{$P_{reproduction}$}
+	\SetKwData{ProbabilityAlteration}{$P_{alteration}$}
 	\SetKwData{Parents}{Parents}
 	\SetKwData{Children}{Children}
-	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{FunctionNodes}{$nodes_{func}$}
+	\SetKwData{TerminalNodes}{$nodes_{term}$}
 	\SetKwData{Population}{Population}
 	\SetKwData{PopulationSize}{$Population_{size}$}
 	\SetKwData{ParentOne}{$Parent_{1}$}
 	\SetKwData{ParentTwo}{$Parent_{2}$}
 	\SetKwData{ChildOne}{$Child_{1}$}
-	\SetKwData{ChildTwo}{$Child_{2}$}	
+	\SetKwData{ChildTwo}{$Child_{2}$}
+	\SetKwData{Operator}{Operator}	
+	\SetKwData{CrossoverOperator}{CrossoverOperator}
+	\SetKwData{MutationOperator}{MutationOperator}
+	\SetKwData{ReproductionOperator}{ReproductionOperator}
+	\SetKwData{AlterationOperator}{AlterationOperator}
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
@@ -160,27 +157,46 @@ copy of the ga for now...
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{Crossover}{Crossover}
 	\SetKwFunction{Mutate}{Mutate}
-  
+	\SetKwFunction{Size}{Size}
+	\SetKwFunction{SelectGeneticOperator}{SelectGeneticOperator}
+  	\SetKwFunction{Reproduce}{Reproduce}
+	\SetKwFunction{AlterArchitecture}{AlterArchitecture}
+
 	% I/O
-	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwIn{\PopulationSize, \FunctionNodes, \TerminalNodes, \ProbabilityCrossover, \ProbabilityMutate, \ProbabilityReproduction, \ProbabilityAlteration}		
 	\KwOut{\Best}
   	% Algorithm
 	% initialize	
-	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \FunctionNodes, \TerminalNodes}\;
 	% evaluate
 	\EvaluatePopulation{\Population}\;
 	% best
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		% select
-		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
-		% recombine
+		% build up child generation
 		\Children $\leftarrow 0$\;
-		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
-			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
-			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
-			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+		\While{$\neg$\StopCondition{\Size{\Children} $<$ \PopulationSize}} {
+			\Operator $\leftarrow$ \SelectGeneticOperator{\ProbabilityCrossover, \ProbabilityMutate, \ProbabilityReproduction, \ProbabilityAlteration}\;
+		
+			\If{\Operator $==$ \CrossoverOperator}{
+				\ParentOne, \ParentTwo $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+				\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo}\;
+				\Children $\leftarrow$ \ChildOne\;
+				\Children $\leftarrow$ \ChildTwo\;
+			}\ElseIf{\Operator $==$ \MutationOperator}{
+				\ParentOne $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+				\ChildOne $\leftarrow$ \Mutate{\ParentOne}\;
+				\Children $\leftarrow$ \ChildOne\;
+			}\ElseIf{\Operator $==$ \ReproductionOperator}{
+				\ParentOne $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+				\ChildOne $\leftarrow$ \Reproduce{\ParentOne}\;
+				\Children $\leftarrow$ \ChildOne\;
+			}\ElseIf{\Operator $==$ \AlterationOperator}{
+				\ParentOne $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+				\ChildOne $\leftarrow$ \AlterArchitecture{\ParentOne}\;
+				\Children $\leftarrow$ \ChildOne\;
+			}
 		}
 		% evaluate
 		\EvaluatePopulation{\Children}\;
