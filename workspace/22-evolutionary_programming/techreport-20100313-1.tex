@@ -111,7 +111,70 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of the Evolutionary Programming algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Children}{Children}
+	\SetKwData{Union}{Union}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{Parent}{$Parent_{i}$}
+	\SetKwData{Child}{$Child_{i}$}
+	\SetKwData{Candidate}{$S_{i}$}
+	\SetKwData{CandidateWins}{$Si_{wins}$}
+	\SetKwData{CandidateOther}{$S_{j}$}
+	\SetKwData{BoutSize}{BoutSize}
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Mutate}{Mutate}
+  	\SetKwFunction{RandomSelection}{RandomSelection}
+	\SetKwFunction{SelectBestByWins}{SelectBestByWins}
+	\SetKwFunction{Cost}{Cost}
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \BoutSize}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% mutate
+		\Children $\leftarrow 0$\;
+		\ForEach{\Parent $\in$ \Population}{
+			\Child $\leftarrow$ \Mutate{\Parent}\;
+			\Children $\leftarrow$ \Child\;
+		}
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children, \Best}\;
+		% tournaments
+		\Union $\leftarrow$ \Population $+$ \Children\;
+		\ForEach{\Candidate $\in$ \Union}{
+			\For{$1$ \KwTo \BoutSize}{
+				\CandidateOther $\leftarrow$ \RandomSelection{\Union}\;
+				\If{\Cost{\Candidate} $<$ \Cost{\CandidateOther}} {
+					\CandidateWins $\leftarrow$ \CandidateWins $+$ 1\;
+				}
+			}
+		}
+		\Population $\leftarrow$ \SelectBestByWins{\Union, \PopulationSize}\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Evolutionary Programming algorithm.}
+	\label{alg:evolutionary_programming}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -120,10 +183,11 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item representation was originally FSM, now anything. continuous func opt is population now
+	\item bout size is commonly 5\% to 10\% of the population
+	\item representation was originally FSM, now anything - domain specific representations. continuous func opt is population now
 	\item traditionally only uses mutation and no crossover, although crossover can be used
-	\item focus on linkage of parent of offspring, less concerned with genetic operators
-	\item EP is an abstraction of evolution at the species level, different from the others that focus at the population of individuals level (whatever...)
+	\item focus on linkage of parent of offspring, less concerned with genetic operators.
+	\item EP is an abstraction of evolution at the species level, different from the others that focus at the population of individuals level (whatever...) macro-evolution rather than micro-evolution
 	\item Gaussian mutation when used for non-linear programming
 \end{itemize}
 
@@ -133,10 +197,8 @@ todo
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{evolutionary_programming} provides an example of the Evolutionary Programming algorithm implemented in the Ruby Programming Language.
- 
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
-
 % algorithm
 The algorithm is an implementation of Evolutionary Programming based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a}.
 

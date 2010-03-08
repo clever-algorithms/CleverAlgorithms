@@ -78,7 +78,7 @@ def search(max_generations, problem_size, search_space, pop_size, bout_size)
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] < best[:fitness]
     union = children+population
-    union.each{|c| tournament(c, population, bout_size)}
+    union.each{|c| tournament(c, union, bout_size)}
     union.sort!{|x,y| y[:wins] <=> x[:wins]}
     population = union[0...pop_size]
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
