@@ -212,12 +212,16 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Genetic Programming algorithm was designed for inductive automatic programming and is well suited to symbolic regression, controller design, and machine learning tasks under the broader name of function approximation.
+	\item Traditionally symbolic expressions are evolved and evaluated in a virtual machine, although the approach has been applied with real programming languages.	
 	\item The evaluation (fitness assignment) of a candidate solution typically take the structure of the program into account, rewarding parsimony.
 	\item The selection process should be balanced between random selection and greedy selection to bias the search towards fitter candidate solutions (exploitation), whilst promoting useful diversity into the population (exploration).
 	\item A program may respond zero or more input values and may produce one or more results.
 	\item All functions used in the function node set must return a usable result, for example, the division function must return a value (such as zero or one) when a division by zero occurs.
+	\item All genetic operations ensure (or should ensure) that syntactically valid and executable programs are produced as a result of their application.
 	\item The Genetic Programming algorithm is commonly configured with a high-probability of crossover ($\geq 90\%$) and a low-probability of mutation ($\leq 1\%$). Other operators such as reproduction and architecture alterations are used with moderate-level probabilities and fill in the probabilistic gap.
+	\item Architecture altering operations are not limited to the duplication and deletion of sub-structures of a given program. 
 	\item The crossover genetic operator in the algorithm is commonly configured to select a function as a the cross-point with a high-probability ($\geq 90\%$) and low-probability of selecting a terminal as a cross-point ($\leq 10\%$).
+	\item The function set may also include control structures such as conditional statements and loop constructs.
 	\item The Genetic Programing algorithm can be realized as a stack-based programming language as opposed to a graph \cite{Perkis1994}.
 	\item The Genetic Programming algorithm can make use of Automatically Defined Functions (ADFs) that are sub-graphs that are promoted to the status of functions for reuse and are co-evolved with the programs. 
 	 \item The genetic operators employed during reproduction in the algorithm may themselves be considered transformation programs for candidate programs and may be co-evolved in the algorithm \cite{Angeline1996}.
@@ -231,7 +235,7 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 Listing~\ref{genetic_programming} provides an example of the Genetic Programming algorithm implemented in the Ruby Programming Language based on Koza and Poli's tutorial \cite{Koza2003a}.
  
 % problem
-The demonstration problem is an instance of a symbolic regression, where a function must be devised to match a set of observations. In this case the target function is $x^2+x+1$ where $x \in [-1,1]$. The observations are generated directly from the target function without noise for the purposes of this example. In practical problems, if one knew and had access to the target function then the genetic program would not be required.
+The demonstration problem is an instance of a symbolic regression, where a function must be devised to match a set of observations. In this case the target function is a quadratic polynomial $x^2+x+1$ where $x \in [-1,1]$. The observations are generated directly from the target function without noise for the purposes of this example. In practical problems, if one knew and had access to the target function then the genetic program would not be required.
 
 % algorithm
 The algorithm must devise a program with the function set $\{ +, -, \times, \div \}$ and the terminal set $\{ X, R \}$, where $X$ is the input value, and $R$ is a static random variable generated for a program $X \in [-5,5]$. A division by zero returns a value of one. 
@@ -278,7 +282,7 @@ Koza is generally credited with the development and popularizing of the field, p
 Koza provides a practical introduction to the field as a tutorial \cite{Koza2003a}, and provides recent overview of the broader field and usage of the technique \cite{Koza2005}.
 
 % books
-In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on automatically defined functions (ADFs) \cite{Koza1994}, volume III providing an update on the field \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical example problem instances.
+In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on automatically defined functions (ADFs) \cite{Koza1994}, volume III that considered the a Genetic Programming Problem Solver (GPPS) for automatically defining the function set and program structure for a given problem \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical example problem instances.
 
 % additional books
 Some additional excellent books on the field include Banzhaf, et al's introduction to the field \cite{Banzhaf1998}, Langdon and Poli's detailed look at the technique \cite{Langdon2002}, and Poli, Langdon, and McPhee's contemporary and practical jumpstart is the field guide to Genetic Programming \cite{Poli2008}.
