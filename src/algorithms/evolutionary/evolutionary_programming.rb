@@ -21,7 +21,7 @@ def random_gaussian
     u2 = 2 * rand() - 1
     w = u1 * u1 + u2 * u2
   end while w >= 1
-  w = Math::sqrt(( -2 * Math::log(w)) / w)
+  w = Math::sqrt((-2 * Math::log(w)) / w)
   g2 = u1 * w;
   g1 = u2 * w;
   return g1
@@ -86,7 +86,7 @@ def search(max_generations, problem_size, search_space, pop_size, bout_size)
   return best
 end
 
-max_generations = 300
+max_generations = 100
 population_size = 100
 problem_size = 2
 search_space = Array.new(problem_size) {|i| [-5, +5]}
