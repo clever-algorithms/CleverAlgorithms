@@ -47,6 +47,7 @@ h3. Technical Reports
 * Jason Brownlee. "Reactive Tabu Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100221-1.pdf. Technical Report CA-TR-20100221-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Stochastic Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100223-1.pdf. Technical Report CA-TR-20100223-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Genetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100303-1.pdf. Technical Report CA-TR-20100303-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, March 2010.
+* Jason Brownlee. "Genetic Programming":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100308-1.pdf. Technical Report CA-TR-20100308-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, March 2010.
 * ...
 
 h3. Software
