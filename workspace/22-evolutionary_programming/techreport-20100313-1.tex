@@ -71,7 +71,7 @@ Evolutionary Programming, EP
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-an instance of an EA, belongs to EC, broadly belongs to CI and BIC
+an instance of an EA, belongs to EC, broadly belongs to CI and BIC. it is a stochastic optimization technique.
 % What are the closely related approaches to a technique?
 Siblings with GA, GP, ES, and LCS
 lots of extensions
@@ -127,7 +127,16 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{evolutionary_programming} provides an example of the Evolutionary Programming algorithm implemented in the Ruby Programming Language based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a}.
+ 
+% problem
+problem...
+
+% algorithm
+The algorithm...
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Evolutionary Programming algorithm in the Ruby Programming Language, label=evolutionary_programming]{../../src/algorithms/evolutionary/evolutionary_programming.rb}
 
 
 % References: Deeper understanding
@@ -177,10 +186,11 @@ application to control - early paper \cite{Sebald1990}
 david's book \cite{Fogel1991}
 david's dissertation \cite{Fogel1992}
 
+function optimization \cite{Fogel1991a}
 classical TSP application by David \cite{Fogel1993}
 application to control problems by david \cite{Fogel1994a}
 
-
+future of the field \cite{Fogel1990} (L)
 classical overview \cite{Fogel1994} (L)
 
 classical application to continuous function optimization by Yao, proposal of fast evolutionary programming (FEP) \cite{Yao1999}
