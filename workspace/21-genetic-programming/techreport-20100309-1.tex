@@ -111,7 +111,7 @@ This is achieved by using evolutionary operators on candidate programs in a tree
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimising a cost function, based on Koza and Poli's tutorial \cite{Koza2003a}. 
+Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function, based on Koza and Poli's tutorial \cite{Koza2003a}. 
 
 % more
 The Genetic Program uses LISP-like symbolic expressions called S-expressions that represent the graph of a program with function nodes and terminal nodes. While the algorithm is running, the programs are treated like data, and when they are evaluated they are executed as programs. The traversal of a program graph is always depth first, and functions must always return a value.
@@ -211,22 +211,16 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item The Genetic Programming algorithm was designed for inductive automatic programming and is well suited to symbolic regression, controller design, and machine learning tasks under the broader name of function approximation.
 	\item The evaluation (fitness assignment) of a candidate solution typically take the structure of the program into account, rewarding parsimony.
 	\item The selection process should be balanced between random selection and greedy selection to bias the search towards fitter candidate solutions (exploitation), whilst promoting useful diversity into the population (exploration).
-	
-	
-	\item an adaptive system for improving the performance of a population of candidates and an objective function
-	\item problems are phrased as optimization problems that are solved by a program
-	\item used for machine learning tasks such as function approximation
-	\item can take input or just generate a result
-	\item functions that return a value should always return a value, for example division by zero should return something useful
-	
-	\item can represent and execute the program as a stack (related to linear representation) \cite{Perkis1994}
-	\item can use ADFs to evolve functions at the same time as the program is evolving to use the functions
-	\item the operators may be considered transformation programs and evolved with the system - meta level or co-evolved \cite{Angeline1996}
-	
-	\item during crossover - 0.9 of selecting a function, 0.1 of selecting a terminal as the swap point
-	
+	\item A program may respond zero or more input values and may produce one or more results.
+	\item All functions used in the function node set must return a usable result, for example, the division function must return a value (such as zero or one) when a division by zero occurs.
+	\item The Genetic Programming algorithm is commonly configured with a high-probability of crossover ($\geq 90\%$) and a low-probability of mutation ($\leq 1\%$). Other operators such as reproduction and architecture alterations are used with moderate-level probabilities and fill in the probabilistic gap.
+	\item The crossover genetic operator in the algorithm is commonly configured to select a function as a the cross-point with a high-probability ($\geq 90\%$) and low-probability of selecting a terminal as a cross-point ($\leq 10\%$).
+	\item The Genetic Programing algorithm can be realized as a stack-based programming language as opposed to a graph \cite{Perkis1994}.
+	\item The Genetic Programming algorithm can make use of Automatically Defined Functions (ADFs) that are sub-graphs that are promoted to the status of functions for reuse and are co-evolved with the programs. 
+	 \item The genetic operators employed during reproduction in the algorithm may themselves be considered transformation programs for candidate programs and may be co-evolved in the algorithm \cite{Angeline1996}.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -295,7 +289,7 @@ Some additional excellent books on the field include Banzhaf, et al's introducti
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Genetic Programming algorithm as an extension of the Genetic Algorithm for use as a functionally capable technique for inductive automatic programming. 
 
 % 
 % Contribute
