@@ -52,7 +52,7 @@ def calculate_mean_variance(population)
       sum += distance(c1[:vector], c2[:vector])
     end
   end
-  return sum / population.length
+  return sum / population.length**2
 end
 
 def tournament(candidate, population, bout_size)
@@ -86,7 +86,7 @@ def search(max_generations, problem_size, search_space, pop_size, bout_size)
   return best
 end
 
-max_generations = 100
+max_generations = 300
 population_size = 100
 problem_size = 2
 search_space = Array.new(problem_size) {|i| [-5, +5]}
