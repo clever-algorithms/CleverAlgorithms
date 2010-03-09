@@ -45,6 +45,7 @@ def distance(v1, v2)
   return Math::sqrt(sum)
 end
 
+# TODO remove this, it is in error
 def calculate_mean_variance(population)
   sum = 0
   population.each do |c1|
