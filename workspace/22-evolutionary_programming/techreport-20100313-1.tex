@@ -111,7 +111,7 @@ This objective is pursued by using an adaptive model with surrogates for the pro
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of the Evolutionary Programming algorithm for minimizing a cost function. 
 
-\begin{algorithm}[htp]
+\begin{algorithm}[Ht]
 	\SetLine  
 	% data
 	\SetKwData{Best}{$S_{best}$}
@@ -181,14 +181,12 @@ Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of t
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item bout size is commonly 5\% to 10\% of the population
-	\item representation was originally FSM, now anything - domain specific representations. continuous func opt is population now
-	\item traditionally only uses mutation and no crossover, although crossover can be used
-	\item focus on linkage of parent of offspring, less concerned with genetic operators.
-	\item EP is an abstraction of evolution at the species level, different from the others that focus at the population of individuals level (whatever...) macro-evolution rather than micro-evolution
-	\item Gaussian mutation when used for non-linear programming
-	\item can adapt the parameters for mutation along with the data being evolved \cite{Fogel1991a}
-	
+	\item The representation for candidate solutions should be domain specific, such as real numbers for continuous function optimization.
+	\item The sample size (bout size) for tournament selection during competition is commonly between 5\% and 10\% of the population size.
+	\item Evolutionary Programming traditionally only uses the mutation operator to create new candidate solutions from old candidate solutions. The crossover operator used in some other Evolutionary Algorithms is not used.
+	\item Evolutionary Programming is concerned with the linkage between parent and child candidate solutions and is not concerned with surrogates for genetic operators.
+	\item Continuous function optimization is a popular application for the approach, where real-valued representations are used and commonly a Gaussian-based mutation operator with configuration parameters to influence the amount of mutation.
+	\item The mutation-specific parameters used in the application of the algorithm to continuous function optimization can be adapted in concert with the candidate solutions \cite{Fogel1991a}.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
