@@ -198,9 +198,7 @@ Listing~\ref{evolutionary_programming} provides an example of the Evolutionary P
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is an implementation of Evolutionary Programming based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a}.
-
-TODO: update to use variance
+The algorithm is an implementation of Evolutionary Programming based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a} with per-variable adaptive variance based on Fogel's description for a self-adaptive variation on page 160 of his 1995 book \cite{Fogel1995}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Evolutionary Programming algorithm in the Ruby Programming Language, label=evolutionary_programming]{../../src/algorithms/evolutionary/evolutionary_programming.rb}
@@ -241,8 +239,7 @@ Yao, et al. provide a seminal study of Evolutionary Programming proposing an ext
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Evolutionary Programming technique\ldots
-
+This report described the Evolutionary Programming algorithm as a classical Evolutionary Algorithm that has been revived for application to continuous function optimization.
 
 % 
 % Contribute

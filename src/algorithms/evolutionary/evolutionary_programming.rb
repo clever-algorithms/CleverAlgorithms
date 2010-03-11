@@ -27,14 +27,17 @@ def random_gaussian
   return g1
 end
 
-def mutate(candidate, search_space, variance)
+def mutate(candidate, search_space)
   child = {}
-  child[:vector] = []
-  candidate[:vector].each_with_index do |v,i|
-    d = v + variance * random_gaussian()  
-    d = search_space[i][0] if d < search_space[i][0]
-    d = search_space[i][1] if d > search_space[i][1]
-    child[:vector] << d
+  child[:vector], child[:strategy] = [], []
+  candidate[:vector].each_with_index do |v_old, i|
+    s_old = candidate[:strategy][i]
+    v = v_old + s_old * random_gaussian()
+    v = search_space[i][0] if v < search_space[i][0]
+    v = search_space[i][1] if v > search_space[i][1]
+    child[:vector] << v
+    s = s_old + ((s_old<0) ? s_old*-1.0 : s_old)**0.5 * random_gaussian()
+    child[:strategy] << s
   end
   return child
 end
@@ -43,17 +46,6 @@ def distance(v1, v2)
   sum = 0.0
   v1.each_with_index {|v,i| sum += (v-v2[i])**2.0}
   return Math::sqrt(sum)
-end
-
-# TODO remove this, it is in error
-def calculate_mean_variance(population)
-  sum = 0
-  population.each do |c1|
-    population.each do |c2|
-      sum += distance(c1[:vector], c2[:vector])
-    end
-  end
-  return sum / population.length**2
 end
 
 def tournament(candidate, population, bout_size)
@@ -65,16 +57,17 @@ def tournament(candidate, population, bout_size)
 end
 
 def search(max_generations, problem_size, search_space, pop_size, bout_size)
+  strategy_space = Array.new(problem_size) do |i| 
+    [0, (search_space[i][1]-search_space[i][0])*0.02]
+  end
   population = Array.new(pop_size) do |i|
-    {:vector=>random_vector(problem_size, search_space)}
+    {:vector=>random_vector(problem_size, search_space), 
+      :strategy=>random_vector(problem_size, strategy_space)}
   end
   population.each{|c| c[:fitness] = objective_function(c[:vector])}
   gen, best = 0, population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_generations.times do |gen|
-    variance = calculate_mean_variance(population)
-    children = Array.new(pop_size) do |i| 
-      mutate(population[i], search_space, variance)
-    end
+    children = Array.new(pop_size) {|i| mutate(population[i], search_space)}
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] < best[:fitness]
@@ -87,7 +80,7 @@ def search(max_generations, problem_size, search_space, pop_size, bout_size)
   return best
 end
 
-max_generations = 100
+max_generations = 200
 population_size = 100
 problem_size = 2
 search_space = Array.new(problem_size) {|i| [-5, +5]}
