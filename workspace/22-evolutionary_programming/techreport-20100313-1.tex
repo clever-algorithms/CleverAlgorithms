@@ -92,17 +92,16 @@ Specifically, the technique is inspired by macro-level or species-level process 
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A population of a species reproduce, creating clones with phenotypical variation (mutation). The progeny and the parents compete in a series of tournaments where the overall winners constitute the subsequent generation. This process repeats and the adaptive fit between the species and the environment improves over time.
+A population of a species reproduce, creating clones with phenotypical variation (mutation). The progeny and the parents compete based on their suitability to the environment, where the generally more fit members constitute the subsequent generation and are provided with the opportunity to reproduce themselves. This process repeats and the adaptive fit between the species and the environment improves.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of the Evolutionary Programming algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from the domain.
 % What is a techniques plan of action?
-
-top down evolution compared to the bottom up
-no attempt at sub-symbolic credit assignment
+This objective is pursued by using an adaptive model with surrogates for the processes from evolution, specifically hereditary (reproduction with variation) under competition. The representation used for candidate solutions is directly assessable by a cost or objective function from the domain, and credit assignment is directly apportioned to this representation. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
