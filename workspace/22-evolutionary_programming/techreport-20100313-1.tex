@@ -73,7 +73,7 @@ Evolutionary Programming, EP
 % To what fields of study does a technique belong?
 Evolutionary Programming is a Global Optimization algorithm and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-The approach is a sibling of other Evolutionary Algorithms such as the Genetic Algorithm, and Learning Classifier Systems. It is sometimes confused with Genetic Programming given the similarity of name, and more recently it has started to show strong functionally similarity to Evolution Strategies. 
+The approach is a sibling of other Evolutionary Algorithms such as the Genetic Algorithm, and Learning Classifier Systems. It is sometimes confused with Genetic Programming given the similarity in name, and more recently it shows a strong functional similarity to Evolution Strategies. 
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,9 +81,9 @@ The approach is a sibling of other Evolutionary Algorithms such as the Genetic A
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-Evolutionary Programming is inspired by evolution by means of natural selection.
+Evolutionary Programming is inspired by the theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
-Specifically, the technique is inspired by macro-level or species-level process of evolution (phenotype, hereditary, variation) and is not concerned with the genetic mechanism of evolution (genome, chromosomes, genes, alleles).
+Specifically, the technique is inspired by macro-level or the species-level process of evolution (phenotype, hereditary, variation) and is not concerned with the genetic mechanisms of evolution (genome, chromosomes, genes, alleles).
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -92,7 +92,7 @@ Specifically, the technique is inspired by macro-level or species-level process 
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A population of a species reproduce, creating clones with phenotypical variation (mutation). The progeny and the parents compete based on their suitability to the environment, where the generally more fit members constitute the subsequent generation and are provided with the opportunity to reproduce themselves. This process repeats and the adaptive fit between the species and the environment improves.
+A population of a species reproduce, creating progeny with small phenotypical variation. The progeny and the parents compete based on their suitability to the environment, where the generally more fit members constitute the subsequent generation and are provided with the opportunity to reproduce themselves. This process repeats, improving the adaptive fit between the species and the environment.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -101,7 +101,7 @@ A population of a species reproduce, creating clones with phenotypical variation
 % What is the information processing objective of a technique?
 The objective of the Evolutionary Programming algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from the domain.
 % What is a techniques plan of action?
-This objective is pursued by using an adaptive model with surrogates for the processes from evolution, specifically hereditary (reproduction with variation) under competition. The representation used for candidate solutions is directly assessable by a cost or objective function from the domain, and credit assignment is directly apportioned to this representation. 
+This objective is pursued by using an adaptive model with surrogates for the processes of evolution, specifically hereditary (reproduction with variation) under competition. The representation used for candidate solutions is directly assessable by a cost or objective function from the domain, and credit assignment is directly apportioned to this representation. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -183,9 +183,9 @@ Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of t
 \begin{itemize}
 	\item The representation for candidate solutions should be domain specific, such as real numbers for continuous function optimization.
 	\item The sample size (bout size) for tournament selection during competition is commonly between 5\% and 10\% of the population size.
-	\item Evolutionary Programming traditionally only uses the mutation operator to create new candidate solutions from old candidate solutions. The crossover operator used in some other Evolutionary Algorithms is not used.
-	\item Evolutionary Programming is concerned with the linkage between parent and child candidate solutions and is not concerned with surrogates for genetic operators.
-	\item Continuous function optimization is a popular application for the approach, where real-valued representations are used and commonly a Gaussian-based mutation operator with configuration parameters to influence the amount of mutation.
+	\item Evolutionary Programming traditionally only uses the mutation operator to create new candidate solutions from existing candidate solutions. The crossover operator that is used in some other Evolutionary Algorithms is not employed in Evolutionary Programming.
+	\item Evolutionary Programming is concerned with the linkage between parent and child candidate solutions and is not concerned with surrogates for genetic mechanisms.
+	\item Continuous function optimization is a popular application for the approach, where real-valued representations are with a Gaussian-based mutation operator.
 	\item The mutation-specific parameters used in the application of the algorithm to continuous function optimization can be adapted in concert with the candidate solutions \cite{Fogel1991a}.
 \end{itemize}
 
