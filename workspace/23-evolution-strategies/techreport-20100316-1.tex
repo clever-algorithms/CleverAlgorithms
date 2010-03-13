@@ -73,7 +73,7 @@ Evolution Strategies, ES, Evolutionsstrategie (German)
 % To what fields of study does a technique belong?
 Evolution Strategies is a global optimization algorithm and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-Evolution Strategies is a sibling technique to other Evolutionary Algorithms such as Genetic Algorithms, Genetic Programming, Learning Classifier Systems, and Evolutionary Programming. 
+Evolution Strategies is a sibling technique to other Evolutionary Algorithms such as Genetic Algorithms, Genetic Programming, Learning Classifier Systems, and Evolutionary Programming. A popular descendant of the Evolution Strategy algorithm is the Covariance Matrix Adaptation Evolution Strategy.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -107,7 +107,10 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+terminology for the technique: $(\mu,\lambda)-ES$ where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions in the child generation that is created by and replaces the parent generation. there is also  $(\mu + \lambda)-ES$ where the members of the parent and child generation compete.
+
+the simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -116,7 +119,12 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item problem specific representations, such as real values for continuous function development
+	\item mainly mutation and selection operators, no crossover
+	\item mutation typically involves the use of a gaussian random variable 
+	\item self adaptive strategy parameters for the amount of mutation to each individual or each parameter of each individual - adapted with the components of the solution
+	
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -138,7 +146,15 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
+
+Rechenberg's phd thesis \cite{Rechenberg1971} in german, later published as a book \cite{Rechenberg1973}
+
+lots of tech reports and papers by Schwefel in German
+
+seminal paper in English \cite{Klockgether1970}
+
+Schwefel's thesis \cite{Schwefel1975} in german, also later published as a book \cite{Schwefel1977} and translated into english \cite{Schwefel1981}
+
 
 % 
 % Learn More
@@ -146,6 +162,9 @@ todo
 \subsection{Learn More}
 % historical reviews
 todo
+
+contemporary introduction into the field by two pioneers \cite{Beyer2002} 
+
 
 
 % 
