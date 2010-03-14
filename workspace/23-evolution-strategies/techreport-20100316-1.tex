@@ -99,7 +99,10 @@ todo
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+
+on-line adaptation of search parameters
+
+
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -123,6 +126,10 @@ the simplest configuration is the $(1+1)-ES$ which is a type of greedy hill clim
 	\item mainly mutation and selection operators, no crossover
 	\item mutation typically involves the use of a gaussian random variable 
 	\item self adaptive strategy parameters for the amount of mutation to each individual or each parameter of each individual - adapted with the components of the solution
+	\item used a magical ration of 1/5, ratio of successful mutations should be 1/5 of all mutations. if greater, increase the variance, if less, decrease the variance
+	\item $(\mu,\lambda)-ES$ can be good for moving optima and continued exploration, $(\mu + \lambda)-ES$ can be good for refinement and convergence
+	\item can use recombination that takes the average of two parents, many additional variants including multiple parent contributions.
+	\item can correlate mutations, so there are problem parameters, variance strategy parameters, and direction strategy parameters
 	
 	
 \end{itemize}
@@ -147,6 +154,16 @@ todo
 % 
 \subsection{Primary Sources}
 
+experimental parameter optimization on control systems and shape optimization
+started by hand? later simulated on computers
+first was a $(1+1)-ES$
+
+
+
+introduced by Rechenberg in the 1960s
+extended by Schwefel
+started out on continuious function optimization
+
 Rechenberg's phd thesis \cite{Rechenberg1971} in german, later published as a book \cite{Rechenberg1973}
 
 lots of tech reports and papers by Schwefel in German
@@ -160,10 +177,15 @@ Schwefel's thesis \cite{Schwefel1975} in german, also later published as a book 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-todo
 
-contemporary introduction into the field by two pioneers \cite{Beyer2002} 
+
+
+
+% overviews / introductions
+classical introduction to the field \cite{Back1991} - history of the approach, steps that lead it to where it was in 1991:
+- 1/5 rule, populations, self adaptive parameters, forgetting principles (comma approach), additional strategy parameter for correlated movements
+
+contemporary introduction into the field by two pioneers \cite{Beyer2002} - detailed study of the history, development since inception and theoretical findings. 
 
 
 

@@ -61,6 +61,7 @@ Evolutionary, Restricted Tournament Selection
 Physical, Harmony Search Algorithm
 Evolutionary, Niching Genetic Algorithm
 Evolutionary, Covariance Matrix Adaptation Evolution Strategy
+Evolutionary, Covariance Matrix Adaptation Evolution Strategies
 Stochastic, Random Restart Hill Climbing
 Swarm, Population-based Ant Colony Optimization
 Evolutionary, Island Genetic Algorithm
