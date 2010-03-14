@@ -139,7 +139,14 @@ the simplest configuration is the $(1+1)-ES$ which is a type of greedy hill clim
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{evolution_strategies} provides an example of the Evolution Strategies algorithm implemented in the Ruby Programming Language.
+% problem
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+% algorithm
+todo...
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Evolution Strategies algorithm in the Ruby Programming Language, label=evolution_strategies]{../../src/algorithms/evolutionary/evolution_strategies.rb}
 
 
 % References: Deeper understanding
