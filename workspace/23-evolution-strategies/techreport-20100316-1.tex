@@ -64,7 +64,7 @@ This report describes the Evolution Strategies algorithm using the standardized 
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Evolution Strategies, ES, Evolutionsstrategie (German)
+Evolution Strategies, Evolution Strategy, Evolutionary Strategies, ES, Evolutionsstrategie (German)
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -113,6 +113,74 @@ on-line adaptation of search parameters
 terminology for the technique: $(\mu,\lambda)-ES$ where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions in the child generation that is created by and replaces the parent generation. there is also  $(\mu + \lambda)-ES$ where the members of the parent and child generation compete.
 
 the simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm
+
+TODO
+
+Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the Evolution Strategies algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Children}{Children}
+	\SetKwData{Union}{Union}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{Parent}{$Parent_{i}$}
+	\SetKwData{Child}{$Child_{i}$}
+	\SetKwData{Candidate}{$S_{i}$}
+	\SetKwData{CandidateWins}{$Si_{wins}$}
+	\SetKwData{CandidateOther}{$S_{j}$}
+	\SetKwData{BoutSize}{BoutSize}
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Mutate}{Mutate}
+  	\SetKwFunction{RandomSelection}{RandomSelection}
+	\SetKwFunction{SelectBestByWins}{SelectBestByWins}
+	\SetKwFunction{Cost}{Cost}
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \BoutSize}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% mutate
+		\Children $\leftarrow 0$\;
+		\ForEach{\Parent $\in$ \Population}{
+			\Child $\leftarrow$ \Mutate{\Parent}\;
+			\Children $\leftarrow$ \Child\;
+		}
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children, \Best}\;
+		% tournaments
+		\Union $\leftarrow$ \Population $+$ \Children\;
+		\ForEach{\Candidate $\in$ \Union}{
+			\For{$1$ \KwTo \BoutSize}{
+				\CandidateOther $\leftarrow$ \RandomSelection{\Union}\;
+				\If{\Cost{\Candidate} $<$ \Cost{\CandidateOther}} {
+					\CandidateWins $\leftarrow$ \CandidateWins $+$ 1\;
+				}
+			}
+		}
+		\Population $\leftarrow$ \SelectBestByWins{\Union, \PopulationSize}\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Evolution Strategies algorithm.}
+	\label{alg:evolution_strategies}
+\end{algorithm}
+
 
 
 % Heuristics: Usage guidelines
