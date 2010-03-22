@@ -109,25 +109,21 @@ The objective was classically achieved through the adoption of dynamic variation
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-terminology for the technique: $(\mu,\lambda)-ES$ where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions in the child generation that is created by and replaces the parent generation. there is also  $(\mu + \lambda)-ES$ where the members of the parent and child generation compete.
+% terminology
+Instances of Evolution Strategy algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions generated from each member of the parent generation. In addition to the so-called comma Evolution Strategy, a plus variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations complete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm.
 
-the simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm
-
-TODO
-
-Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the Evolution Strategies algorithm for minimizing a cost function. 
+Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu,\lambda)-ES$ Evolution Strategies algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
 
 \begin{algorithm}[htp]
 	\SetLine  
 	% data
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Children}{Children}
-	\SetKwData{Union}{Union}
 	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{Population}{Population}
-	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{PopulationSize}{$\mu$}
+	\SetKwData{ChildPopulationSize}{$\lambda$}
 	\SetKwData{Parent}{$Parent_{i}$}
-	\SetKwData{Child}{$Child_{i}$}
 	\SetKwData{Candidate}{$S_{i}$}
 	\SetKwData{CandidateWins}{$Si_{wins}$}
 	\SetKwData{CandidateOther}{$S_{j}$}
@@ -135,14 +131,13 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the E
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
-	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{GetBest}{GetBest} 
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{Mutate}{Mutate}
   	\SetKwFunction{RandomSelection}{RandomSelection}
-	\SetKwFunction{SelectBestByWins}{SelectBestByWins}
 	\SetKwFunction{Cost}{Cost}
 	% I/O
-	\KwIn{\PopulationSize, \ProblemSize, \BoutSize}		
+	\KwIn{\PopulationSize, \ChildPopulationSize, \ProblemSize}		
 	\KwOut{\Best}
   	% Algorithm
 	% initialize	
@@ -150,29 +145,22 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the E
 	% evaluate
 	\EvaluatePopulation{\Population}\;
 	% best
-	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	\Best $\leftarrow$ \GetBest{\Population, 1}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
 		% mutate
 		\Children $\leftarrow 0$\;
 		\ForEach{\Parent $\in$ \Population}{
-			\Child $\leftarrow$ \Mutate{\Parent}\;
-			\Children $\leftarrow$ \Child\;
+			\For{$i=0$ $\KwTo$ \ChildPopulationSize}{
+				\Candidate $\leftarrow$ \Mutate{\Parent}\;
+				\Children $\leftarrow$ \Candidate\;
+			}
 		}
 		\EvaluatePopulation{\Children}\;
 		% best
-		\Best $\leftarrow$ \GetBestSolution{\Children, \Best}\;
-		% tournaments
-		\Union $\leftarrow$ \Population $+$ \Children\;
-		\ForEach{\Candidate $\in$ \Union}{
-			\For{$1$ \KwTo \BoutSize}{
-				\CandidateOther $\leftarrow$ \RandomSelection{\Union}\;
-				\If{\Cost{\Candidate} $<$ \Cost{\CandidateOther}} {
-					\CandidateWins $\leftarrow$ \CandidateWins $+$ 1\;
-				}
-			}
-		}
-		\Population $\leftarrow$ \SelectBestByWins{\Union, \PopulationSize}\;
+		\Best $\leftarrow$ \GetBest{\Children$+$\Best, 1}\;
+		% replace
+		\Population $\leftarrow$ \GetBest{\Children, \PopulationSize}\;
 	}
 	\Return{\Best}\;
 	% end
@@ -189,6 +177,9 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the E
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item When optimizing a continuous function optimization problem, strategy parameters are commonly a variance (standard deviation) applied to a random Gaussian. A second set of strategy parameters may be adapted that influence the direction of the standard deviation.
+	
+	
 	\item problem specific representations, such as real values for continuous function development
 	\item mainly mutation and selection operators, no crossover
 	\item mutation typically involves the use of a gaussian random variable 
