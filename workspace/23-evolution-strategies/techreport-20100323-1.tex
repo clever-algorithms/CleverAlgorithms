@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100316}
+\newcommand{\myreportdate}{20100323}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -198,7 +198,7 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the E
 	\item $(\mu,\lambda)-ES$ can be good for moving optima and continued exploration, $(\mu + \lambda)-ES$ can be good for refinement and convergence
 	\item can use recombination that takes the average of two parents, many additional variants including multiple parent contributions.
 	\item can correlate mutations, so there are problem parameters, variance strategy parameters, and direction strategy parameters
-	
+	\item - 1/5 rule, populations, self adaptive parameters, forgetting principles (comma approach), additional strategy parameter for correlated movements
 	
 \end{itemize}
 
@@ -228,41 +228,22 @@ todo...
 % Primary Sources
 % 
 \subsection{Primary Sources}
+% background
+Evolution Strategies was developed by three students (Bienert, Rechenberg, Schwefel) at the Technical University in Berlin in 1964 in an effort to robotically optimize an aerodynamics design problem.
+% seminal
+The seminal work in Evolution Strategy was by Rechenberg's PhD thesis  \cite{Rechenberg1971} that was later published as a book \cite{Rechenberg1973}, both in German.
+% papers
+Many technical reports and papers were published by Schwefel and Rechenberg, although the seminal paper published in English was by Klockgether and Schwefel on the two--phase nozzle design problem \cite{Klockgether1970}.
 
-experimental parameter optimization on control systems and shape optimization
-started by hand? later simulated on computers
-first was a $(1+1)-ES$
-
-
-
-introduced by Rechenberg in the 1960s
-extended by Schwefel
-started out on continuious function optimization
-
-Rechenberg's phd thesis \cite{Rechenberg1971} in german, later published as a book \cite{Rechenberg1973}
-
-lots of tech reports and papers by Schwefel in German
-
-seminal paper in English \cite{Klockgether1970}
-
-Schwefel's thesis \cite{Schwefel1975} in german, also later published as a book \cite{Schwefel1977} and translated into english \cite{Schwefel1981}
-
-
-% 
 % Learn More
 % 
 \subsection{Learn More}
-
-
-
-
-% overviews / introductions
-classical introduction to the field \cite{Back1991} - history of the approach, steps that lead it to where it was in 1991:
-- 1/5 rule, populations, self adaptive parameters, forgetting principles (comma approach), additional strategy parameter for correlated movements
-
-contemporary introduction into the field by two pioneers \cite{Beyer2002} - detailed study of the history, development since inception and theoretical findings. 
-
-
+% Schwefel
+Schwefel soon published his PhD dissertation \cite{Schwefel1975} not long after Rechenberg that too was later published as a book \cite{Schwefel1977} both in German. Schwefel's book was soon translated into English was represents a classical reference for the technique \cite{Schwefel1981}. 
+% Back
+B\"ack provides a classical introduction to the technique, covering the history and development of the algorithm and the steps that lead it to where it was in 1991 \cite{Back1991}.
+% Beyer and Schwefel
+Beyer and Schwefel provide a contemporary introduction into the field that includes a detailed history of the approach, the developments and improvements since its inception, and an overview of the theoretical findings that have been made \cite{Beyer2002}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
@@ -270,7 +251,7 @@ contemporary introduction into the field by two pioneers \cite{Beyer2002} - deta
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report provided a description of the Evolution Strategies algorithm.
 
 % 
 % Contribute
