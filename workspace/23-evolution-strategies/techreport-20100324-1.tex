@@ -111,7 +111,7 @@ The objective was classically achieved through the adoption of dynamic variation
 % What are the data structures and representations used in a technique?
 % terminology
 Instances of Evolution Strategy algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions generated from and replace the parent generation. In addition to the so-called comma-selection Evolution Strategy, a plus-selection variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations complete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm.
-
+% algo
 Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu+\lambda)-ES$ Evolution Strategies algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
 
 \begin{algorithm}[htp]
@@ -176,22 +176,12 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item When optimizing a continuous function optimization problem, strategy parameters are commonly a variance (standard deviation) applied to a random Gaussian. A second set of strategy parameters may be adapted that influence the direction of the standard deviation.
-	
-	\item config: $1 < \mu < \lambda < \infty$
-	\item the ratio of mu to lambda is the amount of selection pressure
-	\item can include a slash rho for recombination
-	
-	\item problem specific representations, such as real values for continuous function development
-	\item mainly mutation and selection operators, no crossover
-	\item mutation typically involves the use of a gaussian random variable 
-	\item self adaptive strategy parameters for the amount of mutation to each individual or each parameter of each individual - adapted with the components of the solution
-	\item used a magical ration of 1/5, ratio of successful mutations should be 1/5 of all mutations. if greater, increase the variance, if less, decrease the variance
-	\item $(\mu,\lambda)-ES$ can be good for moving optima and continued exploration, $(\mu + \lambda)-ES$ can be good for refinement and convergence
-	\item can use recombination that takes the average of two parents, many additional variants including multiple parent contributions.
-	\item can correlate mutations, so there are problem parameters, variance strategy parameters, and direction strategy parameters
-	\item - 1/5 rule, populations, self adaptive parameters, forgetting principles (comma approach), additional strategy parameter for correlated movements
-	
+	\item Evolution Strategies uses problem specific representations, such as real values for continuous function optimization.
+	\item The algorithm is commonly configured such that $1 < \mu < \lambda < \infty$.
+	\item The ration of $\mu$ to $\lambda$ influences the amount of selection pressure (greediness) exerted by the algorithm.
+	\item A contemporary update to the algorithms notation includes a $\rho$ as $(\mu/\rho,\lambda)-ES$ that specifies the number of parents that will contribute to each new candidate solution using a crossover operator. 
+	\item A classical rule used to govern the amount of mutation (standard deviation used in mutation for continuous function optimization) was the $\frac{1}{5}$-rule, where a $\frac{1}{5}$ ratio of successful mutations should be 1/5 of all mutations. If it was greater the variance was increased, and if it was less it was decreased.
+	\item The comma-selection variation of the algorithm can be good for moving optima and continued exploration, whereas the plus-selection variation can be good for refinement and convergence.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
