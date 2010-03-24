@@ -14,7 +14,7 @@ def random_vector(problem_size, search_space)
   end
 end
 
-def random_gaussian
+def gaussian
   u1 = u2 = w = g1 = g2 = 0
   begin
     u1 = 2 * rand() - 1
@@ -27,20 +27,29 @@ def random_gaussian
   return g1
 end
 
-def mutate(candidate, search_space)
+def mutate_problem(vector, stdevs, search_space)
+  child = Array(vector.length)
+  vector.each_with_index do |v, i|
+    child[i] = v + stdevs[i] * gaussian()
+    child[i] = search_space[i][0] if child[i] < search_space[i][0]
+    child[i] = search_space[i][1] if child[i] > search_space[i][1]
+  end
+  return child
+end
+
+def mutate_strategy(stdevs)
+  tau = Math.sqrt(2.0*stdevs.length.to_f)**-1.0
+  tau_prime = Math.sqrt(2.0*Math.sqrt(stdevs.length.to_f))**-1.0
+  child = Array.new(stdevs.length) do |i|
+    stdevs[i] * Math::exp(tau_prime*gaussian() + tau*gaussian())
+  end
+  return child
+end
+
+def mutate(parent, search_space)
   child = {}
-  tau = search_space.length.to_f**-0.5
-  child[:strategy] = []
-  candidate[:strategy].each do |s_old|
-    child[:strategy] << s_old * Math::exp(tau * random_gaussian())
-  end
-  child[:vector] = []
-  candidate[:vector].each_with_index do |v_old,i|
-    v = v_old + child[:strategy][i] * random_gaussian()
-    v = search_space[i][0] if v < search_space[i][0]
-    v = search_space[i][1] if v > search_space[i][1]
-    child[:vector] << v
-  end
+  child[:vector] = mutate_problem(parent[:vector], parent[:strategy], search_space)
+  child[:strategy] = mutate_strategy(parent[:strategy])
   return child
 end
 

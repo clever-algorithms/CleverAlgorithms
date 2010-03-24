@@ -179,6 +179,9 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 	\item When optimizing a continuous function optimization problem, strategy parameters are commonly a variance (standard deviation) applied to a random Gaussian. A second set of strategy parameters may be adapted that influence the direction of the standard deviation.
 	
 	\item config: $1 < \mu < \lambda < \infty$
+	\item the ratio of mu to lambda is the amount of selection pressure
+	\item can include a slash rho for recombination
+	
 	\item problem specific representations, such as real values for continuous function development
 	\item mainly mutation and selection operators, no crossover
 	\item mutation typically involves the use of a gaussian random variable 
@@ -200,7 +203,11 @@ Listing~\ref{evolution_strategies} provides an example of the Evolution Strategi
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-todo...
+The algorithm is a implementation of Evolution Strategies based on simple version described by B\"ack and Schwefel \cite{Back1993b} and used in a detailed study \cite{Yao1997}.
+%  cfg
+The algorithm is an $(30+20)-ES$ Evolutionary Strategy that adapts both the problem and strategy (standard deviations) variables. 
+% a good guide
+More contemporary implements modify the strategy variables differently, and include an additional set of adapted strategy parameters to influence the direction of mutation (see \cite{Rudolph2000} for a concise description).
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Evolution Strategies algorithm in the Ruby Programming Language, label=evolution_strategies]{../../src/algorithms/evolutionary/evolution_strategies.rb}
@@ -230,7 +237,7 @@ Many technical reports and papers were published by Schwefel and Rechenberg, alt
 % Schwefel
 Schwefel soon published his PhD dissertation \cite{Schwefel1975} not long after Rechenberg that too was later published as a book \cite{Schwefel1977} both in German. Schwefel's book was soon translated into English was represents a classical reference for the technique \cite{Schwefel1981}. 
 % Back
-B\"ack provides a classical introduction to the technique, covering the history and development of the algorithm and the steps that lead it to where it was in 1991 \cite{Back1991}.
+B\"ack, et al. provide a classical introduction to the technique, covering the history and development of the algorithm and the steps that lead it to where it was in 1991 \cite{Back1991}.
 % Beyer and Schwefel
 Beyer and Schwefel provide a contemporary introduction into the field that includes a detailed history of the approach, the developments and improvements since its inception, and an overview of the theoretical findings that have been made \cite{Beyer2002}.
 
