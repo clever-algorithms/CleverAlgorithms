@@ -29,15 +29,17 @@ end
 
 def mutate(candidate, search_space)
   child = {}
-  child[:vector], child[:strategy] = [], []
-  candidate[:vector].each_with_index do |v_old, i|
-    s_old = candidate[:strategy][i]
-    v = v_old + s_old * random_gaussian()
+  tau = search_space.length.to_f**-0.5
+  child[:strategy] = []
+  candidate[:strategy].each do |s_old|
+    child[:strategy] << s_old * Math::exp(tau * random_gaussian())
+  end
+  child[:vector] = []
+  candidate[:vector].each_with_index do |v_old,i|
+    v = v_old + child[:strategy][i] * random_gaussian()
     v = search_space[i][0] if v < search_space[i][0]
     v = search_space[i][1] if v > search_space[i][1]
     child[:vector] << v
-    s = s_old + ((s_old<0) ? s_old*-1.0 : s_old)**0.5 * random_gaussian()
-    child[:strategy] << s
   end
   return child
 end
@@ -65,7 +67,7 @@ def search(max_generations, problem_size, search_space, pop_size, num_children)
 end
 
 max_generations = 200
-pop_size = 20
+pop_size = 30
 num_children = 20
 problem_size = 2
 search_space = Array.new(problem_size) {|i| [-5, +5]}
