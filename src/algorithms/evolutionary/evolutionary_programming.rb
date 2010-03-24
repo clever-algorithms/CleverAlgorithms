@@ -42,12 +42,6 @@ def mutate(candidate, search_space)
   return child
 end
 
-def distance(v1, v2)
-  sum = 0.0
-  v1.each_with_index {|v,i| sum += (v-v2[i])**2.0}
-  return Math::sqrt(sum)
-end
-
 def tournament(candidate, population, bout_size)
   candidate[:wins] = 0
   bout_size.times do |i|

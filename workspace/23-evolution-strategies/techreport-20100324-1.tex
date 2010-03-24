@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100323}
+\newcommand{\myreportdate}{20100324}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -110,9 +110,9 @@ The objective was classically achieved through the adoption of dynamic variation
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 % terminology
-Instances of Evolution Strategy algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions generated from each member of the parent generation. In addition to the so-called comma Evolution Strategy, a plus variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations complete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm.
+Instances of Evolution Strategy algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions generated from and replace the parent generation. In addition to the so-called comma-selection Evolution Strategy, a plus-selection variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations complete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm.
 
-Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu,\lambda)-ES$ Evolution Strategies algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
+Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu+\lambda)-ES$ Evolution Strategies algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -136,6 +136,7 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 	\SetKwFunction{Mutate}{Mutate}
   	\SetKwFunction{RandomSelection}{RandomSelection}
 	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{Size}{Size}
 	% I/O
 	\KwIn{\PopulationSize, \ChildPopulationSize, \ProblemSize}		
 	\KwOut{\Best}
@@ -150,11 +151,11 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 	\While{$\neg$\StopCondition{}} {
 		% mutate
 		\Children $\leftarrow 0$\;
-		\ForEach{\Parent $\in$ \Population}{
-			\For{$i=0$ $\KwTo$ \ChildPopulationSize}{
-				\Candidate $\leftarrow$ \Mutate{\Parent}\;
-				\Children $\leftarrow$ \Candidate\;
-			}
+		$i \leftarrow 0$\;
+		\While{\Size{\Children} $<$ \ChildPopulationSize}{
+			\Candidate $\leftarrow$ \Mutate{\Parent}\;
+			\Children $\leftarrow$ \Candidate\;
+			$i \leftarrow i+1$\;
 		}
 		\EvaluatePopulation{\Children}\;
 		% best
@@ -167,8 +168,6 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 	\caption{Pseudo Code for the Evolution Strategies algorithm.}
 	\label{alg:evolution_strategies}
 \end{algorithm}
-
-
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
