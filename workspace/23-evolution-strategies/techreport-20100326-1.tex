@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100324}
+\newcommand{\myreportdate}{20100326}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -64,7 +64,7 @@ This report describes the Evolution Strategies algorithm using the standardized 
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Evolution Strategies, Evolution Strategy, Evolutionary Strategies, ES, Evolutionsstrategie (German)
+Evolution Strategies, Evolution Strategy, Evolutionary Strategies, ES
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -92,14 +92,14 @@ Specifically, the technique is inspired by macro-level or the species-level proc
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Evolution Strategies only briefly flirted with explanation via metaphor, that is less preferred to grounded probabilistic explanations.
+Evolution Strategies only briefly flirted with explanation via metaphor, and is less preferred to grounded probabilistic explanations.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of the Evolution Strategies algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from the domain.
+The objective of the Evolution Strategies algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from a domain.
 % What is a techniques plan of action?
 The objective was classically achieved through the adoption of dynamic variation, a surrogate for descent with modification, where the amount of variation was adapted dynamically with performance-based heuristics. Contemporary approaches co-adapt parameters that control the amount and bias of variation with the candidate solutions.
 
@@ -112,7 +112,7 @@ The objective was classically achieved through the adoption of dynamic variation
 % terminology
 Instances of Evolution Strategy algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solution in the parent generation, and $\lambda$ is the number of candidate solutions generated from and replace the parent generation. In addition to the so-called comma-selection Evolution Strategy, a plus-selection variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations complete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$ which is a type of greedy hill climbing algorithm.
 % algo
-Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu+\lambda)-ES$ Evolution Strategies algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
+Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $(\mu+\lambda)-ES$ Evolution Strategy algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants. 
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -125,9 +125,10 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 	\SetKwData{ChildPopulationSize}{$\lambda$}
 	\SetKwData{Parent}{$Parent_{i}$}
 	\SetKwData{Candidate}{$S_{i}$}
-	\SetKwData{CandidateWins}{$Si_{wins}$}
-	\SetKwData{CandidateOther}{$S_{j}$}
-	\SetKwData{BoutSize}{BoutSize}
+	\SetKwData{CandidateObjective}{$Si_{problem}$}
+	\SetKwData{CandidateStrategy}{$Si_{strategy}$}
+	\SetKwData{ParentObjective}{$Pi_{problem}$}
+	\SetKwData{ParentStrategy}{$Pi_{strategy}$}
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
@@ -153,7 +154,9 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 		\Children $\leftarrow 0$\;
 		$i \leftarrow 0$\;
 		\While{\Size{\Children} $<$ \ChildPopulationSize}{
-			\Candidate $\leftarrow$ \Mutate{\Parent}\;
+			\Candidate $\leftarrow 0$\;			
+			\CandidateObjective $\leftarrow$ \Mutate{\ParentObjective, \ParentStrategy}\;
+			\CandidateStrategy $\leftarrow$ \Mutate{\ParentStrategy}\;
 			\Children $\leftarrow$ \Candidate\;
 			$i \leftarrow i+1$\;
 		}
@@ -178,10 +181,10 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudo-code listing of the $
 \begin{itemize}
 	\item Evolution Strategies uses problem specific representations, such as real values for continuous function optimization.
 	\item The algorithm is commonly configured such that $1 < \mu < \lambda < \infty$.
-	\item The ration of $\mu$ to $\lambda$ influences the amount of selection pressure (greediness) exerted by the algorithm.
-	\item A contemporary update to the algorithms notation includes a $\rho$ as $(\mu/\rho,\lambda)-ES$ that specifies the number of parents that will contribute to each new candidate solution using a crossover operator. 
-	\item A classical rule used to govern the amount of mutation (standard deviation used in mutation for continuous function optimization) was the $\frac{1}{5}$-rule, where a $\frac{1}{5}$ ratio of successful mutations should be 1/5 of all mutations. If it was greater the variance was increased, and if it was less it was decreased.
-	\item The comma-selection variation of the algorithm can be good for moving optima and continued exploration, whereas the plus-selection variation can be good for refinement and convergence.
+	\item The ratio of $\mu$ to $\lambda$ influences the amount of selection pressure (greediness) exerted by the algorithm.
+	\item A contemporary update to the algorithms notation includes a $\rho$ as $(\mu/\rho,\lambda)-ES$ that specifies the number of parents that will contribute to each new candidate solution using a recombination operator. 
+	\item A classical rule used to govern the amount of mutation (standard deviation used in mutation for continuous function optimization) was the $\frac{1}{5}$-rule, where the ratio of successful mutations should be $\frac{1}{5}$ of all mutations. If it is greater the variance is increased, otherwise if the ratio is is less, the variance is decreased.
+	\item The comma-selection variation of the algorithm can be good for dynamic problem instances given it's capability for continued exploration of the search space, whereas the plus-selection variation can be good for refinement and convergence.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -193,11 +196,11 @@ Listing~\ref{evolution_strategies} provides an example of the Evolution Strategi
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is a implementation of Evolution Strategies based on simple version described by B\"ack and Schwefel \cite{Back1993b} and used in a detailed study \cite{Yao1997}.
+The algorithm is a implementation of Evolution Strategies based on simple version described by B\"ack and Schwefel \cite{Back1993b}, which was also used as the basis of a detailed empirical study \cite{Yao1997}.
 %  cfg
 The algorithm is an $(30+20)-ES$ Evolutionary Strategy that adapts both the problem and strategy (standard deviations) variables. 
 % a good guide
-More contemporary implements modify the strategy variables differently, and include an additional set of adapted strategy parameters to influence the direction of mutation (see \cite{Rudolph2000} for a concise description).
+More contemporary implementations may modify the strategy variables differently, and include an additional set of adapted strategy parameters to influence the direction of mutation (see \cite{Rudolph2000} for a concise description).
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Evolution Strategies algorithm in the Ruby Programming Language, label=evolution_strategies]{../../src/algorithms/evolutionary/evolution_strategies.rb}
@@ -225,11 +228,11 @@ Many technical reports and papers were published by Schwefel and Rechenberg, alt
 % 
 \subsection{Learn More}
 % Schwefel
-Schwefel soon published his PhD dissertation \cite{Schwefel1975} not long after Rechenberg that too was later published as a book \cite{Schwefel1977} both in German. Schwefel's book was soon translated into English was represents a classical reference for the technique \cite{Schwefel1981}. 
+Schwefel published his PhD dissertation \cite{Schwefel1975} not long after Rechenberg that too was later published as a book \cite{Schwefel1977} both in German. Schwefel's book was later translated into English was represents a classical reference for the technique \cite{Schwefel1981}. 
 % Back
-B\"ack, et al. provide a classical introduction to the technique, covering the history and development of the algorithm and the steps that lead it to where it was in 1991 \cite{Back1991}.
+B\"ack, et al. provide a classical introduction to the technique, covering the history, development of the algorithm, and the steps that lead it to where it was in 1991 \cite{Back1991}.
 % Beyer and Schwefel
-Beyer and Schwefel provide a contemporary introduction into the field that includes a detailed history of the approach, the developments and improvements since its inception, and an overview of the theoretical findings that have been made \cite{Beyer2002}.
+Beyer and Schwefel provide a contemporary introduction to the field that includes a detailed history of the approach, the developments and improvements since its inception, and an overview of the theoretical findings that have been made \cite{Beyer2002}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
