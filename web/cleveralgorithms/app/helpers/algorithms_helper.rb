@@ -9,4 +9,15 @@ module AlgorithmsHelper
     return new_content
   end
   
+  def make_unorded_list(content)
+    paragraphs = content.split("\n")
+    new_content = ""
+    new_content << "<ul>"
+    paragraphs.each do |paragraph|
+      new_content << "<li>#{h(paragraph)}</li>"
+    end
+     new_content << "</ul>"
+    return new_content
+  end
+  
 end
