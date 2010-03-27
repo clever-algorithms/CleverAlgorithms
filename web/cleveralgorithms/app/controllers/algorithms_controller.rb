@@ -23,6 +23,7 @@ class AlgorithmsController < ApplicationController
     #   # redirect_to(:action=>"show", :name=>@algorithm.name)
     # end
     
+    @filename = get_filename(@algorithm.code_file)
     @filedata = download(@algorithm.code_file)
     if !@filedata.nil?
       @filedata = @filedata.strip
@@ -36,6 +37,10 @@ class AlgorithmsController < ApplicationController
   end
   
   private 
+  
+  def get_filename(source_address)
+    return source_address.split('/').last
+  end
   
   def download(source_address)
     url = URI.parse(source_address)
