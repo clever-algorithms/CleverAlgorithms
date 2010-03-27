@@ -52,3 +52,18 @@ a:hover { color: #fff; background-color:#000; }
   list-style: square;
 }
 
+#flash { color: green; }
+
+#head {
+	background-color: #eee;
+}
+#menu {
+	background-color: #ddd;
+	text-align: left;
+	padding: 0px 0px 0px 10px;
+}
+#title {
+	color: gray;
+	font-size: 30px;
+	padding: 10px;
+}
