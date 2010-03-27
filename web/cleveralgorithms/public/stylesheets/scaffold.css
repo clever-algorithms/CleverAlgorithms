@@ -116,11 +116,15 @@ div.algorithm_name {
 	font-style: bold;
 }
 div.algorithm_aliases {
-	
 	font-style: italic;
 }
 
 table.algorithm_fields, th {
 	text-align: left;
 	vertical-align:top;
+}
+
+div.algorithm_footer {
+	margin-top: 50px;
+	font-size: 11px;
 }

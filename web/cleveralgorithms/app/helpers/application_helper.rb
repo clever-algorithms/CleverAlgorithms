@@ -1,6 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
   
+  # jason brownlee email
+  # used on copyright, etc
+  def jason_email
+    "jasonb@CleverAlgorithms.com"
+  end
   
   # the name of the website used in views
   def site_name
