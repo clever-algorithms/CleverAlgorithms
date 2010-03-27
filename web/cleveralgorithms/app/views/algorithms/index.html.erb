@@ -1,15 +1,16 @@
-<h1>Listing algorithms</h1>
+<% title("All Algorithms") %>
 
-<table>
-  <tr>
-    <th>Name</th>
-  </tr>
+<div class="subtitle">Browse All Algorithms</div>
 
-<% @algorithms.each do |algorithm| %>
-  <tr>
-    <td><%=h algorithm.name %></td>
-    <td><%= link_to 'Show', algorithm %></td>
-  </tr>
-<% end %>
-</table>
+<div class="text">
+	There are <strong><%=h @algorithms.size %> algorithms</strong> described in the Clever Algorithms project.
+</div>
+
+<div class="algorithm_list">
+	<% @algorithms.each do |algorithm| %>
+		<div class="algorithm_item">
+			<%= link_to algorithm.name, algorithm %>
+		</div>		
+	<% end %>
+</div>
 

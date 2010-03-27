@@ -13,14 +13,14 @@ class Admin::AlgorithmsController < Admin::AdminController
 
   # GET /algorithms/1
   # GET /algorithms/1.xml
-  def show
-    @algorithm = Algorithm.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.xml  { render :xml => @algorithm }
-    end
-  end
+  # def show
+  #   @algorithm = Algorithm.find(params[:id])
+  # 
+  #   respond_to do |format|
+  #     format.html # show.html.erb
+  #     format.xml  { render :xml => @algorithm }
+  #   end
+  # end
 
   # GET /algorithms/new
   # GET /algorithms/new.xml
@@ -45,7 +45,7 @@ class Admin::AlgorithmsController < Admin::AdminController
 
     respond_to do |format|
       if @algorithm.save
-        flash[:notice] = 'Algorithm was successfully created.'
+        flash[:notice] = "Algorithm '#{@algorithm.name}' was successfully created."
         format.html { redirect_to(:action=>"index") }
         # format.xml  { render :xml => @algorithm, :status => :created, :location => @algorithm }
       else
@@ -62,8 +62,8 @@ class Admin::AlgorithmsController < Admin::AdminController
 
     respond_to do |format|
       if @algorithm.update_attributes(params[:algorithm])
-        flash[:notice] = 'Algorithm was successfully updated.'
-        format.html { redirect_to(@algorithm) }
+        flash[:notice] = "Algorithm '#{@algorithm.name}' was successfully updated."
+        format.html { redirect_to(:action=>"index") }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -79,7 +79,8 @@ class Admin::AlgorithmsController < Admin::AdminController
     @algorithm.destroy
 
     respond_to do |format|
-      format.html { redirect_to(algorithms_url) }
+      flash[:notice] = "Algorithm '#{@algorithm.name}' was successfully deleted."
+      format.html { redirect_to(:action=>"index") }
       format.xml  { head :ok }
     end
   end

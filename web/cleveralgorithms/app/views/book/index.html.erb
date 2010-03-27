@@ -1,5 +1,20 @@
 <% title(book_title) %>
 
-the books names is <%= book_title %>
+<div class="subtitle">Buy the book</div>
 
-buy the book now
+<div class="about">
+The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the field of Artificial Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable.
+</div>
+
+<div class="about">
+	The title of the book is: <strong><%= book_title %></strong>
+</div>
+
+<ul>
+	<li><%= link_to "Buy the PDF from Lulu now!", "" %></li>
+	<li><%= link_to "Buy the paper back from Lulu now!", "" %></li>
+	<li><%= link_to "Buy the hard back from Lulu now!", "" %></li>
+	<li><%= link_to "Buy the paper back from Amazon now!", "" %></li>
+</ul>
+
+

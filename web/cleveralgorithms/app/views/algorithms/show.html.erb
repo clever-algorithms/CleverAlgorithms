@@ -1,36 +1,36 @@
 <% title(@algorithm.name) %>
 
-<div id="algorithm">
-	<div id="algorithm_name">
+<div class="algorithm">
+	<div class="algorithm_name">
 		<%=h @algorithm.name %>
 	</div>
-	<div id="algorithm_aliases">
+	<div class="algorithm_aliases">
 		<%=h @algorithm.aliases %>
 	</div>
-	<div id="algorithm_taxonomy">
+	<div class="algorithm_taxonomy">
 		<%=h @algorithm.taxonomy %>
 	</div>
 	<% if !@algorithm.inspiration.empty? %>
-	<div id="algorithm_inspiration">
+	<div class="algorithm_inspiration">
 		<%=h @algorithm.inspiration %>
 	</div>
 	<% end %>
 	<% if !@algorithm.metaphor.empty? %>
-	<div id="algorithm_metaphor">
+	<div class="algorithm_metaphor">
 		<%=h @algorithm.metaphor %>
 	</div>
 	<% end %>
-	<div id="algorithm_strategy">
+	<div class="algorithm_strategy">
 		<%=h @algorithm.strategy %>
 	</div>
-	<div id="algorithm_procedure">
+	<div class="algorithm_procedure">
 		<%=h @algorithm.procedure %>
 	</div>
-	<div id="algorithm_code">
+	<div class="algorithm_code">
 		<%=h @algorithm.code %>
 		<%=h @algorithm.code_file %>
 	</div>
-	<div id="algorithm_references">
+	<div class="algorithm_references">
 		<%=h @algorithm.references %>
 	</div>
 </div>

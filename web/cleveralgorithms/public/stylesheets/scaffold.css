@@ -52,18 +52,53 @@ a:hover { color: #fff; background-color:#000; }
   list-style: square;
 }
 
-#flash { color: green; }
+div.flash { color: green; }
 
-#head {
+div.head {
 	background-color: #eee;
+	margin-bottom: 20px;
 }
-#menu {
+div.menu {
 	background-color: #ddd;
 	text-align: left;
 	padding: 0px 0px 0px 10px;
 }
-#title {
-	color: gray;
+div.title {
+	color: black;
 	font-size: 30px;
 	padding: 10px;
+}
+div.body {
+	padding: 10px;
+	width: 800px;
+}
+div.welcome {
+	color: black;
+	font-size: 20pt;
+	margin-bottom: 20px;
+}
+div.subtitle {
+	color: black;
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+
+div.text {
+	margin-bottom: 10px;
+}
+
+div.about {
+	margin-bottom: 20px;
+}
+div.landing_options {	
+	margin-bottom: 20px;
+}
+
+div.algorithm_name {
+	text-transform:uppercase;
+}
+
+table.algorithm_fields, th {
+	text-align: left;
+	vertical-align:top;
 }

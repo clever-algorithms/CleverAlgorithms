@@ -1,8 +1,19 @@
-<h2>Welcome to clever algorithms</h2>
+<% title("Clever Algorithms Project") %>
+<div class="subtitle">
+	Welcome to the Clever Algorithms project!
+</div>
+<div class="about">
+The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the field of Artificial Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable.
+</div>
 
-
-<%= link_to "list all algorithms", :controller => "algorithms" %>
-<br />
-<%= link_to "about math", "http://mathcache.appspot.com/static/docs.html" %>
-<br />
-<%= link_to "buy the book now", book_path %>
+<div class="landing_options">
+	<div class="option_buy_the_book">
+		You may <%= link_to "buy the book right now", book_path %> in either digital or dead tree format.
+	</div>
+	<div class="option_or">
+	- OR -
+	</div>
+	<div class="option_free">
+	You may <%= link_to "browse", :controller=>"algorithms" %> or <%= link_to "search", :controller=>"" %> all of the algorithm descriptions online for free. 
+	</div>	
+</div>

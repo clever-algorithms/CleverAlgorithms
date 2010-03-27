@@ -8,22 +8,22 @@
   <%= stylesheet_link_tag 'scaffold' %>
 </head>
 <body>
-	<div id="head">
-		<div id="title">
+	<div class="head">
+		<div class="title">
 			Clever Algorithms
 		</div>
-		<div id="menu">
+		<div class="menu">
 			<%= link_to "Home", root_path %> |
 			<%= link_to "Book", book_path %> |
 			<%= link_to "Algorithms", algorithms_path %> |
 			<%= link_to "Admin", admin_panel_path %>
 		</div>		
 	</div>
-	<div id="body">
-		<div id="flash">
-			<%= flash[:notice] %>
-		</div>
-		<div id="content">
+	<div class="flash">
+		<%= flash[:notice] %>
+	</div>
+	<div class="body">
+		<div class="content">
 			<%= yield %>
 		</div>
 	</div>

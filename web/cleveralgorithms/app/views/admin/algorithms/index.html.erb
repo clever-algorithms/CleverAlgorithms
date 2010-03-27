@@ -1,4 +1,7 @@
-<h1>Listing algorithms</h1>
+<h1>Manage Algorithms</h1>
+
+<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+<%= link_to "Back", admin_panel_path %>
 
 <table>
   <tr>
@@ -9,12 +12,13 @@
   <tr>
     <td><%=h a.name %></td>
     <td><%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %></td>
-    <td><%= link_to 'Delete', :confirm => 'Are you sure?',  :controller => "admin/algorithms", :action => "destroy" %></td>
+    <td><%= link_to 'Delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %>
+<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+<%= link_to "Back", admin_panel_path %>
 
