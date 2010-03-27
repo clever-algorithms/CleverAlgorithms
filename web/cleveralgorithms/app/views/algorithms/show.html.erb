@@ -1,35 +1,73 @@
 <% title(@algorithm.name) %>
+<% content_for :stylesheet do %>
+	<%= stylesheet_link_tag 'prettify', :cache => 'prettify_c' %>
+<% end %>
+<% content_for :script do %>
+	<%= javascript_include_tag 'prettify' %>
+<% end %>
 
 <div class="algorithm">
-	<div class="algorithm_name">
-		<%=h @algorithm.name %>
+	<div class="algorithm_title">
+		<div class="algorithm_name">
+			<%=h @algorithm.name %>
+		</div>
+		<div class="algorithm_aliases">
+			<%=h @algorithm.aliases %>
+		</div>		
 	</div>
-	<div class="algorithm_aliases">
-		<%=h @algorithm.aliases %>
-	</div>
-	<div class="algorithm_taxonomy">
+
+	
+	<div class="algorithm_subheading">Taxonomy</div>
+	<div class="algorithm_taxonomy">		
 		<%=h @algorithm.taxonomy %>
 	</div>
+	
 	<% if !@algorithm.inspiration.empty? %>
+	<div class="algorithm_subheading">Inspiration</div>
 	<div class="algorithm_inspiration">
 		<%=h @algorithm.inspiration %>
 	</div>
 	<% end %>
+	
 	<% if !@algorithm.metaphor.empty? %>
+	<div class="algorithm_subheading">Metaphor</div>
 	<div class="algorithm_metaphor">
 		<%=h @algorithm.metaphor %>
 	</div>
 	<% end %>
+	
+	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
 		<%=h @algorithm.strategy %>
 	</div>
+	
+	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
 		<%=h @algorithm.procedure %>
 	</div>
+	
+	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
 		<%=h @algorithm.code %>
-		<%=h @algorithm.code_file %>
+		
+		<%= link_to "see", "http://google-code-prettify.googlecode.com/svn/trunk/README.html" %>
+		
+		<div code="prettyprint lang-cpp">
+			class Voila {
+			public:
+			  // Voila
+			  static const string VOILA = "Voila";
+
+			  // will not interfere with embedded tags.
+			}
+		</div>
+		<br />
+		<div class="download">
+			<%= link_to "Download", @algorithm.code_file %>
+		</div>
 	</div>
+	
+	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
 		<%=h @algorithm.references %>
 	</div>

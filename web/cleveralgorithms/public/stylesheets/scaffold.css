@@ -64,7 +64,7 @@ div.menu {
 	padding: 0px 0px 0px 10px;
 }
 div.title {
-	color: black;
+	color: #555;
 	font-size: 30px;
 	padding: 10px;
 }
@@ -94,8 +94,30 @@ div.landing_options {
 	margin-bottom: 20px;
 }
 
+div.algorithm{
+	color: #666;
+}
+div.algorithm_subheading {
+	margin-top: 25px;
+	margin-bottom: 5px;
+	font-style: bold;
+	font-variant: small-caps;
+	font-size: 13pt;
+	color: black;
+}
+div.algorithm_title{	
+	margin-bottom: 20px;
+}
 div.algorithm_name {
+	color: black;
 	text-transform:uppercase;
+	font-size: 20px;
+	margin-bottom: 5px;
+	font-style: bold;
+}
+div.algorithm_aliases {
+	
+	font-style: italic;
 }
 
 table.algorithm_fields, th {

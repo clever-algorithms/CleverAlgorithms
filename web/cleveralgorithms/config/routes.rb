@@ -2,8 +2,8 @@ ActionController::Routing::Routes.draw do |map|
   
   
   # algorithms
-  map.connect 'algorithms/:name', :controller => 'algorithms', :action => 'show'
-  map.resources :algorithms
+  map.connect 'a/:name', :controller => 'algorithms', :action => 'show'
+  map.resources :algorithms, :as=>"a"
   
   # book
   map.book 'book', :controller =>"book"
@@ -13,9 +13,10 @@ ActionController::Routing::Routes.draw do |map|
       admin.resources :panel
       admin.resources :algorithms
   end
-  
+  # short cut for admin
   map.admin_panel 'admin/panel', :controller => "admin/panel"
-  # map.home '', :controller => "home"
+  
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
 
