@@ -1,0 +1,15 @@
+<h1>Listing algorithms</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+  </tr>
+
+<% @algorithms.each do |algorithm| %>
+  <tr>
+    <td><%=h algorithm.name %></td>
+    <td><%= link_to 'Show', algorithm %></td>
+  </tr>
+<% end %>
+</table>
+
