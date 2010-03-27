@@ -1,6 +1,6 @@
 <h1>Editing algorithm</h1>
 
-<% form_for :algorithm, :url => { :controller => "admin/algorithms", :action=>"update", :id=>@algorithm.id } do |f| %>
+<% form_for @algorithm, :url => { :controller => "admin/algorithms", :action=>"update", :id=>@algorithm.id } do |f| %>
   <%= f.error_messages %>
 
   <p>
