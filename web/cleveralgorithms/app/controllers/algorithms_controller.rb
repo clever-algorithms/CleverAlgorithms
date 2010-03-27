@@ -1,3 +1,6 @@
+require 'net/http'
+require 'uri'
+
 class AlgorithmsController < ApplicationController
   # GET /algorithms
   # GET /algorithms.xml
@@ -15,16 +18,31 @@ class AlgorithmsController < ApplicationController
   def show
     name = params[:name].gsub('+', ' ')
     @algorithm = Algorithm.find_by_name(name)
-    if @algorithm.nil?
-      @algorithm = Algorithm.find(name)
-      # redirect_to(:action=>"show", :name=>@algorithm.name)
-    end
+    # if @algorithm.nil?
+    #   @algorithm = Algorithm.find(name)
+    #   # redirect_to(:action=>"show", :name=>@algorithm.name)
+    # end
     
+    @filedata = download(@algorithm.code_file)
+    if !@filedata.nil?
+      @filedata = @filedata.strip
+      # todo think about stripping the comment
+    end
 
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @algorithm }
     end
+  end
+  
+  private 
+  
+  def download(source_address)
+    url = URI.parse(source_address)
+    http = Net::HTTP.new(url.host, url.port)
+    resp, data = http.request_get(url.path, {})
+    return nil if resp.code.to_i < 200 or resp.code.to_i > 299
+    return data
   end
 
 end

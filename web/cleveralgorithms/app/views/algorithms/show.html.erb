@@ -5,6 +5,9 @@
 <% content_for :script do %>
 	<%= javascript_include_tag 'prettify' %>
 <% end %>
+<% content_for :body_tag do %>
+	<%= "onload='prettyPrint()'" %>
+<% end %>
 
 <div class="algorithm">
 	<div class="algorithm_title">
@@ -49,19 +52,14 @@
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
 		<%=h @algorithm.code %>
-		
-		<%= link_to "see", "http://google-code-prettify.googlecode.com/svn/trunk/README.html" %>
-		
-		<div code="prettyprint lang-cpp">
-			class Voila {
-			public:
-			  // Voila
-			  static const string VOILA = "Voila";
 
-			  // will not interfere with embedded tags.
-			}
-		</div>
-		<br />
+<pre class="prettyprint lang-rb">
+<% if @filedata.nil? -%>
+Source file could not be located
+<% else -%>
+<%= @filedata -%>
+<% end -%>
+</pre>		
 		<div class="download">
 			<%= link_to "Download", @algorithm.code_file %>
 		</div>
