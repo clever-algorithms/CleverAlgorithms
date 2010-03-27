@@ -22,40 +22,45 @@
 	
 	<div class="algorithm_subheading">Taxonomy</div>
 	<div class="algorithm_taxonomy">		
-		<%=h @algorithm.taxonomy %>
+		<%=make_paragraphs @algorithm.taxonomy %>
 	</div>
 	
 	<% if !@algorithm.inspiration.empty? %>
 	<div class="algorithm_subheading">Inspiration</div>
 	<div class="algorithm_inspiration">
-		<%=h @algorithm.inspiration %>
+		<%=make_paragraphs @algorithm.inspiration %>
 	</div>
 	<% end %>
 	
 	<% if !@algorithm.metaphor.empty? %>
 	<div class="algorithm_subheading">Metaphor</div>
 	<div class="algorithm_metaphor">
-		<%=h @algorithm.metaphor %>
+		<%=make_paragraphs @algorithm.metaphor %>
 	</div>
 	<% end %>
 	
 	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
-		<%=h @algorithm.strategy %>
+		<%=make_paragraphs @algorithm.strategy %>
 	</div>
 	
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
-		<%=h @algorithm.procedure %>
+		<%=make_paragraphs @algorithm.procedure %>
+	</div>
+	
+	<div class="algorithm_subheading">Heuristics</div>
+	<div class="algorithm_heuristics">
+		<%=make_paragraphs @algorithm.heuristics %>
 	</div>
 	
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
-		<%=h @algorithm.code %>
+		<%=make_paragraphs @algorithm.code %>
 
 <pre class="prettyprint lang-rb">
 <% if @filedata.nil? -%>
-Source file could not be located
+Sorry, the source file could not be located.
 <% else -%>
 <%= @filedata -%>
 <% end -%>
@@ -67,7 +72,7 @@ Source file could not be located
 	
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
-		<%=h @algorithm.references %>
+		<%=make_paragraphs @algorithm.references %>
 	</div>
 </div>
 

@@ -1,24 +1,31 @@
-<h1>Manage Algorithms</h1>
+<% title("Manage Algorithms") %>
 
-<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
-<%= link_to "Back", admin_panel_path %>
+<div class="subtitle">Manage Algorithms</div>
 
-<table>
-  <tr>
-    <th>Name</th>
-  </tr>
+<div class="text">
+	There are <strong><%=h @algorithms.size %> algorithms</strong> described in the Clever Algorithms project.
+</div>
 
-<% @algorithms.each do |a| %>
-  <tr>
-    <td><%=h a.name %></td>
-    <td><%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %></td>
-    <td><%= link_to 'Delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %></td>
-  </tr>
-<% end %>
-</table>
+<div class="manage_controls">
+	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+	<%= link_to "Back", admin_panel_path %>
+</div>
 
-<br />
+<div class="algorithm_list">
+	<% @algorithms.each do |a| %>
+		<div class="algorithm_item">
+			<span style="width:700px;"><%= link_to a.name, a %></span>
+			<span>
+				<%= link_to 'edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> |
+				<%= link_to 'delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %>
+			</span>
+		</div>		
+	<% end %>
+</div>
 
-<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
-<%= link_to "Back", admin_panel_path %>
+<div class="manage_controls">
+	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+	<%= link_to "Back", admin_panel_path %>
+</div>
+
 

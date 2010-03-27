@@ -82,7 +82,12 @@ div.subtitle {
 	font-size: 20px;
 	margin-bottom: 20px;
 }
-
+div.subsubtitle {
+	color: black;
+	font-size: 15px;
+	margin-bottom: 15px;
+	font-variant: small-caps;
+}
 div.text {
 	margin-bottom: 10px;
 }

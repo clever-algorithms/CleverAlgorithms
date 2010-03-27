@@ -1,14 +1,28 @@
-<h2>Welcome to the admin interface</h2>
+<% title("Administration Panel") %>
 
+<div class="subtitle">Administration Panel</div>
+
+
+<div class="subsubtitle">Algorithms</div>
 <ul>
-	<li><%= link_to "Manage Algorithms", :controller => "admin/algorithms", :action => "index" %></li>
-	<li><%= link_to "about math", "http://mathcache.appspot.com/static/docs.html" %></li>
+	<li><%= link_to "Manage Algorithms", :controller=>"admin/algorithms", :action=>"index" %></li>
+	<li><%= link_to "New Algorithm", :controller=>"admin/algorithms", :action=>"new" %></li>
 </ul>
 
-site overview...things like
+<div class="subsubtitle">Useful Links</div>
+<ul>
+	<li><%= link_to "W3Schools CSS Tutorial", "http://www.w3schools.com/css/default.asp" %></li>
+	<li><%= link_to "Javascript code prettifier", "http://google-code-prettify.googlecode.com/svn/trunk/README.html" %></li>
+	<li><%= link_to "Embedding math with replacemath.js", "http://mathcache.appspot.com/static/docs.html" %></li>
+</ul>
+
+
+<div class="subsubtitle">todo...</div>
 <ul>
 	<li>most popular algorithms today, last 7 days, last 30 days, forever</li>
 	<li>most requested algorithm...</li>
 	<li>recent requests...</li>
 	<li>recent suggestions...</li>
 </ul>
+
+
