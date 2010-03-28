@@ -7,14 +7,61 @@ The Clever Algorithms project is an effort to describe a large number of algorit
 </div>
 
 <div class="about">
-	The title of the book is: <strong><%= book_title %></strong>
+	<p>
+	The title of the book is: <strong><%= book_title %></strong>.
+	</p>
+	
+	<p>
+	The expected launch date is <em>late 2010</em>.
+	</p>
+	
+	<p>
+	The book will by published through <a href="http://www.lulu.com">LuLu.com</a> and be available through Amazon and all good book stores. It shall be released as a PDF e-book and paperback. The contents of the book are freely available online at <%= link_to site_name, site_url %>.
+	</p>
+	<br />
 </div>
 
-<ul>
-	<li><%= link_to "Buy the PDF from Lulu now!", "" %></li>
-	<li><%= link_to "Buy the paper back from Lulu now!", "" %></li>
-	<li><%= link_to "Buy the hard back from Lulu now!", "" %></li>
-	<li><%= link_to "Buy the paper back from Amazon now!", "" %></li>
-</ul>
+<div class="subsubtitle">Notification of Book Launch</div>
+<div class="notification">
+	<p>
+	Do you want to be notified when the book is launched? 
+	</p>
+	<p>
+	<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>
+	<%= f.error_messages %>
+	<%= f.label :email %>
+	<%= f.text_field :email, :size=>40 %>
+	<%= f.submit 'Notify Me!' %>
+	<% end %>		
+	<small>* We promise to use your email responsibly. No spam.</small>
+	</p>
+	<br />
+</div>
+
+<div class="subsubtitle">Table of Contents</div>
+<div class="toc">
+	<ol>
+		<li>Background</li>
+		<ol>
+			<li>Introduction</li>
+		</ol>
+		
+		<li>Algorithms</li>
+		<ol>
+			<li>Stochastic Algorithms</li>
+			<li>Physical Algorithms</li>
+			<li>Evolutionary Algorithms</li>
+			<li>Probabilistic Algorithms</li>
+			<li>Swarm Algorithms</li>
+			<li>Immune Algorithms</li>
+		</ol>
+		
+		<li>Extensions</li>
+		<ol>
+			<li>Advanced Topics</li>
+		</ol>
+	</ol>
+</div>
+
 
 

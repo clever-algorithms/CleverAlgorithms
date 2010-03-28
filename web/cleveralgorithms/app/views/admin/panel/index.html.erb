@@ -9,6 +9,14 @@
 	<li><%= link_to "New Algorithm", :controller=>"admin/algorithms", :action=>"new" %></li>
 </ul>
 
+
+<div class="subsubtitle">Site Health</div>
+<ul>
+	<li>There are <strong><%= total_algorithms %></strong> algorithms.</li>
+	<li>There have been <strong><%= total_email_notifications_last_day %></strong> notification sign-up's today, <strong><%= total_email_notifications_last_week %></strong> this week, and <strong><%= total_email_notifications %></strong> for all time.</li>
+</ul>
+
+
 <div class="subsubtitle">Useful Links</div>
 <ul>
 	<li><%= link_to "W3Schools CSS Tutorial", "http://www.w3schools.com/css/default.asp" %></li>
