@@ -30,29 +30,9 @@ module AlgorithmsHelper
       ref = s[0...first]
       rs<<"[<a href='##{ref}'>#{ref}</a>]"
       rs << s[first+1..s.length]
-    end
-    
+    end    
     return rs
   end
-  
-  # works - makes a list
-  
-  # def make_bibliography(content)
-  #   paragraphs = content.split("\n")
-  #   new_content = ""
-  #   new_content << "<ul>"
-  #   paragraphs.each do |p|
-  #     index = p.index(':')
-  #     link, ref = p[0...index], p[index+1..p.length]      
-  #     new_content << "<li>"
-  #     new_content << "<a name='#{link}'></a>"
-  #     new_content << "[#{link}] : "
-  #     new_content << ref
-  #     new_content << "</li>"
-  #   end
-  #    new_content << "</ul>"
-  #   return new_content
-  # end
   
   # make a table  
   def make_bibliography(content)
@@ -82,7 +62,6 @@ module AlgorithmsHelper
     end  
     return content
   end
-  
   
   def make_links(content)
     paragraphs = content.split("\n")
