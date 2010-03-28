@@ -27,8 +27,8 @@ class AlgorithmsController < ApplicationController
     @filedata = download(@algorithm.code_file)
     if !@filedata.nil?
       @filedata = @filedata.strip
-      # split = @filedata.split('\n')
-      # @filedata = split[7..split.length].join('\n')
+      split = @filedata.split("\n")
+      @filedata = split[6...split.length].join("\n")
     end
 
     respond_to do |format|

@@ -28,7 +28,7 @@ module AlgorithmsHelper
       rs << s and next if i == 0
       first = s.index('}')      
       ref = s[0...first]
-      rs<<"(<a href='##{ref}'>#{ref}</a>)"
+      rs<<"[<a href='##{ref}'>#{ref}</a>]"
       rs << s[first+1..s.length]
     end
     
