@@ -33,6 +33,7 @@
 			<%= link_to "Heuristics", '#algorithm_heuristics' %> |
 			<%= link_to "Code Listing", '#algorithm_code' %> |
 			<%= link_to "References", '#algorithm_references' %> |
+			<%= link_to "Around the Web", '#algorithm_web' %> |
 			<%= link_to "Bibliography", '#algorithm_bibliography' %> 
 		</div>
 	</div>
@@ -98,6 +99,12 @@ Sorry, the source file could not be located.
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
 		<%=make_paragraphs @algorithm.references %>
+	</div>
+	
+	<a name="algorithm_web"></a>
+	<div class="algorithm_subheading">Around the Web</div>
+	<div class="algorithm_web">
+		<%=make_links @algorithm.web %>
 	</div>
 	
 	<a name="algorithm_bibliography"></a>

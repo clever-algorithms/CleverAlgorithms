@@ -13,6 +13,7 @@ class CreateAlgorithms < ActiveRecord::Migration
       t.string :code_file
       t.text :references
       t.text :bibliography
+      t.text :web
       
       t.timestamps
     end

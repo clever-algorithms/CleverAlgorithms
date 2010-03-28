@@ -52,4 +52,19 @@ module AlgorithmsHelper
     return new_content
   end
   
+  def make_links(content)
+    paragraphs = content.split("\n")
+    new_content = ""
+    new_content << "<ul>"
+    paragraphs.each do |p|
+      index = p.index('$')
+      text, link = p[0...index], p[index+1..p.length]
+      new_content << "<li>"
+      new_content << "<a href='#{link}'>#{text}</a>"
+      new_content << "</li>"
+    end
+     new_content << "</ul>"
+    return new_content
+  end
+  
 end

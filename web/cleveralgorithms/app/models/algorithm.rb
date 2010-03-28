@@ -15,6 +15,7 @@ class Algorithm < ActiveRecord::Base
   validates_presence_of :code_file, :message=>"code_file must be provided"
   validates_presence_of :references, :message=>"references must be provided"
   validates_presence_of :bibliography, :message=>"bibliography must be provided"
+  validates_presence_of :web, :message=>"web must be provided"
   
   def to_param  # overridden
     name.sub(' ', '+')
