@@ -54,8 +54,7 @@ module AlgorithmsHelper
   #   return new_content
   # end
   
-  # make a table
-  
+  # make a table  
   def make_bibliography(content)
     paragraphs = content.split("\n")
     new_content = ""
@@ -65,11 +64,22 @@ module AlgorithmsHelper
       link, ref = p[0...index], p[index+1..p.length]      
       new_content << "<tr>"
       new_content << "<td><a name='#{link}'></a>[#{link}]</td>"
-      new_content << "<td>#{ref}</td>"
+      new_content << "<td>#{process_reference_link_name(ref)}</td>"
       new_content << "</tr>"
     end
      new_content << "</table>"
     return new_content
+  end
+  
+  def process_reference_link_name(ref)
+    split = ref.split('.')
+    content = ""
+    split.each_with_index do |p, i|
+      next if p.empty? or p.strip.empty?
+      content << "#{p}." and next if i != split.length-3
+      content << " <a href=''>#{p.strip}</a>."
+    end  
+    return content
   end
   
   
