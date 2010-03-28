@@ -135,6 +135,15 @@ table.algorithm_fields, th {
 	vertical-align:top;
 }
 
+table.algorithm_bibliography_table, td {
+	text-align: left;
+	vertical-align:top;
+	padding: 0px 0px 12px 0px;
+}
+
+
+
+
 div.algorithm_footer {
 	margin-top: 50px;
 	font-size: 11px;
