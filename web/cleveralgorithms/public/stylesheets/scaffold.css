@@ -109,9 +109,15 @@ div.algorithm_subheading {
 	font-variant: small-caps;
 	font-size: 13pt;
 	color: black;
+	background-color: #eee;
 }
 div.algorithm_title{	
 	margin-bottom: 20px;
+	background-color: #eee;
+}
+div.algorithm_menu {
+	margin-top: 10px;
+	font-size: 80%;
 }
 div.algorithm_name {
 	color: black;

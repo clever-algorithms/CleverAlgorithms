@@ -11,22 +11,40 @@
 <% end %>
 
 <div class="algorithm">
+	<a name="algorithm_name"></a>
 	<div class="algorithm_title">
-		<div class="algorithm_name">
+		<div class="algorithm_name">			
 			<%=h @algorithm.name %>
 		</div>
 		<div class="algorithm_aliases">
 			<%=h @algorithm.aliases %>
 		</div>		
+		<div class="algorithm_menu">
+			<%= link_to "Name", '#algorithm_name' %> |
+			<%= link_to "Taxonomy", '#algorithm_taxonomy' %> |
+			<% if !@algorithm.inspiration.empty? %>
+				<%= link_to "Inspiration", '#algorithm_inspiration' %> |
+			<% end %>
+			<% if !@algorithm.metaphor.empty? %>
+				<%= link_to "Metaphor", '#algorithm_metaphor' %> |
+			<% end %>
+			<%= link_to "Strategy", '#algorithm_strategy' %> |
+			<%= link_to "Procedure", '#algorithm_procedure' %> |
+			<%= link_to "Heuristics", '#algorithm_heuristics' %> |
+			<%= link_to "Code Listing", '#algorithm_code' %> |
+			<%= link_to "References", '#algorithm_references' %> |
+			<%= link_to "Bibliography", '#algorithm_bibliography' %> 
+		</div>
 	</div>
 
-	
-	<div class="algorithm_subheading">Taxonomy</div>
+	<a name="algorithm_taxonomy"></a>
+	<div class="algorithm_subheading">Taxonomy</div>	
 	<div class="algorithm_taxonomy">		
 		<%=make_paragraphs @algorithm.taxonomy %>
 	</div>
 	
 	<% if !@algorithm.inspiration.empty? %>
+	<a name="algorithm_inspiration"></a>
 	<div class="algorithm_subheading">Inspiration</div>
 	<div class="algorithm_inspiration">
 		<%=make_paragraphs @algorithm.inspiration %>
@@ -34,27 +52,32 @@
 	<% end %>
 	
 	<% if !@algorithm.metaphor.empty? %>
+	<a name="algorithm_metaphor"></a>
 	<div class="algorithm_subheading">Metaphor</div>
 	<div class="algorithm_metaphor">
 		<%=make_paragraphs @algorithm.metaphor %>
 	</div>
 	<% end %>
 	
+	<a name="algorithm_strategy"></a>
 	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
 		<%=make_paragraphs @algorithm.strategy %>
 	</div>
 	
+	<a name="algorithm_procedure"></a>
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
 		<%=make_paragraphs @algorithm.procedure %>
 	</div>
 	
+	<a name="algorithm_heuristics"></a>
 	<div class="algorithm_subheading">Heuristics</div>
 	<div class="algorithm_heuristics">
 		<%=make_unorded_list @algorithm.heuristics %>
 	</div>
 	
+	<a name="algorithm_code"></a>
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
 		<%=make_paragraphs @algorithm.code %>
@@ -67,14 +90,17 @@ Sorry, the source file could not be located.
 <% end -%>
 </pre>		
 		<div class="download">
-			<%= link_to "Download #{@filename}", @algorithm.code_file %>
+			Download: <%= link_to "#{@filename}", @algorithm.code_file %>
 		</div>
 	</div>
 	
+	<a name="algorithm_references">
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
 		<%=make_paragraphs @algorithm.references %>
 	</div>
+	
+	<a name="algorithm_bibliography">
 	<div class="algorithm_subheading">Bibliography</div>
 	<div class="algorithm_bibliography">
 		N/A
