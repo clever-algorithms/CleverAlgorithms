@@ -72,12 +72,13 @@ module AlgorithmsHelper
   end
   
   def process_reference_link_name(ref)
-    split = ref.split('.')
+    split = ref.strip.split('.')
     content = ""
     split.each_with_index do |p, i|
       next if p.empty? or p.strip.empty?
-      content << "#{p}." and next if i != split.length-3
-      content << " <a href=''>#{p.strip}</a>."
+      content << "#{p}." and next if i != split.length-2
+      name = p.strip
+      content << " <a href='http://scholar.google.com/scholar?q=#{name}'>#{name}</a>."
     end  
     return content
   end
