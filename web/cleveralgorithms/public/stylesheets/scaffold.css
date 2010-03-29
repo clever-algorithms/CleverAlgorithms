@@ -1,9 +1,13 @@
-body { background-color: #fff; color: #333; }
+body { 
+	background-color: #fff; color: #333; 
+	padding: 0px 0px 0px 0px;
+	margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px;
+}
 
 body, p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
   font-size:   13px;
-  line-height: 18px;
+  line-height: 18px;  
 }
 
 pre {
@@ -55,7 +59,7 @@ a:hover { color: #fff; background-color:#000; }
 div.flash { color: green; }
 
 div.head {
-	background-color: #eee;
+	background-color: #A9D0F5;
 	margin-bottom: 20px;
 }
 div.menu {
@@ -141,7 +145,9 @@ table.algorithm_bibliography_table, td {
 	padding: 0px 0px 12px 0px;
 }
 
-
+p.book_description {
+	font-size: 111%;
+}
 
 
 div.algorithm_footer {

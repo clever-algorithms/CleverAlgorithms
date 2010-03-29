@@ -21,6 +21,10 @@ module ApplicationHelper
     "Clever Algorithms: Modern Artificial Intelligence Recipes"
   end
   
+  def book_author
+    "Jason Brownlee"
+  end
+  
   # title convention used in the sute
   def title(page_title=nil)
     if !page_title.nil?

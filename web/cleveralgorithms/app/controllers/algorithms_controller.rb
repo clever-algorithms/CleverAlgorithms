@@ -18,17 +18,14 @@ class AlgorithmsController < ApplicationController
   def show
     name = params[:name].gsub('+', ' ')
     @algorithm = Algorithm.find_by_name(name)
-    # if @algorithm.nil?
-    #   @algorithm = Algorithm.find(name)
-    #   # redirect_to(:action=>"show", :name=>@algorithm.name)
-    # end
-    
-    @filename = get_filename(@algorithm.code_file)
-    @filedata = download(@algorithm.code_file)
-    if !@filedata.nil?
-      @filedata = @filedata.strip
-      split = @filedata.split("\n")
-      @filedata = split[6...split.length].join("\n")
+    if !@algorithm.code_file.blank? and @algorithm.code_file != "N/A"
+      @filename = get_filename(@algorithm.code_file)
+      @filedata = download(@algorithm.code_file)
+      if !@filedata.nil?
+        @filedata = @filedata.strip
+        split = @filedata.split("\n")
+        @filedata = split[6...split.length].join("\n")
+      end
     end
 
     respond_to do |format|

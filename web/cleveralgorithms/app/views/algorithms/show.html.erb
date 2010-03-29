@@ -17,7 +17,11 @@
 			<%=h @algorithm.name %>
 		</div>
 		<div class="algorithm_aliases">
-			<%=h @algorithm.aliases %>
+			<% if @algorithm.aliases == "N/A" %>
+				Coming soon.
+			<% else %>
+				<%=h @algorithm.aliases %>
+			<% end %>
 		</div>		
 		<div class="algorithm_menu">
 			<%= link_to "Name", '#algorithm_name' %> |
@@ -43,50 +47,74 @@
 	<a name="algorithm_taxonomy"></a>
 	<div class="algorithm_subheading">Taxonomy</div>	
 	<div class="algorithm_taxonomy">		
-		<%=make_paragraphs @algorithm.taxonomy %>
+		<% if @algorithm.taxonomy == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.taxonomy %>
+		<% end %>
 	</div>
 	
-	<% if !@algorithm.inspiration.empty? %>
+	<% if !@algorithm.inspiration.nil? %>
 	<a name="algorithm_inspiration"></a>
 	<div class="algorithm_subheading">Inspiration</div>
 	<div class="algorithm_inspiration">
-		<%=make_paragraphs @algorithm.inspiration %>
+		<% if @algorithm.inspiration == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.inspiration %>
+		<% end %>
 	</div>
 	<% end %>
 	
-	<% if !@algorithm.metaphor.empty? %>
+	<% if !@algorithm.metaphor.nil? %>
 	<a name="algorithm_metaphor"></a>
 	<div class="algorithm_subheading">Metaphor</div>
 	<div class="algorithm_metaphor">
-		<%=make_paragraphs @algorithm.metaphor %>
+		<% if @algorithm.metaphor == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.metaphor %>
+		<% end %>
 	</div>
 	<% end %>
 	
 	<a name="algorithm_strategy"></a>
 	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
-		<%=make_paragraphs @algorithm.strategy %>
+		<% if @algorithm.strategy == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.strategy %>
+		<% end %>
 	</div>
 	
-	<% if false %>
 	<a name="algorithm_procedure"></a>
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
-		<%=make_paragraphs @algorithm.procedure %>
+		<% if @algorithm.procedure == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.procedure %>
+		<% end %>
 	</div>
-	<% end %>
 	
 	<a name="algorithm_heuristics"></a>
 	<div class="algorithm_subheading">Heuristics</div>
 	<div class="algorithm_heuristics">
-		<%=make_unorded_list @algorithm.heuristics %>
+		<% if @algorithm.heuristics == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_unorded_list @algorithm.heuristics %>
+		<% end %>		
 	</div>
 	
 	<a name="algorithm_code"></a>
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
-		<%=make_paragraphs @algorithm.code %>
-
+		<% if @algorithm.code == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.code %>
 <pre class="prettyprint lang-rb">
 <% if @filedata.nil? -%>
 Sorry, the source file could not be located.
@@ -98,23 +126,36 @@ Sorry, the source file could not be located.
 			Download: <%= link_to "#{@filename}", @algorithm.code_file %>
 		</div>
 	</div>
+		<% end %>
 	
 	<a name="algorithm_references"></a>
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
-		<%=make_paragraphs @algorithm.references %>
+		<% if @algorithm.references == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_paragraphs @algorithm.references %>
+		<% end %>				
 	</div>
 	
 	<a name="algorithm_web"></a>
 	<div class="algorithm_subheading">Around the Web</div>
 	<div class="algorithm_web">
-		<%=make_links @algorithm.web %>
+		<% if @algorithm.web == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_links @algorithm.web %>
+		<% end %>				
 	</div>
 	
 	<a name="algorithm_bibliography"></a>
 	<div class="algorithm_subheading">Bibliography</div>
 	<div class="algorithm_bibliography">
-		<%=make_bibliography @algorithm.bibliography %>
+		<% if @algorithm.bibliography == "N/A" %>
+			Coming soon.
+		<% else %>
+			<%=make_bibliography @algorithm.bibliography %>
+		<% end %>	
 	</div>
 </div>
 

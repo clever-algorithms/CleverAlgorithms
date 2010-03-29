@@ -2,7 +2,7 @@ ActionController::Routing::Routes.draw do |map|
   
   
   # algorithms
-  map.connect 'a/:name', :controller => 'algorithms', :action => 'show'
+  map.connect "a/:name", :controller => 'algorithms', :action => 'show'
   map.resources :algorithms, :as=>"a"
   
   # book
