@@ -75,31 +75,17 @@ Differential Evolution is a Global Optimization algorithm and is an instance of 
 % What are the closely related approaches to a technique?
 It is related to sibling Evolutionary Algorithms such as the Genetic Algorithm and Evolutionary Programming, and Evolution Strategies, and shows some similarities to Particle Swarm Optimization.
 
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\section{Inspiration}
-\label{sec:inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-todo
-
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\section{Metaphor}
-\label{sec:metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
-
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+
+The Differential Evolution algorithm involves maintaining a population of candidate solutions that under go generations of recombination, evaluation, and selection. The recombination strategy is quite different to similar evolutionary algorithms involving the creation of new candidate solution components based on the weighted difference between two randomly selected population members added to a third population member (so-called classic DE). This approach perturbs population members relative relative to the spread of the broader population. In conjunction with selection, the perturbation effect self-organizes or bound the resampling of the problem space to known areas of interest.
+
+extracts direction and distance information from the population, indirectly
+
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -108,7 +94,52 @@ todo
 % What is the computational recipe for a technique?
 
 % What are the data structures and representations used in a technique?
-nomenclature... 
+The algorithm as a specialized nomenclature for each variation of the technique describing the specifics of the configuration used in the variation. This takes the form of DE/x/y/z, where x represents the solution to be perturbed such a random or best (in the population). The y signifies the number of difference vectors used in the perturbation of x, where a difference vectors is essentially the difference between two randomly selected although distinct members of the population. Finally, z signifies the recombination operator performed such as bin for binomial and exp for exponential. 
+
+The classical DE is noted as DE/rand/1/bin, where as variation of this approach that creates new solutions as perturbations of the best solution in the generation is noted as DE/best/1/bin.
+
+
+Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the Differential Evolution algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Member}{$P_{i}$}
+	\SetKwData{Population}{Population}
+	
+	\SetKwData{PopulationSize}{G}
+	\SetKwData{NumParameters}{NP}
+	\SetKwData{WeightingFactor}{F}
+	\SetKwData{CrossoverRate}{CR}
+	
+	% functions
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{InitializePopulation}{InitializePopulation}
+	\SetKwFunction{EvaluateCost}{EvaluateCost}
+	\SetKwFunction{GetBestSolution}{GetBestSolution}
+  
+	% I/O
+	\KwIn{\PopulationSize, \NumParameters, \WeightingFactor, \CrossoverRate}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \NumParameters}\;
+	% evaluate
+	\EvaluateCost{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		
+		
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Differential Evolution algorithm.}
+	\label{alg:differential_evolution}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -117,7 +148,18 @@ nomenclature...
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The number of parents (NP) should be 10 times the number of parameters being optimized
+	\item Use a weighting factor (F) of 0.8
+	\item Use a crossover rate (CR) of 0.9
+	\item Initialize new vectors anywhere in the valid search space
+	\item Increase to NP should decrease F and vice-versa
+	\item Higher crossover for DE/rand/1/bin than for DE/rand/1/exp
+	\item CR and F almost always in [0.5, 1.0]
+	\item Common approaches: DE/rand/1/ DE/best/2/
+	
+	\item designed for nonlinear, non-differentiable continuous function optimization
+	\item initialize with a random population
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -125,7 +167,14 @@ nomenclature...
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{differential_evolution} provides an example of the Differential Evolution algorithm implemented in the Ruby Programming Language.
+% problem
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+% algorithm
+The algorithm...
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Differential Evolution algorithm in the Ruby Programming Language, label=differential_evolution]{../../src/algorithms/evolutionary/differential_evolution.rb}
 
 
 % References: Deeper understanding
@@ -139,9 +188,10 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-
-seminal was a tech report by Storn and Price \cite{Storn1995} later published as a journal article \cite{Storn1997}
-
+% seminal
+The Differential Evolution algorithm was presented by Storn and Price in a technical report that considered DE1 and DE2 variants of the approach applied to a suite of continuous function optimization problems  \cite{Storn1995}. A revised version of the technical report was later published as a journal article \cite{Storn1997}. 
+% early papers, maturation
+An early paper by Storn applied the approach to the optimization of an IIR-filter (Infinite Impulse Response) \cite{Storn1996a}. A second early paper applied the approach to a second suite of benchmark problem instances, adopting the contemporary nomenclature for describing the approach, including the DE/rand/1 and DE/best/2 variations \cite{Storn1996b}.
 
 
 % 
@@ -149,20 +199,9 @@ seminal was a tech report by Storn and Price \cite{Storn1995} later published as
 % 
 \subsection{Learn More}
 % historical reviews
-
-
-nice overview \cite{Price1997}
-
-good overview of application to func opt \cite{Storn1996}
-
-
-books
-great intro chapter in \cite{Price1999}
-
-2005 book \cite{Price2005} - technique in depth, benchmarks, sample code, application samples
-
-2008 technical book \cite{Chakraborty2008}, review and extensions to address complexities such as stopping criteria, rotation invariance 
-
+A classical overview of Differential Evolution is presented by Price and Storn \cite{Price1997}, and terse introduction to the approach for function optimization is presented by Storn \cite{Storn1996}. A seminal extended description of the algorithm with sample applications was presented by Storn and Price as a book chapter \cite{Price1999}.
+% books
+Price, Storn, and Lampinen release a contemporary book dedicated to Differential Evolution including theory, benchmarks, sample code and numerous application demonstrations \cite{Price2005}. Chakraborty also released a book considering extensions to the approach to address complexities such as rotation invariance and stopping criteria  \cite{Chakraborty2008}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
