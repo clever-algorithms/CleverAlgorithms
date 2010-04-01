@@ -4,75 +4,66 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def onemax(bitstring)
-  sum = 0
-  bitstring.each_char {|x| sum+=1 if x=='1'}
-  return sum
+def objective_function(vector)
+  return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
-end
-
-def point_mutation(bitstring, prob_mutation)
-  child = ""
-  bitstring.size.times do |i|
-    bit = bitstring[i]
-    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+def random_vector(problem_size, search_space)
+  return Array.new(problem_size) do |i|      
+    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
-  return child
 end
 
-def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1[:bitstring] if rand()<p_crossover
-  child = ""
-  parent1[:bitstring].size.times do |i| 
-    child << ((rand()<0.5) ? parent1[:bitstring][i] : parent2[:bitstring][i])
+def new_sample(p0, p1, p2, p3, f, cr, search_space)
+  length = p0[:vector].length
+  sample = {}
+  sample[:vector] = []
+  cut = rand(length-1) + 1
+  length.times do |i|
+    if (i==cut or rand() < cr)
+      v = p3[:vector][i] + f * (p1[:vector][i] - p2[:vector][i])
+      v = search_space[i][0] if v < search_space[i][0]
+      v = search_space[i][1] if v > search_space[i][1]
+      sample[:vector] << v
+    else
+      sample[:vector] << p0[:vector][i]
+    end
   end
-  return child
+  return sample
 end
 
-def reproduce(selected, population_size, p_crossover, p_mutation)
-  children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
-    child = {}
-    child[:bitstring] = uniform_crossover(p1, p2, p_crossover)
-    child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
-    children << child
-  end
-  return children
-end
-
-def random_bitstring(num_bits)
-  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
-end
-
-def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-  population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(num_bits), :fitness=>0}
-  end
-  population.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  while best[:fitness]!=num_bits and gen<max_generations
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover, p_mutation)    
-    children.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
-    population = children
-    gen += 1
-    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
+def search(max_generations, np, search_space, g, f, cr)
+  pop = Array.new(g) {|i| {:vector=>random_vector(np, search_space)} }
+  pop.each{|c| c[:cost] = objective_function(c[:vector])}
+  gen, best = 0, pop.sort{|x,y| x[:cost] <=> y[:cost]}.first  
+  max_generations.times do |gen|
+    samples = []
+    pop.each_with_index do |p0, i|
+      p1 = p2 = p3 = -1
+      p1 = rand(pop.length) until p1!=i
+      p2 = rand(pop.length) until p2!=i and p2!=p1
+      p3 = rand(pop.length) until p3!=i and p3!=p1 and p3!=p2
+      samples << new_sample(p0, pop[p1], pop[p2], pop[p3], f, cr, search_space)
+    end
+    samples.each{|c| c[:cost] = objective_function(c[:vector])}
+    nextgen = Array.new(g) do |i| 
+      (samples[i][:cost]<=pop[i][:cost]) ? samples[i] : pop[i]
+    end
+    pop = nextgen    
+    pop.sort{|x,y| x[:cost] <=> y[:cost]}
+    best = pop.first if pop.first[:cost] < best[:cost]
+    puts " > gen #{gen+1}, fitness=#{best[:cost]}"
   end  
   return best
 end
 
-max_generations = 100
-population_size = 100
-num_bits = 64
-p_crossover = 0.98
-p_mutation = 1.0/num_bits
 
-best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+problem_size = 3
+max_generations = 200
+pop_size = 10*problem_size
+weighting_factor = 0.8
+crossover_factor = 0.9
+search_space = Array.new(problem_size) {|i| [-5, +5]}
+
+best = search(max_generations, problem_size, search_space, pop_size, weighting_factor, crossover_factor)
+puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"

@@ -71,7 +71,7 @@ Differential Evolution, DE
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-Differential Evolution is a Global Optimization algorithm and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
+Differential Evolution is a Stochastic Direct Search and Global Optimization algorithm, and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
 It is related to sibling Evolutionary Algorithms such as the Genetic Algorithm and Evolutionary Programming, and Evolution Strategies, and shows some similarities to Particle Swarm Optimization.
 
@@ -91,15 +91,11 @@ extracts direction and distance information from the population, indirectly
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-% What is the computational recipe for a technique?
-
 % What are the data structures and representations used in a technique?
-The algorithm as a specialized nomenclature for each variation of the technique describing the specifics of the configuration used in the variation. This takes the form of DE/x/y/z, where x represents the solution to be perturbed such a random or best (in the population). The y signifies the number of difference vectors used in the perturbation of x, where a difference vectors is essentially the difference between two randomly selected although distinct members of the population. Finally, z signifies the recombination operator performed such as bin for binomial and exp for exponential. 
+Differential Evolution as a specialized nomenclature that describes the adopted configuration. This takes the form of DE$/x/y/z$, where $x$ represents the solution to be perturbed (such a random or best). The $y$ signifies the number of difference vectors used in the perturbation of $x$, where a difference vectors is the difference between two randomly selected although distinct members of the population. Finally, $z$ signifies the recombination operator performed such as bin for binomial and exp for exponential. 
 
-The classical DE is noted as DE/rand/1/bin, where as variation of this approach that creates new solutions as perturbations of the best solution in the generation is noted as DE/best/1/bin.
-
-
-Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the Differential Evolution algorithm for minimizing a cost function. 
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/rand/1/bin configuration based on \cite{Storn1997}. 
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -148,17 +144,17 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item Differential evolution was designed for designed for nonlinear, non-differentiable continuous function optimization.
+	\item The weighting factor $F \in [0,2]$ controls the amplification of differential variation, a value of 0.8 is suggested.
+	\item the crossover weight $CR \in [0,1]$ probabilistically controls the amount of recombination, a value of 0.9 is suggested.
+	\item The initial population of candidate solutions should be randomly generated from within the space of valid solutions.
+	\item The popular configurations are DE/rand/1/* and DE/best/2/*. 
+	
+	
 	\item The number of parents (NP) should be 10 times the number of parameters being optimized
-	\item Use a weighting factor (F) of 0.8
-	\item Use a crossover rate (CR) of 0.9
-	\item Initialize new vectors anywhere in the valid search space
 	\item Increase to NP should decrease F and vice-versa
 	\item Higher crossover for DE/rand/1/bin than for DE/rand/1/exp
-	\item CR and F almost always in [0.5, 1.0]
-	\item Common approaches: DE/rand/1/ DE/best/2/
-	
-	\item designed for nonlinear, non-differentiable continuous function optimization
-	\item initialize with a random population
+	4
 	
 \end{itemize}
 
@@ -189,10 +185,11 @@ The algorithm...
 % 
 \subsection{Primary Sources}
 % seminal
-The Differential Evolution algorithm was presented by Storn and Price in a technical report that considered DE1 and DE2 variants of the approach applied to a suite of continuous function optimization problems  \cite{Storn1995}. A revised version of the technical report was later published as a journal article \cite{Storn1997}. 
+The Differential Evolution algorithm was presented by Storn and Price in a technical report that considered DE1 and DE2 variants of the approach applied to a suite of continuous function optimization problems \cite{Storn1995}. 
 % early papers, maturation
 An early paper by Storn applied the approach to the optimization of an IIR-filter (Infinite Impulse Response) \cite{Storn1996a}. A second early paper applied the approach to a second suite of benchmark problem instances, adopting the contemporary nomenclature for describing the approach, including the DE/rand/1 and DE/best/2 variations \cite{Storn1996b}.
-
+% seminal
+The early work including technical reports and conference papers by Storn and Price culminated in a seminal journal article \cite{Storn1997}.
 
 % 
 % Learn More
