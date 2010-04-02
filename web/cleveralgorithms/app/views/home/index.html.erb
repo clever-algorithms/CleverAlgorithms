@@ -29,10 +29,10 @@
 
 
 <a name="random"></a>
-<div class="subsubtitle">Random Algorithm</div>
+<div class="subsubtitle">Random Algorithm: <%= link_to @algorithm.name, @algorithm %></div>
 <div class="text">
 	<p>
-	<%= link_to @algorithm.name, @algorithm -%> <br />
-	<%= @algorithm.strategy -%>
+	<%= truncate(@algorithm.strategy, 200, "...")  %>
+	(<%= link_to "more", @algorithm %>)
 	</p>
 </div>
