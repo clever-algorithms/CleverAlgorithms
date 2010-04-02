@@ -95,7 +95,7 @@ extracts direction and distance information from the population, indirectly
 Differential Evolution as a specialized nomenclature that describes the adopted configuration. This takes the form of DE$/x/y/z$, where $x$ represents the solution to be perturbed (such a random or best). The $y$ signifies the number of difference vectors used in the perturbation of $x$, where a difference vectors is the difference between two randomly selected although distinct members of the population. Finally, $z$ signifies the recombination operator performed such as bin for binomial and exp for exponential. 
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/rand/1/bin configuration based on \cite{Storn1997}. 
+Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/rand/1/bin configuration. Algorithm~\ref{alg:new_sample} provides a pseudo-code listing of the $NewSample$ function from the Differential Evolution algorithm.
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -103,8 +103,9 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	% data
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Member}{$P_{i}$}
+	\SetKwData{Sample}{$S_{i}$}
 	\SetKwData{Population}{Population}
-	
+	\SetKwData{NewPopulation}{NewPopulation}	
 	\SetKwData{PopulationSize}{G}
 	\SetKwData{NumParameters}{NP}
 	\SetKwData{WeightingFactor}{F}
@@ -115,6 +116,8 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\SetKwFunction{InitializePopulation}{InitializePopulation}
 	\SetKwFunction{EvaluateCost}{EvaluateCost}
 	\SetKwFunction{GetBestSolution}{GetBestSolution}
+	\SetKwFunction{NewSample}{NewSample}
+	\SetKwFunction{Cost}{Cost}
   
 	% I/O
 	\KwIn{\PopulationSize, \NumParameters, \WeightingFactor, \CrossoverRate}		
@@ -128,13 +131,75 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		
-		
+		\NewPopulation $\leftarrow 0$\;
+		% create new 
+		\ForEach{\Member $\in$ \Population}{
+			\Sample $\leftarrow$ \NewSample{\Member, \Population, \NumParameters, \WeightingFactor, \CrossoverRate}\;
+			\eIf{\Cost{\Sample} $\leq$ \Cost{\Member}}{
+				\NewPopulation $\leftarrow$ \Sample\;
+			}
+			{
+				\NewPopulation $\leftarrow$ \Member\;
+			}
+		}
+		\Population $\leftarrow$ \NewPopulation\;
+		% eval
+		\EvaluateCost{\Population}\;
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	}
 	\Return{\Best}\;
 	% end
 	\caption{Pseudo Code for the Differential Evolution algorithm.}
 	\label{alg:differential_evolution}
+\end{algorithm}
+
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Membera}{$P_{0}$}
+	\SetKwData{Memberb}{$P_{1}$}
+	\SetKwData{Memberc}{$P_{2}$}
+	\SetKwData{Memberd}{$P_{3}$}
+	\SetKwData{Memberai}{$P0_{i}$}
+	\SetKwData{Memberbi}{$P1_{i}$}
+	\SetKwData{Memberci}{$P2_{i}$}
+	\SetKwData{Memberdi}{$P3_{i}$}
+	\SetKwData{Sample}{$S$}
+	\SetKwData{SampleVar}{$S_{i}$}
+	\SetKwData{Population}{Population}
+	\SetKwData{NumParameters}{NP}
+	\SetKwData{WeightingFactor}{F}
+	\SetKwData{CrossoverRate}{CR}
+	\SetKwData{CutPoint}{CutPoint}
+	
+	% functions
+	\SetKwFunction{RandomMemeber}{RandomMemeber}
+	\SetKwFunction{RandomPosition}{RandomPosition}
+	\SetKwFunction{Rand}{Rand}
+  
+	% I/O
+	\KwIn{\Membera, \Population, \NumParameters, \WeightingFactor, \CrossoverRate}		
+	\KwOut{\Sample}
+  	% Algorithm
+	\Repeat{\Memberb $\neq$ \Membera}{\Memberb $\leftarrow$ \RandomMemeber{\Population}\;}
+	\Repeat{\Memberc $\neq$ \Membera $\vee$ \Memberc $\neq$ \Memberb}{\Memberc $\leftarrow$ \RandomMemeber{\Population}\;}
+	\Repeat{\Memberd $\neq$ \Membera $\vee$ \Memberd $\neq$ \Memberb $\vee$ \Memberd $\neq$ \Memberc}{\Memberd $\leftarrow$ \RandomMemeber{\Population}\;}
+	\CutPoint $\leftarrow$ \RandomPosition{\NumParameters}\;
+	\Sample $\leftarrow0$\;
+	\For{$i$ $\KwTo$ \NumParameters}{
+		\eIf{$i \equiv$  \CutPoint $\wedge$ \Rand{} $<$ \CrossoverRate}{
+			\SampleVar $\leftarrow$ \Memberdi + \WeightingFactor $\times$ (\Memberbi - \Memberci)\;
+		}{
+			\SampleVar $\leftarrow$ \Memberai\;
+		}
+	}
+	
+	\Return{\Sample}\;
+	% end
+	\caption{Pseudo Code for the NewSample function in the Differential Evolution algorithm.}
+	\label{alg:new_sample}
 \end{algorithm}
 
 % Heuristics: Usage guidelines
@@ -149,13 +214,6 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\item the crossover weight $CR \in [0,1]$ probabilistically controls the amount of recombination, a value of 0.9 is suggested.
 	\item The initial population of candidate solutions should be randomly generated from within the space of valid solutions.
 	\item The popular configurations are DE/rand/1/* and DE/best/2/*. 
-	
-	
-	\item The number of parents (NP) should be 10 times the number of parameters being optimized
-	\item Increase to NP should decrease F and vice-versa
-	\item Higher crossover for DE/rand/1/bin than for DE/rand/1/exp
-	4
-	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -167,7 +225,7 @@ Listing~\ref{differential_evolution} provides an example of the Differential Evo
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm...
+The algorithm is an implementation of Differential Evolution with the DE/rand/1/bin configuration proposed by Storn and Price \cite{Storn1997}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Differential Evolution algorithm in the Ruby Programming Language, label=differential_evolution]{../../src/algorithms/evolutionary/differential_evolution.rb}
