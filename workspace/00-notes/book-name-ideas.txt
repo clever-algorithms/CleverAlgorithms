@@ -20,3 +20,6 @@ format: <title>: <subtitle>
 - Clever Algorithms: Metaheuristics Recipes in Ruby
 - Clever Algorithms: A Corpus of Metaheuristics Recipes
 - Clever Algorithms: A Compendium of Metaheuristics Recipes
+- Clever Algorithms: A Jumpstart Guide for Modern Metaheuristics
+- Clever Algorithms: A Jumpstart Guide for Modern Artificial Intelligence
+- Clever Algorithms: Jumpstart Guides for Modern Artificial Intelligence
