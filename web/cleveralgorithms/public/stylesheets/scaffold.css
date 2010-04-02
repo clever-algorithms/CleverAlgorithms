@@ -1,5 +1,5 @@
 body { 
-	background-color: #fff; color: #333; 
+	background-color: #eee; color: #333; 
 	padding: 0px 0px 0px 0px;
 	margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px;
 }
@@ -18,7 +18,7 @@ pre {
 
 a { color: #000; }
 a:visited { color: #666; }
-a:hover { color: #fff; background-color:#000; }
+a:hover { color: #000; }
 
 .fieldWithErrors {
   padding: 2px;
@@ -56,26 +56,80 @@ a:hover { color: #fff; background-color:#000; }
   list-style: square;
 }
 
-div.flash { color: green; }
+div.flash { 
+	color: green; 
+	font-weight: bold;
+	padding: 0px;
+}
+
+
 
 div.head {
-	background-color: #A9D0F5;
-	margin-bottom: 20px;
-}
-div.menu {
-	background-color: #ddd;
-	text-align: left;
-	padding: 0px 0px 0px 10px;
+	background-color: #fff;
+	margin-bottom: 10px;
+	padding-bottom: 0px;
 }
 div.title {
-	color: #555;
-	font-size: 30px;
-	padding: 10px;
+	color: #444;
+	font-size: 130%;
+	padding: 8px;
 }
 div.body {
+	margin-left: 0px;
+	padding: 0px;
+}
+
+table.content {
+	padding: 0px;
+	border-collapse: collapse;
+}
+
+td.menu {
+	text-align: left;
+	padding: 10px 10px 10px 0px;
+	width: 180px;		
+}
+div.menu_title {
+	text-transform: lowercase;
+	padding: 0px;
+	font-size: 90%;
+	padding-top: 15px;
+	padding-left: 10px;
+}
+div.menu_content ul {
+	margin-top: 2px;
+	background: #fff;	
+	font-size: 85%;
+	padding-left: 18px;
+	list-style-type: square;
+	border-style:solid;
+	border-width:1px;
+	border-color:#aaa;
+}
+
+div.menu_content li {
+	padding-bottom: 4px;
+}
+
+
+td.page {
+	background-color: #fff;
 	padding: 10px;
 	width: 800px;
+	border-style:solid;
+	border-width:1px;
+	border-color:#aaa;
+	text-align: justify;
 }
+div.footer {
+	color: #888;
+	margin-top: 10px;
+	font-size: 80%;
+	vertical-align: baseline;
+}
+
+
+
 div.welcome {
 	color: black;
 	font-size: 20pt;
@@ -83,14 +137,23 @@ div.welcome {
 }
 div.subtitle {
 	color: black;
-	font-size: 20px;
+	font-size: 170%;
+	padding-bottom: 5px;
 	margin-bottom: 20px;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #aaa;
 }
 div.subsubtitle {
 	color: black;
-	font-size: 15px;
-	margin-bottom: 15px;
+	font-size: 130%;
+	padding-bottom: 5px;
+	margin-bottom: 20px;
+	margin-top: 5px;
 	font-variant: small-caps;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #aaa;
 }
 div.text {
 	margin-bottom: 10px;
@@ -104,35 +167,44 @@ div.landing_options {
 }
 
 div.algorithm{
-	color: #666;
-}
-div.algorithm_subheading {
-	margin-top: 25px;
-	margin-bottom: 5px;
-	font-style: bold;
-	font-variant: small-caps;
-	font-size: 13pt;
-	color: black;
-	background-color: #eee;
 }
 div.algorithm_title{	
-	margin-bottom: 20px;
-	
-}
-div.algorithm_menu {
-	margin-top: 10px;
-	font-size: 80%;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 div.algorithm_name {
 	color: black;
-	text-transform:uppercase;
-	font-size: 40px;
-	margin-bottom: 5px;
+	text-transform: capitalize;
+	font-size: 300%;
 	font-style: bold;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #aaa;
+	padding-bottom: 8px;
 }
 div.algorithm_aliases {
-	font-style: italic;
+	#font-style: italic;
+	font-size: 85%;
 }
+
+
+div.algorithm_subheading {
+	padding-top: 15px;
+	padding-bottom: 5px;
+	font-style: bold;
+	font-variant: small-caps;
+	font-size: 13pt;
+	color: black;	
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #aaa;
+}
+
+
+div.algorithm_menu ul {
+	list-style-type: square;
+}
+
 
 table.algorithm_fields, th {
 	text-align: left;
@@ -150,7 +222,3 @@ p.book_description {
 }
 
 
-div.algorithm_footer {
-	margin-top: 50px;
-	font-size: 11px;
-}

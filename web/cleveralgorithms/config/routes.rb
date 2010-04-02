@@ -7,6 +7,8 @@ ActionController::Routing::Routes.draw do |map|
   
   # book
   map.book 'book', :controller =>"book"
+  # about
+  map.about 'about', :controller =>"home", :action =>"about"
 
   # administration /admin/
   map.namespace :admin do |admin|

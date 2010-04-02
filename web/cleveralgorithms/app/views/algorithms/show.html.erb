@@ -23,25 +23,29 @@
 				<%=h @algorithm.aliases %>
 			<% end %>
 		</div>		
-		<div class="algorithm_menu">
-			<%= link_to "Name", '#algorithm_name' %> |
-			<%= link_to "Taxonomy", '#algorithm_taxonomy' %> |
+	</div>
+	
+	<div class="algorithm_subheading">Contents</div>
+	<div class="algorithm_menu">
+		<ul>
+			<li><%= link_to "Taxonomy", '#algorithm_taxonomy' %></li>
 			<% if !@algorithm.inspiration.empty? %>
-				<%= link_to "Inspiration", '#algorithm_inspiration' %> |
+				<li><%= link_to "Inspiration", '#algorithm_inspiration' %></li>
 			<% end %>
 			<% if !@algorithm.metaphor.empty? %>
-				<%= link_to "Metaphor", '#algorithm_metaphor' %> |
-			<% end %>
-			<%= link_to "Strategy", '#algorithm_strategy' %> |
+				<li><%= link_to "Metaphor", '#algorithm_metaphor' %></li>
+			<% end %>			
+			<li><%= link_to "Strategy", '#algorithm_strategy' %></li>
 			<% if false %>
-			<%= link_to "Procedure", '#algorithm_procedure' %> |
+				<li><%= link_to "Procedure", '#algorithm_procedure' %></li>
 			<% end %>
-			<%= link_to "Heuristics", '#algorithm_heuristics' %> |
-			<%= link_to "Code Listing", '#algorithm_code' %> |
-			<%= link_to "References", '#algorithm_references' %> |
-			<%= link_to "Around the Web", '#algorithm_web' %> |
-			<%= link_to "Bibliography", '#algorithm_bibliography' %> 
-		</div>
+			
+			<li><%= link_to "Heuristics", '#algorithm_heuristics' %></li>
+			<li><%= link_to "Code Listing", '#algorithm_code' %></li>
+			<li><%= link_to "References", '#algorithm_references' %></li>
+			<li><%= link_to "Around the Web", '#algorithm_web' %></li>
+			<li><%= link_to "Bibliography", '#algorithm_bibliography' %></li>
+		</ul>
 	</div>
 
 	<a name="algorithm_taxonomy"></a>
@@ -161,11 +165,6 @@ Sorry, the source file could not be located.
 
 
 <div class="algorithm_footer">
-&copy; Copyright 2010 <%= mail_to jason_email, "Jason Brownlee" %> Some Rights Reserved. <br />
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
-	<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" /></a>
-<br />
-This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
 </div>
 
 <!-- process latex -->

@@ -34,4 +34,13 @@ module ApplicationHelper
 	  end
 	end
 	
+	
+	def popular_algorithms(limit=5)
+	  Algorithm.all(:order=>"RANDOM()", :limit=>limit)
+	end
+	
+	def updated_algorithms(limit=5)
+	  Algorithm.all(:order=>"updated_at DESC", :limit=>limit)
+	end
+	
 end
