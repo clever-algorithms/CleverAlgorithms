@@ -17,6 +17,11 @@ module ApplicationHelper
     "http://www.CleverAlgorithms.com"
   end
   
+  # url to the dev site
+  def development_url
+    "http://github.com/jbrownlee/CleverAlgorithms"
+  end
+  
   def book_title
     "Clever Algorithms: Modern Artificial Intelligence Recipes"
   end
@@ -34,7 +39,6 @@ module ApplicationHelper
 	  end
 	end
 	
-	
 	def popular_algorithms(limit=5)
 	  Algorithm.all(:order=>"RANDOM()", :limit=>limit)
 	end
@@ -43,4 +47,5 @@ module ApplicationHelper
 	  Algorithm.all(:order=>"updated_at DESC", :limit=>limit)
 	end
 	
+
 end

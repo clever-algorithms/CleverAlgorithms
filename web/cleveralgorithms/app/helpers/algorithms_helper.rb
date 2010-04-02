@@ -78,4 +78,6 @@ module AlgorithmsHelper
     return new_content
   end
   
+
+  
 end

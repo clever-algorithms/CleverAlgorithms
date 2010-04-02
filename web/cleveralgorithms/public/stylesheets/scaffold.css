@@ -208,10 +208,24 @@ table.algorithm_bibliography_table, td {
 }
 
 
-
-
 div.landing_options {	
-	
+	margin-top: 30px;
+	margin-bottom: 30px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #aaa;
+	text-align: center;
+	padding: 20px;
+	font-size: 120%;
+}
+div.option_buy_the_book {
+	padding: 10px;
+}
+div.option_or {
+	padding: 10px;
+}
+div.option_free {
+	padding: 10px;
 }
 
 

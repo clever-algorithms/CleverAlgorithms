@@ -19,4 +19,17 @@ class Algorithm < ActiveRecord::Base
     name.gsub(/ /, '+')    
   end
   
+  
+  def self.popular_algorithms(limit=5)
+	  Algorithm.all(:order=>"RANDOM()", :limit=>limit)
+	end
+	
+	def self.updated_algorithms(limit=5)
+	  Algorithm.all(:order=>"updated_at DESC", :limit=>limit)
+	end
+	
+  def self.random_algorithm
+	  Algorithm.find(:order=>"RANDOM()", :limit=>1)
+	end
+  
 end

@@ -1,19 +1,38 @@
 <% title("Clever Algorithms Project") %>
-<div class="subtitle">
-	Welcome to the Clever Algorithms project!
-</div>
-<div class="about">
-The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the field of Artificial Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable.
+
+<div class="subtitle">The Clever Algorithms Project</div>
+
+<a name="welcome"></a>
+<div class="subsubtitle">Welcome</div>
+<div class="text">
+	<p>
+	The Clever Algorithms project is an effort to describe a large number of algorithmic 
+	techniques from the the field of Artificial Intelligence in a complete, 
+	consistent, and centralized manner such that they are accessible, usable, and understandable.
+	(<%= link_to "more...", about_path %>)
+	</p>
 </div>
 
+<a name="options"></a>
 <div class="landing_options">
 	<div class="option_buy_the_book">
-		You may <%= link_to "buy the book right now", book_path %> in either digital or dead tree format.
+		<%= link_to "Buy the book right now!", book_path %> in either digital or dead tree format.
 	</div>
 	<div class="option_or">
-	- OR -
+	- or -
 	</div>
 	<div class="option_free">
-	You may <%= link_to "browse", :controller=>"algorithms" %> or <%= link_to "search", :controller=>"" %> all of the algorithm descriptions online for free. 
+	<%= link_to "Browse", :controller=>"algorithms" %> any of the 
+	<strong><%=h Algorithm.count %></strong> algorithm descriptions online for free. 
 	</div>	
+</div>
+
+
+<a name="random"></a>
+<div class="subsubtitle">Random Algorithm</div>
+<div class="text">
+	<p>
+	<%= link_to @algorithm.name, @algorithm -%> <br />
+	<%= @algorithm.strategy -%>
+	</p>
 </div>
