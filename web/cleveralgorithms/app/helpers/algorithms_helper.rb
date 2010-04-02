@@ -78,6 +78,8 @@ module AlgorithmsHelper
     return new_content
   end
   
-
+  def unreleased_text
+    "<span class='coming_soon'>Coming Soon.</span>"
+  end
   
 end

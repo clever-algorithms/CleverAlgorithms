@@ -5,7 +5,7 @@ class AlgorithmsController < ApplicationController
   # GET /algorithms
   # GET /algorithms.xml
   def index
-    @algorithms = Algorithm.all(:order=>"name ASC")
+    @algorithms = Algorithm.ordered_by_name
 
     respond_to do |format|
       format.html # index.html.erb

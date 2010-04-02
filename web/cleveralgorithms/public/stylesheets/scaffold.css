@@ -114,7 +114,7 @@ div.menu_content li {
 td.page {
 	background-color: #fff;
 	padding: 10px;
-	width: 800px;
+	width:800px;
 	border-style:solid;
 	border-width:1px;
 	border-color:#aaa;
@@ -165,12 +165,13 @@ div.algorithm_title{
 div.algorithm_name {
 	color: black;
 	text-transform: capitalize;
-	font-size: 300%;
+	font-size: 250%;
 	font-style: bold;
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #aaa;
 	padding-bottom: 8px;
+	text-align: left;
 }
 div.algorithm_aliases {
 	#font-style: italic;
@@ -230,6 +231,9 @@ div.option_free {
 }
 
 
+span.coming_soon {
+	color: #888;
+}
 
 
 

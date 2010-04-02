@@ -17,10 +17,10 @@
 			<%=h @algorithm.name %>
 		</div>
 		<div class="algorithm_aliases">
-			<% if @algorithm.aliases == "N/A" %>
-				Coming soon.
-			<% else %>
+			<% if @algorithm.released %>
 				<%=h @algorithm.aliases %>
+			<% else %>
+				<%= unreleased_text %>
 			<% end %>
 		</div>		
 	</div>
@@ -51,33 +51,33 @@
 	<a name="algorithm_taxonomy"></a>
 	<div class="algorithm_subheading">Taxonomy</div>	
 	<div class="algorithm_taxonomy">		
-		<% if @algorithm.taxonomy == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.taxonomy %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	</div>
 	
-	<% if !@algorithm.inspiration.nil? %>
+	<% if !@algorithm.inspiration.empty? %>
 	<a name="algorithm_inspiration"></a>
 	<div class="algorithm_subheading">Inspiration</div>
 	<div class="algorithm_inspiration">
-		<% if @algorithm.inspiration == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.inspiration %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	</div>
 	<% end %>
 	
-	<% if !@algorithm.metaphor.nil? %>
+	<% if !@algorithm.metaphor.empty? %>
 	<a name="algorithm_metaphor"></a>
 	<div class="algorithm_subheading">Metaphor</div>
 	<div class="algorithm_metaphor">
-		<% if @algorithm.metaphor == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.metaphor %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	</div>
 	<% end %>
@@ -85,39 +85,37 @@
 	<a name="algorithm_strategy"></a>
 	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
-		<% if @algorithm.strategy == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.strategy %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	</div>
 	
 	<a name="algorithm_procedure"></a>
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
-		<% if @algorithm.procedure == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.procedure %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	</div>
 	
 	<a name="algorithm_heuristics"></a>
 	<div class="algorithm_subheading">Heuristics</div>
 	<div class="algorithm_heuristics">
-		<% if @algorithm.heuristics == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_unorded_list @algorithm.heuristics %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>		
 	</div>
 	
 	<a name="algorithm_code"></a>
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
-		<% if @algorithm.code == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.code %>
 <pre class="prettyprint lang-rb">
 <% if @filedata.nil? -%>
@@ -130,35 +128,37 @@ Sorry, the source file could not be located.
 			Download: <%= link_to "#{@filename}", @algorithm.code_file %>
 		</div>
 	</div>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>
 	
 	<a name="algorithm_references"></a>
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
-		<% if @algorithm.references == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_paragraphs @algorithm.references %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>				
 	</div>
 	
 	<a name="algorithm_web"></a>
 	<div class="algorithm_subheading">Around the Web</div>
 	<div class="algorithm_web">
-		<% if @algorithm.web == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_links @algorithm.web %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>				
 	</div>
 	
 	<a name="algorithm_bibliography"></a>
 	<div class="algorithm_subheading">Bibliography</div>
 	<div class="algorithm_bibliography">
-		<% if @algorithm.bibliography == "N/A" %>
-			Coming soon.
-		<% else %>
+		<% if @algorithm.released %>
 			<%=make_bibliography @algorithm.bibliography %>
+		<% else %>
+			<%= unreleased_text %>
 		<% end %>	
 	</div>
 </div>
