@@ -111,7 +111,6 @@ div.menu_content li {
 	padding-bottom: 4px;
 }
 
-
 td.page {
 	background-color: #fff;
 	padding: 10px;
@@ -155,19 +154,11 @@ div.subsubtitle {
 	border-bottom-width: 1px;
 	border-bottom-color: #aaa;
 }
-div.text {
-	margin-bottom: 10px;
-}
 
-div.about {
-	margin-bottom: 20px;
-}
-div.landing_options {	
-	margin-bottom: 20px;
-}
 
 div.algorithm{
 }
+
 div.algorithm_title{	
 	padding-bottom: 10px;
 	padding-top: 10px;
@@ -205,7 +196,6 @@ div.algorithm_menu ul {
 	list-style-type: square;
 }
 
-
 table.algorithm_fields, th {
 	text-align: left;
 	vertical-align:top;
@@ -217,8 +207,14 @@ table.algorithm_bibliography_table, td {
 	padding: 0px 0px 12px 0px;
 }
 
-p.book_description {
-	font-size: 111%;
+
+
+
+div.landing_options {	
+	
 }
+
+
+
 
 

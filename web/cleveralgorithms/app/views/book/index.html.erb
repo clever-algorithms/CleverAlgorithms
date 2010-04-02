@@ -2,31 +2,35 @@
 
 <div class="subtitle">Buy the book</div>
 
+<div class="subsubtitle">Book Details</div>
 <div class="about">
-	<p class="book_description">
-	<%= book_author %>. <strong><%= book_title %></strong>, Lulu.com, 2010 (expected)
-	</p>
-	<div class="notification">
-		<p>
-		Do you want to be notified when the book is launched? 
-		</p>
-		<p>
-		<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>
-		<%= f.error_messages %>
-		Your <%= f.label :email %>:
-		<%= f.text_field :email, :size=>40 %>
-		<%= f.submit 'Let me know!' %>
-		<% end %>		
-		<small>* We promise to use your email responsibly. No spam.</small>
-		</p>
-	</div>
-
 	<p>
-	The book will by published through <a href="http://www.lulu.com">LuLu.com</a> and be available through Amazon and all good book stores. It shall be released as a PDF e-book and paperback. The contents of the book are freely available online at <%= link_to site_name, site_url %>.
+	The book will by published through LuLu and be available through Amazon and all good book stores. 
+	It shall be released as a PDF e-book and paperback. The contents of the book are freely available 
+	online at <%= link_to site_name, site_url %>.
 	</p>
-	<br />
+	
+	<ul>
+		<li>Jason Brownlee. <strong><%= book_title %></strong>, LuLu, 2010 (expected)</li>
+	</ul>
 </div>
 
+
+<div class="subsubtitle">Coming Soon...</div>
+<div class="notification">	
+	<p>
+	Get notified when the book is launched!
+	</p>
+	<p>
+	<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>
+	<%= f.error_messages %>
+	Your <%= f.label :email %>:
+	<%= f.text_field :email, :size=>40 %>
+	<%= f.submit 'Let me know!' %>
+	<% end %>		
+	<small>* We promise to use your email responsibly. No spam.</small>
+	</p>
+</div>
 
 <div class="subsubtitle">Table of Contents</div>
 <div class="toc">
