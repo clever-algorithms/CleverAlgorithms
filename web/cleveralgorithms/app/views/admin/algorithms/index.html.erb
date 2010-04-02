@@ -2,30 +2,41 @@
 
 <div class="subtitle">Manage Algorithms</div>
 
-<div class="text">
+<p class="text">
 	There are <strong><%=h @algorithms.size %> algorithms</strong> described in the Clever Algorithms project.
-</div>
+</p>
 
-<div class="manage_controls">
+<p class="manage_controls">
 	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
 	<%= link_to "Back", admin_panel_path %>
-</div>
+</p>
 
-<div class="algorithm_list">
+<table class="algorithm_list">
+	<tr>
+		<th>Name</th>
+		<th>Created</th>
+		<th>Updated</th>
+		<th>Released</th>
+		<th></th>
+	</tr>
+	
 	<% @algorithms.each do |a| %>
-		<div class="algorithm_item">
-			<span style="width:700px;"><%= link_to a.name, a %></span>
-			<span>
-				<%= link_to 'edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> |
-				<%= link_to 'delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %>
-			</span>
-		</div>		
+		<tr>
+			<td><%= link_to a.name, a %></td>
+			<td><%= (Date.today - a.created_at.to_time.to_date).days %> days ago</td>
+			<td><%= (Date.today - a.updated_at.to_time.to_date).days %> days ago</td>
+			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>"><%= (a.released) ? "Yes" : "No" %></td>
+			<td style="text-align:center;">
+				<%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> | 
+				<%= link_to 'Delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %>
+			</td>
+		</tr>
 	<% end %>
-</div>
+</table>
 
-<div class="manage_controls">
+<p class="manage_controls">
 	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
 	<%= link_to "Back", admin_panel_path %>
-</div>
+</p>
 
 

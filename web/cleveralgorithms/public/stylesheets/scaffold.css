@@ -124,7 +124,6 @@ div.footer {
 	color: #888;
 	margin-top: 10px;
 	font-size: 80%;
-	vertical-align: baseline;
 }
 
 
@@ -231,6 +230,25 @@ div.option_free {
 }
 
 
+
+
+
+table.algorithm_list, tr {
+	width: 100%;
+	border-collapse: collapse;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #aaa;
+}
+
+td.algorithm_released {
+	background: #CEF6CE;
+	text-align: center;
+}
+td.algorithm_unreleased {
+	background: #F6CECE;
+	text-align: center;
+}
 
 
 

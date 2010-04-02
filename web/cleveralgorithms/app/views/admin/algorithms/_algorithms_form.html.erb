@@ -1,6 +1,10 @@
 <div class="algorithm_fields">
 	<table class="algorithm_fields">
 		<tr>
+			<th><%= f.label :released %></th>
+			<td><%= f.check_box :released  %></td>
+		</tr>
+		<tr>
 			<th><%= f.label :name %></th>
 			<td><%= f.text_field :name, :size=>80 %></td>
 		</tr>

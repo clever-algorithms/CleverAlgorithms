@@ -32,7 +32,7 @@
 <div class="subsubtitle">Random Algorithm: <%= link_to @algorithm.name, @algorithm %></div>
 <div class="text">
 	<p>
-	<%= truncate(@algorithm.strategy, 200, "...")  %>
+	<%= snippet(@algorithm.strategy, 30)  %>
 	(<%= link_to "more", @algorithm %>)
 	</p>
 </div>

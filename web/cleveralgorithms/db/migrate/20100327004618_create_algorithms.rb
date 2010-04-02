@@ -14,6 +14,7 @@ class CreateAlgorithms < ActiveRecord::Migration
       t.text :references, :default => "N/A"
       t.text :bibliography, :default => "N/A"
       t.text :web, :default => "N/A"
+      t.boolean :released, :default => 0
       
       t.timestamps
     end
