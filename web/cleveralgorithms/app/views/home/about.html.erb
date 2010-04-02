@@ -3,7 +3,7 @@
 <div class="subtitle">About</div>
 
 <div class="subsubtitle">The Clever Algorithms Project</div>
-<div class="about">
+<div class="text">
 	<p>
 	An open problem in the field of Artificial Intelligence is that algorithm 
 	descriptions are commonly incomplete, inconsistent, and distributed resulting 
@@ -22,24 +22,47 @@
 	research scientists, engineers, students, and interested amateurs.
 	</p>
 	<p>
-	The outcomes for this project are a compendium of algorithm descriptions released 
-	as a book entitled "<%= link_to book_title, book_url %>" as well as the 
-	<%= link_to site_name, site_url %> website that provides all content for free.
-	</p>
-	<p>
-		For more information on the background of this project, see: 
-		<ul>
-			<li>
-				Jason Brownlee. <%= link_to "The Clever Algorithms Project: Overview", "http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf" %>. 
-				Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
-			</li>
-		</ul>
+	The outcomes for this project are i) a website that provides all content for free
+	and 2) a compendium of algorithm descriptions released as a book:
+	<ul>
+		<li>
+			Jason Brownlee. "<%= link_to book_title, book_url %>", LuLu, 2010 (expected)
+		</li>
+	</ul>
 	</p>			
 </div>
 
+<div class="subsubtitle">The Author</div>
+<div class="text">
+	<p>
+	Jason Brownlee has a Bachelors degree in Applied Science, a Masters in 
+	Information Technology and a PhD in Computer Science from Swinburne 
+	University of Technology in Melbourne, Australia. The subject of Jason's 
+	Masters research was Niching Genetic Algorithms. Jason's PhD work was in 
+	the area of Artificial Immune Systems and involved research into extending 
+	the state of Clonal Selection inspired machine learning algorithms and 
+	devising new techniques inspired by the structure and function of the 
+	acquired immune system.
+	</p>
+	<p>
+	Jason has earned a living as a Consultant on numerous enterprise, R&amp;D, and
+	research information technology projects in defense, retail, energy, 
+	meteorology, geospatial, and information services sectors. 
+	You may see a summary of Jason's academic, research, and work history on his
+	<%= link_to "LinkedIn profile", "http://www.linkedin.com/in/jasonbrownlee" %>.
+	</p>
+	
+	<p>
+	Jason has a long standing passion for both practical software engineering 
+	and basic research into machine learning and has developed and released many reports, 
+	software plug-ins, and software tools. Jason also enjoys writing and maintains a 
+	blog entitled <%= link_to "Never Read Passively", "http://www.neverreadpassively.com" %> 
+	and can be followed on twitter via <%= link_to "@jbrownlee", "http://twitter.com/jbrownlee" %>.
+	</p>
+</div>
 
-<div class="subsubtitle">Development</div>
-<div class="about">
+<div class="subsubtitle">Project Development</div>
+<div class="text">
 	<p>
 	An incremental content development methodology was used to complete the project
 	that involved the completion of discrete standalone algorithm descriptions over an extended 
@@ -54,8 +77,8 @@
 </div>
 
 
-<div class="subsubtitle">Contribute</div>
-<div class="about">
+<div class="subsubtitle">Contributions</div>
+<div class="text">
 	<p>
 	Found a typo in the content or a bug in the source code? 		
 	Are you an expert in a technique and know some facts that could improve an algorithm description for all?
@@ -64,13 +87,19 @@
 	</p>
 	<p>
 	Two pillars of this effort are i) that the best domain experts are people outside of the project, 
-	and ii) that this work is wrong by default. 
-	<strong>Please help to make this work less wrong</strong> 
-	by emailing the project author: <%= mail_to jason_email, "Jason Brownlee" %> 
-	or by clicking the "Make Suggestion" links provided in each algorithm description.
+	and ii) that this work is (somewhat) wrong by default. 
+	<strong>Please help to make this work less wrong!</strong>.
+	Email the author: <%= mail_to jason_email, "Jason Brownlee" %> 
+	or click the "Make Suggestion" links provided in each algorithm description.
 	</p>
 </div>
 
-
-
-
+<div class="subsubtitle">Acknowledgements</div>
+<div class="text">
+	<p>
+	Contributions warmly received from: <em>Your name here!</em>.	
+	</p>
+	<p>
+	A special thank you to: Daniel Angus, PhD and Ying Liu, PhD.
+	</p>
+</div>
