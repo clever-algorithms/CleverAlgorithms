@@ -202,16 +202,28 @@ table.algorithm_fields {
 }
 
 div.make_suggestion {
-	color: #aaa;
-	margin-top: 80px;	
+	color: #888;
+	margin-top: 60px;	
 	padding-left: 10px;
 	padding-right: 10px;
 	font-size: 70%;
-	border-style:solid;
+	border-style:dashed;
 	border-width:1px;
 	border-color:#aaa;
+	background: #eee;
 }
-
+div.make_suggestion2 {
+	color: #888;
+	margin-top: 20px;	
+	margin-bottom: 20px;	
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 70%;
+	border-style:dashed;
+	border-width:1px;
+	border-color:#aaa;
+	background: #eee;
+}
 
 
 td, th {

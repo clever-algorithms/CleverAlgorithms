@@ -25,6 +25,25 @@
 		</div>		
 	</div>
 	
+	<% if !@algorithm.released %>	
+		<div class="make_suggestion2">
+			<div class="text">
+				<p>
+				Can this algorithm description 
+				not be written soon enough for you?
+				</p>
+				<p>
+				We prioritize the writing of algorithm descriptions based on their
+				calculated popularity and user demand.
+				</p>
+				<p>
+				Please, <%= link_to "let us know", {:controller=>"messages", :action=>"new", :algorithm_id=>@algorithm} %> 
+				and suggest we hurry up!
+				</p>
+			</div>
+		</div>
+	<% end %>
+	
 	<div class="algorithm_subheading">Contents</div>
 	<div class="algorithm_menu">
 		<ul>
@@ -175,6 +194,7 @@ Sorry, the source file could not be located.
 		
 	</div>
 	
+<% if @algorithm.released %>	
 	<div class="make_suggestion">
 		<div class="text">
 			<p>
@@ -188,11 +208,11 @@ Sorry, the source file could not be located.
 			<strong>Please help to make this work less wrong!</strong>.
 			</p>
 			<p>
-			<%=make_suggestion(@algorithm) %> to improve this algorithm description. 
+			<%= link_to "Make a Suggestion", :controller=>"messages", :action=>"new", :algorithm_id=>@algorithm %> to improve this algorithm description. 
 			</p>
 		</div>
-		
 	</div>
+<% end %>
 	
 </div>
 

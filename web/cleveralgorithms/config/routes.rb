@@ -5,7 +5,12 @@ ActionController::Routing::Routes.draw do |map|
   
   # algorithms
   map.connect "a/:name", :controller => 'algorithms', :action => 'show'
-  map.resources :algorithms, :as=>"a"
+  
+  map.resources :algorithms, :as=>"a" do |algorithm|
+    algorithm.resources :messages
+  end
+  
+  
   
   # book
   map.book 'book', :controller =>"book"

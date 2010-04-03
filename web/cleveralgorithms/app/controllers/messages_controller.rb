@@ -24,6 +24,7 @@ class MessagesController < ApplicationController
   # GET /messages/new
   # GET /messages/new.xml
   def new
+    @algorithm = (params[:algorithm_id].nil?) ? nil : Algorithm.find_by_name(params[:algorithm_id])
     @message = Message.new
 
     respond_to do |format|

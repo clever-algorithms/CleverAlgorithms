@@ -3,7 +3,10 @@
 <div class="subtitle">All algorithms</div>
 
 <div class="text">
-	There are <strong><%=h Algorithm.count %> algorithms</strong> described in the Clever Algorithms project.
+	<p>
+	There are currently <strong><%=h Algorithm.released.count %> algorithms</strong> described 
+	of the <%=h Algorithm.count %> algorithms in the Clever Algorithms project.
+	</p>
 </div>
 
 <div class="algorithm_list">
@@ -14,3 +17,18 @@
 	</ul>
 </div>
 
+<div class="make_suggestion">
+	<div class="text">
+		<p>
+		Is there an algorithm missing, one that you would really like to see described?
+		</p>
+		<p>
+		We prioritize the writing of algorithm descriptions based on their
+		calculated popularity and user demand.
+		</p>
+		<p>
+		Please, <%=make_suggestion2(@algorithm) %> and suggest 
+		we hurry up!
+		</p>
+	</div>
+</div>

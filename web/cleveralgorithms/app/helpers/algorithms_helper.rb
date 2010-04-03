@@ -82,8 +82,4 @@ module AlgorithmsHelper
     "<span class='coming_soon'>Coming Soon.</span>"
   end
   
-  def make_suggestion(algorithm)
-    link_to "Make a Suggestion" ""
-  end
-  
 end
