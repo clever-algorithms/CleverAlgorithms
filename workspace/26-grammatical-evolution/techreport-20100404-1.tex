@@ -212,6 +212,9 @@ The production rules for the grammar in BNF are:
 	\item $<var>$ ::= x, 1.0
 \end{itemize}
 
+% algorithm
+Candidate solutions are constructed directly into executable ruby code and execute. A given candidate solution is evaluated by comparing their output against the target function and taking the sum of the absolute errors of a number of trials. The probability of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
+
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Grammatical Evolution algorithm in the Ruby Programming Language, label=grammatical_evolution]{../../src/algorithms/evolutionary/grammatical_evolution.rb}
 
@@ -250,7 +253,7 @@ O'Neill and Ryan present a seminal reference for Grammatical Evolution in their 
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Grammatical Evolution algorithm as a automatic programming technique that uses context free grammars as a representation, and ensures that structurally correct programs are always created.
 
 % 
 % Contribute
