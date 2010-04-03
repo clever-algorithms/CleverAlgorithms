@@ -1,0 +1,271 @@
+% Gene Expression Programming
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{Gene Expression Programming}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
+\newcommand{\myreportdate}{20100405}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\today\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+% project
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
+% template
+The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
+% report
+This report described the Gene Expression Programming algorithm using the standardized template.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Gene, Expression, Programming}}
+\end{description} 
+
+\section{Introduction} 
+\label{sec:intro}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+This report described the Gene Expression Programming algorithm using the standardized template.
+
+% Name
+% The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
+\section{Name} 
+\label{sec:name}
+% What is the canonical name and common aliases for a technique?
+% What are the common abbreviations and acronyms for a technique?
+% The heading and alternate headings for the algorithm description.
+Gene Expression Programming, GEP
+
+% Taxonomy: Lineage and locality
+% The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
+\section{Taxonomy}
+\label{sec:taxonomy}
+% To what fields of study does a technique belong?
+% What are the closely related approaches to a technique?
+todo
+
+% Inspiration: Motivating system
+% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
+% Optional
+\section{Inspiration}
+\label{sec:inspiration}
+% What is the system or process that motivated the development of a technique?
+% Which features of the motivating system are relevant to a technique?
+
+biology of gene expression
+
+% Metaphor: Explanation via analogy
+% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
+% Optional
+\section{Metaphor}
+\label{sec:metaphor}
+% What is the explanation of a technique in the context of the inspiring system?
+% What are the functionalities inferred for a technique from the analogous inspiring system?
+Gene Expression Programming uses a linear genome as the basis for genetic operators such as mutation, recombination, inversion, and transposition. The genome is comprised of chromosomes (typically one) and each chromosome is comprised of genes (one or more) that are translated into an expression tree to address a given problem. The strategy attempts to solve problems by creating programs represented as expression trees (like GP) although applies the genetic operators to a sub-symbolic representation of the expression trees (unlike a GP, more like a GA). As such it is similar in strategy to GE.
+
+% Strategy: Problem solving plan
+% The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
+\section{Strategy}
+\label{sec:strategy}
+% What is the information processing objective of a technique?
+% What is a techniques plan of action?
+The strategy for Gene Expression Programming is an evolutionary process that operates on a sub-symbolic representation of candidate solutions which is translated (expressed) as a solution to a given problem to be evaluated.
+
+% Procedure: Abstract computation
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+\section{Procedure}
+\label{sec:procedure}
+% What is the computational recipe for a technique?
+% What are the data structures and representations used in a technique?
+A candidate solution is represented as a linear representation of an expression tree where each symbol maps to a function or terminal node. The linear representation is mapped to an expression tree in a breadth-first manner. The compressed representation is referred to as Karva notation or a K-expression within the context of the GEP field. 
+
+A genome or K-expression is fixed length and is comprised of one or more sub-expressions (genes), which are also defined with a fixed length. A gene is comprised of two sections, a head which may contain any function or terminal symbols, and a tail section that may only contain terminal symbols. The size of the head is a system parameter, where as the tail length is calculated via a heuristic method that ensures that each gene will always translate (express) syntactically correct expression trees. The tail portion of the gene provides a genetic buffer which ensures closure of the genes expression. As such some or none of the information in the tail may be expressed, providing a flexible non-coding region in candidate solutions engendering the evolution of evolvability. 
+
+The robust gene definition means that genetic operators can be applied to the sub-symbolic representation without concern for the resultant gene expression, providing separation of genotype and phenotype. For difficult problems, multiple genes (sub-expressions) are used and combined to address the problem. The sub-expressions are linked using link expressions which are function nodes that are either statically defined (such as a conjunction) or evolved on the genome with the genes.
+
+The mutation operate substituted expressions along the genome, although must respect the gene rules such that function and terminal nodes are mutated in the head of genes, whereas only terminal nodes are substituted in the tail of genes. Crossover occurs between two selected parents from the population and can occur based on a one-point cross, two point cross, or finally a gene-based approach were genes are selected from the parents with uniform probability.
+
+An inversion operator may be used with a low probability that reverses a small sequence of symbols (1-3) within a section of a gene (tail or head). A transposition operator may be used that has a number of different modes, including: duplicate a small sequences (1-3) from somewhere on a gene to the head, small sequences on a gene to the root of the gene, and moving of entire genes on the chromosome. In the case of intra-gene transpositions, the sequence in the head of the gene is moved down to accommodate the copied sequence and the length of the head is truncated to maintain consistent gene sizes.
+
+Numeric constants can be included in the terminal node set, although GEP defines an alternative method. A `?' is included in the terminal set that represents a numeric constant from an array that are evolved on the end of the genome. The constants are read from the end of the genome and are substituted for `?' as the expression tree is created (in breadth first order). Finally the numeric constants are used as array indices in yet another chromosome of numerical values which are substituted into the expression tree.
+
+Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing of the Gene Expression Programming algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{Parents}{Parents}
+	\SetKwData{Children}{Children}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{ParentOne}{$Parent_{1}$}
+	\SetKwData{ParentTwo}{$Parent_{2}$}
+	\SetKwData{ChildOne}{$Child_{1}$}
+	\SetKwData{ChildTwo}{$Child_{2}$}	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectParents}{SelectParents}
+	\SetKwFunction{Replace}{Replace}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Mutate}{Mutate}
+  
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% select
+		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+		% recombine
+		\Children $\leftarrow 0$\;
+		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
+			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
+			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+		}
+		% evaluate
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children}\;
+		% replace
+		\Population $\leftarrow$ \Replace{\Population, \Children}\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Gene Expression Programming algorithm.}
+	\label{alg:gene_expression_programming}
+\end{algorithm}
+
+
+% Heuristics: Usage guidelines
+% The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
+\section{Heuristics}
+\label{sec:heuristics}
+% What are the suggested configurations for a technique?
+% What are the guidelines for the application of a technique to a problem instance?
+\begin{itemize}
+	\item Use of parsimony pressure to create expressions that solve the problem that are also small (concise and easier to read). For example, the objective fitness function can be scaled based on the number of nodes in the expression tree, perhaps a ratio of genome length to resultant expression tree.
+	\item The length of a chromosome is defined by the number of genes, where a gene length is defined by $h + t$. The $h$ is a user defined parameter (such as 10), where as $t$ is defined as $t = h (n-1) + 1$. $n$ represents the maximum arity of functional nodes in the expression (such as 2 if the arithmetic function $\times, \div, -, +$ are used)
+	\item Mutation is typically $\frac{1}{L}$, selection can be any of the classical approaches (such as roulette wheel or tournament), and crossover rates are typically high (0.7 of offspring)
+	\item Use multiple sub-expressions linked together on hard problems when one gene does not get much progress. Provides modularity in the solution for both evolvability and ultimate readability.
+\end{itemize}
+
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\section{Code Listing}
+\label{sec:code}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
+Listing~\ref{gene_expression_programming} provides an example of the Gene Expression Programming algorithm implemented in the Ruby Programming Language based on the seminal version proposed by Ferreira \cite{Ferreira2001}.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Gene Expression Programming algorithm in the Ruby Programming Language, label=gene_expression_programming]{../../src/algorithms/evolutionary/gene_expression_programming.rb}
+
+
+% References: Deeper understanding
+% The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
+\section{References}
+\label{sec:references}
+% What are the primary sources for a technique?
+% What are the suggested reference sources for learning more about a technique?
+
+% 
+% Primary Sources
+% 
+\subsection{Primary Sources}
+% seminal
+seminal paper by Ferreira \cite{Ferreira2001}
+% early
+
+% 
+% Learn More
+% 
+\subsection{Learn More}
+% reviews
+early overview of the technique as a book chapter \cite{Ferreira2002}
+
+a great overview of the technique as a book chapter \cite{Ferreira2005}
+
+% books
+
+book \cite{Ferreira2006} - introduction to the technique including background, the algorithm, and demonstration applications
+
+
+
+
+% 
+% Conclusions: What the reader or what thre author learned by completing this this report.
+% 
+\section{Conclusions}
+\label{sec:conclusions}
+% report
+todo
+
+% 
+% Contribute
+% 
+\section{Contribute}
+\label{sec:contribute}
+% simple
+Found a typo in the content or a bug in the source code? 
+% advanced 
+Are you an expert in this technique and know some facts that could improve the algorithm description for all?
+% incentive
+Do you want to get that warm feeling from contributing to an open source project? 
+Do you want to see your name as an acknowledgment in print?
+
+%  ideal
+Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is (somewhat) wrong by default. 
+% advice
+Please help to make this work less wrong by emailing the author `\myreportauthor' at \url{\myreportemail} or visit the project website at \url{\myreportwebsite}.
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
