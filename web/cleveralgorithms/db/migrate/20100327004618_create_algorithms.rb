@@ -2,18 +2,18 @@ class CreateAlgorithms < ActiveRecord::Migration
   def self.up
     create_table :algorithms do |t|
       t.string :name
-      t.text :aliases
-      t.text :taxonomy
-      t.text :inspiration
-      t.text :metaphor
-      t.text :strategy
-      t.text :procedure
-      t.text :heuristics
-      t.text :code
-      t.string :code_file
-      t.text :references
-      t.text :bibliography
-      t.text :web
+      t.text :aliases, :default => ""
+      t.text :taxonomy, :default => ""
+      t.text :inspiration, :default => ""
+      t.text :metaphor, :default => ""
+      t.text :strategy, :default => ""
+      t.text :procedure, :default => ""
+      t.text :heuristics, :default => ""
+      t.text :code, :default => ""
+      t.string :code_file, :default => ""
+      t.text :references, :default => ""
+      t.text :bibliography, :default => ""
+      t.text :web, :default => ""
       t.boolean :released, :default => 0
       
       t.timestamps

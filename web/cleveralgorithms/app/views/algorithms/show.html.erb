@@ -56,6 +56,7 @@
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+				
 	</div>
 	
 	<% if !@algorithm.inspiration.empty? %>
@@ -67,6 +68,7 @@
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+				
 	</div>
 	<% end %>
 	
@@ -79,6 +81,7 @@
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+				
 	</div>
 	<% end %>
 	
@@ -90,8 +93,10 @@
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+				
 	</div>
 	
+<% if false %>	
 	<a name="algorithm_procedure"></a>
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
@@ -100,7 +105,9 @@
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+				
 	</div>
+<% end %>	
 	
 	<a name="algorithm_heuristics"></a>
 	<div class="algorithm_subheading">Heuristics</div>
@@ -109,7 +116,8 @@
 			<%=make_unorded_list @algorithm.heuristics %>
 		<% else %>
 			<%= unreleased_text %>
-		<% end %>		
+		<% end %>	
+					
 	</div>
 	
 	<a name="algorithm_code"></a>
@@ -127,10 +135,12 @@ Sorry, the source file could not be located.
 		<div class="download">
 			Download: <%= link_to "#{@filename}", @algorithm.code_file %>
 		</div>
-	</div>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
+		
+	</div>
+
 	
 	<a name="algorithm_references"></a>
 	<div class="algorithm_subheading">References</div>
@@ -139,7 +149,8 @@ Sorry, the source file could not be located.
 			<%=make_paragraphs @algorithm.references %>
 		<% else %>
 			<%= unreleased_text %>
-		<% end %>				
+		<% end %>	
+					
 	</div>
 	
 	<a name="algorithm_web"></a>
@@ -149,7 +160,8 @@ Sorry, the source file could not be located.
 			<%=make_links @algorithm.web %>
 		<% else %>
 			<%= unreleased_text %>
-		<% end %>				
+		<% end %>
+						
 	</div>
 	
 	<a name="algorithm_bibliography"></a>
@@ -160,7 +172,29 @@ Sorry, the source file could not be located.
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>	
+		
 	</div>
+	
+	<div class="make_suggestion">
+		<div class="text">
+			<p>
+			Found a typo in the content or a bug in the source code? 		
+			Are you an expert in a technique and know some facts that could improve an algorithm description for all?
+			Do you want to get that warm feeling from contributing to an open source project? 
+			</p>
+			<p>
+			Two pillars of this effort are i) that the best domain experts are people outside of the project, 
+			and ii) that this work is (somewhat) wrong by default. 
+			<strong>Please help to make this work less wrong!</strong>.
+			</p>
+			<p>
+			<%=make_suggestion(@algorithm) %> to improve this algorithm description or 			
+			email the author: <%= mail_to jason_email, book_author %>. 
+			</p>
+		</div>
+		
+	</div>
+	
 </div>
 
 

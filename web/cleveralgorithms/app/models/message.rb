@@ -7,4 +7,9 @@ class Message < ActiveRecord::Base
   
   # associations
   belongs_to :algorithm
+  
+  # named scopes
+  named_scope :all_addressed, :conditions=>['addressed=?', true]
+  named_scope :all_unaddressed, :conditions=>['addressed=?', false]
+  
 end

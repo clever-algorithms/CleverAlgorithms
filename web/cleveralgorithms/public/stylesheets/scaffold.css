@@ -201,6 +201,18 @@ table.algorithm_fields {
 	vertical-align:top;
 }
 
+div.make_suggestion {
+	color: #aaa;
+	margin-top: 80px;	
+	padding-left: 10px;
+	padding-right: 10px;
+	font-size: 70%;
+	border-style:solid;
+	border-width:1px;
+	border-color:#aaa;
+}
+
+
 
 td, th {
 	vertical-align:top;

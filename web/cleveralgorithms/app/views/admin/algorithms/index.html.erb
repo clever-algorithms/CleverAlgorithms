@@ -17,15 +17,21 @@
 		<th>Created</th>
 		<th>Updated</th>
 		<th>Released</th>
+		<th>Msgs</th>
 		<th></th>
 	</tr>
 	
 	<% @algorithms.each do |a| %>
 		<tr class="algorithm_list_row">
 			<td><%= link_to a.name, a %></td>
-			<td><%= date_difference_days(a.created_at) %> days ago</td>
-			<td><%= date_difference_days(a.updated_at) %> days ago</td>
-			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>"><%= (a.released) ? "Yes" : "No" %></td>
+			<td><%= date_difference_days(a.created_at) %></td>
+			<td><%= date_difference_days(a.updated_at) %></td>
+			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>">
+				<%= (a.released) ? "Yes" : "No" %>
+			</td>
+			<td>
+				<%= a.messages.all_addressed.count %>/<%= a.messages.all_unaddressed.count %>
+			</td>
 			<td style="text-align:center;">
 				<%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> | 
 				<%= link_to 'Delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %>
