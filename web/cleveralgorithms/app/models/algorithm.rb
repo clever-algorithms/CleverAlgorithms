@@ -20,6 +20,9 @@ class Algorithm < ActiveRecord::Base
   named_scope :released, :conditions=>['released=?', true]
   named_scope :random, :order=>"RANDOM()"
  
+  # associations
+  has_many :messages
+  
   
   def to_param  # overridden
     name.gsub(/ /, '+')    

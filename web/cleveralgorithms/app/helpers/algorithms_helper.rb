@@ -42,7 +42,7 @@ module AlgorithmsHelper
     paragraphs.each do |p|
       index = p.index(':')
       link, ref = p[0...index], p[index+1..p.length]      
-      new_content << "<tr>"
+      new_content << "<tr class='algorithm_bibliography_tr'>"
       new_content << "<td><a name='#{link}'></a>[#{link}]</td>"
       new_content << "<td>#{process_reference_link_name(ref)}</td>"
       new_content << "</tr>"

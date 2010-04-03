@@ -196,15 +196,15 @@ div.algorithm_menu ul {
 	list-style-type: square;
 }
 
-table.algorithm_fields, th {
+table.algorithm_fields {
 	text-align: left;
 	vertical-align:top;
 }
 
-table.algorithm_bibliography_table, td {
-	text-align: left;
+
+td, th {
 	vertical-align:top;
-	padding: 0px 0px 12px 0px;
+	text-align: left;
 }
 
 
@@ -237,9 +237,11 @@ span.coming_soon {
 
 
 
-table.algorithm_list, tr {
+table.algorithm_list {
 	width: 100%;
-	border-collapse: collapse;
+}
+
+tr.algorithm_list_row {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 	border-bottom-color: #aaa;

@@ -21,10 +21,10 @@
 	</tr>
 	
 	<% @algorithms.each do |a| %>
-		<tr>
+		<tr class="algorithm_list_row">
 			<td><%= link_to a.name, a %></td>
-			<td><%= (Date.today - a.created_at.to_time.to_date).days %> days ago</td>
-			<td><%= (Date.today - a.updated_at.to_time.to_date).days %> days ago</td>
+			<td><%= date_difference_days(a.created_at) %> days ago</td>
+			<td><%= date_difference_days(a.updated_at) %> days ago</td>
 			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>"><%= (a.released) ? "Yes" : "No" %></td>
 			<td style="text-align:center;">
 				<%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> | 
