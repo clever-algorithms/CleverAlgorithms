@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  msg: MyText
+  algorithm: 
+  section: MyString
+  name: MyString
+  email: MyString
+  subject: MyString
+
+two:
+  msg: MyText
+  algorithm: 
+  section: MyString
+  name: MyString
+  email: MyString
+  subject: MyString

@@ -1,0 +1,33 @@
+<p>
+  <b>Msg:</b>
+  <%=h @message.msg %>
+</p>
+
+<p>
+  <b>Algorithm:</b>
+  <%=h @message.algorithm %>
+</p>
+
+<p>
+  <b>Section:</b>
+  <%=h @message.section %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @message.name %>
+</p>
+
+<p>
+  <b>Email:</b>
+  <%=h @message.email %>
+</p>
+
+<p>
+  <b>Subject:</b>
+  <%=h @message.subject %>
+</p>
+
+
+<%= link_to 'Edit', edit_message_path(@message) %> |
+<%= link_to 'Back', messages_path %>
