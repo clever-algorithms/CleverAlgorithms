@@ -27,13 +27,13 @@ def one_point_crossover(parent1, parent2, p_crossover, codon_bits)
   return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2length]
 end
 
-def duplication(bitstring, codon_bits)
+def codon_duplication(bitstring, codon_bits)
   codons = bitstring.length/codon_bits
   return bitstring if rand() >= 1.0/codons.to_f
   return bitstring + bitstring[rand(codons)*codon_bits, codon_bits]
 end
 
-def delete(bitstring, codon_bits)
+def codon_deletion(bitstring, codon_bits)
   codons = bitstring.length/codon_bits
   return bitstring if rand() >= 0.5/codons.to_f
   off = rand(codons)*codon_bits
@@ -46,8 +46,8 @@ def reproduce(selected, population_size, p_crossover, codon_bits)
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
     child[:bitstring] = one_point_crossover(p1, p2, p_crossover, codon_bits)
-    child[:bitstring] = delete(child[:bitstring], codon_bits)
-    child[:bitstring] = duplication(child[:bitstring], codon_bits)
+    child[:bitstring] = codon_deletion(child[:bitstring], codon_bits)
+    child[:bitstring] = codon_duplication(child[:bitstring], codon_bits)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
   end
@@ -131,7 +131,7 @@ grammar = {"S"=>"EXP",
   "BINARY"=>["+", "-", "/", "*" ],
   "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
   "VAR"=>["INPUT", "1.0"]}
-max_depth = 10
+max_depth = 7
 bounds = [-1, +1]
 generations = 100
 pop_size = 100
