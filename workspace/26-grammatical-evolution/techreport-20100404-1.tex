@@ -120,61 +120,93 @@ A variable-length binary string representation is used for the optimization proc
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:grammatical_evolution} provides a pseudo-code listing of the Grammatical Evolution algorithm for minimizing a cost function.
 
-\begin{algorithm}[htp]
-	\SetLine  
 
-	% data
+\begin{algorithm}[ht]
+	\SetLine  
+	% params
 	\SetKwData{Best}{$S_{best}$}
-	\SetKwData{Member}{$P_{i}$}
-	\SetKwData{Sample}{$S_{i}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{ProbabilityDeleteCodon}{$P_{delete}$}
+	\SetKwData{ProbabilityDuplicateCodon}{$P_{duplicate}$}
+	\SetKwData{CodonBits}{$Codon_{numbits}$}
+	\SetKwData{Grammar}{Grammar}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	% data
 	\SetKwData{Population}{Population}
-	\SetKwData{NewPopulation}{NewPopulation}	
-	\SetKwData{PopulationSize}{G}
-	\SetKwData{NumParameters}{NP}
-	\SetKwData{WeightingFactor}{F}
-	\SetKwData{CrossoverRate}{CR}
-	
+	\SetKwData{Parents}{Parents}
+	\SetKwData{Children}{Children}	
+	\SetKwData{ParentOne}{$Parent_{i}$}
+	\SetKwData{ParentTwo}{$Parent_{j}$}
+	\SetKwData{Solution}{$S_{i}$}	
+	\SetKwData{SolutionBitstring}{$Si_{bitstring}$}
+	\SetKwData{SolutionIntegers}{$Si_{integers}$}
+	\SetKwData{SolutionProgram}{$Si_{program}$}
+	\SetKwData{SolutionCost}{$Si_{cost}$}
 	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectParents}{SelectParents}
+	\SetKwFunction{Replace}{Replace}
 	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{InitializePopulation}{InitializePopulation}
-	\SetKwFunction{EvaluateCost}{EvaluateCost}
-	\SetKwFunction{GetBestSolution}{GetBestSolution}
-	\SetKwFunction{NewSample}{NewSample}
-	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Mutate}{Mutate}
+	\SetKwFunction{CodonDeletion}{CodonDeletion}
+	\SetKwFunction{CodonDuplication}{CodonDuplication}
+	\SetKwFunction{Decode}{Decode}
+	\SetKwFunction{Map}{Map}
+	\SetKwFunction{Execute}{Execute}
   
 	% I/O
-	\KwIn{\PopulationSize, \NumParameters, \WeightingFactor, \CrossoverRate}		
+	\KwIn{\Grammar, \CodonBits \PopulationSize, \ProbabilityCrossover, \ProbabilityMutate, \ProbabilityDeleteCodon, \ProbabilityDuplicateCodon}		
 	\KwOut{\Best}
   	% Algorithm
 	% initialize	
-	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \NumParameters}\;
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \CodonBits}\;
 	% evaluate
-	\EvaluateCost{\Population}\;
+	\ForEach{\Solution $\in$ \Population}{
+		\SolutionIntegers $\leftarrow$ \Decode{\SolutionBitstring, \CodonBits}\;
+		\SolutionProgram $\leftarrow$ \Map{\SolutionIntegers, \Grammar}\;
+		\SolutionCost $\leftarrow$ \Execute{\SolutionProgram}\;
+	}
 	% best
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		\NewPopulation $\leftarrow 0$\;
-		% create new 
-		\ForEach{\Member $\in$ \Population}{
-			\Sample $\leftarrow$ \NewSample{\Member, \Population, \NumParameters, \WeightingFactor, \CrossoverRate}\;
-			\eIf{\Cost{\Sample} $\leq$ \Cost{\Member}}{
-				\NewPopulation $\leftarrow$ \Sample\;
-			}
-			{
-				\NewPopulation $\leftarrow$ \Member\;
-			}
+		% select
+		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+		% recombine
+		\Children $\leftarrow 0$\;
+		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
+			% crossover
+			\Solution $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			% deletion
+			\SolutionBitstring $\leftarrow$ \CodonDeletion{\SolutionBitstring, \ProbabilityDeleteCodon}\;
+			% duplication
+			\SolutionBitstring $\leftarrow$ \CodonDuplication{\SolutionBitstring, \ProbabilityDuplicateCodon}\;
+			% mutation
+			\SolutionBitstring $\leftarrow$ \Mutate{\SolutionBitstring, \ProbabilityMutate}\;
+			% add
+			\Children $\leftarrow$ \Solution\;
 		}
-		\Population $\leftarrow$ \NewPopulation\;
-		% eval
-		\EvaluateCost{\Population}\;
-		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		% evaluate
+		\ForEach{\Solution $\in$ \Children}{
+			\SolutionIntegers $\leftarrow$ \Decode{\SolutionBitstring, \CodonBits}\;
+			\SolutionProgram $\leftarrow$ \Map{\SolutionIntegers, \Grammar}\;
+			\SolutionCost $\leftarrow$ \Execute{\SolutionProgram}\;
+		}
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children}\;
+		% replace
+		\Population $\leftarrow$ \Replace{\Population, \Children}\;
 	}
 	\Return{\Best}\;
 	% end
 	\caption{Pseudo Code for the Grammatical Evolution algorithm.}
 	\label{alg:grammatical_evolution}
 \end{algorithm}
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -213,7 +245,9 @@ The production rules for the grammar in BNF are:
 \end{itemize}
 
 % algorithm
-Candidate solutions are constructed directly into executable ruby code and execute. A given candidate solution is evaluated by comparing their output against the target function and taking the sum of the absolute errors of a number of trials. The probability of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
+The algorithm uses point mutation and a codon respecting one-point crossover operator. Binary tournament selection is used to select the subsequent generation. 
+% eval
+Binary strings are decoded to integers using the Binary Coded Decimal method. Candidate solutions are then mapped directly into executable ruby code and execute. A given candidate solution is evaluated by comparing their output against the target function and taking the sum of the absolute errors of a number of trials. The probability of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Grammatical Evolution algorithm in the Ruby Programming Language, label=grammatical_evolution]{../../src/algorithms/evolutionary/grammatical_evolution.rb}
