@@ -1,4 +1,4 @@
-# Genetic Programming in the Ruby Programming Language
+# Grammatical Evolution in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
