@@ -19,7 +19,11 @@ def point_mutation(bitstring)
   return child
 end
 
-def uniform_crossover(parent1, parent2, p_crossover)
+def one_point_crossover(parent1, parent2, p_crossover)
+  return ""+parent1[:bitstring] if rand()>=p_crossover
+  
+  
+  
   return ""+parent1[:bitstring] if rand()<p_crossover
   child = ""
   parent1[:bitstring].size.times do |i| 
@@ -28,14 +32,22 @@ def uniform_crossover(parent1, parent2, p_crossover)
   return child
 end
 
-def reproduce(selected, population_size, p_crossover)
+def duplication(bitstring, codon_bits)
+  codons = bitstring.length/codon_bits
+  puts codons
+  return bitstring if rand() >= 1.0/codons.to_f
+  off = rand(codons)  
+  return bitstring + bitstring[off*codon_bits, codon_bits]
+end
+
+def reproduce(selected, population_size, p_crossover, codon_bits)
   children = []
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
-    child[:bitstring] = uniform_crossover(p1, p2, p_crossover)
+    child[:bitstring] = one_point_crossover(p1, p2, p_crossover)
+    child[:bitstring] = duplication(child[:bitstring], codon_bits)
     child[:bitstring] = point_mutation(child[:bitstring])
-    # TODO addition's
     children << child
   end
   return children
@@ -47,8 +59,8 @@ end
 
 def decode_integers(bitstring, codon_bits)
   ints = []
-  (bitstring.size/codon_bits).times do |block|
-    codon = bitstring[block, codon_bits]
+  (bitstring.length/codon_bits).times do |off|
+    codon = bitstring[off*codon_bits, codon_bits]
     sum, i = 0, 0
     codon.each_char {|x| sum+=((x=='1') ? 1 : 0) * (2 ** i);i+=1}
     ints << sum
@@ -103,7 +115,7 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar
   gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
   generations.times do |gen|
     selected = Array.new(pop_size){|i| binary_tournament(pop)}
-    children = reproduce(selected, pop_size, p_crossover)    
+    children = reproduce(selected, pop_size, p_crossover,codon_bits)    
     children.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
@@ -124,7 +136,7 @@ generations = 100
 pop_size = 100
 codon_bits = 8
 initial_bits = 10*codon_bits
-p_crossover = 0.20
+p_crossover = 0.95
 
 best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
 puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"

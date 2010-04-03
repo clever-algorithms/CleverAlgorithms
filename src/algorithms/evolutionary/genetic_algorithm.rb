@@ -25,7 +25,7 @@ def point_mutation(bitstring, prob_mutation)
 end
 
 def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1[:bitstring] if rand()<p_crossover
+  return ""+parent1[:bitstring] if rand()>=p_crossover
   child = ""
   parent1[:bitstring].size.times do |i| 
     child << ((rand()<0.5) ? parent1[:bitstring][i] : parent2[:bitstring][i])
@@ -51,7 +51,7 @@ end
 
 def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
   population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(num_bits), :fitness=>0}
+    {:bitstring=>random_bitstring(num_bits)}
   end
   population.each{|c| c[:fitness] = onemax(c[:bitstring])}
   gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
