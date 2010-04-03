@@ -19,25 +19,25 @@ def point_mutation(bitstring)
   return child
 end
 
-def one_point_crossover(parent1, parent2, p_crossover)
+def one_point_crossover(parent1, parent2, p_crossover, codon_bits)
   return ""+parent1[:bitstring] if rand()>=p_crossover
-  
-  
-  
-  return ""+parent1[:bitstring] if rand()<p_crossover
-  child = ""
-  parent1[:bitstring].size.times do |i| 
-    child << ((rand()<0.5) ? parent1[:bitstring][i] : parent2[:bitstring][i])
-  end
-  return child
+  cut = rand([parent1.length, parent2.length].min/codon_bits)
+  cut *= codon_bits
+  p2length = parent2[:bitstring].length
+  return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2length]
 end
 
 def duplication(bitstring, codon_bits)
   codons = bitstring.length/codon_bits
-  puts codons
   return bitstring if rand() >= 1.0/codons.to_f
-  off = rand(codons)  
-  return bitstring + bitstring[off*codon_bits, codon_bits]
+  return bitstring + bitstring[rand(codons)*codon_bits, codon_bits]
+end
+
+def delete(bitstring, codon_bits)
+  codons = bitstring.length/codon_bits
+  return bitstring if rand() >= 0.5/codons.to_f
+  off = rand(codons)*codon_bits
+  return bitstring[0...off] + bitstring[off+codon_bits...bitstring.length]
 end
 
 def reproduce(selected, population_size, p_crossover, codon_bits)
@@ -45,7 +45,8 @@ def reproduce(selected, population_size, p_crossover, codon_bits)
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
-    child[:bitstring] = one_point_crossover(p1, p2, p_crossover)
+    child[:bitstring] = one_point_crossover(p1, p2, p_crossover, codon_bits)
+    child[:bitstring] = delete(child[:bitstring], codon_bits)
     child[:bitstring] = duplication(child[:bitstring], codon_bits)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
@@ -120,7 +121,7 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
     pop = children
-    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
+    puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].length/codon_bits}, s=#{best[:bitstring]}"
   end  
   return best
 end
@@ -130,13 +131,13 @@ grammar = {"S"=>"EXP",
   "BINARY"=>["+", "-", "/", "*" ],
   "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
   "VAR"=>["INPUT", "1.0"]}
-max_depth = 8
+max_depth = 10
 bounds = [-1, +1]
 generations = 100
 pop_size = 100
 codon_bits = 8
 initial_bits = 10*codon_bits
-p_crossover = 0.95
+p_crossover = 0.30
 
 best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
 puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
