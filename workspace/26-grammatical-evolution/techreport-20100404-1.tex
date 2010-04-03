@@ -73,7 +73,7 @@ Grammatical Evolution, GE
 % To what fields of study does a technique belong?
 Grammatical Evolution is a Global Optimization technique and an instance of an Evolutionary Algorithm from the field of Evolutionary Computation. It may also be considered an algorithm for Automatic Programming.
 % What are the closely related approaches to a technique?
-Grammatical Evolution is related to other Evolutionary Algorithms for programming such as Genetic Programming.
+Grammatical Evolution is related to other Evolutionary Algorithms for programming such as Genetic Programming, as well as the classical Genetic Algorithm that uses binary strings.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,8 +81,9 @@ Grammatical Evolution is related to other Evolutionary Algorithms for programmin
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+The Grammatical Evolution algorithm is inspired by the biological process used for generating a protein from genetic material as well as the broader genetic evolutionary process.
 % Which features of the motivating system are relevant to a technique?
-todo
+The genome is comprised of DNA as string of building blocks that is transcribed to RNA. RNA codons are in turn translated to sequences of amino acids and used in the protein. The resulting protein in its environment is the phenotype. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,16 +91,21 @@ todo
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
+% mapping
+The phenotype is a computer program that is created from a binary string-based genome. The genome is decoded to a integers which are in turn mapped onto pre-defined rules that makeup the program. 
+% wrapping
+The mapping from genotype to the phenotype is many-to-many process that uses a wrapping feature. This is like the biological process used by many bacteria, viruses, and mitochondria, where the same genetic material is used in the expression of different genes.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+The mapping adds robustness to the process both in the use of structure-agnostic genetic operators used during the evolutionary process on the sub-symbolic representation and the transcription of well-formed executable programs from the representation.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of Grammatical Evolution is to adapt an executable program to a problem specific objective function.
 % What is a techniques plan of action?
-todo
+This is achieved through an iterative process with surrogates of evolutionary mechanisms such as descent with variation, genetic mutation and recombination, and genetic transcription and gene expression. The grammar is evolved in a sub-symbolic form as variable length binary strings and mapped to a symbolic and well-structured form as a context free grammar for assessment.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -107,7 +113,12 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+% grammar
+A grammar is defined in Backus Normal Form (BNF), which is a context free grammar expressed as a series of production rules comprised of terminals and non-terminals.
+% mapping
+A variable-length binary string representation is used for the optimization process. Bits are read from the a candidate solutions genome in blocks of 8 and decoded to an integer (in the range between 0 and $2^{8-1}$). If the end of the binary string is reached when reading integers, the reading process loops back to the start of the string, effectively treating creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not decode and use a solutions entire genome or may decode the genome more than once given it's circular nature.
+
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
