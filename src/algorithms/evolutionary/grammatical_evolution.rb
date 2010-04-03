@@ -56,25 +56,55 @@ def decode_integers(bitstring, codon_bits)
   return ints
 end
 
-def evaluate(candidate, codon_bits)
-  # map to integer
-  candidate[:mapping] = decode_integers(candidate[:bitstring], codon_bits)
-  # map to program
-  
-  
-  # cost
-  
-  return 0
+def map(grammar, integers, max_depth)
+  done, offset, depth = false, 0, 0
+  symbolic_string = grammar["S"]
+  begin
+    done = true
+    grammar.keys.each do |key|      
+      symbolic_string = symbolic_string.gsub(key) do |k| 
+        done = false
+        set = (k=="EXP" and depth>=max_depth-1) ? grammar["VAR"] : grammar[k]
+        integer = integers[offset].modulo(set.length)
+        offset = (offset==integers.length-1) ? 0 : offset+1
+        set[integer]
+      end
+    end
+    depth += 1
+  end until done
+  return symbolic_string
 end
 
-def search(generations, pop_size, codon_bits, initial_bits, p_crossover)
+def target_function(x)
+  x**4.0 + x**3.0 + x**2.0 + x
+end
+
+def cost(program, bounds)
+  errors = 0.0    
+  10.times do
+    x = bounds[0] + ((bounds[1] - bounds[0]) * rand())
+    expression = program.gsub("INPUT", x.to_s)
+    target = target_function(x)
+    begin score = eval(expression) rescue score = 0.0/0.0 end    
+    errors += (((score.nan? or score.infinite?) ? 0.0 : score) - target).abs
+  end    
+  return errors
+end
+
+def evaluate(candidate, codon_bits, grammar, max_depth, bounds)
+  candidate[:integers] = decode_integers(candidate[:bitstring], codon_bits)
+  candidate[:program] = map(grammar, candidate[:integers], max_depth)
+  candidate[:fitness] = cost(candidate[:program], bounds)
+end
+
+def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
   pop = Array.new(pop_size) {|i| {:bitstring=>random_bitstring(initial_bits)}}
-  pop.each{|c| c[:fitness] = evaluate(c,codon_bits)}
+  pop.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
   gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
   generations.times do |gen|
     selected = Array.new(pop_size){|i| binary_tournament(pop)}
     children = reproduce(selected, pop_size, p_crossover)    
-    children.each{|c| c[:fitness] = evaluate(c,codon_bits)}
+    children.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
     pop = children
@@ -83,11 +113,18 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover)
   return best
 end
 
-generations = 300
+grammar = {"S"=>"EXP",
+  "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNIARY(EXP) ", " VAR "],
+  "BINARY"=>["+", "-", "/", "*" ],
+  "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
+  "VAR"=>["INPUT", "1.0"]}
+max_depth = 8
+bounds = [-1, +1]
+generations = 100
 pop_size = 100
 codon_bits = 8
 initial_bits = 10*codon_bits
-p_crossover = 0.98
+p_crossover = 0.20
 
-best = search(generations, pop_size, codon_bits, initial_bits, p_crossover)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
+puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
