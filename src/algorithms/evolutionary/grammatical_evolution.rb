@@ -29,7 +29,7 @@ def uniform_crossover(parent1, parent2, p_crossover)
 end
 
 def reproduce(selected, population_size, p_crossover)
-  children = []  
+  children = []
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
@@ -45,39 +45,49 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def evaluate(candidate)
+def decode_integers(bitstring, codon_bits)
+  ints = []
+  (bitstring.size/codon_bits).times do |block|
+    codon = bitstring[block, codon_bits]
+    sum, i = 0, 0
+    codon.each_char {|x| sum+=((x=='1') ? 1 : 0) * (2 ** i);i+=1}
+    ints << sum
+  end
+  return ints
+end
+
+def evaluate(candidate, codon_bits)
   # map to integer
-  
+  candidate[:mapping] = decode_integers(candidate[:bitstring], codon_bits)
   # map to program
+  
   
   # cost
   
   return 0
 end
 
-def search(max_generations, population_size, codon_bits, initial_bits, p_crossover)
-  population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(initial_bits)}
-  end
-  population.each{|c| c[:fitness] = evaluate(c)}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  max_generations.times do |gen|
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover)    
-    children.each{|c| c[:fitness] = evaluate(c)}
+def search(generations, pop_size, codon_bits, initial_bits, p_crossover)
+  pop = Array.new(pop_size) {|i| {:bitstring=>random_bitstring(initial_bits)}}
+  pop.each{|c| c[:fitness] = evaluate(c,codon_bits)}
+  gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  generations.times do |gen|
+    selected = Array.new(pop_size){|i| binary_tournament(pop)}
+    children = reproduce(selected, pop_size, p_crossover)    
+    children.each{|c| c[:fitness] = evaluate(c,codon_bits)}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
-    population = children
+    pop = children
     puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
   end  
   return best
 end
 
-max_generations = 300
-population_size = 100
+generations = 300
+pop_size = 100
 codon_bits = 8
 initial_bits = 10*codon_bits
 p_crossover = 0.98
 
-best = search(max_generations, population_size, codon_bits, initial_bits, p_crossover)
+best = search(generations, pop_size, codon_bits, initial_bits, p_crossover)
 puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
