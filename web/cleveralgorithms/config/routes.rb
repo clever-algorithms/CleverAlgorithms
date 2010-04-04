@@ -16,7 +16,7 @@ ActionController::Routing::Routes.draw do |map|
   map.book  'book', :controller =>"book"
   # about
   map.about 'about', :controller =>"home", :action =>"about"
-  map.help  'help', :controller =>"home", :action =>"help"
+  map.support  'support', :controller =>"home", :action =>"support"
 
   # administration /admin/
   map.namespace :admin do |admin|

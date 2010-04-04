@@ -8,7 +8,7 @@ class HomeController < ApplicationController
     
   end
   
-  def help
+  def support
     
   end
   
