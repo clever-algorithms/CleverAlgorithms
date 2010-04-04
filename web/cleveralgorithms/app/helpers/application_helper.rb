@@ -51,6 +51,8 @@ module ApplicationHelper
 	  thought.split[0..(wordcount-1)].join(" ") +(thought.split.size > wordcount ? "..." : "") 
 	end
 
-
+  def lazy_algorithm_link(name)
+    link_to name, algorithm_url(name)
+  end
 
 end
