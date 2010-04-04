@@ -27,8 +27,15 @@
 		calculated popularity and user demand.
 		</p>
 		<p>
-		Please, <%=make_suggestion2(@algorithm) %> and suggest 
+		Please, <%= link_to "let us know", "" %> and suggest 
 		we hurry up!
+		</p>
+		<p>
+			For more information on the methodology used to select algorithms
+			for the Clever Algorithms project, please see: 
+			<ul>
+				<li>Jason Brownlee. <%= link_to "Data-Driven Optimization Algorithm Selection", "http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100112-1.pdf" %>. Technical Report CA-TR-20100112-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.</li>
+			</ul>
 		</p>
 	</div>
 </div>

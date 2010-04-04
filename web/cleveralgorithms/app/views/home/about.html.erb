@@ -1,7 +1,7 @@
 <% title("About") %>
-
 <a name="about"></a>
 <div class="subtitle">About</div>
+<p>Want to know a little more about all this?</p>
 
 <div class="algorithm_subheading">Contents</div>
 <div class="algorithm_menu">
@@ -9,7 +9,6 @@
 		<li><%= link_to "Project", '#project' %></li>
 		<li><%= link_to "Algorithm Descriptions", '#template' %></li>
 		<li><%= link_to "Author", '#author' %></li>
-		<li><%= link_to "Project Development", '#development' %></li>
 		<li><%= link_to "Contributions", '#contribute' %></li>
 		<li><%= link_to "Acknowledgements", '#acknowledgements' %></li>
 	</ul>
@@ -37,13 +36,26 @@
 	</p>
 	<p>
 	The outcomes for this project are i) a website that provides all content for free
-	and 2) a compendium of algorithm descriptions released as a book:
+	and 2) a compendium of algorithm descriptions released as a book: 
 	<ul>
-		<li>
-			Jason Brownlee. "<%= link_to book_title, book_url %>", LuLu, 2010 (expected)
-		</li>
+		<li>Jason Brownlee. "<%= link_to book_title, book_url %>", LuLu, 2010 (expected)</li>
 	</ul>
-	</p>			
+	</p>
+	<p>
+	An incremental content development methodology was used to complete the project
+	that involved the completion of discrete standalone algorithm descriptions over an extended 
+	period of time. This approach allowed continuous review, revision, and refinement of both 
+	the content and the algorithm description template.
+	The content for the project was developed as a series of technical reports 
+	in a public github project. The project all produced technical reports are
+	available from: <%= link_to development_url, development_url %> 
+	</p>	
+	<p>
+	For more background on the Clever Algorithms project, please see: 
+	<ul>
+		<li>Jason Brownlee. <%= link_to "The Clever Algorithms Project: Overview","http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf" %>. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.</li>
+	</ul>
+	</p>
 </div>
 
 <a name="template"></a>
@@ -63,11 +75,25 @@
 		<li><strong>Strategy</strong>: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.</li>
 		<li><strong>Procedure</strong>: (*optional) The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.</li>
 		<li><strong>Heuristics</strong>: The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.</li>
-		<li><strong>Code Listing</strong>: The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.</li>
+		<li>
+		<strong>Code Listing</strong>: The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+		<br />
+		The Ruby Programming language was selected for code examples in the Clever Algorithms Project. For more background information on language selection for the Clever Algorithms Project, please see: 
+		<ul>
+			<li>Jason Brownlee. <%= link_to "Programming Language Selection for Optimization Algorithms", "http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100122-1.pdf" %>. Technical Report CA-TR-20100122-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.</li>
+		</ul>
+		</li>
 		<li><strong>References</strong>: The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. </li>
 		<li><strong>Around the Web</strong>: A minimal but useful set of pointers to websites that provide further sources of information of the algorithm.</li>
 		<li><strong>Bibliography</strong>: The complete bibliography for the citations made throughout the algorithm description.</li>
 	</ul>
+	
+	<p>
+	For more background on the development of the standardized algorithm template used in the Clever Algorithms project, please see: 
+	<ul>
+		<li>Jason Brownlee. <%= link_to "A Template for Standardized Algorithm Descriptions", "http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100107-1.pdf" %>. Technical Report CA-TR-20100107-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.</li>
+	</ul>
+	</p>
 </div>
 
 <a name="author"></a>
@@ -97,22 +123,6 @@
 	software plug-ins, and software tools. Jason also enjoys writing and maintains a 
 	blog entitled <%= link_to "Never Read Passively", "http://www.neverreadpassively.com" %> 
 	and can be followed on twitter via <%= link_to "@jbrownlee", "http://twitter.com/jbrownlee" %>.
-	</p>
-</div>
-
-<a name="development"></a>
-<div class="subsubtitle">Project Development</div>
-<div class="text">
-	<p>
-	An incremental content development methodology was used to complete the project
-	that involved the completion of discrete standalone algorithm descriptions over an extended 
-	period of time. This approach allowed continuous review, revision, and refinement of both 
-	the content and the algorithm description template.
-	</p>
-	<p>
-	The content for the project was developed as a series of technical reports 
-	in a public github project. The project all produced technical reports are
-	available from: <%= link_to development_url, development_url %> 
 	</p>
 </div>
 
