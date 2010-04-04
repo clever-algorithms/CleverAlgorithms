@@ -9,9 +9,21 @@
 	</p>
 </div>
 
-<div class="algorithm_list">
+<a name="released"></a>
+<div class="subsubtitle">Released</div>
+<div class="text">
 	<ul>
-	<% @algorithms.each do |algorithm| %>
+	<% @released.each do |algorithm| %>
+		<li><%= link_to algorithm.name, algorithm %></li>		
+	<% end %>
+	</ul>
+</div>
+
+<a name="unreleased"></a>
+<div class="subsubtitle">Coming Soon</div>
+<div class="text">
+	<ul>
+	<% @unreleased.each do |algorithm| %>
 		<li><%= link_to algorithm.name, algorithm %></li>		
 	<% end %>
 	</ul>
@@ -31,8 +43,7 @@
 		we hurry up!
 		</p>
 		<p>
-			For more information on the methodology used to select algorithms
-			for the Clever Algorithms project, please see: 
+		For more information on the methodology used to select algorithms for the Clever Algorithms project, please see: 
 			<ul>
 				<li>Jason Brownlee. <%= link_to "Data-Driven Optimization Algorithm Selection", "http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100112-1.pdf" %>. Technical Report CA-TR-20100112-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.</li>
 			</ul>
