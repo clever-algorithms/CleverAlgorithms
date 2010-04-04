@@ -204,10 +204,10 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing o
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{gene_expression_programming} provides an example of the Gene Expression Programming algorithm implemented in the Ruby Programming Language based on the seminal version proposed by Ferreira \cite{Ferreira2001}.
-
 % problem
-
+The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[-1,1]$. The grammar used in this problem is: Functions: $F=\{+,-,\div,\times,\}$ and Terminals: $T=\{x\}$.
 % algorithm
+The algorithm uses binary tournament selection, uniform crossover and point mutations. The K-expression is decoded to an expression tree in a breadth-first manner, which is then parsed depth first as an ruby expression string for display and direct evaluation.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Gene Expression Programming algorithm in the Ruby Programming Language, label=gene_expression_programming]{../../src/algorithms/evolutionary/gene_expression_programming.rb}
@@ -243,7 +243,7 @@ Ferreira published a book on the approach in 2002 covering background, the algor
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Gene Expression Programming algorithm as an evolutionary automatic programming technique.
 
 % 
 % Contribute
