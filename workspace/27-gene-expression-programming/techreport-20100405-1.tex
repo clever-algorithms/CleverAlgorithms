@@ -82,10 +82,11 @@ It is a sibling of other Evolutionary Algorithms such as a the Genetic Algorithm
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 Gene Expression Programming is inspired by the replication and expression of the DNA molecule, specifically at the gene level. 
-% replication
-The mechanisms of gene replication may involve mutations (copying errors), recombination with a second genome, transposition or movement of the gene on the genome, and duplication of the gene.
 % expression
 The expression of a gene involves the transcription of its DNA to RNA which in turn forms amino acids that make up proteins as the phenotype of an organism. 
+% replication
+The DNA building blocks are subjected to mechanisms of variation (mutations such as coping errors) as well as recombination during sexual reproduction.
+
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -133,13 +134,18 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing o
 	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
 	\SetKwData{Parents}{Parents}
 	\SetKwData{Children}{Children}
-	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{Population}{Population}
 	\SetKwData{PopulationSize}{$Population_{size}$}
 	\SetKwData{ParentOne}{$Parent_{1}$}
 	\SetKwData{ParentTwo}{$Parent_{2}$}
-	\SetKwData{ChildOne}{$Child_{1}$}
-	\SetKwData{ChildTwo}{$Child_{2}$}	
+	\SetKwData{Solution}{$S_{i}$}
+	\SetKwData{SolutionGenome}{$Si_{genome}$}
+	\SetKwData{SolutionProgram}{$Si_{program}$}
+	\SetKwData{SolutionCost}{$Si_{cost}$}	
+	\SetKwData{Grammar}{Grammar}
+	\SetKwData{HeadLength}{$Head_{length}$}
+	\SetKwData{TailLength}{$Tail_{length}$}
+	
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
@@ -149,15 +155,20 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing o
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{Crossover}{Crossover}
 	\SetKwFunction{Mutate}{Mutate}
+	\SetKwFunction{Map}{DecodeBreadthFirst}
+	\SetKwFunction{Execute}{Execute}
   
 	% I/O
-	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwIn{\Grammar, \PopulationSize, \HeadLength, \TailLength, \ProbabilityCrossover, \ProbabilityMutate}		
 	\KwOut{\Best}
   	% Algorithm
 	% initialize	
-	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \Grammar, \HeadLength, \TailLength}\;
 	% evaluate
-	\EvaluatePopulation{\Population}\;
+	\ForEach{\Solution $\in$ \Population}{
+		\SolutionProgram $\leftarrow$ \Map{\SolutionGenome, \Grammar}\;
+		\SolutionCost $\leftarrow$ \Execute{\SolutionProgram}\;
+	}
 	% best
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
@@ -167,12 +178,18 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing o
 		% recombine
 		\Children $\leftarrow 0$\;
 		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
-			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
-			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
-			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+			% crossover
+			\SolutionGenome $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			% mutation
+			\SolutionGenome $\leftarrow$ \Mutate{\SolutionGenome, \ProbabilityMutate}\;
+			% add
+			\Children $\leftarrow$ \Solution\;
 		}
 		% evaluate
-		\EvaluatePopulation{\Children}\;
+		\ForEach{\Solution $\in$ \Population}{
+			\SolutionProgram $\leftarrow$ \Map{\SolutionGenome, \Grammar}\;
+			\SolutionCost $\leftarrow$ \Execute{\SolutionProgram}\;
+		}
 		% best
 		\Best $\leftarrow$ \GetBestSolution{\Children}\;
 		% replace
@@ -192,9 +209,8 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudo-code listing o
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Use of parsimony pressure to create expressions that solve the problem that are also small (concise and easier to read). For example, the objective fitness function can be scaled based on the number of nodes in the expression tree, perhaps a ratio of genome length to resultant expression tree.
 	\item The length of a chromosome is defined by the number of genes, where a gene length is defined by $h + t$. The $h$ is a user defined parameter (such as 10), where as $t$ is defined as $t = h (n-1) + 1$. $n$ represents the maximum arity of functional nodes in the expression (such as 2 if the arithmetic function $\times, \div, -, +$ are used)
-	\item Mutation is typically $\frac{1}{L}$, selection can be any of the classical approaches (such as roulette wheel or tournament), and crossover rates are typically high (0.7 of offspring)
+	\item Mutation is low (such as $\frac{1}{L}$), selection can be any of the classical approaches (such as roulette wheel or tournament), and crossover rates are typically high (0.7 of offspring)
 	\item Use multiple sub-expressions linked together on hard problems when one gene does not get much progress. Provides modularity in the solution for both evolvability and ultimate readability.
 \end{itemize}
 
