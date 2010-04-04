@@ -54,15 +54,30 @@ class MessagesController < ApplicationController
   # POST /messages
   # POST /messages.xml
   def create
-    @message = Message.new(params[:message])
+    # flash[:notice] = @algorithm.name
+    # redirect_to(algorithms_path)
+    # return
+    
+    # params[:message][:algorithm_id] = @algorithm.id
+    # @algorithm.messages.create(params[:message])
+    # @algorithm.messages << Message.create(params[:message])    
+    # @algorithm.save!
+    
+    # @message.save!
+    
+    flash[:notice] = @algorithm.name
+    redirect_to(algorithms_path)
+    return
 
     respond_to do |format|
       if @message.save
         flash[:notice] = 'Message sent successfully created.'
-        format.html { redirect_to(@algorithm) }
+        # format.html { redirect_to(:controller=>"algorithms", :action=>"show", :id=>@algorithm.name) }
+        format.html {redirect_to(algorithms_path) }
         # format.xml  { render :xml => @message, :status => :created, :location => @message }
       else
-        format.html { render :action => "new" }
+        format.html {redirect_to(algorithms_path) }
+        # format.html { render :action => "new" }
         # format.xml  { render :xml => @message.errors, :status => :unprocessable_entity }
       end
     end
