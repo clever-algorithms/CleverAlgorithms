@@ -1,182 +1,184 @@
 
 Kingdom: stochastic (52)
-genet & 1630000 & 18149 & 1610000 & 85434 & 1029561 & 5.0 \\
-probably approximate locally optimal & 0 & 11170 & 0 & 0 & 0 & 0.615 \\
-random search & 265000 & 1515 & 33600 & 2885 & 122808 & 0.42 \\
-tabu search & 44600 & 1432 & 37400 & 4271 & 36727 & 0.215 \\
-blind search & 11700 & 775 & 4590 & 328 & 4902 & 0.061 \\
-adaptive directional random search & 0 & 1048 & 1 & 0 & 0 & 0.058 \\
-hill climbing search & 2300 & 647 & 3030 & 320 & 2926 & 0.045 \\
-scatter search & 4530 & 484 & 3480 & 549 & 3066 & 0.041 \\
-stochastic local search & 3090 & 489 & 2400 & 456 & 3649 & 0.039 \\
-adaptive random search & 959 & 626 & 911 & 70 & 660 & 0.037 \\
-variable neighborhood search & 3210 & 436 & 2900 & 466 & 3182 & 0.036 \\
-controlled random search & 993 & 495 & 955 & 73 & 620 & 0.03 \\
-greedy randomized adaptive search procedure & 1420 & 403 & 1800 & 285 & 1246 & 0.029 \\
-reactive tabu search & 1570 & 433 & 1440 & 189 & 1383 & 0.029 \\
-pure random search & 642 & 418 & 772 & 119 & 485 & 0.026 \\
-guided local search & 1710 & 319 & 1380 & 243 & 2038 & 0.024 \\
-iterated local search & 2130 & 289 & 1740 & 325 & 1755 & 0.024 \\
-stochastic hill climbing & 904 & 362 & 851 & 96 & 934 & 0.023 \\
-reactive search & 954 & 322 & 487 & 73 & 747 & 0.02 \\
-probabilistic hill climbing & 384 & 310 & 405 & 22 & 366 & 0.018 \\
-directed random search & 368 & 224 & 403 & 46 & 238 & 0.014 \\
-stochastic gradient descent algorithm & 513 & 207 & 435 & 38 & 409 & 0.013 \\
-variable depth search & 550 & 209 & 429 & 65 & 428 & 0.013 \\
-fast local search & 1280 & 150 & 623 & 83 & 536 & 0.011 \\
-adaptive step-size random search & 86 & 199 & 74 & 6 & 50 & 0.011 \\
-random mutation hill climbing & 422 & 142 & 422 & 48 & 375 & 0.009 \\
-pure adaptive search & 232 & 108 & 136 & 31 & 171 & 0.007 \\
-blind random search & 162 & 122 & 196 & 18 & 158 & 0.007 \\
-generalized hill climbing & 373 & 84 & 214 & 33 & 205 & 0.006 \\
-creeping random search & 63 & 96 & 42 & 3 & 26 & 0.005 \\
-guided genetic algorithm & 466 & 63 & 247 & 40 & 318 & 0.005 \\
-random hill climbing & 160 & 90 & 153 & 22 & 117 & 0.005 \\
-reactive local search & 300 & 66 & 200 & 46 & 312 & 0.005 \\
-parallel hill climbing & 189 & 74 & 141 & 18 & 149 & 0.005 \\
-iterated hill climbing & 142 & 84 & 153 & 21 & 102 & 0.005 \\
-dynamic hill climbing & 202 & 61 & 151 & 16 & 161 & 0.004 \\
-sequential random search & 93 & 76 & 73 & 5 & 33 & 0.004 \\
-variable neighborhood decomposition search & 187 & 44 & 172 & 42 & 563 & 0.004 \\
-random restart hill climbing & 257 & 35 & 113 & 6 & 254 & 0.002 \\
-parallel variable neighborhood search & 132 & 22 & 92 & 23 & 78 & 0.002 \\
-hill climbing with learning & 108 & 32 & 74 & 14 & 80 & 0.002 \\
-stochastic diffusion search & 296 & 18 & 96 & 9 & 558 & 0.002 \\
-random bit climbing & 34 & 24 & 25 & 3 & 12 & 0.001 \\
-mutation hill climbing algorithm & 40 & 17 & 37 & 8 & 15 & 0.001 \\
-random bit climber & 49 & 19 & 35 & 6 & 24 & 0.001 \\
-extended guided local search & 42 & 18 & 38 & 10 & 27 & 0.001 \\
-random restart algorithm & 31 & 8 & 29 & 8 & 25 & 0.001 \\
-localized random search & 36 & 9 & 25 & 3 & 14 & 0.001 \\
-reactive search optimization & 77 & 2 & 7 & 0 & 45 & 0.0 \\
-adaptive random search with intensification and diversification & 68 & 1 & 11 & 0 & 9 & 0.0 \\
-multiple restart algorithm & 3 & 1 & 2 & 1 & 1 & 0.0 \\
-skewed variable neighborhood search & 7 & 4 & 9 & 3 & 2 & 0.0 \\
+genet & 1390000 & 20659 & 1600000 & 87177 & 1034219 & 5.0 \\
+probably approximate locally optimal & 0 & 11435 & 0 & 0 & 0 & 0.553 \\
+random search & 297000 & 1556 & 37800 & 2919 & 122868 & 0.465 \\
+tabu search & 42800 & 1369 & 42400 & 4330 & 36850 & 0.209 \\
+blind search & 12200 & 775 & 4990 & 339 & 4914 & 0.058 \\
+adaptive directional random search & 0 & 985 & 1 & 0 & 0 & 0.048 \\
+hill climbing search & 2050 & 647 & 3240 & 322 & 2930 & 0.041 \\
+scatter search & 4290 & 476 & 3690 & 565 & 3089 & 0.038 \\
+variable neighborhood search & 2940 & 461 & 3060 & 482 & 3180 & 0.035 \\
+stochastic local search & 2590 & 459 & 2600 & 461 & 3660 & 0.034 \\
+adaptive random search & 820 & 623 & 1030 & 70 & 662 & 0.033 \\
+controlled random search & 863 & 492 & 1050 & 74 & 630 & 0.027 \\
+reactive tabu search & 1410 & 435 & 1550 & 191 & 1377 & 0.027 \\
+greedy randomized adaptive search procedure & 1230 & 393 & 1910 & 291 & 1248 & 0.026 \\
+pure random search & 526 & 429 & 834 & 119 & 490 & 0.023 \\
+iterated local search & 1880 & 293 & 1870 & 329 & 1767 & 0.022 \\
+guided local search & 1560 & 324 & 1470 & 243 & 2044 & 0.022 \\
+stochastic hill climbing & 710 & 355 & 922 & 97 & 934 & 0.02 \\
+reactive search & 739 & 313 & 520 & 75 & 747 & 0.018 \\
+probabilistic hill climbing & 296 & 293 & 467 & 22 & 368 & 0.015 \\
+directed random search & 320 & 217 & 467 & 46 & 236 & 0.012 \\
+variable depth search & 434 & 208 & 469 & 66 & 429 & 0.012 \\
+stochastic gradient descent algorithm & 422 & 199 & 528 & 39 & 408 & 0.011 \\
+adaptive step-size random search & 72 & 194 & 92 & 6 & 50 & 0.01 \\
+fast local search & 801 & 148 & 660 & 84 & 533 & 0.01 \\
+random mutation hill climbing & 382 & 141 & 465 & 48 & 375 & 0.008 \\
+blind random search & 117 & 117 & 199 & 18 & 158 & 0.006 \\
+random hill climbing & 142 & 90 & 163 & 22 & 116 & 0.005 \\
+pure adaptive search & 183 & 99 & 140 & 31 & 173 & 0.005 \\
+generalized hill climbing & 314 & 76 & 236 & 33 & 204 & 0.005 \\
+creeping random search & 40 & 93 & 48 & 3 & 26 & 0.005 \\
+iterated hill climbing & 107 & 82 & 162 & 21 & 102 & 0.004 \\
+parallel hill climbing & 129 & 71 & 161 & 18 & 149 & 0.004 \\
+sequential random search & 77 & 76 & 82 & 5 & 33 & 0.004 \\
+reactive local search & 240 & 68 & 213 & 46 & 314 & 0.004 \\
+guided genetic algorithm & 429 & 64 & 267 & 41 & 319 & 0.004 \\
+dynamic hill climbing & 151 & 58 & 158 & 16 & 161 & 0.003 \\
+variable neighborhood decomposition search & 171 & 41 & 180 & 42 & 564 & 0.003 \\
+stochastic diffusion search & 247 & 18 & 102 & 9 & 558 & 0.002 \\
+random restart hill climbing & 209 & 35 & 119 & 7 & 252 & 0.002 \\
+hill climbing with learning & 90 & 32 & 78 & 14 & 80 & 0.002 \\
+parallel variable neighborhood search & 102 & 20 & 90 & 23 & 78 & 0.001 \\
+mutation hill climbing algorithm & 29 & 17 & 43 & 8 & 16 & 0.001 \\
+extended guided local search & 33 & 17 & 41 & 10 & 27 & 0.001 \\
+random bit climbing & 22 & 25 & 28 & 3 & 12 & 0.001 \\
+random bit climber & 28 & 19 & 37 & 6 & 23 & 0.001 \\
+localized random search & 26 & 8 & 26 & 3 & 14 & 0.0 \\
+skewed variable neighborhood search & 5 & 4 & 7 & 3 & 2 & 0.0 \\
+multiple restart algorithm & 2 & 1 & 1 & 1 & 1 & 0.0 \\
+random restart algorithm & 22 & 8 & 29 & 8 & 25 & 0.0 \\
+adaptive random search with intensification and diversification & 57 & 1 & 12 & 0 & 9 & 0.0 \\
+reactive search optimization & 51 & 2 & 9 & 1 & 45 & 0.0 \\
 
 Kingdom: probabilistic (17)
-expectation-maximization algorithm & 14200 & 724 & 14900 & 1209 & 15578 & 0.087 \\
-cross-entropy method & 1870 & 296 & 1180 & 119 & 1527 & 0.021 \\
-population-based incremental learning & 1520 & 299 & 1180 & 193 & 1162 & 0.021 \\
-bayesian optimization algorithm & 1910 & 247 & 1120 & 209 & 1603 & 0.019 \\
-compact genetic algorithm & 1280 & 141 & 761 & 121 & 1615 & 0.012 \\
-univariate marginal distribution algorithm & 460 & 119 & 398 & 88 & 366 & 0.008 \\
-probabilistic incremental program evolution & 314 & 88 & 197 & 54 & 305 & 0.006 \\
-hierarchical bayesian optimization algorithm & 463 & 69 & 230 & 64 & 435 & 0.005 \\
-extended compact genetic algorithm & 452 & 52 & 261 & 45 & 1131 & 0.005 \\
-bivariate marginal distribution algorithm & 219 & 54 & 185 & 34 & 158 & 0.004 \\
-gaussian adaptation & 150 & 34 & 43 & 4 & 28 & 0.002 \\
-estimation of gaussian networks algorithm & 17 & 9 & 30 & 5 & 9 & 0.001 \\
-estimation of bayesian networks algorithm & 44 & 16 & 45 & 14 & 35 & 0.001 \\
-stochastic hill climbing with learning by vectors of normal distributions & 43 & 21 & 41 & 12 & 29 & 0.001 \\
-mutual information maximization for input clustering & 53 & 23 & 70 & 13 & 57 & 0.001 \\
-estimation of multivariate normal algorithm & 47 & 8 & 33 & 3 & 34 & 0.001 \\
-graduated optimization & 105 & 5 & 25 & 2 & 30 & 0.0 \\
+expectation-maximization algorithm & 12800 & 725 & 16100 & 1232 & 15563 & 0.083 \\
+cross-entropy method & 1700 & 303 & 1260 & 123 & 1538 & 0.02 \\
+population-based incremental learning & 1350 & 297 & 1280 & 195 & 1163 & 0.019 \\
+bayesian optimization algorithm & 1550 & 248 & 1200 & 211 & 1603 & 0.018 \\
+compact genetic algorithm & 1120 & 137 & 826 & 122 & 1616 & 0.011 \\
+univariate marginal distribution algorithm & 371 & 112 & 435 & 89 & 366 & 0.007 \\
+probabilistic incremental program evolution & 250 & 88 & 205 & 55 & 308 & 0.005 \\
+hierarchical bayesian optimization algorithm & 381 & 67 & 247 & 64 & 435 & 0.005 \\
+extended compact genetic algorithm & 354 & 52 & 275 & 46 & 1131 & 0.005 \\
+bivariate marginal distribution algorithm & 177 & 53 & 193 & 34 & 159 & 0.003 \\
+gaussian adaptation & 116 & 33 & 41 & 4 & 28 & 0.002 \\
+mutual information maximization for input clustering & 40 & 23 & 76 & 13 & 58 & 0.001 \\
+estimation of bayesian networks algorithm & 31 & 15 & 45 & 14 & 35 & 0.001 \\
+stochastic hill climbing with learning by vectors of normal distributions & 33 & 18 & 46 & 12 & 29 & 0.001 \\
+estimation of multivariate normal algorithm & 32 & 7 & 34 & 3 & 34 & 0.0 \\
+estimation of gaussian networks algorithm & 15 & 8 & 31 & 5 & 9 & 0.0 \\
+graduated optimization & 84 & 5 & 30 & 2 & 30 & 0.0 \\
 
-Kingdom: physical (9)
-simulated annealing & 131000 & 3730 & 317000 & 10609 & 137158 & 0.74 \\
-adaptive simulated annealing & 2690 & 592 & 1750 & 148 & 2520 & 0.039 \\
-memetic algorithm & 4180 & 429 & 3020 & 613 & 3047 & 0.038 \\
-extremal optimization & 1290 & 237 & 705 & 104 & 756 & 0.016 \\
-quantum annealing & 2570 & 158 & 444 & 37 & 1043 & 0.012 \\
-cultural algorithm & 1060 & 185 & 602 & 76 & 333 & 0.012 \\
-simplex-simulated annealing & 390 & 85 & 326 & 17 & 242 & 0.006 \\
-harmony search algorithm & 1220 & 49 & 316 & 59 & 167 & 0.004 \\
-stochastic tunneling algorithm & 43 & 2 & 17 & 4 & 10 & 0.0 \\
+Kingdom: physical (10)
+simulated annealing & 119000 & 3030 & 364000 & 10754 & 137374 & 0.716 \\
+memetic algorithm & 3960 & 440 & 3230 & 626 & 3058 & 0.036 \\
+adaptive simulated annealing & 2560 & 570 & 1990 & 147 & 2512 & 0.035 \\
+extremal optimization & 1150 & 251 & 737 & 105 & 760 & 0.015 \\
+quantum annealing & 1660 & 162 & 477 & 37 & 1050 & 0.011 \\
+cultural algorithm & 939 & 179 & 686 & 78 & 332 & 0.011 \\
+simplex-simulated annealing & 295 & 83 & 353 & 17 & 243 & 0.005 \\
+harmony search algorithm & 1350 & 58 & 337 & 59 & 171 & 0.005 \\
+stochastic tunneling algorithm & 38 & 5 & 18 & 4 & 12 & 0.0 \\
+annealed nelder and mead & 12 & 1 & 15 & 0 & 4 & 0.0 \\
 
 Kingdom: swarm (22)
-particle swarm optimization & 49500 & 729 & 33400 & 2198 & 16516 & 0.133 \\
-ant system & 9660 & 566 & 7860 & 945 & 5028 & 0.058 \\
-ant colony system & 6750 & 592 & 4640 & 615 & 2667 & 0.049 \\
-antnet & 5880 & 457 & 1390 & 179 & 1272 & 0.033 \\
-max-min ant system & 1920 & 265 & 1740 & 283 & 1014 & 0.021 \\
-multiple ant colony system & 504 & 120 & 474 & 82 & 317 & 0.008 \\
-pareto ant colony optimization & 179 & 30 & 132 & 36 & 77 & 0.002 \\
-rank-based ant system & 215 & 32 & 146 & 18 & 61 & 0.002 \\
-population-based ant colony optimization & 135 & 20 & 66 & 12 & 381 & 0.002 \\
-bee colony optimization & 382 & 17 & 133 & 21 & 61 & 0.002 \\
-bees algorithm & 584 & 14 & 182 & 11 & 214 & 0.002 \\
-honey bee algorithm & 89 & 8 & 33 & 7 & 8 & 0.001 \\
-bacterial foraging optimization algorithm & 119 & 6 & 59 & 7 & 35 & 0.001 \\
-elitist ant system & 141 & 14 & 107 & 11 & 60 & 0.001 \\
-firefly algorithm & 167 & 7 & 48 & 5 & 43 & 0.001 \\
-virtual bee algorithm & 23 & 7 & 21 & 7 & 4 & 0.0 \\
-crowding population-based ant colony optimization & 10 & 1 & 4 & 0 & 0 & 0.0 \\
-artificial bee colony optimization & 29 & 6 & 17 & 1 & 8 & 0.0 \\
-waves of swarm particles & 23 & 5 & 14 & 7 & 16 & 0.0 \\
-monaco: multi-objective network optimization based on aco & 2 & 2 & 0 & 0 & 0 & 0.0 \\
-wasp swarm algorithm & 10 & 2 & 4 & 2 & 6 & 0.0 \\
-repulsive particle swarm optimization & 142 & 6 & 35 & 2 & 39 & 0.0 \\
+particle swarm optimization & 51900 & 719 & 33700 & 2250 & 16606 & 0.135 \\
+ant system & 9590 & 550 & 8940 & 960 & 5031 & 0.055 \\
+ant colony system & 7030 & 596 & 5430 & 628 & 2668 & 0.047 \\
+antnet & 3890 & 446 & 1530 & 180 & 1273 & 0.029 \\
+max-min ant system & 1920 & 278 & 1950 & 289 & 1017 & 0.02 \\
+multiple ant colony system & 470 & 117 & 527 & 83 & 315 & 0.008 \\
+rank-based ant system & 263 & 31 & 166 & 18 & 62 & 0.002 \\
+bees algorithm & 640 & 13 & 194 & 12 & 217 & 0.002 \\
+pareto ant colony optimization & 141 & 29 & 141 & 36 & 77 & 0.002 \\
+population-based ant colony optimization & 95 & 21 & 64 & 12 & 381 & 0.002 \\
+bee colony optimization & 359 & 18 & 147 & 23 & 63 & 0.001 \\
+elitist ant system & 128 & 14 & 116 & 11 & 61 & 0.001 \\
+honey bee algorithm & 116 & 8 & 36 & 7 & 8 & 0.001 \\
+firefly algorithm & 269 & 7 & 54 & 5 & 46 & 0.001 \\
+crowding population-based ant colony optimization & 9 & 1 & 5 & 0 & 0 & 0.0 \\
+bacterial foraging optimization algorithm & 105 & 6 & 61 & 7 & 35 & 0.0 \\
+waves of swarm particles & 10 & 5 & 14 & 7 & 16 & 0.0 \\
+wasp swarm algorithm & 7 & 2 & 4 & 2 & 6 & 0.0 \\
+repulsive particle swarm optimization & 92 & 6 & 39 & 2 & 39 & 0.0 \\
+artificial bee colony optimization & 51 & 6 & 19 & 1 & 9 & 0.0 \\
+virtual bee algorithm & 17 & 7 & 21 & 7 & 5 & 0.0 \\
+monaco: multi-objective network optimization based on aco & 3 & 2 & 0 & 0 & 0 & 0.0 \\
 
-Kingdom: evolutionary (37)
-genetic algorithm & 289000 & 4190 & 409000 & 18603 & 182617 & 1.057 \\
-genetic programming & 65100 & 1462 & 41700 & 4726 & 68694 & 0.268 \\
-evolutionary programming & 19200 & 954 & 18200 & 1946 & 15737 & 0.114 \\
-evolution strategies & 12500 & 821 & 12300 & 1647 & 11165 & 0.091 \\
-differential evolution & 17900 & 786 & 12200 & 949 & 11001 & 0.084 \\
-simple genetic algorithm & 5750 & 724 & 7190 & 754 & 4767 & 0.061 \\
-learning classifier system & 2470 & 528 & 1770 & 147 & 2278 & 0.036 \\
-grammatical evolution & 2630 & 524 & 1070 & 212 & 1685 & 0.035 \\
-non-dominated sorting genetic algorithm & 2170 & 401 & 2710 & 425 & 1396 & 0.031 \\
-strength pareto evolutionary algorithm & 1560 & 379 & 2100 & 419 & 1027 & 0.029 \\
-genitor algorithm & 915 & 389 & 974 & 100 & 802 & 0.024 \\
-messy genetic algorithm & 945 & 351 & 852 & 93 & 720 & 0.022 \\
-interactive genetic algorithm & 2370 & 245 & 947 & 120 & 692 & 0.018 \\
-gene expression programming & 3110 & 203 & 1210 & 141 & 1281 & 0.017 \\
-sequential niching genetic algorithm & 1 & 301 & 0 & 0 & 1 & 0.017 \\
-pareto archived evolution strategy & 879 & 218 & 1010 & 220 & 558 & 0.016 \\
-vector evaluated genetic algorithm & 580 & 233 & 786 & 124 & 368 & 0.015 \\
-shuffled complex evolution & 1170 & 139 & 1260 & 27 & 946 & 0.01 \\
-cellular genetic algorithm & 520 & 137 & 313 & 69 & 373 & 0.009 \\
-double diploid genetic algorithm & 1 & 167 & 0 & 0 & 0 & 0.009 \\
-coevolutionary genetic algorithm & 637 & 107 & 337 & 58 & 191 & 0.007 \\
-restricted tournament selection & 278 & 85 & 265 & 50 & 211 & 0.006 \\
-niching genetic algorithm & 497 & 49 & 346 & 33 & 263 & 0.004 \\
-linkage learning genetic algorithm & 197 & 49 & 145 & 31 & 202 & 0.003 \\
-island genetic algorithm & 367 & 38 & 227 & 24 & 172 & 0.003 \\
-covariance matrix adaptation evolution strategy & 325 & 35 & 238 & 46 & 205 & 0.003 \\
-crowding genetic algorithm & 147 & 38 & 57 & 12 & 72 & 0.002 \\
-cooperative coevolutionary genetic algorithm & 247 & 22 & 86 & 17 & 28 & 0.002 \\
-deterministic crowding algorithm & 34 & 19 & 34 & 7 & 31 & 0.001 \\
-chc genetic algorithm & 63 & 12 & 54 & 7 & 37 & 0.001 \\
-indicator based evolutionary algorithm & 56 & 19 & 65 & 27 & 22 & 0.001 \\
-genetic algorithm with punctuated equilibria & 10 & 19 & 20 & 1 & 8 & 0.001 \\
-dependency structure matrix driven genetic algorithm & 34 & 14 & 37 & 10 & 61 & 0.001 \\
-nested evolution strategy & 17 & 2 & 4 & 1 & 6 & 0.0 \\
-probabilistic crowding genetic algorithm & 4 & 1 & 3 & 2 & 2 & 0.0 \\
-fitness sharing genetic algorithm & 57 & 3 & 23 & 4 & 5 & 0.0 \\
-speciation genetic algorithm & 38 & 1 & 1 & 0 & 7 & 0.0 \\
+Kingdom: evolutionary (38)
+genetic algorithm & 275000 & 3210 & 349000 & 18889 & 183201 & 0.965 \\
+genetic programming & 54700 & 1420 & 44100 & 4766 & 68727 & 0.257 \\
+evolutionary programming & 16300 & 919 & 20500 & 1966 & 15765 & 0.107 \\
+evolution strategies & 10900 & 847 & 13500 & 1673 & 11178 & 0.087 \\
+differential evolution & 17000 & 823 & 13300 & 986 & 11077 & 0.082 \\
+simple genetic algorithm & 5250 & 722 & 8050 & 766 & 4770 & 0.057 \\
+learning classifier system & 2210 & 523 & 1870 & 148 & 2281 & 0.032 \\
+grammatical evolution & 2130 & 511 & 1140 & 215 & 1689 & 0.031 \\
+non-dominated sorting genetic algorithm & 2090 & 410 & 3000 & 435 & 1403 & 0.03 \\
+strength pareto evolutionary algorithm & 1490 & 384 & 2360 & 426 & 1033 & 0.027 \\
+genitor algorithm & 770 & 386 & 1110 & 100 & 792 & 0.022 \\
+messy genetic algorithm & 761 & 345 & 947 & 93 & 723 & 0.02 \\
+gene expression programming & 2880 & 214 & 1330 & 142 & 1282 & 0.016 \\
+interactive genetic algorithm & 2080 & 239 & 1030 & 119 & 693 & 0.016 \\
+pareto archived evolution strategy & 800 & 211 & 1130 & 222 & 560 & 0.015 \\
+vector evaluated genetic algorithm & 527 & 232 & 881 & 125 & 365 & 0.014 \\
+sequential niching genetic algorithm & 1 & 290 & 1 & 0 & 1 & 0.014 \\
+shuffled complex evolution & 1040 & 139 & 1290 & 27 & 955 & 0.009 \\
+cellular genetic algorithm & 416 & 127 & 346 & 69 & 372 & 0.008 \\
+double diploid genetic algorithm & 1 & 165 & 0 & 0 & 0 & 0.008 \\
+coevolutionary genetic algorithm & 559 & 103 & 370 & 58 & 191 & 0.006 \\
+restricted tournament selection & 215 & 84 & 275 & 51 & 210 & 0.005 \\
+niching genetic algorithm & 433 & 50 & 400 & 34 & 263 & 0.004 \\
+linkage learning genetic algorithm & 148 & 48 & 158 & 31 & 202 & 0.003 \\
+island genetic algorithm & 309 & 37 & 232 & 25 & 173 & 0.003 \\
+covariance matrix adaptation evolution strategy & 249 & 37 & 262 & 46 & 209 & 0.003 \\
+crowding genetic algorithm & 116 & 37 & 68 & 12 & 72 & 0.002 \\
+dependency structure matrix driven genetic algorithm & 26 & 14 & 40 & 10 & 61 & 0.001 \\
+indicator based evolutionary algorithm & 44 & 22 & 83 & 30 & 23 & 0.001 \\
+chc genetic algorithm & 50 & 12 & 59 & 7 & 37 & 0.001 \\
+cooperative coevolutionary genetic algorithm & 226 & 22 & 107 & 17 & 27 & 0.001 \\
+deterministic crowding algorithm & 25 & 18 & 36 & 7 & 32 & 0.001 \\
+genetic algorithm with punctuated equilibria & 9 & 19 & 23 & 1 & 8 & 0.001 \\
+fitness sharing genetic algorithm & 48 & 6 & 33 & 4 & 5 & 0.0 \\
+nested evolution strategy & 10 & 1 & 4 & 1 & 6 & 0.0 \\
+covariance matrix adaptation evolution strategies & 21 & 8 & 22 & 6 & 11 & 0.0 \\
+speciation genetic algorithm & 35 & 1 & 1 & 0 & 7 & 0.0 \\
+probabilistic crowding genetic algorithm & 3 & 1 & 3 & 2 & 2 & 0.0 \\
 
 Kingdom: immunological (6)
-clonal selection algorithm & 2080 & 186 & 1430 & 209 & 690 & 0.015 \\
-negative selection algorithm & 1310 & 174 & 1050 & 168 & 579 & 0.014 \\
-artificial immune recognition system & 561 & 55 & 342 & 35 & 364 & 0.004 \\
-immune network algorithm & 358 & 41 & 186 & 29 & 116 & 0.003 \\
-dendritic cell algorithm & 253 & 17 & 109 & 32 & 220 & 0.002 \\
-b-cell algorithm & 103 & 28 & 68 & 21 & 73 & 0.002 \\
+clonal selection algorithm & 1950 & 183 & 1660 & 211 & 691 & 0.014 \\
+negative selection algorithm & 1160 & 172 & 1210 & 170 & 579 & 0.012 \\
+artificial immune recognition system & 502 & 56 & 375 & 36 & 365 & 0.004 \\
+immune network algorithm & 309 & 40 & 216 & 30 & 117 & 0.003 \\
+b-cell algorithm & 73 & 29 & 74 & 21 & 73 & 0.002 \\
+dendritic cell algorithm & 242 & 17 & 121 & 32 & 223 & 0.002 \\
 
 Kingdom: classical (13)
-steepest descent & 49300 & 2620 & 54400 & 4434 & 46422 & 0.305 \\
-line search & 61400 & 1630 & 33600 & 2504 & 51470 & 0.228 \\
-conjugate gradient method & 28200 & 1583 & 35000 & 2516 & 27276 & 0.182 \\
-newton-raphson method & 19000 & 1730 & 27900 & 1607 & 21131 & 0.164 \\
-simplex algorithm & 26000 & 1640 & 20900 & 1668 & 21481 & 0.16 \\
-quasi-newton method & 9090 & 840 & 11700 & 871 & 10242 & 0.079 \\
-method of steepest descent & 4540 & 1015 & 7290 & 388 & 4620 & 0.072 \\
-gauss-newton algorithm & 2510 & 695 & 4000 & 226 & 2752 & 0.048 \\
-downhill simplex method & 3070 & 631 & 3690 & 216 & 3018 & 0.044 \\
-broyden's method & 1280 & 655 & 691 & 89 & 1441 & 0.04 \\
-nelder-mead method & 995 & 370 & 1270 & 122 & 1203 & 0.024 \\
-nonlinear conjugate gradient method & 759 & 178 & 561 & 67 & 579 & 0.012 \\
-levenberg-marquarft & 9 & 2 & 7 & 2 & 0 & 0.0 \\
+steepest descent & 47400 & 3070 & 59200 & 4493 & 46527 & 0.316 \\
+line search & 60100 & 1650 & 38400 & 2541 & 51501 & 0.226 \\
+conjugate gradient method & 26300 & 1596 & 38000 & 2557 & 27306 & 0.176 \\
+newton-raphson method & 18900 & 1770 & 30100 & 1644 & 21176 & 0.157 \\
+simplex algorithm & 23600 & 1720 & 23600 & 1693 & 21487 & 0.155 \\
+quasi-newton method & 8500 & 843 & 13000 & 887 & 10273 & 0.075 \\
+method of steepest descent & 4580 & 1012 & 8500 & 392 & 4605 & 0.066 \\
+gauss-newton algorithm & 2290 & 697 & 4570 & 233 & 2753 & 0.044 \\
+downhill simplex method & 2820 & 632 & 3950 & 219 & 3028 & 0.04 \\
+broyden's method & 1180 & 657 & 797 & 89 & 1443 & 0.036 \\
+nelder-mead method & 870 & 355 & 1390 & 125 & 1200 & 0.021 \\
+nonlinear conjugate gradient method & 701 & 196 & 616 & 67 & 577 & 0.012 \\
+levenberg-marquarft & 10 & 3 & 7 & 2 & 0 & 0.0 \\
 
 Kingdom: Top 10 Algorithms (10)
-stochastic & genet & 1630000 & 18149 & 1610000 & 85434 & 1029561 & 5.0 \\
-evolutionary & genetic algorithm & 289000 & 4190 & 409000 & 18603 & 182617 & 1.057 \\
-physical & simulated annealing & 131000 & 3730 & 317000 & 10609 & 137158 & 0.74 \\
-stochastic & probably approximate locally optimal & 0 & 11170 & 0 & 0 & 0 & 0.615 \\
-stochastic & random search & 265000 & 1515 & 33600 & 2885 & 122808 & 0.42 \\
-classical & steepest descent & 49300 & 2620 & 54400 & 4434 & 46422 & 0.305 \\
-evolutionary & genetic programming & 65100 & 1462 & 41700 & 4726 & 68694 & 0.268 \\
-classical & line search & 61400 & 1630 & 33600 & 2504 & 51470 & 0.228 \\
-stochastic & tabu search & 44600 & 1432 & 37400 & 4271 & 36727 & 0.215 \\
-classical & conjugate gradient method & 28200 & 1583 & 35000 & 2516 & 27276 & 0.182 \\
+stochastic & genet & 1390000 & 20659 & 1600000 & 87177 & 1034219 & 5.0 \\
+evolutionary & genetic algorithm & 275000 & 3210 & 349000 & 18889 & 183201 & 0.965 \\
+physical & simulated annealing & 119000 & 3030 & 364000 & 10754 & 137374 & 0.716 \\
+stochastic & probably approximate locally optimal & 0 & 11435 & 0 & 0 & 0 & 0.553 \\
+stochastic & random search & 297000 & 1556 & 37800 & 2919 & 122868 & 0.465 \\
+classical & steepest descent & 47400 & 3070 & 59200 & 4493 & 46527 & 0.316 \\
+evolutionary & genetic programming & 54700 & 1420 & 44100 & 4766 & 68727 & 0.257 \\
+classical & line search & 60100 & 1650 & 38400 & 2541 & 51501 & 0.226 \\
+stochastic & tabu search & 42800 & 1369 & 42400 & 4330 & 36850 & 0.209 \\
+classical & conjugate gradient method & 26300 & 1596 & 38000 & 2557 & 27306 & 0.176 \\
