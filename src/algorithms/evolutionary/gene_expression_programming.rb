@@ -10,8 +10,8 @@ def binary_tournament(population)
 end
 
 def point_mutation(grammar, genome, p_mutation, head_length)
-  child = ""
-  genome.each_with_index do |v,i|
+  child, i = "", 0
+  genome.each_char do |v|
     if rand()<p_mutation
       if (i<head_length)
         child << grammar["FUNC"][rand(grammar["FUNC"].length)]
@@ -21,15 +21,16 @@ def point_mutation(grammar, genome, p_mutation, head_length)
     else 
       child << v
     end
+    i += 1
   end
   return child
 end
 
 def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1[:genome] if rand()>=p_crossover
+  return ""+parent1 if rand()>=p_crossover
   child = ""
-  parent1[:genome].size.times do |i| 
-    child << ((rand()<0.5) ? parent1[:genome][i] : parent2[:genome][i])
+  parent1.length.times do |i| 
+    child << ((rand()<0.5) ? parent1[i] : parent2[i])
   end
   return child
 end
@@ -39,11 +40,8 @@ def reproduce(grammar, selected, pop_size, p_crossover, p_mutation, head_length)
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
-    child[:genome] = uniform_crossover(p1, p2, p_crossover)
+    child[:genome] = uniform_crossover(p1[:genome], p2[:genome], p_crossover)
     child[:genome] = point_mutation(grammar, child[:genome], p_mutation, head_length)
-    
-    # TODO other?
-    
     children << child
   end
   return children
@@ -109,7 +107,7 @@ def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_c
     {:genome=>random_genome(grammar, head_length, tail_length)}
   end
   pop.each{|c| evaluate(c, grammar, bounds)}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
   generations.times do |gen|
     selected = Array.new(pop){|i| binary_tournament(pop)}
     children = reproduce(grammar, selected, pop_size, p_crossover, p_mutation, head_length)    
@@ -118,17 +116,17 @@ def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_c
     best = children.first if children.first[:fitness] >= best[:fitness]
     pop = children
     gen += 1
-    puts " > gen=#{gen}, f=#{best[:fitness]}, g=#{best[:genome]}, b=#{best[:program]}"
+    puts " > gen=#{gen}, f=#{best[:fitness]}, g=#{best[:genome]}"
   end  
   return best
 end
 
 grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
-bounds = [1, 20]
+bounds = [-1, 1]
 head_length = 24
 tail_length = head_length * (2-1) + 1
-generations = 100
-pop_size = 60
+generations = 150
+pop_size = 100
 p_crossover = 0.70
 p_mutation = 2.0/(head_length+tail_length).to_f
 
