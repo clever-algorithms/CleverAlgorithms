@@ -17,8 +17,14 @@ class AlgorithmsController < ApplicationController
   # GET /algorithms/1
   # GET /algorithms/1.xml
   def show
-    name = params[:name].gsub('+', ' ')
-    @algorithm = Algorithm.find_by_name(name)
+    name = params[:id].gsub('+', ' ')
+    @algorithm = Algorithm.first(:conditions=>['name=?', name])
+    if @algorithm.nil?
+      flash[:notice] = "Unknown algorithm '#{name}', perhaps suggest it!"
+      redirect_to(algorithms_path) 
+      return
+    end
+    
     if !@algorithm.code_file.blank? and @algorithm.code_file != "N/A"
       @filename = get_filename(@algorithm.code_file)
       @filedata = download(@algorithm.code_file)

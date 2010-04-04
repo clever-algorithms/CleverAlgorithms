@@ -1,15 +1,13 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :messages
+  
 
-  
-  
+
   # algorithms
-  map.connect "a/:name", :controller => 'algorithms', :action => 'show'
-  
-  map.resources :algorithms, :as=>"a" do |algorithm|
-    algorithm.resources :messages
+  # map.connect "a/:name", :controller => 'algorithms', :action => 'show'
+  map.resources :algorithms, :as=>"a", :only => [:index,:show] do |a|
+    a.resources :messages, :only => [:new, :create]
   end
-  
+
   
   
   # book
