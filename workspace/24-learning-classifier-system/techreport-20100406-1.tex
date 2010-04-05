@@ -126,6 +126,68 @@ the bucket brigade algorithm
 
 the genetic algorithm
 
+Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of the Learning Classifier System algorithm for minimizing a cost function. 
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{Parents}{Parents}
+	\SetKwData{Children}{Children}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{ParentOne}{$Parent_{1}$}
+	\SetKwData{ParentTwo}{$Parent_{2}$}
+	\SetKwData{ChildOne}{$Child_{1}$}
+	\SetKwData{ChildTwo}{$Child_{2}$}	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectParents}{SelectParents}
+	\SetKwFunction{Replace}{Replace}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{Crossover}{Crossover}
+	\SetKwFunction{Mutate}{Mutate}
+  
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwOut{\Best}
+  	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluatePopulation{\Population}\;
+	% best
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% select
+		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+		% recombine
+		\Children $\leftarrow 0$\;
+		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
+			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
+			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
+			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+		}
+		% evaluate
+		\EvaluatePopulation{\Children}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Children}\;
+		% replace
+		\Population $\leftarrow$ \Replace{\Population, \Children}\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Learning Classifier System algorithm.}
+	\label{alg:learning_classifier_system}
+\end{algorithm}
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
