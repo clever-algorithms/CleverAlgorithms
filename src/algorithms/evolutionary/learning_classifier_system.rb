@@ -68,11 +68,45 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
   return best
 end
 
+
+def neg(bit) 
+  return (bit==1) ? 0 : 1 
+end
+  
+def target_function(bitstring)
+  v = []
+  bitstring.each_char {|c| v<<c.to_i}
+  x0,x1,x2,x3,x4,x5 = v
+  return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
+end
+
+# puts target_function("100010")
+
+def all_permutations(length)
+  # requires ruby 1.8.7+
+  return [0,1].combination(length).to_a
+end
+
+puts "total permutations: #{all_permutations(6).length}"
+
+
 max_generations = 100
 population_size = 100
-num_bits = 64
+learning_rate = 0
+discount_factor = 0
+ga_frequency = 0
+problem_size = 6
+num_bits = problem_size+2**problem_size
 p_crossover = 0.98
 p_mutation = 1.0/num_bits
+p_deletion = 0
 
-best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+# lots of others....
+
+num_rules = 50
+num_bits = 64
+
+# best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
+# puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+
+

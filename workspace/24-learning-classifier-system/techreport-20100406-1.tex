@@ -73,7 +73,7 @@ Learning Classifier System, LCS
 % To what fields of study does a technique belong?
 The Learning Classifier System algorithm is both an instance of an Evolutionary Algorithm from the field of Evolutionary Computation and an instance of a Reinforcement Learning algorithm from Machine Learning.
 % What are the closely related approaches to a technique?
-todo
+The Learning Classifier System is a theoretical system with a number of implementations, two common versions of which are the Zeroth-level Classifier System (ZCS) and the Accuracy-based Classifier System (XCS).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -196,7 +196,9 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item They are suited for problems with the following characteristics: Perpetually novel events with large amounts of noise, Continual, and real-time requirements for action, Implicitly or inexactly defined goals, Sparse payoff or reinforcement obtainable only through long sequences of tasks
+	\item They are suited for problems with the following characteristics: perpetually novel events with large amounts of noise, continual, and real-time requirements for action, implicitly or inexactly defined goals, and sparse payoff or reinforcement obtainable only through long sequences of tasks.
+	\item ...
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -209,6 +211,10 @@ Listing~\ref{learning_classifier_system} provides an example of the Learning Cla
 The problem...
 % algorithm
 The algorithm...
+
+
+really based on \cite{Butz2002a}
+problem based on experimens with XCS in \cite{Wilson1995} and \cite{Wilson1998}
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Classifier System algorithm in the Ruby Programming Language, label=learning_classifier_system]{../../src/algorithms/evolutionary/learning_classifier_system.rb}
@@ -259,6 +265,7 @@ Wilson proposed two variations of the Michigan style learning classifier which h
 ZCS: (zeroth-level classifier system) A simpler variation of the Michigan style classifier system in which there is no message list, and a Q-learning like reinforcement learning algorithm is used called QBB. \cite{Wilson1994}
 
 XCS: (accuracy-based) An archetypal application LCS (with accurate and maximally general classifiers) in which the bucket brigade algorithm is replaced with an adaptation of Q-learning (different to the hybrid approach used in ZCS). In addition, credit is assigned based upon the accuracy (usefulness) of classifiers (as opposed to the predicted reward). The genetic algorithm is applied to subsets of classifiers (called environmental niches) that apply to the same situations (rather than the entire population). \cite{Wilson1995}
+
 
 
 % 
