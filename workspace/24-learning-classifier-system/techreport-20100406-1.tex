@@ -1,4 +1,4 @@
-% Algorithm Template
+% Learning Classifier System
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100320}
+\newcommand{\myreportdate}{20100406}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+This report describes the Learning Classifier System algorithm using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Learning, Classifier, System}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Learning Classifier System algorithm using the standardized template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,13 +64,14 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Learning Classifier System, LCS
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
+The Learning Classifier System algorithm is both an instance of an Evolutionary Algorithm from the field of Evolutionary Computation and an instance of a Reinforcement Learning algorithm from Machine Learning.
 % What are the closely related approaches to a technique?
 todo
 
@@ -97,16 +98,34 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of the Learning Classifier System algorithm is to optimize payoff (performance) based on its exposure to stimuli from its problem-specific  environment.
 % What is a techniques plan of action?
-todo
+They achieve this by managing credit assignment for those rules that prove effective and search for new rules and new variations on rules using an evolutionary process.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-% What is the computational recipe for a technique?
+
+
 % What are the data structures and representations used in a technique?
-todo
+The actors of the system include (1) detectors, (2) messages, (3) effectors, (4) feedback, and (5) classifiers.
+
+Detectors: Used by the system to perceive the state of the environment Messages: Information passed from the detectors into the system as discrete information packets. The system performs information processing on messages, and messages may directly result in actions in the environment Effectors: Control the systems actions on and within the environment Feedback: In addition to the system actively perceiving via its detections, it may also receive directed feedback from the environment (payoff) Classifier: A condition-action rule that provides a filter for messages. If a message satisfies the conditional part of the classifier, the action of the classier triggers. Rules act as message processors.
+
+Messages are defined of length k using a binary alphabet. A classifier is defined as a bit string with a ternary alphabet of ${1, 0, \#}$, where the $\#$ represents do not care . The classifier s string has at least two parts: one or more conditional parts, and an action part. 
+[condition] / [action] $1\#\#01\#10/001011$
+
+In addition, a message may be such that the condition of classifiers is negated (NOT), thus messages may be assigned sign (+/-).
+
+% What is the computational recipe for a technique?
+system
+1) Messages from the environment are placed on the message list 2) The conditions of each classifier are checked to see if they are satisfied by at least one message in the message list 3) All classifiers that are satisfied participate in a competition, those that win post their action to the message list 4) All messages directed to the effectors are executed (causing actions in the environment) 5) All messages on the message list from the previous cycle are deleted (messages persist for a single cycle)
+
+the bucket brigade algorithm
+
+the genetic algorithm
+
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -115,7 +134,7 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item They are suited for problems with the following characteristics: Perpetually novel events with large amounts of noise, Continual, and real-time requirements for action, Implicitly or inexactly defined goals, Sparse payoff or reinforcement obtainable only through long sequences of tasks
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -137,14 +156,65 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-todo
+
+proposed by Holland as a theoretical system
+
+initial ideas:
+proposed: \cite{Holland1976}
+
+
+Classifier systems were proposed by John Holland [4,9], and later standardized [5]. 
+
+follow-up abstract \cite{Holland1977}
+In [9] Holland presents his classifier system as a computationally complete cognitive system with four elements: (1) A set of elementary interacting units called classifiers. (2) A performance algorithm that directs the action of the system in the environment. (3) A simple learning algorithm that keeps track of each classifiers success in receiving rewards. (4) A more complex learning algorithm that modifies the set of classifiers such that good classifiers persist, and new variants of good classifiers are proposed. The result is that the system generates an experience-based cognitive map that lets the system lookahead and assign credit during non-
+reward intervals.
+
+standardized presentation \cite{Holland1980}
+???
+
+In his 1992 edition of his seminal work on Adaptation [12], Holland suggested that classifier systems were proposed to investigate genetic-based learning in problem domains that were characteristic of most learning situations for animals and humans.
+
+refined presentation of the approach \cite{Holland1989}
+
+implemented by some of his students...
+
+many types of classifier systems. De Jong demarcates two main streams that persist today \cite{Jong1988}
+
+- (holland) Michigan-style LCS - optimize the classifier (whole rule set) 
+	- two further types: strength based: ZCS and accuracy-based XCS.
+LCS refers to the Michigan-style LCS
+- Pittsburgh-type LCS - optimize the rules for the classifier proposed by Smith in his PhD dissertation \cite{Smith1980} and later published \cite{Smith1983}
+
+Wilson proposed two variations of the Michigan style learning classifier which have become ubiquitously employed in the field. The ZCS [33] which is a simpler variation for the system for investigation, and the XCS [34,38] which is an effective classifier for general application.
+
+ZCS: (zeroth-level classifier system) A simpler variation of the Michigan style classifier system in which there is no message list, and a Q-learning like reinforcement learning algorithm is used called QBB. \cite{Wilson1994}
+
+XCS: (accuracy-based) An archetypal application LCS (with accurate and maximally general classifiers) in which the bucket brigade algorithm is replaced with an adaptation of Q-learning (different to the hybrid approach used in ZCS). In addition, credit is assigned based upon the accuracy (usefulness) of classifiers (as opposed to the predicted reward). The genetic algorithm is applied to subsets of classifiers (called environmental niches) that apply to the same situations (rather than the entire population). \cite{Wilson1995}
+
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% historical reviews
-todo
+% introductions
+
+classical and detailed overview of the approach and the state of the field, describing the system and algorithms in great depth \cite{Booker1989}
+
+a second classical review that takes a more critical eye with the state of the system and the field \cite{Wilson1989}
+
+a contemporary review of the field \cite{Holmes2002}
+
+% books
+by Lanzi, et al.
+seminal book \cite{Lanzi2000} - collection of papers by leaders in the field on many aspects of the algorithm including basics, advanced topics and demonstration applications.
+a highlight introductory article from this book includes an explanation of LCS by all the major contributors to the field \cite{Holland2000}
+
+also see for a guided tour of the development of the technique as it matured throughout the 1990s \cite{Lanzi2000a}
+
+
+\cite{Bull2004} - a collection of applications 
+\cite{Bull2005} - a collection on the foundations of classifier systems, including theory and practical usage
+\cite{Butz2002} - detailed overview of the technique including basics, applications and theory, focused on an extension called ACS/2 - anticipatory learning classifier systems (nope, drop it)
 
 
 % 
@@ -153,7 +223,7 @@ todo
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Learning Classifier System as a machine learning technique using both reinforcement learning and genetic algorithms. The content for this report based based on a previous work on the Learning Classifier System by this author \cite{Brownlee2007a}.
 
 % 
 % Contribute
