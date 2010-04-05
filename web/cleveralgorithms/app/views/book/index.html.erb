@@ -23,15 +23,29 @@
 	<p>
 	Get notified when the book is launched!
 	</p>
-	<p>
-	<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>
-	<%= f.error_messages %>
-	Your <%= f.label :email %>:
-	<%= f.text_field :email, :size=>40 %>
-	<%= f.submit 'Let me know!' %>
-	<% end %>		
-	<small>* We promise to use your email responsibly. No spam.</small>
-	</p>
+	
+	<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>	
+	<table>
+		<tr>
+			<td></td>
+			
+		</tr>
+		<tr>
+			<td>
+			</td>
+		</tr>
+	</table>
+	
+	<div>
+		<div><%= f.error_messages %></div>
+		<span><%= f.label :email, "Your email" %>:</span>
+		<span><%= f.text_field :email, :size=>40 %></span>
+		<span><%= f.submit 'Let me know!' %></span>
+		<div>
+			<small>* We promise to use your email responsibly. No spam.</small>
+		</div>
+	</div>	
+	<% end %>
 </div>
 
 <div class="subsubtitle">Table of Contents</div>
