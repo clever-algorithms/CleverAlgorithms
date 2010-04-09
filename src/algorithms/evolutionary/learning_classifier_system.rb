@@ -45,29 +45,44 @@ def reproduce(selected, population_size, p_crossover, p_mutation)
   return children
 end
 
-def random_bitstring(num_bits)
+
+
+def new_classifier(condition, action, gen)
+  classifier = {}
+  classifier[:action] = (rand()<0.5) ? '0' : '1'
+  classifier[:condition] = (0...length).inject(""){|s,i|s<<['1','0','#'][rand(3)]}
+  
+  
+  
+  # last time used in a GA in an action set
+  classifier[:last_match_time] = gen
+  # p - average expected payoff
+  classifier[:prediction_estimate] = 0
+  # eta - estimates errors made by predictions
+  classifier[:estimated_error] = 0
+  # f - fitness
+  classifier[:fitness] = 0
+  
+  # exp - times used in an action set
+  classifier[:experience] = 0
+  # as = average size of the action set size this thing has belonged to
+  classifier[:action_set_size] = 1
+  #num = number of micro classifiers this classifer represents
+  classifier[:num_classifier] = 1
+  
+  
+  return classifier
+end
+
+def generate_random_classifier(length, action_set, gen)
+  condition = (0...length).inject(""){|s,i|s<<['1','0','#'][rand(3)]}
+  action = action_set[rand(action_set.length)]
+  return new_classifier(condition, action, gen)
+end
+
+def generate_problem_string(length)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
-
-def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-  population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(num_bits)}
-  end
-  population.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  while best[:fitness]!=num_bits and gen<max_generations
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover, p_mutation)    
-    children.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
-    population = children
-    gen += 1
-    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
-  end  
-  return best
-end
-
 
 def neg(bit) 
   return (bit==1) ? 0 : 1 
@@ -80,25 +95,109 @@ def target_function(bitstring)
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
 end
 
-# puts target_function("100010")
-
-def all_permutations(length)
-  # requires ruby 1.8.7+
-  return [0,1].combination(length).to_a
+def does_match(instance, condition)
+  count = 0
+  condition.each_char do |s|
+    return false if s!='#' and instance[count]!=s
+    count += 1 
+  end
+  return true
 end
 
-puts "total permutations: #{all_permutations(6).length}"
+def get_actions(population)
+  return [] if population.empty?
+  set = {}
+  population.each do |classifier|
+    key = classifier[:action]
+    set[key] = 0 if set[key].nil?
+    set[key] += 1
+  end 
+  return set.keys
+end
+
+def generate_match_set(instance, population, action_set, gen)
+  match_set = []  
+  population.each do |classifier|
+    match_set << classifier if does_match(instance, classifier[:condition])
+    break if get_actions(match_set).length >= action_set.length
+  end
+  actions, c = nil, nil
+  while (actions=get_actions(match_set)).length < action_set.length
+    begin
+      c = generate_random_classifier(instance.length, action_set, gen)
+    end until does_match(instance, c[:condition]) and !actions.include?(c[:action])
+    population << c
+    match_set << c 
+  end    
+  # delete from population ???
+
+  return match_set
+end
+
+def generate_prediction(instance, match_set)
+  prediction = {}
+  match_set.each do |classifier|
+    key = classifier[:action]
+    prediction[key] = {:sum=>0,:count=>0,:weight=>0.0} if prediction[key].nil?
+    prediction[key]][:sum] += classifier[:prediction_estimate]*classifier[:fitness]
+    prediction[key]][:count] += classifier[:fitness]
+    # why not just count, why fitness?
+  end
+  prediction.keys.each do |key| 
+    prediction[key][:weight]=prediction[key][:sum]/prediction[key][:count]
+  end
+  return prediction
+end
+
+def select_action(prediction_array, p_explore)
+  keys = prediction_array.keys
+  return true, keys[rand(keys.length)] if rand() < p_explore    
+  keys.sort!{|x,y| prediction_array[y][:weight]<=>prediction_array[x][:weight]}  
+  return false, keys.first
+end
+
+def search(length, max_generations, action_set, p_explore)  
+  population = []  
+  max_generations.times do |gen|
+    instance = generate_problem_string(length)
+    match_set = generate_match_set(instance, population, action_set, gen)
+    prediction_array = generate_prediction(instance, match_set, action_set)    
+    explore, action = select_action(prediction_array, p_explore)
+    
+    # do learning for last action
+
+    # run ga?
+    
+    # store this action as last action
+    
+    puts " > #{gen} "
+  end
+  
+  
+end
+
 
 
 max_generations = 100
-population_size = 100
-learning_rate = 0
+problem_size = 6
+action_set = ['0', '1']
+
+#probability for exploration
+p_explore = 0.1
+
+
+population = search(problem_size, max_generations, action_set, p_explore)
+puts "done! Solution: "
+
+
+# not decided yet
+pop_size = 100
+learning_rate = 0.1
 discount_factor = 0
 ga_frequency = 0
-problem_size = 6
-num_bits = problem_size+2**problem_size
+
 p_crossover = 0.98
-p_mutation = 1.0/num_bits
+p_mutation = 1.0/problem_size
 p_deletion = 0
 
 # lots of others....
