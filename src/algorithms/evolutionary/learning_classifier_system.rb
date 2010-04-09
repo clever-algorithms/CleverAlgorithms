@@ -163,6 +163,7 @@ def search(length, max_generations, action_set, p_explore)
     match_set = generate_match_set(instance, population, action_set, gen)
     prediction_array = generate_prediction(instance, match_set, action_set)    
     explore, action = select_action(prediction_array, p_explore)
+    action_set = match_set.select{|c| c[:action]==action}
     
     # do learning for last action
 
