@@ -101,63 +101,74 @@ The processing loop for the Learning Classifier system is as follows: i) Message
 % algorithm
 The algorithm may be described in terms of the main processing loop and two sub-algorithms: a reinforcement learning algorithm such as the bucket brigade algorithm or Q-learning, and a genetic algorithm for optimization of the system.
 % presentated
-Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of the high-level processing loop of the Learning Classifier System. 
+Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of the high-level processing loop of the Learning Classifier System, specifically the XCS as described by Butz and Wilson \cite{Butz2002a}. 
 
-\begin{algorithm}[htp]
+\begin{algorithm}[ht]
 	\SetLine  
 
 	% data
-	\SetKwData{Best}{$S_{best}$}
-	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
-	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
-	\SetKwData{Parents}{Parents}
-	\SetKwData{Children}{Children}
-	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{Population}{Population}
-	\SetKwData{PopulationSize}{$Population_{size}$}
-	\SetKwData{ParentOne}{$Parent_{1}$}
-	\SetKwData{ParentTwo}{$Parent_{2}$}
-	\SetKwData{ChildOne}{$Child_{1}$}
-	\SetKwData{ChildTwo}{$Child_{2}$}	
+	\SetKwData{Environment}{env}
+	\SetKwData{Input}{$Input_{t}$}
+	\SetKwData{Matchset}{Matchset}
+	\SetKwData{Prediction}{Prediction}
+	\SetKwData{Action}{Action}
+	\SetKwData{Actionset}{$ActionSet_{t}$}
+	\SetKwData{Reward}{$Reward_{t}$}
+	\SetKwData{Payoff}{$Payoff_{t}$}
+	\SetKwData{LastActionset}{$ActionSet_{t-1}$}
+	\SetKwData{LastInput}{$Input_{t-1}$}
+	\SetKwData{LastReward}{$Reward_{t-1}$}
+
 	% functions
-	\SetKwFunction{InitializePopulation}{InitializePopulation}  
-	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
-	\SetKwFunction{GetBestSolution}{GetBestSolution} 
-	\SetKwFunction{SelectParents}{SelectParents}
-	\SetKwFunction{Replace}{Replace}
 	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{Crossover}{Crossover}
-	\SetKwFunction{Mutate}{Mutate}
+	\SetKwFunction{InitializeEnvironment}{InitializeEnvironment}
+	\SetKwFunction{InitializePopulation}{InitializePopulation}
+	\SetKwFunction{GenerateMatchSet}{GenerateMatchSet}
+	\SetKwFunction{GeneratePrediction}{GeneratePrediction}
+	\SetKwFunction{SelectionAction}{SelectionAction}
+	\SetKwFunction{GenerateActionSet}{GenerateActionSet}
+	\SetKwFunction{ExecuteAction}{ExecuteAction}
+	\SetKwFunction{CalculatePayoff}{CalculatePayoff}
+	\SetKwFunction{PerformLearning}{PerformLearning}
+	\SetKwFunction{RunGeneticAlgorithm}{RunGeneticAlgorithm}
+	\SetKwFunction{LastStepOfTask}{LastStepOfTask}
   
 	% I/O
-	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
-	\KwOut{\Best}
+	\KwIn{\Environment}		
+	\KwOut{\Population}
   	% Algorithm
-	% initialize	
-	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
-	% evaluate
-	\EvaluatePopulation{\Population}\;
-	% best
-	\Best $\leftarrow$ \GetBestSolution{\Population}\;
-	% loop
-	\While{$\neg$\StopCondition{}} {
-		% select
-		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
-		% recombine
-		\Children $\leftarrow 0$\;
-		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
-			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
-			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;
-			\Children $\leftarrow$ \Mutate{\ChildTwo, \ProbabilityMutate}\;
+	
+	\Environment $\leftarrow$ \InitializeEnvironment{\Environment}\;
+	\Population $\leftarrow$ \InitializePopulation{}\;
+	\LastActionset $\leftarrow$ $0$\;
+	\LastInput $\leftarrow$ $0$\;
+	\LastReward $\leftarrow$ $0$\;
+		
+	\While{$\neg$\StopCondition{}}{
+		\Input $\leftarrow$ \Environment\;
+		\Matchset $\leftarrow$ \GenerateMatchSet{\Population, \Input}\;
+		\Prediction $\leftarrow$ \GeneratePrediction{\Matchset}\;
+		\Action $\leftarrow$ \SelectionAction{\Prediction}\;
+		\Actionset $\leftarrow$ \GenerateActionSet{\Action, \Matchset}\;
+		\Reward $\leftarrow$ \ExecuteAction{\Action, \Environment}\;
+		\If{\LastActionset $\neq$ $0$}{
+			\Payoff $\leftarrow$ \CalculatePayoff{\LastReward, \Prediction}\;
+			\PerformLearning{\LastActionset, \Payoff, \Population}\;
+			\RunGeneticAlgorithm{\LastActionset, \LastInput, \Population}\;
 		}
-		% evaluate
-		\EvaluatePopulation{\Children}\;
-		% best
-		\Best $\leftarrow$ \GetBestSolution{\Children}\;
-		% replace
-		\Population $\leftarrow$ \Replace{\Population, \Children}\;
+		
+		\eIf{\LastStepOfTask{\Environment, \Action}}{
+			\Payoff $\leftarrow$ \Reward\;
+			\PerformLearning{\Actionset, \Payoff, \Population}\;
+			\RunGeneticAlgorithm{\Actionset, \Input, \Population}\;
+			\LastActionset $\leftarrow$ $0$\;
+		}{
+			\LastActionset $\leftarrow$ \Actionset\;
+			\LastInput $\leftarrow$ \Input\;
+			\LastReward $\leftarrow$ \Reward\;
+		}
 	}
-	\Return{\Best}\;
 	% end
 	\caption{Pseudo Code for the Learning Classifier System algorithm.}
 	\label{alg:learning_classifier_system}
@@ -187,7 +198,7 @@ The majority of the heuristics in this section are specific to the XCS Learning 
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{learning_classifier_system} provides an example of the Learning Classifier System algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It can be described as a classification problem, where each of the $2^6$ patterns of bits is associated with a boolean class $\{1,0\}$. For this problem instance, the first two bits may be decoded as an address into the remaining four bits that specify the class (for example in 100010, `10' decode to the second index of the remaining 4 bits meaning the class is 1). In propositional logic this may be described as $F=(\neg x_0) (\neg x_1) x_2 + (\neg x_0) x_1 x_3 + x_0 (\neg x_1) x_4 + x_0 x_1 x_5$. 
+The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It can be described as a classification problem, where each of the $2^6$ patterns of bits is associated with a boolean class $\{1,0\}$. For this problem instance, the first two bits may be decoded as an address into the remaining four bits that specify the class (for example in 100010, `10' decode to the index of `2' in the remaining 4 bits making the class `1'). In propositional logic this may be described as $F=(\neg x_0) (\neg x_1) x_2 + (\neg x_0) x_1 x_3 + x_0 (\neg x_1) x_4 + x_0 x_1 x_5$. 
 % algorithm
 The algorithm is an instance of XCS based on the description provided by Butz and Wilson \cite{Butz2002a} with the parameters based on the application of XCS to Boolean multiplexer problems by Wilson \cite{Wilson1995, Wilson1998}.
 % specifics
