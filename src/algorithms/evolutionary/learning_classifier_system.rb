@@ -4,49 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def onemax(bitstring)
-  sum = 0
-  bitstring.each_char {|x| sum+=1 if x=='1'}
-  return sum
-end
-
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
-end
-
-def point_mutation(bitstring, prob_mutation)
-  child = ""
-  bitstring.size.times do |i|
-    bit = bitstring[i]
-    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
-  end
-  return child
-end
-
-def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1[:bitstring] if rand()>=p_crossover
-  child = ""
-  parent1[:bitstring].size.times do |i| 
-    child << ((rand()<0.5) ? parent1[:bitstring][i] : parent2[:bitstring][i])
-  end
-  return child
-end
-
-def reproduce(selected, population_size, p_crossover, p_mutation)
-  children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
-    child = {}
-    child[:bitstring] = uniform_crossover(p1, p2, p_crossover)
-    child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
-    children << child
-  end
-  return children
-end
-
-
-
 def new_classifier(condition, action, gen)
   classifier = {}
   classifier[:action] = (rand()<0.5) ? '0' : '1'
@@ -57,11 +14,11 @@ def new_classifier(condition, action, gen)
   # last time used in a GA in an action set
   classifier[:last_match_time] = gen
   # p - average expected payoff
-  classifier[:prediction_estimate] = 0
+  classifier[:prediction_estimate] = 0.00001
   # eta - estimates errors made by predictions
-  classifier[:estimated_error] = 0
+  classifier[:estimated_error] = 0.00001
   # f - fitness
-  classifier[:fitness] = 0
+  classifier[:fitness] = 0.00001
   
   # exp - times used in an action set
   classifier[:experience] = 0
@@ -156,25 +113,115 @@ def select_action(prediction_array, p_explore)
   return false, keys.first
 end
 
-def search(length, max_generations, action_set, p_explore)  
-  population = []  
+def update_set(action_set, payoff, learning_rate, min_error)
+  action_set.each do |c| 
+    c[:experience] += 1.0
+    if(c[:experience] < 1.0/learning_rate)
+      c[:prediction_estimate] += (payoff-c[:prediction_estimate]) / c[:experience]
+    else
+      c[:prediction_estimate] += learning_rate*(payoff-c[:prediction_estimate])
+    end    
+    raise "bad prediction_estimate" if c[:prediction_estimate].nan? or c[:prediction_estimate].infinite?
+  
+    if(c[:experience] < 1.0/learning_rate)
+      c[:estimated_error] += ((payoff-c[:prediction_estimate]).abs-c[:estimated_error]) / c[:experience]
+    else
+      c[:estimated_error] += learning_rate*((payoff-c[:prediction_estimate]).abs-c[:estimated_error])
+    end
+    raise "bad estimated_error" if c[:estimated_error].nan? or c[:estimated_error].infinite?
+    
+    if(c[:experience] < 1.0/learning_rate)
+      classifier[:action_set_size] += (action_set.collect{|b| b[:num_classifier]-classifier[:action_set_size]}) / c[:experience]
+    else
+      classifier[:action_set_size] += learning_rate*(action_set.collect{|b| b[:num_classifier]-classifier[:action_set_size]})
+    end
+    raise "bad action_set_size" if c[:action_set_size].nan? or c[:action_set_size].infinite?
+  end
+end
+
+def update_fitness(action_set, min_error, learning_rate, alpha, v)
+  sum = 0
+  accuracy = Arrau.new(action_set.length)
+  action_set.each_with_index do |c,i|
+    if c[:estimated_error] < min_error
+      accuracy[i] = 1
+    else
+      accuracy[i] = alpha * (c[:estimated_error]/min_error)**-v
+    end
+    sum += accuracy[i] * c[:num_classifier]
+  end
+  action_set.each_with_index do |c,i|
+    c[:fitness] += learning_rate * (accuracy[i] * c[:num_classifier] / sum - c[:fitness])
+    raise "bad fitness" if c[:fitness].nan? or c[:fitness].infinite?
+  end
+end
+
+def can_run_genetic_algorithm(action_set, gen, ga_frequency)
+  s1 = action_set.inject(0) {|s,i| s += action_set[i][:last_match_time] * action_set[i][:num_classifier])}
+  s2 = action_set.inject(0) {|s,i| s += action_set[i][:num_classifier])}
+  if gen - (s1 / s2) > ga_frequency
+    return true
+  end
+  return false
+end
+
+def binary_tournament(population)
+  s1, s2 = population[rand(population.size)], population[rand(population.size)]
+  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+end
+
+def point_mutation(bitstring, prob_mutation)
+  child = ""
+  bitstring.size.times do |i|
+    bit = bitstring[i]
+    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+  end
+  return child
+end
+
+def uniform_crossover(parent1, parent2, p_crossover)
+  return ""+parent1[:condition] if rand()>=p_crossover
+  child = ""
+  parent1[:condition].size.times do |i| 
+    child << ((rand()<0.5) ? parent1[:condition][i] : parent2[:condition][i])
+  end
+  return child
+end
+
+def run_genetic_algorithm(population, action_set, instance, gen, p_crossover)
+  p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
+  condition1,  = uniform_crossover(p1, p2, p_crossover)
+  condition2 = uniform_crossover(p2, p1, p_crossover)  
+  c1 = new_classifier(condition1, ""p1[:action], gen)
+  c2 = new_classifier(condition2, ""p2[:action], gen)
+  
+end
+
+def search(length, pop_size, max_generations, action_set, p_explore, learning_rate, min_error, alpha, v, ga_frequency, p_crossover)  
+  population = []
   max_generations.times do |gen|
     instance = generate_problem_string(length)
     match_set = generate_match_set(instance, population, action_set, gen)
     prediction_array = generate_prediction(instance, match_set, action_set)    
     explore, action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
+    # maximixing payoff, so wroing should equal zero
+    payoff = 1.0 - (target_function(instance) - action).abs.to_f
+    update_set(action_set, payoff, learning_rate, min_error)
+    update_fitness(action_set, min_error, learning_rate, alpha, v)
+    # do subsumption ???
     
-    # do learning for last action
-
-    # run ga?
+    # run ga
+    if can_run_genetic_algorithm(action_set, gen, ga_frequency)
+      action_set.each do {|c| c[:last_match_time] = gen}
+      run_genetic_algorithm(population, action_set, instance, p_crossover)
+    end
     
-    # store this action as last action
     
     puts " > #{gen} "
   end
   
-  
+  return population
 end
 
 
@@ -182,31 +229,28 @@ end
 max_generations = 100
 problem_size = 6
 action_set = ['0', '1']
+learning_rate = 0.1
+min_error = 0.1
+alpha = 0.1
+v = 5
+p_crossover = 0.95
+p_mutation = 1.0/problem_size
 
-#probability for exploration
+#probability for exploration - look it up.
 p_explore = 0.1
+# num classifiers - what is used in some experiments?
+pop_size = 100
+# ???
+ga_frequency = 10
 
-
-population = search(problem_size, max_generations, action_set, p_explore)
+population = search(problem_size, pop_size, max_generations, action_set, p_explore, 
+  learning_rate, min_error, alpha, v, ga_frequency)
 puts "done! Solution: "
 
 
 # not decided yet
-pop_size = 100
-learning_rate = 0.1
 discount_factor = 0
-ga_frequency = 0
 
 p_crossover = 0.98
 p_mutation = 1.0/problem_size
 p_deletion = 0
-
-# lots of others....
-
-num_rules = 50
-num_bits = 64
-
-# best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-# puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
-
-
