@@ -28,7 +28,6 @@ def new_classifier(condition, action, gen)
   return classifier
 end
 
-
 def copy_classifier(parent_classifier)
   classifier = {}
   classifier[:action] = ""+parent_classifier[:action]
@@ -224,6 +223,16 @@ def uniform_crossover(string1, string2)
   end
 end
 
+def insert_in_population(classifier, population)
+  population.each do |c|    
+    if classifier[:condition] == c[:condition] and classifier[:action] == c[:action]
+      c[:num_classifier] += 1
+      return
+    end
+  end
+  population << classifier
+end
+
 def crossover(c1, c2, p2, p2)
   l = c1[:condition].length
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
@@ -249,7 +258,7 @@ def run_genetic_algorithm(population, action_set, instance, gen, p_crossover, p_
       # subsumption
     else
       # do insert
-      population << c
+      insert_in_population(c, population)
     end    
     
     # do deletion
@@ -266,7 +275,8 @@ def search(length, pop_size, max_generations, action_set, p_explore, learning_ra
     explore, action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
     # maximixing payoff, so wroing should equal zero
-    payoff = 1.0 - (target_function(instance) - action).abs.to_f
+    expected = target_function(instance)
+    payoff = 1.0 - (expected - action).abs.to_f
     update_set(action_set, payoff, learning_rate, min_error)
     update_fitness(action_set, min_error, learning_rate, alpha, v)
     # do subsumption ???
@@ -278,7 +288,7 @@ def search(length, pop_size, max_generations, action_set, p_explore, learning_ra
     end
     
     
-    puts " > #{gen} "
+    puts " > #{gen} in=#{instance}, out=#{action}, expected=#{expected}, p=#{payoff}"
   end
   
   return population
