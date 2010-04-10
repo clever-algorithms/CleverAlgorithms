@@ -181,14 +181,22 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-The majority of the heuristics in this section are specific to the XCS Learning Classifier System.
+The majority of the heuristics in this section are specific to the XCS Learning Classifier System as described by Butz and Wilson \cite{Butz2002a}.
 
 \begin{itemize}
 	\item Learning Classifier Systems are suited for problems with the following characteristics: perpetually novel events with large amounts of noise, continual, and real-time requirements for action, implicitly or inexactly defined goals, and sparse payoff or reinforcement obtainable only through long sequences of tasks.
-	\item The learning rate $\beta$ should be in the range $\in [0.1,0.2]$.
+	\item The learning rate $\beta$ for a classifiers expected payoff, error and fitness could be in the range $\in [0.1,0.2]$.
 	\item The frequency of running the genetic algorithm $\theta_{GA}$ should be in the range $\in [25,50]$.
-	
-	
+	\item The discount factor used in multi-step programs $\gamma$ should be in the around $0.71$.
+	\item The minimum error for whereby classifiers are considered to have equal accuracy $\epsilon_{0}$ should be 10\% of the maximum reward.
+	\item The probability of crossover in the genetic algorithm $\chi$ should be in the range $\in [0.5,1.0]$.
+	\item The probability of mutating a single position in a classifier in the genetic algorithm $\mu$ should be in the range $\in [0.01,0.05]$.
+	\item The experience threshold during classifier deletion $\theta_{del}$ could be about 20.
+	\item The experience threshold for a classifier during subsumption $\theta_{sub}$ could be around 20.
+	\item The initial values for a classifiers expected payoff $p_1$, error $\epsilon_1$, and fitness $f_1$ should be small and close to zero.
+	\item The probability of selecting a random action for the purposes of exploration $p_{exp}$ could be close to 0.5.
+	\item The minimum number of different actions that must be specified in a match set $\theta_{mna}$ is usually the total number of possible actions in the environment for the input.
+	\item Subsumption should be used on problem domains that are known contain well defined rules for mapping inputs to outputs.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
