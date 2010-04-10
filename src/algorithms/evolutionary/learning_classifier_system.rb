@@ -49,7 +49,6 @@ def copy_classifier(parent_classifier)
   #num = number of micro classifiers this classifer represents
   classifier[:num_classifier] = parent_classifier[:num_classifier]
   
-  
   return classifier
 end
 
@@ -94,7 +93,38 @@ def get_actions(population)
   return set.keys
 end
 
-def generate_match_set(instance, population, action_set, gen)
+def calculate_deletion_vote(classifier, pop, delete_threashold)
+  vote = classifier[:action_set_size] * classifier[:num_classifier]
+  avg_fit = pop.inspect{|s,i| s+=pop[i][:fitness]}/pop.inspect{|s,i| s+=pop[i][:num_classifier]}
+  derated = classifier[:fitness] / classifier[:num_classifier]
+  if classifier[:experience] > delete_threashold and derated < 0.1 * avg_fit
+    vote *= avg_fit / derated
+  end  
+  return vote
+end
+
+def delete_from_population(population, max_classifiers, delete_threashold)
+  total = population.inspect {|s,i| s+=population[i][:num_classifier]}
+  return if total < max_classifiers
+  population.each {|c| c[:dvote] = calculate_deletion_vote(c, pop, delete_threashold)}
+  vote_sum = population.inspect {|s,i| s+=population[i][:dvote]}
+  point = rand() * vote_sum
+  vote_sum, index = 0, 0
+  population.each_with_index do |c,v|
+    vote_sum += c[:dvote]
+    if vote_sum > point
+      index = i
+      break
+    end
+  end
+  if population[index][:num_classifier] > 1
+    population[index][:num_classifier] -= 1
+  else
+    population.delete_at(index)
+  end
+end
+
+def generate_match_set(instance, population, action_set, gen, max_classifiers, delete_threashold)
   match_set = []  
   population.each do |classifier|
     match_set << classifier if does_match(instance, classifier[:condition])
@@ -107,9 +137,8 @@ def generate_match_set(instance, population, action_set, gen)
     end until does_match(instance, c[:condition]) and !actions.include?(c[:action])
     population << c
     match_set << c 
+    delete_from_population(population, max_classifiers, delete_threashold)
   end    
-  # delete from population ???
-
   return match_set
 end
 
@@ -120,7 +149,6 @@ def generate_prediction(instance, match_set)
     prediction[key] = {:sum=>0,:count=>0,:weight=>0.0} if prediction[key].nil?
     prediction[key]][:sum] += classifier[:prediction_estimate]*classifier[:fitness]
     prediction[key]][:count] += classifier[:fitness]
-    # why not just count, why fitness?
   end
   prediction.keys.each do |key| 
     prediction[key][:weight]=prediction[key][:sum]/prediction[key][:count]
@@ -151,24 +179,25 @@ def update_set(action_set, payoff, learning_rate, min_error)
       c[:estimated_error] += learning_rate*((payoff-c[:prediction_estimate]).abs-c[:estimated_error])
     end
     raise "bad estimated_error" if c[:estimated_error].nan? or c[:estimated_error].infinite?
-    
+        
+    sum = action_set.inspect {|s,i| s+= action_set[i][:num_classifier]-c[:action_set_size]}    
     if(c[:experience] < 1.0/learning_rate)
-      classifier[:action_set_size] += (action_set.collect{|b| b[:num_classifier]-classifier[:action_set_size]}) / c[:experience]
+      classifier[:action_set_size] += sum / c[:experience]
     else
-      classifier[:action_set_size] += learning_rate*(action_set.collect{|b| b[:num_classifier]-classifier[:action_set_size]})
+      classifier[:action_set_size] += learning_rate*sum
     end
     raise "bad action_set_size" if c[:action_set_size].nan? or c[:action_set_size].infinite?
   end
 end
 
-def update_fitness(action_set, min_error, learning_rate, alpha, v)
+def update_fitness(action_set, min_error, learning_rate)
   sum = 0
   accuracy = Arrau.new(action_set.length)
   action_set.each_with_index do |c,i|
     if c[:estimated_error] < min_error
       accuracy[i] = 1
     else
-      accuracy[i] = alpha * (c[:estimated_error]/min_error)**-v
+      accuracy[i] = 0.1 * (c[:estimated_error]/min_error)**-5
     end
     sum += accuracy[i] * c[:num_classifier]
   end
@@ -245,32 +274,23 @@ def crossover(c1, c2, p2, p2)
   c2[:fitness] = c1[:fitness]
 end
 
-def run_genetic_algorithm(population, action_set, instance, gen, p_crossover, p_mutation, action_set)
+def run_genetic_algorithm(population, action_set, instance, gen, p_crossover, p_mutation, action_set, max_classifiers, delete_threashold)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
-  crossover(c1, c2, p2, p2) if rand() < p_crossover
-  
+  crossover(c1, c2, p2, p2) if rand() < p_crossover  
   [c1,c2].each do |c|
     mutation(c, p_mutation, action_set)
-    
-    
-    if subsumption?
-      # subsumption
-    else
-      # do insert
-      insert_in_population(c, population)
-    end    
-    
-    # do deletion
-    
+    insert_in_population(c, population)
+    delete_from_population(population, max_classifiers, delete_threashold)
   end  
 end
 
-def search(length, pop_size, max_generations, action_set, p_explore, learning_rate, min_error, alpha, v, ga_frequency, p_crossover, p_mutation)  
+def search(length, max_classifiers, max_generations, action_set, p_explore, 
+    learning_rate, min_error, ga_frequency, p_crossover, p_mutation, delete_threashold)
   population = []
   max_generations.times do |gen|
     instance = generate_problem_string(length)
-    match_set = generate_match_set(instance, population, action_set, gen)
+    match_set = generate_match_set(instance, population, action_set, gen, max_classifiers, delete_threashold)
     prediction_array = generate_prediction(instance, match_set, action_set)    
     explore, action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
@@ -278,19 +298,15 @@ def search(length, pop_size, max_generations, action_set, p_explore, learning_ra
     expected = target_function(instance)
     payoff = 1.0 - (expected - action).abs.to_f
     update_set(action_set, payoff, learning_rate, min_error)
-    update_fitness(action_set, min_error, learning_rate, alpha, v)
-    # do subsumption ???
-    
-
+    update_fitness(action_set, min_error, learning_rate)
     if can_run_genetic_algorithm(action_set, gen, ga_frequency)
       action_set.each do {|c| c[:last_match_time] = gen}
-      run_genetic_algorithm(population, action_set, instance, p_crossover, p_mutation, action_set)
+      run_genetic_algorithm(population, action_set, instance, p_crossover, 
+        p_mutation, action_set, max_classifiers, delete_threashold)
     end
-    
-    
-    puts " > #{gen} in=#{instance}, out=#{action}, expected=#{expected}, p=#{payoff}"
-  end
   
+    puts " > #{gen} in=#{instance}, out=#{action}, expected=#{expected}, p=#{payoff}"
+  end  
   return population
 end
 
@@ -301,23 +317,14 @@ problem_size = 6
 action_set = ['0', '1']
 learning_rate = 0.1
 min_error = 0.1
-alpha = 0.1
-v = 5
 p_crossover = 0.95
 p_mutation = 1.0/(problem_size + 1)
-
-#probability for exploration - look it up.
-p_explore = 0.1
-# num classifiers - what is used in some experiments?
-pop_size = 100
-# ???
-ga_frequency = 10
+ga_frequency = 25
+delete_threashold = 20
+p_explore = 0.5
+# a better val!?
+max_classifiers = 100
 
 population = search(problem_size, pop_size, max_generations, action_set, p_explore, 
-  learning_rate, min_error, alpha, v, ga_frequency, p_crossover, p_mutation)
+  learning_rate, min_error, alpha, v, ga_frequency, p_crossover, p_mutation, delete_threashold)
 puts "done! Solution: "
-
-
-# not decided yet
-discount_factor = 0
-p_deletion = 0
