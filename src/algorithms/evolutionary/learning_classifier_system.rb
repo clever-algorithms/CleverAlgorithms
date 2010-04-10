@@ -26,16 +26,13 @@ def copy_classifier(parent_classifier)
   classifier[:prediction] = parent_classifier[:prediction]
   classifier[:error] = parent_classifier[:error]
   classifier[:fitness] = parent_classifier[:fitness]
-  classifier[:experience] = parent_classifier[:experience]
+  classifier[:prediction] = 1.0
+  classifier[:error] = 0.00001
+  classifier[:fitness] = 1.0  
+  classifier[:experience] = 0.0
   classifier[:setsize] = parent_classifier[:setsize]
-  classifier[:num] = parent_classifier[:num]
+  classifier[:num] = 1
   return classifier
-end
-
-def generate_random_classifier(length, all_actions, gen)
-  condition = (0...length).inject(""){|s,i|s+['1','0','#'][rand(3)]}
-  action = all_actions[rand(all_actions.length)]
-  return new_classifier(condition, action, gen)
 end
 
 def generate_problem_string(length)
@@ -64,7 +61,7 @@ def calculate_deletion_vote(classifier, pop, delete_threashold)
 end
 
 def delete_from_population(population, max_classifiers, delete_threashold)
-  total = population.inject(0.0) {|s,c| s+c[:num]}
+  total = population.inject(0) {|s,c| s+c[:num]}
   return if total < max_classifiers
   population.each {|c| c[:dvote] = calculate_deletion_vote(c, population, delete_threashold)}
   vote_sum = population.inject(0.0) {|s,c| s+c[:dvote]}
@@ -82,6 +79,13 @@ def delete_from_population(population, max_classifiers, delete_threashold)
   else
     population.delete_at(index)
   end
+end
+
+def generate_random_classifier(instance, actions, gen)
+  condition = ""
+  instance.each_char {|s| condition << ((rand<1.0/3.0) ? '#' : s)}
+  action = actions[rand(actions.length)]
+  return new_classifier(condition, action, gen)
 end
 
 def does_match(instance, condition)  
@@ -109,14 +113,12 @@ def generate_match_set(instance, population, all_actions, gen, max_classifiers, 
   match_set = population.select{|c| does_match(instance, c[:condition])}
   actions = get_actions(match_set)
   while actions.length < all_actions.length do
-    c = nil
-    begin
-      c = generate_random_classifier(instance.length, all_actions, gen)
-    end until does_match(instance, c[:condition]) and !actions.include?(c[:action])
-    population << c
-    match_set << c
+    remaining = all_actions - actions
+    classifier = generate_random_classifier(instance, remaining, gen)
+    population << classifier
+    match_set << classifier
     delete_from_population(population, max_classifiers, delete_threashold)
-    actions = get_actions(match_set)
+    actions << classifier[:action]
   end
   return match_set
 end
@@ -125,7 +127,7 @@ def generate_prediction(instance, match_set)
   prediction = {}
   match_set.each do |classifier|
     key = classifier[:action]
-    prediction[key] = {:sum=>0,:count=>0,:weight=>0.0} if prediction[key].nil?
+    prediction[key] = {:sum=>0.0,:count=>0.0,:weight=>0.0} if prediction[key].nil?
     prediction[key][:sum] += classifier[:prediction]*classifier[:fitness]
     prediction[key][:count] += classifier[:fitness]
   end
@@ -199,28 +201,26 @@ def can_run_genetic_algorithm(action_set, gen, ga_frequency)
   return false
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+def select_parent(population)
+  sum = population.inject(0.0) {|s,c| s+c[:fitness]}
+  point = rand() * sum
+  sum = 0
+  population.each do |c|
+    sum += c[:fitness]
+    return c if sum > point
+  end  
 end
 
-def point_mutation(string, p_mutation)
-  child = ""
-  string.size.times do |i|
-    bit = string[i]
+def mutation(classifier, p_mutation, action_set, instance)
+  classifier[:condition].length.times do |i|
     if rand() < p_mutation
-      choice = ['1','0','#']
-      choice.delete(bit)
-      child << choice[rand(choice.length)]
-    else 
-      child << bit 
+      if classifier[:condition][i].chr == '#'
+        classifier[:condition][i] = instance[i]
+      else
+        classifier[:condition][i] = '#'
+      end
     end
   end
-  return child
-end
-
-def mutation(classifier, p_mutation, action_set)
-  classifier[:condition] = point_mutation(classifier[:condition], p_mutation)
   if rand() < p_mutation
     new_action = nil
     begin
@@ -231,14 +231,16 @@ def mutation(classifier, p_mutation, action_set)
 end
 
 def uniform_crossover(string1, string2)
-  return Array.new(string1.length) do |i|
-    ((rand()<0.5) ? string1[i] : string2[i])
-  end
+  rs = ""
+  string1.length.times do |i|
+    rs << ((rand()<0.5) ? string1[i] : string2[i])
+  end  
+  return rs
 end
 
 def insert_in_population(classifier, population)
   population.each do |c|    
-    if classifier[:condition] == c[:condition] and classifier[:action] == c[:action]
+    if classifier[:condition]==c[:condition] and classifier[:action]==c[:action]
       c[:num] += 1
       return
     end
@@ -247,7 +249,6 @@ def insert_in_population(classifier, population)
 end
 
 def crossover(c1, c2, p1, p2)
-  l = c1[:condition].length
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
   c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
@@ -259,12 +260,12 @@ def crossover(c1, c2, p1, p2)
 end
 
 def run_genetic_algorithm(all_actions, population, action_set, instance, gen, 
-    p_crossover, p_mutation, max_classifiers, delete_threashold)
-  p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
+    p_crossover, p_mutation, max_classifiers, delete_threashold)    
+  p1, p2 = select_parent(action_set), select_parent(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
-  crossover(c1, c2, p1, p2) if rand() < p_crossover  
+  crossover(c1, c2, p1, p2) if rand() < p_crossover
   [c1,c2].each do |c|
-    mutation(c, p_mutation, all_actions)
+    mutation(c, p_mutation, all_actions, instance)
     insert_in_population(c, population)
     delete_from_population(population, max_classifiers, delete_threashold)
   end  
@@ -273,7 +274,6 @@ end
 def search(length, max_classifiers, max_generations, all_actions, p_explore, 
     learning_rate, min_error, ga_frequency, p_crossover, p_mutation, delete_threashold)
   pop, abs = [], 0.0
-  # max_classifiers.times {pop<<generate_random_classifier(length, all_actions, 0)}
   max_generations.times do |gen|
     instance = generate_problem_string(length)
     match_set = generate_match_set(instance, pop, all_actions, gen, max_classifiers, delete_threashold)
@@ -298,7 +298,7 @@ def search(length, max_classifiers, max_generations, all_actions, p_explore,
   return pop
 end
 
-max_generations = 10000
+max_generations = 5000
 length = 6
 all_actions = ['0', '1']
 learning_rate = 0.2
@@ -307,7 +307,7 @@ p_crossover = 0.80
 p_mutation = 0.04
 ga_frequency = 25
 delete_threashold = 20
-p_explore = 0.30
+p_explore = 0.10
 max_classifiers = 100
 
 population = search(length, max_classifiers, max_generations, all_actions, p_explore, 
