@@ -73,20 +73,9 @@ Learning Classifier System, LCS
 % To what fields of study does a technique belong?
 The Learning Classifier System algorithm is both an instance of an Evolutionary Algorithm from the field of Evolutionary Computation and an instance of a Reinforcement Learning algorithm from Machine Learning.
 % What are the closely related approaches to a technique?
-The Learning Classifier System is a theoretical system with a number of implementations, two common versions of which are the Zeroth-level Classifier System (ZCS) and the Accuracy-based Classifier System (XCS). Each of these two main types of classifier systems have many extensions and variations.
-
-
-- (holland) Michigan-style LCS - optimize the classifier (whole rule set) 
-	- two further types: strength based: ZCS and accuracy-based XCS.
-LCS refers to the Michigan-style LCS
-- Pittsburgh-type LCS - optimize the rules for the classifier proposed by Smith in his PhD dissertation \cite{Smith1980} and later published \cite{Smith1983}
-
-Wilson proposed two variations of the Michigan style learning classifier which have become ubiquitously employed in the field. The ZCS [33] which is a simpler variation for the system for investigation, and the XCS [34,38] which is an effective classifier for general application.
-
-ZCS: (zeroth-level classifier system) A simpler variation of the Michigan style classifier system in which there is no message list, and a Q-learning like reinforcement learning algorithm is used called QBB. \cite{Wilson1994}
-
-XCS: (accuracy-based) An archetypal application LCS (with accurate and maximally general classifiers) in which the bucket brigade algorithm is replaced with an adaptation of Q-learning (different to the hybrid approach used in ZCS). In addition, credit is assigned based upon the accuracy (usefulness) of classifiers (as opposed to the predicted reward). The genetic algorithm is applied to subsets of classifiers (called environmental niches) that apply to the same situations (rather than the entire population). \cite{Wilson1995}
-
+The Learning Classifier System is a theoretical system with a number of implementations. Two streams of classifier that emerged are the Pittsburgh-style that seeks to optimize whole classifier, and the Michigan-style that optimize responsive rulesets. 
+% common 
+The Michigan-style Learning Classifier is the most common and is comprised of two versions: the ZCS (zeroth-level classifier system) and the XCS (accuracy-based classifier system).
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -101,31 +90,18 @@ This is achieved by managing credit assignment for those rules that prove useful
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-
-
 % What are the data structures and representations used in a technique?
-The actors of the system include (1) detectors, (2) messages, (3) effectors, (4) feedback, and (5) classifiers.
-
-Holland presents his classifier system as a computationally complete cognitive system with four elements: (1) A set of elementary interacting units called classifiers. (2) A performance algorithm that directs the action of the system in the environment. (3) A simple learning algorithm that keeps track of each classifiers success in receiving rewards. (4) A more complex learning algorithm that modifies the set of classifiers such that good classifiers persist, and new variants of good classifiers are proposed. The result is that the system generates an experience-based cognitive map that lets the system lookahead and assign credit during non-
-reward intervals.
-
-
-Detectors: Used by the system to perceive the state of the environment Messages: Information passed from the detectors into the system as discrete information packets. The system performs information processing on messages, and messages may directly result in actions in the environment Effectors: Control the systems actions on and within the environment Feedback: In addition to the system actively perceiving via its detections, it may also receive directed feedback from the environment (payoff) Classifier: A condition-action rule that provides a filter for messages. If a message satisfies the conditional part of the classifier, the action of the classier triggers. Rules act as message processors.
-
-Messages are defined of length k using a binary alphabet. A classifier is defined as a bit string with a ternary alphabet of ${1, 0, \#}$, where the $\#$ represents do not care . The classifier s string has at least two parts: one or more conditional parts, and an action part. 
-[condition] / [action] $1\#\#01\#10/001011$
-
-In addition, a message may be such that the condition of classifiers is negated (NOT), thus messages may be assigned sign (+/-).
+% actors
+The actors of the system include detectors, messages, effectors, feedback, and classifiers. Detectors are used by the system to perceive the state of the environment. Messages is the discrete information passed from the detectors into the system as discrete information packets. The system performs information processing on messages, and messages may directly result in actions in the environment. Effectors control the actions of the system on and within the environment. In addition to the system actively perceiving via its detections, it may also receive directed feedback from the environment (payoff). Classifiers are condition-action rules that provides a filter for messages. If a message satisfies the conditional part of the classifier, the action of the classier triggers. Rules act as message processors.
+% data
+Messages are defined of length $k$ using a binary alphabet. A classifier is defined as a binary string with a ternary alphabet of ${1, 0, \#}$, where the $\#$ represents do not care (matching both a 1 or 0). 
 
 % What is the computational recipe for a technique?
-system
-1) Messages from the environment are placed on the message list 2) The conditions of each classifier are checked to see if they are satisfied by at least one message in the message list 3) All classifiers that are satisfied participate in a competition, those that win post their action to the message list 4) All messages directed to the effectors are executed (causing actions in the environment) 5) All messages on the message list from the previous cycle are deleted (messages persist for a single cycle)
-
-the bucket brigade algorithm
-
-the genetic algorithm
-
-Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of the Learning Classifier System algorithm for minimizing a cost function. 
+The processing loop for the Learning Classifier system is as follows: i) Messages from the environment are placed on the message list. ii) The conditions of each classifier are checked to see if they are satisfied by at least one message in the message list. iii) All classifiers that are satisfied participate in a competition, those that win post their action to the message list. iv) All messages directed to the effectors are executed (causing actions in the environment). v) All messages on the message list from the previous cycle are deleted (messages persist for a single cycle).
+% algorithm
+The algorithm may be described in terms of the main processing loop and two sub-algorithms: a reinforcement learning algorithm such as the bucket brigade algorithm or Q-learning, and a genetic algorithm for optimization of the system.
+% presentated
+Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of the high-level processing loop of the Learning Classifier System. 
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -194,9 +170,13 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of
 \label{sec:heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
+The majority of the heuristics in this section are specific to the XCS Learning Classifier System.
+
 \begin{itemize}
 	\item Learning Classifier Systems are suited for problems with the following characteristics: perpetually novel events with large amounts of noise, continual, and real-time requirements for action, implicitly or inexactly defined goals, and sparse payoff or reinforcement obtainable only through long sequences of tasks.
-	\item ...
+	\item The learning rate $\beta$ should be in the range $\in [0.1,0.2]$.
+	\item The frequency of running the genetic algorithm $\theta_{GA}$ should be in the range $\in [25,50]$.
+	
 	
 \end{itemize}
 
@@ -211,7 +191,7 @@ The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It
 % algorithm
 The algorithm is an instance of XCS based on the description provided by Butz and Wilson \cite{Butz2002a} with the parameters based on the application of XCS to Boolean multiplexer problems by Wilson \cite{Wilson1995, Wilson1998}.
 % specifics
-THe population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1, v=5, \delta=0.1$ and $P_{\#}=\frac{1}{3}$.
+The population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. The multiplexer problem is a single step problem, so the complexities of delayed payoff were removed. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1, v=5, \delta=0.1$ and $P_{\#}=\frac{1}{3}$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Classifier System algorithm in the Ruby Programming Language, label=learning_classifier_system]{../../src/algorithms/evolutionary/learning_classifier_system.rb}
