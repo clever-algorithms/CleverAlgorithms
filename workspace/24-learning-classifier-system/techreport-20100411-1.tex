@@ -73,25 +73,20 @@ Learning Classifier System, LCS
 % To what fields of study does a technique belong?
 The Learning Classifier System algorithm is both an instance of an Evolutionary Algorithm from the field of Evolutionary Computation and an instance of a Reinforcement Learning algorithm from Machine Learning.
 % What are the closely related approaches to a technique?
-The Learning Classifier System is a theoretical system with a number of implementations, two common versions of which are the Zeroth-level Classifier System (ZCS) and the Accuracy-based Classifier System (XCS).
+The Learning Classifier System is a theoretical system with a number of implementations, two common versions of which are the Zeroth-level Classifier System (ZCS) and the Accuracy-based Classifier System (XCS). Each of these two main types of classifier systems have many extensions and variations.
 
-% Inspiration: Motivating system
-% The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
-% Optional
-\section{Inspiration}
-\label{sec:inspiration}
-% What is the system or process that motivated the development of a technique?
-% Which features of the motivating system are relevant to a technique?
-todo
 
-% Metaphor: Explanation via analogy
-% The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
-% Optional
-\section{Metaphor}
-\label{sec:metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+- (holland) Michigan-style LCS - optimize the classifier (whole rule set) 
+	- two further types: strength based: ZCS and accuracy-based XCS.
+LCS refers to the Michigan-style LCS
+- Pittsburgh-type LCS - optimize the rules for the classifier proposed by Smith in his PhD dissertation \cite{Smith1980} and later published \cite{Smith1983}
+
+Wilson proposed two variations of the Michigan style learning classifier which have become ubiquitously employed in the field. The ZCS [33] which is a simpler variation for the system for investigation, and the XCS [34,38] which is an effective classifier for general application.
+
+ZCS: (zeroth-level classifier system) A simpler variation of the Michigan style classifier system in which there is no message list, and a Q-learning like reinforcement learning algorithm is used called QBB. \cite{Wilson1994}
+
+XCS: (accuracy-based) An archetypal application LCS (with accurate and maximally general classifiers) in which the bucket brigade algorithm is replaced with an adaptation of Q-learning (different to the hybrid approach used in ZCS). In addition, credit is assigned based upon the accuracy (usefulness) of classifiers (as opposed to the predicted reward). The genetic algorithm is applied to subsets of classifiers (called environmental niches) that apply to the same situations (rather than the entire population). \cite{Wilson1995}
+
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -100,7 +95,7 @@ todo
 % What is the information processing objective of a technique?
 The objective of the Learning Classifier System algorithm is to optimize payoff (performance) based on its exposure to stimuli from its problem-specific  environment.
 % What is a techniques plan of action?
-They achieve this by managing credit assignment for those rules that prove effective and search for new rules and new variations on rules using an evolutionary process.
+This is achieved by managing credit assignment for those rules that prove useful and searching for new rules and new variations on rules using an evolutionary process.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -110,6 +105,10 @@ They achieve this by managing credit assignment for those rules that prove effec
 
 % What are the data structures and representations used in a technique?
 The actors of the system include (1) detectors, (2) messages, (3) effectors, (4) feedback, and (5) classifiers.
+
+Holland presents his classifier system as a computationally complete cognitive system with four elements: (1) A set of elementary interacting units called classifiers. (2) A performance algorithm that directs the action of the system in the environment. (3) A simple learning algorithm that keeps track of each classifiers success in receiving rewards. (4) A more complex learning algorithm that modifies the set of classifiers such that good classifiers persist, and new variants of good classifiers are proposed. The result is that the system generates an experience-based cognitive map that lets the system lookahead and assign credit during non-
+reward intervals.
+
 
 Detectors: Used by the system to perceive the state of the environment Messages: Information passed from the detectors into the system as discrete information packets. The system performs information processing on messages, and messages may directly result in actions in the environment Effectors: Control the systems actions on and within the environment Feedback: In addition to the system actively perceiving via its detections, it may also receive directed feedback from the environment (payoff) Classifier: A condition-action rule that provides a filter for messages. If a message satisfies the conditional part of the classifier, the action of the classier triggers. Rules act as message processors.
 
@@ -196,7 +195,7 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item They are suited for problems with the following characteristics: perpetually novel events with large amounts of noise, continual, and real-time requirements for action, implicitly or inexactly defined goals, and sparse payoff or reinforcement obtainable only through long sequences of tasks.
+	\item Learning Classifier Systems are suited for problems with the following characteristics: perpetually novel events with large amounts of noise, continual, and real-time requirements for action, implicitly or inexactly defined goals, and sparse payoff or reinforcement obtainable only through long sequences of tasks.
 	\item ...
 	
 \end{itemize}
@@ -224,7 +223,7 @@ problem based on experiments with XCS in \cite{Wilson1995} and \cite{Wilson1998}
 
 cfg
 - growing population as needed
-- hard coded alpha=0.1, v=5, delta=0.1, probability of # = 1/3 (cut down on params)
+- hard coded alpha=0.1, v=5, delta=0.1, probability of \# = 1/3 (cut down on params)
 - no subsumption (ga or active set), good for this problem, focus on brevity
 
 
@@ -243,67 +242,23 @@ cfg
 % Primary Sources
 % 
 \subsection{Primary Sources}
-
-proposed by Holland as a theoretical system
-
-initial ideas:
-proposed: \cite{Holland1976}
-
-
-Classifier systems were proposed by John Holland [4,9], and later standardized [5]. 
-
-follow-up abstract \cite{Holland1977}
-In [9] Holland presents his classifier system as a computationally complete cognitive system with four elements: (1) A set of elementary interacting units called classifiers. (2) A performance algorithm that directs the action of the system in the environment. (3) A simple learning algorithm that keeps track of each classifiers success in receiving rewards. (4) A more complex learning algorithm that modifies the set of classifiers such that good classifiers persist, and new variants of good classifiers are proposed. The result is that the system generates an experience-based cognitive map that lets the system lookahead and assign credit during non-
-reward intervals.
-
-standardized presentation \cite{Holland1980}
-???
-
-In his 1992 edition of his seminal work on Adaptation [12], Holland suggested that classifier systems were proposed to investigate genetic-based learning in problem domains that were characteristic of most learning situations for animals and humans.
-
-refined presentation of the approach \cite{Holland1989}
-
-implemented by some of his students...
-
-many types of classifier systems. De Jong demarcates two main streams that persist today \cite{Jong1988}
-
-- (holland) Michigan-style LCS - optimize the classifier (whole rule set) 
-	- two further types: strength based: ZCS and accuracy-based XCS.
-LCS refers to the Michigan-style LCS
-- Pittsburgh-type LCS - optimize the rules for the classifier proposed by Smith in his PhD dissertation \cite{Smith1980} and later published \cite{Smith1983}
-
-Wilson proposed two variations of the Michigan style learning classifier which have become ubiquitously employed in the field. The ZCS [33] which is a simpler variation for the system for investigation, and the XCS [34,38] which is an effective classifier for general application.
-
-ZCS: (zeroth-level classifier system) A simpler variation of the Michigan style classifier system in which there is no message list, and a Q-learning like reinforcement learning algorithm is used called QBB. \cite{Wilson1994}
-
-XCS: (accuracy-based) An archetypal application LCS (with accurate and maximally general classifiers) in which the bucket brigade algorithm is replaced with an adaptation of Q-learning (different to the hybrid approach used in ZCS). In addition, credit is assigned based upon the accuracy (usefulness) of classifiers (as opposed to the predicted reward). The genetic algorithm is applied to subsets of classifiers (called environmental niches) that apply to the same situations (rather than the entire population). \cite{Wilson1995}
-
-
+% seminal
+Early ideas on the theory of Learning Classifier Systems were proposed by Holland \cite{Holland1976, Holland1977}, culminating in a standardized presentation a few years later \cite{Holland1980}.
+% taxonomy
+A number of implementations of the theoretical system were investigated, although a taxonomy of main approaches was proposed by De Jong \cite{Jong1988}: 1) Pittsburgh-style proposed by Smith \cite{Smith1980, Smith1983} and 2) Holland-style or Michigan-style Learning classifiers that are further comprised of the Zeroth-level classifier (ZCS) \cite{Wilson1994} and the accuracy-based classifier (XCS) \cite{Wilson1995}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% introductions
-
-classical and detailed overview of the approach and the state of the field, describing the system and algorithms in great depth \cite{Booker1989}
-
-a second classical review that takes a more critical eye with the state of the system and the field \cite{Wilson1989}
-
-a contemporary review of the field \cite{Holmes2002}
-
+% classical
+Booker, Goldberg, and Holland provide a classical introduction to Learning Classifier Systems including an overview of the state of the field and the algorithm in detail \cite{Booker1989}. Wilson and Goldberg also provide a classical introduction and review of the approach, although take a more critical stance \cite{Wilson1989}.  
+% review
+Holmes, et al. provide a contemporary review of the field focusing both on the approach and application areas to which the approach has been demonstrated successfully \cite{Holmes2002}.
 % books
-by Lanzi, et al.
-seminal book \cite{Lanzi2000} - collection of papers by leaders in the field on many aspects of the algorithm including basics, advanced topics and demonstration applications.
-a highlight introductory article from this book includes an explanation of LCS by all the major contributors to the field \cite{Holland2000}
-
-also see for a guided tour of the development of the technique as it matured throughout the 1990s \cite{Lanzi2000a}
-
-
-\cite{Bull2004} - a collection of applications 
-\cite{Bull2005} - a collection on the foundations of classifier systems, including theory and practical usage
-\cite{Butz2002} - detailed overview of the technique including basics, applications and theory, focused on an extension called ACS/2 - anticipatory learning classifier systems (nope, drop it)
-
+Lanzi, Stolzmann, and Wilson provide a seminal book in the field as a collection of papers covering the basic, advanced topics, and demonstration applications. A particular highlight from this book is the first paper that provides a concise description of Learning Classifier Systems by many leaders and major contributors to the field \cite{Holland2000}, providing rare insight. Another paper from this book by Lanzi and Riolo provides a detailed review of the development of the approach as it matured throughout the 1990s.
+% other book
+Bull and Kovacs a second book introductory book to the field focusing on the theory of the approach and its practical application \cite{Bull2005}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
