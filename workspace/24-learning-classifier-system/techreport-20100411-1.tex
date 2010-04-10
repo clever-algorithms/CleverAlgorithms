@@ -207,25 +207,11 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudo-code listing of
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{learning_classifier_system} provides an example of the Learning Classifier System algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem...
+The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It can be described as a classification problem, where each of the $2^6$ patterns of bits is associated with a boolean class $\{1,0\}$. For this problem instance, the first two bits may be decoded as an address into the remaining four bits that specify the class (for example in 100010, `10' decode to the second index of the remaining 4 bits meaning the class is 1). In propositional logic this may be described as $F=(\neg x_0) (\neg x_1) x_2 + (\neg x_0) x_1 x_3 + x_0 (\neg x_1) x_4 + x_0 x_1 x_5$. 
 % algorithm
-The algorithm...
-
-
-really based on \cite{Butz2002a}
-problem based on experiments with XCS in \cite{Wilson1995} and \cite{Wilson1998}
-
-- 6 boolean multiplexer problem, single step problem (question, answer, independent steps)
-- xcs isa bout accuracy of prediction rather than prediction
-- GA is applied to sets, not all rules
-- no message list
-- results in accurate and maximally minimal classification rules
-
-cfg
-- growing population as needed
-- hard coded alpha=0.1, v=5, delta=0.1, probability of \# = 1/3 (cut down on params)
-- no subsumption (ga or active set), good for this problem, focus on brevity
-
+The algorithm is an instance of XCS based on the description provided by Butz and Wilson \cite{Butz2002a} with the parameters based on the application of XCS to Boolean multiplexer problems by Wilson \cite{Wilson1995, Wilson1998}.
+% specifics
+THe population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1, v=5, \delta=0.1$ and $P_{\#}=\frac{1}{3}$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Classifier System algorithm in the Ruby Programming Language, label=learning_classifier_system]{../../src/algorithms/evolutionary/learning_classifier_system.rb}
@@ -252,7 +238,7 @@ A number of implementations of the theoretical system were investigated, althoug
 % 
 \subsection{Learn More}
 % classical
-Booker, Goldberg, and Holland provide a classical introduction to Learning Classifier Systems including an overview of the state of the field and the algorithm in detail \cite{Booker1989}. Wilson and Goldberg also provide a classical introduction and review of the approach, although take a more critical stance \cite{Wilson1989}.  
+Booker, Goldberg, and Holland provide a classical introduction to Learning Classifier Systems including an overview of the state of the field and the algorithm in detail \cite{Booker1989}. Wilson and Goldberg also provide a classical introduction and review of the approach, although take a more critical stance \cite{Wilson1989}.
 % review
 Holmes, et al. provide a contemporary review of the field focusing both on the approach and application areas to which the approach has been demonstrated successfully \cite{Holmes2002}.
 % books
