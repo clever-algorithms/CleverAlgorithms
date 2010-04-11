@@ -53,6 +53,7 @@ h3. Technical Reports
 * Jason Brownlee. "Differential Evolution":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100402-1.pdf. Technical Report CA-TR-20100402-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * Jason Brownlee. "Grammatical Evolution":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100403-1.pdf. Technical Report CA-TR-20100403-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * Jason Brownlee. "Gene Expression Programming":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100404-1.pdf. Technical Report CA-TR-20100404-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
+* Jason Brownlee. "Learning Classifier System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100411-1.pdf. Technical Report CA-TR-20100411-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * ...
 
 h3. Software
