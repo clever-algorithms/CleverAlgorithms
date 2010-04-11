@@ -156,3 +156,15 @@ Probabilistic, Stochastic hill climbing with learning by vectors of normal distr
 Stochastic, Random Bit Climber,28,19,37,6,23
 Evolutionary, Probabilistic Crowding Genetic Algorithm,3,1,3,2,2
 Probabilistic, Compact Genetic Algorithm,1120,137,826,122,1616
+Evolutionary, Fast Non-dominated Sorting Genetic Algorithm,31,9,38,5,12
+Evolutionary, Niched Pareto Genetic Algorithm,1560,386,1680,205,679
+Evolutionary, Pareto-Archived Evolution Strategy,803,212,1130,222,429
+Evolutionary, Dynamic Multi-objective Evolutionary Algorithm,26,10,29,11,8
+Evolutionary, Region-based Selection in Evolutionary Multiobjective Optimization,67,43,103,35,37
+Evolutionary, Random Weighted Genetic Algorithm,11,1,11,1,5
+Evolutionary, Pareto Envelope-based Selection Algorithm,227,87,309,64,129
+Evolutionary, Multi-objective Genetic Algorithm,5810,639,5920,626,2244
+Evolutionary, Micro-GA,873,218,655,53,276
+Evolutionary, Rank-Density Based Genetic Algorithm,11,7,23,5,7
+Evolutionary, Multi-objective Evolutionary Algorithm,3010,397,2930,435,1971
+Evolutionary, Weight-based Genetic Algorithm,30,7,42,2,14
