@@ -156,3 +156,15 @@ Classical, downhill simplex method
 Stochastic, Random Restart Algorithm
 Evolutionary, Pareto Archived Evolution Strategy
 Physical, Annealed Nelder and Mead
+Evolutionary, Multi-objective Genetic Algorithm
+Evolutionary, Niched Pareto Genetic Algorithm
+Evolutionary, Weight-based Genetic Algorithm
+Evolutionary, Random Weighted Genetic Algorithm
+Evolutionary, Pareto-Archived Evolution Strategy
+Evolutionary, Pareto Envelope-based Selection Algorithm
+Evolutionary, Region-based Selection in Evolutionary Multiobjective Optimization
+Evolutionary, Multi-objective Evolutionary Algorithm
+Evolutionary, Micro-GA
+Evolutionary, Rank-Density Based Genetic Algorithm
+Evolutionary, Dynamic Multi-objective Evolutionary Algorithm
+Evolutionary, Fast Non-dominated Sorting Genetic Algorithm
