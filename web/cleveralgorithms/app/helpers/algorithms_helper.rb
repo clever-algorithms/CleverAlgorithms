@@ -82,8 +82,15 @@ module AlgorithmsHelper
     "<span class='coming_soon'>Coming Soon.</span>"
   end
   
+  def nocontent_text
+    "<span class='no_content'>Nothing yet.</span>"
+  end
+  
+  
   def algorithm_color(algorithm)
+    # bad data
     return "\#FFF" if algorithm.nil? or algorithm.kingdom.blank?
+    
     kingdom = algorithm.kingdom.downcase
     # bright green
     return "\#EFFBEF" if kingdom == "evolutionary"
@@ -97,9 +104,10 @@ module AlgorithmsHelper
     return "\#FBEFFB" if kingdom == "probabilistic"
     # purple
     return "\#F5EFFB" if kingdom == "immune"
-    
-    
+    # white (fallback)
     return "\#FFFFFF"
   end
+  
+
   
 end

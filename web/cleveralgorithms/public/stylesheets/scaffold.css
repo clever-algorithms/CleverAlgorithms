@@ -272,7 +272,9 @@ span.coming_soon {
 	color: #888;
 }
 
-
+span.no_content {
+	color: #888;
+}
 
 table.algorithm_list {
 	width: 100%;

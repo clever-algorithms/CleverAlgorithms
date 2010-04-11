@@ -18,19 +18,19 @@
 		</div>
 		<div class="algorithm_aliases">
 			<% if @algorithm.released %>
-				<%=h @algorithm.aliases %>
+				<%= @algorithm.aliases.blank? ? nocontent_text : @algorithm.aliases %>
 			<% else %>
 				<%= unreleased_text %>
 			<% end %>
 		</div>		
 	</div>
 	
-	<% if !@algorithm.released %>	
+	<% if !@algorithm.released or !@algorithm.completed() %>	
 		<div class="make_suggestion2">
 			<div class="text">
 				<% if @algorithm.book %>
 <p>
-Sorry, this algorithm is currently not described.
+Sorry, this algorithm description is currently not completed.
 </p>
 <p>
 We prioritize the writing of algorithm descriptions based on their calculated popularity and user demand.
@@ -41,14 +41,14 @@ you want to read about this algorithm, and suggest we hurry up with the descript
 </p>
 				<% else %>
 <p>
-Sorry, this algorithm is currently not described and is not in the <%= link_to "Clever Algorithms book", book_path %>.
+Sorry, this algorithm description is currently not completed and is not in the <%= link_to "Clever Algorithms book", book_path %>.
 </p>
 <p>
 We prioritize the writing of algorithm descriptions based on their calculated popularity and user demand.
 </p>
 <p>
 Please, <%= link_to "let us know", {:controller=>"messages", :action=>"new", :algorithm_id=>@algorithm} %> 
-you want to read about this algorithm, or that it must be included in the book!
+you want to read about this algorithm, and/or that it really should be included in the book!
 </p>				
 				<% end %>
 			</div>
@@ -82,7 +82,7 @@ you want to read about this algorithm, or that it must be included in the book!
 	<div class="algorithm_subheading">Taxonomy</div>	
 	<div class="algorithm_taxonomy">		
 		<% if @algorithm.released %>
-			<%=make_paragraphs @algorithm.taxonomy %>
+			<%= @algorithm.taxonomy.empty? ? nocontent_text : make_paragraphs(@algorithm.taxonomy) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
@@ -119,7 +119,7 @@ you want to read about this algorithm, or that it must be included in the book!
 	<div class="algorithm_subheading">Strategy</div>
 	<div class="algorithm_strategy">
 		<% if @algorithm.released %>
-			<%=make_paragraphs @algorithm.strategy %>
+			<%= @algorithm.strategy.blank? ? nocontent_text : make_paragraphs(@algorithm.strategy) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
@@ -131,7 +131,7 @@ you want to read about this algorithm, or that it must be included in the book!
 	<div class="algorithm_subheading">Procedure</div>
 	<div class="algorithm_procedure">
 		<% if @algorithm.released %>
-			<%=make_paragraphs @algorithm.procedure %>
+			<%=@algorithm.procedure.blank? ? nocontent_text : make_paragraphs(@algorithm.procedure)	 %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
@@ -143,7 +143,7 @@ you want to read about this algorithm, or that it must be included in the book!
 	<div class="algorithm_subheading">Heuristics</div>
 	<div class="algorithm_heuristics">
 		<% if @algorithm.released %>
-			<%=make_unorded_list @algorithm.heuristics %>
+			<%= @algorithm.heuristics.blank? ? nocontent_text : make_unorded_list(@algorithm.heuristics) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>	
@@ -154,6 +154,7 @@ you want to read about this algorithm, or that it must be included in the book!
 	<div class="algorithm_subheading">Code Listing</div>
 	<div class="algorithm_code">
 		<% if @algorithm.released %>
+<% if @algorithm.code.blank? %> <%= nocontent_text %> <% else %>		
 			<%=make_paragraphs @algorithm.code %>
 <pre class="prettyprint lang-rb">
 <% if @filedata.nil? -%>
@@ -165,6 +166,7 @@ Sorry, the source file could not be located.
 		<div class="download">
 			Download: <%= link_to "#{@filename}", @algorithm.code_file %>
 		</div>
+<% end %>		
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
@@ -176,7 +178,7 @@ Sorry, the source file could not be located.
 	<div class="algorithm_subheading">References</div>
 	<div class="algorithm_references">
 		<% if @algorithm.released %>
-			<%=make_paragraphs @algorithm.references %>
+			<%= @algorithm.references.blank? ? nocontent_text : make_paragraphs(@algorithm.references) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>	
@@ -186,8 +188,8 @@ Sorry, the source file could not be located.
 	<a name="algorithm_web"></a>
 	<div class="algorithm_subheading">Around the Web</div>
 	<div class="algorithm_web">
-		<% if @algorithm.released %>
-			<%=make_links @algorithm.web %>
+		<% if @algorithm.released %>		
+			<%= @algorithm.web.blank? ? nocontent_text : make_links(@algorithm.web) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>
@@ -198,7 +200,7 @@ Sorry, the source file could not be located.
 	<div class="algorithm_subheading">Bibliography</div>
 	<div class="algorithm_bibliography">
 		<% if @algorithm.released %>
-			<%=make_bibliography @algorithm.bibliography %>
+			<%= @algorithm.bibliography.blank? ? nocontent_text : make_bibliography(@algorithm.bibliography) %>
 		<% else %>
 			<%= unreleased_text %>
 		<% end %>	
@@ -212,11 +214,6 @@ Sorry, the source file could not be located.
 			Found a typo in the content or a bug in the source code? 		
 			Are you an expert in a technique and know some facts that could improve an algorithm description for all?
 			Do you want to get that warm feeling from contributing to an open source project? 
-			</p>
-			<p>
-			Two pillars of this effort are i) that the best domain experts are people outside of the project, 
-			and ii) that this work is (somewhat) wrong by default. 
-			<strong>Please help to make this work less wrong!</strong>.
 			</p>
 			<p>
 			<%= link_to "Make a Suggestion", :controller=>"messages", :action=>"new", :algorithm_id=>@algorithm %> to improve this algorithm description. 
