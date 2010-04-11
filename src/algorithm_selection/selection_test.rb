@@ -18,7 +18,9 @@ require 'selection_lib'
 class TestSelectionLib < Test::Unit::TestCase
   
   TEST_QUERY = "%22genetic+algorithm%22"
-  TEST_QUERY_NO_RESULTS = "%22this+will+return+no_results+ok%22"
+  TEST_QUERY_NO_RESULTS = "%22this+will+return+no_results+ok%22"  
+  TEST_QUERY_NO_RESULTS_WITH_SUGGEST = "%22sequential+niching+genetic+algorithm%22"
+  
 
 #  return results
 
@@ -156,43 +158,77 @@ class TestSelectionLib < Test::Unit::TestCase
     assert(!rs.empty?, "result is empty")
     assert_operator(rs.to_i, :==, 0, "query unexpectedly returned results")
   end   
+  
+  
+  # no results, but google suggests some
+  # these fail, google does not support this :(
+  
+  def test_get_approx_google_book_no_results_with_suggestion
+    rs = nil
+    assert_nothing_raised do
+        rs = get_approx_google_book_results(TEST_QUERY_NO_RESULTS_WITH_SUGGEST)
+    end
+    assert(!rs.nil?, "result is nil") 
+    assert(!rs.empty?, "result is empty")        
+    assert_operator(rs.to_i, :==, 0, "query unexpectedly returned results")
+  end
+   
+  def test_get_approx_google_web_no_results_with_suggestion
+    rs = nil
+    assert_nothing_raised do
+        rs = get_approx_google_web_results(TEST_QUERY_NO_RESULTS_WITH_SUGGEST)
+    end
+    assert(!rs.nil?, "result is nil") 
+    assert(!rs.empty?, "result is empty")        
+    assert_operator(rs.to_i, :==, 0, "query unexpectedly returned results")
+  end  
+  
+  def test_get_approx_google_scholar_no_results_with_suggestion
+    rs = nil
+    assert_nothing_raised do
+        rs = get_approx_google_scholar_results(TEST_QUERY_NO_RESULTS_WITH_SUGGEST)
+    end
+    assert(!rs.nil?, "result is nil") 
+    assert(!rs.empty?, "result is empty")        
+    assert_operator(rs.to_i, :==, 0, "query unexpectedly returned results")
+  end   
    
    
    # test query prep
    
    
   def test_prepare_query_conversions
-    # 1 word
-    assert_equal(prepare_query("random"), "%22random%22", "failed normal 1 word case")
-    # 2 words
-    assert_equal(prepare_query("genetic algorithm"), "%22genetic+algorithm%22", "failed normal 2 word case")
-    # 3 words
-    assert_equal(prepare_query("iterated local search"), "%22iterated+local+search%22", "failed normal 3 word case")
-    # trim
-    assert_equal(prepare_query(" genetic algorithm  "), "%22genetic+algorithm%22", "failed trim case")
-    # lower case
-    assert_equal(prepare_query("GeNeTiC AlGoRiThM"), "%22genetic+algorithm%22", "failed lower case test")
-    # replace '-' with '+'
-    assert_equal(prepare_query("iterated-local-search"), "%22iterated+local+search%22", "failed to replace - with +")
-    # remove ':'
-    assert_equal(prepare_query("iterated: local search"), "%22iterated+local+search%22", "failed to remove :")
-    # everything
-    assert_equal(prepare_query(" ItErAtEd: local-search    "), "%22iterated+local+search%22", "failed to do trim, case, -=>+, space to + and remove :, all at once")
-  end
-  
-  def test_prepare_query_validation
-    # no (
-    assert_raise RuntimeError, LoadError do 
-      prepare_query("no brackets(") 
+      # 1 word
+      assert_equal(prepare_query("random"), "%22random%22", "failed normal 1 word case")
+      # 2 words
+      assert_equal(prepare_query("genetic algorithm"), "%22genetic+algorithm%22", "failed normal 2 word case")
+      # 3 words
+      assert_equal(prepare_query("iterated local search"), "%22iterated+local+search%22", "failed normal 3 word case")
+      # trim
+      assert_equal(prepare_query(" genetic algorithm  "), "%22genetic+algorithm%22", "failed trim case")
+      # lower case
+      assert_equal(prepare_query("GeNeTiC AlGoRiThM"), "%22genetic+algorithm%22", "failed lower case test")
+      # replace '-' with '+'
+      assert_equal(prepare_query("iterated-local-search"), "%22iterated+local+search%22", "failed to replace - with +")
+      # remove ':'
+      assert_equal(prepare_query("iterated: local search"), "%22iterated+local+search%22", "failed to remove :")
+      # everything
+      assert_equal(prepare_query(" ItErAtEd: local-search    "), "%22iterated+local+search%22", "failed to do trim, case, -=>+, space to + and remove :, all at once")
     end
-    # no )
-    assert_raise RuntimeError, LoadError do
-       prepare_query("no brackets)") 
+    
+    def test_prepare_query_validation
+      # no (
+      assert_raise RuntimeError, LoadError do 
+        prepare_query("no brackets(") 
+      end
+      # no )
+      assert_raise RuntimeError, LoadError do
+         prepare_query("no brackets)") 
+      end
+      # no +
+      assert_raise RuntimeError, LoadError do 
+        prepare_query("no+plus") 
+      end
     end
-    # no +
-    assert_raise RuntimeError, LoadError do 
-      prepare_query("no+plus") 
-    end
-  end
   
 end

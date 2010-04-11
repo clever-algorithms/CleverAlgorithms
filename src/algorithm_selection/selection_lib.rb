@@ -9,6 +9,7 @@
 # All queries are expected in the form: %22genetic+algorithm%22 
 # All queries return a string containing a integer
 
+# you can pretty print the json with: puts JSON.pretty_generate(json_object)
 
 require 'rubygems'
 require 'json'
