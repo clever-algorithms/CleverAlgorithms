@@ -14,6 +14,8 @@ class CreateAlgorithms < ActiveRecord::Migration
       t.text :references, :default => ""
       t.text :bibliography, :default => ""
       t.text :web, :default => ""
+      t.string :kingdom, :default => ""
+      t.boolean :book, :default => 0
       t.boolean :released, :default => 0
       
       t.timestamps

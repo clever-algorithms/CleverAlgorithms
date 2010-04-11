@@ -15,7 +15,10 @@
 </head>
 <body <%= yield :body_tag %>>
 	<div class="head">
-		<div class="title"><%= link_to "CleverAlgorithms.com", root_url %></div>		
+		<div class="title">
+		<!-- <%= link_to "CleverAlgorithms.com", root_url %> -->
+		Clever Algorithms
+		</div>		
 	</div>
 	<div class="flash"><%= flash[:notice] %></div>
 	<div class="body">
@@ -26,7 +29,7 @@
 					<div class="menu_content">
 						<ul>
 							<li><%= link_to "Home", root_path %></li>
-							<li><%= link_to "Buy the book!", book_path %></li>
+							<li><%= link_to "Get the Book!", book_path %></li>
 							<li><%= link_to "All algorithms", algorithms_path %></li>
 							<li><%= link_to "About", about_path %></li>
 							<li><%= link_to "Support", support_path %></li>

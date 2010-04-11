@@ -13,7 +13,7 @@
 <div class="algorithm">
 	<a name="algorithm_name"></a>
 	<div class="algorithm_title">
-		<div class="algorithm_name">			
+		<div class="algorithm_name" style="background:<%=algorithm_color(@algorithm) %>;">			
 			<%=h @algorithm.name %>
 		</div>
 		<div class="algorithm_aliases">
@@ -28,18 +28,29 @@
 	<% if !@algorithm.released %>	
 		<div class="make_suggestion2">
 			<div class="text">
-				<p>
-				Can this algorithm description 
-				not be written soon enough for you?
-				</p>
-				<p>
-				We prioritize the writing of algorithm descriptions based on their
-				calculated popularity and user demand.
-				</p>
-				<p>
-				Please, <%= link_to "let us know", {:controller=>"messages", :action=>"new", :algorithm_id=>@algorithm} %> 
-				and suggest we hurry up!
-				</p>
+				<% if @algorithm.book %>
+<p>
+Sorry, this algorithm is currently not described.
+</p>
+<p>
+We prioritize the writing of algorithm descriptions based on their calculated popularity and user demand.
+</p>
+<p>
+Please, <%= link_to "let us know", {:controller=>"messages", :action=>"new", :algorithm_id=>@algorithm} %> 
+you want to read about this algorithm, and suggest we hurry up with the description!
+</p>
+				<% else %>
+<p>
+Sorry, this algorithm is currently not described and is not in the <%= link_to "Clever Algorithms book", book_path %>.
+</p>
+<p>
+We prioritize the writing of algorithm descriptions based on their calculated popularity and user demand.
+</p>
+<p>
+Please, <%= link_to "let us know", {:controller=>"messages", :action=>"new", :algorithm_id=>@algorithm} %> 
+you want to read about this algorithm, or that it must be included in the book!
+</p>				
+				<% end %>
 			</div>
 		</div>
 	<% end %>

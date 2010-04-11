@@ -1,5 +1,6 @@
 body { 
-	background-color: #eee; color: #333; 
+	background-color: #F9F9F9; 
+	color: #000; 
 	padding: 0px 0px 0px 0px;
 	margin-left: 0px; margin-top: 0px; margin-right: 0px; margin-bottom: 0px;
 }
@@ -58,21 +59,27 @@ a:hover { color: #000; }
 
 div.flash { 
 	color: green; 
-	font-weight: bold;
 	padding: 0px;
+	padding-left: 200px;
+	background: #fff;
 }
 
 
 
 div.head {
-	background-color: #fff;
 	margin-bottom: 10px;
 	padding-bottom: 0px;
 }
+
+
 div.title {
-	color: #444;
-	font-size: 130%;
+	color: #000;
+	font-size: 200%;
 	padding: 8px;
+/*	font-variant: small-caps;*/
+	text-transform: lowercase;
+	font-family: "Lucida Console", Courier, Monospace;
+	font-style: bold;
 }
 div.body {
 	margin-left: 0px;
@@ -86,18 +93,19 @@ table.content {
 
 td.menu {
 	text-align: left;
-	padding: 10px 10px 10px 0px;
+	padding: 0px 10px 10px 0px;
 	width: 180px;		
 }
 div.menu_title {
 	text-transform: lowercase;
 	padding: 0px;
 	font-size: 90%;
-	padding-top: 15px;
+	padding-top: 0px;
 	padding-left: 10px;
 }
 div.menu_content ul {
-	margin-top: 2px;
+	margin-top: 0px;
+	margin-bottom: 25px;
 	background: #fff;	
 	font-size: 85%;
 	padding-left: 18px;
@@ -160,17 +168,22 @@ div.algorithm{
 
 div.algorithm_title{	
 	padding-bottom: 10px;
-	padding-top: 10px;
+	padding-top: 0px;
 }
 div.algorithm_name {
 	color: black;
 	text-transform: capitalize;
 	font-size: 250%;
 	font-style: bold;
-	border-bottom-style: solid;
+/*	border-bottom-style: solid;
 	border-bottom-width: 1px;
-	border-bottom-color: #aaa;
-	padding-bottom: 8px;
+	border-bottom-color: #aaa;*/
+	border-style: solid;
+	border-width: 1px;
+	border-color: #aaa;
+/*	padding-bottom: 5px;
+	padding-top: 5px;*/
+	padding: 8px;
 	text-align: left;
 }
 div.algorithm_aliases {
