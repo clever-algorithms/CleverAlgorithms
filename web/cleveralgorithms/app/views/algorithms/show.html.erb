@@ -1,13 +1,17 @@
 <% title(@algorithm.name) %>
+<% content_for :metadata do %>
+	<meta name="description" content="<%=@algorithm.name -%>" />
+	<meta name="keywords" content="<%=@algorithm.aliases.blank? ? @algorithm.name : @algorithm.aliases -%>" />
+<% end %>
 <% content_for :stylesheet do %>
-<%= stylesheet_link_tag 'prettify', :cache => 'prettify_c' -%>
+	<%= stylesheet_link_tag 'prettify', :cache => 'prettify_c' -%>
 <% end %>
 <% content_for :script do %>
-<%= javascript_include_tag 'prettify' -%>
-<%= javascript_include_tag 'http://mathcache.s3.amazonaws.com/replacemath.js' -%>
+	<%= javascript_include_tag 'prettify' -%>
+	<%= javascript_include_tag 'http://mathcache.s3.amazonaws.com/replacemath.js' -%>
 <% end %>
 <% content_for :body_tag do %>
-<%= "onload='prettyPrint()'" -%>
+	<%= "onload='prettyPrint()'" -%>
 <% end %>
 
 <div class="algorithm">
