@@ -5,8 +5,7 @@ ActionController::Routing::Routes.draw do |map|
   # algorithms
   # map.connect "a/:name", :controller => 'algorithms', :action => 'show'
   map.resources :algorithms, :as=>"a", :only => [:index,:show] do |a|
-    a.resources :messages
-    # , :only => [:new, :create]
+    a.resources :messages, :only => [:new, :create]
   end
 
   

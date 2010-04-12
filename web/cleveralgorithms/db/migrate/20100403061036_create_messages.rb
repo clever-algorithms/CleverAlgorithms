@@ -3,7 +3,6 @@ class CreateMessages < ActiveRecord::Migration
     create_table :messages do |t|
       t.text :msg
       t.references :algorithm
-      t.string :section
       t.string :name
       t.string :email
       t.string :subject

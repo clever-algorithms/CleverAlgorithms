@@ -4,42 +4,46 @@
 
 <div class="text">
 	<p>
-	asdf
+	Thank you for helping to improve the <%= link_to @algorithm.name, @algorithm %> description.
+	<br />
+	We totally love you forever for helping out!
 	</p>
 </div>
 
 <% form_for [:algorithm, @message]  do |f| %>
-  <%= "f.error_messages"  %>
+	<%= f.error_messages  %>
 
-  <p>
-    <%= f.label :msg %><br />
-    <%= f.text_area :msg %>
-  </p>
-  <p>
-    <%= f.label :algorithm %><br />
-    <%= f.text_field :algorithm %>
-  </p>
-  <p>
-    <%= f.label :section %><br />
-    <%= f.text_field :section %>
-  </p>
-  <p>
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.label :email %><br />
-    <%= f.text_field :email %>
-  </p>
-  <p>
-    <%= f.label :subject %><br />
-    <%= f.text_field :subject %>
-  </p>
-  <p>
-    <%= f.submit 'Create' %>
-  </p>
-<% end %>
-
-<% if !@algorithm.nil? %>
-	<%= link_to 'Back', @algorithm %>
+	<table width="50%">
+		<tr>
+			<td colspan=2>
+		    <strong><%= f.label :msg, "Your suggestion:" %></strong><br />
+		    <%= f.text_area :msg, :size => "50x10" %>				
+			</td>
+		</tr>
+		<tr>
+			<td colspan=2>
+		    <p>
+		    	You may optionally provide your name if you would like an acknowledgement.
+					You may provide an email if you would like to be contacted about your suggestion.
+		    </p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+		    <%= f.label :name, "Your name <small>(optional)</small>:" %><br />
+		    <%= f.text_field :name %>			
+			</td>
+			<td>
+		    <%= f.label :email, "Email address <small>(optional)</small>:" %><br />
+		    <%= f.text_field :email %>		
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<br />
+		    <%= f.submit 'Submit' %> | <%= link_to 'Back', @algorithm %>
+			</td>
+			<td></td>
+		</tr>
+	</table>
 <% end %>
