@@ -22,16 +22,16 @@ class Algorithm < ActiveRecord::Base
   
   
   def completed()
-    return false if @aliases.blank?
-    return false if @taxonomy.blank?
-    return false if @strategy.blank?
-    # return false if @procedure.blank?
-    return false if @heuristics.blank?
-    return false if @code.blank?
-    return false if @code_file.blank?
-    return false if @references.blank?
-    return false if @bibliography.blank?
-    # return false if @web.blank?
+    return false if aliases.blank?
+    return false if taxonomy.blank?
+    return false if strategy.blank?
+    # return false if procedure.blank?
+    return false if heuristics.blank?
+    return false if code.blank?
+    return false if code_file.blank?
+    return false if references.blank?
+    return false if bibliography.blank?
+    # return false if web.blank?
     
     return true
   end
