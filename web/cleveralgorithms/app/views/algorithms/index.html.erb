@@ -4,30 +4,40 @@
 
 <div class="text">
 	<p>
-	There are currently <strong><%=h Algorithm.released.count %> algorithms</strong> described 
-	of the <%=h Algorithm.count %> algorithms in the Clever Algorithms project.
+	The Clever Algorithms project is responsible for the description of <strong><%=h Algorithm.count %></strong> algorithms 
+	(<%=h Algorithm.released.count %> finished and <%=h Algorithm.unreleased.count %> coming soon). 
+	A total of <strong><%=h Algorithm.book.count %></strong> of the described algorithms are in the <%= link_to "Clever Algorithms book", book_path %>. 	
 	</p>
 </div>
+<%
+groups = {}
+@algorithms.each do |a| 
+	groups[a.kingdom] = [] if groups[a.kingdom].nil?
+	groups[a.kingdom]<<a
+end
+groups.keys.each {|key| groups[key].sort!{|x,y| x.name<=>y.name} }
 
-<a name="released"></a>
-<div class="subsubtitle">Released</div>
-<div class="text">
-	<ul>
-	<% @released.each do |algorithm| %>
-		<li><%= link_to algorithm.name, algorithm %></li>		
-	<% end %>
-	</ul>
-</div>
+%>
 
-<a name="unreleased"></a>
-<div class="subsubtitle">Coming Soon</div>
-<div class="text">
-	<ul>
-	<% @unreleased.each do |algorithm| %>
-		<li><%= link_to algorithm.name, algorithm %></li>		
-	<% end %>
-	</ul>
+<a name="algorithms"></a>
+<div class="subsubtitle">Algorithms</div>
+
+<% groups.keys.each do |group| %>
+<div>
+	<strong><%=group %></strong>
 </div>
+<ul>
+	<% groups[group].each do |algorithm| %>
+		<li>
+			<%= link_to algorithm.name, algorithm %>
+		</li>		
+	<% end %>
+</ul>
+
+<% end %>
+
+
+
 
 <div class="make_suggestion">
 	<div class="text">
@@ -39,8 +49,8 @@
 		calculated popularity and user demand.
 		</p>
 		<p>
-		Please, <%= link_to "let us know", "" %> and suggest 
-		we hurry up!
+		Please send an email to <%= mail_to jason_email, book_author %> and list missing algorithms.
+		Any references to primary sources would be greatly appreciated.
 		</p>
 		<p>
 		For more information on the methodology used to select algorithms for the Clever Algorithms project, please see: 

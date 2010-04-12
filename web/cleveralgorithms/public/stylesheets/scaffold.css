@@ -58,10 +58,9 @@ a:hover { color: #000; }
 }
 
 div.flash { 
-	color: green; 
-	padding: 0px;
+	color: red; 
+	padding-bottom: 2px;
 	padding-left: 200px;
-	background: #fff;
 }
 
 
@@ -76,7 +75,6 @@ div.title {
 	color: #000;
 	font-size: 200%;
 	padding: 8px;
-/*	font-variant: small-caps;*/
 	text-transform: lowercase;
 	font-family: "Lucida Console", Courier, Monospace;
 	font-style: bold;

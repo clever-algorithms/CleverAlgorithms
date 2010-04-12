@@ -4,10 +4,11 @@
 
 <div class="text">
 	<p>
-	Thank you for helping to improve the <%= link_to @algorithm.name, @algorithm %> description.
+	Thank you for taking the time to improve the <%= link_to @algorithm.name, @algorithm %> description.
 	<br />
-	We totally love you forever for helping out!
+	All suggestions are read by our team of algorithm research scientists.
 	</p>
+	<br />
 </div>
 
 <% form_for [:algorithm, @message]  do |f| %>
@@ -22,9 +23,9 @@
 		</tr>
 		<tr>
 			<td colspan=2>
-		    <p>
-		    	You may optionally provide your name if you would like an acknowledgement.
-					You may provide an email if you would like to be contacted about your suggestion.
+		    <p style="font-size:80%;">
+		    	You may optionally provide your name if you would like to be mentioned in an acknowledgement.
+					You may provide an email address if you would like to be contacted about your suggestion.
 		    </p>
 			</td>
 		</tr>

@@ -10,6 +10,7 @@ class Algorithm < ActiveRecord::Base
   named_scope :ordered_by_name, :order=>"name ASC"
   named_scope :released, :conditions=>['released=?', true]
   named_scope :unreleased, :conditions=>['released=?', false]
+  named_scope :book, :conditions=>['book=?', true]
   named_scope :random, :order=>"RANDOM()"
  
   # associations

@@ -58,7 +58,7 @@ class MessagesController < ApplicationController
     @message = Message.new(params[:message])
     respond_to do |format|
       if @message.save
-        flash[:notice] = 'Message sent successfully.'
+        flash[:notice] = "Thanks again, your suggestion will be read ASAP by our team of PhDs."
         format.html {redirect_to(@algorithm) }
         format.xml  { render :xml => @message, :status => :created, :location => @message }
       else

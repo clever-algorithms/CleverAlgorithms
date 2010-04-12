@@ -5,8 +5,7 @@ class AlgorithmsController < ApplicationController
   # GET /algorithms
   # GET /algorithms.xml
   def index
-    @released = Algorithm.released.ordered_by_name
-    @unreleased = Algorithm.unreleased.ordered_by_name
+    @algorithms = Algorithm.ordered_by_name
 
     respond_to do |format|
       format.html # index.html.erb
