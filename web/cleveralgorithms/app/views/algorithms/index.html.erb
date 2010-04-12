@@ -15,16 +15,17 @@ groups = {}
 	groups[a.kingdom] = [] if groups[a.kingdom].nil?
 	groups[a.kingdom]<<a
 end
-groups.keys.each {|key| groups[key].sort!{|x,y| x.name<=>y.name} }
+keys = groups.keys.sort
+keys.each {|key| groups[key].sort!{|x,y| x.name<=>y.name} }
 
 %>
 
 <a name="algorithms"></a>
 <div class="subsubtitle">Algorithms</div>
 
-<% groups.keys.each do |group| %>
+<% keys.each do |group| %>
 <div>
-	<strong><%=group %></strong>
+	<strong><%=group %> Algorithms</strong> (<%= groups[group].size %>)
 </div>
 <ul>
 	<% groups[group].each do |algorithm| %>
