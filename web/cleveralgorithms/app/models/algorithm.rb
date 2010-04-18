@@ -25,6 +25,11 @@ class Algorithm < ActiveRecord::Base
     return messages.all_unaddressed.count > 0
   end
   
+  def self.first_by_name(name)
+    name = name.gsub('+', ' ')
+    return Algorithm.first(:conditions=>['name=?', name])
+  end
+  
   
   def completed()
     return false if aliases.blank?

@@ -22,12 +22,15 @@
 		<th><%= f.label :addressed %>:</th>
 		<td><%= f.check_box :addressed %></td>		
 	</tr>
-	<tr>
+	<tr>		
+		<td>
+			<br />
+			<%= f.submit 'Update' %> |
+			<%= link_to 'Back', admin_algorithm_messages_path(@algorithm) %>
+		</td>		
 		<td></td>
-		<td><%= f.submit 'Update' %></td>		
 	</tr>
 <% end %>	
 </table>
 
 
-<%= link_to 'Back', admin_algorithm_messages_path(@algorithm) %>

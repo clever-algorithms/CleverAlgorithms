@@ -16,8 +16,7 @@ class AlgorithmsController < ApplicationController
   # GET /algorithms/1
   # GET /algorithms/1.xml
   def show
-    name = params[:id].gsub('+', ' ')
-    @algorithm = Algorithm.first(:conditions=>['name=?', name])
+    @algorithm = Algorithm.first_by_name(params[:id])
     if @algorithm.nil?
       flash[:notice] = "Unknown algorithm '#{name}', perhaps suggest it!"
       redirect_to(algorithms_path) 

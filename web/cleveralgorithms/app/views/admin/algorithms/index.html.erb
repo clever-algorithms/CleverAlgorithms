@@ -7,7 +7,7 @@
 </p>
 
 <p class="manage_controls">
-	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+	<%= link_to 'New', new_admin_algorithm_path %> |
 	<%= link_to "Back", admin_panel_path %>
 </p>
 
@@ -29,21 +29,19 @@
 			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>">
 				<%= (a.released) ? "Yes" : "No" %>
 			</td>
-			<td>				
-				<span <%= (a.has_unaddressed_msgs?) ? "class='highlighted'" : "" -%> >
+			<td <%= (a.has_unaddressed_msgs?) ? "class='highlighted'" : "" -%>>
 				<%= algorithm_messages_field(a) %>
-				</span>
 			</td>
 			<td style="text-align:center;">
-				<%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> | 
-				<%= link_to 'Delete', {:controller=>"admin/algorithms", :action=>"destroy", :id=>a.id}, :confirm=>"Are you sure?", :method=>:delete %>
+				<%= link_to 'Edit', edit_admin_algorithm_path(a) %> | 
+				<%= link_to 'Delete', admin_algorithm_path(a), :confirm=>"Are you sure?", :method=>:delete %>
 			</td>
 		</tr>
 	<% end %>
 </table>
 
 <p class="manage_controls">
-	<%= link_to 'New', :controller => "admin/algorithms", :action => "new" %> |
+	<%= link_to 'New', new_admin_algorithm_path %> |
 	<%= link_to "Back", admin_panel_path %>
 </p>
 

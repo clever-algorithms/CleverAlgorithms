@@ -17,7 +17,7 @@
     <td><%=h message.msg %></td>
 		<td><%= message.addressed ? "yes" : "no" %></td>
     <td><%= link_to 'Edit', edit_admin_algorithm_message_path(@algorithm, message) %></td>
-    <td><%= link_to 'Destroy', {:controller=>"admin/messages", :action=>"destroy", :id=>message, :algorithm_id=>@algorithm}, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Destroy', admin_algorithm_message_path(@algorithm,message), :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>

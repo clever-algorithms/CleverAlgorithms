@@ -1,20 +1,15 @@
 ActionController::Routing::Routes.draw do |map|
   
-
-
-  # algorithms
-  # map.connect "a/:name", :controller => 'algorithms', :action => 'show'
-  map.resources :algorithms, :as=>"a", :only => [:index,:show] do |a|
-    a.resources :messages, :only => [:new, :create]
-  end
-
-  
-  
   # book
   map.book  'book', :controller =>"book"
   # about
   map.about 'about', :controller =>"home", :action =>"about"
   map.support  'support', :controller =>"home", :action =>"support"
+
+  # algorithms
+  map.resources :algorithms, :as=>"a", :only => [:index,:show] do |a|
+    a.resources :messages, :only => [:new, :create]
+  end
 
   # administration /admin/
   map.namespace :admin do |admin|

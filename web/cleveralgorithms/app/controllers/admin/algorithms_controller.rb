@@ -35,18 +35,19 @@ class Admin::AlgorithmsController < Admin::AdminController
 
   # GET /algorithms/1/edit
   def edit
-    @algorithm = Algorithm.find(params[:id])
+    @algorithm = Algorithm.first_by_name(params[:id])
   end
 
   # POST /algorithms
   # POST /algorithms.xml
   def create
     @algorithm = Algorithm.new(params[:algorithm])
+    # @algorithm.id = nil
 
     respond_to do |format|
-      if @algorithm.save
+      if @algorithm.save!
         flash[:notice] = "Algorithm '#{@algorithm.name}' was successfully created."
-        format.html { redirect_to(:action=>"index") }
+        format.html { redirect_to(admin_algorithms_url) }
         # format.xml  { render :xml => @algorithm, :status => :created, :location => @algorithm }
       else
         format.html { render :action => "new" }
@@ -58,12 +59,12 @@ class Admin::AlgorithmsController < Admin::AdminController
   # PUT /algorithms/1
   # PUT /algorithms/1.xml
   def update
-    @algorithm = Algorithm.find(params[:id])
+    @algorithm = Algorithm.first_by_name(params[:id])
 
     respond_to do |format|
       if @algorithm.update_attributes(params[:algorithm])
         flash[:notice] = "Algorithm '#{@algorithm.name}' was successfully updated."
-        format.html { redirect_to(:action=>"index") }
+        format.html { redirect_to(admin_algorithms_url) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -75,7 +76,7 @@ class Admin::AlgorithmsController < Admin::AdminController
   # DELETE /algorithms/1
   # DELETE /algorithms/1.xml
   def destroy
-    @algorithm = Algorithm.find(params[:id])
+    @algorithm = Algorithm.first_by_name(params[:id])
     @algorithm.destroy
 
     respond_to do |format|
