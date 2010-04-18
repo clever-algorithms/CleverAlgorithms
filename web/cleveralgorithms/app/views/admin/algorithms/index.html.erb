@@ -29,8 +29,10 @@
 			<td class="algorithm_<%= (a.released) ? "released" : "unreleased" %>">
 				<%= (a.released) ? "Yes" : "No" %>
 			</td>
-			<td>
-				<%= a.messages.all_addressed.count %>/<%= a.messages.all_unaddressed.count %>
+			<td>				
+				<span <%= (a.has_unaddressed_msgs?) ? "class='highlighted'" : "" -%> >
+				<%= algorithm_messages_field(a) %>
+				</span>
 			</td>
 			<td style="text-align:center;">
 				<%= link_to 'Edit', :controller => "admin/algorithms", :action => "edit", :id=>a.id %> | 

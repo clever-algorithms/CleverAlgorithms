@@ -5,7 +5,7 @@ class CreateMessages < ActiveRecord::Migration
       t.references :algorithm
       t.string :name
       t.string :email
-      t.string :subject
+      # t.string :subject
       t.boolean :addressed, :default => 0
 
       t.timestamps

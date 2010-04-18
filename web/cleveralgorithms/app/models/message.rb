@@ -14,5 +14,7 @@ class Message < ActiveRecord::Base
   def email_not_specified?()
     return (email.nil? or email.blank?)
   end
+   
+
   
 end

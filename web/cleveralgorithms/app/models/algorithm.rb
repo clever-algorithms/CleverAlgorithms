@@ -21,6 +21,10 @@ class Algorithm < ActiveRecord::Base
     name.gsub(/ /, '+')    
   end
   
+  def has_unaddressed_msgs?
+    return messages.all_unaddressed.count > 0
+  end
+  
   
   def completed()
     return false if aliases.blank?

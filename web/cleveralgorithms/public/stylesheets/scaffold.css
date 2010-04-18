@@ -293,5 +293,7 @@ td.algorithm_unreleased {
 	text-align: center;
 }
 
-
+.highlighted {
+	background: #ff5;
+}
 

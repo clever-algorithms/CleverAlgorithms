@@ -18,8 +18,10 @@ ActionController::Routing::Routes.draw do |map|
 
   # administration /admin/
   map.namespace :admin do |admin|
-      admin.resources :panel
-      admin.resources :algorithms
+      admin.resources :panel, :only => [:index]
+      admin.resources :algorithms, :only => [:index,:edit,:new,:update,:destroy] do |a|
+        a.resources :messages, :only => [:index, :edit, :update, :destroy]
+    end
   end
   # short cut for admin
   map.admin_panel 'admin/panel', :controller => "admin/panel"
