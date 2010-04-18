@@ -16,5 +16,9 @@ class Message < ActiveRecord::Base
   end
    
 
+  def self.count_created_within_days_ago(days)
+    date = (Date.today - days).to_time.utc
+    return Message.count(:all, :conditions=>['updated_at>?',date])
+  end
   
 end

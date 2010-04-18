@@ -30,6 +30,11 @@ class Algorithm < ActiveRecord::Base
     return Algorithm.first(:conditions=>['name=?', name])
   end
   
+  def self.count_updated_within_days_ago(days)
+    date = (Date.today - days).to_time.utc
+    return Algorithm.count(:all, :conditions=>['updated_at>?',date])
+  end
+  
   
   def completed()
     return false if aliases.blank?

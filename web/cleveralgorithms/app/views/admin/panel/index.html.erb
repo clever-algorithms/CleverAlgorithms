@@ -2,22 +2,91 @@
 
 <div class="subtitle">Administration Panel</div>
 
-
 <div class="subsubtitle">Algorithms</div>
-<ul>
-	<li><%= link_to "Manage Algorithms", admin_algorithms_path %></li>
-	<li><%= link_to "New Algorithm", new_admin_algorithm_path %></li>
-</ul>
+<p>
+	<%= link_to "Manage Algorithms", admin_algorithms_path %> |
+	<%= link_to "New Algorithm", new_admin_algorithm_path %>
+</p>
+
+<table>
+	<tr>
+		<th>Total Algorithms:</th>
+		<td><%= Algorithm.count %></td>
+	</tr>
+	<tr>
+		<th>Algorithms in Book:</th>
+		<td><%= Algorithm.book.count %>/<%= Algorithm.count %></td>
+	</tr>
+	<tr>
+		<th>Released Algorithms:</th>
+		<td><%= Algorithm.released.count %>/<%= Algorithm.count %></td>
+	</tr>
+	<tr>
+		<th>Algorithms Updated today:</th>
+		<td><%= Algorithm.count_updated_within_days_ago(1) %></td>
+	</tr>	
+	<tr>
+		<th>Algorithms Updated in last 7 days:</th>
+		<td><%= Algorithm.count_updated_within_days_ago(7) %></td>
+	</tr>
+	<tr>
+		<th>Algorithms Updated in last 30 days:</th>
+		<td><%= Algorithm.count_updated_within_days_ago(30) %></td>
+	</tr>
+</table>
 
 
-<div class="subsubtitle">Site Health</div>
-<ul>
-	<li>There are <strong><%= total_algorithms %></strong> algorithms.</li>
-	<li>There have been <strong><%= total_email_notifications_last_day %></strong> notification sign-up's today, <strong><%= total_email_notifications_last_week %></strong> this week, and <strong><%= total_email_notifications %></strong> for all time.</li>
-</ul>
+<div class="subsubtitle">Messages</div>
+<table>
+	<tr>
+		<th>Total Messages:</th>
+		<td><%= Message.count %></td>
+	</tr>
+	<tr>
+		<th>Addressed Messages:</th>
+		<td><%= Message.all_addressed.count %>/<%= Message.count %></td>
+	</tr>
+	<tr>
+		<th>Unaddressed Messages:</th>
+		<td><%= Message.all_unaddressed.count %>/<%= Message.count %></td>
+	</tr>
+	<tr>
+		<th>Messages Created today:</th>
+		<td><%= Message.count_created_within_days_ago(1) %></td>
+	</tr>	
+	<tr>
+		<th>Messages in last 7 days:</th>
+		<td><%= Message.count_created_within_days_ago(7) %></td>
+	</tr>
+	<tr>
+		<th>Messages in last 30 days:</th>
+		<td><%= Message.count_created_within_days_ago(30) %></td>
+	</tr>	
+</table>
 
 
-<div class="subsubtitle">Useful Links</div>
+<div class="subsubtitle">Book Notifications</div>
+<table>
+	<tr>
+		<th>Total Sign-up's:</th>
+		<td><%= Email.count %></td>
+	</tr>
+	<tr>
+		<th>Sign-up's today:</th>
+		<td><%= Email.count_created_within_days_ago(1) %></td>
+	</tr>	
+	<tr>
+		<th>Sign-up's in last 7 days:</th>
+		<td><%= Email.count_created_within_days_ago(7) %></td>
+	</tr>
+	<tr>
+		<th>Sign-up's in last 30 days:</th>
+		<td><%= Email.count_created_within_days_ago(30) %></td>
+	</tr>	
+</table>
+
+
+<div class="subsubtitle">Useful Development Links</div>
 <ul>
 	<li><%= link_to "W3Schools CSS Tutorial", "http://www.w3schools.com/css/default.asp" %></li>
 	<li><%= link_to "Javascript code prettifier", "http://google-code-prettify.googlecode.com/svn/trunk/README.html" %></li>
