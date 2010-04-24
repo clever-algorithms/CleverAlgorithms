@@ -1,0 +1,77 @@
+body, p, ol, ul, td {
+  font-family: verdana, arial, helvetica, sans-serif;
+  font-size:   13px;
+  line-height: 18px;  
+}
+
+.text {
+	padding-left: 30px;
+	vertical-align: top;
+	text-align: justify;
+}
+
+.buy_now {
+	padding: 30px;
+	text-align: center;	
+	font-size: 200%;
+}
+
+.red_button {
+	color: #fff;
+	background: red;
+	padding: 10px;
+}
+
+.red_button a:link {color: #fff; text-decoration: none;}
+.red_button a:visited {color: #fff; text-decoration: none;}
+.red_button a:active {color: #fff; text-decoration: none;}
+.red_button a:hover {text-decoration: underline;}
+
+
+.title {
+	padding-bottom: 30px;
+}
+
+.toc {
+	padding-top: 30px;
+}
+
+.cover {
+	vertical-align: center;
+}
+
+.fieldWithErrors {
+  margin: 0;
+  display: inline;
+}
+
+.fieldWithErrors  label {
+  color: red;
+}
+
+.fieldWithErrors input {
+  background-color: #fbe3e4 !important;
+  color: #8a1f11;
+}
+
+.flash {
+	background: #FFFFCC;
+	text-align: center;
+}
+
+.img-shadow {
+  float:left;
+  background: url(shadowAlpha.png) no-repeat bottom right !important;
+  background: url(shadow.gif) no-repeat bottom right;
+  margin: 10px 0 0 10px !important;
+  margin: 10px 0 0 5px;
+  }
+
+.img-shadow img {
+  display: block;
+  position: relative;
+  background-color: #fff;
+  border: 1px solid #a9a9a9;
+  margin: -6px 6px 6px -6px;
+  padding: 4px;
+  }

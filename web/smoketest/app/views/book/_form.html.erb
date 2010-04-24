@@ -1,0 +1,41 @@
+<% form_for :email, :url=>{:controller=>"book",:action=>"create"} do |f| %>
+<center>
+<table width="400px" border=0>
+	<tr>
+		<td colspan="2">
+			<p>
+				<strong>Sorry, not finished yet</strong>: Get notified when we do!
+			</p>
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<%= f.label :email, "Your email*:" %><br />
+			<%= f.text_field :email, :size=>40 %>
+		</td>
+		<td>
+			<%= f.label :name, "Your name <small>(optional)</small>:" %><br />
+			<%= f.text_field :name, :size=>20 %>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<%= f.label :message, "Any message <small>(optional)</small>:" %><br />
+	    <%= f.text_area :message, :size=>"50x4" %>
+		</td>
+	</tr>
+	<tr>		
+		<td><%= f.submit 'Notify Me' %> | <%= link_to "Cancel", "" %></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td colspan="2">
+			<p>
+				We are expecting to go into print in late 2010 or early 2011.
+				Until then, you can <%= link_to "follow our progress", book_dev_url %>.
+			</p>
+		</td>
+	</tr>	
+</table>
+<% end %>
+</center>
