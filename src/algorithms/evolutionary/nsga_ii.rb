@@ -144,13 +144,13 @@ def select_parents(fronts, pop_size)
   offspring = []
   last_front = 0
   fronts.each do |front|
-    break if offspring.length+front.length > pop_size
+    break if (offspring.length+front.length) > pop_size
     front.each {|p| offspring << p}
     last_front += 1
-  end
+  end  
   if (remaining = pop_size-offspring.length) > 0
-    fronts.last.sort! {|x,y| crowded_comparison_operator(x,y)}
-    offspring += fronts.last[0...remaining]
+    fronts[last_front].sort! {|x,y| crowded_comparison_operator(x,y)}
+    offspring += fronts[last_front][0...remaining]
   end
   return offspring
 end
@@ -180,10 +180,10 @@ def search(problem_size, search_space, max_gens, pop_size, p_crossover)
     best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
     puts " > gen=#{gen+1}, fronts=#{fronts.length}, best=#{best_s}"
   end  
-  return pop
+  return children
 end
 
-max_gens = 100
+max_gens = 50
 pop_size = 100
 p_crossover = 0.98
 problem_size = 1

@@ -96,7 +96,86 @@ The population is sorted into a hierarchy of sub-populations based on the orderi
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:nsga} provides a pseudo-code listing of the Non-dominated Sorting Genetic Algorithm II (NSGA-II) for minimizing a cost function. 
+% explaination
+The \texttt{SortByRankAndDistance} function orders the population into a hierarchy of non-dominated pareto fronts. The \texttt{CrowdingDistanceAssignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al. for a clear presentation of the pseudo code and explanation of these functions \cite{Deb2002}. The \texttt{CrossoverAndMutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{SelectParentsByRankAndDistance} and \texttt{SortByRankAndDistance} functions discriminate members of the population first by rank (order of dominated precedence of the front the solution belongs to) and then distance within the front (calculated by \texttt{CrowdingDistanceAssignment}).
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	\SetKwData{Selected}{Selected}
+	\SetKwData{Children}{Children}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{Union}{Union}
+	\SetKwData{Fronts}{Fronts}
+	\SetKwData{Front}{$Front_i$}
+	\SetKwData{Parents}{Parents}
+	\SetKwData{LastFront}{$Front_L$}
+
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluateAgainstObjectiveFunctions}{EvaluateAgainstObjectiveFunctions} 
+	\SetKwFunction{StopCondition}{StopCondition}	
+	\SetKwFunction{FastNondominatedSort}{FastNondominatedSort}
+	\SetKwFunction{SelectParentsByRank}{SelectParentsByRank}
+	\SetKwFunction{SelectParentsByRankAndDistance}{SelectParentsByRankAndDistance}	
+	\SetKwFunction{Merge}{Merge}
+	\SetKwFunction{Size}{Size}
+	\SetKwFunction{Break}{Break}
+	\SetKwFunction{CrossoverAndMutation}{CrossoverAndMutation}
+	\SetKwFunction{CrowdingDistanceAssignment}{CrowdingDistanceAssignment}
+	\SetKwFunction{SortByRankAndDistance}{SortByRankAndDistance}
+	
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwOut{\Best}
+	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% evaluate
+	\EvaluateAgainstObjectiveFunctions{\Population}\;
+	\FastNondominatedSort{\Population}\;
+	\Selected $\leftarrow$ \SelectParentsByRank{\Population, \PopulationSize}\;
+	\Children $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+	\EvaluateAgainstObjectiveFunctions{\Children}\;
+		\Union $\leftarrow$ \Merge{\Population, \Children}\;
+		\Fronts $\leftarrow$ \FastNondominatedSort{\Union}\;		
+		% classical loop in paper
+		\Parents $\leftarrow$ 0\;
+		\LastFront $\leftarrow$ 0\;
+		\ForEach{\Front $\in$ \Fronts}{
+			\CrowdingDistanceAssignment{\Front}\;
+			\eIf{\Size{\Parents}$+$\Size{\Front} $>$ \PopulationSize}{
+			\LastFront $\leftarrow$ $i$\;
+				\Break{}\;
+			}{
+				\Parents $\leftarrow$ \Merge{\Parents, \Front}\;
+			}
+		}
+		\If{\Size{\Parents}$<$\PopulationSize}{
+			\LastFront $\leftarrow$ \SortByRankAndDistance{\LastFront}\;
+			\For{$P_1$ \KwTo $P_{\PopulationSize-\Size{LastFront}}$}{
+				\Parents $\leftarrow$ $Pi$\;
+			}
+		}		
+		% sample old GA
+		\Selected $\leftarrow$ \SelectParentsByRankAndDistance{\Parents, \PopulationSize}\;
+		\Population  $\leftarrow$ \Children\;
+		\Children $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
+	}
+	\Return{\Children}\;
+	% end
+	\caption{Pseudo Code for the Non-dominated Sorting Genetic Algorithm II.}
+	\label{alg:nsga}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
