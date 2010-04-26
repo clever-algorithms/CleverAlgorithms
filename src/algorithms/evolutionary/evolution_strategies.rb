@@ -62,7 +62,7 @@ def search(max_generations, problem_size, search_space, pop_size, num_children)
       :strategy=>random_vector(problem_size, strategy_space)}
   end
   population.each{|c| c[:fitness] = objective_function(c[:vector])}
-  gen, best = 0, population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
+  best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_generations.times do |gen|
     children = Array.new(num_children) {|i| mutate(population[i], search_space)}
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
