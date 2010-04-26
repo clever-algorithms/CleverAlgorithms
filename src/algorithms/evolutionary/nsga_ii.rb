@@ -79,7 +79,7 @@ end
 def dominates(p1, p2)
   min = false
   p1[:objectives].each_with_index do |x,i|
-    min = true if x <  p2[:objectives][i]
+    min = true if x < p2[:objectives][i]
   end
   return false if !min  
   p1[:objectives].each_with_index do |x,i|
@@ -102,7 +102,7 @@ def fast_nondominated_sort(pop)
       end
     end
     if p1[:dominated] == 0 
-      p1[:rank] = 1
+      p1[:rank] = 0
       fronts[0] << p1
     end
   end
@@ -122,38 +122,40 @@ def fast_nondominated_sort(pop)
     curr += 1
     fronts[curr] = next_front    
   end until fronts[curr] == 0  
+  return fronts
 end
 
 def crowding_distance(pop)
   # TODO
 end
 
-def fitness(pop)
-  # TODO
-end
-
 def search(problem_size, search_space, max_gens, pop_size, p_crossover)
-  # first run
   population = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
   end
   fast_nondominated_sort(population)
-  fitness(population)
-  #population.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-  selected = Array.new(population_size){|i| binary_tournament(population)}
+  population.each {|p| p[:fitness]=p[:rank]}
+  selected = Array.new(pop_size){|i| binary_tournament(population)}
   children = reproduce(selected, pop_size, p_crossover)
   max_gens.times do |gen|
     union = population + children
-    f = fast_nondominated_sort(union)
-    
+    fronts = fast_nondominated_sort(union)
     offspring = []
+    
+    # it says this, but the pseudo code doesn't do it
+    #fronts.first.each {|p| offspring<<p} if fronts.first<=pop_size
+    
     begin
+      
+      # ????
       crowding_distance(union)
-    end until offspring.length == pop_size
-    
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, pop_size, p_crossover)
-    
+      
+      
+    end until offspring.length == pop_size    
+    offspring.each {|p| p[:fitness]=p[:crowding]}
+    selected = Array.new(pop_size){|i| binary_tournament(offspring)}
+    population = children
+    children = reproduce(selected, pop_size, p_crossover)    
     puts " > gen #{gen}"
   end  
   return population
