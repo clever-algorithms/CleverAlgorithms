@@ -118,7 +118,8 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item NSGA was designed for and is suited to continuous function multiple objective optimization problem instances.
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -126,13 +127,16 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{nsga} provides an example of the Non-dominated Sorting Genetic Algorithm II (NSGA-II) implemented in the Ruby Programming Language.
+% problem
+The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solution for this function are a front $x \in [0,2]$.
+% algorithm
+The algorithm is a implementation of NSGA-II based on the presentation by Deb, et al. \cite{Deb2002}.
+%  cfg
+The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded using the binary coded decimal method and rescaled to the function domain. A fixed mutation rate of $\frac{1}{L}$ is used, where $L$ is the number of bits in a solution's binary string.
 
-
-implemented as specified in \cite{Deb2002}
-
-test function is SCH, 1 dimensional, optimal solutions are in 0,2
-
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Non-dominated Sorting Genetic Algorithm II (NSGA-II) in the Ruby Programming Language, label=nsga]{../../src/algorithms/evolutionary/nsga_ii.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
