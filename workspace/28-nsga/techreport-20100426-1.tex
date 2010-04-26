@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100410}
+\newcommand{\myreportdate}{20100426}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -64,9 +64,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Non-dominated Sorting Genetic Algorithm, Nondominated Sorting Genetic Algorithm, NSGA, NSGA-II, NSGAII
-
-
+Non-dominated Sorting Genetic Algorithm, Nondominated Sorting Genetic Algorithm, Fast Elitist Non-dominated Sorting Genetic Algorithm, NSGA, NSGA-II, NSGAII
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -145,17 +143,9 @@ todo
 % 
 \subsection{Primary Sources}
 % seminal
-todo
-% early
-
-proposal of NSGA \cite{Srinivas1994}
-ranking selection method to focus on good points
-niching method to maintain stable sub-populations
-
-
-
-proposal of NSGA II \cite{Deb2002}, no actually in \cite{Deb2000}
-
+Srinivas and Deb proposed the NSGA algorithm inspired by Goldberg's notion of a non-dominated sorting procedure \cite{Srinivas1994}. Goldberg proposed a non-dominated sorting procedure in his book in considering the biases in the pareto optimal solutions provided by VEGA \cite{Goldberg1989}. Srinivas and Deb's NSGA used the sorting procedure as a ranking selection method, and a fitness sharing niching method to maintain stable sub-populations across the pareto front.
+% extension
+Deb, et al. later extended NSGA to address three criticism of the approach: i) the $O(mN^3)$ time complexity, the lack of elitism, and the need for a sharing parameter for the fitness sharing niching method \cite{Deb2000, Deb2002}.
 
 % 
 % Learn More
