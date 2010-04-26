@@ -28,11 +28,6 @@ def decode(bitstring, search_space)
   return vector
 end
 
-def binary_tournament(pop)
-  s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
-end
-
 def point_mutation(bitstring)
   child = ""
   bitstring.size.times do |i|
@@ -79,7 +74,10 @@ end
 def dominates(p1, p2)
   min = false
   p1[:objectives].each_with_index do |x,i|
-    min = true if x < p2[:objectives][i]
+    if x < p2[:objectives][i]
+      min = true
+      break
+    end
   end
   return false if !min  
   p1[:objectives].each_with_index do |x,i|
@@ -89,31 +87,28 @@ def dominates(p1, p2)
 end
 
 def fast_nondominated_sort(pop)
-  sets = {}
   fronts = [[]]
   pop.each do |p1|
-    sets[p1] = []
-    p1[:dominated] = 0
-    pop.each do |p2|
-      if dominates(p1, p2)
-        sets[p1] << p2
+    p1[:dom_count], p1[:dom_set] = 0, []
+    pop.each do |p2|      
+      if dominates(p1, p2)        
+        p1[:dom_set] << p2
       elsif dominates(p2, p1)
-        p1[:dominated] += 1
+        p1[:dom_count] += 1
       end
     end
-    if p1[:dominated] == 0 
+    if p1[:dom_count] == 0 
       p1[:rank] = 0
-      fronts[0] << p1
+      fronts.first << p1
     end
-  end
+  end  
   curr = 0
-  begin
+  while fronts[curr].length != 0    
     next_front = []
     fronts[curr].each do |p1|
-      sets[p1].each do |p2|
-        p2[:dominated] -= 1
-        if 
-          p2[:dominated] == 0
+      p1[:dom_set].each do |p2|
+        p2[:dom_count] -= 1
+        if p2[:dom_count] == 0          
           p2[:rank] = (curr+1)
           next_front << p2
         end
@@ -121,41 +116,102 @@ def fast_nondominated_sort(pop)
     end
     curr += 1
     fronts[curr] = next_front    
-  end until fronts[curr] == 0  
+  end
+  
+  # DELETE ME 
+  puts ">total fronts: #{fronts.length}"
+  
   return fronts
 end
 
-def crowding_distance(pop)
-  # TODO
+def calculate_crowding_distance(pop)
+  pop.each {|p| p[:distance] = 0.0}
+  num_obs = pop.first[:objectives].length
+  num_obs.times do |i|
+    pop.sort!{|x,y| x[:objectives][i]<=>y[:objectives][i]}
+    min, max = pop.first[:objectives][i], pop.last[:objectives][i]
+    range, inf = max-min, 1.0/0.0
+    pop.first[:distance], pop.last[:distance] = inf, inf
+    
+    # DELETE ME 
+    puts pop.first[:distance]
+    
+    next if range == 0
+    e = pop.length-2
+    1...e do |j|
+      norm_diff = (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
+      pop[j][:distance] += norm_diff
+    end  
+  end
+end
+
+def crowded_comparison_operator(x,y)
+  return y[:distance]<=>x[:distance] if x[:rank] == y[:rank]
+  return x[:rank]<=>y[:rank]
+end
+
+def better(x,y)
+  if !x[:distance].nil? and x[:rank] == y[:rank]
+    return (x[:distance]>y[:distance]) ? x : y
+  end
+  return (x[:rank]<y[:rank]) ? x : y
+end
+
+def binary_selection(pop)
+  s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
+  return better(s1,s2)
+end
+
+def select_parents(union, pop_size)
+  fronts = fast_nondominated_sort(union)
+  offspring = []
+  
+  fronts.each do |front|
+    next if front.empty?
+    calculate_crowding_distance(front)
+    front.each do |p|
+      # just dominated or all????
+      # if all, then why would i ever need the next check
+      offspring << p if p[:dominated] == 0
+      break if offspring.length>=pop_size
+    end
+    break if offspring.length>=pop_size
+  end
+  
+  remaining = pop_size - offspring.length
+  if remaining > 0
+    
+    # DELETE ME
+    puts "doing remaining!"
+    raise "WTF" if remaining>fronts.last.length      
+    
+    # LAST FRONT!!!!!??
+    fronts.last.sort! { |x,y| crowded_comparison_operator(x,y)}
+    offspring += fronts.last[0...remaining]
+  end
+  
+  
+  # DELETE ME
+  puts offspring.length
+  
+  return offspring
 end
 
 def search(problem_size, search_space, max_gens, pop_size, p_crossover)
   population = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
   end
+  calculate_objectives(population, search_space)
   fast_nondominated_sort(population)
-  population.each {|p| p[:fitness]=p[:rank]}
-  selected = Array.new(pop_size){|i| binary_tournament(population)}
-  children = reproduce(selected, pop_size, p_crossover)
+  selected = Array.new(pop_size){binary_selection(population)}
+  children = reproduce(selected, pop_size, p_crossover)  
   max_gens.times do |gen|
-    union = population + children
-    fronts = fast_nondominated_sort(union)
-    offspring = []
-    
-    # it says this, but the pseudo code doesn't do it
-    #fronts.first.each {|p| offspring<<p} if fronts.first<=pop_size
-    
-    begin
-      
-      # ????
-      crowding_distance(union)
-      
-      
-    end until offspring.length == pop_size    
-    offspring.each {|p| p[:fitness]=p[:crowding]}
-    selected = Array.new(pop_size){|i| binary_tournament(offspring)}
+    calculate_objectives(children, search_space)
+    union = population + children    
+    offspring = select_parents(union, pop_size)
+    selected = Array.new(pop_size){binary_selection(offspring)}
     population = children
-    children = reproduce(selected, pop_size, p_crossover)    
+    children = reproduce(selected, pop_size, p_crossover)
     puts " > gen #{gen}"
   end  
   return population
