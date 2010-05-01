@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100430}
+\newcommand{\myreportdate}{20100502}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -45,7 +45,7 @@ The project makes use of a standardized algorithm description template that uses
 This report describes the Strength Pareto Evolutionary Algorithm using the standardized template. 
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Strength, Pareto, Evolutionary, Algorithm}}
 \end{description} 
 
 \section{Introduction} 
@@ -64,15 +64,18 @@ This report describes the Strength Pareto Evolutionary Algorithm using the stand
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Strength Pareto Evolutionary Algorithm, SPEA
+Strength Pareto Evolutionary Algorithm, SPEA, SPEA2
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
+Strength Pareto Evolutionary Algorithm is a Multiple Objective Optimization (MOO) algorithm and an Evolutionary Algorithm (EA) from the field of Evolutionary Computation (EC). It belongs to the field of Evolutionary Multiple Objective (EMO) algorithms.
 % What are the closely related approaches to a technique?
-todo
+It is related to sibling Evolutionary Algorithms such as Non-dominated Sorting Genetic Algorithm (NSGA), Vector-Evaluated Genetic Algorithm (VEGA), and Pareto Archived Evolution Strategy (PAES).
+% versions
+There are two versions of SPEA, the original SPEA algorithm and the extension SPEA2. Additional extensions include SPEA+ and iSPEA.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -138,19 +141,14 @@ todo
 % 
 \subsection{Primary Sources}
 % seminal
-
-SPEA proposed by Zitzler and Thiele in a technical report \cite{Zitzler1998}
-
-later published \cite{Zitzler1999}
+Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm in a technical report \cite{Zitzler1998}, that was later published \cite{Zitzler1999}. 
+% some details
 
 % extension
-
-extended by Zitzler and Thiele to SPEA2, tech report \cite{Zitzler2001} and then published \cite{Zitzler2002}
-
-maybe also SPEA2+???
+Zitzler, Laumanns, and Thiele later extended the approach to ... called SPEA2 in a technical report  \cite{Zitzler2001}, that was later published \cite{Zitzler2002}.
+% details
 
 
-% 
 % Learn More
 % 
 \subsection{Learn More}
@@ -165,7 +163,7 @@ todo
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Strength Pareto Evolutionary Algorithm as an evolutionary multiple objective optimization algorithm.
 
 % 
 % Contribute
