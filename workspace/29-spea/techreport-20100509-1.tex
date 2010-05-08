@@ -137,7 +137,7 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 	
 	% I/O
 	\KwIn{\PopulationSize, \ArchiveSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
-	\KwOut{\Population}
+	\KwOut{\Archive}
 	% Algorithm
 	% initialize	
 	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
@@ -164,16 +164,16 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 		}
 		\eIf{\StopCondition{}}{
 			% termination
-			\Population $\leftarrow$ \GetNonDominated{\Population}\;
+			\Archive $\leftarrow$ \GetNonDominated{\Archive}\;
 			\Break{}\;
 		}{
 			% selection
-			\Selected $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+			\Selected $\leftarrow$ \SelectParents{\Archive, \PopulationSize}\;
 			% mating
 			\Population $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
 		}
 	}
-	\Return{\Population}\;
+	\Return{\Archive}\;
 	
 	% end
 	\caption{Pseudo Code for the Strength Pareto Evolutionary Algorithm 2 (SPEA2).}
@@ -190,6 +190,7 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 	\item SPEA was designed for and is suited to combinatorial and continuous function multiple objective optimization problem instances.
 	\item A binary representation can be used for continuous function optimization problems in conjunction with classical genetic operators such as one-point crossover and point mutation.
 	\item A $k$ value of 1 may be used for efficiency whilst still providing useful results.
+	\item The size of the archive is commonly smaller than the size of the population.
 	\item There is a lot of room for implementation optimizations in density and Pareto dominance calculations.
 \end{itemize}
 

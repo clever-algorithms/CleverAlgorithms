@@ -78,50 +78,53 @@ def dominates(p1, p2)
   return true
 end
 
-def calculate_dominance(pop)
-  pop.each do |p1|
-    p1[:dom_count], p1[:dom_set] = 0, []
-    pop.each do |p2|
-      if dominates(p1, p2)        
-        p1[:dom_set] << p2
-      elsif dominates(p2, p1)
-        p1[:dom_count] += 1
-      end
-    end
-  end  
-end
-
 def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
 def distance(c1, c2)
   sum = 0.0
-  c1.each_with_index {|x,i| sum+=(c1[i]-c2[i])**2.0}
+  c1.each_with_index {|x,i| sum += (c1[i]-c2[i])**2.0}
   return Math.sqrt(sum)
+end
+
+def calculate_dominated(pop)
+  pop.each do |p1|
+    p1[:dom_set] = pop.select {|p2| dominates(p1, p2) }
+  end  
+end
+
+def calculate_raw_fitness(p1, pop)
+  return pop.inject(0.0) do |sum, p2| 
+    (dominates(p2, p1)) ? sum + p2[:dom_set].size.to_f : sum
+  end
+end
+
+def calculate_density(p1, pop)
+  pop.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
+  list = pop.sort{|x,y| x[:dist]<=>y[:dist]}
+  k = Math.sqrt(pop.length).to_i
+  return 1.0 / (list[k][:dist] + 2.0)
 end
 
 def calculate_fitness(pop, archive, search_space)
   calculate_objectives(pop, search_space)
   union = archive + pop
-  calculate_dominance(union)
-  k = Math.sqrt(union.length).to_i
+  calculate_dominated(union)
   union.each do |p1|
-    p1[:raw_fitness] = p1[:dom_set].inject(0.0) {|sum,x| sum+x[:dom_count]}
-    union.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
-    list = union.sort{|x,y| x[:dist]<=>y[:dist]}
-    p1[:density] = 1.0 / (list[k][:dist] + 2.0)
+    p1[:raw_fitness] = calculate_raw_fitness(p1, union)
+    p1[:density] = calculate_density(p1, union)
     p1[:fitness] = p1[:raw_fitness] + p1[:density]
   end
 end
 
 def environmental_selection(pop, archive, archive_size)
   union = archive + pop
-  environment = get_non_dominated(union)
+  environment = union.select {|p| p[:fitness]<1.0}
   if environment.length < archive_size
     union.sort!{|x,y| x[:fitness]<=>y[:fitness]}
     union.each do |p|
-      environment << p if p[:fitness] > 1.0
+      environment << p if p[:fitness] >= 1.0
       break if environment.length >= archive_size
     end
   elsif environment.length > archive_size
@@ -139,15 +142,9 @@ def environmental_selection(pop, archive, archive_size)
   return environment
 end
 
-def get_non_dominated(pop)
-  nondominated = []
-  pop.each {|p| nondominated << p if p[:fitness]<1.0}
-  return nondominated
-end
-
 def binary_tournament(pop)
   s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  return (s1[:fitness] < s2[:fitness]) ? s1 : s2
 end
 
 def search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
@@ -156,26 +153,26 @@ def search(problem_size, search_space, max_gens, pop_size, archive_size, p_cross
   end
   gen, archive = 0, []
   begin    
-    calculate_fitness(pop, archive, search_space)
-    archive = environmental_selection(pop, archive, archive_size)
-    best = pop.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
+    calculate_fitness(pop, archive, search_space)    
+    archive = environmental_selection(pop, archive, archive_size)    
+    best = archive.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
     puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
     if gen >= max_gens
-      pop = get_non_dominated(pop)
+      archive = archive.select {|p| p[:fitness]<1.0}
       break
     else
-      selected = Array.new(pop_size){binary_tournament(pop)}
+      selected = Array.new(pop_size){binary_tournament(archive)}
       pop = reproduce(selected, pop_size, p_crossover)
       gen += 1
     end
   end while true
-  return pop
+  return archive
 end
 
 max_gens = 50
-pop_size = 50
-archive_size = 100
-p_crossover = 0.98
+pop_size = 80
+archive_size = 40
+p_crossover = 0.90
 problem_size = 1
 search_space = Array.new(problem_size) {|i| [-1000, 1000]}
 
