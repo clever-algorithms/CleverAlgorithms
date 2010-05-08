@@ -145,6 +145,7 @@ def get_non_dominated(pop)
   return nondominated
 end
 
+# TODO - i thought this was minimize!
 def binary_tournament(pop)
   s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
