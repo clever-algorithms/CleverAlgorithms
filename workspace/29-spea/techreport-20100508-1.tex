@@ -85,7 +85,7 @@ There are two versions of SPEA, the original SPEA algorithm and the extension SP
 % What is the information processing objective of a technique?
 The objective of the algorithm is to locate and and maintain a front of non-dominated Pareto optimal solutions.
 % What is a techniques plan of action?
-This is achieved by using an evolutionary process (with surrogate procedures for genetic recombination and mutation) to explore the search space, and a selection process that uses a combination of the degree to which a candidate solution is dominated (strength) and an estimation of density of the Pareto front as an assigned fitness. An archive of of the Pareto front is maintained separate from the population of candidate solutions used for mating in the evolutionary process providing a form of elitism.
+This is achieved by using an evolutionary process (with surrogate procedures for genetic recombination and mutation) to explore the search space, and a selection process that uses a combination of the degree to which a candidate solution is dominated (strength) and an estimation of density of the Pareto front as an assigned fitness. An archive of the Pareto front is maintained separate from the population of candidate solutions used in the evolutionary process, providing a form of elitism.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -95,9 +95,9 @@ This is achieved by using an evolutionary process (with surrogate procedures for
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:spea} provides a pseudo-code listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
 % explaination
-The \texttt{CalculateRawFitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that dominate a give solution.
-The \texttt{CandidateDensity} function estimates the density of a function as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive.
-The \texttt{PopulateWithRemainingBest} function iteratively fills the archive with the remaining candidate solutions in order of improving fitness.
+The \texttt{CalculateRawFitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that a give solution dominate.
+The \texttt{CandidateDensity} function estimates the density of an area of the Pareto front as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive combined.
+The \texttt{PopulateWithRemainingBest} function iteratively fills the archive with the remaining candidate solutions in order of fitness.
 The \texttt{RemoveMostSimilar} function truncates the archive population removing those members with the smallest $\sigma^k$ values as calculated against the archive.
 The \texttt{SelectParents} function selects parents from a population using a Genetic Algorithm selection method such as binary tournament selection. The \texttt{CrossoverAndMutation} function performs the crossover and mutation genetic operators from the Genetic Algorithm.
 
@@ -222,11 +222,11 @@ The algorithm uses a binary string representation (16 bits per objective functio
 % 
 \subsection{Primary Sources}
 % seminal
-Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm in a technical report \cite{Zitzler1998} and was later published \cite{Zitzler1999}.
+Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm as a technical report on a multiple objective optimization algorithm with elitism and clustering along the Pareto front \cite{Zitzler1998}. The technical report was later published \cite{Zitzler1999}.
 % thesis
 The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler PhD thesis \cite{Zitzler1999a}.
 % extension
-Zitzler, Laumanns, and Thiele later extended the approach called SPEA2 to address some inefficiencies of the approach that was released as a technical report \cite{Zitzler2001} that was later published \cite{Zitzler2002}. SPEA2 provided a fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
+Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies the approach, called SPEA2 that was released as a technical report \cite{Zitzler2001} and later published \cite{Zitzler2002}. SPEA2 provided a fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
 
 % Learn More
 % 
