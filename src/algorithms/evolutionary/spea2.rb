@@ -78,94 +78,46 @@ def dominates(p1, p2)
   return true
 end
 
-def fast_nondominated_sort(pop)
-  fronts = Array.new(1){[]}
+def calculate_dominance(pop)
   pop.each do |p1|
     p1[:dom_count], p1[:dom_set] = 0, []
-    pop.each do |p2|      
+    pop.each do |p2|
       if dominates(p1, p2)        
         p1[:dom_set] << p2
       elsif dominates(p2, p1)
         p1[:dom_count] += 1
       end
     end
-    if p1[:dom_count] == 0 
-      p1[:rank] = 0
-      fronts.first << p1
-    end
   end  
-  curr = 0
-  begin
-    next_front = []
-    fronts[curr].each do |p1|
-      p1[:dom_set].each do |p2|
-        p2[:dom_count] -= 1
-        if p2[:dom_count] == 0          
-          p2[:rank] = (curr+1)
-          next_front << p2
-        end
-      end      
-    end
-    curr += 1
-    fronts << next_front if !next_front.empty?
-  end while curr < fronts.length
-  return fronts
-end
-
-def calculate_crowding_distance(pop)
-  pop.each {|p| p[:distance] = 0.0}
-  num_obs = pop.first[:objectives].length
-  num_obs.times do |i|
-    pop.sort!{|x,y| x[:objectives][i]<=>y[:objectives][i]}
-    min, max = pop.first[:objectives][i], pop.last[:objectives][i]
-    range, inf = max-min, 1.0/0.0
-    pop.first[:distance], pop.last[:distance] = inf, inf
-    next if range == 0
-    (1...(pop.length-2)).each do |j|
-      pop[j][:distance] += (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
-    end  
-  end
-end
-
-def crowded_comparison_operator(x,y)
-  return y[:distance]<=>x[:distance] if x[:rank] == y[:rank]
-  return x[:rank]<=>y[:rank]
-end
-
-def better(x,y)
-  if !x[:distance].nil? and x[:rank] == y[:rank]
-    return (x[:distance]>y[:distance]) ? x : y
-  end
-  return (x[:rank]<y[:rank]) ? x : y
-end
-
-def select_parents(fronts, pop_size)  
-  fronts.each {|f| calculate_crowding_distance(f)}
-  offspring = []
-  last_front = 0
-  fronts.each do |front|
-    break if (offspring.length+front.length) > pop_size
-    front.each {|p| offspring << p}
-    last_front += 1
-  end  
-  if (remaining = pop_size-offspring.length) > 0
-    fronts[last_front].sort! {|x,y| crowded_comparison_operator(x,y)}
-    offspring += fronts[last_front][0...remaining]
-  end
-  return offspring
 end
 
 def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
-def calculate_fitness(pop, search_space)
-  calculate_objectives(pop, search_space)
-  
-  # TODO
+def distance(c1, c2)
+  sum = 0.0
+  c1.each_with_index {|x,i| sum+=(c1[i]-c2[i])**2.0}
+  return Math.sqrt(sum)
 end
 
-def environmental_selection(pop, archive)
+def calculate_fitness(pop, archive, search_space)
+  calculate_objectives(pop, search_space)
+  union = archive + pop  
+  calculate_dominance(union)
+  k = Math.sqrt(union.length).to_i
+  union.each do |p1|
+    p1[:raw_fitness] = p1[:dom_set].inject(0.0) {|sum, x| sum+x[:dom_count]}
+    union.each do |p2|
+      p2[:dist] = distance(p1[:objectives], p2[:objectives])      
+    end
+    list = union.sort{|x,y| x[:dist]<=>y[:dist]}
+    p1[:density] = 1.0 / (list[k][:dist] + 2.0)
+    p1[:fitness] = p1[:raw_fitness] + p1[:density]
+  end
+end
+
+def environmental_selection(pop, archive, archive_size)
   union = archive + pop
   
   # TODO
@@ -175,10 +127,13 @@ end
 
 def get_non_dominated(pop)
   nondominated = []
-  
-  # TODO
-  
+  pop.each {|p| nondominated << p if p[:dom_count]==0 }
   return nondominated
+end
+
+def binary_tournament(pop)
+  s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
+  return (s1[:fitness]<s2[:fitness]) ? s1 : s2
 end
 
 def search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
@@ -191,13 +146,12 @@ def search(problem_size, search_space, max_gens, pop_size, archive_size, p_cross
     archive = environmental_selection(pop, archive, archive_size)
     best = pop.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
     best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
-    puts " > gen=#{gen}, fronts=#{fronts.length}, best=#{best_s}"
+    puts " > gen=#{gen}, pop=#{pop.size}, arch=#{archive.size} best=#{best_s}"
     if gen >= max_gens
       pop = get_non_dominated(pop)
       break
     else
-      # TODO check that better is using the right measure of comparison
-      selected = Array.new(pop_size){better(pop[rand(pop_size)], pop[rand(pop_size)])}
+      selected = Array.new(pop_size){binary_tournament(pop)}
       pop = reproduce(selected, pop_size, p_crossover)
       gen += 1
     end
