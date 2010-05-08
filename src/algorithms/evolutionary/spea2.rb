@@ -1,4 +1,4 @@
-# Strength Pareto Evolutionary Algorithm in the Ruby Programming Language
+# Strength Pareto Evolutionary Algorithm 2 (SPEA2) in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -108,9 +108,7 @@ def calculate_fitness(pop, archive, search_space)
   k = Math.sqrt(union.length).to_i
   union.each do |p1|
     p1[:raw_fitness] = p1[:dom_set].inject(0.0) {|sum, x| sum+x[:dom_count]}
-    union.each do |p2|
-      p2[:dist] = distance(p1[:objectives], p2[:objectives])      
-    end
+    union.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
     list = union.sort{|x,y| x[:dist]<=>y[:dist]}
     p1[:density] = 1.0 / (list[k][:dist] + 2.0)
     p1[:fitness] = p1[:raw_fitness] + p1[:density]
@@ -119,21 +117,37 @@ end
 
 def environmental_selection(pop, archive, archive_size)
   union = archive + pop
-  
-  # TODO
-  
-  return union
+  environment = get_non_dominated(union)
+  if environment.length < archive_size
+    union.sort!{|x,y| x[:fitness]<=>y[:fitness]}
+    union.each do |p|
+      environment << p if p[:fitness] > 1.0
+      break if environment.length >= archive_size
+    end
+  elsif environment.length > archive_size
+    begin
+      k = Math.sqrt(environment.length).to_i
+      environment.each do |p1|
+        environment.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
+        list = environment.sort{|x,y| x[:dist]<=>y[:dist]}
+        p1[:density] = list[k][:dist]
+      end
+      environment.sort!{|x,y| x[:density]<=>y[:density]}
+      environment.shift
+    end until environment.length >= archive_size
+  end  
+  return environment
 end
 
 def get_non_dominated(pop)
   nondominated = []
-  pop.each {|p| nondominated << p if p[:dom_count]==0 }
+  pop.each {|p| nondominated << p if p[:fitness]<1.0}
   return nondominated
 end
 
 def binary_tournament(pop)
   s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
-  return (s1[:fitness]<s2[:fitness]) ? s1 : s2
+  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
 end
 
 def search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
@@ -144,9 +158,8 @@ def search(problem_size, search_space, max_gens, pop_size, archive_size, p_cross
   begin    
     calculate_fitness(pop, archive, search_space)
     archive = environmental_selection(pop, archive, archive_size)
-    best = pop.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
-    best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
-    puts " > gen=#{gen}, pop=#{pop.size}, arch=#{archive.size} best=#{best_s}"
+    best = pop.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
+    puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
     if gen >= max_gens
       pop = get_non_dominated(pop)
       break
@@ -168,3 +181,5 @@ search_space = Array.new(problem_size) {|i| [-1000, 1000]}
 
 pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
 puts "done!"
+
+pop.each {|p| puts p[:fitness] }
