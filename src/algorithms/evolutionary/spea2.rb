@@ -4,22 +4,35 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def onemax(bitstring)
-  sum = 0
-  bitstring.each_char {|x| sum+=1 if x=='1'}
-  return sum
+BITS_PER_PARAM = 16
+
+def objective1(vector)
+  return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+def objective2(vector)
+  return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
 end
 
-def point_mutation(bitstring, prob_mutation)
+def decode(bitstring, search_space)
+  vector = []
+  search_space.each_with_index do |bounds, i|
+    off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
+    bitstring[off...(off+BITS_PER_PARAM)].each_char do |c|
+      sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
+      j += 1
+    end
+    min, max = bounds
+    vector << min + ((max-min)/((2.0**BITS_PER_PARAM.to_f)-1.0)) * sum
+  end
+  return vector
+end
+
+def point_mutation(bitstring)
   child = ""
   bitstring.size.times do |i|
     bit = bitstring[i]
-    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+    child << ((rand()<1.0/bitstring.length.to_f) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
@@ -33,13 +46,13 @@ def uniform_crossover(parent1, parent2, p_crossover)
   return child
 end
 
-def reproduce(selected, population_size, p_crossover, p_mutation)
+def reproduce(selected, population_size, p_crossover)
   children = []  
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
     child[:bitstring] = uniform_crossover(p1, p2, p_crossover)
-    child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
+    child[:bitstring] = point_mutation(child[:bitstring])
     children << child
   end
   return children
@@ -49,30 +62,155 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-  population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(num_bits)}
+def calculate_objectives(pop, search_space)
+  pop.each do |p|
+    p[:vector] = decode(p[:bitstring], search_space)
+    p[:objectives] = []
+    p[:objectives] << objective1(p[:vector])
+    p[:objectives] << objective2(p[:vector])
   end
-  population.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  while best[:fitness]!=num_bits and gen<max_generations
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover, p_mutation)    
-    children.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
-    population = children
-    gen += 1
-    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
-  end  
-  return best
 end
 
-max_generations = 100
-population_size = 100
-num_bits = 64
-p_crossover = 0.98
-p_mutation = 1.0/num_bits
+def dominates(p1, p2)
+  p1[:objectives].each_with_index do |x,i|
+    return false if x > p2[:objectives][i]
+  end
+  return true
+end
 
-best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+def fast_nondominated_sort(pop)
+  fronts = Array.new(1){[]}
+  pop.each do |p1|
+    p1[:dom_count], p1[:dom_set] = 0, []
+    pop.each do |p2|      
+      if dominates(p1, p2)        
+        p1[:dom_set] << p2
+      elsif dominates(p2, p1)
+        p1[:dom_count] += 1
+      end
+    end
+    if p1[:dom_count] == 0 
+      p1[:rank] = 0
+      fronts.first << p1
+    end
+  end  
+  curr = 0
+  begin
+    next_front = []
+    fronts[curr].each do |p1|
+      p1[:dom_set].each do |p2|
+        p2[:dom_count] -= 1
+        if p2[:dom_count] == 0          
+          p2[:rank] = (curr+1)
+          next_front << p2
+        end
+      end      
+    end
+    curr += 1
+    fronts << next_front if !next_front.empty?
+  end while curr < fronts.length
+  return fronts
+end
+
+def calculate_crowding_distance(pop)
+  pop.each {|p| p[:distance] = 0.0}
+  num_obs = pop.first[:objectives].length
+  num_obs.times do |i|
+    pop.sort!{|x,y| x[:objectives][i]<=>y[:objectives][i]}
+    min, max = pop.first[:objectives][i], pop.last[:objectives][i]
+    range, inf = max-min, 1.0/0.0
+    pop.first[:distance], pop.last[:distance] = inf, inf
+    next if range == 0
+    (1...(pop.length-2)).each do |j|
+      pop[j][:distance] += (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
+    end  
+  end
+end
+
+def crowded_comparison_operator(x,y)
+  return y[:distance]<=>x[:distance] if x[:rank] == y[:rank]
+  return x[:rank]<=>y[:rank]
+end
+
+def better(x,y)
+  if !x[:distance].nil? and x[:rank] == y[:rank]
+    return (x[:distance]>y[:distance]) ? x : y
+  end
+  return (x[:rank]<y[:rank]) ? x : y
+end
+
+def select_parents(fronts, pop_size)  
+  fronts.each {|f| calculate_crowding_distance(f)}
+  offspring = []
+  last_front = 0
+  fronts.each do |front|
+    break if (offspring.length+front.length) > pop_size
+    front.each {|p| offspring << p}
+    last_front += 1
+  end  
+  if (remaining = pop_size-offspring.length) > 0
+    fronts[last_front].sort! {|x,y| crowded_comparison_operator(x,y)}
+    offspring += fronts[last_front][0...remaining]
+  end
+  return offspring
+end
+
+def weighted_sum(x)
+  return x[:objectives].inject(0.0) {|sum, x| sum+x}
+end
+
+def calculate_fitness(pop, search_space)
+  calculate_objectives(pop, search_space)
+  
+  # TODO
+end
+
+def environmental_selection(pop, archive)
+  union = archive + pop
+  
+  # TODO
+  
+  return union
+end
+
+def get_non_dominated(pop)
+  nondominated = []
+  
+  # TODO
+  
+  return nondominated
+end
+
+def search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
+  pop = Array.new(pop_size) do |i|
+    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+  end
+  gen, archive = 0, []
+  begin    
+    calculate_fitness(pop, archive, search_space)
+    archive = environmental_selection(pop, archive, archive_size)
+    best = pop.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
+    best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
+    puts " > gen=#{gen}, fronts=#{fronts.length}, best=#{best_s}"
+    if gen >= max_gens
+      pop = get_non_dominated(pop)
+      break
+    else
+      # TODO check that better is using the right measure of comparison
+      selected = Array.new(pop_size){better(pop[rand(pop_size)], pop[rand(pop_size)])}
+      pop = reproduce(selected, pop_size, p_crossover)
+      gen += 1
+    end
+  end while true
+  return pop
+end
+
+max_gens = 50
+pop_size = 100
+archive_size = 100
+p_crossover = 0.98
+problem_size = 1
+search_space = Array.new(problem_size) {|i| [-1000, 1000]}
+
+pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
+puts "done!"

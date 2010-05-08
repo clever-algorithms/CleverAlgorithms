@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20100502}
+\newcommand{\myreportdate}{20100509}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -91,7 +91,26 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+
+
+SPEA notes
+- maintains an external population for each generation - sorts non-dominated solutions
+- external population is mixed with the current population each generation
+- fitness based on the number of solutions they dominate
+
+- stores pareto optimal solutions externally
+- uses pareto dominance to order and assign scalar fitness values
+- uses clustering to reduce the number of non-dominated solutions will maintaining the structure of the Pareto front
+
+SPEA2 notes
+- external population is initially empty
+- all non-dominated solutions from current pop are pushed to the external population
+- two main differences: fitness assignment and truncation operator
+- density is used as the fitness function
+- spea1 uses a clustering algorithm when the non-dominated front exceeds the archive limit
+	- use a new truncation operator
+	- does not loose boundary points
+- only members of the external population participate in mating
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -100,7 +119,8 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item SPEA was designed for and is suited to combinatorial and continuous function multiple objective optimization problem instances.
+	\item A binary representation can be used for continuous function optimization problems in conjunction with classical genetic operators such as one-point crossover and point mutation.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -108,8 +128,16 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{spea} provides an example of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) implemented in the Ruby Programming Language.
+% problem
+The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solution for this function are $x \in [0,2]$.
+% algorithm
+The algorithm is an implementation of SPEA2 based on the presentation by Zitzler, Laumanns, and Thiele \cite{Zitzler2002}.
+%  cfg
+The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded using the binary coded decimal method and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
 
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Strength Pareto Evolutionary Algorithm 2 SPEA2) in the Ruby Programming Language, label=spea]{../../src/algorithms/evolutionary/spea2.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -123,21 +151,17 @@ todo
 % 
 \subsection{Primary Sources}
 % seminal
-Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm in a technical report \cite{Zitzler1998}, that was later published \cite{Zitzler1999}. 
-% some details
-
+Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm in a technical report \cite{Zitzler1998} and was later published \cite{Zitzler1999}.
+% thesis
+The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler PhD thesis \cite{Zitzler1999a}.
 % extension
-Zitzler, Laumanns, and Thiele later extended the approach to ... called SPEA2 in a technical report  \cite{Zitzler2001}, that was later published \cite{Zitzler2002}.
-% details
-
+Zitzler, Laumanns, and Thiele later extended the approach called SPEA2 to address some inefficiencies of the approach that was released as a technical report \cite{Zitzler2001} that was later published \cite{Zitzler2002}. SPEA2 provided a fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-todo
-% books
-
+Zitzler, Laumanns, and Bleuler provide a tutorial on SPEA2 as a book chapter that considers the basics of multiple objective optimization, and the differences from SPEA and the other related Multiple Objective Evolutionary Algorithms \cite{Zitzler2004}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
