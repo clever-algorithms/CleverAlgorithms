@@ -103,11 +103,11 @@ end
 
 def calculate_fitness(pop, archive, search_space)
   calculate_objectives(pop, search_space)
-  union = archive + pop  
+  union = archive + pop
   calculate_dominance(union)
   k = Math.sqrt(union.length).to_i
   union.each do |p1|
-    p1[:raw_fitness] = p1[:dom_set].inject(0.0) {|sum, x| sum+x[:dom_count]}
+    p1[:raw_fitness] = p1[:dom_set].inject(0.0) {|sum,x| sum+x[:dom_count]}
     union.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
     list = union.sort{|x,y| x[:dist]<=>y[:dist]}
     p1[:density] = 1.0 / (list[k][:dist] + 2.0)
@@ -145,7 +145,6 @@ def get_non_dominated(pop)
   return nondominated
 end
 
-# TODO - i thought this was minimize!
 def binary_tournament(pop)
   s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
@@ -174,7 +173,7 @@ def search(problem_size, search_space, max_gens, pop_size, archive_size, p_cross
 end
 
 max_gens = 50
-pop_size = 100
+pop_size = 50
 archive_size = 100
 p_crossover = 0.98
 problem_size = 1
@@ -182,5 +181,3 @@ search_space = Array.new(problem_size) {|i| [-1000, 1000]}
 
 pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
 puts "done!"
-
-pop.each {|p| puts p[:fitness] }
