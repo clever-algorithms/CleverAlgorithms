@@ -73,6 +73,7 @@ Strength Pareto Evolutionary Algorithm, SPEA, SPEA2
 % To what fields of study does a technique belong?
 Strength Pareto Evolutionary Algorithm is a Multiple Objective Optimization (MOO) algorithm and an Evolutionary Algorithm (EA) from the field of Evolutionary Computation (EC). It belongs to the field of Evolutionary Multiple Objective (EMO) algorithms.
 % What are the closely related approaches to a technique?
+Strength Pareto Evolutionary Algorithm is an extension of the Genetic Algorithm for multiple objective optimization problems.
 It is related to sibling Evolutionary Algorithms such as Non-dominated Sorting Genetic Algorithm (NSGA), Vector-Evaluated Genetic Algorithm (VEGA), and Pareto Archived Evolution Strategy (PAES).
 % versions
 There are two versions of SPEA, the original SPEA algorithm and the extension SPEA2. Additional extensions include SPEA+ and iSPEA.
@@ -92,26 +93,92 @@ This is achieved by using an evolutionary process (with surrogate procedures for
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
+Algorithm~\ref{alg:spea} provides a pseudo-code listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
+% explaination
+The \texttt{CalculateRawFitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that dominate a give solution.
+The \texttt{CandidateDensity} function estimates the density of a function as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive.
+The \texttt{PopulateWithRemainingBest} function iteratively fills the archive with the remaining candidate solutions in order of improving fitness.
+The \texttt{RemoveMostSimilar} function truncates the archive population removing those members with the smallest $\sigma^k$ values as calculated against the archive.
+The \texttt{SelectParents} function selects parents from a population using a Genetic Algorithm selection method such as binary tournament selection. The \texttt{CrossoverAndMutation} function performs the crossover and mutation genetic operators from the Genetic Algorithm.
 
+\begin{algorithm}[htp]
+	\SetLine  
 
-SPEA notes
-- maintains an external population for each generation - sorts non-dominated solutions
-- external population is mixed with the current population each generation
-- fitness based on the number of solutions they dominate
+	% params
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{ArchiveSize}{$Archive_{size}$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
+	% data
+	\SetKwData{Population}{Population}
+	\SetKwData{Archive}{Archive}
+	\SetKwData{Selected}{Selected}
+	\SetKwData{Candidate}{$S_i$}
+	\SetKwData{CandidateObjectives}{$Si_{objectives}$}
+	\SetKwData{CandidateRawFitness}{$Si_{raw}$}
+	\SetKwData{CandidateDensity}{$Si_{density}$}
+	\SetKwData{CandidateFitness}{$Si_{fitness}$}
+	\SetKwData{Union}{Union}
 
-- stores pareto optimal solutions externally
-- uses pareto dominance to order and assign scalar fitness values
-- uses clustering to reduce the number of non-dominated solutions will maintaining the structure of the Pareto front
-
-SPEA2 notes
-- external population is initially empty
-- all non-dominated solutions from current pop are pushed to the external population
-- two main differences: fitness assignment and truncation operator
-- density is used as the fitness function
-- spea1 uses a clustering algorithm when the non-dominated front exceeds the archive limit
-	- use a new truncation operator
-	- does not loose boundary points
-- only members of the external population participate in mating
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation} 
+	\SetKwFunction{SelectParents}{SelectParents}
+	\SetKwFunction{CrossoverAndMutation}{CrossoverAndMutation}
+	\SetKwFunction{StopCondition}{StopCondition}	
+	\SetKwFunction{Break}{Break}
+	\SetKwFunction{GetNonDominated}{GetNonDominated}
+	\SetKwFunction{CalculateObjectives}{CalculateObjectives}
+	\SetKwFunction{CalculateRawFitness}{CalculateRawFitness}
+	\SetKwFunction{CalculateSolutionDensity}{CalculateSolutionDensity}
+	\SetKwFunction{Size}{Size}
+	\SetKwFunction{PopulateWithRemainingBest}{PopulateWithRemainingBest}
+	\SetKwFunction{RemoveMostSimilar}{RemoveMostSimilar}
+	
+	% I/O
+	\KwIn{\PopulationSize, \ArchiveSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
+	\KwOut{\Population}
+	% Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	\Archive $\leftarrow 0$\;
+	% loop
+	\While{True} {
+		% calculate fitnes
+		\For{\Candidate $\in$ \Population}{
+			\CandidateObjectives $\leftarrow$ \CalculateObjectives{\Candidate}\;
+		}
+		\Union $\leftarrow$ \Population $+$ \Archive\;
+		\For{\Candidate $\in$ \Union}{
+			\CandidateRawFitness $\leftarrow$ \CalculateRawFitness{\Candidate, \Union}\;
+			\CandidateDensity $\leftarrow$ \CalculateSolutionDensity{\Candidate, \Union}\;
+			\CandidateFitness $\leftarrow$ \CandidateRawFitness $+$ \CandidateDensity\;
+		}
+		% environment selection
+		\Archive $\leftarrow$ \GetNonDominated{\Union}\;
+		\If{\Size{\Archive} $<$ \ArchiveSize}{
+			\PopulateWithRemainingBest{\Union, \Archive, \ArchiveSize}\;
+		}
+		\ElseIf{\Size{\Archive} $>$ \ArchiveSize}{
+			\RemoveMostSimilar{\Archive, \ArchiveSize}\;
+		}
+		\eIf{\StopCondition{}}{
+			% termination
+			\Population $\leftarrow$ \GetNonDominated{\Population}\;
+			\Break{}\;
+		}{
+			% selection
+			\Selected $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
+			% mating
+			\Population $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
+		}
+	}
+	\Return{\Population}\;
+	
+	% end
+	\caption{Pseudo Code for the Strength Pareto Evolutionary Algorithm 2 (SPEA2).}
+	\label{alg:spea}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
