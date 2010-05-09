@@ -168,3 +168,5 @@ Evolutionary, Micro-GA
 Evolutionary, Rank-Density Based Genetic Algorithm
 Evolutionary, Dynamic Multi-objective Evolutionary Algorithm
 Evolutionary, Fast Non-dominated Sorting Genetic Algorithm
+Evolutionary, Fast Messy Genetic Algorithm
+Evolutionary, Gene Expression Messy Genetic Algorithm
