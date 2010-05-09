@@ -18,7 +18,7 @@ h3. Book Manuscripts
 ** "Milestone 01":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone01-20100113.pdf : Draft book structure including title, parts, chapters, sections, and subsections.
 ** "Milestone 02":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone02-20100124.pdf : Draft preface and background chapters.
 ** "Milestone 03":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone03-20100227.pdf : Draft 10 algorithm descriptions. 
-** Milestone 04 : Draft 20 algorithm descriptions. 
+** "Milestone 04":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone04-20100509.pdf : Draft 20 algorithm descriptions. 
 ** Milestone 05 : Draft 30 algorithm descriptions. (_in progress_)
 ** Milestone 06 : Draft 40 algorithm descriptions. (_next_)
 ** Milestone 07 : Draft 50 algorithm descriptions. (_future_)
