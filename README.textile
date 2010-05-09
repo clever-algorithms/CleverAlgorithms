@@ -18,10 +18,10 @@ h3. Book Manuscripts
 ** "Milestone 01":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone01-20100113.pdf : Draft book structure including title, parts, chapters, sections, and subsections.
 ** "Milestone 02":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone02-20100124.pdf : Draft preface and background chapters.
 ** "Milestone 03":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone03-20100227.pdf : Draft 10 algorithm descriptions. 
-** Milestone 04 : Draft 20 algorithm descriptions. (_in progress_)
-** Milestone 05 : Draft 30 algorithm descriptions. (_next_)
-** Milestone 06 : Draft 40 algorithm descriptions. (_future_)
-** Milestone 07 : Draft 50 algorithm descriptions.
+** Milestone 04 : Draft 20 algorithm descriptions. 
+** Milestone 05 : Draft 30 algorithm descriptions. (_in progress_)
+** Milestone 06 : Draft 40 algorithm descriptions. (_next_)
+** Milestone 07 : Draft 50 algorithm descriptions. (_future_)
 ** Milestone 08 : Draft extension chapters.
 ** Milestone 09 : Edit the first complete draft.
 ** Milestone 10 : Send out complete draft for third-party editing & review.
@@ -56,6 +56,7 @@ h3. Technical Reports
 * Jason Brownlee. "Learning Classifier System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100411-1.pdf. Technical Report CA-TR-20100411-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * Jason Brownlee. "Non-dominated Sorting Genetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100426-1.pdf. Technical Report CA-TR-20100426-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * Jason Brownlee. "Strength Pareto Evolutionary Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100508-1.pdf. Technical Report CA-TR-20100508-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
+* Jason Brownlee. "Evolutionary Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100509-1.pdf. Technical Report CA-TR-20100509-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * ...
 
 h3. Software
