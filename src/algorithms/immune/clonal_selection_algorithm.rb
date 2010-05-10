@@ -61,7 +61,11 @@ def calculate_affinity(pop)
   max = pop.max{|x,y| x[:cost]<=>y[:cost]} 
   min = pop.min{|x,y| x[:cost]<=>y[:cost]}
   range = max[:cost]-min[:cost]
-  pop.each {|p| p[:affinity] = 1.0-(p[:cost]-min[:cost]/range)}
+  if range == 0
+    pop.each {|p| p[:affinity] = 1.0}
+  else
+    pop.each {|p| p[:affinity] = 1.0-(p[:cost]-min[:cost]/range)}
+  end
 end
 
 def clone_and_hypermutate(pop, clone_factor, mutate_factor)
@@ -107,14 +111,14 @@ def search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_
     pop = greedy_merge(pop, clones)    
     pop = random_insertion(search_space, pop, problem_size, num_rand)
     best = (pop + [best]).min{|x,y| x[:cost]<=>y[:cost]}
-    puts " > gen #{gen+1}, fitness=#{best[:cost]}"
+    puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]} s=#{best[:vector].inspect}"
   end  
   return best
 end
 
 problem_size = 3
 max_gens = 200
-pop_size = 50
+pop_size = 100
 clone_factor = 0.1
 mutate_factor = 2.5
 num_rand = 2
