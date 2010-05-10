@@ -50,7 +50,7 @@ def search(max_generations, np, search_space, g, f, cr)
       (samples[i][:cost]<=pop[i][:cost]) ? samples[i] : pop[i]
     end
     pop = nextgen    
-    pop.sort{|x,y| x[:cost] <=> y[:cost]}
+    pop.sort!{|x,y| x[:cost] <=> y[:cost]}
     best = pop.first if pop.first[:cost] < best[:cost]
     puts " > gen #{gen+1}, fitness=#{best[:cost]}"
   end  
