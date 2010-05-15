@@ -107,7 +107,69 @@ The information processing principles of the self-nonself discrimination via neg
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:detector_gen} provides a pseudo-code listing of the detector generation procedure for the Negative Selection Algorithm. Algorithm~\ref{alg:detector_app} provides a pseudo-code listing of the detector application procedure for the Negative Selection Algorithm.
+
+\begin{algorithm}[ht]
+	\SetLine  
+  % data
+  \SetKwData{Repertoire}{Repertoire}
+  \SetKwData{SelfData}{SelfData}
+	\SetKwData{Detectors}{Detectors}
+	\SetKwData{CurrentDetector}{$Detector_{i}$}
+	 % functions
+  \SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{GenerateRandomDetectors}{GenerateRandomDetectors}
+	\SetKwFunction{Matches}{Matches}
+	% i/o
+  \KwIn{\SelfData}
+  \KwOut{\Repertoire}
+	% algorithm
+	\Repertoire $\leftarrow 0$\;
+  \While{$\neg$\StopCondition{}}{
+		\Detectors $\leftarrow$ \GenerateRandomDetectors{}\;
+		\ForEach{\CurrentDetector $\in$ \Repertoire}{
+			\If{$\neg$\Matches{\CurrentDetector, \SelfData}}{
+				\Repertoire $\leftarrow$ \CurrentDetector\;
+			}
+		}
+	}
+	\Return{\Repertoire}\;	
+	\caption{Pseudo Code for detector generation in the Negative Selection Algorithm.}
+	\label{alg:detector_gen}
+\end{algorithm}
+
+\begin{algorithm}[ht]
+	\SetLine  
+  % data
+  \SetKwData{Repertoire}{Repertoire}
+  \SetKwData{InputSamples}{InputSamples}
+	\SetKwData{Detectors}{Detectors}
+	\SetKwData{CurrentDetector}{$Detector_{i}$}
+	\SetKwData{CurrentInputSample}{$Input_{i}$}
+	\SetKwData{InputSampleClassification}{$Inputi_{class}$}
+	 % functions
+  \SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{GenerateRandomDetectors}{GenerateRandomDetectors}
+	\SetKwFunction{Matches}{Matches}
+	\SetKwFunction{Break}{Break}
+	% i/o
+  \KwIn{\InputSamples, \Repertoire}
+	% algorithm
+  \For{\CurrentInputSample $\in$ \InputSamples}
+ 	{
+		\InputSampleClassification $\leftarrow$ ``non-self''\;
+		\ForEach{\CurrentDetector $\in$ \Repertoire}{
+			\If{\Matches{\CurrentInputSample, \CurrentDetector}}
+			{
+				\InputSampleClassification $\leftarrow$ ``self''\;
+				\Break{}\;
+			}
+		}
+	}	
+	\caption{Pseudo Code for detector application in the Negative Selection Algorithm.}
+	\label{alg:detector_app}
+\end{algorithm}
+ 
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -116,7 +178,11 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The Negative Selection Algorithm was designed for change detection novelty detection, intrusion detection and similar pattern recognition and classification problem domains.
+	\item A data representation should be selected that is most suitable for a given problem domain, and a matching rule in turn selected or tailored to the data representation.
+	\item Detectors can be prepared with no prior knowledge of the problem domain other than the known (called the `self') dataset. 
+	\item The algorithm can be configured to balance between detector convergence (quality of the matches) and the space complexity (number of detectors).
+	\item The lack of dependence between detectors means that detector preparation and application is inherently parallel and suited for a distributed and parallel implementation, respectively.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -154,6 +220,13 @@ The seminal negative selection algorithm was proposed by Forrest, et~al. \cite{F
 It was applied to monitoring changes in the execution behavior of Unix processes \cite{Forrest1996, Hofmeyr1998}, and to monitor the changes in remote connections of a network computer (intrusion detection) \cite{Hofmeyr1999, Hofmeyr1999a}. The application of the algorithm has been predominantly to virus host intrusion detection and their abstracted problems of classification (two-class) and anomaly detection.
 % validity
 More recently, the validity of the application of negative selection algorithms in high-dimensional spaces has been questioned, specifically given the scalability of the approach in the face of the exponential increase in volume within the problem space \cite{Stibor2006}.
+% esponda
+Esponda provides some interesting work showing some compression and privacy benefits provided by maintaining a negative model (non-self) \cite{Darlington2005}
+% others
+Ji and Dasgupta provide a contemporary and detailed review of Negative Selection algorithms covering topics such as data representations, matching rules, detector generation procedures, computational complexity, hybridization, and theoretical frameworks \cite{Ji2007}.
+
+
+
 
 
 % 
