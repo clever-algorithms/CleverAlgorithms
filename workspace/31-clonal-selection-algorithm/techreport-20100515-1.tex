@@ -71,8 +71,11 @@ Clonal Selection Algorithm, CSA, CLONALG
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
+The Clonal Selection Algorithm (CLONALG) belongs to the field of Artificial Immune Systems.
 % What are the closely related approaches to a technique?
-todo
+It is related to other Clonal Selection algorithms such as the ARtificial Immune Recognition System (AIRS), the B-Cell Algorithm (BCA), and the Multi-objective Immune System Algorithm (MISA).
+% extensions
+There are numerious extensions to CLONALG including tweaks such as the CLONALG1 and CLONALG2 approaches, a version for classification called CLONCLAS,  and an adaptive version called Adaptive Clonal Selection (ACS).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -80,8 +83,9 @@ todo
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+The Clonal Selection algorithm is inspired by the Clonal Selection theory of acquired immunity.
 % Which features of the motivating system are relevant to a technique?
-todo
+The clonal selection theory credited to Burnet was proposed to account for the behavior and capabilities of antibodies in the acquired immune system \cite{Burnet1957, Burnet1959}. Inspired by the principles of Darwinian natural selection theory of evolution, the theory proposes that antigens select-for lymphocytes (both B and T-cells). When a lymphocyte is selected and binds to an antigenic determinant, the cell proliferates making many thousands more copies and differentiates into different cell types (plasma and memory cells). Plasma cells have a short lifespan and produce vast quantities of antibody molecules, whereas memory cells live for an extended period in the host anticipating future recognition of the same determinant. The important feature of the theory is that when a cell is selected and proliferates, it is subjected to small copying errors (changes to the genome called somatic hypermutation) that change the shape of the expressed receptors and subsequent determinant recognition capabilities of both the antibodies bound to the lymphocytes cells surface, and the antibodies that plasma cells produce.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,15 +94,16 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+The theory suggests that starting with an initial repertoire of general immune cells, the system is able to change itself (the compositions and densities of cells and their receptors) in response to experience with the environment. Through a blind process of selection and accumulated variation on the large scale of many billions of cells, the acquired immune system is capable of acquiring the necessary information to protect the host organism from the specific pathogenic dangers of the environment. It also suggests that the system must anticipate (guess) at the pathogen to which it will be exposed, and requires exposure to pathogen that may harm the host before it can acquire the necessary information to provide a defense.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing principles of the clonal selection theory describe a general learning strategy.
 % What is a techniques plan of action?
-todo
+This strategy involves a population of adaptive information units (each representing a problem-solution or component) is subjected to a competition processes for selection, which together with the resultant duplication and variation, ultimately improves the information units, and solves or approximately solves a problem.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -106,7 +111,62 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:clonalg} provides a pseudo-code listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
+% description
+The general CLONALG model involves the selection of antibodies (candidate solutions) based on affinity either by matching against an antigen pattern or via evaluation of a pattern by a cost function. Selected antibodies are subjected to cloning proportional to affinity, and the hypermutation of clones inversely-proportional to clone affinity. The resultant clonal-set competes with the existent antibody population for membership in the next generation. In addition, low-affinity population members are replaced by randomly generated antibodies. The pattern recognition variation of the algorithm includes the maintenance of a memory solution set which in its entirety represents a solution to the problem. A binary-encoding scheme is employed for the binary-pattern recognition and continuous function optimization examples, and an integer permutation scheme is employed for the Traveling Salesman Problem (TSP).
+
+\begin{algorithm}[ht]
+  \SetLine  
+  % data
+  \SetKwData{Pop}{Population}
+  \SetKwData{Length}{$Problem_{size}$}
+  \SetKwData{Selectsize}{$Selection_{size}$}
+  \SetKwData{RandomCells}{$RandomCells_{num}$}
+  \SetKwData{PopSize}{$Population_{size}$}
+  \SetKwData{CloneRate}{$Clone_{rate}$}
+  \SetKwData{MutationRate}{$Mutation_{rate}$}
+
+	 % functions
+  \SetKwFunction{StopCondition}{StopCondition}
+  \SetKwFunction{Hypermutate}{Hypermutate}
+  \SetKwFunction{Affinity}{Affinity}
+  \SetKwFunction{Select}{Select}
+  \SetKwFunction{Clone}{Clone}
+  \SetKwFunction{Replace}{Replace}
+  \SetKwFunction{CreateRandomCells}{CreateRandomCells}  
+  
+  \KwIn{\PopSize, \Selectsize, \Length, \RandomCells, \CloneRate, \MutationRate}		
+  \KwOut{\Pop}
+  
+  % create cells	
+	\Pop $\leftarrow$ \CreateRandomCells{\PopSize, \Length}\;
+	
+	\While{$\neg$\StopCondition{}}
+	{
+	 \ForEach{$p_i \in$ \Pop}		%// presentation
+	 {
+	 	\Affinity{$p_i$}\;
+	 }
+	 $Population_{select} \leftarrow$ \Select{\Pop, \Selectsize}\;		%// clonal selection
+	 $Population_{clones} \leftarrow$ 0\;
+	 \ForEach{$p_i \in Population_{select}$}	%	// clonal expansion
+	 {
+	 	$Population_{clones} \leftarrow$ \Clone{$p_i$, \CloneRate}\;
+	 }	 
+	 \ForEach{$p_i \in Population_{clones}$}		%// affinity maturation
+	 {
+    \Hypermutate{$p_i$, \MutationRate}\;
+	  \Affinity{$p_i$}\;
+	 }	 
+	\Pop $\leftarrow$ \Select{\Pop, $Population_{clones}$, \PopSize}\;		%// greedy selection
+	$Population_{rand} \leftarrow$ \CreateRandomCells{\RandomCells}\;
+	\Replace{\Pop, $Population_{rand}$}\;	%// random replacement
+	}
+	\Return{\Pop}\;
+	
+	\caption{Pseudo Code for the Clonal Selection Algorithm (CLONALG).}
+	\label{alg:clonalg}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -115,7 +175,8 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The CLONALG was designed as a general machine learning approach and has been applied to pattern recognition, function optimization, and combinatorial optimization problem domains.
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -127,7 +188,7 @@ Listing~\ref{clonal_selection_algorithm} provides an example of the Clonal Selec
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-todo...
+The algorithm is implemented as described by de Castro and Von Zuben for function optimization \cite{Castro2002a}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Clonal Selection Algorithm (CLONALG) in the Ruby Programming Language, label=clonal_selection_algorithm]{../../src/algorithms/immune/clonal_selection_algorithm.rb}
@@ -161,6 +222,7 @@ clonclas
 
 acs
 
+Brownlee provides a review of Clonal Selection algorithms providing a taxonomy, algorithm reviews, and a broader bibliography \cite{Brownlee2007b}. 
 
 % books
 chapter
@@ -174,7 +236,9 @@ de castro and timmis book
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Clonal Selection Algorithm (CLONALG).
+% source
+Elements of this report were drawn from some of the author's previous works including a review of Clonal Selection Algorithms \cite{Brownlee2007b} and his dissertation work \cite{Brownlee2008}.
 
 % 
 % Contribute

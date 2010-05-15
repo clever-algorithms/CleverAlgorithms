@@ -170,3 +170,12 @@ Evolutionary, Dynamic Multi-objective Evolutionary Algorithm
 Evolutionary, Fast Non-dominated Sorting Genetic Algorithm
 Evolutionary, Fast Messy Genetic Algorithm
 Evolutionary, Gene Expression Messy Genetic Algorithm
+Immunological, Multi-objective Immune System Algorithm
+Immunological, Adaptive Clonal Selection
+Immunological, Real-coded Clonal Selection Algorithm
+Immunological, Immunological Algorithm
+Immunological, Simple Immunological Algorithm
+Immunological, Cloning, Information Gain, Aging
+Immunological, Optimization Immunological Algorithm
+Immunological, Artificial Immune Network
+Immunological, Optimization Artificial Immune Network
