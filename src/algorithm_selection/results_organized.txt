@@ -108,7 +108,7 @@ artificial bee colony optimization & 51 & 6 & 19 & 1 & 9 & 0.0 \\
 virtual bee algorithm & 17 & 7 & 21 & 7 & 5 & 0.0 \\
 monaco: multi-objective network optimization based on aco & 3 & 2 & 0 & 0 & 0 & 0.0 \\
 
-Kingdom: evolutionary (50)
+Kingdom: evolutionary (52)
 genetic algorithm & 275000 & 3210 & 349000 & 18889 & 183201 & 0.965 \\
 genetic programming & 54700 & 1420 & 44100 & 4766 & 68727 & 0.257 \\
 evolutionary programming & 16300 & 919 & 20500 & 1966 & 15765 & 0.107 \\
@@ -127,46 +127,57 @@ messy genetic algorithm & 761 & 345 & 947 & 93 & 723 & 0.02 \\
 interactive genetic algorithm & 2080 & 239 & 1030 & 119 & 693 & 0.016 \\
 gene expression programming & 2880 & 214 & 1330 & 142 & 1282 & 0.016 \\
 pareto archived evolution strategy & 800 & 211 & 1130 & 222 & 560 & 0.015 \\
+pareto-archived evolution strategy & 803 & 212 & 1130 & 222 & 429 & 0.014 \\
 vector evaluated genetic algorithm & 527 & 232 & 881 & 125 & 365 & 0.014 \\
 sequential niching genetic algorithm & 1 & 290 & 1 & 0 & 1 & 0.014 \\
-pareto-archived evolution strategy & 803 & 212 & 1130 & 222 & 429 & 0.014 \\
 micro-ga & 873 & 218 & 655 & 53 & 276 & 0.012 \\
 shuffled complex evolution & 1040 & 139 & 1290 & 27 & 955 & 0.009 \\
 cellular genetic algorithm & 416 & 127 & 346 & 69 & 372 & 0.008 \\
 double diploid genetic algorithm & 1 & 165 & 0 & 0 & 0 & 0.008 \\
 coevolutionary genetic algorithm & 559 & 103 & 370 & 58 & 191 & 0.006 \\
-pareto envelope-based selection algorithm & 227 & 87 & 309 & 64 & 129 & 0.005 \\
 restricted tournament selection & 215 & 84 & 275 & 51 & 210 & 0.005 \\
+pareto envelope-based selection algorithm & 227 & 87 & 309 & 64 & 129 & 0.005 \\
+fast messy genetic algorithm & 192 & 97 & 251 & 18 & 169 & 0.005 \\
 niching genetic algorithm & 433 & 50 & 400 & 34 & 263 & 0.004 \\
-linkage learning genetic algorithm & 148 & 48 & 158 & 31 & 202 & 0.003 \\
-island genetic algorithm & 309 & 37 & 232 & 25 & 173 & 0.003 \\
+gene expression messy genetic algorithm & 153 & 75 & 199 & 35 & 207 & 0.004 \\
 covariance matrix adaptation evolution strategy & 249 & 37 & 262 & 46 & 209 & 0.003 \\
 region-based selection in evolutionary multiobjective optimization & 67 & 43 & 103 & 35 & 37 & 0.003 \\
+island genetic algorithm & 309 & 37 & 232 & 25 & 173 & 0.003 \\
+linkage learning genetic algorithm & 148 & 48 & 158 & 31 & 202 & 0.003 \\
 crowding genetic algorithm & 116 & 37 & 68 & 12 & 72 & 0.002 \\
-cooperative coevolutionary genetic algorithm & 226 & 22 & 107 & 17 & 27 & 0.001 \\
-genetic algorithm with punctuated equilibria & 9 & 19 & 23 & 1 & 8 & 0.001 \\
-indicator based evolutionary algorithm & 44 & 22 & 83 & 30 & 23 & 0.001 \\
 chc genetic algorithm & 50 & 12 & 59 & 7 & 37 & 0.001 \\
+genetic algorithm with punctuated equilibria & 9 & 19 & 23 & 1 & 8 & 0.001 \\
 fast non-dominated sorting genetic algorithm & 31 & 9 & 38 & 5 & 12 & 0.001 \\
-deterministic crowding algorithm & 25 & 18 & 36 & 7 & 32 & 0.001 \\
+cooperative coevolutionary genetic algorithm & 226 & 22 & 107 & 17 & 27 & 0.001 \\
 dependency structure matrix driven genetic algorithm & 26 & 14 & 40 & 10 & 61 & 0.001 \\
 dynamic multi-objective evolutionary algorithm & 26 & 10 & 29 & 11 & 8 & 0.001 \\
-speciation genetic algorithm & 35 & 1 & 1 & 0 & 7 & 0.0 \\
+deterministic crowding algorithm & 25 & 18 & 36 & 7 & 32 & 0.001 \\
+indicator based evolutionary algorithm & 44 & 22 & 83 & 30 & 23 & 0.001 \\
 random weighted genetic algorithm & 11 & 1 & 11 & 1 & 5 & 0.0 \\
-probabilistic crowding genetic algorithm & 3 & 1 & 3 & 2 & 2 & 0.0 \\
-nested evolution strategy & 10 & 1 & 4 & 1 & 6 & 0.0 \\
 fitness sharing genetic algorithm & 48 & 6 & 33 & 4 & 5 & 0.0 \\
+probabilistic crowding genetic algorithm & 3 & 1 & 3 & 2 & 2 & 0.0 \\
 rank-density based genetic algorithm & 11 & 7 & 23 & 5 & 7 & 0.0 \\
 covariance matrix adaptation evolution strategies & 21 & 8 & 22 & 6 & 11 & 0.0 \\
 weight-based genetic algorithm & 30 & 7 & 42 & 2 & 14 & 0.0 \\
+nested evolution strategy & 10 & 1 & 4 & 1 & 6 & 0.0 \\
+speciation genetic algorithm & 35 & 1 & 1 & 0 & 7 & 0.0 \\
 
-Kingdom: immunological (6)
+Kingdom: immunological (15)
+simple immunological algorithm & 0 & 982 & 3 & 0 & 1 & 0.047 \\
+optimization immunological algorithm & 2 & 867 & 2 & 0 & 1 & 0.042 \\
 clonal selection algorithm & 1950 & 183 & 1660 & 211 & 691 & 0.014 \\
+artificial immune network & 1800 & 204 & 1450 & 100 & 554 & 0.014 \\
 negative selection algorithm & 1160 & 172 & 1210 & 170 & 579 & 0.012 \\
 artificial immune recognition system & 502 & 56 & 375 & 36 & 365 & 0.004 \\
 immune network algorithm & 309 & 40 & 216 & 30 & 117 & 0.003 \\
 b-cell algorithm & 73 & 29 & 74 & 21 & 73 & 0.002 \\
+immunological algorithm & 149 & 30 & 124 & 15 & 90 & 0.002 \\
 dendritic cell algorithm & 242 & 17 & 121 & 32 & 223 & 0.002 \\
+real-coded clonal selection algorithm & 38 & 9 & 32 & 8 & 14 & 0.001 \\
+adaptive clonal selection & 91 & 20 & 77 & 18 & 20 & 0.001 \\
+cloning information gain aging & 3 & 1 & 3 & 1 & 2 & 0.0 \\
+optimization artificial immune network & 2 & 1 & 9 & 0 & 0 & 0.0 \\
+multi-objective immune system algorithm & 16 & 5 & 24 & 4 & 6 & 0.0 \\
 
 Kingdom: classical (13)
 steepest descent & 47400 & 3070 & 59200 & 4493 & 46527 & 0.316 \\

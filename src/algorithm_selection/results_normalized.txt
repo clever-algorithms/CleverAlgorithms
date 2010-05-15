@@ -168,3 +168,14 @@ Evolutionary, Micro-GA,873,218,655,53,276,0.012
 Evolutionary, Rank-Density Based Genetic Algorithm,11,7,23,5,7,0.0
 Evolutionary, Multi-objective Evolutionary Algorithm,3010,397,2930,435,1971,0.03
 Evolutionary, Weight-based Genetic Algorithm,30,7,42,2,14,0.0
+Immunological, Optimization Artificial Immune Network,2,1,9,0,0,0.0
+Immunological, Optimization Immunological Algorithm,2,867,2,0,1,0.042
+Immunological, Immunological Algorithm,149,30,124,15,90,0.002
+Evolutionary, Gene Expression Messy Genetic Algorithm,153,75,199,35,207,0.004
+Evolutionary, Fast Messy Genetic Algorithm,192,97,251,18,169,0.005
+Immunological, Multi-objective Immune System Algorithm,16,5,24,4,6,0.0
+Immunological, Real-coded Clonal Selection Algorithm,38,9,32,8,14,0.001
+Immunological, Adaptive Clonal Selection,91,20,77,18,20,0.001
+Immunological, Cloning Information Gain Aging,3,1,3,1,2,0.0
+Immunological, Simple Immunological Algorithm,0,982,3,0,1,0.047
+Immunological, Artificial Immune Network,1800,204,1450,100,554,0.014

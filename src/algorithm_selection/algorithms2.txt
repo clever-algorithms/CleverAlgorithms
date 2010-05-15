@@ -175,7 +175,7 @@ Immunological, Adaptive Clonal Selection
 Immunological, Real-coded Clonal Selection Algorithm
 Immunological, Immunological Algorithm
 Immunological, Simple Immunological Algorithm
-Immunological, Cloning, Information Gain, Aging
+Immunological, Cloning Information Gain Aging
 Immunological, Optimization Immunological Algorithm
 Immunological, Artificial Immune Network
 Immunological, Optimization Artificial Immune Network
