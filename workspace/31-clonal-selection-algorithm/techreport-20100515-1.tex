@@ -73,7 +73,7 @@ Clonal Selection Algorithm, CSA, CLONALG
 % To what fields of study does a technique belong?
 The Clonal Selection Algorithm (CLONALG) belongs to the field of Artificial Immune Systems.
 % What are the closely related approaches to a technique?
-It is related to other Clonal Selection algorithms such as the ARtificial Immune Recognition System (AIRS), the B-Cell Algorithm (BCA), and the Multi-objective Immune System Algorithm (MISA).
+It is related to other Clonal Selection algorithms such as the Artificial Immune Recognition System (AIRS), the B-Cell Algorithm (BCA), and the Multi-objective Immune System Algorithm (MISA).
 % extensions
 There are numerious extensions to CLONALG including tweaks such as the CLONALG1 and CLONALG2 approaches, a version for classification called CLONCLAS,  and an adaptive version called Adaptive Clonal Selection (ACS).
 
@@ -85,7 +85,7 @@ There are numerious extensions to CLONALG including tweaks such as the CLONALG1 
 % What is the system or process that motivated the development of a technique?
 The Clonal Selection algorithm is inspired by the Clonal Selection theory of acquired immunity.
 % Which features of the motivating system are relevant to a technique?
-The clonal selection theory credited to Burnet was proposed to account for the behavior and capabilities of antibodies in the acquired immune system \cite{Burnet1957, Burnet1959}. Inspired by the principles of Darwinian natural selection theory of evolution, the theory proposes that antigens select-for lymphocytes (both B and T-cells). When a lymphocyte is selected and binds to an antigenic determinant, the cell proliferates making many thousands more copies and differentiates into different cell types (plasma and memory cells). Plasma cells have a short lifespan and produce vast quantities of antibody molecules, whereas memory cells live for an extended period in the host anticipating future recognition of the same determinant. The important feature of the theory is that when a cell is selected and proliferates, it is subjected to small copying errors (changes to the genome called somatic hypermutation) that change the shape of the expressed receptors and subsequent determinant recognition capabilities of both the antibodies bound to the lymphocytes cells surface, and the antibodies that plasma cells produce.
+The clonal selection theory credited to Burnet was proposed to account for the behavior and capabilities of antibodies in the acquired immune system \cite{Burnet1957, Burnet1959}. Inspired itself by the principles of Darwinian natural selection theory of evolution, the theory proposes that antigens select-for lymphocytes (both B and T-cells). When a lymphocyte is selected and binds to an antigenic determinant, the cell proliferates making many thousands more copies of itself and differentiates into different cell types (plasma and memory cells). Plasma cells have a short lifespan and produce vast quantities of antibody molecules, whereas memory cells live for an extended period in the host anticipating future recognition of the same determinant. The important feature of the theory is that when a cell is selected and proliferates, it is subjected to small copying errors (changes to the genome called somatic hypermutation) that change the shape of the expressed receptors and subsequent determinant recognition capabilities of both the antibodies bound to the lymphocytes cells surface, and the antibodies that plasma cells produce.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -103,7 +103,7 @@ The theory suggests that starting with an initial repertoire of general immune c
 % What is the information processing objective of a technique?
 The information processing principles of the clonal selection theory describe a general learning strategy.
 % What is a techniques plan of action?
-This strategy involves a population of adaptive information units (each representing a problem-solution or component) is subjected to a competition processes for selection, which together with the resultant duplication and variation, ultimately improves the information units, and solves or approximately solves a problem.
+This strategy involves a population of adaptive information units (each representing a problem-solution or component) subjected to a competitive processes for selection, which together with the resultant duplication and variation ultimately improves the adaptive fit the information units to their environment.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -111,7 +111,7 @@ This strategy involves a population of adaptive information units (each represen
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:clonalg} provides a pseudo-code listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
+Algorithm~\ref{alg:clonalg} provides a pseudo-code listing of the Clonal Selection Algorithm (CLONALG) for minimizing a cost function. 
 % description
 The general CLONALG model involves the selection of antibodies (candidate solutions) based on affinity either by matching against an antigen pattern or via evaluation of a pattern by a cost function. Selected antibodies are subjected to cloning proportional to affinity, and the hypermutation of clones inversely-proportional to clone affinity. The resultant clonal-set competes with the existent antibody population for membership in the next generation. In addition, low-affinity population members are replaced by randomly generated antibodies. The pattern recognition variation of the algorithm includes the maintenance of a memory solution set which in its entirety represents a solution to the problem. A binary-encoding scheme is employed for the binary-pattern recognition and continuous function optimization examples, and an integer permutation scheme is employed for the Traveling Salesman Problem (TSP).
 
@@ -176,12 +176,12 @@ The general CLONALG model involves the selection of antibodies (candidate soluti
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The CLONALG was designed as a general machine learning approach and has been applied to pattern recognition, function optimization, and combinatorial optimization problem domains.
-	\item Binary string representations are used and decided to a representation suitable for a specific problem domain.
+	\item Binary string representations are used and decoded to a representation suitable for a specific problem domain.
 	\item The number of clones created for each selected member is calculated as a function of the repertoire size $N_c=round(\beta \cdot N)$, where $\beta$ is the user parameter $Clone_{rate}$. 
 	\item A rank-based affinity-proportionate function is used to determine the number of clones created for selected members of the population for pattern recognition problem instances.
 	\item The number of random antibodies inserted each iteration is typically very low (1-2).
 	\item Point mutations (bit-flips) are used in the hypermutation operation.
-	\item The function $p=exp(-\rho \cdot f)$ is used to determine the mutation rate for a given candidate solution, where $f$ is the candidates affinity (normalized maximizing cost value), and $\rho$ is the user parameter $Mutation_{rate}$.
+	\item The function $exp(-\rho \cdot f)$ is used to determine the probability of individual component mutation for a given candidate solution, where $f$ is the candidates affinity (normalized maximizing cost value), and $\rho$ is the user parameter $Mutation_{rate}$.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -211,7 +211,7 @@ The algorithm is implemented as described by de Castro and Von Zuben for functio
 % 
 \subsection{Primary Sources}
 % seminal
-Hidden at the back of a technical report on the applications of artificial immune systems de~Castro and Von~Zuben \cite{Castro1999} proposed the Clonal Selection Algorithm (CSA) as a computational realization of the clonal selection principle for pattern matching and optimization.
+Hidden at the back of a technical report on the applications of Artificial Immune Systems de~Castro and Von~Zuben \cite{Castro1999} proposed the Clonal Selection Algorithm (CSA) as a computational realization of the clonal selection principle for pattern matching and optimization.
 % early
 The algorithm was later published \cite{Castro2000}, and investigated where it was renamed to CLONALG (CLONal selection ALGorithm) \cite{Castro2002a}.
 
@@ -222,7 +222,7 @@ The algorithm was later published \cite{Castro2000}, and investigated where it w
 % parallel
 Watkins, et~al. proposed to exploit the \emph{inherent distributedness} of the CLONALG and proposed a parallel version of the pattern recognition version of the algorithm \cite{Watkins2003}.
 % clonclas
-White and Garret also investigated the pattern recognition version of CLONALG and generalized the approach for the task of binary pattern classification renaming it Clonal Classification (CLONCLAS) where their approach was compared to a number of simple Hamming distance based heuristics \cite{White2003}.
+White and Garret also investigated the pattern recognition version of CLONALG and generalized the approach for the task of binary pattern classification renaming it to Clonal Classification (CLONCLAS) where their approach was compared to a number of simple Hamming distance based heuristics \cite{White2003}.
 % acs
 In an attempt to address concerns of algorithm efficiency, parameterization, and representation selection for continuous function optimization Garrett proposed an updated version of CLONALG called Adaptive Clonal Selection (ACS) \cite{Garrett2004}.
 % reviews
