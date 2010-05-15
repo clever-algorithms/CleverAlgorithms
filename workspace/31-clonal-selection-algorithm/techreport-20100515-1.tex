@@ -176,7 +176,12 @@ The general CLONALG model involves the selection of antibodies (candidate soluti
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The CLONALG was designed as a general machine learning approach and has been applied to pattern recognition, function optimization, and combinatorial optimization problem domains.
-	
+	\item Binary string representations are used and decided to a representation suitable for a specific problem domain.
+	\item The number of clones created for each selected member is calculated as a function of the repertoire size $N_c=round(\beta \cdot N)$, where $\beta$ is the user parameter $Clone_{rate}$. 
+	\item A rank-based affinity-proportionate function is used to determine the number of clones created for selected members of the population for pattern recognition problem instances.
+	\item The number of random antibodies inserted each iteration is typically very low (1-2).
+	\item Point mutations (bit-flips) are used in the hypermutation operation.
+	\item The function $p=exp(-\rho \cdot f)$ is used to determine the mutation rate for a given candidate solution, where $f$ is the candidates affinity (normalized maximizing cost value), and $\rho$ is the user parameter $Mutation_{rate}$.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -214,21 +219,16 @@ The algorithm was later published \cite{Castro2000}, and investigated where it w
 % Learn More
 % 
 \subsection{Learn More}
+% parallel
+Watkins, et~al. proposed to exploit the \emph{inherent distributedness} of the CLONALG and proposed a parallel version of the pattern recognition version of the algorithm \cite{Watkins2003}.
+% clonclas
+White and Garret also investigated the pattern recognition version of CLONALG and generalized the approach for the task of binary pattern classification renaming it Clonal Classification (CLONCLAS) where their approach was compared to a number of simple Hamming distance based heuristics \cite{White2003}.
+% acs
+In an attempt to address concerns of algorithm efficiency, parameterization, and representation selection for continuous function optimization Garrett proposed an updated version of CLONALG called Adaptive Clonal Selection (ACS) \cite{Garrett2004}.
 % reviews
-
-parallel clonalg
-
-clonclas
-
-acs
-
+In their book, de Castro and Timmis provide a detailed treatment of CLONALG including a description of the approach (starting page 79) and a step through of the algorithm (starting page 99) \cite{Castro2002b}.
+Cutello and Nicosia provide a study of the clonal selection principle and algorithms inspired by the theory \cite{Cutello2005}.
 Brownlee provides a review of Clonal Selection algorithms providing a taxonomy, algorithm reviews, and a broader bibliography \cite{Brownlee2007b}. 
-
-% books
-chapter
-
-de castro and timmis book
-
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
