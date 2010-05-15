@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+This report describes the Negative Selection Algorithm using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Negative Selection}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Negative Selection Algorithm using the standardized template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,7 +64,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Negative Selection Algorithm, NSA
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -81,7 +81,7 @@ todo
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-todo
+An important consideration for Burnet in developing the clonal selection theory was the integration of the fact that such a powerfully destructive process as acquired immunity does not immediately turn against the host organism in the generation of self-antibodies (autoimmune response). This ability of the clonal response to maturate lymphocyte cells for pathogen and not self-tissues became known as \emph{self-nonself discrimination} \cite{Crist2000, Nossal1994}, and in conjunction with clonal selection forms paradigms by which the acquired immune systems is understood in the field of immunology. Clonal selection accounts for this observation by proposing both that (1) the initial repertoire of immune cells are prepared in such a way that none are autoimmune, and (2) that during the maturation process in the ongoing interaction with pathogen, that autoimmune clones are destroyed. Immune cells are continually being destroyed, therefore there is a constant stream of new immune cells that must be created and integrated into the repertoire. This theory was confirmed by the discovery of T-lymphocyte cells that are matured using both a positive and negative selection process in the thymus.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,7 +90,7 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+Self-nonself discrimination primed with a negative selection process has interesting information processing properties. The theory suggests that the anticipatory guesses made in clonal selection are filtered by regions of infeasibility (protein conformations that bind to self-tissues). Further, the self-nonself immunological paradigm proposes the modelling of the unknown domain (encountered pathogen) by modelling the complement of what is known. This is unintuitive as the natural inclination is to categorise unknown information by what is different from what is known rather than guessing at the unknown information and filtering guesses by what is known. 
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -98,7 +98,7 @@ todo
 \label{sec:strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-todo
+The information processing principles of the self-nonself discrimination via negative selection are that of a \emph{anomaly} and \emph{change} detection system that model the anticipation of variation from what is known.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -137,17 +137,15 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-% seminal
-todo
-% early
+The seminal negative selection algorithm was proposed by Forrest, et~al. \cite{Forrest1994} in which a population of detectors are prepared in the presence of known information, where those randomly generated detectors that match against known data are discarded. The population of pattern guesses in the unknown space then monitors the corpus of known information for changes. The algorithm was applied to the monitoring of files for changes (corruptions and infections by computer viruses), and later formalized as a change detection algorithm \cite{D'haeseleer1996a, D'haeseleer1996}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
-% reviews
-todo
-% books
+It was applied to monitoring changes in the execution behavior of Unix processes \cite{Forrest1996, Hofmeyr1998}, and to monitor the changes in remote connections of a network computer (intrusion detection) \cite{Hofmeyr1999, Hofmeyr1999a}. The application of the algorithm has been predominantly to virus host intrusion detection and their abstracted problems of classification (two-class) and anomaly detection.
+% validity
+More recently, the validity of the application of negative selection algorithms in high-dimensional spaces has been questioned, specifically given the scalability of the approach in the face of the exponential increase in volume within the problem space \cite{Stibor2006}.
 
 
 % 
@@ -156,7 +154,9 @@ todo
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Negative Selection algorithm from the field of Artificial Immune systems.
+% sources
+Elements of this report were drawn from some of the author's previous works including his dissertation work \cite{Brownlee2008}.
 
 % 
 % Contribute
