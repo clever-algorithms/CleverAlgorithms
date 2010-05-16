@@ -179,3 +179,4 @@ Immunological, Cloning Information Gain Aging
 Immunological, Optimization Immunological Algorithm
 Immunological, Artificial Immune Network
 Immunological, Optimization Artificial Immune Network
+Immunological, Resource Limited Artificial Immune System
