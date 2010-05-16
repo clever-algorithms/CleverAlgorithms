@@ -199,7 +199,7 @@ Listing~\ref{negative_selection_algorithm} provides an example of the Negative S
 % problem
 The demonstration problem is a two-class classification problem where samples a drawn from a two-dimensional domain, where $x,y \in [0,1]$. Those samples in $1.0>x>0.5, 1.0>x>0.5$ are classified as self and the rest of the space belongs to the non-self class. Samples are drawn from the self class and presented to the algorithm for the preparation of pattern detectors for classifying unobserved samples from the non-self class.
 % algorithm
-The algorithm creates a set of detectors that do not match the self data, and are then applied to a set of randomly generated samples from the domain. The algorithm uses a binary representation that is decoded using the Binary Coded Decimal method into a real value. The ratio of the Hamming distance between two patterns is used as the matching function with a user defined `closeness' tolerance.
+The algorithm creates a set of detectors that do not match the self data, and are then applied to a set of randomly generated samples from the domain. The algorithm uses a real-valued representation. The Euclidean distance function is used during matching and a minimum distance value is specified as a user parameter for approximate matches between patterns. The algorithm includes the additional computationally expensive check for duplicates in the preparation of the self dataset and the detector set.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Negative Selection Algorithm in the Ruby Programming Language, label=negative_selection_algorithm]{../../src/algorithms/immune/negative_selection_algorithm.rb}
