@@ -14,7 +14,7 @@ def decode(bitstring, search_space)
   vector = []
   search_space.each_with_index do |bounds, i|
     off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
-    bitstring[off...(off+BITS_PER_PARAM)].each_char do |c|
+    bitstring[off...(off+BITS_PER_PARAM)].reverse.each_char do |c|
       sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
       j += 1
     end
