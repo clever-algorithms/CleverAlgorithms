@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-todo
+This report describes the Immune Network Algorithm using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Immune, Network, Algorithm}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes\ldots todo
+This report describes the Immune Network Algorithm using the standardized template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,7 +64,7 @@ This report describes\ldots todo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-todo
+Immune Network Algorithm, INA, Idiotypic Network Algorithm
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -81,7 +81,7 @@ todo
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-todo
+A concern of the clonal selection theory is that it presumes that the repertoire of reactive cells remains idle when there are no pathogen to which to respond. Considering this problem, Niels Jerne proposed an Immune Network Theory (Idiotypic Networks) where immune cells are not at rest in the absence of pathogen, instead antibody and immune cells recognize and respond to each other \cite{Jerne1974a, Jerne1974, Jerne1984}. The theory proposes that antibody (both free floating and surface bound) possess idiotopes (surface features) to which the receptors of other antibody can bind. As a result of receptor interactions, the repertoire becomes dynamic, where receptors continually both inhibit and excite each other in complex regulatory networks (chains of receptors). The network theory suggests that the clonal selection process may be triggered by the idiotopes of other immune cells and molecules in addition to the surface characteristics of pathogen, and that the maturation process applies both to the receptors themselves the idiotopes which they expose. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,7 +90,7 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+The immune network theory has interesting resource maintenance and signaling information processing properties. The clonal selection and negative selection paradigms integrate the accumulative and filtered learning of the acquired immune system, whereas the immune network theory proposes an additional order of complexity between the cells and molecules under selection. In addition to cells that interact directly with pathogen, there are cells that interact with those reactive cells and with pathogen indirectly, in successive layers such that networks of activity for higher-order structures such as internal images of pathogen (promotion), and regulatory networks (so-called anti-idiotopes and anti-anti-idiotopes).
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -137,9 +137,7 @@ todo
 % Primary Sources
 % 
 \subsection{Primary Sources}
-% seminal
-todo
-% early
+Early works, such as Farmer, et~al. \cite{Farmer1986a} suggested at the exploitation of the information processing properties of network theory for machine learning. A seminal network theory based algorithm was proposed by Timmis, et~al. called the Artificial Immune Network (AIN) \cite{Timmis2000a}  (later extended and renamed the Resource Limited Artificial Immune System \cite{Timmis2001, Timmis2000} and Artificial Immune Network \cite{Knight2001a}). The algorithm maintains a population of adaptive units that operate under a clonal selection process. Units are connected to each other based on distance measures in the information space (for example Euclidean distance if the units are real-valued vectors), such that adaptive units that are \emph{close} in the information space suppress the activation of each other. Therefore, the more \emph{connections} a given unit has with other nodes influences the units potential for being selected and cloned under clonal selection. Timmis' system was applied to feature extraction and data clustering. Another seminal network based algorithm was proposed by de~Castro and Von Zuben called Artificial Immune Network (aiNet) which extended the principles of AIN and CLONALG and was applied to clustering  \cite{Castro2000c, Castro2001a}. The aiNet algorithm was further extended to optimisation domains and renamed opt-aiNet \cite{Castro2002c}.
 
 % 
 % Learn More
