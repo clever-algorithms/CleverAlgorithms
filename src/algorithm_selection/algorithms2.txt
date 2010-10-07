@@ -180,3 +180,11 @@ Immunological, Optimization Immunological Algorithm
 Immunological, Artificial Immune Network
 Immunological, Optimization Artificial Immune Network
 Immunological, Resource Limited Artificial Immune System
+Neural, Learning Vector Quantization
+Neural, Self Organizing Map
+Neural, Perceptron
+Neural, Widrow Hoff
+Neural, Back Propagation
+Neural, Bold Driver Back Propagation
+Neural, Hopfield net
+Neural, Radial Bias Function
