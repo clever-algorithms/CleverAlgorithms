@@ -1,6 +1,8 @@
-# 
 # Unit tests for genetic_algorithm.rb
-# 
+
+# The Clever Algorithms Project: http://www.CleverAlgorithms.com
+# (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+# This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
 require "../genetic_algorithm"
@@ -71,6 +73,17 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
           assert_not_same(pop[i][:bitstring], c[:bitstring])  
         end
       end
+      
+      # test reproduce mutate case
+      def test_reproduce_clone
+        pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+        children = reproduce(pop, pop.length, 0, 1)
+        children.each_with_index do |c,i| 
+          assert_not_equal(pop[i][:bitstring], c[:bitstring])
+          assert_equal("1111111111", c[:bitstring])
+          assert_not_same(pop[i][:bitstring], c[:bitstring])  
+        end
+      end      
       
       # test reproduce size mismatch
       def test_reproduce_mismatch
