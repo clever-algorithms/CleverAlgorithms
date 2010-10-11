@@ -10,6 +10,10 @@ def onemax(bitstring)
   return sum
 end
 
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
+end
+
 def binary_tournament(population)
   s1, s2 = population[rand(population.size)], population[rand(population.size)]
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
@@ -17,18 +21,17 @@ end
 
 def point_mutation(bitstring, prob_mutation)
   child = ""
-  bitstring.size.times do |i|
-    bit = bitstring[i]
+   bitstring.each_char do |bit|
     child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
 
 def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1[:bitstring] if rand()>=p_crossover
+  return ""+parent1 if rand()>=p_crossover
   child = ""
-  parent1[:bitstring].size.times do |i| 
-    child << ((rand()<0.5) ? parent1[:bitstring][i] : parent2[:bitstring][i])
+  parent1.length.times do |i| 
+    child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
   end
   return child
 end
@@ -38,15 +41,12 @@ def reproduce(selected, population_size, p_crossover, p_mutation)
   selected.each_with_index do |p1, i|    
     p2 = (i.even?) ? selected[i+1] : selected[i-1]
     child = {}
-    child[:bitstring] = uniform_crossover(p1, p2, p_crossover)
+    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
     child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
     children << child
+    break if children.size >= population_size
   end
   return children
-end
-
-def random_bitstring(num_bits)
-  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
 def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
