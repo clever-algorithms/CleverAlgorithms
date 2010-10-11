@@ -66,7 +66,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       
       # test reproduce cloning case
       def test_reproduce_clone
-        pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>random_bitstring(10)} }
+        pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
         children = reproduce(pop, pop.length, 0, 0)
         children.each_with_index do |c,i| 
           assert_equal(pop[i][:bitstring], c[:bitstring])
@@ -87,7 +87,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       
       # test reproduce size mismatch
       def test_reproduce_mismatch
-        pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>random_bitstring(10)} }
+        pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
         children = reproduce(pop, 9, 0, 0)
         assert_equal(9, children.length)
       end
