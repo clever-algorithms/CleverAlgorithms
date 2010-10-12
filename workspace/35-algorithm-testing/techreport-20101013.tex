@@ -1,0 +1,63 @@
+% Technical Report: Algorithm Testing
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{Algorithm Testing}
+\newcommand{\myreportsubtitle}{Unit tests and writing for testability}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20101013}
+\newcommand{\myreportfulldate}{October 13, 2010}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}: {\myreportsubtitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\myreportfulldate\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+This is the abstract. Consider writing a one sentence summary of each major section in the report.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Algorihtm, Test, Unit Test, Testability}}
+\end{description} 
+
+% summarise the document breakdown with cross references
+\section{Introduction}
+\label{sec:introduction}
+This is the introduction. Consider summarizing the message of the document, then provide a breakdown of the sections of the document with cross references.
+
+\section{A Section}
+\label{sec:a_section}
+Write things!
+
+\subsection{A SubSection}
+Write more things!
+
+% summarise the document message and areas for future consideration
+\section{Conclusions}
+\label{sec:conclusions}
+This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
