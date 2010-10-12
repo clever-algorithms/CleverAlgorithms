@@ -7,8 +7,6 @@
 require "test/unit"
 require "../genetic_algorithm"
 
-# TODO figure out some ruby-fu to test the script functions without running it.
-
 class TC_GeneticAlgorithm < Test::Unit::TestCase
       
       # test that the objective function behaves as expected
