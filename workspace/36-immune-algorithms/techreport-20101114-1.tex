@@ -1,0 +1,132 @@
+% Immune Algorithms
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{Immune Algorithms}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20101114}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\today\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+% project
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
+% template
+The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
+% type
+The second batch of ten algorithms for the project have been described, all of which are classified as Evolutionary Algorithms under the adopted algorithm taxonomy.
+% best practices
+This report provides a point of reflection on the preparation of these algorithms.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Immune, Optimization, Findings}}
+\end{description} 
+
+% summarise the document breakdown with cross references
+\section{Introduction}
+\label{sec:introduction}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+This report provides an overview of the Immune Algorithms in the Clever Algorithms project. 
+Section~\ref{sec:algorithms} provides background information and reviews common themes for the general class of algorithm and summarizes those immune algorithms that have been described for the Clever Algorithms Project.
+
+% 
+% Described Evolutionary Algorithms
+% 
+\section{Immune Algorithms}
+\label{sec:algorithms}
+
+% 
+% Background
+% 
+\subsection{Background}
+% broadly
+The algorithms to be described in the Clever Algorithms project are drawn from a diverse set of subfields of Artificial Intelligence, such as Computational Intelligence, Biologically Inspired Computation, and Metaheuristics. The majority of the algorithms selected for description in the project are optimization algorithms \cite{Brownlee2010b}. 
+% specific
+The recently completed algorithms that have been described for the Clever Algorithms project are referred to as Immune Algorithms. They are differentiated from the remainder of the algorithms described in the project that have been designated a taxonomy including stochastic, swarm, probabilistic, physical, and evolutionary algorithms \cite{Brownlee2010b}. 
+
+% Immune
+\subsubsection{Immune System}
+Immune Algorithms belong to the Evolutionary Computation field of study concerned with computational methods inspired by the process and mechanisms of biological immune system. 
+
+A simplified description of the immune system is an organ system intended to protect the host organism from the threats posed to it from pathogens and toxic substances. Pathogens encompass a range of micro-organisms such as bacteria, virus, parasites and pollen. The traditional perspective regarding the role of the immune system is divided into two primary tasks: the \emph{detection} and \emph{elimination} of pathogen\footnote{More recent perspectives on the role of the system include a maintenance system \cite{Cohen2001a}, and a cognitive system \cite{Varela1994}.}. This behaviour is typically referred to as the differentiation of self (molecules and cells that belong to the host organisms) from potentially harmful non-self. 
+
+The architecture of the immune system is such that a series of defensive layers protect the host. The most basic of these layers provide \emph{physical barriers} to prevent pathogen from entering the host such as skin, and mucous membranes that trap and filter out pathogen. The next level is physiological that provides inhospitable conditions for pathogen at entry points to host such as high pH acidity in the digestive tract and varied temperature to inhibit growth of micro-organisms. Once a pathogen makes it inside the host, it must contend with the \emph{innate} and \emph{acquired} immune system. These interrelated immunological sub-systems are comprised of many types of cells  and molecules produced by specialized organs and processes to address the self-nonself problem at the lowest level using chemical bonding, where the surfaces of cells and molecules interact with the surfaces of pathogen.
+
+The adaptive immune system, also referred to as the acquired immune system, is named such because it is responsible for specializing a defense for the host organism based on the \emph{specific} pathogen to which it is exposed. Unlike the innate immune system, the acquired immune system is present only in vertebrates (animals with a spinal column). The system retains a \emph{memory} of exposures which it has encountered. This memory is \emph{recalled} on reinfection exhibiting a \emph{learned} pathogen identification. This learning process may be divided into two types of response. The first or \emph{primary response} occurs when the system encounters a novel pathogen. The system is slow to respond, potentially taking a number of weeks to clear the infection. On re-encountering the same pathogen again, the system exhibits a \emph{secondary response}, applying what was learned in the primary response and clearing up the infection rapidly. The \emph{memory} the system acquires in the primary response is typically long lasting, providing pathogenic immunity for the lifetime of the host, two common examples of which are the chickenpox and measles. White blood cells called lymphocytes (or leukocytes) are the most important cell in the acquired immune system. Lymphocytes are involved in both the identification and elimination of pathogen, and recirculate within the host organisms body in the blood and lymph (the fluid that permeates tissue). The behavior of the adaptive immune system may be described with regard to two general sub-systems: \emph{Humoral Immunity} for addressing free-floating pathogen (for example in blood), and \emph{Cellular Immunity} for addressing virally infected cells.
+
+% AIS
+\subsubsection{Artificial Immune Systems}
+Artificial Immune Systems (AIS) is a sub-field Computational Intelligence motivated by immunology (primarily mammalian immunology) that emerged in the early 1990's (for example \cite{Bersini1990, Ishida1990}), based on the proposal in the late 1980's to apply theoretical immunological models to machine learning and automated problem solving (such as \cite{Hoffmann1986, Farmer1986}). The early works in the field were inspired by exotic theoretical models (immune network theory) and were applied to machine learning, control and optimization problems. The approaches were reminiscent of paradigms such as Artificial Neural Networks, Genetic Algorithms, Reinforcement Learning, and Learning Classifier Systems. The most formative works in giving the field an identity were those that proposed the immune system as an analogy for information protection systems in the field of computer security. The classical examples include Forrest, et~al.'s Computer Immunity \cite{Forrest1994, Forrest1997a} and Kephart's Immune Anti-Virus \cite{Kephart1994, Kephart1995}. These works were formative for the field because they provided an intuitive application domain that captivated a broader audience and assisted in differentiating the work as an independent sub-field.
+
+% References
+\subsubsection{References}
+% classical
+The seminal reference for those interested in the field is the text book by de Castro and Timmis ``Artificial Immune Systems: A New Computational Intelligence Approach'' \cite{Castro2002}. This reference text provides an introduction to immunology with a level of detail appropriate for a computer scientist, followed by a summary of the state of the art, algorithms, application areas, and case studies. 
+
+% 
+% Described Algorithms
+% 
+\subsection{Described Algorithms}
+\label{subsec:algorithms}
+% overview
+This section lists the immune algorithms currently described for inclusion in the Clever Algorithms project. It is proposed that these algorithms will collectively comprise a chapter on `Immune Algorithms' in the Clever Algorithms book. 
+
+\begin{enumerate}
+	\item \textbf{Clonal Selection Algorithm}: \cite{Brownlee2010z}
+	\item \textbf{Negative Selection Algorithm}: \cite{Brownlee2010aa}
+	\item \textbf{Artificial Immune Network}: \cite{Brownlee2010ab}
+\end{enumerate}
+
+% 
+% Extensions
+% 
+\section{Extensions}
+\label{sec:extensions}
+There are many algorithms, and even classes of algorithm that were not described from the field of Artificial Immune Systems. Some areas that may be considered for algorithm description in follow up works include:
+
+\begin{itemize}
+	\item \textbf{Dendritic Cell Algorithm}: a new class of algorithm inspired by the behavior of dendritic cells.
+	\item \textbf{Danger Theory}: Methods inspired by the theory by Polly Matzinger \cite{Matzinger1994, Matzinger2002} which proposes that the acquired immune system responds to signals of damage, which opposes the fundamental self-nonself paradigm. 
+	\item \textbf{Additional Clonal Selection Algorithms}: There are many different types of clonal selection algorithms not limited to the B-Cell Algorithm (BCA), the Artificial Immune Recognition System (AIRS), and the Multi-objective Immune System Algorithm (MISA).
+\end{itemize}
+
+% 
+% Conclusions
+% 
+\section{Conclusions}
+\label{sec:conclusions}
+% overview
+This report provided a point of reflection for the batch of immune algorithm descriptions prepared for the Clever Algorithms project. All described algorithms were assigned to the `Immune Algorithms' kingdom in the chosen algorithm taxonomy. This report highlighted the commonality for all described Immune Algorithms and provided a definition suitable for use in the proposed book and website.
+
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
