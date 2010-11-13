@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101010}
+\newcommand{\myreportdate}{20101114}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -104,7 +104,7 @@ The classical clonal selection and negative selection paradigms integrate the ac
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of the immune network process is to prepare a repertoire of discrete pattern detectors for a given problem domain.
+The objective of the immune network process is to prepare a repertoire of discrete pattern detectors for a given problem domain, where better performing cells in the network suppress low-affinity (similar) cells in the network.
 % What is a techniques plan of action?
 This is principle is achieved through an interactive process of exposing the population to external information to which it responds to with both a clonal selection response and internal meta-dynamics of intra-population responses that stabilize the responses of the population to the external stimuli.
 
@@ -114,7 +114,76 @@ This is principle is achieved through an interactive process of exposing the pop
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:opt_ainet} provides a pseudo-code listing of the Optimization Artificial Immune Network algorithm (opt-aiNet) for minimizing a cost function. 
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{NumClones}{$N_{clones}$}
+	\SetKwData{NumRandomCells}{$N_{random}$}
+	\SetKwData{Progeny}{Progeny}
+	\SetKwData{Clones}{Clones}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Population}{Population}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{Cell}{$Cell_{i}$}
+	\SetKwData{Clone}{$Clone_{i}$}
+	\SetKwData{Cost}{$Cost_{avg}$}
+	\SetKwData{AffinityThreshold}{AffinityThreshold}
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{CreateRandomCells}{CreateRandomCells}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{MutateRelativeToFitnessOfParent}{MutateRelativeToFitnessOfParent}
+	\SetKwFunction{CalculateAveragePopulationCost}{CalculateAveragePopulationCost}
+	\SetKwFunction{CreateClones}{CreateClones}  
+	\SetKwFunction{SupressLowAffinityCells}{SupressLowAffinityCells}
+
+	% I/O
+	\KwIn{\PopulationSize, \ProblemSize, \NumClones, \NumRandomCells, \AffinityThreshold}		
+	\KwOut{\Best}
+  % Algorithm
+	% initialize	
+	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
+	% loop
+	\While{$\neg$\StopCondition{}} {
+		% evaluate
+		\EvaluatePopulation{\Population}\;
+		% best
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		% state of population
+		\Progeny $\leftarrow 0$\;
+		\Cost $\leftarrow$ \CalculateAveragePopulationCost{\Population}\;
+		\Repeat{\CalculateAveragePopulationCost{\Population} $\leq$ \Cost} {
+			clone
+			\ForEach{\Cell $\in$ \Population}{
+				% clone
+				\Clones $\leftarrow$ \CreateClones{\Cell, \NumClones}\;
+				\ForEach{\Clone $\in$ \Clones} {
+					% mutate
+					\Clone $\leftarrow$ \MutateRelativeToFitnessOfParent{\Clone, \Cell}\;				
+				}
+				% select best from the clone
+				\EvaluatePopulation{\Clones}\;
+				\Progeny $\leftarrow$ \GetBestSolution{\Clones}\;			
+			}
+		}
+		% network effects
+		\SupressLowAffinityCells{\Progeny, \AffinityThreshold}\;
+		% random cells
+		\Progeny $\leftarrow$ \CreateRandomCells{\NumRandomCells}\;		
+		% replace
+		\Population $\leftarrow$ \Progeny\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Optimization Artificial Immune Network algorithm (opt-aiNet).}
+	\label{alg:opt_ainet}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -123,7 +192,16 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item aiNet is designed for unsupervised clustering, where as the opt-aiNet extension was designed for pattern recognition and optimization, specifically multi-modal function optimization.
+	\item Mutation of clones is proportionate to the affinity of the parent cell with the cost function (better fitness, lower mutation).
+	\item The addition of random cells each iteration adds a random-restart like capability to the algorithms.
+	\item Suppression based on cell similarity provides a mechanism for reducing redundancy.
+	\item The population size is dynamic, and if it continues to grow it may be an indication of a problem with many local optima or that the affinity threshold may needs to be increased.
+	\item Affinity proportionate mutation is performed using $c\prime = c + \alpha \times N(1,0)$ where $\alpha = \frac{1}{\beta} \times exp(-f)$, $N$ is a Guassian random number, and $f$ is the fitness of the parent cell, $\beta$ controls the decay of the function and can be set to 100. 
+	\item The affinity threshold is problem and representation specific, for example a $AffinityThreshold$ may be set to an arbitrary value such as 0.1 on a continuous function domain, or calculated as a percentage of the problem space.
+	\item The number of random cells inserted may be 40\% of the population size. 
+	\item The number of clones created for a cell may be small, such as 10.
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -133,10 +211,9 @@ todo
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{optainet} provides an example of the Optimization Artificial Immune Network (opt-aiNet) implemented in the Ruby Programming Language.
 % problem
-The problem...
-
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm...
+The algorithm is an implementation based on the specification by de~Castro and Von Zuben \cite{Castro2002c}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Optimization Artificial Immune Network (opt-aiNet) in the Ruby Programming Language, label=optainet]{../../src/algorithms/immune/optainet.rb}
@@ -170,7 +247,6 @@ The authors de~Castro and Von Zuben provide a detailed presentation of the aiNet
 Timmis and Edmonds provide a careful examination of the opt-aiNet algorithm and propose some modifications and augmentations to improve its applicability and performance for multimodal function optimization problem domains \cite{Timmis2004}.
 % dynamic
 The authors de~Franca, Von~Zuben, and de~Castro proposed an extension to opt-aiNet that provided a number of enhancements and adapted its capability for for dynamic function optimization problems called dopt-aiNet \cite{Franca2005}.
-
 
 
 % 
