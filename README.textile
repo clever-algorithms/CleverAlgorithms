@@ -59,6 +59,7 @@ h3. Technical Reports
 * Jason Brownlee. "Evolutionary Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100509-1.pdf. Technical Report CA-TR-20100509-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * Jason Brownlee. "Clonal Selection Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100515-1.pdf. Technical Report CA-TR-20100515-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * Jason Brownlee. "Negative Selection Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100516-1.pdf. Technical Report CA-TR-20100516-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
+* Jason Brownlee. "Artificial Immune Network":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114-1.pdf. Technical Report CA-TR-20101114-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * ...
 
 h3. Software

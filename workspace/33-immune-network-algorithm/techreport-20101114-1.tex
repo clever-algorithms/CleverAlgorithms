@@ -87,6 +87,7 @@ The Artificial Immune Network algorithm is inspired by the Immune Network theory
 % Which features of the motivating system are relevant to a technique?
 The clonal selection theory of acquired immunity accounts for the adaptive behavior of the immune system including the ongoing selection and proliferation of cells that select-for potentially harmful (and typically foreign) material in the body.
 A concern of the clonal selection theory is that it presumes that the repertoire of reactive cells remains idle when there are no pathogen to which to respond. Jerne proposed an Immune Network Theory (Idiotypic Networks) where immune cells are not at rest in the absence of pathogen, instead antibody and immune cells recognize and respond to each other \cite{Jerne1974, Jerne1974a, Jerne1984}. 
+
 The Immune Network theory proposes that antibody (both free floating and surface bound) possess idiotopes (surface features) to which the receptors of other antibody can bind. As a result of receptor interactions, the repertoire becomes dynamic, where receptors continually both inhibit and excite each other in complex regulatory networks (chains of receptors). The theory suggests that the clonal selection process may be triggered by the idiotopes of other immune cells and molecules in addition to the surface characteristics of pathogen, and that the maturation process applies both to the receptors themselves the idiotopes which they expose. 
 
 % Metaphor: Explanation via analogy
@@ -104,9 +105,9 @@ The classical clonal selection and negative selection paradigms integrate the ac
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of the immune network process is to prepare a repertoire of discrete pattern detectors for a given problem domain, where better performing cells in the network suppress low-affinity (similar) cells in the network.
+The objective of the immune network process is to prepare a repertoire of discrete pattern detectors for a given problem domain, where better performing cells suppress low-affinity (similar) cells in the network.
 % What is a techniques plan of action?
-This is principle is achieved through an interactive process of exposing the population to external information to which it responds to with both a clonal selection response and internal meta-dynamics of intra-population responses that stabilize the responses of the population to the external stimuli.
+This principle is achieved through an interactive process of exposing the population to external information to which it responds with both a clonal selection response and internal meta-dynamics of intra-population responses that stabilizes the responses of the population to the external stimuli.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -193,12 +194,12 @@ Algorithm~\ref{alg:opt_ainet} provides a pseudo-code listing of the Optimization
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item aiNet is designed for unsupervised clustering, where as the opt-aiNet extension was designed for pattern recognition and optimization, specifically multi-modal function optimization.
-	\item Mutation of clones is proportionate to the affinity of the parent cell with the cost function (better fitness, lower mutation).
+	\item The amount of mutation of clones is proportionate to the affinity of the parent cell with the cost function (better fitness, lower mutation).
 	\item The addition of random cells each iteration adds a random-restart like capability to the algorithms.
 	\item Suppression based on cell similarity provides a mechanism for reducing redundancy.
 	\item The population size is dynamic, and if it continues to grow it may be an indication of a problem with many local optima or that the affinity threshold may needs to be increased.
 	\item Affinity proportionate mutation is performed using $c\prime = c + \alpha \times N(1,0)$ where $\alpha = \frac{1}{\beta} \times exp(-f)$, $N$ is a Guassian random number, and $f$ is the fitness of the parent cell, $\beta$ controls the decay of the function and can be set to 100. 
-	\item The affinity threshold is problem and representation specific, for example a $AffinityThreshold$ may be set to an arbitrary value such as 0.1 on a continuous function domain, or calculated as a percentage of the problem space.
+	\item The affinity threshold is problem and representation specific, for example a $AffinityThreshold$ may be set to an arbitrary value such as 0.1 on a continuous function domain, or calculated as a percentage of the size of the problem space.
 	\item The number of random cells inserted may be 40\% of the population size. 
 	\item The number of clones created for a cell may be small, such as 10.
 	
@@ -211,7 +212,7 @@ Algorithm~\ref{alg:opt_ainet} provides a pseudo-code listing of the Optimization
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{optainet} provides an example of the Optimization Artificial Immune Network (opt-aiNet) implemented in the Ruby Programming Language.
 % problem
-The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
 The algorithm is an implementation based on the specification by de~Castro and Von Zuben \cite{Castro2002c}.
 
@@ -258,7 +259,7 @@ The authors de~Franca, Von~Zuben, and de~Castro proposed an extension to opt-aiN
 % report
 This report described the Artificial Immune Network algorithm from the field of Artificial Immune systems.
 % sources
-Elements of this report were drawn from some of the author's previous works including his dissertation work \cite{Brownlee2008}.
+Elements of this report were drawn from some of the author's previous works including his dissertation \cite{Brownlee2008}.
 
 % 
 % Contribute
@@ -274,7 +275,7 @@ Do you want to get that warm feeling from contributing to an open source project
 Do you want to see your name as an acknowledgment in print?
 
 %  ideal
-Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is (somewhat) wrong by default. 
+Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is subjected to continuous improvement. 
 % advice
 Please help to make this work less wrong by emailing the author `\myreportauthor' at \url{\myreportemail} or visit the project website at \url{\myreportwebsite}.
 
