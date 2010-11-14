@@ -17,9 +17,8 @@ def cost(permutation, cities)
   return distance
 end
 
-def initialise_pheromone_matrix(num_cities, naive_score)
-  v = num_cities.to_f / naive_score
-  return Array.new(num_cities){|i| Array.new(num_cities, v)}
+def initialise_pheromone_matrix(num_cities, init_pher)  
+  return Array.new(num_cities){|i| Array.new(num_cities, init_pher)}
 end
 
 def nearest_neighbor_solution(cities)
@@ -56,7 +55,7 @@ def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_hist
   choices
 end
 
-def select_next_city(choices)
+def prob_select_next_city(choices)
   sum = choices.inject(0.0){|sum,element| sum + element[:prob]}
   return choices[rand(choices.length)][:city] if sum == 0.0
   v, next_city = rand(), -1
@@ -74,50 +73,56 @@ def select_next_city(choices)
   return next_city
 end
 
-def stepwise_construction(cities, pheromone, c_heuristic, c_history)
+def greedy_select_next_city(choices)
+  best = choices.max{|a,b| a[:prob]<=>b[:prob]}
+  return best[:city]
+end
+
+def stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
   perm = []
   perm << rand(cities.length)
   begin
-    choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, c_history)
-    next_city = select_next_city(choices)
+    choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, 1.0)
+    greedy = rand() <= c_greediness
+    next_city = (greedy) ? greedy_select_next_city(choices) : prob_select_next_city(choices)
     perm << next_city
   end until perm.length == cities.length
   return perm
 end
 
-def decay_pheromone(pheromone, decay_factor)
-  pheromone.each do |array|
-    array.each_with_index do |p, i|
-      array[i] = (1.0 - decay_factor) * p
-    end
+def global_update_pheromone(pheromone, candidate, decay_factor)
+  candidate[:vector].each_with_index do |x, i|
+    y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
+    value = (1.0-decay_factor)*pheromone[x][y] + decay_factor*(1.0/candidate[:cost])
+    pheromone[x][y] = value
+    pheromone[y][x] = value
   end
 end
 
-def update_pheromone(pheromone, solutions)
-  solutions.each do |candidate|
-    update = 1.0 / candidate[:cost]
-    candidate[:vector].each_with_index do |x, i|
-      y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-      pheromone[x][y] += d
-      pheromone[y][x] += d
-    end
+def local_update_pheromone(pheromone, candidate, c_local_pheromone, decay_factor, init_pheromone)
+  candidate[:vector].each_with_index do |x, i|
+    y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
+    value = (1.0-c_local_pheromone)*pheromone[x][y] + c_local_pheromone * init_pheromone
+    pheromone[x][y] = value
+    pheromone[y][x] = value
   end
 end
 
-def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_history)
+def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_local_pheromone, c_greediness)
   best = nearest_neighbor_solution(cities)
+  init_pheromone = 1.0 / (cities.length.to_f * best[:cost])
   puts "Nearest Neighbor heuristic solution: cost=#{best[:cost]}"
-  pheromone = initialise_pheromone_matrix(cities.length, best[:cost])
+  pheromone = initialise_pheromone_matrix(cities.length, init_pheromone)
   max_iterations.times do |iter|
     solutions = []
     num_ants.times do
       candidate = {}
-      candidate[:vector] = stepwise_construction(cities, pheromone, c_heuristic, c_history)
+      candidate[:vector] = stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
       candidate[:cost] = cost(candidate[:vector], cities)
       best = candidate if candidate[:cost] < best[:cost]
+      local_update_pheromone(pheromone, candidate, c_local_pheromone, decay_factor, init_pheromone)
     end
-    decay_pheromone(pheromone, decay_factor)
-    update_pheromone(pheromone, solutions)
+    global_update_pheromone(pheromone, best, decay_factor)
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
   return best
@@ -132,12 +137,13 @@ if __FILE__ == $0
    [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],
    [875,920],[700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],
    [595,360],[1340,725],[1740,245]]
-  max_iterations = 50
-  num_ants = berlin52.length
-  decay_factor = 0.5
+  max_iterations = 100
+  num_ants = 10
+  decay_factor = 0.1
   c_heuristic = 2.5
-  c_history = 1.0
+  c_local_pheromone = 0.1
+  c_greediness = 0.9
 
-  best = search(berlin52, max_iterations, num_ants, decay_factor, c_heuristic, c_history)
+  best = search(berlin52, max_iterations, num_ants, decay_factor, c_heuristic, c_local_pheromone, c_greediness)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
