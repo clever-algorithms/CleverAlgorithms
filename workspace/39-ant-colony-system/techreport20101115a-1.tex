@@ -109,6 +109,14 @@ Solutions are constructed one discrete piece at a time in a probabilistic step-w
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:acs} provides a pseudo-code listing of the main Ant Colony System algorithm for minimizing a cost function. 
+
+The procedure is different to Ant Systems in three specific ways, as follows:
+\begin{itemize}
+	\item Evaporation occurs after each candidate solution is created.
+	\item Update and decay processes are only applied to the components of the best tour found so far in each iteration.
+	\item Local pheromone update for each new solution created.
+\end{itemize}
+
 The pheromone update process is described by a single equation that combines the contributions of all candidate solutions with a decay coefficient to determine the new pheromone value, as follows:
 
 \begin{equation}
@@ -190,7 +198,12 @@ where $\tau_{i,j}$ is the maximizing contribution to the overall score of select
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The Ant Colony System algorithm was designed for use with combinatorial problems such as the TSP, knapsack problem, quadratic assignment problems, graph coloring problems and many others.
+	\item The local pheromone (history) coefficient ($\sigma$) controls the amount of contribution history plays in a components probability of selection and is commonly set to 0.1.
+	\item The heuristic coefficient ($\beta$) controls the amount of contribution problem-specific heuristic information plays in a components probability of selection and is commonly between 2 and 5, such as 2.5.
+	\item The decay factor ($\rho$) controls the rate at which historic information is lost and is commonly set to 0.1.
+	\item The greediness factor $q0$ is commonly set to 0.9.
+	\item The total number of ants ($m$) is commonly set low, such as 10.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -220,7 +233,7 @@ Some extensions to the algorithm implementation for speed improvements may consi
 % 
 \subsection{Primary Sources}
 % seminal
-todo
+The algorithm was proposed in a technical report by Dorigo and Gambardella \cite{Dorigo1997a}, and was later published \cite{Dorigo1997}.
 % early
 
 % 
@@ -230,6 +243,7 @@ todo
 % reviews
 todo
 % books
+The seminal book on Ant Colony Optimization in general with a detailed treatment of Ant Colony System is ``Ant colony optimization'' by Dorigo and St\"utzle \cite{Dorigo2004}. An earlier book ``Swarm intelligence: from natural to artificial systems'' by Bonabeau, Dorigo, and Theraulaz also provides an introduction to Swarm Intelligence with a detailed treatment of Ant Colony System \cite{Bonabeau1999}.
 
 
 % 
