@@ -81,7 +81,7 @@ Ant System was originally the term used to refer to a range of Ant based algorit
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-THe Ant system algorithm is inspired by the foraging behavior of ants, specifically of the pheromone communication between ants of a good path between the colony and a food source in an environment called stigmergy.
+The Ant system algorithm is inspired by the foraging behavior of ants, specifically of the pheromone communication between ants of a good path between the colony and a food source in an environment called stigmergy.
 % Which features of the motivating system are relevant to a technique?
 
 
@@ -92,7 +92,7 @@ THe Ant system algorithm is inspired by the foraging behavior of ants, specifica
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+Ants initially wander randomly around their environment. Once food is located an ant will begin laying down pheromone in the environment. Numerous trips between the food and the colony are performed and if the same route is followed that leads to food then additional pheromone is layed down. Pheromone decays in the environment, so that older paths are less likely to be followed. Other ants may discover the same path to the food and in turn may follow it to food and lay down pheromone. A positive feedback process routes more and more ants to productive paths to the food which are in turn refined through their use. 
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -108,62 +108,31 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:as} provides a pseudo-code listing of the Ant System algorithm for minimizing a cost function. 
+Algorithm~\ref{alg:as} provides a pseudo-code listing of the main Ant System algorithm for minimizing a cost function. 
 
 \begin{algorithm}[ht]
 	\SetLine  
 
 	% data
-	\SetKwData{GlobalBest}{$P_{g\_best}$}
+	\SetKwData{Best}{$P_{best}$}
 	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{Population}{Population}
 	\SetKwData{PopulationSize}{$Population_{size}$}
-	\SetKwData{Particle}{$P$}
-	\SetKwData{CurrentBest}{$P_{p\_best}$}
-	\SetKwData{CurrentPosition}{$P_{position}$}
-	\SetKwData{CurrentVelocity}{$P_{velocity}$}
-	\SetKwData{CurrentCost}{$P_{cost}$}
+	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{RandomPosition}{RandomPosition}
-	\SetKwFunction{RandomVelocity}{RandomVelocity}	
-	\SetKwFunction{UpdatePosition}{UpdatePosition}
-	\SetKwFunction{UpdateVelocity}{UpdateVelocity}
+
 	
 	% I/O
 	\KwIn{\ProblemSize, \PopulationSize}		
-	\KwOut{\GlobalBest}
+	\KwOut{\Best}
   % Algorithm
-
-	% initialize	
-	\Population $\leftarrow$ $0$\;
-	\GlobalBest $\leftarrow$ $0$\;
-	\For{$i=1$ $\KwTo$ \PopulationSize} {
-		\CurrentPosition $\leftarrow$ \RandomPosition{\PopulationSize}\;
-		\CurrentVelocity $\leftarrow$ \RandomVelocity{}\;
-		\CurrentCost $\leftarrow$ \Cost{\CurrentPosition}\;
-		\CurrentBest $\leftarrow$ \CurrentPosition\;
-		\If{\CurrentCost $\leq$ \GlobalBest} {
-			\GlobalBest $\leftarrow$ \CurrentBest\;
-		}
-	}	
-
+	
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		\ForEach{\Particle $\in$ \Population} {
-			\CurrentVelocity $\leftarrow$ \UpdateVelocity{\CurrentVelocity, \GlobalBest, \CurrentBest}\;
-			\CurrentPosition $\leftarrow$ \UpdatePosition{\CurrentPosition, \CurrentVelocity}\;
-			\CurrentCost $\leftarrow$ \Cost{\CurrentPosition}\;
-			\If{\CurrentCost $\leq$ \CurrentBest} {
-				\CurrentBest $\leftarrow$ \CurrentPosition\;
-				\If{\CurrentCost $\leq$ \GlobalBest} {
-					\GlobalBest $\leftarrow$ \CurrentBest\;
-				}
-			}
-		}		
+	
 	}
-	\Return{\GlobalBest}\;
+	\Return{\Best}\;
 	% end
 	\caption{Pseudo Code for the Ant System algorithm.}
 	\label{alg:as}
@@ -176,7 +145,10 @@ Algorithm~\ref{alg:as} provides a pseudo-code listing of the Ant System algorith
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The contribution of history ($\alpha$) is commonly set to 1.0.
+	\item The contribution of the heuristic ($\beta$) is commonly between 2 and 5, such as 2.5.
+	\item The decay factor ($\rho$) is commonly set to 0.5.
+	\item The total number of ants ($m$) is commonly set to the number of components in the problem, such as the number of cities in the TSP.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
