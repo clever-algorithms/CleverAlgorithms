@@ -24,14 +24,14 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101115}
+\newcommand{\myreportdate}{20101114}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
 % leave this alone, it's templated baby!
 \title{{\myreporttitle}\footnote{\myreportlicense}}
 \author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
-\date{\today\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\date{\today\\{\small{Technical Report: CA-TR-{\myreportdate}b-\myreportversion}}}
 \begin{document}
 \maketitle
 
@@ -90,7 +90,7 @@ Particle Swarm Optimization is inspired by the social foraging behavior of some 
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
-Particles in the swarm fly through an environment following the fitter members of the swarm and generally biasing their movement toward historically good areas of the environment.
+Particles in the swarm fly through an environment following the fitter members of the swarm and generally biasing their movement toward historically good areas of their environment.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
 
 
@@ -101,7 +101,7 @@ Particles in the swarm fly through an environment following the fitter members o
 % What is the information processing objective of a technique?
 The goal of the algorithm is to have all the particles locate the optima in a multi-dimensional hyper-volume.
 % What is a techniques plan of action?
-This is achieved by assigning initially random positions to all particles in the space and assign small random velocities. The algorithm is executed like a simulation, advancing the position of each particle in turn based on its velocity, the best known global position in the problem space and the best known position known to a particle. The objective function is sampled after each position update. Over time, through a combination of exploration and exploitation of known good positions in the search space, the particles cluster or converge together around an optima. 
+This is achieved by assigning initially random positions to all particles in the space and small initial random velocities. The algorithm is executed like a simulation, advancing the position of each particle in turn based on its velocity, the best known global position in the problem space and the best known position known to a particle. The objective function is sampled after each position update. Over time, through a combination of exploration and exploitation of known good positions in the search space, the particles cluster or converge together around an optima. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -109,7 +109,7 @@ This is achieved by assigning initially random positions to all particles in the
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:pso} provides a pseudo-code listing of the Particle Swarm Optimization algorithm for minimizing a cost function. The listing shows global interaction, although does not show local neighborhood interactions.
+Algorithm~\ref{alg:pso} provides a pseudo-code listing of the Particle Swarm Optimization algorithm for minimizing a cost function. 
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -139,6 +139,7 @@ Algorithm~\ref{alg:pso} provides a pseudo-code listing of the Particle Swarm Opt
 
 	% initialize	
 	\Population $\leftarrow$ $0$\;
+	\GlobalBest $\leftarrow$ $0$\;
 	\For{$i=1$ $\KwTo$ \PopulationSize} {
 		\CurrentPosition $\leftarrow$ \RandomPosition{\PopulationSize}\;
 		\CurrentVelocity $\leftarrow$ \RandomVelocity{}\;
@@ -165,7 +166,7 @@ Algorithm~\ref{alg:pso} provides a pseudo-code listing of the Particle Swarm Opt
 	}
 	\Return{\GlobalBest}\;
 	% end
-	\caption{Pseudo Code for the Particle Swarm Optimization algorithm (global max).}
+	\caption{Pseudo Code for the Particle Swarm Optimization algorithm.}
 	\label{alg:pso}
 \end{algorithm}
 
@@ -178,10 +179,11 @@ Algorithm~\ref{alg:pso} provides a pseudo-code listing of the Particle Swarm Opt
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The number of particles should be low, around 20-40
-	\item The speed a particle can move (maximum change is position per iteration) should be bounded, such as to a percentage of the size of the domain.
+	\item The speed a particle can move (maximum change in its position per iteration) should be bounded, such as to a percentage of the size of the domain.
 	\item The learning factors (biases towards global and personal best positions) should be between 0 and 4, typically 2.
 	\item A local bias (local neighborhood) factor can be introduced where neighbors are determined based on Euclidean distance between particle positions.
-	\item Particles may leave the boundary of the problem space and may be penalized or be reflected back into the domain. 
+	\item Particles may leave the boundary of the problem space and may be penalized, be reflected back into the domain or biased to return back toward a position in the problem domain. 
+	\item An inertia or momentum coefficient can be introduced to limit the change in velocity.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -193,7 +195,7 @@ Listing~\ref{pso} provides an example of the Particle Swarm Optimization algorit
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is a simple version of Particle Swarm Optimization based on the seminal papers. The implementation limits the velocity at a pre-defined maximum, and bounds particles to the search space, reflecting their movement and velocity if the bounds of the space are reached. Particles are influenced by the best position found as well as their own personal best position.
+The algorithm is a conservative version of Particle Swarm Optimization based on the seminal papers. The implementation limits the velocity at a pre-defined maximum, and bounds particles to the search space, reflecting their movement and velocity if the bounds of the space are exceeded. Particles are influenced by the best position found as well as their own personal best position. Natural extensions may consider limiting velocity with an inertia coefficient and including a neighborhood function for the particles.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Particle Swarm Optimization in the Ruby Programming Language, label=pso]{../../src/algorithms/swarm/pso.rb}
@@ -211,7 +213,7 @@ The algorithm is a simple version of Particle Swarm Optimization based on the se
 % 
 \subsection{Primary Sources}
 % seminal
-Particle Swarm Optimization was described as a stochastic global optimization method for continuous functions in 1995 by Eberhart and Kennedy \cite{Eberhart1995, Kennedy1995}. It was based on work on genetic algorithms and on the flocking behavioral models of Reynolds \cite{Reynolds1987}.
+Particle Swarm Optimization was described as a stochastic global optimization method for continuous functions in 1995 by Eberhart and Kennedy \cite{Eberhart1995, Kennedy1995}. It motivated as an optimization based on the flocking behavioral models of Reynolds \cite{Reynolds1987}.
 % early
 Early works included the introduction of inertia \cite{Shi1998} and early study of social topologies in the swarm by Kennedy \cite{Kennedy1999}. 
 
@@ -220,8 +222,7 @@ Early works included the introduction of inertia \cite{Shi1998} and early study 
 % 
 \subsection{Learn More}
 % reviews
-
-Poli provides a meta-analysis of PSO publications that focus on the application the technique, providing a systematic breakdown on application areas \cite{Poli2008a}. 
+Poli, Kennedy, and Blackwell provide a modern overview of the field of PSO with detailed coverage of extensions to the baseline technique \cite{Poli2007}. Poli provides a meta-analysis of PSO publications that focus on the application the technique, providing a systematic breakdown on application areas \cite{Poli2008a}. 
 % books
 An excellent book on Swarm Intelligence in general with detailed coverage of Particle Swarm Optimization is ``Swarm Intelligence'' by Kennedy, Eberhart, and Shi \cite{Kennedy2001}.
 
@@ -231,7 +232,7 @@ An excellent book on Swarm Intelligence in general with detailed coverage of Par
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Particle Swarm Optimization algorithm using the standardized template.
 
 % 
 % Contribute
