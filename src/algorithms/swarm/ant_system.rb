@@ -80,7 +80,6 @@ def stepwise_construction(cities, pheromone, c_heuristic, c_history)
   begin
     choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, c_history)
     next_city = select_next_city(choices)
-    raise "Selected an invalid city: choice=#{next_city}, perm=#{perm.inspect}" if next_city<0 or perm.include?(next_city)
     perm << next_city
   end until perm.length == cities.length
   return perm
@@ -90,7 +89,6 @@ def decay_pheromone(pheromone, decay_factor)
   pheromone.each do |array|
     array.each_with_index do |p, i|
       array[i] = (1.0 - decay_factor) * p
-      raise "Unexpected pheromone #{array[i]}" if p==0.0/0.0 or p==1.0/0.0
     end
   end
 end

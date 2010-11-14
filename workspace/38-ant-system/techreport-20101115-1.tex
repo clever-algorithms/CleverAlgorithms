@@ -99,10 +99,9 @@ Ants initially wander randomly around their environment. Once food is located an
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of the strategy is to exploit historic and heuristic information to construct candidate solutions and fold the information learned from constructing solutions into the history.
 % What is a techniques plan of action?
-
-probabilistic step-wise construction of solution
-
+Solutions are constructed one discrete piece at a time in a probabilistic step-wise manner. The probability of selecting a component is determined by the heuristic contribution of the component to the overall cost of the solution and the quality of solutions from which the component has historically known to have been included. History is updated proportional to the quality of candidate solutions and is uniformly deceased ensuring the most recent and useful information is retained.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -111,28 +110,73 @@ probabilistic step-wise construction of solution
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:as} provides a pseudo-code listing of the main Ant System algorithm for minimizing a cost function. 
+In this algorithm, all ants contribute pheromone, that is the components of alls solutions created are updated in the pheromone (history) matrix. The update process is described by a single equation that combines the contributions of all candidate solutions with a decay coefficient for determine the new pheromone value. The pseudo code listing shows this as a two step process for simplicity. 
+
+\begin{equation}
+\tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \sum_{k=1}^m \Delta_{i,j}^k
+\end{equation}
+
+where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, $m$ is the number of ants, and  $\sum_{k=1}^m \Delta_{i,j}^k $ is the sum of $\frac{1}{S_{cost}} $ (maximizing solution cost) for those solutions that include component $i,j$.
+
+Probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
+
+\begin{equation}
+\frac{\tau_{i,j}^{\alpha} \times \eta_{i,j}^{\beta}}
+{\sum_{k=1}^c \tau_{i,k}^{\alpha} \times \eta_{i,k}^{\beta}}
+\end{equation}
+
+where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the number of components. 
 
 \begin{algorithm}[ht]
 	\SetLine  
 
 	% data
 	\SetKwData{Best}{$P_{best}$}
+	\SetKwData{BestCost}{$Pbest_{cost}$}
 	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{DecayFactor}{$\rho$}
+	\SetKwData{HistoryContribution}{$\alpha$}
+	\SetKwData{HeuristicContribution}{$\beta$}
+	\SetKwData{NumAnts}{$m$}
 	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{Pheromone}{Pheromone}
+	\SetKwData{Candidates}{Candidates}
+	\SetKwData{Solution}{$S_{i}$}
+	\SetKwData{SolutionCost}{$Si_{cost}$}
+	\SetKwData{HeuristicSolution}{$S_{h}$}
+	\SetKwData{HeuristicSolutionCost}{$Sh_{cost}$}
 	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
-
+	\SetKwFunction{InitializePheromone}{InitializePheromone}
+	\SetKwFunction{ProbabilisticStepwiseConstruction}{ProbabilisticStepwiseConstruction}
+	\SetKwFunction{DecayPheromone}{DecayPheromone}
+	\SetKwFunction{UpdatePheromone}{UpdatePheromone}
+	\SetKwFunction{CreateHeuristicSolution}{CreateHeuristicSolution}
 	
 	% I/O
-	\KwIn{\ProblemSize, \PopulationSize}		
+	\KwIn{\ProblemSize, \PopulationSize, \NumAnts, \DecayFactor, \HistoryContribution, \HeuristicContribution}		
 	\KwOut{\Best}
   % Algorithm
-	
+	\Best $\leftarrow$ \CreateHeuristicSolution{\ProblemSize}\;
+	\BestCost $\leftarrow$ \Cost{\HeuristicSolution}\;
+	\Pheromone $\leftarrow$ \InitializePheromone{\BestCost}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-	
+		\Candidates $\leftarrow$ $0$\;
+		\For{$i=1$ $\KwTo$ \NumAnts} {
+			\Solution $\leftarrow$ \ProbabilisticStepwiseConstruction{\Pheromone, \ProblemSize, \HistoryContribution, \HeuristicContribution}\;
+			\SolutionCost $\leftarrow$ \Cost{\Solution}\;
+			\If{\SolutionCost $\leq$ \BestCost} {
+				\BestCost $\leftarrow$ \SolutionCost\;
+				\Best $\leftarrow$ \Solution\;
+			}
+		}
+		\DecayPheromone{\Pheromone, \DecayFactor}\;
+		\ForEach{\Solution $\in$ \Candidates}{
+			\UpdatePheromone{\Pheromone, \Solution, \SolutionCost}\;
+		}
 	}
 	\Return{\Best}\;
 	% end
@@ -147,6 +191,7 @@ Algorithm~\ref{alg:as} provides a pseudo-code listing of the main Ant System alg
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
+	\item Ant systems is designed for use with combinatorial problems such as the TSP, knapsack problem, quadratic assignment problems, graph coloring problems and many others.
 	\item The contribution of history ($\alpha$) is commonly set to 1.0.
 	\item The contribution of the heuristic ($\beta$) is commonly between 2 and 5, such as 2.5.
 	\item The decay factor ($\rho$) is commonly set to 0.5.
@@ -161,13 +206,11 @@ Algorithm~\ref{alg:as} provides a pseudo-code listing of the main Ant System alg
 Listing~\ref{ant_system} provides an example of the Ant System algorithm implemented in the Ruby Programming Language. 
 % problem
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
-
 % algorithm
-The algorithm is an implementation of the simple Ant System...
+The algorithm is a naive implementation of the Ant System. Some extensions for speed improvements may consider pre-calculating a distance matrix for all the cities in the problem, and pre-computing a probability matrix for choices during the probabilistic step-wise construction of tours. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Ant System algorithm in the Ruby Programming Language, label=ant_system]{../../src/algorithms/swarm/ant_system.rb}
-
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -189,8 +232,6 @@ The seminal publication into the investigation of Ant System (with the implement
 % Learn More
 % 
 \subsection{Learn More}
-% reviews
-todo
 % books
 The seminal book on Ant Colony Optimization in general with a detailed treatment of Ant system is ``Ant colony optimization'' by Dorigo and St\"utzle \cite{Dorigo2004}. An earlier book ``Swarm intelligence: from natural to artificial systems'' by Bonabeau, Dorigo, and Theraulaz also provides an introduction to Swarm Intelligence with a detailed treatment of Ant System \cite{Bonabeau1999}.
 
@@ -200,7 +241,7 @@ The seminal book on Ant Colony Optimization in general with a detailed treatment
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Ant System algorithm using the standardized algorithm template. The algorithm implementation was based on a previous implementation by the author for the OAT project \cite{Brownlee2007}.
 
 % 
 % Contribute
