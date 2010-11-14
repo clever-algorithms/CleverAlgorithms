@@ -1,4 +1,4 @@
-# Particle Swarm Optimization in the Ruby Programming Language
+# Ant System in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
