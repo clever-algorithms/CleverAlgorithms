@@ -64,6 +64,7 @@ h3. Technical Reports
 * Jason Brownlee. "Particle Swarm Optimization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114b-1.pdf. Technical Report CA-TR-20101114b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Ant System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115-1.pdf. Technical Report CA-TR-20101115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Ant Colony System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115a-1.pdf. Technical Report CA-TR-20101115a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Swarm Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115b-1.pdf. Technical Report CA-TR-20101115b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * ...
 
 h3. Software
