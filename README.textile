@@ -71,8 +71,6 @@ h4. Physical Algorithms
 * Jason Brownlee. "Simulated Annealing":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115c-1.pdf. Technical Report CA-TR-20101115c-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Memetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116-1.pdf. Technical Report CA-TR-20101116-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
-* ...
-
 h3. Software
 
 * "Algorithms":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithms/ : The executable source code used in all algorithm descriptions. Each algorithm is in a separate file, and files are organized by algorithm taxonomic kingdom used in the book structure, specifically: stochastic, physical, evolutionary, probabilistic, swarm, and immune.
