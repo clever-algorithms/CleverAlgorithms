@@ -62,7 +62,9 @@ h3. Technical Reports
 * Jason Brownlee. "Artificial Immune Network":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114-1.pdf. Technical Report CA-TR-20101114-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Immune Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114a-1.pdf. Technical Report CA-TR-20101114a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Particle Swarm Optimization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114b-1.pdf. Technical Report CA-TR-20101114b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
-* Jason Brownlee. "Any System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115-1.pdf. Technical Report CA-TR-20101115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.* ...
+* Jason Brownlee. "Ant System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115-1.pdf. Technical Report CA-TR-20101115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Ant Colony System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115a-1.pdf. Technical Report CA-TR-20101115a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* ...
 
 h3. Software
 

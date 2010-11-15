@@ -45,7 +45,7 @@ The project makes use of a standardized algorithm description template that uses
 This report describes the Ant Colony System algorithm.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Ant, Colony, Sytem}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Ant, Colony, System}}
 \end{description} 
 
 \section{Introduction} 
@@ -81,7 +81,7 @@ Ant Colony System is an extension to the Ant System algorithm and is related to 
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-The Ant system algorithm is inspired by the foraging behavior of ants, specifically the pheromone communication between ants regarding a good path between the colony and a food source in an environment. This mechanism is called stigmergy.
+The Ant Colony System algorithm is inspired by the foraging behavior of ants, specifically the pheromone communication between ants regarding a good path between the colony and a food source in an environment. This mechanism is called stigmergy.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -115,7 +115,7 @@ The probabilistic step-wise construction of solution makes use of both history (
 P_{i,j} \leftarrow \frac{\tau_{i,j}^{\alpha} \times \eta_{i,j}^{\beta}}{\sum_{k=1}^c \tau_{i,k}^{\alpha} \times \eta_{i,k}^{\beta}}
 \end{equation}
 
-where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. A greediness factor ($q0$) is used to influences when to use the above probabilistic component selection and when to greedily select the best possible component. 
+where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient (commonly fixed at 1.0), $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. A greediness factor ($q0$) is used to influences when to use the above probabilistic component selection and when to greedily select the best possible component. 
 
 A local pheromone update is performed for each solution that is constructed to dissuade following solutions to use the same components in the same order, as follows:
 
@@ -131,7 +131,7 @@ At the end of each iteration, the pheromone is updated and decayed using the bes
 \tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \Delta_{i,j}^{best}
 \end{equation}
 
-where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, and $\Delta_{i,j}^{best} $ is the $\frac{1}{S_{cost}} $ (maximizing solution cost) for the best solution found so far. 
+where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, and $\Delta_{i,j}^{best} $ is the maximizing solution cost for the best solution found so far. 
 
 
 
