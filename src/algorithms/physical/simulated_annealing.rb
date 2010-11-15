@@ -55,7 +55,7 @@ def create_neighbour(current, cities)
 end
 
 def should_accept?(candidate, current, temp)
-  return true if candidate[:cost] < current[:cost]
+  return true if candidate[:cost] <= current[:cost]
   return Math.exp((current[:cost] - candidate[:cost]) / temp) > rand()
 end
 

@@ -73,7 +73,7 @@ Simulated Annealing, SA
 % To what fields of study does a technique belong?
 Simulated Annealing is a global optimization that belongs to the field of Stochastic Optimization and Metaheuristics.
 % What are the closely related approaches to a technique?
-Simulated Annealing is an adaptation of the Metropolis-Hastings Monte Carlo algorithm for the use in function optimization. It is a baseline method that like the Genetic Algorithm provides a basis for a large variety of extensions and specialization's of the general method.
+Simulated Annealing is an adaptation of the Metropolis-Hastings Monte Carlo algorithm and is used in function optimization. Like the Genetic Algorithm, it provides a basis for a large variety of extensions and specialization's of the general method not limited to Parallel Simulated Annealing, Fast Simulated Annealing, and Adaptive Simulated Annealing.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,7 +81,7 @@ Simulated Annealing is an adaptation of the Metropolis-Hastings Monte Carlo algo
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-Simulated Annealing is inspired by the process of annealing in metallurgy where a material is heated and slowly cooled under controlled conditions to increase the size of the crystals and reduce their defects. This has the effect of improving the strength and durability of the material. The heat increases the energy of the atoms allowing them to move freely, and the slow cooling schedule allows a new low-energy configuration to be discovered and exploited.
+Simulated Annealing is inspired by the process of annealing in metallurgy. In this natural process a material is heated and slowly cooled under controlled conditions to increase the size of the crystals in the material and reduce their defects. This has the effect of improving the strength and durability of the material. The heat increases the energy of the atoms allowing them to move freely, and the slow cooling schedule allows a new low-energy configuration to be discovered and exploited.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -90,7 +90,7 @@ Simulated Annealing is inspired by the process of annealing in metallurgy where 
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
-Each configuration of the problem in the search space represents a different internal energy of the system. Heating the system up results in a broader sampling and a relaxation of the acceptance criteria of the samples taken from the search space. As the system is cooled, the scope of sampling the search space narrows to those areas that have demonstrated some potential of payoff and the acceptance criteria of samples is narrowed to improving movements. Once the system has cooled, the configuration will represent a sample at or close to a global optimum. 
+Each configuration of a solution in the search space represents a different internal energy of the system. Heating the system results in a relaxation of the acceptance criteria of the samples taken from the search space. As the system is cooled, the acceptance criteria of samples is narrowed to focus on improving movements. Once the system has cooled, the configuration will represent a sample at or close to a global optimum. 
 % What are the functionalities inferred for a technique from the analogous inspiring system?
 
 
@@ -101,7 +101,7 @@ Each configuration of the problem in the search space represents a different int
 % What is the information processing objective of a technique?
 The information processing objective of the technique is to locate the minimum cost configuration in the search space.
 % What is a techniques plan of action?
-The algorithms plan of action is to probabilistically re-sample the problem space with a step-size that is initially very large and that decreases over the execution time of the algorithm. Similarly, the acceptance of new samples into the currently held sample is managed by a probabilistic function that becomes more discerning of the cost of samples it accepts over the execution time of the algorithm.
+The algorithms plan of action is to probabilistically re-sample the problem space where the acceptance of new samples into the currently held sample is managed by a probabilistic function that becomes more discerning of the cost of samples it accepts over the execution time of the algorithm. This probabilistic decision is based on the Metropolis-Hastings algorithm for simulating samples from a thermodynamic system. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -116,19 +116,42 @@ Algorithm~\ref{alg:sa} provides a pseudo-code listing of the main Simulated Anne
 
 	% data
 	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{Best}{$P_{best}$}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{InitialTemperature}{$temp_{max}$}
+	\SetKwData{Temp}{$temp_{curr}$}
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Current}{$S_{current}$}
+	\SetKwData{Candidate}{$S_{i}$}
 	
 	% functions
 	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{Rand}{Rand}
 	\SetKwFunction{StopCondition}{StopCondition}
-	% I/O
-	\KwIn{\ProblemSize}		
-	\KwOut{\Best}
-  % Algorithm
+	\SetKwFunction{CreateInitialSolution}{CreateInitialSolution}
+	\SetKwFunction{CreateNeighborSolution}{CreateNeighborSolution}
+	\SetKwFunction{CalculateTemperature}{CalculateTemperature}
 	
+	% I/O
+	\KwIn{\ProblemSize, \MaxIterations, \InitialTemperature}		
+	\KwOut{\Best}
+  
+	% Algorithm
+	\Current $\leftarrow$ \CreateInitialSolution{\ProblemSize}\;
+	\Best $\leftarrow$ \Current\;
 	% loop
-	\While{$\neg$\StopCondition{}} {
-		
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Candidate $\leftarrow$ \CreateNeighborSolution{\Current}\;
+		\Temp $\leftarrow$ \CalculateTemperature{$i$, \InitialTemperature}\;
+		\uIf{\Cost{\Candidate} $\leq$ \Cost{\Current}} {
+			\Current $\leftarrow$ \Candidate\;
+			\If{\Cost{\Candidate} $\leq$ \Cost{\Best}} {
+				\Best $\leftarrow$ \Candidate\;
+			}
+		}
+		\ElseIf{$\exp(\frac{\Cost{\Current}-\Cost{\Candidate}}{\Temp})$ $>$ \Rand{}} {
+			\Current $\leftarrow$ \Candidate\;
+		}
 	}
 	\Return{\Best}\;
 	% end
@@ -143,10 +166,13 @@ Algorithm~\ref{alg:sa} provides a pseudo-code listing of the main Simulated Anne
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Simulated Annealing was designed for use with combinatorial optimization problems, although it has also been adapted for continuous function optimization problems.
-	\item The convergence proof suggests that with a long enough cooling period, that the system will always converge to the global optimum. The downside of this finding is that the number of samples taken for optimum convergence to occur on some problems may be more than a complete enumeration of the search space. 
-	\item Performance improvements can be given with the selection of a candidate move generation scheme that is less likely to generate candidates of significantly higher cost.
+	\item Simulated Annealing was designed for use with combinatorial optimization problems, although it has been adapted for continuous function optimization problems.
+	\item The convergence proof suggests that with a long enough cooling period, the system will always converge to the global optimum. The downside of this theoretical finding is that the number of samples taken for optimum convergence to occur on some problems may be more than a complete enumeration of the search space. 
+	\item Performance improvements can be given with the selection of a candidate move generation scheme (neighborhood) that is less likely to generate candidates of significantly higher cost.
 	\item Restarting the cooling scheduling using the best found solution so far can lead to an improved outcome on some problems.
+	\item A common acceptance method is to always accept improving solutions and accept worse solutions with a probability of $P(accept) \leftarrow \exp(\frac{e-e\prime}{T})$, where $T$ is the current temperature, $e$ is the energy (or cost) of the current solution and $e\prime$ is the energy of a candidate solution being considered.
+	\item The size of the neighborhood considered in generating candidate solutions may also change over time or be influenced by the temperature, starting initially broad and narrowing with the execution of the algorithm.
+	\item A problem specific heuristic method can be used to provide the starting point for the search.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -157,8 +183,9 @@ Algorithm~\ref{alg:sa} provides a pseudo-code listing of the main Simulated Anne
 Listing~\ref{simulated_annealing} provides an example of the Simulated Annealing algorithm implemented in the Ruby Programming Language. 
 % problem
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+
 % algorithm
-The algorithm...
+The algorithm implementation uses a two-opt procedure for the neighborhood function and the classical $P(accept) \leftarrow \exp(\frac{e-e\prime}{T})$ as the acceptance function. A simple linear cooling regime is used with a large initial temperature which is decreased each iteration. The initial solution is created using a nearest neighbor heuristic to provide a good starting point for the search.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Simulated Annealing algorithm in the Ruby Programming Language, label=simulated_annealing]{../../src/algorithms/physical/simulated_annealing.rb}
@@ -187,7 +214,7 @@ There were a number of early studies and application papers such as Kirkpatrick'
 % reviews
 There are many excellent reviews of Simulated Annealing, not limited to the review by Ingber that describes improved methods such as Adaptive Simulated Annealing, Simulated Quenching, and hybrid methods \cite{Ingber1993}.
 % books
-There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include ``Simulated Annealing: Theory and Applications'' by Laarhoven and Aarts \cite{Laarhoven1988} that provides an introduction to the technique and applications, and ``Simulated annealing: parallelization techniques'' by Robert Azencott \cite{Azencott1992} that focuses of the theory and applications of parallel methods for Simulated Annealing.
+There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include ``Simulated Annealing: Theory and Applications'' by Laarhoven and Aarts \cite{Laarhoven1988} that provides an introduction to the technique and applications, and ``Simulated Annealing: Parallelization Techniques'' by Robert Azencott \cite{Azencott1992} that focuses of the theory and applications of parallel methods for Simulated Annealing.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
