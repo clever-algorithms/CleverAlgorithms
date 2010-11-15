@@ -93,16 +93,16 @@ end
 def global_update_pheromone(pheromone, candidate, decay_factor)
   candidate[:vector].each_with_index do |x, i|
     y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-    value = (1.0-decay_factor)*pheromone[x][y] + decay_factor*(1.0/candidate[:cost])
+    value = ((1.0-decay_factor)*pheromone[x][y]) + (decay_factor*(1.0/candidate[:cost]))
     pheromone[x][y] = value
     pheromone[y][x] = value
   end
 end
 
-def local_update_pheromone(pheromone, candidate, c_local_pheromone, decay_factor, init_pheromone)
+def local_update_pheromone(pheromone, candidate, c_local_pheromone, init_pheromone)
   candidate[:vector].each_with_index do |x, i|
     y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-    value = (1.0-c_local_pheromone)*pheromone[x][y] + c_local_pheromone * init_pheromone
+    value = ((1.0-c_local_pheromone)*pheromone[x][y]) + (c_local_pheromone * init_pheromone)
     pheromone[x][y] = value
     pheromone[y][x] = value
   end
@@ -120,7 +120,7 @@ def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_local_
       candidate[:vector] = stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
       candidate[:cost] = cost(candidate[:vector], cities)
       best = candidate if candidate[:cost] < best[:cost]
-      local_update_pheromone(pheromone, candidate, c_local_pheromone, decay_factor, init_pheromone)
+      local_update_pheromone(pheromone, candidate, c_local_pheromone, init_pheromone)
     end
     global_update_pheromone(pheromone, best, decay_factor)
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"

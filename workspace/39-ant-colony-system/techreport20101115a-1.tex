@@ -109,29 +109,31 @@ Solutions are constructed one discrete piece at a time in a probabilistic step-w
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:acs} provides a pseudo-code listing of the main Ant Colony System algorithm for minimizing a cost function. 
-
-The procedure is different to Ant Systems in three specific ways, as follows:
-\begin{itemize}
-	\item Evaporation occurs after each candidate solution is created.
-	\item Update and decay processes are only applied to the components of the best tour found so far in each iteration.
-	\item Local pheromone update for each new solution created.
-\end{itemize}
-
-The pheromone update process is described by a single equation that combines the contributions of all candidate solutions with a decay coefficient to determine the new pheromone value, as follows:
-
-\begin{equation}
-\tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \sum_{k=1}^m \Delta_{i,j}^k
-\end{equation}
-
-where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, $m$ is the number of ants, and  $\sum_{k=1}^m \Delta_{i,j}^k $ is the sum of $\frac{1}{S_{cost}} $ (maximizing solution cost) for those solutions that include component $i,j$. The pseudo code listing shows this equation as an equivalent as a two step process of decay followed by update for simplicity. 
-
 The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
 
 \begin{equation}
 P_{i,j} \leftarrow \frac{\tau_{i,j}^{\alpha} \times \eta_{i,j}^{\beta}}{\sum_{k=1}^c \tau_{i,k}^{\alpha} \times \eta_{i,k}^{\beta}}
 \end{equation}
 
-where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. 
+where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. A greediness factor ($q0$) is used to influences when to use the above probabilistic component selection and when to greedily select the best possible component. 
+
+A local pheromone update is performed for each solution that is constructed to dissuade following solutions to use the same components in the same order, as follows:
+
+\begin{equation}
+\tau_{i,j} \leftarrow (1-\sigma) \times \tau_{i,j} + \sigma \times \tau_{i,j}^{0}
+\end{equation}
+
+where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\sigma$ is the local pheromone factor, and $\tau_{i,j}^{0}$ is the initial pheromone value.
+
+At the end of each iteration, the pheromone is updated and decayed using the best candidate solution found thus far (or the best candidate solution found for the iteration), as follows:
+
+\begin{equation}
+\tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \Delta_{i,j}^{best}
+\end{equation}
+
+where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, and $\Delta_{i,j}^{best} $ is the $\frac{1}{S_{cost}} $ (maximizing solution cost) for the best solution found so far. 
+
+
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -141,8 +143,9 @@ where $\tau_{i,j}$ is the maximizing contribution to the overall score of select
 	\SetKwData{BestCost}{$Pbest_{cost}$}
 	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{DecayFactor}{$\rho$}
-	\SetKwData{HistoryContribution}{$\alpha$}
+	\SetKwData{LocalPheromone}{$\sigma$}
 	\SetKwData{HeuristicContribution}{$\beta$}
+	\SetKwData{GreedinessFactor}{$q0$}
 	\SetKwData{NumAnts}{$m$}
 	\SetKwData{PopulationSize}{$Population_{size}$}
 	\SetKwData{Pheromone}{Pheromone}
@@ -151,39 +154,37 @@ where $\tau_{i,j}$ is the maximizing contribution to the overall score of select
 	\SetKwData{SolutionCost}{$Si_{cost}$}
 	\SetKwData{HeuristicSolution}{$S_{h}$}
 	\SetKwData{HeuristicSolutionCost}{$Sh_{cost}$}
+	\SetKwData{InitialPheromone}{$Pheromone_{init}$}
 	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{InitializePheromone}{InitializePheromone}
-	\SetKwFunction{ProbabilisticStepwiseConstruction}{ProbabilisticStepwiseConstruction}
-	\SetKwFunction{DecayPheromone}{DecayPheromone}
-	\SetKwFunction{UpdatePheromone}{UpdatePheromone}
+	\SetKwFunction{ConstructSolution}{ConstructSolution}
+	\SetKwFunction{LocalUpdateAndDecayPheromone}{LocalUpdateAndDecayPheromone}
+	\SetKwFunction{GlobalUpdateAndDecayPheromone}{GlobalUpdateAndDecayPheromone}
 	\SetKwFunction{CreateHeuristicSolution}{CreateHeuristicSolution}
 	
 	% I/O
-	\KwIn{\ProblemSize, \PopulationSize, \NumAnts, \DecayFactor, \HistoryContribution, \HeuristicContribution}		
+	\KwIn{\ProblemSize, \PopulationSize, \NumAnts, \DecayFactor, \HeuristicContribution, \LocalPheromone, \GreedinessFactor}		
 	\KwOut{\Best}
   % Algorithm
 	\Best $\leftarrow$ \CreateHeuristicSolution{\ProblemSize}\;
 	\BestCost $\leftarrow$ \Cost{\HeuristicSolution}\;
-	\Pheromone $\leftarrow$ \InitializePheromone{\BestCost}\;
+	\InitialPheromone $\leftarrow$ $\frac{1.0}{\ProblemSize \times \BestCost}$\;
+	\Pheromone $\leftarrow$ \InitializePheromone{\InitialPheromone}\;
 	% loop
-	\While{$\neg$\StopCondition{}} {
-		\Candidates $\leftarrow$ $0$\;
+	\While{$\neg$\StopCondition{}} {		
 		\For{$i=1$ $\KwTo$ \NumAnts} {
-			\Solution $\leftarrow$ \ProbabilisticStepwiseConstruction{\Pheromone, \ProblemSize, \HistoryContribution, \HeuristicContribution}\;
+			\Solution $\leftarrow$ \ConstructSolution{\Pheromone, \ProblemSize, \HeuristicContribution, \GreedinessFactor}\;
 			\SolutionCost $\leftarrow$ \Cost{\Solution}\;
 			\If{\SolutionCost $\leq$ \BestCost} {
 				\BestCost $\leftarrow$ \SolutionCost\;
 				\Best $\leftarrow$ \Solution\;
 			}
-			\Candidates $\leftarrow$ \Solution\;
+			\LocalUpdateAndDecayPheromone{\Pheromone, \Solution, \SolutionCost, \LocalPheromone}\;
 		}
-		\DecayPheromone{\Pheromone, \DecayFactor}\;
-		\ForEach{\Solution $\in$ \Candidates}{
-			\UpdatePheromone{\Pheromone, \Solution, \SolutionCost}\;
-		}
+		\GlobalUpdateAndDecayPheromone{\Pheromone, \Best, \BestCost, \DecayFactor}\;
 	}
 	\Return{\Best}\;
 	% end
@@ -202,7 +203,7 @@ where $\tau_{i,j}$ is the maximizing contribution to the overall score of select
 	\item The local pheromone (history) coefficient ($\sigma$) controls the amount of contribution history plays in a components probability of selection and is commonly set to 0.1.
 	\item The heuristic coefficient ($\beta$) controls the amount of contribution problem-specific heuristic information plays in a components probability of selection and is commonly between 2 and 5, such as 2.5.
 	\item The decay factor ($\rho$) controls the rate at which historic information is lost and is commonly set to 0.1.
-	\item The greediness factor $q0$ is commonly set to 0.9.
+	\item The greediness factor ($q0$) is commonly set to 0.9.
 	\item The total number of ants ($m$) is commonly set low, such as 10.
 \end{itemize}
 
@@ -232,16 +233,15 @@ Some extensions to the algorithm implementation for speed improvements may consi
 % Primary Sources
 % 
 \subsection{Primary Sources}
+The algorithm was initially investigated by Dorigo and Gambardella under the name Ant-Q \cite{Dorigo1996a, Gambardella1995}.
 % seminal
-The algorithm was proposed in a technical report by Dorigo and Gambardella \cite{Dorigo1997a}, and was later published \cite{Dorigo1997}.
-% early
+It was renamed Ant Colony System and further investigated first in a technical report by Dorigo and Gambardella \cite{Dorigo1997a}, and later published \cite{Dorigo1997}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-todo
 % books
 The seminal book on Ant Colony Optimization in general with a detailed treatment of Ant Colony System is ``Ant colony optimization'' by Dorigo and St\"utzle \cite{Dorigo2004}. An earlier book ``Swarm intelligence: from natural to artificial systems'' by Bonabeau, Dorigo, and Theraulaz also provides an introduction to Swarm Intelligence with a detailed treatment of Ant Colony System \cite{Bonabeau1999}.
 
