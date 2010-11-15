@@ -81,7 +81,7 @@ Memetic Algorithms have functional similarities to Baldwinian Evolutionary Algor
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-Memetic algorithms are inspired by the interplay of genetic evolution and memetic evolution. Universal Darwinism is the generalization of genes beyond biological-based systems to any system where discrete units of information can be inherited and be subjected to evolutionary forces of selection and variation. Meme is a term used to refer to a piece of discrete cultural information, suggesting at the interplay of genetic and cultural evolution.
+Memetic Algorithms are inspired by the interplay of genetic evolution and memetic evolution. Universal Darwinism is the generalization of genes beyond biological-based systems to any system where discrete units of information can be inherited and be subjected to evolutionary forces of selection and variation. The term `meme' is used to refer to a piece of discrete cultural information, suggesting at the interplay of genetic and cultural evolution.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -90,15 +90,15 @@ Memetic algorithms are inspired by the interplay of genetic evolution and memeti
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
+The genotype is evolved based on the interaction the phenotype has with the environment. This interaction is metered by cultural phenomena that influence the selection mechanisms, and even the pairing and recombination mechanisms. Cultural information is shared between individuals, spreading through the population as memes relative to their fitness or fitness the memes impart to the individuals. Collectively, the interplay of the geneotype and the memeotype strengthen the fitness of population in the environment.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The objective of the information processing strategy is to exploit both a population based global search technique to broadly locate good areas of the search space, combined with the repeated usage of a local search heuristic by individual solutions to locate local optimum.
+The objective of the information processing strategy is to exploit a population based global search technique to broadly locate good areas of the search space, combined with the repeated usage of a local search heuristic by individual solutions to locate local optimum.
 % What is a techniques plan of action?
 Ideally, memetic algorithms embrace the duality of genetic and cultural evolution, allowing the transmission, selection, inheritance, and variation of memes as well as genes. 
 
@@ -165,7 +165,10 @@ Algorithm~\ref{alg:ma} provides a pseudo-code listing of the Memetic Algorithm f
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The global search provides the broad exploration mechanism, whereas the individual solution improvement via local search provides an exploitation mechanism. 
+	\item Balance is needed between the local and global mechanisms to ensure the system does not prematurely converge to a local optimum and does not consume unnecessary computational resources.
+	\item The local search should be problem and representation specific, where as the global search may be generic and non-specific (black-box).
+	\item Memetic Algorithms have been applied to a range of constraint, combinatorial, and continuous function optimization problem domains.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -175,9 +178,9 @@ Algorithm~\ref{alg:ma} provides a pseudo-code listing of the Memetic Algorithm f
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{memetic_algorithm} provides an example of the Memetic Algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem...
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm implementation...
+The Memetic Algorithm uses a canonical Genetic Algorithm as the global search technique that operates on binary strings, uses tournament selection, point mutations, uniform crossover and a binary coded decimal decoding of bits to real values. A bit climber local search is used that performs probabilistic bit flips (point mutations) and only accepts solutions with the same or improving fitness. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Memetic Algorithm in the Ruby Programming Language, label=memetic_algorithm]{../../src/algorithms/physical/memetic_algorithm.rb}
@@ -195,7 +198,7 @@ The algorithm implementation...
 % 
 \subsection{Primary Sources}
 % seminal
-The concept of a memetic algorithm is credited to Moscato \cite{Moscato1989} inspired by the description of meme's in Dawkins' ``The Selfish Gene'' \cite{Dawkins1976}. Moscato proposed Memetic Algorithms as the marriage between population based global search and heuristic local search made by each individual without the constraints of a genetic representation and investigated variations on the Traveling Salesman Problem.
+The concept of a Memetic Algorithm is credited to Moscato \cite{Moscato1989}, who was inspired by the description of meme's in Dawkins' ``The Selfish Gene'' \cite{Dawkins1976}. Moscato proposed Memetic Algorithms as the marriage between population based global search and heuristic local search made by each individual without the constraints of a genetic representation and investigated variations on the Traveling Salesman Problem.
 % early
 
 % 
@@ -203,9 +206,10 @@ The concept of a memetic algorithm is credited to Moscato \cite{Moscato1989} ins
 % 
 \subsection{Learn More}
 % reviews
-todo
+Moscato and Cotta provide a gentle introduction to the field of Memetic Algorithms as a book chapter that covers formal descriptions of the approach, a summary of the fields of application, and the state of the art \cite{Moscato2003}.
+A overview and classification of the types of Memetic Algorithms is presented by Ong, et al. who describe a class of adaptive Memetic Algorithms \cite{Ong2006}. Krasnogor and Smith also provide a taxonomy of Memetic Algorithms, focusing on the properties needed to design `competent' implementations of the approach with examples on a number of combinatorial optimization problems \cite{Krasnogor2005}. Work by Krasnogor and Gustafson investigate what they refer to as `self-generating' Memetic Algorithms that use the memetic principle to co-evolve the local search applied by individual solutions \cite{Krasnogor2004}. 
 % books
-
+For a broader overview of the field, see the 2005 book ``Recent Advances in Memetic Algorithms'' that provides an overview and a number of studies \cite{Hart2005}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
@@ -213,7 +217,7 @@ todo
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-todo
+This report described the Memetic algorithm using the standardized algorithm template.
 
 % 
 % Contribute

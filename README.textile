@@ -12,21 +12,9 @@ h2. Outcomes
 
 This section contains a listing of outcomes and deliverables from the project.
 
-h3. Book Manuscripts
-
-* Content Development
-** "Milestone 01":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone01-20100113.pdf : Draft book structure including title, parts, chapters, sections, and subsections.
-** "Milestone 02":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone02-20100124.pdf : Draft preface and background chapters.
-** "Milestone 03":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone03-20100227.pdf : Draft 10 algorithm descriptions. 
-** "Milestone 04":http://github.com/jbrownlee/CleverAlgorithms/raw/master/book/milestones/milestone04-20100509.pdf : Draft 20 algorithm descriptions. 
-** Milestone 05 : Draft 30 algorithm descriptions. (_in progress_)
-** Milestone 06 : Draft 40 algorithm descriptions. (_next_)
-** Milestone 07 : Draft 50 algorithm descriptions. (_future_)
-** Milestone 08 : Draft extension chapters.
-** Milestone 09 : Edit the first complete draft.
-** Milestone 10 : Send out complete draft for third-party editing & review.
-
 h3. Technical Reports
+
+h4. Overview
 
 * Jason Brownlee. "The Clever Algorithms Project: Overview":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100105-1.pdf. Technical Report CA-TR-20100105-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "A Template for Standardized Algorithm Descriptions":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100107-1.pdf. Technical Report CA-TR-20100107-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
@@ -35,6 +23,9 @@ h3. Technical Reports
 * Jason Brownlee. "A Gentle Introduction to AI: Natural Computation, Computational Intelligence and Metaheuristics":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100115-1.pdf. Technical Report CA-TR-20100115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Unconventional Optimization Algorithms: An Introduction":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100118-1.pdf. Technical Report CA-TR-20100118-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Programming Language Selection for Optimization Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100122-1.pdf. Technical Report CA-TR-20100122-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
+
+h4. Stochastic Algorithms
+
 * Jason Brownlee. "Random Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100129-1.pdf. Technical Report CA-TR-20100129-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Adaptive Random Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100131-1.pdf. Technical Report CA-TR-20100131-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, January 2010.
 * Jason Brownlee. "Stochastic Hill Climbing":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100202-1.pdf. Technical Report CA-TR-20100202-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
@@ -46,6 +37,9 @@ h3. Technical Reports
 * Jason Brownlee. "Scatter Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100216-1.pdf. Technical Report CA-TR-20100216-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Reactive Tabu Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100221-1.pdf. Technical Report CA-TR-20100221-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
 * Jason Brownlee. "Stochastic Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100223-1.pdf. Technical Report CA-TR-20100223-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, February 2010.
+
+h4. Evolutionary Algorithms
+
 * Jason Brownlee. "Genetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100303-1.pdf. Technical Report CA-TR-20100303-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, March 2010.
 * Jason Brownlee. "Genetic Programming":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100308-1.pdf. Technical Report CA-TR-20100308-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, March 2010.
 * Jason Brownlee. "Evolutionary Programming":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100313-1.pdf. Technical Report CA-TR-20100313-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, March 2010.
@@ -57,15 +51,26 @@ h3. Technical Reports
 * Jason Brownlee. "Non-dominated Sorting Genetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100426-1.pdf. Technical Report CA-TR-20100426-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, April 2010.
 * Jason Brownlee. "Strength Pareto Evolutionary Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100508-1.pdf. Technical Report CA-TR-20100508-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * Jason Brownlee. "Evolutionary Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100509-1.pdf. Technical Report CA-TR-20100509-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
+
+h4. Immune Algorithms
+
 * Jason Brownlee. "Clonal Selection Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100515-1.pdf. Technical Report CA-TR-20100515-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * Jason Brownlee. "Negative Selection Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20100516-1.pdf. Technical Report CA-TR-20100516-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, May 2010.
 * Jason Brownlee. "Artificial Immune Network":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114-1.pdf. Technical Report CA-TR-20101114-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Immune Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114a-1.pdf. Technical Report CA-TR-20101114a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+
+h4. Swarm Algorithms
+
 * Jason Brownlee. "Particle Swarm Optimization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114b-1.pdf. Technical Report CA-TR-20101114b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Ant System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115-1.pdf. Technical Report CA-TR-20101115-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Ant Colony System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115a-1.pdf. Technical Report CA-TR-20101115a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Swarm Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115b-1.pdf. Technical Report CA-TR-20101115b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+
+h4. Physical Algorithms
+
 * Jason Brownlee. "Simulated Annealing":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115c-1.pdf. Technical Report CA-TR-20101115c-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Memetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116-1.pdf. Technical Report CA-TR-20101116-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+
 * ...
 
 h3. Software
@@ -92,7 +97,7 @@ h2. Contribute
 
 Found a typo in some content or a bug in the source code? Are you an expert in a given area and know some facts that could improve an algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
 
-Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is somewhat wrong by default. 
+Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is subjected to continuous improvement. 
 
 *Please help to make this work less wrong!*
 
