@@ -71,8 +71,9 @@ Memetic Algorithm, MA
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
+Memetic Algorithms have elements of Metaheuristics and Computational Intelligence. Although they have principles of Evolutionary Algorithms, they may not strictly be considered an Evolutionary Technique.
 % What are the closely related approaches to a technique?
-todo
+Memetic Algorithms have functional similarities to Baldwinian Evolutionary Algorithms, Lamarckian Evolutionary Algorithms, Hybrid Evolutionary Algorithms, and Cultural Algorithms. Using ideas of memes and Memetic Algorithms in optimization may be referred to as Memetic Computing.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -80,8 +81,8 @@ todo
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+Memetic algorithms are inspired by the interplay of genetic evolution and memetic evolution. Universal Darwinism is the generalization of genes beyond biological-based systems to any system where discrete units of information can be inherited and be subjected to evolutionary forces of selection and variation. Meme is a term used to refer to a piece of discrete cultural information, suggesting at the interplay of genetic and cultural evolution.
 % Which features of the motivating system are relevant to a technique?
-todo
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -97,8 +98,9 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The objective of the information processing strategy is to exploit both a population based global search technique to broadly locate good areas of the search space, combined with the repeated usage of a local search heuristic by individual solutions to locate local optimum.
 % What is a techniques plan of action?
-todo
+Ideally, memetic algorithms embrace the duality of genetic and cultural evolution, allowing the transmission, selection, inheritance, and variation of memes as well as genes. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -106,7 +108,55 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:ma} provides a pseudo-code listing of the Memetic Algorithm for minimizing a cost function. The procedure describes a simple or first order Memetic Algorithm that shows the improvement of individual solutions separate from a global search, although does not show the independent evolution of memes. 
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{PopulationSize}{$Pop_{size}$}
+	\SetKwData{MemeticPopulationSize}{$MemePop_{size}$}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Population}{Population}
+	\SetKwData{MemeticPopulation}{MemeticPopulation}
+	\SetKwData{Candidate}{$S_{i}$}
+	\SetKwData{CandidateCost}{$Si_{cost}$}
+	
+	% functions
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{InitializePopulation}{InitializePopulation}
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{StochasticGlobalSearch}{StochasticGlobalSearch}
+	\SetKwFunction{SelectMemeticPopulation}{SelectMemeticPopulation}
+	\SetKwFunction{GetBestSolution}{GetBestSolution}
+	\SetKwFunction{LocalSearch}{LocalSearch}
+	
+	% I/O
+	\KwIn{\ProblemSize, \PopulationSize, \MemeticPopulationSize}		
+	\KwOut{\Best}
+  
+	% Algorithm
+	\Population $\leftarrow$ \InitializePopulation{\ProblemSize, \PopulationSize}\;
+	
+	% loop
+	\While{$\neg$\StopCondition{}} {	
+		\ForEach{\Candidate $\in$ \Population} {
+			\CandidateCost $\leftarrow$ \Cost{\Candidate}\;
+		}
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\Population $\leftarrow$ \StochasticGlobalSearch{\Population}\;
+		\MemeticPopulation $\leftarrow$ \SelectMemeticPopulation{\Population, \MemeticPopulationSize}\;
+		\ForEach{\Candidate $\in$ \MemeticPopulation} {
+			\Candidate $\leftarrow$ \LocalSearch{\Candidate}\;
+		}
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Memetic Algorithm.}
+	\label{alg:ma}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -145,7 +195,7 @@ The algorithm implementation...
 % 
 \subsection{Primary Sources}
 % seminal
-todo
+The concept of a memetic algorithm is credited to Moscato \cite{Moscato1989} inspired by the description of meme's in Dawkins' ``The Selfish Gene'' \cite{Dawkins1976}. Moscato proposed Memetic Algorithms as the marriage between population based global search and heuristic local search made by each individual without the constraints of a genetic representation and investigated variations on the Traveling Salesman Problem.
 % early
 
 % 
