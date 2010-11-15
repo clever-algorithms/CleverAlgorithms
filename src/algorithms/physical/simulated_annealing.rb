@@ -37,13 +37,38 @@ def nearest_neighbor_solution(cities)
   return candidate
 end
 
-def search(cities, max_iterations)
-  best = nearest_neighbor_solution(cities)
-  puts "Nearest Neighbor heuristic solution: cost=#{best[:cost]}"
-  
-  max_iterations.times do |iter|
-    
-    puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
+def two_opt!(perm)
+  c1, c2 = rand(perm.length), rand(perm.length)
+  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = c2, c1 if c2 < c1
+  perm[c1...c2] = perm[c1...c2].reverse
+  return perm
+end
+
+def create_neighbour(current, cities)
+  candidate = {}
+  candidate[:vector] = Array.new(current[:vector])
+  two_opt!(candidate[:vector])
+  two_opt!(candidate[:vector])
+  candidate[:cost] = cost(candidate[:vector], cities)
+  return candidate
+end
+
+def should_accept?(candidate, current, temp)
+  return true if candidate[:cost] < current[:cost]
+  return Math.exp((current[:cost] - candidate[:cost]) / temp) > rand()
+end
+
+def search(cities, max_iter, max_temp, temp_change)
+  current, temp = nearest_neighbor_solution(cities), max_temp
+  best = current
+  puts "Nearest Neighbor heuristic solution: cost=#{current[:cost]}"  
+  max_iter.times do |iter|
+    candidate = create_neighbour(current, cities)
+    temp = temp * temp_change
+    current = candidate if should_accept?(candidate, current, temp)
+    best = candidate if candidate[:cost] < best[:cost]
+    puts " > iteration #{(iter+1)}, temp=#{temp}, best=#{best[:cost]}"
   end
   return best
 end
@@ -57,8 +82,10 @@ if __FILE__ == $0
    [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],
    [875,920],[700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],
    [595,360],[1340,725],[1740,245]]
-  max_iterations = 50  
-
-  best = search(berlin52, max_iterations)
+  max_iterations = 5000
+  max_temp = 100000.0
+  temp_change = 0.98
+  
+  best = search(berlin52, max_iterations, max_temp, temp_change)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

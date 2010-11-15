@@ -115,30 +115,12 @@ Algorithm~\ref{alg:sa} provides a pseudo-code listing of the main Simulated Anne
 	\SetLine  
 
 	% data
-	\SetKwData{Best}{$P_{best}$}
-	\SetKwData{BestCost}{$Pbest_{cost}$}
 	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{DecayFactor}{$\rho$}
-	\SetKwData{HistoryContribution}{$\alpha$}
-	\SetKwData{HeuristicContribution}{$\beta$}
-	\SetKwData{NumAnts}{$m$}
-	\SetKwData{PopulationSize}{$Population_{size}$}
-	\SetKwData{Pheromone}{Pheromone}
-	\SetKwData{Candidates}{Candidates}
-	\SetKwData{Solution}{$S_{i}$}
-	\SetKwData{SolutionCost}{$Si_{cost}$}
-	\SetKwData{HeuristicSolution}{$S_{h}$}
-	\SetKwData{HeuristicSolutionCost}{$Sh_{cost}$}
+	\SetKwData{Best}{$P_{best}$}
 	
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
-	\SetKwFunction{InitializePheromone}{InitializePheromone}
-	\SetKwFunction{ProbabilisticStepwiseConstruction}{ProbabilisticStepwiseConstruction}
-	\SetKwFunction{DecayPheromone}{DecayPheromone}
-	\SetKwFunction{UpdatePheromone}{UpdatePheromone}
-	\SetKwFunction{CreateHeuristicSolution}{CreateHeuristicSolution}
-	
 	% I/O
 	\KwIn{\ProblemSize}		
 	\KwOut{\Best}
@@ -163,7 +145,8 @@ Algorithm~\ref{alg:sa} provides a pseudo-code listing of the main Simulated Anne
 \begin{itemize}
 	\item Simulated Annealing was designed for use with combinatorial optimization problems, although it has also been adapted for continuous function optimization problems.
 	\item The convergence proof suggests that with a long enough cooling period, that the system will always converge to the global optimum. The downside of this finding is that the number of samples taken for optimum convergence to occur on some problems may be more than a complete enumeration of the search space. 
-	\item ...
+	\item Performance improvements can be given with the selection of a candidate move generation scheme that is less likely to generate candidates of significantly higher cost.
+	\item Restarting the cooling scheduling using the best found solution so far can lead to an improved outcome on some problems.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -195,15 +178,14 @@ The algorithm...
 % seminal
 Simulated Annealing is credited to Kirkpatrick, Gelatt, and Vecchi in 1983 \cite{Kirkpatrick1983}. Granville, Krivanek, and Rasson provided the proof for convergence for Simulated Annealing in 1994 \cite{Granville1994}.
 % early
-
+There were a number of early studies and application papers such as Kirkpatrick's investigation into the TSP and minimum cut problems \cite{Kirkpatrick1983a}, and a study by Vecchi and Kirkpatrick on Simulated Annealing applied to the global wiring problem \cite{Vecchi1983}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-There are many excellent reviews of Simulated Annealing, not limited to...
-
+There are many excellent reviews of Simulated Annealing, not limited to the review by Ingber that describes improved methods such as Adaptive Simulated Annealing, Simulated Quenching, and hybrid methods \cite{Ingber1993}.
 % books
 There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include ``Simulated Annealing: Theory and Applications'' by Laarhoven and Aarts \cite{Laarhoven1988} that provides an introduction to the technique and applications, and ``Simulated annealing: parallelization techniques'' by Robert Azencott \cite{Azencott1992} that focuses of the theory and applications of parallel methods for Simulated Annealing.
 
