@@ -71,9 +71,9 @@ Perceptron
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-The Perceptron algorithm belongs to the field of Artificial Neural Networks and Computational Intelligence.
+The Perceptron algorithm belongs to the field of Artificial Neural Networks and more broadly Computational Intelligence.
 % What are the closely related approaches to a technique?
-It is a single layer feedforward neural network (single cell network) that inspired many extensions and variants, not limited to Madaline and Widrow Hoff.
+It is a single layer feedforward neural network (single cell network) that inspired many extensions and variants, not limited to Adalines and Widrow Hoff learning rules.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,9 +81,9 @@ It is a single layer feedforward neural network (single cell network) that inspi
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-The Perceptron is inspired by the information processing of a single neural cell (called a neural). 
+The Perceptron is inspired by the information processing of a single neural cell (called a neuron). 
 % Which features of the motivating system are relevant to a technique?
-A neural accepts input signals via the dendrites, a chemical process occurs within the cell based on the input signals, and the cell may or may not produce an output signal on its axon. The point where one cells axon interfaces another cells dendrite is called the synapse, where the activation of the cell may produce an output signal.
+A neuron accepts input signals via the dendrites, a chemical process occurs within the cell based on the input signals, and the cell may or may not produce an output signal on its axon. The point where one cells axon interfaces another cells dendrite is called the synapse, which may fire if the cell is activated.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -108,12 +108,12 @@ The system is trained using a supervised learning method, where the error betwee
 \section{Procedure}
 \label{sec:procedure}
 % What are the data structures and representations used in a technique?
-The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is composed of a vector of weights (one for each expected input) and a bias term.
+The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
 
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
 \begin{equation}
-	activation \leftarrow \sum_{k=1}^{n}(w_{k} \times x_{ki}) + w_{bias} \times 1.0
+	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
 \end{equation}
 
 where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. The weights are updated as follows:
@@ -176,7 +176,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	\item The Perceptron cannot learn a non-linear mapping between the input and output attributes. The XOR problem is a classical example of a problem that the Perceptron cannot learn.
 	\item Input and output values should be normalized such that $x \in [0,1)$.
 	\item The learning rate ($\alpha \in [0,1]$) controls the amount of change each error has on the system, lower learning rages are common such as 0.1.
-	\item The weights can be updated in an online manner (after the exposure to each input pattern) in batch (after a fixed number of patterns have been observed).
+	\item The weights can be updated in an online manner (after the exposure to each input pattern) or in batch (after a fixed number of patterns have been observed).
 	\item Batch updates are expected to be more stable than online updates for some complex problems.
 	\item A bias weight is used with a constant input signal to provide stability to the learning process. 
 	\item A step transfer function is commonly used to transfer the activation to a binary output value $1 \leftarrow activation \geq 0$, otherwise $0$.
@@ -194,7 +194,7 @@ Listing~\ref{perceptron} provides an example of the Perceptron algorithm impleme
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm implementation using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similary, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
+The algorithm was implementated using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similary, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Perceptron algorithm in the Ruby Programming Language, label=perceptron]{../../src/algorithms/neural/perceptron.rb}
@@ -212,7 +212,7 @@ The algorithm implementation using an online learning method, meaning the weight
 % 
 \subsection{Primary Sources}
 % seminal
-The Perceptron algorithm was proposed by Rosenblatt in 1958 \cite{Rosenblatt1958}.
+The Perceptron algorithm was proposed by Rosenblatt in 1958 \cite{Rosenblatt1958}. Rosenblatt proposed a range of neural network structures and methods. The `Perceptron' as it is known is in fact a simplification of Rosenblatt's models by Minsky and Papert for the purposes of analysis \cite{Minsky1969}.
 % early
 An early proof of convergence was provided by Novikoff \cite{Novikoff1962}
 
