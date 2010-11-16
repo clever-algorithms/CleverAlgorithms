@@ -111,7 +111,57 @@ The system is trained using a supervised learning method, where the error betwee
 The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is composed of a vector of weights (one for each expected input) and a bias term.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. 
+Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
+\begin{equation}
+	activation \leftarrow \sum_{k=1}^{n}(w_{k} \times x_{ki}) + w_{bias} \times 1.0
+\end{equation}
+
+where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. The weights are updated as follows:
+
+\begin{equation}
+	w_{i}(t+1) = w_{i}(t) + \alpha \times (e(t)-a(t)) \times x_{i}(t)
+\end{equation}
+
+where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learning rate, $e(t)$ and $a(t)$ are the expected and actual output at time $t$, and $x_i$ is the $i^{th}$ input. This update process is applied to each weight in turn (as well as the bias weight with its contact input).
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}$}
+	\SetKwData{Weights}{Weights}
+	\SetKwData{InputPatterns}{InputPatterns}
+	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{Activation}{$Activation_i$}
+	\SetKwData{Output}{$Output_i$}
+
+	% functions
+	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
+	\SetKwFunction{ActivateNetwork}{ActivateNetwork}
+	\SetKwFunction{TransferActivation}{TransferActivation}
+	\SetKwFunction{UpdateWeights}{UpdateWeights}
+	
+	% I/O
+	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \LearningRate}		
+	\KwOut{\Weights}
+  
+	% Algorithm
+	\Weights $\leftarrow$ \InitializeWeights{\ProblemSize}\;
+	% loop
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
+		\Activation $\leftarrow$ \ActivateNetwork{\Pattern, \Weights}\;
+		\Output $\leftarrow$ \TransferActivation{\Activation}\;
+		\UpdateWeights{\Pattern, \Output, \LearningRate}\;
+	}
+	\Return{\Weights}\;
+	% end
+	\caption{Pseudo Code for the Perceptron algorithm (training weights).}
+	\label{alg:train}
+\end{algorithm}
 
 
 
@@ -125,8 +175,13 @@ Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron.
 	\item The Perceptron can be used to approximate arbitrary linear functions and can be used for regression or classification problems.
 	\item The Perceptron cannot learn a non-linear mapping between the input and output attributes. The XOR problem is a classical example of a problem that the Perceptron cannot learn.
 	\item Input and output values should be normalized such that $x \in [0,1)$.
-	\item The learning rate controls the amount of change each error has on the system, lower learning rages are common such as 0.1.
-	
+	\item The learning rate ($\alpha \in [0,1]$) controls the amount of change each error has on the system, lower learning rages are common such as 0.1.
+	\item The weights can be updated in an online manner (after the exposure to each input pattern) in batch (after a fixed number of patterns have been observed).
+	\item Batch updates are expected to be more stable than online updates for some complex problems.
+	\item A bias weight is used with a constant input signal to provide stability to the learning process. 
+	\item A step transfer function is commonly used to transfer the activation to a binary output value $1 \leftarrow activation \geq 0$, otherwise $0$.
+	\item It is good practice to expose the system to input patterns in a different random order each enumeration through the input set.
+	\item The initial weights are typically small random values, typically $\in [0, 0.5]$.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -136,10 +191,10 @@ Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron.
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{perceptron} provides an example of the Perceptron algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem...
+The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm implementation...
+The algorithm implementation using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similary, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Perceptron algorithm in the Ruby Programming Language, label=perceptron]{../../src/algorithms/neural/perceptron.rb}
