@@ -64,7 +64,7 @@ This report describes the Back-propagation algorithm using the standardized algo
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Back-propagation, Backpropagation, Error Back Propagation, Backprop
+Back-propagation, Backpropagation, Error Back Propagation, Backprop, Delta-rule
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -73,7 +73,7 @@ Back-propagation, Backpropagation, Error Back Propagation, Backprop
 % To what fields of study does a technique belong?
 The Back-propagation algorithm is a supervised learning method for multi-layer feed forward networks from the field of Artificial Neural Networks and more broadly Computational Intelligence.
 % What are the closely related approaches to a technique?
-The name refers to the backward propagation of error during the training of the network. 
+The name refers to the backward propagation of error during the training of the network. Back-propagation is the basis for many variations and extensions to method for training multi-layer feed-forward networks not limited to Vogl's Method (Bold Drive), Delta-Bar-Delta, Quickprop, and Rprop.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,32 +81,117 @@ The name refers to the backward propagation of error during the training of the 
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+The feed forward neural network is inspired by the information processing of one or more neural cells (called a neuron). 
 % Which features of the motivating system are relevant to a technique?
-todo
+A neuron accepts input signals via the dendrites, a chemical process occurs within the cell based on the input signals, and the cell may or may not produce an output signal on its axon. The point where one cells axon interfaces another cells dendrite is called the synapse, which may fire if the cell is activated.
+% backprop 
+The Back-propagation algorithm is a training regime for multi-layer feed forward neural networks and is not inspired by the learning processes the biological system.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\section{Metaphor}
-\label{sec:metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+% \section{Metaphor}
+% \label{sec:metaphor}
+% % What is the explanation of a technique in the context of the inspiring system?
+% % What are the functionalities inferred for a technique from the analogous inspiring system?
+% todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the technique is to model a given function by modifying internal weightings of input signals to produce an expected output signal.
 % What is a techniques plan of action?
-todo
+The system is trained using a supervised learning method, where the error between the system's output and a known expected output is presented to the system and used to modify its internal state. State is maintained in a set of weightings on the input signals. The weights are used to represent an abstraction of the mapping of input vectors to the output signal for the examples that the system was exposed to during training.
+Each layer of the network provides an abstraction of the information processing of the previous layer, allowing the combination of sub-functions and higher order modeling.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-% What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
+The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
+
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
+\begin{equation}
+	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
+\end{equation}
+
+where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. The weights are updated as follows:
+
+\begin{equation}
+	w_{i}(t+1) = w_{i}(t) + \alpha \times (e(t)-a(t)) \times x_{i}(t)
+\end{equation}
+
+where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learning rate, $e(t)$ and $a(t)$ are the expected and actual output at time $t$, and $x_i$ is the $i^{th}$ input. This update process is applied to each weight in turn (as well as the bias weight with its contact input).
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}$}
+	\SetKwData{Weights}{Weights}
+	\SetKwData{InputPatterns}{InputPatterns}
+	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{Activation}{$Activation_i$}
+	\SetKwData{Output}{$Output_i$}
+
+	% functions
+	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
+	\SetKwFunction{ActivateNetwork}{ActivateNetwork}
+	\SetKwFunction{TransferActivation}{TransferActivation}
+	\SetKwFunction{UpdateWeights}{UpdateWeights}
+	
+	% I/O
+	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \LearningRate}		
+	\KwOut{\Weights}
+  
+	% Algorithm
+	\Weights $\leftarrow$ \InitializeWeights{\ProblemSize}\;
+	% loop
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
+		\Activation $\leftarrow$ \ActivateNetwork{\Pattern, \Weights}\;
+		\Output $\leftarrow$ \TransferActivation{\Activation}\;
+		\UpdateWeights{\Pattern, \Output, \LearningRate}\;
+	}
+	\Return{\Weights}\;
+	% end
+	\caption{Pseudo Code for the Perceptron algorithm (training weights).}
+	\label{alg:train}
+\end{algorithm}
+
+
+
+% Heuristics: Usage guidelines
+% The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
+\section{Heuristics}
+\label{sec:heuristics}
+% What are the suggested configurations for a technique?
+% What are the guidelines for the application of a technique to a problem instance?
+\begin{itemize}
+	\item The Back-propagation algorithm can be used to train a multi-layer network to approximate arbitrary non-linear functions and can be used for regression or classification problems.
+	\item Input and output values should be normalized such that $x \in [0,1)$.
+	\item The weights can be updated in an online manner (after the exposure to each input pattern) or in batch (after a fixed number of patterns have been observed).
+	\item Batch updates are expected to be more stable than online updates for some complex problems.
+	\item A Sigmoid transfer function is commonly used to transfer the activation to a binary output value, although other transfer functions can be used such as the hyperbolic tangent (tanh).
+	\item It is good practice to expose the system to input patterns in a different random order each enumeration through the input set.
+	\item The initial weights are typically small random values, typically $\in [0, 0.5]$.
+	\item Typically a small number of layers are used such as 2-4 given that the increase in layers result in an increase in the complexity of the system and the time required to train the weights.
+	\item The learning rate can be varied during training, and it is common to introduce a momentum term to limit the rate of change.
+	\item The weights of a give network can be initialized with a global optimization method before being refined using the Back-propagation algorithm.
+\end{itemize}
+
+% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
+\section{Code Listing}
+\label{sec:code}
+% How is a technique implemented as an executable program?
+% How is a technique applied to a concrete problem instance?
 Listing~\ref{backpropagation} provides an example of the Back-propagation algorithm implemented in the Ruby Programming Language. 
 % problem
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
@@ -116,23 +201,6 @@ The algorithm was implemented using an online learning method, meaning the weigh
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Back-propagation algorithm in the Ruby Programming Language, label=backpropagation]{../../src/algorithms/neural/backpropagation.rb}
-
-% Heuristics: Usage guidelines
-% The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
-\section{Heuristics}
-\label{sec:heuristics}
-% What are the suggested configurations for a technique?
-% What are the guidelines for the application of a technique to a problem instance?
-\begin{itemize}
-	\item todo
-\end{itemize}
-
-% The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
-\section{Code Listing}
-\label{sec:code}
-% How is a technique implemented as an executable program?
-% How is a technique applied to a concrete problem instance?
-todo
 
 
 % References: Deeper understanding
@@ -147,17 +215,19 @@ todo
 % 
 \subsection{Primary Sources}
 % seminal
-todo
+The backward propagation of error method is credited to Bryson and Ho in \cite{Bryson1969}. It was applied to the training of multi-layer networks and called back-propagation by Rumelhart, Hinton and Williams in 1986 \cite{Rumelhart1986b, Rumelhart1986c}. 
 % early
+This effort and the collection of studies edited by Rumelhart and McClelland that defined the field of Artificial Neural Networks \cite{Rumelhart1986, Rumelhart1986a}.
+
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-todo
 % books
-
+A seminal book on the approach was ``Backpropagation: theory, architectures, and applications'' by Chauvin and Rumelhart that provided an excellent introduction (chapter 1) but also a collection of studies applying and extending the approach \cite{Chauvin1995}.
+Reed and Marks provide an excellent treatment of feed-forward neural networks called ``Neural Smithing'' that includes chapters dedicated to Back-propagation, the configuration of its parameters, error surface and speed improvements \cite{Reed1999}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
@@ -165,7 +235,7 @@ todo
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Backpropagation algorithm using the standardized algorithm template.
+This report described the Back-propagation algorithm using the standardized algorithm template.
 
 % 
 % Contribute
