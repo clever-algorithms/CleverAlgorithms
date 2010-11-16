@@ -70,6 +70,7 @@ h4. Physical Algorithms
 
 * Jason Brownlee. "Simulated Annealing":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101115c-1.pdf. Technical Report CA-TR-20101115c-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Memetic Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116-1.pdf. Technical Report CA-TR-20101116-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Extremal Optimization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116a-1.pdf. Technical Report CA-TR-20101116a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 h3. Software
 

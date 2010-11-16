@@ -83,7 +83,7 @@ It is generally related to hill climbing algorithms and provides the basis for e
 % What is the system or process that motivated the development of a technique?
 Extremal Optimization is inspired by the Bak-Sneppen self-organized criticality model of co-evolution from the field of statistical physics. 
 % Which features of the motivating system are relevant to a technique?
-The self-organized criticality model suggests that some dynamical systems have a critical point as an attractor, whereby the systems exhibit periods of slow movement or accumulation followed by short periods of avalanche or instability. Examples of such systems include land formation, earthquakes, and the dynamics of sand piles. The Bak-Sneppen considers such dynamics in co-evolutionary systems and the description of punctuated equilibrium (long periods of status followed by short short periods of extension and large evolutionary change).
+The self-organized criticality model suggests that some dynamical systems have a critical point as an attractor, whereby the systems exhibit periods of slow movement or accumulation followed by short periods of avalanche or instability. Examples of such systems include land formation, earthquakes, and the dynamics of sand piles. The Bak-Sneppen considers these dynamics in co-evolutionary systems and in the punctuated equilibrium model, which is described as long periods of status followed by short periods of extension and large evolutionary change.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -91,7 +91,7 @@ The self-organized criticality model suggests that some dynamical systems have a
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
-The dynamics of the system result in the steady improvement of a candidate solution with sudden and large crashes in the quality of the candidate solution. These dynamics allow two main phases of activity in the system: 1) to exploit higher quality solutions in a local search like manner, and 2) then escape possible local optima with a population crash and explore the search space for a new area of high quality solutions.
+The dynamics of the system result in the steady improvement of a candidate solution with sudden and large crashes in the quality of the candidate solution. These dynamics allow two main phases of activity in the system: 1) to exploit higher quality solutions in a local search like manner, and 2) escape possible local optima with a population crash and explore the search space for a new area of high quality solutions.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
 
 % Strategy: Problem solving plan
@@ -101,7 +101,7 @@ The dynamics of the system result in the steady improvement of a candidate solut
 % What is the information processing objective of a technique?
 The objective of the information processing strategy is to iteratively identify the worst performing components of a given solution and replace or swap them with other components.
 % What is a techniques plan of action?
-This is achieved through the allocation of cost to the components of the solution based on their contribution to the over all cost of the solution in the problem domain. Once components are assessed they can be ranked and the weaker components replaced or switched with a randomly selected component. 
+This is achieved through the allocation of cost to the components of the solution based on their contribution to the overall cost of the solution in the problem domain. Once components are assessed they can be ranked and the weaker components replaced or switched with a randomly selected component. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -109,7 +109,7 @@ This is achieved through the allocation of cost to the components of the solutio
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:eo} provides a pseudo-code listing of the main Extremal Optimization algorithm for minimizing a cost function. The deterministic selection of the worst component in the \\ \texttt{SelectWeakComponent} function and replacement in the \texttt{SelectReplacementComponent} function is classical EO. If these decisions are probabilistic making use of $\tau$, this is referred to as $\tau$-Extremal Optimization.
+Algorithm~\ref{alg:eo} provides a pseudo-code listing of the Extremal Optimization algorithm for minimizing a cost function. The deterministic selection of the worst component in the \\ \texttt{SelectWeakComponent} function and replacement in the \texttt{SelectReplacementComponent} function is classical EO. If these decisions are probabilistic making use of $\tau$ parameter, this is referred to as $\tau$-Extremal Optimization.
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -120,7 +120,7 @@ Algorithm~\ref{alg:eo} provides a pseudo-code listing of the main Extremal Optim
 	\SetKwData{TauParam}{$\tau$}
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Current}{$S_{current}$}
-	\SetKwData{Candidate}{$S_{i}$}	
+	\SetKwData{Candidate}{$S_{candidate}$}	
 	\SetKwData{CandidateComponents}{$Si_{components}$}
 	\SetKwData{Component}{$Component_{i}$}	
 	\SetKwData{OtherComponent}{$Component_{j}$}	
@@ -171,9 +171,9 @@ Algorithm~\ref{alg:eo} provides a pseudo-code listing of the main Extremal Optim
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Extremal Optimization was designed for combinatorial optimization problems, although variations have been applied to continuous function optimization.
-	\item The selection of the worst component and the replacement component each iteration can be deterministic, or probabilistic, the latter is referred to as $\tau$-Extremal Optimization given the use of a $\tau$ parameter.
+	\item The selection of the worst component and the replacement component each iteration can be deterministic or probabilistic, the latter of which is referred to as $\tau$-Extremal Optimization given the use of a $\tau$ parameter.
 	\item The selection of an appropriate scoring function of the components of a solution is the most difficult part in the application of the technique.
-	\item For $\tau$-Extremal Optimization, low $\tau$ values are used such as 1.2 in some continuous function optimization problems and 4 in some combinatorial optimization problems such as the Traveling Salesman Problem.
+	\item For $\tau$-Extremal Optimization, low $\tau$ values are used (such as $\tau \in [1,2]$) have been found to be effective.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -186,7 +186,7 @@ Listing~\ref{extremal_optimization} provides an example of the Extremal Optimiza
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-The algorithm implementation is based on the seminal work by Boettcher and Percus \cite{Boettcher1999}. A solution is comprised of a permutation of city components. Each city can potentially form a connection to ant other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected ($fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$). A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. 
+The algorithm implementation is based on the seminal work by Boettcher and Percus \cite{Boettcher1999}. A solution is comprised of a permutation of city components. Each city can potentially form a connection to any other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected: $fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$. A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. 
 
 An extension to the provided implementation would be to always replace the longest edge on the selected worst component city.
 
@@ -224,6 +224,8 @@ A number of detailed reviews of Extremal Optimization have been presented, inclu
 \label{sec:conclusions}
 % report
 This report described the Extremal Optimization algorithm using the standardized algorithm template.
+
+The implementation of the $\tau$-Extremal Optimization algorithm in the Ruby programming language require some additional work to provide an effective demonstration.
 
 % 
 % Contribute
