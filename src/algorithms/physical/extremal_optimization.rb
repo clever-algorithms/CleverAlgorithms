@@ -37,36 +37,101 @@ def nearest_neighbor_solution(cities)
   return candidate
 end
 
-def two_opt!(perm)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
-  c1, c2 = c2, c1 if c2 < c1
-  perm[c1...c2] = perm[c1...c2].reverse
+def calculate_neighbour_order(city_number, cities)
+  city_distances = []
+  cities.each_with_index do |city, i|
+    next if i == city_number
+    c = {}
+    c[:number] = i
+    c[:distance] = euc_2d(cities[city_number], cities[i])
+    city_distances << c
+  end
+  city_distances.sort!{|x,y| x[:distance] <=> y[:distance]}
+  return city_distances
+end
+
+def get_edges_for_city(city_number, permutation)
+  c1, c2 = -1, -1
+  permutation.each_with_index do |c, i|
+    if c == city_number
+      c1 = (i==0) ? permutation.last : permutation[i-1]
+      c2 = (c==permutation.length-1) ? permutation[0] : permutation[i+1]
+      break
+    end
+  end
+  raise "error" if c1==-1 or c2==-1
+  return [c1, c2]
+end
+
+def calculate_city_fitness(permutation, city_number, cities)
+  c1, c2 = get_edges_for_city(city_number, permutation)
+  neighbors = calculate_neighbour_order(city_number, cities)
+  n1, n2 = -1, -1
+  neighbors.each_with_index do |neighbor,i|
+    n1 = i+1 if neighbor[:number] == c1
+    n2 = i+1 if neighbor[:number] == c2
+  end
+  raise "error" if n1==-1 or n2==-1
+  return 3.0 / (n1.to_f + n2.to_f)
+end
+
+def probabilistically_select_city_number(ordered_choices, tau, ignore=[])
+  sum = 0.0
+  ordered_choices.each_with_index do |city, i|
+    sum += (i.to_f + 1.0)**-tau if !ignore.include?(i)
+  end
+  choice, city_number = rand(), -1
+  ordered_choices.each_with_index do |city, i|
+    next if ignore.include?(i)
+    choice -= ((i.to_f + 1.0)**-tau) / sum
+    if choice <= 0
+      city_number = city[:number]
+      break
+    end
+  end
+  city_number = ordered_choices.last[:number] if city_number == -1
+  return city_number
+end
+
+def create_candidate(permutation, cities, selected_city, tau)
+  c1, c2 = get_edges_for_city(selected_city, permutation)
+  d1 = euc_2d(cities[selected_city], cities[c1])
+  d2 = euc_2d(cities[selected_city], cities[c2])
+  p1 = (d1 < d2) ? c2 : c1  
+  neighbors = calculate_neighbour_order(selected_city, cities)
+  p2 = probabilistically_select_city_number(neighbors, tau, [selected_city, p1])
+  perm = Array.new(permutation)
+  puts ">before: #{perm.inspect}, selected_city=#{selected_city}, p1=#{p1}, p2=#{p2}"
+  perm[p1...p2] = perm[p1...p2].reverse
+  puts ">after: #{perm.inspect}"
   return perm
 end
 
-def create_neighbour(current, cities)
-  candidate = {}
-  candidate[:vector] = Array.new(current[:vector])
-  two_opt!(candidate[:vector])
-  two_opt!(candidate[:vector])
-  candidate[:cost] = cost(candidate[:vector], cities)
-  return candidate
+def calculate_city_fitnesses(cities, permutation)
+  city_fitness = []
+  cities.each_with_index do |city, i|
+    c = {}
+    c[:number] = i
+    c[:fitness] = calculate_city_fitness(permutation, i, cities)
+    city_fitness << c
+  end
+  city_fitness.sort!{|x,y| x[:fitness] <=> y[:fitness]}
+  return city_fitness
 end
 
-def should_accept?(candidate, current, temp)
-  return true if candidate[:cost] <= current[:cost]
-  return Math.exp((current[:cost] - candidate[:cost]) / temp) > rand()
-end
-
-def search(cities, max_iter, max_temp, temp_change)
-  current, temp = nearest_neighbor_solution(cities), max_temp
+def search(cities, max_iter, tau)
+  current = nearest_neighbor_solution(cities)
   best = current
   puts "Nearest Neighbor heuristic solution: cost=#{current[:cost]}"  
   max_iter.times do |iter|
-   
-    best = candidate if candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, temp=#{temp}, best=#{best[:cost]}"
+    city_fitnesses = calculate_city_fitnesses(cities, current[:vector])
+    selected_city = probabilistically_select_city_number(city_fitnesses, tau)
+    candidate = {}
+    candidate[:vector] = create_candidate(current[:vector], cities, selected_city, tau)
+    candidate[:cost] = cost(candidate[:vector], cities)    
+    current = candidate
+    best = candidate if candidate[:cost] < best[:cost]    
+    puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
   return best
 end
@@ -80,10 +145,9 @@ if __FILE__ == $0
    [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],[95,260],
    [875,920],[700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],
    [595,360],[1340,725],[1740,245]]
-  max_iterations = 5000
-  max_temp = 100000.0
-  temp_change = 0.98
+  max_iterations = 3
+  tau = 4.0
   
-  best = search(berlin52, max_iterations, max_temp, temp_change)
+  best = search(berlin52, max_iterations, tau)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
