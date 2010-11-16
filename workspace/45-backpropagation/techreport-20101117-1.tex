@@ -114,20 +114,14 @@ Each layer of the network provides an abstraction of the information processing 
 The Back-propagation algorithm is a method for training the weights in a multi-layer feed-forward neural network. As such, it requires a network structure to be defined of one or more layers where one layer is fully connected to the next layer. A standard network structure is 1 input layer, one hidden layer, and one output layer. The method is primarily concerned with adapting the weights to the error in the presence of input patterns, and the method is applied backward from the network output layer through to the input layer.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a pseudo-code for training the Back-propagation training method. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
+Algorithm~\ref{alg:train} provides a high-level pseudo-code for training the Back-propagation training method. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
 \begin{equation}
-	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
+	activation = \bigg(\sum_{k=1}^{n} w_{k} \times x_{ki}\bigg) + w_{bias} \times 1.0
 \end{equation}
 
-where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. 
+where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. A logistic transfer function (sigmoid) is used to provide nonlinearities between in the input and output signals: $\frac{1}{1+exp(-a)}$, where $a$ represents the neuron activation. 
 
-The weights are updated as follows:
-
-\begin{equation}
-	w_{i}(t+1) = w_{i}(t) + \alpha \times (e(t)-a(t)) \times x_{i}(t)
-\end{equation}
-
-where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learning rate, $e(t)$ and $a(t)$ are the expected and actual output at time $t$, and $x_i$ is the $i^{th}$ input. This update process is applied to each weight in turn (as well as the bias weight with its contact input).
+The weight updates use the delta rule, specifically a changed delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. Error derivatives are assigned to each network weight and the weights are updated to reduce the error, metered by a learning coefficient. The equations for the back propagation of error are not included for brevity.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -136,33 +130,35 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{MaxIterations}{$iterations_{max}$}
 	\SetKwData{LearningRate}{$learn_{rate}$}
-	\SetKwData{Weights}{Weights}
+	\SetKwData{Network}{Network}
+	\SetKwData{NetworkWeights}{$Network_{weights}$}
 	\SetKwData{InputPatterns}{InputPatterns}
 	\SetKwData{Pattern}{$Pattern_i$}
-	\SetKwData{Activation}{$Activation_i$}
 	\SetKwData{Output}{$Output_i$}
 
 	% functions
-	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{ConstructNetworkLayers}{ConstructNetworkLayers}
 	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
-	\SetKwFunction{ActivateNetwork}{ActivateNetwork}
-	\SetKwFunction{TransferActivation}{TransferActivation}
+	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{ForwardPropagate}{ForwardPropagate}
+	\SetKwFunction{BackwardPropagateError}{BackwardPropagateError}
 	\SetKwFunction{UpdateWeights}{UpdateWeights}
 	
 	% I/O
 	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \LearningRate}		
-	\KwOut{\Weights}
+	\KwOut{\Network}
   
 	% Algorithm
-	\Weights $\leftarrow$ \InitializeWeights{\ProblemSize}\;
+	\Network $\leftarrow$ \ConstructNetworkLayers{}\;
+	\NetworkWeights $\leftarrow$ \InitializeWeights{\Network, \ProblemSize}\;
 	% loop
 	\For{$i=1$ \KwTo \MaxIterations} {
 		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
-		\Activation $\leftarrow$ \ActivateNetwork{\Pattern, \Weights}\;
-		\Output $\leftarrow$ \TransferActivation{\Activation}\;
+		\Output $\leftarrow$ \ForwardPropagate{\Pattern, \Network}\;
+		\BackwardPropagateError{\Pattern, \Output, \Network}\;		
 		\UpdateWeights{\Pattern, \Output, \LearningRate}\;
 	}
-	\Return{\Weights}\;
+	\Return{\Network}\;
 	% end
 	\caption{Pseudo Code for the Back-propagation algorithm (training weights).}
 	\label{alg:train}
@@ -199,7 +195,9 @@ Listing~\ref{backpropagation} provides an example of the Back-propagation algori
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
+The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A logistic (sigmoid) transfer function is used to convert the activation into a binary output. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. 
+
+A three layer network is demonstrated with 2 nodes in the input layer, 2 nodes in the hidden layer and 1 node in the output layer, which is far more sufficient than the problem requires. A bias weight is used on each neuron for stability with a constant input of 1.0. The learning process is separated into four steps: forward propagation, backward propagation of error, calculation of error derivatives (assigning blame to the weights) and the weight update. This separation facilities easy extensions such as adding a momentum term or weight decay to the update process.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Back-propagation algorithm in the Ruby Programming Language, label=backpropagation]{../../src/algorithms/neural/backpropagation.rb}
@@ -237,7 +235,7 @@ Reed and Marks provide an excellent treatment of feed-forward neural networks ca
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Back-propagation algorithm using the standardized algorithm template.
+This report described the Back-propagation algorithm using the standardized algorithm template. The implementation of the algorithm was based on a past implementation for the WEKA machine learning workbench \url{http://wekaclassalgos.sourceforge.net}. The proposed demonstration implementation in Ruby does not converge and remains an area for further work. Additionally, the sample problem is too simple and must be elaborated to a non-linearly separable classification problem (such as spirals).
 
 % 
 % Contribute

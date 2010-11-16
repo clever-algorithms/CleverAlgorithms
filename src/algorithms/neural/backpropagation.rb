@@ -86,27 +86,28 @@ def calculate_error_derivatives_for_weights(network, pattern)
   network.each_with_index do |layer, i|
     input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
-      neuron[:error_derivative] = Array.new(neuron[:weights].length)
+      derivatives = Array.new(neuron[:weights].length)
       input.each_with_index do |signal, j|
-        neuron[:error_derivative][j] = neuron[:error_delta] * signal
+        derivatives[j] = neuron[:error_delta] * signal
       end
-      neuron[:error_derivative][neuron[:weights].length-1] = neuron[:error_delta] * 1.0
+      derivatives[derivatives.length-1] = neuron[:error_delta] * 1.0
+      neuron[:error_derivative] = derivatives
     end
   end
 end
 
 def update_weights(network, lrate)
-  network.each_with_index do |layer, i|
+  network.each do |layer|
     layer.each do |neuron|
       neuron[:weights].each_with_index do |w, j|
-        neuron[:weights][j] += lrate * neuron[:error_derivative][j]
+        neuron[:weights][j] = w + (lrate * neuron[:error_derivative][j])
       end
     end
   end
 end
 
 def train_network(network, domain, problem_size, iterations, lrate)
-  iterations.times do |epoch|
+  iterations.times do |it|
     pattern = generate_random_pattern(domain)
     out_v, out_c = forward_propagate(network, pattern, domain)    
     puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"
@@ -151,7 +152,7 @@ if __FILE__ == $0
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
   learning_rate = 0.1
   hidden_layer_size = 2
-  iterations = 500
+  iterations = 100
 
   run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
 end
