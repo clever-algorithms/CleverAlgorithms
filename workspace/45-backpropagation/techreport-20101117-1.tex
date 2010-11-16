@@ -111,15 +111,17 @@ Each layer of the network provides an abstraction of the information processing 
 \section{Procedure}
 \label{sec:procedure}
 % What are the data structures and representations used in a technique?
-The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
+The Back-propagation algorithm is a method for training the weights in a multi-layer feed-forward neural network. As such, it requires a network structure to be defined of one or more layers where one layer is fully connected to the next layer. A standard network structure is 1 input layer, one hidden layer, and one output layer. The method is primarily concerned with adapting the weights to the error in the presence of input patterns, and the method is applied backward from the network output layer through to the input layer.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
+Algorithm~\ref{alg:train} provides a pseudo-code for training the Back-propagation training method. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
 \begin{equation}
 	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
 \end{equation}
 
-where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. The weights are updated as follows:
+where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. 
+
+The weights are updated as follows:
 
 \begin{equation}
 	w_{i}(t+1) = w_{i}(t) + \alpha \times (e(t)-a(t)) \times x_{i}(t)
@@ -128,7 +130,7 @@ where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribut
 where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learning rate, $e(t)$ and $a(t)$ are the expected and actual output at time $t$, and $x_i$ is the $i^{th}$ input. This update process is applied to each weight in turn (as well as the bias weight with its contact input).
 
 \begin{algorithm}[ht]
-	\SetLine  
+	\SetLine
 
 	% data
 	\SetKwData{ProblemSize}{ProblemSize}
@@ -162,7 +164,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	}
 	\Return{\Weights}\;
 	% end
-	\caption{Pseudo Code for the Perceptron algorithm (training weights).}
+	\caption{Pseudo Code for the Back-propagation algorithm (training weights).}
 	\label{alg:train}
 \end{algorithm}
 
@@ -179,7 +181,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	\item Input and output values should be normalized such that $x \in [0,1)$.
 	\item The weights can be updated in an online manner (after the exposure to each input pattern) or in batch (after a fixed number of patterns have been observed).
 	\item Batch updates are expected to be more stable than online updates for some complex problems.
-	\item A Sigmoid transfer function is commonly used to transfer the activation to a binary output value, although other transfer functions can be used such as the hyperbolic tangent (tanh).
+	\item A logistic function (sigmoid) transfer function is commonly used to transfer the activation to a binary output value, although other transfer functions can be used such as the hyperbolic tangent (tanh), Gaussian, and softmax.
 	\item It is good practice to expose the system to input patterns in a different random order each enumeration through the input set.
 	\item The initial weights are typically small random values, typically $\in [0, 0.5]$.
 	\item Typically a small number of layers are used such as 2-4 given that the increase in layers result in an increase in the complexity of the system and the time required to train the weights.
