@@ -22,24 +22,9 @@ def initialise_pheromone_matrix(num_cities, naive_score)
   return Array.new(num_cities){|i| Array.new(num_cities, v)}
 end
 
-def nearest_neighbor_solution(cities)
-  candidate = {}
-  candidate[:vector] = [rand(cities.length)]
-  all_cities = Array.new(cities.length) {|i| i}
-  while candidate[:vector].length < cities.length
-    next_city = {:city=>nil,:dist=>nil}
-    candidates = all_cities - candidate[:vector]
-    candidates.each do |city|
-      dist = euc_2d(cities[candidate[:vector].last], city)
-      if next_city[:city].nil? or next_city[:dist] < dist
-        next_city[:city] = city
-        next_city[:dist] = dist
-      end
-    end
-    candidate[:vector] << next_city[:city]
-  end
-  candidate[:cost] = cost(candidate[:vector], cities)  
-  return candidate
+def random_permutation(cities)
+  all = Array.new(cities.length) {|i| i}
+  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
 end
 
 def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
@@ -105,8 +90,8 @@ def update_pheromone(pheromone, solutions)
 end
 
 def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_history)
-  best = nearest_neighbor_solution(cities)
-  puts "Nearest Neighbor heuristic solution: cost=#{best[:cost]}"
+  best = {:vector=>random_permutation(cities)}
+  best[:cost] = cost(best[:vector], cities)
   pheromone = initialise_pheromone_matrix(cities.length, best[:cost])
   max_iterations.times do |iter|
     solutions = []

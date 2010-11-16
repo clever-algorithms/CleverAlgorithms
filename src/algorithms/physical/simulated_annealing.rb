@@ -17,24 +17,9 @@ def cost(permutation, cities)
   return distance
 end
 
-def nearest_neighbor_solution(cities)
-  candidate = {}
-  candidate[:vector] = [rand(cities.length)]
-  all_cities = Array.new(cities.length) {|i| i}
-  while candidate[:vector].length < cities.length
-    next_city = {:city=>nil,:dist=>nil}
-    candidates = all_cities - candidate[:vector]
-    candidates.each do |city|
-      dist = euc_2d(cities[candidate[:vector].last], city)
-      if next_city[:city].nil? or next_city[:dist] < dist
-        next_city[:city] = city
-        next_city[:dist] = dist
-      end
-    end
-    candidate[:vector] << next_city[:city]
-  end
-  candidate[:cost] = cost(candidate[:vector], cities)  
-  return candidate
+def random_permutation(cities)
+  all = Array.new(cities.length) {|i| i}
+  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
 end
 
 def two_opt!(perm)
@@ -60,9 +45,9 @@ def should_accept?(candidate, current, temp)
 end
 
 def search(cities, max_iter, max_temp, temp_change)
-  current, temp = nearest_neighbor_solution(cities), max_temp
-  best = current
-  puts "Nearest Neighbor heuristic solution: cost=#{current[:cost]}"  
+  current = {:vector=>random_permutation(cities)}
+  current[:cost] = cost(current[:vector], cities)
+  temp, best = max_temp, current
   max_iter.times do |iter|
     candidate = create_neighbour(current, cities)
     temp = temp * temp_change
