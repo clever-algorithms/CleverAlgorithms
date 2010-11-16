@@ -34,13 +34,6 @@ def initialize_weights(problem_size)
   return random_vector(minmax)
 end
 
-def update_weights(problem_size, weights, input, out_expected, output_actual, learning_rate)
-  problem_size.times do |i|
-    weights[i] += learning_rate * (out_expected - output_actual) * input[i]
-  end
-  weights[problem_size] += learning_rate * (out_expected - output_actual) * 1.0
-end
-
 def activate(weights, vector)
   sum = 0.0
   vector.each_with_index do |input, i|
@@ -54,14 +47,14 @@ def transfer(activation)
   return 1.0 / (1.0 + Math.exp(-activation)) 
 end
 
-# def transfer_derivative(transferred)
-#   return transferred * (1.0 - transferred)
-# end
+def transfer_derivative(output)
+  return output * (1.0 - output)
+end
 
 def forward_propagate(network, pattern, domain)
   network.each_with_index do |layer, i|
     input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
-    layer.each_with_index do |neuron, j|
+    layer.each do |neuron|
       neuron[:activation] = activate(neuron[:weights], input)
       neuron[:output] = transfer(neuron[:activation])
     end
@@ -71,22 +64,55 @@ def forward_propagate(network, pattern, domain)
   return [out_actual, out_class]
 end
 
-def create_neuron(num_inputs)
-  neuron = {}
-  neuron[:weights] = initialize_weights(num_inputs)
-  return neuron
+def backward_propagate_error(network, pattern)
+  network = network.reverse
+  network.each_with_index do |layer, i|
+    back_signal = pattern[:class_norm]
+    layer.each_with_index do |neuron, k|
+      if i > 0        
+        prev_layer, back_signal = network[i-1], 0.0
+        prev_layer.each_with_index do |prev_neuron, j|
+          # only sum errors weighted by connection to k'th neuron
+          back_signal += (prev_neuron[:weights][k] * prev_neuron[:error_delta])
+        end
+      end
+      error = (back_signal - neuron[:output])
+      neuron[:error_delta] = error * transfer_derivative(neuron[:output])
+    end
+  end
 end
 
-def create_layer(num_neurons, num_inputs)
-  return Array.new(num_neurons){create_neuron(num_inputs)}
+def calculate_error_derivatives_for_weights(network, pattern)
+  network.each_with_index do |layer, i|
+    input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
+    layer.each do |neuron|
+      neuron[:error_derivative] = Array.new(neuron[:weights].length)
+      input.each_with_index do |signal, j|
+        neuron[:error_derivative][j] = neuron[:error_delta] * signal
+      end
+      neuron[:error_derivative][neuron[:weights].length-1] = neuron[:error_delta] * 1.0
+    end
+  end
+end
+
+def update_weights(network, lrate)
+  network.each_with_index do |layer, i|
+    layer.each do |neuron|
+      neuron[:weights].each_with_index do |w, j|
+        neuron[:weights][j] += lrate * neuron[:error_derivative][j]
+      end
+    end
+  end
 end
 
 def train_network(network, domain, problem_size, iterations, lrate)
   iterations.times do |epoch|
     pattern = generate_random_pattern(domain)
     out_v, out_c = forward_propagate(network, pattern, domain)    
-    puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"    
-    # update_weights(problem_size, weights, pattern[:vector], pattern[:class_norm], out_v, lrate)
+    puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"
+    backward_propagate_error(network, pattern)
+    calculate_error_derivatives_for_weights(network, pattern)
+    update_weights(network, lrate)
   end
 end
 
@@ -98,6 +124,16 @@ def test_network(network, domain)
     correct += 1 if out_c == pattern[:class_label]
   end
   puts "Finished test with a score of #{correct}/#{100} (#{correct}%)"
+end
+
+def create_neuron(num_inputs)
+  neuron = {}
+  neuron[:weights] = initialize_weights(num_inputs)
+  return neuron
+end
+
+def create_layer(num_neurons, num_inputs)
+  return Array.new(num_neurons){create_neuron(num_inputs)}
 end
 
 def run(domain, problem_size, iterations, hidden_layer_size, learning_rate)  
@@ -115,7 +151,7 @@ if __FILE__ == $0
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
   learning_rate = 0.1
   hidden_layer_size = 2
-  iterations = 60
+  iterations = 500
 
   run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
 end
