@@ -21,7 +21,16 @@ def generate_random_pattern(domain)
 end
 
 def initialize_vectors(domain, num_vectors)
-  return Array.new(num_vectors) {generate_random_pattern(domain)}
+  classes = domain.keys
+  codebook_vectors = []
+  num_vectors.times do 
+    selected_class = rand(classes.length)
+    codebook = {}
+    codebook[:class_label] = classes[selected_class]
+    codebook[:vector] = random_vector([[0,1],[0,1]])
+    codebook_vectors << codebook
+  end
+  return codebook_vectors
 end
 
 def euclidean_distance(v1, v2)
@@ -41,12 +50,23 @@ def get_best_matching_unit(codebook_vectors, pattern)
   return best
 end
 
+def update_codebook_vector(bmu, pattern, lrate)
+  bmu[:vector].each_with_index do |v,i|
+    error = pattern[:vector][i]-bmu[:vector][i]
+    if bmu[:class_label] == pattern[:class_label] 
+      bmu[:vector][i] += lrate * error 
+    else
+      bmu[:vector][i] -= lrate * error
+    end
+  end
+end
+
 def train_network(codebook_vectors, domain, problem_size, iterations, lrate)
   iterations.times do |epoch|
     pattern = generate_random_pattern(domain)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
     puts "> train got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
-    # update_weights(problem_size, weights, pattern[:vector], pattern[:class_norm], out_v, lrate)
+    update_codebook_vector(bmu, pattern, lrate)
   end
 end
 
@@ -54,8 +74,8 @@ def test_network(codebook_vectors, domain)
   correct = 0
   100.times do 
     pattern = generate_random_pattern(domain)
-    # out_v, out_c = get_output(weights, pattern, domain)
-    # correct += 1 if out_c == pattern[:class_label]
+    bmu = get_best_matching_unit(codebook_vectors, pattern)
+    correct += 1 if bmu[:class_label] == pattern[:class_label]
   end
   puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
 end
@@ -71,7 +91,7 @@ if __FILE__ == $0
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
   learning_rate = 0.3
   iterations = 1000
-  num_vectors = 15
+  num_vectors = 20
 
   run(domain, problem_size, iterations, num_vectors, learning_rate)
 end
