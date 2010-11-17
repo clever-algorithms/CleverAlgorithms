@@ -81,33 +81,92 @@ PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Probabi
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+Probabilistic-Based Incremental Learning is a probabilistic technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
-todo
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\section{Metaphor}
-\label{sec:metaphor}
-% What is the explanation of a technique in the context of the inspiring system?
-% What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+% \section{Metaphor}
+% \label{sec:metaphor}
+% % What is the explanation of a technique in the context of the inspiring system?
+% % What are the functionalities inferred for a technique from the analogous inspiring system?
+% todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the PBIL algorithm is to reduce the memory required by the genetic algorithm.
 % What is a techniques plan of action?
-todo
+This is done by reducing the population of a candidate solutions to a single probabilistic vector of attributes from which candidate solutions can be generated and assessed.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-% What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+The Probabilistic-Based Incremental Learning algorithm operates on a real vector that represents the probability of each component being expressed in a candidate solution. The technique as originally described uses bits to represent each component.
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Probabilistic-Based Incremental Learning algorithm for minimizing a cost function.
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
+	\SetKwData{LearningRate}{$Learn_{rate}$}
+	\SetKwData{MutationFactor}{$Mutation_{factor}$}
+	\SetKwData{NumSamples}{$Samples_{num}$}
+	\SetKwData{NumBits}{$Bits_{num}$}
+	
+	\SetKwData{Vector}{$V$}
+	\SetKwData{CurrentBest}{$S_{current}$}
+	\SetKwData{Sample}{$S_i$}
+	\SetKwData{Bit}{$S_{bit}^i$}
+	\SetKwData{VectorBit}{$V_{bit}^i$}
+
+	% functions
+	\SetKwFunction{InitializeVector}{InitializeVector}  
+	\SetKwFunction{StopCondition}{StopCondition} 
+	\SetKwFunction{GenerateSamples}{GenerateSamples} 
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{Rand}{Rand}
+  
+	% I/O
+	\KwIn{\NumBits, \NumSamples, \LearningRate, \ProbabilityMutate, \MutationFactor}		
+	\KwOut{\Best}
+
+  % Algorithm
+	\Vector $\leftarrow$ \InitializeVector{\NumBits}\;
+	\Best $\leftarrow$ $0$\;
+	
+	\While{$\neg$\StopCondition{}} {
+		\CurrentBest $\leftarrow$ $0$\;		
+		\For{$i$ \KwTo \NumSamples} {
+			\Sample $\leftarrow$ \GenerateSamples{\Vector}\;
+			\If{\Cost{\Sample} $\leq$ \Cost{\CurrentBest}} {
+				\CurrentBest $\leftarrow$ \Sample\;
+				\If{\Cost{\Sample} $\leq$ \Cost{\Best}} {
+					\Best $\leftarrow$ \Sample\;
+				}
+			}			
+		}
+		\ForEach{\Bit $\in$ \CurrentBest} {
+			\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0-\LearningRate) + \Bit $\times$ \LearningRate\;
+			\If{\Rand{} $<$ \ProbabilityMutate} {
+				\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0-\MutationFactor) + \Rand{} $\times$ \MutationFactor\;
+			}
+		}
+	}
+	\Return{\Best}\;
+	
+	% end
+	\caption{Pseudo Code for the Probabilistic-Based Incremental Learning.}
+	\label{alg:pbil}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -116,7 +175,9 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item PBIL was designed to optimize the probability for a bit position in a binary string that may in turn be decoded for a given problem domain.
+	\item Extensions to PBIL have been proposed that extend the representation beyond bits to real and combinatorial values.
+	\item ...
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -126,7 +187,7 @@ todo
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{pbil} provides an example of the Probabilistic-Based Incremental Learning algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem ...
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 
 % algorithm
 The algorithm...
@@ -147,7 +208,7 @@ The algorithm...
 % 
 \subsection{Primary Sources}
 % seminal
-todo
+The Probabilistic-Based Incremental Learning algorithm was proposed by Baluja in a technical report \cite{Baluja1994}.
 % early
 
 % 
