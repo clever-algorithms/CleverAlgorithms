@@ -45,7 +45,7 @@ The project makes use of a standardized algorithm description template that uses
 This report describes the Learning Vector Quantization algorithm using the standardized template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Learning, Vector, Quantization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Learning, Vector, Quantization}}
 \end{description} 
 
 \section{Introduction} 
@@ -124,7 +124,15 @@ todo
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-todo
+Listing~\ref{lvq} provides an example of the Learning Vector Quantization algorithm implemented in the Ruby Programming Language. 
+% problem
+The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
+
+% algorithm
+The algorithm...
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Learning Vector Quantization algorithm in the Ruby Programming Language, label=lvq]{../../src/algorithms/neural/lvq.rb}
 
 
 % References: Deeper understanding
@@ -139,17 +147,16 @@ todo
 % 
 \subsection{Primary Sources}
 % seminal
-todo
-% early
+The Learning Vector Quantization algorithm was described by Kohonen in 1988 \cite{Kohonen1988}, and was further described in the same year by Kohonen \cite{Kohonen1988a} and benchmarked by Kohonen, Barna, and Chrisley \cite{Kohonen1988b}.
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-todo
+Kohonen provides a detailed overview of the state of LVQ algorithms and variants (LVQ1, LVQ2, and LVQ2.1) \cite{Kohonen1990}. The technical report that comes with the LVQ\_PAK software (written by Kohonen and his students) provides both an excellent summary of the technique and it's main variants, as well as summarizing the important considerations when applying the approach \cite{Kohonen1996}.
 % books
-
+The seminal book on Learning Vector Quantization and the Self-Organizing Map is ``Self-Organizing Maps'' by Kohonen, which includes a chapter (Chapter 6) dedicated to LVQ and its variants \cite{Kohonen1995}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
