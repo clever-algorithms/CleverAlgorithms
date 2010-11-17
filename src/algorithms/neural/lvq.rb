@@ -10,87 +10,68 @@ def random_vector(minmax)
   end
 end
 
-def normalize_class_index(class_no, domain)
-  return (class_no.to_f/(domain.length-1).to_f)
-end
-
-def denormalize_class_index(normalized_class, domain)
-  return (normalized_class*(domain.length-1).to_f).round.to_i
-end
-
 def generate_random_pattern(domain)  
   classes = domain.keys
   selected_class = rand(classes.length)
   pattern = {}
   pattern[:class_number] = selected_class
   pattern[:class_label] = classes[selected_class]
-  pattern[:class_norm] = normalize_class_index(selected_class, domain)
   pattern[:vector] = random_vector(domain[classes[selected_class]])
   return pattern
 end
 
-def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[0,0.5]}
-  return random_vector(minmax)
+def initialize_vectors(domain, num_vectors)
+  return Array.new(num_vectors) {generate_random_pattern(domain)}
 end
 
-def update_weights(problem_size, weights, input, out_expected, output_actual, learning_rate)
-  problem_size.times do |i|
-    weights[i] += learning_rate * (out_expected - output_actual) * input[i]
-  end
-  weights[problem_size] += learning_rate * (out_expected - output_actual) * 1.0
-end
-
-def calculate_activation(weights, vector)
+def euclidean_distance(v1, v2)
   sum = 0.0
-  vector.each_with_index do |input, i|
-    sum += weights[i] * input
+  v1.each_with_index do |v, i|
+    sum += (v1[i]-v2[i])**2.0
   end
-  sum += weights[vector.length] * 1.0
-  return sum
+  return Math.sqrt(sum)
 end
 
-def transfer(activation)
-  return (activation >= 0) ? 1.0 : 0.0
+def get_best_matching_unit(codebook_vectors, pattern)
+  best, b_dist = nil, nil
+  codebook_vectors.each do |codebook|
+    dist = euclidean_distance(codebook[:vector], pattern[:vector])
+    best,b_dist = codebook,dist if b_dist.nil? or dist<b_dist
+  end
+  return best
 end
 
-def get_output(weights, pattern, domain)
-  activation = calculate_activation(weights, pattern[:vector])
-  out_actual = transfer(activation)
-  out_class = domain.keys[denormalize_class_index(out_actual, domain)]
-  return [out_actual, out_class]
-end
-
-def train_weights(weights, domain, problem_size, iterations, lrate)
+def train_network(codebook_vectors, domain, problem_size, iterations, lrate)
   iterations.times do |epoch|
     pattern = generate_random_pattern(domain)
-    out_v, out_c = get_output(weights, pattern, domain)    
-    puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"    
-    update_weights(problem_size, weights, pattern[:vector], pattern[:class_norm], out_v, lrate)
+    bmu = get_best_matching_unit(codebook_vectors, pattern)
+    puts "> train got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
+    # update_weights(problem_size, weights, pattern[:vector], pattern[:class_norm], out_v, lrate)
   end
 end
 
-def test_weights(weights, domain)
+def test_network(codebook_vectors, domain)
   correct = 0
   100.times do 
     pattern = generate_random_pattern(domain)
-    out_v, out_c = get_output(weights, pattern, domain)
-    correct += 1 if out_c == pattern[:class_label]
+    # out_v, out_c = get_output(weights, pattern, domain)
+    # correct += 1 if out_c == pattern[:class_label]
   end
   puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
 end
 
-def run(domain, problem_size, iterations, learning_rate)  
-  weights = initialize_weights(problem_size)
-  train_weights(weights, domain, problem_size, iterations, learning_rate)
-  test_weights(weights, domain)
+def run(domain, problem_size, iterations, num_vectors, learning_rate)  
+  codebook_vectors = initialize_vectors(domain, num_vectors)
+  train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
+  test_network(codebook_vectors, domain)
 end
 
 if __FILE__ == $0
   problem_size = 2
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-  learning_rate = 0.1
-  iterations = 60
+  learning_rate = 0.3
+  iterations = 1000
+  num_vectors = 15
 
-  run(domain, problem_size, iterations, learning_rate)
+  run(domain, problem_size, iterations, num_vectors, learning_rate)
 end
