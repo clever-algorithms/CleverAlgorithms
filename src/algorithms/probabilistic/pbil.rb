@@ -1,4 +1,4 @@
-# Probabilistic-Based Incremental Learning in the Ruby Programming Language
+# Population-Based Incremental Learning in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -19,7 +19,7 @@ end
 
 def update_vector(vector, current, lrate)
   vector.each_with_index do |p, i|
-    vector[i] = p * (1.0-lrate) + current[:bitstring][i]  * lrate
+    vector[i] = p * (1.0-lrate) + current[:bitstring][i] * lrate
   end
 end
 
