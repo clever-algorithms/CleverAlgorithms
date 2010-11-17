@@ -61,11 +61,12 @@ def update_codebook_vector(bmu, pattern, lrate)
   end
 end
 
-def train_network(codebook_vectors, domain, problem_size, iterations, lrate)
-  iterations.times do |epoch|
+def train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
+  iterations.times do |iter|
     pattern = generate_random_pattern(domain)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
-    puts "> train got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
+    lrate = learning_rate * (1.0-(iter.to_f/iterations.to_f))
+    puts "> train lrate=#{lrate} got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
     update_codebook_vector(bmu, pattern, lrate)
   end
 end

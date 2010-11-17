@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101117a}
+\newcommand{\myreportdate}{20101118}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -64,7 +64,7 @@ This report describes the Learning Vector Quantization algorithm using the stand
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Learning Vector Quantization, LVQ, Vector Quantization
+Learning Vector Quantization, LVQ
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -73,7 +73,7 @@ Learning Vector Quantization, LVQ, Vector Quantization
 % To what fields of study does a technique belong?
 The Learning Vector Quantization algorithm belongs to the field of Artificial Neural Networks, and more broadly to the field of Computational Intelligence. 
 % What are the closely related approaches to a technique?
-Learning Vector Quantization is related to the Kohonen Self-Organizing Map which is essentially the same algorithm with the addition of a connections between the neurons. Additionally, LVQ is a baseline technique that was defined with a few variants LVQ1, LVQ2, LVQ2.1, LVQ3 and OLVQ1, as well as many third-party extensions and refinements too numerous to list.
+Learning Vector Quantization is related to the Kohonen Self-Organizing Map which is a similar algorithm with the addition of a connections between the neurons. Additionally, LVQ is a baseline technique that was defined with a few variants LVQ1, LVQ2, LVQ2.1, LVQ3, OLVQ1, and OLVQ3 as well as many third-party extensions and refinements too numerous to list.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -101,7 +101,7 @@ The Learning Vector Quantization algorithm is related to the Self-Organizing Map
 % What is the information processing objective of a technique?
 The information processing objective of the algorithm is to prepare a set of codebook (or prototype) vectors in the domain of the observed input data samples and to use these vectors to classify unseen examples.
 % What is a techniques plan of action?
-An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected and adjusted to be closer to the input vector, and in some cases further away from the winner for runner's up. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset.
+An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected and adjusted to be closer to the input vector, and in some cases, further away from the winner for runner's up. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -112,15 +112,13 @@ Vector Quantization is a technique from signal processing density functions are 
 
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Learning Vector Quantization method. 
+Codebook vectors are initialized to small floating point values, or sampled from an available dataset. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
-A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
 \begin{equation}
-	activation = \bigg(\sum_{k=1}^{n} w_{k} \times x_{ki}\bigg) + w_{bias} \times 1.0
+	dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2
 \end{equation}
 
-where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. A logistic transfer function (sigmoid) is used to calculate the output for a neuron $\in [0,1]$ and provide nonlinearities between in the input and output signals: $\frac{1}{1+exp(-a)}$, where $a$ represents the neuron activation. 
-
-The weight updates use the delta rule, specifically a changed delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. Error derivatives are assigned to each neuron weight and the weights are updated to reduce the error, metered by a learning coefficient. The equations for the back propagation of error are not included for brevity.
+where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given codebook vector.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -130,36 +128,43 @@ The weight updates use the delta rule, specifically a changed delta rule where e
 	\SetKwData{MaxIterations}{$iterations_{max}$}
 	\SetKwData{LearningRate}{$learn_{rate}$}
 	\SetKwData{CodebookVectors}{CodebookVectors}
-	\SetKwData{NetworkWeights}{$Network_{weights}$}
 	\SetKwData{InputPatterns}{InputPatterns}
 	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
+	\SetKwData{PatternClass}{$Pattern_{i}^{class}$}
 	\SetKwData{Output}{$Output_i$}
 	\SetKwData{NumCodebookVectors}{$CodebookVectors_{num}$}
+	\SetKwData{Bmu}{$Bmu_i$}
+	\SetKwData{BmuClass}{$Bmu_{i}^{class}$}
+	\SetKwData{BmuAttribute}{$Bmu_{i}^{attribute}$}
 	
 	% functions
 	\SetKwFunction{InitializeCodebookVectors}{InitializeCodebookVectors}
 	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
-	\SetKwFunction{InitializeWeights}{InitializeWeights}
-	\SetKwFunction{ForwardPropagate}{ForwardPropagate}
-	\SetKwFunction{BackwardPropagateError}{BackwardPropagateError}
-	\SetKwFunction{UpdateWeights}{UpdateWeights}
+	\SetKwFunction{SelectBestMatchingUnit}{SelectBestMatchingUnit}
+
 	
 	% I/O
 	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \NumCodebookVectors \LearningRate}		
-	\KwOut{\Network}
+	\KwOut{\CodebookVectors}
   
 	% Algorithm
-	\NetworkWeights $\leftarrow$ \InitializeCodebookVectors{\InputPatterns, \ProblemSize}\;
+	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\NumCodebookVectors, \ProblemSize}\;
 	% loop
 	\For{$i=1$ \KwTo \MaxIterations} {
 		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
-		\Output $\leftarrow$ \ForwardPropagate{\Pattern, \Network}\;
-		\BackwardPropagateError{\Pattern, \Output, \Network}\;		
-		\UpdateWeights{\Pattern, \Output, \Network, \LearningRate}\;
+		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
+		\ForEach{\BmuAttribute $\in$ \Bmu}{
+			\eIf{\BmuClass $\equiv$ \PatternClass} {
+				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+			} {
+				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+			}
+		}
 	}
-	\Return{\Network}\;
+	\Return{\CodebookVectors}\;
 	% end
-	\caption{Pseudo Code for the Learning Vector Quantization algorithm (training weights).}
+	\caption{Pseudo Code for the Learning Vector Quantization algorithm (LVQ1).}
 	\label{alg:train}
 \end{algorithm}
 
@@ -170,11 +175,14 @@ The weight updates use the delta rule, specifically a changed delta rule where e
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Learning Vector Quantization was designed for classification and regression problems that have existing data sets that can be used to supervise the learning by the system.
+	\item Learning Vector Quantization was designed for classification problems that have existing data sets that can be used by supervise the learning by the system. The algorithm does not support regression problems.
 	\item LVQ is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
-	\item Input vectors should be normalized such that $x \in [0,1)$. 
+	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
 	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
-	\item ...
+	\item There should be sufficient training iterations to expose all the training data to the model multiple times.
+	\item The learning rate is typically linearly decayed over the training period from an initial value to close to zero.
+	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
+	\item Multiple passes of the LVQ training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -187,7 +195,7 @@ Listing~\ref{lvq} provides an example of the Learning Vector Quantization algori
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm was implemented as the LVQ1 variant where the best matching codebook vector is located and moved toward the the input vector if it is the same class, or away if the classes differ.
+The algorithm was implemented using the LVQ1 variant where the best matching codebook vector is located and moved toward the the input vector if it is the same class, or away if the classes differ. A linear decay was used for the learning rate that was updated after each pattern was exposed to the model. The implementation can easily be extended to the other variants of the method.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Vector Quantization algorithm in the Ruby Programming Language, label=lvq]{../../src/algorithms/neural/lvq.rb}
@@ -212,7 +220,7 @@ The Learning Vector Quantization algorithm was described by Kohonen in 1988 \cit
 % 
 \subsection{Learn More}
 % reviews
-Kohonen provides a detailed overview of the state of LVQ algorithms and variants (LVQ1, LVQ2, and LVQ2.1) \cite{Kohonen1990}. The technical report that comes with the LVQ\_PAK software (written by Kohonen and his students) provides both an excellent summary of the technique and it's main variants, as well as summarizing the important considerations when applying the approach \cite{Kohonen1996}.
+Kohonen provides a detailed overview of the state of LVQ algorithms and variants (LVQ1, LVQ2, and LVQ2.1) \cite{Kohonen1990}. The technical report that comes with the LVQ\_PAK software (written by Kohonen and his students) provides both an excellent summary of the technique and its main variants, as well as summarizing the important considerations when applying the approach \cite{Kohonen1996}.
 % books
 The seminal book on Learning Vector Quantization and the Self-Organizing Map is ``Self-Organizing Maps'' by Kohonen, which includes a chapter (Chapter 6) dedicated to LVQ and its variants \cite{Kohonen1995}.
 
@@ -222,7 +230,7 @@ The seminal book on Learning Vector Quantization and the Self-Organizing Map is 
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Learning Vector Quantization algorithm using the standardized template.
+This report described the Learning Vector Quantization algorithm using the standardized template. The algorithm implementation and heuristics for this algorithm were based on past work by the author for the WEKA machine learning workbench, available at \url{http://wekaclassalgos.sourceforge.net}.
 
 % 
 % Contribute
