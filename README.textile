@@ -78,6 +78,11 @@ h4. Neural Algorithms
 * Jason Brownlee. "Back-propagation Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101117-1.pdf. Technical Report CA-TR-20101117-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Learning Vector Quantization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101118-1.pdf. Technical Report CA-TR-20101118-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
+h4. Probabilistic Algorithms
+
+* Jason Brownlee. "Population-Based Incremental Learning":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101118a-1.pdf. Technical Report CA-TR-20101118a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+
+
 
 h3. Software
 

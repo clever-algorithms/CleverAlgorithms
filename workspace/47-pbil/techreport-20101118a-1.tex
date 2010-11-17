@@ -73,7 +73,7 @@ Population-Based Incremental Learning, PBIL
 % To what fields of study does a technique belong?
 Population-Based Incremental Learning is an Estimation of Distribution Algorithm (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Population Incremental Programing Evolution Algorithm, and the Bayesian Optimization Algorithm. The fact the the algorithm maintains a single prototype vector that is updated competitively shows some relationship to the Learning Vector Quantization algorithm.
+PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Probabilistic Incremental Programing Evolution Algorithm, and the Bayesian Optimization Algorithm. The fact the the algorithm maintains a single prototype vector that is updated competitively shows some relationship to the Learning Vector Quantization algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -100,7 +100,7 @@ Population-Based Incremental Learning is a Population technique without an inspi
 % What is the information processing objective of a technique?
 The information processing objective of the PBIL algorithm is to reduce the memory required by the genetic algorithm.
 % What is a techniques plan of action?
-This is done by reducing the population of a candidate solutions to a single Population vector of attributes from which candidate solutions can be generated and assessed.
+This is done by reducing the population of a candidate solutions to a single prototype vector of attributes from which candidate solutions can be generated and assessed. Updates and mutation operators are also performed to the prototype vector, rather than the generated candidate solutions. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -209,7 +209,7 @@ The algorithm is an implementation of the simple PBIL algorithm that updates the
 % 
 \subsection{Primary Sources}
 % seminal
-The Population-Based Incremental Learning algorithm was proposed by Baluja in a technical report that proposed the base algorithm as well as a number of variants inspired by the Learning Vector Quantization algorithm applied to many problems not limited to jobshop scheduling, bin packing, and function optimization \cite{Baluja1994}.
+The Population-Based Incremental Learning algorithm was proposed by Baluja in a technical report that proposed the base algorithm as well as a number of variants inspired by the Learning Vector Quantization algorithm \cite{Baluja1994}.
 % early
 
 
@@ -219,7 +219,7 @@ The Population-Based Incremental Learning algorithm was proposed by Baluja in a 
 \subsection{Learn More}
 % reviews
 Baluja and Caruana provide an excellent overview of PBIL and compare it to the standard Genetic Algorithm, released as a technical report \cite{Baluja1995} and later published \cite{Baluja1995a}. Baluja provides a detailed comparison between the Genetic algorithm and PBIL on a range of problems and scales in another technical report \cite{Baluja1995b}.
-Greene provided one of the first published accounts on the applicability of PBIL as a practical optimization algorithm \cite{Greene1996}.
+Greene provided an excellent account on the applicability of PBIL as a practical optimization algorithm \cite{Greene1996}.
 H\"ohfeld and Rudolph provide the first theoretical analysis of the technique and provide a convergence proof \cite{Hohfeld1997}.
 % books
 
