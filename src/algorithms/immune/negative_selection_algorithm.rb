@@ -19,9 +19,8 @@ end
 
 def euclidean_distance(v1, v2)
   sum = 0.0
-  v1.each_with_index do |v,i|
-    diff = v - v2[i]
-    sum += (diff*diff)
+  v1.each_with_index do |v, i|
+    sum += (v1[i]-v2[i])**2.0
   end
   return Math.sqrt(sum)
 end
