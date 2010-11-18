@@ -1,4 +1,4 @@
-% Population-Based Incremental Learning algorithm
+% Univariate Marginal Distribution Algorithm
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -19,12 +19,12 @@
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
-\newcommand{\myreporttitle}{Population-Based Incremental Learning}
+\newcommand{\myreporttitle}{Univariate Marginal Distribution Algorithm}
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101118a}
+\newcommand{\myreportdate}{20101118b}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-This report describes the Population-Based Incremental Learning algorithm using the standardized template.
+This report describes the Univariate Marginal Distribution Algorithm using the standardized algorithm description template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Population-Based, \\Incremental, Learning}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Optimization, Univariate, \\Marginal, Distribution, Algorithm}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes the Population-Based Incremental Learning algorithm using the standardized template.
+This report describes the Univariate Marginal Distribution Algorithm using the standardized algorithm description template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,16 +64,16 @@ This report describes the Population-Based Incremental Learning algorithm using 
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Population-Based Incremental Learning, PBIL
+Univariate Marginal Distribution Algorithm, UMDA, Univariate Marginal Distribution, UMD
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-Population-Based Incremental Learning is an Estimation of Distribution Algorithm (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation.
+The Univariate Marginal Distribution Algorithm belongs to the field of Estimation of Distribution Algorithms (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Probabilistic Incremental Programing Evolution Algorithm, and the Bayesian Optimization Algorithm. The fact the the algorithm maintains a single prototype vector that is updated competitively shows some relationship to the Learning Vector Quantization algorithm.
+UMDA is related to other EDAs such as the Compact Genetic Algorithm, the Population-Based Incremental Learning algorithm, and the Bayesian Optimization Algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -81,8 +81,8 @@ PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Probabi
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-Population-Based Incremental Learning is a Population technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
+Population-Based Incremental Learning is a Population technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -98,18 +98,18 @@ Population-Based Incremental Learning is a Population technique without an inspi
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The information processing objective of the PBIL algorithm is to reduce the memory required by the genetic algorithm.
 % What is a techniques plan of action?
-This is done by reducing the population of a candidate solutions to a single prototype vector of attributes from which candidate solutions can be generated and assessed. Updates and mutation operators are also performed to the prototype vector, rather than the generated candidate solutions. 
+todo
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
-% What are the data structures and representations used in a technique?
-The Population-Based Incremental Learning algorithm maintains on a real-valued prototype vector that represents the probability of each component being expressed in a candidate solution. 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based Incremental Learning algorithm for maximizing a cost function.
+% What are the data structures and representations used in a technique?
+The Univariate Marginal Distribution Algorithm... 
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:umda} provides a pseudo-code listing of the Univariate Marginal Distribution Algorithm for minimizing a cost function.
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -164,8 +164,8 @@ Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based 
 	\Return{\Best}\;
 	
 	% end
-	\caption{Pseudo Code for the Population-Based Incremental Learning.}
-	\label{alg:pbil}
+	\caption{Pseudo Code for the Univariate Marginal Distribution Algorithm.}
+	\label{alg:umda}
 \end{algorithm}
 
 % Heuristics: Usage guidelines
@@ -175,11 +175,7 @@ Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based 
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item PBIL was designed to optimize the probability of components from low cardinality sets, such as bit's in a binary string.
-	\item The algorithm has a very small memory footprint (compared to some population-based evolutionary algorithms) given the compression of information into a single prototype vector.
-	\item Extensions to PBIL have been proposed that extend the representation beyond sets to real-valued vectors.
-	\item Variants of PBIL that were proposed in the original paper include updating the prototype vector with more than one competitive candidate solution (such as an average of top candidate solutions), and moving the prototype vector away from the least competitive candidate solution each iteration.
-	\item Low learning rates are preferred, such as 0.1.
+	\item todo
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -187,14 +183,14 @@ Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based 
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{pbil} provides an example of the Population-Based Incremental Learning algorithm implemented in the Ruby Programming Language. 
+Listing~\ref{umda} provides an example of the Univariate Marginal Distribution Algorithm implemented in the Ruby Programming Language. 
 % problem
 The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 % algorithm
-The algorithm is an implementation of the simple PBIL algorithm that updates the prototype vector based on the best candidate solution generated each iteration. 
+The algorithm...
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Population-Based Incremental Learning algorithm in the Ruby Programming Language, label=pbil]{../../src/algorithms/probabilistic/pbil.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Univariate Marginal Distribution Algorithm in the Ruby Programming Language, label=umda]{../../src/algorithms/probabilistic/umda.rb}
 
 
 % References: Deeper understanding
@@ -209,18 +205,15 @@ The algorithm is an implementation of the simple PBIL algorithm that updates the
 % 
 \subsection{Primary Sources}
 % seminal
-The Population-Based Incremental Learning algorithm was proposed by Baluja in a technical report that proposed the base algorithm as well as a number of variants inspired by the Learning Vector Quantization algorithm \cite{Baluja1994}.
+The Univariate Marginal Distribution Algorithm was described by M\"uhlenbein in 1997 \cite{Muhlenbein1997}.
 % early
-
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-Baluja and Caruana provide an excellent overview of PBIL and compare it to the standard Genetic Algorithm, released as a technical report \cite{Baluja1995} and later published \cite{Baluja1995a}. Baluja provides a detailed comparison between the Genetic algorithm and PBIL on a range of problems and scales in another technical report \cite{Baluja1995b}.
-Greene provided an excellent account on the applicability of PBIL as a practical optimization algorithm \cite{Greene1996}.
-H\"ohfeld and Rudolph provide the first theoretical analysis of the technique and provide a convergence proof \cite{Hohfeld1997}.
+todo
 % books
 
 
@@ -230,7 +223,7 @@ H\"ohfeld and Rudolph provide the first theoretical analysis of the technique an
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Population-Based Incremental Learning algorithm using the standardized template.
+This report described the Univariate Marginal Distribution Algorithm using the standardized algorithm description template.
 
 % 
 % Contribute
