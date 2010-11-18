@@ -81,6 +81,7 @@ h4. Neural Algorithms
 h4. Probabilistic Algorithms
 
 * Jason Brownlee. "Population-Based Incremental Learning":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101118a-1.pdf. Technical Report CA-TR-20101118a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Univariate Marginal Distribution Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101118b-1.pdf. Technical Report CA-TR-20101118b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 
 

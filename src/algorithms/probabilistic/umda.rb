@@ -18,12 +18,12 @@ def binary_tournament(population)
 end
 
 def calculate_bit_probabilities(num_bits, pop)
-  probabilities= Array.new(num_bits, 0)
+  vector= Array.new(num_bits, 0.0)
   pop.each do |member|
-    member[:bitstring].each_with_index {|v, i| probabilities[i] += 1}
+    member[:bitstring].each_with_index {|v, i| vector[i] += v}
   end
-  probabilities.each_with_index {|f,i| probabilities[i] = (f.to_f/pop.length.to_f)}
-  return probabilities
+  vector.each_with_index {|f,i| vector[i] = (f.to_f/pop.length.to_f)}
+  return vector
 end
 
 def generate_candidate(vector)
@@ -35,14 +35,14 @@ def generate_candidate(vector)
   return candidate
 end
 
-def search(num_bits, max_iterations, population_size)
+def search(num_bits, max_iterations, population_size, selection_size)
   pop = Array.new(population_size) do
     {:bitstring=>random_bitstring(num_bits)}
   end
   pop.each{|c| c[:fitness] = onemax(c[:bitstring])}
   best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
   max_iterations.times do |iter|
-    selected = Array.new(population_size) { binary_tournament(pop) }
+    selected = Array.new(selection_size) { binary_tournament(pop) }
     vector = calculate_bit_probabilities(num_bits, selected)
     samples = Array.new(population_size) { generate_candidate(vector) }
     samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
@@ -57,8 +57,9 @@ end
 if __FILE__ == $0
   num_bits = 64
   max_iterations = 100
-  population_size = 100
+  population_size = 50
+  selection_size = 30
   
-  best = search(num_bits, max_iterations, population_size)
+  best = search(num_bits, max_iterations, population_size, selection_size)
   puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
 end
