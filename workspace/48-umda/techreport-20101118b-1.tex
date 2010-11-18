@@ -73,6 +73,7 @@ Univariate Marginal Distribution Algorithm, UMDA, Univariate Marginal Distributi
 % To what fields of study does a technique belong?
 The Univariate Marginal Distribution Algorithm belongs to the field of Estimation of Distribution Algorithms (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
+UMDA is closely related to the Factorized Distribution Algorithm (FDA) and was the basis for the extension algorithm called the Bivariate Marginal Distribution Algorithm (BMDA).
 UMDA is related to other EDAs such as the Compact Genetic Algorithm, the Population-Based Incremental Learning algorithm, and the Bayesian Optimization Algorithm.
 
 % Inspiration: Motivating system
@@ -98,8 +99,9 @@ Population-Based Incremental Learning is a Population technique without an inspi
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing strategy of the algorithm is use the frequency of components in a population of candidate solutions to control the construction of new candidate solutions.
 % What is a techniques plan of action?
-todo
+This is achieved by first measuring the frequency of each component in the population (the univariate marginal probability) and using the probabilities to influence the probabilistic selection of components in the component-wise construction of new candidate solutions.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -107,7 +109,6 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-The Univariate Marginal Distribution Algorithm... 
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:umda} provides a pseudo-code listing of the Univariate Marginal Distribution Algorithm for minimizing a cost function.
 
@@ -213,7 +214,7 @@ The Univariate Marginal Distribution Algorithm was described by M\"uhlenbein in 
 % 
 \subsection{Learn More}
 % reviews
-todo
+Pelikan and M\"uhlenbein extended the approach to cover problems that have dependencies between the components (specifically pair-dependencies), referring to the technique as the Bivariate Marginal Distribution Algorithm (BMDA) \cite{Pelikan1998, Pelikan1999}.
 % books
 
 
