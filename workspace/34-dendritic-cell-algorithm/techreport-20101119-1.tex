@@ -1,3 +1,5 @@
+% Dear future self, this is a 'system', not an algorithm, and the papers poorly describe it (abandoned)
+
 % Dendritic Cell Algorithm
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
@@ -130,7 +132,8 @@ todo
 \begin{itemize}
 	\item The Dendritic Cell Algorithm is not specifically a classification algorithm, it may be considered a data filtering method for use in anomaly detection problems.
 	\item The \texttt{danger} and \texttt{safe} signals are problem specific signals of the risk that the input pattern is an anomaly or is normal.
-	\item ...
+	\item The \texttt{danger} and \texttt{safe} signals do not have to be reciprocal, meaning they may provide conflicting information.
+	\item The system was designed be used in real-time anomaly detection problems, as well as static problems.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -143,7 +146,7 @@ Listing~\ref{dca} provides an example of the Dendritic Cell Algorithm implemente
 The problem is a contrived anomaly-detection problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `Normal' for normal data ($x\in[0,1], y\in[0,1]$) and `Anomaly' for anomalous ($x\in[0.45,0.55], y\in[0.45,0.55]$), where class N excludes class A (a doughnut with anomalies in the whole in the middle). Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
 
 % algorithm
-The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) concisely described in \cite{Stibor2009}, with verification from \cite{Greensmith2008}.
+The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) as described in \cite{Stibor2009, Greensmith2008}, with verification from \cite{Greensmith2006a}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Deterministic Dendritic Cell Algorithm (dDCA) in the Ruby Programming Language, label=dca]{../../src/algorithms/immune/dendritic_cell_algorithm.rb}

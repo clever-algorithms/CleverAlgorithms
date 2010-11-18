@@ -4,6 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+#  Dear future self, this is a 'system', not an algorithm, and the papers poorly describe it (abandoned)
+
 def random_vector(search_space)
   return Array.new(search_space.length) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
@@ -32,51 +34,67 @@ def generate_pattern(domain, prob_anomaly, prob_anomaly_signal, prob_normal_sign
   pattern = nil
   if rand() < prob_anomaly
     pattern = generate_specific_pattern("Anomaly", domain)
-    pattern[:normal_signal] = rand() * (1.0-prob_normal_signal)
-    pattern[:anomaly_signal] = rand() * prob_anomaly_signal
+    pattern[:safe] = rand() * (1.0-prob_normal_signal)
+    pattern[:danger] = rand() * prob_anomaly_signal
   else
     pattern = generate_specific_pattern("Normal", domain, "Anomaly")
-    pattern[:normal_signal] = rand() * prob_normal_signal
-    pattern[:anomaly_signal] = rand() * (1.0-prob_anomaly_signal)
+    pattern[:safe] = rand() * prob_normal_signal
+    pattern[:danger] = rand() * (1.0-prob_anomaly_signal)
   end
   return pattern
 end
 
-def initialize_cells(domain, num_cells)
-  cells = []
-  num_cells.times do 
-    
-  end
-  return cells
+def initialize_cell(cell={})
+  # cell[:weights] = random_vector([[0,1],[0,1]])
+  cell[:lifespan] = 100.0 # ???
+  cell[:k] = 0.0
+  cell[:cms] = 0.0
+  cell[:output] = 0.0
+  cell[:migrate_threshold] = rand()
 end
 
-def test_cells(codebook_vectors, domain)
-  correct = 0
-  100.times do 
-    pattern = generate_random_pattern(domain)
-    bmu = get_best_matching_unit(codebook_vectors, pattern)
-    correct += 1 if bmu[:class_label] == pattern[:class_label]
+def expose_cell(cell, pattern)
+  cms = pattern[:safe] + pattern[:danger] 
+  
+  cell[:cms] += cms
+  cell[:k] += pattern[:danger] - (pattern[:safe] * 2.0)
+  cell[:output] = (cell[:weights][0] + cell[:cms]) + (cell[:weights][1] + cell[:k])
+  
+  cell[:lifespan] -= cms
+  if cell[:lifespan] <= 0
+    puts " > cell died, resetting..."
+    initialize_cell(cell)
   end
-  puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
+  
 end
 
-def run(domain, problem_size, iterations, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)  
-  cells = initialize_cells(domain, num_cells)
-  iterations.times do |iter|
+def can_cell_migrate?(cell)
+  return cell[:cms] <= cell[:migrate_threshold]
+end
+
+def run(domain, max_iter, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)  
+  cells = Array.new(num_cells){ initialize_cell() }
+  tissue = []
+  max_iter.times do |iter|
     pattern = generate_pattern(domain, prob_anomaly, prob_ano_signal, prob_nor_signal)
-
+    cells.each {|cell| expose_cell(cell, pattern)}
+    cells.each {|cell| tissue << cell if can_cell_migrate?(cell)} 
+    tissue.each {|cell| cells.delete(cell)}
+    
+    
     puts "generated #{pattern[:class_label]}"
   end
 end
 
 if __FILE__ == $0
-  problem_size = 2
   domain = {"Normal"=>[[0,1],[0,1]],"Anomaly"=>[[0.45,0.55],[0.45,0.55]]}
-  iterations = 1000
-  num_cells = 50
   prob_ano_signal = 0.70
   prob_nor_signal = 0.95
   prob_anomaly = 0.10
 
-  run(domain, problem_size, iterations, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)
+  iterations = 1000
+  num_cells = 50
+  mcav = prob_anomaly
+
+  run(domain, iterations, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)
 end
