@@ -8,58 +8,46 @@ def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
 
-def random_bitstring(length)
-  return Array.new(length){ ((rand()<0.5) ? 1 : 0) }
-end
-
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
-end
-
-def calculate_bit_probabilities(num_bits, pop)
-  vector= Array.new(num_bits, 0.0)
-  pop.each do |member|
-    member[:bitstring].each_with_index {|v, i| vector[i] += v}
-  end
-  vector.each_with_index {|f,i| vector[i] = (f.to_f/pop.length.to_f)}
-  return vector
-end
-
 def generate_candidate(vector)
   candidate = {}
   candidate[:bitstring] = Array.new(vector.length)
   vector.each_with_index do |p, i|
     candidate[:bitstring][i] = (rand()<p) ? 1 : 0
   end
+  candidate[:cost] = onemax(candidate[:bitstring])
   return candidate
 end
 
-def search(num_bits, max_iterations, population_size, selection_size)
-  pop = Array.new(population_size) do
-    {:bitstring=>random_bitstring(num_bits)}
+def update_vector(num_bits, vector, winner, loser)
+  num_bits.times do |i|  
+    if winner[:bitstring][i] != loser[:bitstring][i]
+      if winner[:bitstring][i] == 1
+        vector[i] = vector[i] + 1.0/num_bits.to_f
+      else 
+        vector[i] = vector[i] - 1.0/num_bits.to_f
+      end
+    end
   end
-  pop.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
+end
+
+def search(num_bits, max_iterations)
+  vector = Array.new(num_bits){0.5}
+  best = nil
   max_iterations.times do |iter|
-    selected = Array.new(selection_size) { binary_tournament(pop) }
-    vector = calculate_bit_probabilities(num_bits, selected)
-    samples = Array.new(population_size) { generate_candidate(vector) }
-    samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    samples.sort{|x,y| y[:fitness] <=> x[:fitness]}
-    best = samples.first if samples.first[:fitness] > best[:fitness]
-    pop = samples
-    puts " >iteration=#{iter}, f=#{best[:fitness]}, s=#{best[:bitstring]}"
+    c1 = generate_candidate(vector)
+    c2 = generate_candidate(vector)
+    winner, loser = (c1[:cost] > c2[:cost] ? [c1,c2] : [c2,c1])
+    best = winner if best.nil? or winner[:cost]>best[:cost]
+    update_vector(num_bits, vector, winner, loser)
+    puts " >iteration=#{iter}, f=#{best[:cost]}, s=#{best[:bitstring]}"
   end
   return best
 end
 
 if __FILE__ == $0
-  num_bits = 64
-  max_iterations = 100
-  population_size = 50
-  selection_size = 30
+  num_bits = 32
+  max_iterations = 200
   
-  best = search(num_bits, max_iterations, population_size, selection_size)
-  puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
+  best = search(num_bits, max_iterations)
+  puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end
