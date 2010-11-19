@@ -10,89 +10,110 @@ def random_vector(search_space)
   end
 end
 
-def contains_2d?(point, space)
-  space.each_with_index do |minmax, i|
-    return false if point[i]<minmax[0] and point[i]>minmax[1]
-  end
-  return true
-end
-
-def generate_specific_pattern(class_label, domain, exclude_label=nil)
-  vector = nil
-  begin
-    vector = random_vector(domain[class_label])
-  end while !exclude_label.nil? and !contains_2d?(vector, domain[exclude_label])
+def construct_pattern(class_label, domain, p_safe, p_danger)
+  set = domain[class_label]
+  selection = rand(set.size)
   pattern = {}
-  pattern[:vector] = vector
   pattern[:class_label] = class_label
+  pattern[:input] = set[selection]
+  pattern[:safe] = (rand() * p_safe * 100.0)
+  pattern[:danger] = (rand() * p_danger * 100.0)  
   return pattern
 end
 
-def generate_pattern(domain, prob_anomaly, prob_anomaly_signal, prob_normal_signal)
+def generate_pattern(domain, p_anomaly, p_normal)
   pattern = nil
-  if rand() < prob_anomaly
-    pattern = generate_specific_pattern("Anomaly", domain)
-    pattern[:safe] = rand() * (1.0-prob_normal_signal)
-    pattern[:danger] = rand() * prob_anomaly_signal
+  total = domain.keys.inject(0.0){|s,k| s+domain[k].size.to_f}
+  if rand() < (domain["Anomaly"].size.to_f/total)
+    pattern = construct_pattern("Anomaly", domain, 1.0-p_normal, p_anomaly)
   else
-    pattern = generate_specific_pattern("Normal", domain, "Anomaly")
-    pattern[:safe] = rand() * prob_normal_signal
-    pattern[:danger] = rand() * (1.0-prob_anomaly_signal)
+    pattern = construct_pattern("Normal", domain, p_normal, 1.0-p_anomaly)
   end
   return pattern
 end
 
 def initialize_cell(cell={})
-  # cell[:weights] = random_vector([[0,1],[0,1]])
-  cell[:lifespan] = 100.0 # ???
+  cell[:lifespan] = 100.0
   cell[:k] = 0.0
   cell[:cms] = 0.0
-  cell[:output] = 0.0
-  cell[:migrate_threshold] = rand()
+  return cell
 end
 
 def expose_cell(cell, pattern)
-  cms = pattern[:safe] + pattern[:danger] 
-  
+  cms = (pattern[:safe] + pattern[:danger]) 
+  k = pattern[:danger] - (pattern[:safe] * 2.0)  
   cell[:cms] += cms
-  cell[:k] += pattern[:danger] - (pattern[:safe] * 2.0)
-  cell[:output] = (cell[:weights][0] + cell[:cms]) + (cell[:weights][1] + cell[:k])
-  
+  cell[:k] += k
   cell[:lifespan] -= cms
-  if cell[:lifespan] <= 0
-    puts " > cell died, resetting..."
-    initialize_cell(cell)
-  end
-  
 end
 
 def can_cell_migrate?(cell)
-  return cell[:cms] <= cell[:migrate_threshold]
+  return cell[:lifespan] <= 0.0
 end
 
-def run(domain, max_iter, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)  
-  cells = Array.new(num_cells){ initialize_cell() }
-  tissue = []
-  max_iter.times do |iter|
-    pattern = generate_pattern(domain, prob_anomaly, prob_ano_signal, prob_nor_signal)
-    cells.each {|cell| expose_cell(cell, pattern)}
-    cells.each {|cell| tissue << cell if can_cell_migrate?(cell)} 
-    tissue.each {|cell| cells.delete(cell)}
-    
-    
-    puts "generated #{pattern[:class_label]}"
+def expose_all_cells(cells, pattern)
+  migrate = []
+  cells.each do |cell|
+    expose_cell(cell, pattern)
+    if can_cell_migrate?(cell)
+      migrate << cell
+      cell[:class_label] = (cell[:k]>0) ? "Anomaly" : "Normal"
+      cell[:input] = pattern[:input]
+      # puts " > Migrated in=#{pattern[:input]}, class=#{cell[:class_label]}"
+    end
   end
+  return migrate
+end
+
+def train_system(domain, max_iter, num_cells, p_anomaly, p_normal)
+  immature_cells = Array.new(num_cells){ initialize_cell() }
+  migrated = []
+  max_iter.times do |iter|
+    pattern = generate_pattern(domain, p_anomaly, p_normal)
+    migrants = expose_all_cells(immature_cells, pattern)
+    migrants.each do |cell|
+      immature_cells.delete(cell)
+      immature_cells << initialize_cell()
+      migrated << cell
+    end
+    puts "> iter=#{iter} new=#{migrants.size}, migrated=#{migrated.size}"
+  end
+  return migrated
+end
+
+def classify_pattern(migrated, pattern)
+  response = {"Normal"=>0, "Anomaly"=>0}
+  migrated.each do |cell|
+    response[cell[:class_label]] += 1 if cell[:input] == pattern[:input]
+  end
+  return (response["Normal"]>response["Anomaly"]) ? "Normal" : "Anomaly"
+end
+
+def test_system(migrated, domain, p_anomaly, p_normal)
+  correct = 0
+  100.times do
+    pattern = generate_pattern(domain, p_anomaly, p_normal)
+    class_label = classify_pattern(migrated, pattern)
+    correct += 1 if class_label == pattern[:class_label]
+  end
+  puts "Finished test with a score of #{correct}/#{100} (#{correct}%)"
+end
+
+def run(domain, max_iter, num_cells, p_anomaly, p_normal)  
+  migrated = train_system(domain, max_iter, num_cells, p_anomaly, p_normal)
+  test_system(migrated, domain, p_anomaly, p_normal)
 end
 
 if __FILE__ == $0
-  domain = {"Normal"=>[[0,1],[0,1]],"Anomaly"=>[[0.45,0.55],[0.45,0.55]]}
-  prob_ano_signal = 0.70
-  prob_nor_signal = 0.95
-  prob_anomaly = 0.10
+  domain = {}
+  domain["Normal"] = Array.new(50){|i| i}
+  domain["Anomaly"] = Array.new(5){|i| (i+1)*10}
+  domain["Normal"] = domain["Normal"] - domain["Anomaly"]
+  p_anomaly = 0.70
+  p_normal = 0.95
+  
+  iterations = 100
+  num_cells = 20
 
-  iterations = 1000
-  num_cells = 50
-  mcav = prob_anomaly
-
-  run(domain, iterations, num_cells, prob_anomaly, prob_ano_signal, prob_nor_signal)
+  run(domain, iterations, num_cells, p_anomaly, p_normal)
 end

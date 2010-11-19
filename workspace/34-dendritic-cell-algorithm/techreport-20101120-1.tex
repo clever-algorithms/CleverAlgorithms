@@ -169,7 +169,8 @@ Algorithm~\ref{alg:dca} provides a high-level pseudo-code for the Dendritic Cell
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Dendritic Cell Algorithm is not specifically a classification algorithm, it may be considered a data filtering method for use in anomaly detection problems.
-	\item The \texttt{danger} and \texttt{safe} signals are problem specific signals of the risk that the input pattern is an anomaly or is normal.
+	\item The canonical algorithm is designed to operate on a single discrete, categorical or ordinal input and two probabilistic specific signals indicating the heuristic danger or safety of the input.
+	\item The \texttt{danger} and \texttt{safe} signals are problem specific signals of the risk that the input pattern is an anomaly or is normal, both typically  $\in [0,100]$.
 	\item The \texttt{danger} and \texttt{safe} signals do not have to be reciprocal, meaning they may provide conflicting information.
 	\item The system was designed be used in real-time anomaly detection problems, as well as static problems.
 \end{itemize}
@@ -181,10 +182,10 @@ Algorithm~\ref{alg:dca} provides a high-level pseudo-code for the Dendritic Cell
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{dca} provides an example of the Dendritic Cell Algorithm implemented in the Ruby Programming Language, specifically the Deterministic Dendritic Cell Algorithm (dDCA).
 % problem
-The problem is a contrived anomaly-detection problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `Normal' for normal data ($x\in[0,1], y\in[0,1]$) and `Anomaly' for anomalous ($x\in[0.45,0.55], y\in[0.45,0.55]$), where class N excludes class A (a doughnut with anomalies in the whole in the middle). Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
+The problem is a contrived anomaly-detection problem with ordinal inputs $\in [0,100]$ , where values that divide by 10 with no remainder are considered anomalies. Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
 
 % algorithm
-The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) as described in \cite{Stibor2009, Greensmith2008}, with verification from \cite{Greensmith2006a}.
+The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) as described in \cite{Stibor2009, Greensmith2008}, with verification from \cite{Greensmith2006a}. The algorithm was designed to be executed as three asynchronous processes in a real-time or semi-real time environment. For demonstration purposes, the implementation separated out the three main processes and executed the sequentially as a training and cell promotion phase followed by a test (labeling phase).
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Deterministic Dendritic Cell Algorithm (dDCA) in the Ruby Programming Language, label=dca]{../../src/algorithms/immune/dendritic_cell_algorithm.rb}
