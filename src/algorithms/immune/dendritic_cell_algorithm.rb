@@ -65,7 +65,6 @@ end
 
 def expose_all_cells(cells, pattern, threshold)
   migrate = []
-  # store_antigen(cells[rand(cells.size)], pattern[:input])
   cms = (pattern[:safe] + pattern[:danger]) 
   k = pattern[:danger] - (pattern[:safe] * 2.0)  
   cells.each do |cell|

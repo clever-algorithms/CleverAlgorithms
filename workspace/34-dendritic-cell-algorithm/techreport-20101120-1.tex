@@ -110,52 +110,75 @@ This is achieved as a system of three asynchronous processes of 1) migrating suf
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:dca} provides a high-level pseudo-code for the Dendritic Cell Algorithm. 
+Algorithm~\ref{alg:dca} provides a high-level pseudo-code for training the pool of cells in the Dendritic Cell Algorithm, specifically the Deterministic Dendritic Cell Algorithm. Mature migrated cells associate their collected input patterns with anomalies, whereas semi-mature migrated cells associate their collected input patterns as normal.
 
+The resulting migrated cells can then be used to classify input patterns as normal or anomalous. This can be done through sampling the cells and using a voting mechanism, or more elaborate methods such as a `mature context antigen' value (MCAV) which is $\frac{M}{Ag}$ (where $M$ is the number of mature cells with the input and $Ag$ is the sum of the exposures to the input by those mature cells), which gives a probability of a pattern being an anomaly.
 
 \begin{algorithm}[ht]
 	\SetLine
 
 	% data
-	\SetKwData{ProblemSize}{ProblemSize}
 	\SetKwData{MaxIterations}{$iterations_{max}$}
-	\SetKwData{LearningRate}{$learn_{rate}$}
-	\SetKwData{CodebookVectors}{CodebookVectors}
+	\SetKwData{NumCells}{$cells_{num}$}
+	\SetKwData{MigrationThresholdBounds}{$MigrationThresh_{bounds}$}
 	\SetKwData{InputPatterns}{InputPatterns}
-	\SetKwData{Pattern}{$Pattern_i$}
-	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
-	\SetKwData{PatternClass}{$Pattern_{i}^{class}$}
-	\SetKwData{Output}{$Output_i$}
-	\SetKwData{NumCodebookVectors}{$CodebookVectors_{num}$}
-	\SetKwData{Bmu}{$Bmu_i$}
-	\SetKwData{BmuClass}{$Bmu_{i}^{class}$}
-	\SetKwData{BmuAttribute}{$Bmu_{i}^{attribute}$}
+	\SetKwData{Pattern}{$P_i$}
+	\SetKwData{PatternDanger}{$Pi_{danger}$}
+	\SetKwData{PatternSafe}{$Pi_{safe}$}
+	\SetKwData{PatternAntigen}{$Pi_{antigen}$}
+	\SetKwData{K}{$k_i$}
+	\SetKwData{CSM}{$cms_i$}
+	\SetKwData{Cell}{$Cell_i$}
+	\SetKwData{CellLifespan}{$Celli_{lifespan}$}
+	\SetKwData{CellMigrationThreshold}{$Celli_{thresh}$}
+	\SetKwData{CellType}{$Celli_{type}$}
+	\SetKwData{CellCSM}{$Celli_{csm}$}
+	\SetKwData{CellK}{$Celli_{k}$}
+	\SetKwData{ImmatureCells}{ImmatureCells}
+	\SetKwData{MigratedCells}{MigratedCells}
+	\SetKwData{Mature}{Mature}
+	\SetKwData{Semimature}{Semimature}
 	
 	% functions
-	\SetKwFunction{InitializeCodebookVectors}{InitializeCodebookVectors}
+	\SetKwFunction{InitializeCells}{InitializeCells}
 	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
-	\SetKwFunction{SelectBestMatchingUnit}{SelectBestMatchingUnit}
-
+	\SetKwFunction{StoreAntigen}{StoreAntigen}
+	\SetKwFunction{UpdateCellOutputSignals}{UpdateCellOutputSignals}
+	\SetKwFunction{ReInitializeCell}{ReInitializeCell}
+	\SetKwFunction{RemoveCell}{RemoveCell}
+	\SetKwFunction{CreateNewCell}{CreateNewCell}
 	
 	% I/O
-	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \NumCodebookVectors \LearningRate}		
-	\KwOut{\CodebookVectors}
+	\KwIn{\InputPatterns, \MaxIterations, \NumCells, \MigrationThresholdBounds}		
+	\KwOut{\MigratedCells}
   
 	% Algorithm
-	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\NumCodebookVectors, \ProblemSize}\;
+	\ImmatureCells $\leftarrow$ \InitializeCells{\NumCells, \MigrationThresholdBounds}\;
+	\MigratedCells $\leftarrow$ $0$\;
 	% loop
 	\For{$i=1$ \KwTo \MaxIterations} {
 		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
-		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
-		\ForEach{\BmuAttribute $\in$ \Bmu}{
-			\eIf{\BmuClass $\equiv$ \PatternClass} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
-			} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+		\K $\leftarrow$ (\PatternDanger $-$ 2 $\times$ \PatternSafe)\;
+		\CSM $\leftarrow$ (\PatternDanger + \PatternSafe)\;
+		\ForEach{\Cell $\in$ \ImmatureCells} {
+			\UpdateCellOutputSignals{\Cell, \K, \CSM}\;
+			\StoreAntigen{\Cell, \PatternAntigen}\;
+			\uIf{\CellLifespan $\leq$ $0$} {
+				\ReInitializeCell{\Cell}\;
+			}
+			\ElseIf{\CellCSM $\geq$ \CellMigrationThreshold}{
+				\RemoveCell{\ImmatureCells, \Cell}\;
+				\ImmatureCells $\leftarrow$ \CreateNewCell{\MigrationThresholdBounds}\;				
+				\eIf{\CellK $<$ $0$} {
+					\CellType $\leftarrow$ \Mature\;
+				} {
+					\CellType $\leftarrow$ \Semimature\;
+				}
+				\MigratedCells $\leftarrow$ \Cell\;
 			}
 		}
 	}
-	\Return{\CodebookVectors}\;
+	\Return{\MigratedCells}\;
 	% end
 	\caption{Pseudo Code for the Dendritic Cell Algorithm.}
 	\label{alg:dca}
@@ -227,6 +250,8 @@ Greensmith and Aickelin provide a detailed overview of the Dendritic Cell Algori
 \label{sec:conclusions}
 % report
 This report described the Dendritic Cell Algorithm using the standard algorithms template.
+The description of the Deterministic Dendritic Cell Algorithm in the literature was found to be incomplete and ambiguous. As such, the current implementation of the algorithm in the Ruby programming language, while it executes, is considered incomplete. Similarly, the pseudo code listing may too require amendment. It is suggested that the author of the approach be contacted and as such, remains an area for further work.
+
 
 % 
 % Contribute
