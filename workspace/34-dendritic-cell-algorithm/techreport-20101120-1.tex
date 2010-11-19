@@ -82,18 +82,17 @@ It is generally related to other Artificial Immune System algorithms such as the
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-The Dendritic Cell Algorithm is inspired by the Danger Theory of the mammalian immune system, and specifically the role and the function of dendritic cells. 
+The Dendritic Cell Algorithm is inspired by the Danger Theory of the mammalian immune system, and specifically the role and function of dendritic cells. 
 % Which features of the motivating system are relevant to a technique?
-The Danger Theory proposed by Matzinger suggests that the roles of the acquired immune system is to respond to signals of danger, rather than discriminating self from non-self \cite{Matzinger1994, Matzinger2002}. The theory suggests that antigen presenting cells (such as helper T-cells) activate an alarm signal providing the necessarily co-stimulation of antigen-specific cells to respond. Dendritic cells are a type of cell from the innate immune system that respond to some specific forms of danger signals. There are three main types of dendritic cells: `immature' that collect parts of the antigen and the signals, `semi-mature' that immature cells that internally decide that the local signals represent safe and present the antigen to T-cells resulting in tolerance, and `mature' cells that internally decide that the local signals represent danger and present the antigen to T-cells resulting in a reactive response.
+The Danger Theory was proposed by Matzinger and suggests that the roles of the acquired immune system is to respond to signals of danger, rather than discriminating self from non-self \cite{Matzinger1994, Matzinger2002}. The theory suggests that antigen presenting cells (such as helper T-cells) activate an alarm signal providing the necessarily co-stimulation of antigen-specific cells to respond. Dendritic cells are a type of cell from the innate immune system that respond to some specific forms of danger signals. There are three main types of dendritic cells: `immature' that collect parts of the antigen and the signals, `semi-mature' that are immature cells that internally decide that the local signals represent safe and present the antigen to T-cells resulting in tolerance, and `mature' cells that internally decide that the local signals represent danger and present the antigen to T-cells resulting in a reactive response.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\section{Metaphor}
-\label{sec:metaphor}
+% \section{Metaphor}
+% \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-how is the system refined, how does it learn?
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -110,9 +109,8 @@ This is achieved as a system of three asynchronous processes of 1) migrating suf
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:dca} provides a high-level pseudo-code for training the pool of cells in the Dendritic Cell Algorithm, specifically the Deterministic Dendritic Cell Algorithm. Mature migrated cells associate their collected input patterns with anomalies, whereas semi-mature migrated cells associate their collected input patterns as normal.
-
-The resulting migrated cells can then be used to classify input patterns as normal or anomalous. This can be done through sampling the cells and using a voting mechanism, or more elaborate methods such as a `mature context antigen' value (MCAV) which is $\frac{M}{Ag}$ (where $M$ is the number of mature cells with the input and $Ag$ is the sum of the exposures to the input by those mature cells), which gives a probability of a pattern being an anomaly.
+Algorithm~\ref{alg:dca} provides pseudo-code for training a pool of cells in the Dendritic Cell Algorithm, specifically the Deterministic Dendritic Cell Algorithm. Mature migrated cells associate their collected input patterns with anomalies, whereas semi-mature migrated cells associate their collected input patterns as normal.
+The resulting migrated cells can then be used to classify input patterns as normal or anomalous. This can be done through sampling the cells and using a voting mechanism, or more elaborate methods such as a `mature context antigen value' (MCAV) which is $\frac{M}{Ag}$ (where $M$ is the number of mature cells with the antigen and $Ag$ is the sum of the exposures to the antigen by those mature cells), which gives a probability of a pattern being an anomaly.
 
 \begin{algorithm}[ht]
 	\SetLine
@@ -195,7 +193,7 @@ The resulting migrated cells can then be used to classify input patterns as norm
 	\item The canonical algorithm is designed to operate on a single discrete, categorical or ordinal input and two probabilistic specific signals indicating the heuristic danger or safety of the input.
 	\item The \texttt{danger} and \texttt{safe} signals are problem specific signals of the risk that the input pattern is an anomaly or is normal, both typically  $\in [0,100]$.
 	\item The \texttt{danger} and \texttt{safe} signals do not have to be reciprocal, meaning they may provide conflicting information.
-	\item The system was designed be used in real-time anomaly detection problems, as well as static problems.
+	\item The system was designed be used in real-time anomaly detection problems, not just static problem.
 	\item Each cells migration threshold is set separately, typically $\in [5,15]$
 \end{itemize}
 
@@ -206,7 +204,7 @@ The resulting migrated cells can then be used to classify input patterns as norm
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{dca} provides an example of the Dendritic Cell Algorithm implemented in the Ruby Programming Language, specifically the Deterministic Dendritic Cell Algorithm (dDCA).
 % problem
-The problem is a contrived anomaly-detection problem with ordinal inputs $\in [0,100]$ , where values that divide by 10 with no remainder are considered anomalies. Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
+The problem is a contrived anomaly-detection problem with ordinal inputs $\in [0,50]$ , where values that divide by 10 with no remainder are considered anomalies. Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
 
 % algorithm
 The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) as described in \cite{Stibor2009, Greensmith2008}, with verification from \cite{Greensmith2006a}. The algorithm was designed to be executed as three asynchronous processes in a real-time or semi-real time environment. For demonstration purposes, the implementation separated out the three main processes and executed the sequentially as a training and cell promotion phase followed by a test (labeling phase).
@@ -236,9 +234,9 @@ This work was followed shortly by a second study into the algorithm by Greensmit
 % 
 \subsection{Learn More}
 % reviews
-The Dendritic Cell Algorithm was the focus of Greensmith's thesis, which provides a detailed discussion of the methods abstraction from the inspiring biological system and studies, and a review of the techniques limitations \cite{Greensmith2007}. 
+The Dendritic Cell Algorithm was the focus of Greensmith's thesis, which provides a detailed discussion of the methods abstraction from the inspiring biological system, and a review of the technique's limitations \cite{Greensmith2007}. 
 A formal presentation of the algorithm is provided by Greenwmith et al. \cite{Greensmith2006a}.
-Greensmith and Aickelin proposed the Deterministic Dendritic Cell Algorithm (dDCA) that seeks to remove some of the stochastic decision's from the method, reduce the complexity and to make it more amenable to analysis \cite{Greensmith2008}.
+Greensmith and Aickelin proposed the Deterministic Dendritic Cell Algorithm (dDCA) that seeks to remove some of the stochastic decisions from the method, reduce the complexity and to make it more amenable to analysis \cite{Greensmith2008}.
 Stibor, et al. provide a theoretical analysis of the Deterministic Dendritic Cell Algorithm, considering the discrimination boundaries of single dendrite cells in the system \cite{Stibor2009}. 
 % books
 Greensmith and Aickelin provide a detailed overview of the Dendritic Cell Algorithm focusing in the information processing principles of the inspiring biological systems as a book chapter \cite{Greensmith2009}.

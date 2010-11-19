@@ -16,8 +16,8 @@ def construct_pattern(class_label, domain, p_safe, p_danger)
   pattern = {}
   pattern[:class_label] = class_label
   pattern[:input] = set[selection]
-  pattern[:safe] = (rand() * p_safe)
-  pattern[:danger] = (rand() * p_danger)  
+  pattern[:safe] = (rand() * p_safe * 100)
+  pattern[:danger] = (rand() * p_danger * 100)  
   return pattern
 end
 
@@ -133,7 +133,7 @@ if __FILE__ == $0
   domain["Normal"] = Array.new(50){|i| i}
   domain["Anomaly"] = Array.new(5){|i| (i+1)*10}
   domain["Normal"] = domain["Normal"] - domain["Anomaly"]
-  p_anomaly = 0.80
+  p_anomaly = 0.70
   p_normal = 0.95
   iterations = 100
   num_cells = 20

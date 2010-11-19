@@ -59,6 +59,7 @@ h4. Immune Algorithms
 * Jason Brownlee. "Artificial Immune Network":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114-1.pdf. Technical Report CA-TR-20101114-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Immune Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101114a-1.pdf. Technical Report CA-TR-20101114a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Artificial Immune Recognition System":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101119-1.pdf. Technical Report CA-TR-20101119-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Dendritic Cell Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101120-1.pdf. Technical Report CA-TR-20101120-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 h4. Swarm Algorithms
 
