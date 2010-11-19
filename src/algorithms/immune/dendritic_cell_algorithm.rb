@@ -4,8 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-#  Dear future self, this is a 'system', not an algorithm, and the papers poorly describe it (abandoned)
-
 def random_vector(search_space)
   return Array.new(search_space.length) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
