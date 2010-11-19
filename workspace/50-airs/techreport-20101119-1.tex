@@ -110,7 +110,67 @@ The approach is a supervised learning algorithm for classification that uses the
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+% What are the data structures and representations used in a technique?
+AIRS... ARB... memory pool...
+
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Artificial Immune Recognition System. 
+
+An affinity (distance) measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
+
+\begin{equation}
+	dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2
+\end{equation}
+
+where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given cell vector.
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}$}
+	\SetKwData{CodebookVectors}{CodebookVectors}
+	\SetKwData{InputPatterns}{InputPatterns}
+	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
+	\SetKwData{PatternClass}{$Pattern_{i}^{class}$}
+	\SetKwData{Output}{$Output_i$}
+	\SetKwData{NumCodebookVectors}{$CodebookVectors_{num}$}
+	\SetKwData{Bmu}{$Bmu_i$}
+	\SetKwData{BmuClass}{$Bmu_{i}^{class}$}
+	\SetKwData{BmuAttribute}{$Bmu_{i}^{attribute}$}
+	
+	% functions
+	\SetKwFunction{InitializeCodebookVectors}{InitializeCodebookVectors}
+	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
+	\SetKwFunction{SelectBestMatchingUnit}{SelectBestMatchingUnit}
+
+	
+	% I/O
+	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \NumCodebookVectors \LearningRate}		
+	\KwOut{\CodebookVectors}
+  
+	% Algorithm
+	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\NumCodebookVectors, \ProblemSize}\;
+	% loop
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
+		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
+		\ForEach{\BmuAttribute $\in$ \Bmu}{
+			\eIf{\BmuClass $\equiv$ \PatternClass} {
+				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+			} {
+				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+			}
+		}
+	}
+	\Return{\CodebookVectors}\;
+	% end
+	\caption{Pseudo Code for the Artificial Immune Recognition System.}
+	\label{alg:train}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -120,7 +180,10 @@ todo
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The AIRS was designed as a supervised algorithm for classification problem domains.
-	\item ...
+	\item The AIRS is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
+	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
+	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
+	\item Cells may be initialized with small random values or more commonly with values from instances in the training set.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -133,7 +196,7 @@ Listing~\ref{airs} provides an example of the Learning Vector Quantization algor
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm...
+The algorithm is an implementation of the AIRS2 algorithm \cite{Watkins2002b}. An initial pool of memory cells is created, one for each class.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Artificial Immune Recognition System in the Ruby Programming Language, label=airs]{../../src/algorithms/immune/airs.rb}
