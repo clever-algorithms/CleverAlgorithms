@@ -106,7 +106,7 @@ def add_candidate_to_memory_pool(candidate, best_match, memory_cells)
   end
 end
 
-def train_system(memory_cells, domain, problem_size, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
   num_patterns.times do |i|
     pattern = generate_random_pattern(domain)
     best_match = get_most_stimulated_cell(memory_cells, pattern)
@@ -136,21 +136,19 @@ def test_system(memory_cells, domain)
   puts "Finished test with a score of #{correct}/#{100} (#{correct}%)"
 end
 
-def run(domain, problem_size, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)  
+def run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)  
   memory_cells = initialize_cells(domain)
-  train_system(memory_cells, domain, problem_size, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+  train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
   test_system(memory_cells, domain)
 end
 
 if __FILE__ == $0
-  problem_size = 2
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-
   num_patterns = 100
   clone_rate = 10
   mutate_rate = 2.0
   stim_thresh = 0.9
   max_resources = 150
 
-  run(domain, problem_size, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+  run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
 end

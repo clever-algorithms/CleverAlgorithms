@@ -102,73 +102,92 @@ The theory suggests that starting with an initial repertoire of general immune c
 % What is the information processing objective of a technique?
 The information processing objective of the technique is to prepare a set of real-valued vectors to classify patterns. 
 % What is a techniques plan of action?
-The approach is a supervised learning algorithm for classification that uses the idea of an Artificial Recognition Ball (ARB) (introduced in earlier works on the Artificial Immune Network algorithm) to represent clones (groups) of identical B-cells. The AIRS procedure involves cloning and somatic hypermutation for preparing a set of real-valued exemplar vectors suitable for classifying unobserved cases, using a single iteration over a set of training data.
+The Artificial Immune Recognition System maintains a pool of memory cells that are prepared by exposing the system to a single iteration of the training data. Candidate memory cells are prepared when the memory cells are insufficiently stimulated for a given input pattern. A process of cloning and mutation of cells occurs for the most stimulated memory cell. The clones compete with each other for entry into the memory pool based on stimulation and on the amount of resources each cell takes. This concept of resources comes from prior work on Artificial Immune Networks, where a single cell (an Artificial Recognition Ball or ARB) represents a set of similar cells. Here, a cells resources is a function of its stimulation to a given input pattern and the number of clones it may create.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
 % What is the computational recipe for a technique?
-% What are the data structures and representations used in a technique?
-% What are the data structures and representations used in a technique?
-AIRS... ARB... memory pool...
-
-% What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Artificial Immune Recognition System. 
-
+Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Artificial Immune Recognition System, specifically the canonical AIRS2. 
 An affinity (distance) measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}
 	dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2
 \end{equation}
 
-where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given cell vector.
+where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given cell vector. The variation of cells during cloning (somatic hypermutation) occurs inversely proportional to the stimulation of a given cell to an input pattern.
 
 \begin{algorithm}[ht]
 	\SetLine
 
-	% data
-	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{MaxIterations}{$iterations_{max}$}
-	\SetKwData{LearningRate}{$learn_{rate}$}
-	\SetKwData{CodebookVectors}{CodebookVectors}
+	% paramd
 	\SetKwData{InputPatterns}{InputPatterns}
-	\SetKwData{Pattern}{$Pattern_i$}
-	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
-	\SetKwData{PatternClass}{$Pattern_{i}^{class}$}
-	\SetKwData{Output}{$Output_i$}
-	\SetKwData{NumCodebookVectors}{$CodebookVectors_{num}$}
-	\SetKwData{Bmu}{$Bmu_i$}
-	\SetKwData{BmuClass}{$Bmu_{i}^{class}$}
-	\SetKwData{BmuAttribute}{$Bmu_{i}^{attribute}$}
-	
+	\SetKwData{CloneRate}{$clone_{rate}$}
+	\SetKwData{MutateRate}{$mutate_{rate}$}
+	\SetKwData{StimulationThreshold}{$stimulation_{threshold}$}
+	\SetKwData{AffinityThreshold}{$affinity_{threshold}$}
+	\SetKwData{MaxResources}{$resources_{max}$}
+	% data
+	\SetKwData{MemoryPool}{$Cells_{memory}$}
+	\SetKwData{Clones}{$Cells_{clones}$}
+	\SetKwData{Clone}{$Cell_{i}$}
+	\SetKwData{Candidate}{$Cell_{c}$}
+	\SetKwData{CandidateStimulation}{$Cell_{c}^{stimulation}$}
+	\SetKwData{InputPattern}{$InputPattern_i$}
+	\SetKwData{BestMatch}{$Cell_{best}$}
+	\SetKwData{BestMatchClass}{$Cell_{best}^{class}$}
+	\SetKwData{InputPatternClass}{$InputPattern_{i}^{class}$}
+	\SetKwData{NumClones}{$Clones_{num}$}
+	\SetKwData{BestMatchStimulation}{$Cell_{best}^{stimulation}$}
 	% functions
-	\SetKwFunction{InitializeCodebookVectors}{InitializeCodebookVectors}
-	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
-	\SetKwFunction{SelectBestMatchingUnit}{SelectBestMatchingUnit}
-
+	\SetKwFunction{InitializeMemoryPool}{InitializeMemoryPool}
+	\SetKwFunction{Stimulate}{Stimulate}
+	\SetKwFunction{GetMostStimulated}{GetMostStimulated}
+	\SetKwFunction{CreateNewMemoryCell}{CreateNewMemoryCell}
+	\SetKwFunction{CloneAndMutate}{CloneAndMutate}
+	\SetKwFunction{ReducePoolToMaximumResources}{ReducePoolToMaximumResources}
+	\SetKwFunction{Affinity}{Affinity}
+	\SetKwFunction{DeleteCell}{DeleteCell}
+	\SetKwFunction{AverageStimulation}{AverageStimulation}
 	
 	% I/O
-	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \NumCodebookVectors \LearningRate}		
-	\KwOut{\CodebookVectors}
+	\KwIn{\InputPatterns, \CloneRate, \MutateRate, \StimulationThreshold, \MaxResources, \AffinityThreshold}		
+	\KwOut{\MemoryPool}
   
 	% Algorithm
-	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\NumCodebookVectors, \ProblemSize}\;
+	\MemoryPool $\leftarrow$ \InitializeMemoryPool{\InputPatterns}\;
 	% loop
-	\For{$i=1$ \KwTo \MaxIterations} {
-		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
-		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
-		\ForEach{\BmuAttribute $\in$ \Bmu}{
-			\eIf{\BmuClass $\equiv$ \PatternClass} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
-			} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+	\ForEach{\InputPattern $\in$ \InputPatterns}{
+		\Stimulate{\MemoryPool, \InputPatterns}\;
+		\BestMatch $\leftarrow$ \GetMostStimulated{\InputPattern, \MemoryPool}\;
+		\eIf{\BestMatchClass $\neq$ \InputPatternClass} {
+			\MemoryPool $\leftarrow$ \CreateNewMemoryCell{\InputPattern}\;
+		}{
+			\NumClones $\leftarrow$ \BestMatchStimulation $\times$ \CloneRate $\times$ \MutateRate\;
+			\Clones $\leftarrow$ \BestMatch\;
+			\For{$i$ \KwTo \NumClones} {
+				\Clones $\leftarrow$ \CloneAndMutate{\BestMatch}\;
 			}
+			\While{\AverageStimulation{\Clones} $\leq$ \StimulationThreshold} {
+				\ForEach{\Clone $\in$ \Clones} {
+					\Clones $\leftarrow$ \CloneAndMutate{\Clone}\;
+				}
+				\Stimulate{\Clones, \InputPatterns}\;
+				\ReducePoolToMaximumResources{\Clones, \MaxResources}\;
+			}
+			\Candidate $\leftarrow$ \GetMostStimulated{\InputPattern, \Clones}\;
+			\If{\CandidateStimulation $>$ \BestMatchStimulation} {
+				\MemoryPool $\leftarrow$ \Candidate\;
+				\If{\Affinity{\Candidate, \BestMatch} $\leq$ \AffinityThreshold} {
+					\DeleteCell{\BestMatch, \MemoryPool}\;
+				}
+			}			
 		}
 	}
-	\Return{\CodebookVectors}\;
+	\Return{\MemoryPool}\;
 	% end
-	\caption{Pseudo Code for the Artificial Immune Recognition System.}
+	\caption{Pseudo Code for training the Artificial Immune Recognition System (AIRS2).}
 	\label{alg:train}
 \end{algorithm}
 
@@ -182,8 +201,9 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\item The AIRS was designed as a supervised algorithm for classification problem domains.
 	\item The AIRS is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
 	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
-	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
+	\item Euclidean distance is commonly used to measure the distance between real-valued vectors (affinity calculation), although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
 	\item Cells may be initialized with small random values or more commonly with values from instances in the training set.
+	\item A cells affinity is typically a minimizing, where as a cells stimulation is maximizing and typically $\in [0,1]$.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -196,7 +216,7 @@ Listing~\ref{airs} provides an example of the Learning Vector Quantization algor
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm is an implementation of the AIRS2 algorithm \cite{Watkins2002b}. An initial pool of memory cells is created, one for each class.
+The algorithm is an implementation of the AIRS2 algorithm \cite{Watkins2002b}. An initial pool of memory cells is created, one for each class. Euclidean distance divided by the maximum possible distance in the domain is taken as the affinity and stimulation is taken as $1.0-affinity$. The meta-dynamics for memory cells (competition for input patterns) is not performed and may be added into the implementation as an extension.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Artificial Immune Recognition System in the Ruby Programming Language, label=airs]{../../src/algorithms/immune/airs.rb}
