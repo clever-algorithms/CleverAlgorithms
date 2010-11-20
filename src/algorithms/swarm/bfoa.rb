@@ -64,7 +64,7 @@ def chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_
         new_cell = tumble_cell(problem_size, cell, step_size)
         evaluate(new_cell, cells, d_attr, w_attr, h_rep, w_rep)          
         best = cell if cell[:cost] < best[:cost]
-        break if new_cell[:fitness] < cell[:fitness]
+        break if new_cell[:fitness] > cell[:fitness]
         cell = new_cell
         sum_nutrients += cell[:fitness]
       end
@@ -87,7 +87,10 @@ def search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, c
       cells = cells[0...(pop_size/2)] + cells[0...(pop_size/2)]
     end
     cells.each do |cell|
-      cell[:vector] = random_vector(problem_size, search_space) if rand() <= p_eliminate
+      if rand() <= p_eliminate
+        cell[:vector] = random_vector(problem_size, search_space) 
+        puts ">eliminated cell"
+      end
     end
     puts " >iteration=#{l}, fitness=#{best[:fitness]}, cost=#{best[:cost]}"
   end
@@ -99,17 +102,17 @@ if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
 
-  pop_size = 50
+  pop_size = 100
   d_attr = 0.1
   w_attr = 0.2 
   h_rep = d_attr
   w_rep = 10
   
-  step_size = 0.1
+  step_size = 1.0
   elim_disp_steps = 50
   repro_steps = 1
-  chem_steps = 3
-  swim_length = 30
+  chem_steps = 5
+  swim_length = 15
   p_eliminate = 0.5/pop_size
 
   best = search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
