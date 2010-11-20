@@ -14,17 +14,52 @@ def random_vector(problem_size, search_space)
   end
 end
 
+def create_random_bee(problem_size, search_space)
+  bee = {}
+  bee[:vector] = random_vector(problem_size, search_space)
+  return bee
+end
 
+def neighborhood_bee(site, patch_size, search_space)
+  vector = []
+  site.each_with_index do |v,i|
+    v = (rand()<0.5) ? v+rand()*patch_size : v-rand()*patch_size
+    v = search_space[i][0] if v < search_space[i][0]
+    v = search_space[i][1] if v > search_space[i][1]
+    vector << v
+  end
+  bee = {}
+  bee[:vector] = vector
+  return bee
+end
 
-def search(max_gens, problem_size, search_space, pop_size, num_sites, elite_sites, init_patch_size, elite_bees)
+def search_neighborhood(site, neighborhood_size, patch_size, search_space)
+  neighborhood = []
+  neighborhood_size.times do 
+    neighborhood << neighborhood_bee(site[:vector], patch_size, search_space)
+  end
+  neighborhood.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
+  return neighborhood.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
+end
+
+def search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
   best = nil
-  pop = Array.new(pop_size){{:vector=>random_vector(problem_size, search_space)}}
-  pop.each{|bee| bee[:cost] = objective_function(bee[:vector])}
-  best = pop.sort{|x,y| x[:cost]<=>y[:cost]}.first
+  pop = Array.new(num_bees){ create_random_bee(problem_size, search_space) }
   max_gens.times do |gen|
-    
-
-    puts " > gen #{gen+1}, fitness=#{best[:cost]}"
+    pop.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
+    pop.sort!{|x,y| x[:fitness]<=>y[:fitness]}
+    best = pop.first if best.nil? or pop.first[:fitness] < best[:fitness]
+    next_generation = []
+    pop[0...num_sites].each_with_index do |site, i|
+      neighborhood_size = (i<elite_sites) ? e_bees : o_bees
+      next_generation << search_neighborhood(site, neighborhood_size, patch_size, search_space)
+    end
+    (num_bees-num_sites).times do
+      next_generation << create_random_bee(problem_size, search_space)
+    end
+    pop = next_generation
+    patch_size = patch_size * 0.95
+    puts " > iteration=#{gen+1}, patch_size=#{patch_size}, fitness=#{best[:fitness]}"
   end  
   return best
 end
@@ -33,12 +68,13 @@ if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
   max_gens = 200
-  pop_size = 45
+  num_bees = 45
   num_sites = 3
   elite_sites = 1
-  init_patch_size = 3
-  elite_bees = 2
+  patch_size = 3.0
+  e_bees = 7
+  o_bees = 2
 
-  best = search(max_gens, problem_size, search_space, pop_size, num_sites, elite_sites, init_patch_size, elite_bees)
-  puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+  best = search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
