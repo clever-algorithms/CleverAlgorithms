@@ -5,6 +5,7 @@
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 \documentclass[a4paper, 11pt]{article}
+\usepackage{amsmath}
 \usepackage{tabularx}
 \usepackage{booktabs}
 \usepackage{url}
@@ -24,7 +25,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101120b}
+\newcommand{\myreportdate}{20101121}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -101,8 +102,9 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing strategy of the algorithm is to allow cells to stochastically walk toward optima.
 % What is a techniques plan of action?
-todo
+This is achieved through a series of three processes on a population of simulated cells: 1) `Chemotaxis' where the cost of cells is derated by the proximity to other cells and cells move along the manipulated cost surface one at a time (the majority of the work of the algorithm), 2) `Reproduction' where only those cells that performed well over their lifetime may contribute to the next iteration, and 3) `Elimination-dispersal' where cells are discarded and new random samples are inserted with a low probability.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -110,7 +112,46 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:bfoa} provides a pseudo-code listing of the Bacterial Foraging Optimization Algorithm for minimizing a cost function. 
+A cells cost is derated by its interaction with other cells. This interaction is calculated as follows: 
+
+\begin{align*}
+	interaction(cell_k) = 
+	&\sum_{i=1}^S\bigg[-d_{attract}\times exp\bigg(-w_{attract}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg] + \\
+	&\sum_{i=1}^S\bigg[h_{repellant}\times exp\bigg(-w_{repellant}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg]
+\end{align*}
+
+where $cell_k$ is a given cell, $d_{attract}$ and $w_{attract}$ are attraction coefficients, $h_{repellant}$ and $w_{repellant}$ are repulsion coefficients, $S$ is the number of cells in the population, $P$ is the number of dimensions on a given cells position vector.
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	\SetKwData{NumCells}{$Cells_{num}$}
+	
+	
+	% data
+	\SetKwData{Population}{Population}
+	\SetKwData{Best}{Best}
+	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+  
+	% I/O
+	\KwIn{\ProblemSize, \NumCells}		
+	\KwOut{\Best}
+  % Algorithm
+
+	\Population $\leftarrow$ \InitializePopulation{\NumCells, \ProblemSize}\;
+
+	
+	
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Bacterial Foraging Optimization Algorithm.}
+	\label{alg:bfoa}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -119,7 +160,12 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The algorithm was designed for application o continuous function optimization problem domains.
+	\item Given the loops in the algorithm, it can be configured numerous ways to elicit different search behavior. It is common to have a large number of chemotaxis iterations, and small numbers of the other iterations.
+	\item The default coefficients for swarming behavior (cell-cell interactions) are as follows $d_{attract}=0.1$, $w_{attract}=0.2$, $h_{repellant}=d_{attract}$, and $w_{repellant}=10$.	
+	\item The step size is commonly a fraction of the search space, such as 0.1.
+	\item During reproduction, typically half the population with a low health metric are discarded, and two copies of each member from the first (high-health) half of the population are retained.
+	\item The probability of elimination and dispersal ($p_{ed}$) is commonly set quite large, such as 0.25.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -131,7 +177,7 @@ Listing~\ref{bfoa} provides an example of the Bacterial Foraging Optimization Al
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is an implementation based on the description on the seminal work \cite{Passino2002}. The parameters for cell-cell interactions (attraction and repulsion) were taken from the paper.
+The algorithm is an implementation based on the description on the seminal work \cite{Passino2002}. The parameters for cell-cell interactions (attraction and repulsion) were taken from the paper, and the various loop parameters were taken from the `Swarming Effects' example.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Bacterial Foraging Optimization Algorithm in the Ruby Programming Language, label=bfoa]{../../src/algorithms/swarm/bfoa.rb}

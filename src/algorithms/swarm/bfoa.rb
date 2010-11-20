@@ -71,6 +71,7 @@ def chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_
       cell[:sum_nutrients] = sum_nutrients
       moved_cells << cell
     end        
+    puts " >chemotaxis=#{j}, fitness=#{best[:fitness]}, cost=#{best[:cost]}"
     cells = moved_cells
   end
   return [best, cells]
@@ -89,32 +90,27 @@ def search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, c
     cells.each do |cell|
       if rand() <= p_eliminate
         cell[:vector] = random_vector(problem_size, search_space) 
-        puts ">eliminated cell"
       end
-    end
-    puts " >iteration=#{l}, fitness=#{best[:fitness]}, cost=#{best[:cost]}"
+    end    
   end
-
   return best
 end
 
 if __FILE__ == $0
-  problem_size = 3
+  problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, 5]}
-
-  pop_size = 60
+  pop_size = 50
+  step_size = 0.1 #Ci
+  elim_disp_steps = 1 #Ned
+  repro_steps = 4 # Nre
+  chem_steps = 70 # Nc
+  swim_length = 4 # Ns
+  p_eliminate = 0.25 #pe
   d_attr = 0.1
   w_attr = 0.2 
   h_rep = d_attr
   w_rep = 10
-  
-  step_size = 0.1
-  elim_disp_steps = 50
-  repro_steps = 1
-  chem_steps = 3
-  swim_length = 10
-  p_eliminate = 0.5/pop_size
 
   best = search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
-  puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+  puts "done! Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
