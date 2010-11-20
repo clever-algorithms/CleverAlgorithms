@@ -20,7 +20,7 @@ def create_random_bee(problem_size, search_space)
   return bee
 end
 
-def neighborhood_bee(site, patch_size, search_space)
+def create_neighborhood_bee(site, patch_size, search_space)
   vector = []
   site.each_with_index do |v,i|
     v = (rand()<0.5) ? v+rand()*patch_size : v-rand()*patch_size
@@ -36,7 +36,7 @@ end
 def search_neighborhood(site, neighborhood_size, patch_size, search_space)
   neighborhood = []
   neighborhood_size.times do 
-    neighborhood << neighborhood_bee(site[:vector], patch_size, search_space)
+    neighborhood << create_neighborhood_bee(site[:vector], patch_size, search_space)
   end
   neighborhood.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
   return neighborhood.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
@@ -67,7 +67,7 @@ end
 if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
-  max_gens = 200
+  max_gens = 500
   num_bees = 45
   num_sites = 3
   elite_sites = 1

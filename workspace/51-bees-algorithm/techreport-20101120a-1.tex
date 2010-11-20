@@ -36,7 +36,7 @@
 \maketitle
 
 % write a summary sentence for each major section
-\section*{Abstract} 
+\section*{Abstract}
 % project
 The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
 % template
@@ -100,8 +100,9 @@ Honey bees collect nectar from flower patches as a food source for the hive. The
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the algorithm is to locate and explore good sites within a problem search space.
 % What is a techniques plan of action?
-todo
+Scouts are sent out to randomly sample the problem space and locate good sites. The good sites are exploited via the application of a local search, where a smaller number of good sites are explored more than the others. Good sites are continually explored, although many scouts are sent out each iteration always in search of additional good sites.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -109,7 +110,79 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:bees_algorithm} provides a pseudo-code listing of the Bees Algorithm for minimizing a cost function. 
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{NumBees}{$Bees_{num}$}
+	\SetKwData{NumSites}{$Sites_{num}$}
+	\SetKwData{NumEliteSites}{$EliteSites_{num}$}
+	\SetKwData{InitialPatchSize}{$PatchSize_{init}$}
+	\SetKwData{NumEliteBees}{$EliteBees_{num}$}
+	\SetKwData{NumOtherBees}{$OtherBees_{num}$}
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	% data
+	\SetKwData{Neighborhood}{Neighborhood}
+	\SetKwData{Population}{Population}
+	\SetKwData{Best}{$Bee_{best}$}
+	\SetKwData{NextGeneration}{NextGeneration}
+	\SetKwData{BestSites}{$Sites_{best}$}
+	\SetKwData{PatchDecreaseFactor}{$PatchDecrease_{factor}$}
+	\SetKwData{Site}{$Site_{i}$}
+	\SetKwData{NumRecruitedBees}{$RecruitedBees_{num}$}
+	\SetKwData{PatchSize}{$Patch_{size}$}
+	\SetKwData{RemainingBees}{$RemainingBees_{num}$}
+	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{StopCondition}{StopCondition} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectBestSites}{SelectBestSites}
+	\SetKwFunction{CreateNeighbourhoodBee}{CreateNeighbourhoodBee}
+	\SetKwFunction{CreateRandomBee}{CreateRandomBee}
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation}
+  
+	% I/O
+	\KwIn{\ProblemSize, \NumBees, \NumSites, \NumEliteSites, \InitialPatchSize, \NumEliteBees, \NumOtherBees}		
+	\KwOut{\Best}
+  % Algorithm
+
+	\Population $\leftarrow$ \InitializePopulation{\NumBees, \ProblemSize}\;
+
+	\While{$\neg$\StopCondition{}} {
+		\EvaluatePopulation{\Population}\;
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\NextGeneration $\leftarrow 0$\;
+		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
+		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
+		
+		\ForEach{\Site $\in$ \BestSites} {
+				\NumRecruitedBees $\leftarrow$ $0$\;
+				\eIf{$i <$ \NumEliteSites} {
+					\NumRecruitedBees $\leftarrow$ \NumEliteBees\;
+				} {
+					\NumRecruitedBees $\leftarrow$ \NumOtherBees\;
+				}
+				\Neighborhood $\leftarrow$ $0$\;
+				\For{$j$ \KwTo \NumRecruitedBees} {
+					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
+				}
+				\NextGeneration $\leftarrow$ \GetBestSolution{\Neighborhood}\;
+			}
+		
+		\RemainingBees $\leftarrow$ (\NumBees - \NumSites)\;
+		\For{$j$ \KwTo \RemainingBees} {
+			\NextGeneration $\leftarrow$ \CreateRandomBee{}\;
+		}
+		\Population $\leftarrow$ \NextGeneration\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Bees Algorithm.}
+	\label{alg:bees_algorithm}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -119,6 +192,8 @@ todo
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Bees Algorithm was developed to be used with continuous and combinatorial function optimization problems.
+	\item The $Patch_{size}$ variable is used as the neighborhood size. For example, in a continuous function optimization problem, each dimension of a site would be sampled as $x_i \pm Patch_{size}$.
+	\item The number of elite sites ($EliteSites_{num}$) is typically $<$ the number of sites ($Sites_{num}$), and the number of elite bees ($EliteBees_{num}$) is typically $<$ the number of other bees ($OtherBees_{num}$).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -130,7 +205,7 @@ Listing~\ref{bees_algorithm} provides an example of the Bees Algorithm implement
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm...
+The algorithm is an implementation of the Bees Algorithm as described in the seminal paper \cite{Pham2006}. A fixed patch size decrease factor of 0.95 was applied each iteration.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Bees Algorithm in the Ruby Programming Language, label=bees_algorithm]{../../src/algorithms/swarm/bees_algorithm.rb}
@@ -157,6 +232,7 @@ The Bees Algorithm was proposed by Pham, et al. in a technical report in 2005 \c
 \subsection{Learn More}
 % reviews
 The majority of the work on the algorithm has concerned its application to various problem domains.
+The following is a selection of popular application papers: the optimization of linear antenna arrays by Guney and Onay \cite{Guney2007}, the optimization of codebook vectors in the Learning Vector Quantization algorithm for classification by Pham, et al. \cite{Pham2006a}, optimization of neural networks for classification by Pham, et al. \cite{Pham2006b}, and the optimization of clustering methods by Pham, et al. \cite{Pham2007}.
 % books
 
 
