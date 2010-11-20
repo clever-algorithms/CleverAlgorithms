@@ -123,29 +123,96 @@ A cells cost is derated by its interaction with other cells. This interaction is
 
 where $cell_k$ is a given cell, $d_{attract}$ and $w_{attract}$ are attraction coefficients, $h_{repellant}$ and $w_{repellant}$ are repulsion coefficients, $S$ is the number of cells in the population, $P$ is the number of dimensions on a given cells position vector.
 
-\begin{algorithm}[ht]
+The remaining parameters of the algorithm are as follows $Cells_{num}$ is the number of cells maintained in the population, $N_{ed}$ is the number of elimination-dispersal steps, $N_{re}$ is the number of reproduction steps, $N_{c}$ is the number of chemotaxis steps, $N_{s}$ is the number of swim steps for a given cell, $Step_{size}$ is a random direction vector with the same number of dimensions as the problem space, and each value $\in [-1,1]$, and $P_{ed}$ is the probability of a cell being subjected to elimination and dispersal. 
+
+\begin{algorithm}[htp]
 	\SetLine
 
 	% params
 	\SetKwData{ProblemSize}{$Problem_{size}$}
 	\SetKwData{NumCells}{$Cells_{num}$}
+	\SetKwData{EliminationDispersalSteps}{$N_{ed}$}
+	\SetKwData{ReproductionSteps}{$N_{re}$}
+	\SetKwData{ChemotaxisSteps}{$N_{c}$}
+	\SetKwData{SwimSteps}{$N_{s}$}
+	\SetKwData{StepSize}{$Step_{size}$}
+	\SetKwData{ProbElimination}{$P_{ed}$}
 	
+	\SetKwData{DA}{$d_{attract}$}
+	\SetKwData{DW}{$w_{attract}$}
+	\SetKwData{HR}{$h_{repellant}$}
+	\SetKwData{WR}{$w_{repellant}$}
 	
 	% data
 	\SetKwData{Population}{Population}
-	\SetKwData{Best}{Best}
+	\SetKwData{Cell}{Cell}
+	\SetKwData{CellNewPosition}{$Cell\prime$}
+	\SetKwData{CellFitness}{$Cell_{fitness}$}
+	\SetKwData{CellNewPositionFitness}{${Cell\prime}_{fitness}$}
+	\SetKwData{RandomStepDirection}{RandomStepDirection}
+	\SetKwData{Best}{$Cell_{best}$}
+	\SetKwData{CellHealth}{$Cell_{health}$}
+	\SetKwData{Selected}{Selected}
 	
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{Interaction}{Interaction}
+	\SetKwFunction{CreateStep}{CreateStep}
+	\SetKwFunction{TakeStep}{TakeStep}
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{SortByCellHealth}{SortByCellHealth}
+	\SetKwFunction{SelectByCellHealth}{SelectByCellHealth}
+	\SetKwFunction{Rand}{Rand}
+	\SetKwFunction{CreateCellAtRandomLocation}{CreateCellAtRandomLocation}
   
 	% I/O
-	\KwIn{\ProblemSize, \NumCells}		
+	\KwIn{\ProblemSize, \NumCells, \EliminationDispersalSteps, \ReproductionSteps, \ChemotaxisSteps, \SwimSteps, \StepSize, \DA, \DW, \HR, \WR, \ProbElimination}		
 	\KwOut{\Best}
   % Algorithm
 
 	\Population $\leftarrow$ \InitializePopulation{\NumCells, \ProblemSize}\;
 
+	\For{$l=0$ \KwTo \EliminationDispersalSteps}{
 	
+		\For{$k=0$ \KwTo \ReproductionSteps}{
+		
+			\For{$j=0$ \KwTo \ChemotaxisSteps}{
+				% perform chemotaxis
+				\ForEach{\Cell $\in$ \Population} {
+					\CellFitness $\leftarrow$ \Cost{\Cell} + \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
+					\CellHealth $\leftarrow$ \CellFitness\;
+					\CellNewPosition $\leftarrow$ $0$\;
+					% swim
+					\For{$i=0$ \KwTo \SwimSteps}{
+						\RandomStepDirection $\leftarrow$ \CreateStep{\ProblemSize}\;
+						\CellNewPosition $\leftarrow$ \TakeStep{\RandomStepDirection, \StepSize}\;
+						\CellNewPositionFitness $\leftarrow$ \Cost{\CellNewPosition} + \Interaction{\CellNewPosition, \Population, \DA, \DW, \HR, \WR}\;
+						\eIf {\CellNewPositionFitness $>$ \CellFitness} {
+							$i \leftarrow$ \SwimSteps\;
+						}{
+							\Cell $\leftarrow$ \CellNewPosition\;
+							\CellHealth $\leftarrow$ \CellHealth + \CellNewPositionFitness\;
+						}						
+					}	
+					\If{\Cost{\Cell} $\leq$ \Cost{\Best}} {
+						\Best $\leftarrow$ \Cell\;
+					}
+				}
+			}			
+			% perform reproduction
+			\SortByCellHealth{\Population}\;
+			\Selected $\leftarrow$ \SelectByCellHealth{\Population, $\frac{\NumCells}{2}$}\;
+			\Population $\leftarrow$ \Selected\;
+			\Population $\leftarrow$ \Selected\;
+		}
+	
+		% perform elimination and dispersal
+		\ForEach{\Cell $\in$ \Population} {
+			\If{\Rand{} $\leq$ \ProbElimination} {
+				\Cell $\leftarrow$ \CreateCellAtRandomLocation{}\;
+			}
+		}
+	}
 	
 	\Return{\Best}\;
 	% end
