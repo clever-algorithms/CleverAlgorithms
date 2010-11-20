@@ -102,17 +102,17 @@ if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
 
-  pop_size = 100
+  pop_size = 60
   d_attr = 0.1
   w_attr = 0.2 
   h_rep = d_attr
   w_rep = 10
   
-  step_size = 1.0
+  step_size = 0.1
   elim_disp_steps = 50
   repro_steps = 1
-  chem_steps = 5
-  swim_length = 15
+  chem_steps = 3
+  swim_length = 10
   p_eliminate = 0.5/pop_size
 
   best = search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
