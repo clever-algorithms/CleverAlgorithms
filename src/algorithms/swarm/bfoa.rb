@@ -100,12 +100,12 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, 5]}
   pop_size = 50
-  step_size = 0.1 #Ci
-  elim_disp_steps = 1 #Ned
+  step_size = 0.1 # Ci
+  elim_disp_steps = 1 # Ned
   repro_steps = 4 # Nre
   chem_steps = 70 # Nc
   swim_length = 4 # Ns
-  p_eliminate = 0.25 #pe
+  p_eliminate = 0.25 # Ped
   d_attr = 0.1
   w_attr = 0.2 
   h_rep = d_attr
