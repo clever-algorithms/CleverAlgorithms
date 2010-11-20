@@ -81,9 +81,9 @@ The Bees Algorithm is related to other Bee Inspired Algorithms, such as Bee Colo
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-The Bees Algorithm is inspired by the foraging behavior of swarms of honey bees.
+The Bees Algorithm is inspired by the foraging behavior of honey bees.
 % Which features of the motivating system are relevant to a technique?
-Honey bees collect nectar from vast areas around their hive (more than 10 kilometers). The have been observed to send bees to collect nectar from patches relative to the amount of food available eat each flower patch.
+Honey bees collect nectar from vast areas around their hive (more than 10 kilometers). The have been observed to send bees to collect nectar from patches relative to the amount of food available at each flower patch.
 Finally, bees communicate with each other via a waggle dance that informs other bees in the hive as to the direction, distance, and quality rating of food sources.
 
 % Metaphor: Explanation via analogy
@@ -93,7 +93,7 @@ Finally, bees communicate with each other via a waggle dance that informs other 
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Honey bees collect nectar from flower patches as a food source for the hive. The hive sends out scout's that locate patches of flowers, then return to the hive and inform other bees as to the fitness and location of a food source via a waggle dance. The scout returns to the flower patch with follower bees to return to the hive with more nectar. A small number of scouts continue to search for new patches, while bees returning from flower patches continue to communicate the quality of the patch. 
+Honey bees collect nectar from flower patches as a food source for the hive. The hive sends out scout's that locate patches of flowers, then return to the hive and inform other bees as to the fitness and location of a food source via a waggle dance. The scout returns to the flower patch with follower bees. A small number of scouts continue to search for new patches, while bees returning from flower patches continue to communicate the quality of the patch. 
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -154,9 +154,9 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudo-code listing of the Bees Al
 	\While{$\neg$\StopCondition{}} {
 		\EvaluatePopulation{\Population}\;
 		\Best $\leftarrow$ \GetBestSolution{\Population}\;
-		\NextGeneration $\leftarrow 0$\;
-		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
+		\NextGeneration $\leftarrow 0$\;		
 		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
+		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
 		
 		\ForEach{\Site $\in$ \BestSites} {
 				\NumRecruitedBees $\leftarrow$ $0$\;
@@ -192,8 +192,9 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudo-code listing of the Bees Al
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Bees Algorithm was developed to be used with continuous and combinatorial function optimization problems.
-	\item The $Patch_{size}$ variable is used as the neighborhood size. For example, in a continuous function optimization problem, each dimension of a site would be sampled as $x_i \pm Patch_{size}$.
-	\item The number of elite sites ($EliteSites_{num}$) is typically $<$ the number of sites ($Sites_{num}$), and the number of elite bees ($EliteBees_{num}$) is typically $<$ the number of other bees ($OtherBees_{num}$).
+	\item The $Patch_{size}$ variable is used as the neighborhood size. For example, in a continuous function optimization problem, each dimension of a site would be sampled as $x_i \pm (rand() \times Patch_{size})$.
+	\item The $Patch_{size}$ variable is decrease each iteration, typically by a constant amount (such as 0.95).
+	\item The number of elite sites ($EliteSites_{num}$) must be $<$ the number of sites ($Sites_{num}$), and the number of elite bees ($EliteBees_{num}$) is traditionally $<$ the number of other bees ($OtherBees_{num}$).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
