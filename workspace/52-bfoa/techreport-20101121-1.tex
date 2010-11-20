@@ -95,7 +95,7 @@ Specifically, the BFOA is inspired by the chemotaxis behavior of bacteria such a
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+Bacteria perceive their food and the direction to food based on the gradients of chemicals in their environment. Similarly, bacteria can perceive each other in a similar way secreting attracting and repelling chemicals into the environment. Using locomotion mechanisms (such as flagella) Bacteria can move around in their environment, sometimes moving chaotically (tumbling and spinning), and other times moving in a directed manner which one may refer to as swimming. Bacterial cells are treated like agents in an environment, using their perception of food and other cells as motivation to move, and stochastic tumbling and swimming like movement to re-locate. Depending on the cell-cell interactions, cells may swarm a food source, may aggressively repel or ignore each other.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -113,12 +113,12 @@ This is achieved through a series of three processes on a population of simulate
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:bfoa} provides a pseudo-code listing of the Bacterial Foraging Optimization Algorithm for minimizing a cost function. 
-A cells cost is derated by its interaction with other cells. This interaction is calculated as follows: 
+A bacteria cost is derated by its interaction with other cells. This interaction is calculated as follows: 
 
 \begin{align*}
-	interaction(cell_k) = 
-	&\sum_{i=1}^S\bigg[-d_{attract}\times exp\bigg(-w_{attract}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg] + \\
-	&\sum_{i=1}^S\bigg[h_{repellant}\times exp\bigg(-w_{repellant}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg]
+	interaction(bacteria_k) = 
+	&\sum_{i=1}^S\bigg[-d_{attract}\times exp\bigg(-w_{attract}\times \sum_{m=1}^P (bacteria_m^k - other_m^i)^2 \bigg) \bigg] + \\
+	&\sum_{i=1}^S\bigg[h_{repellant}\times exp\bigg(-w_{repellant}\times \sum_{m=1}^P (bacteria_m^k - other_m^i)^2 \bigg) \bigg]
 \end{align*}
 
 where $cell_k$ is a given cell, $d_{attract}$ and $w_{attract}$ are attraction coefficients, $h_{repellant}$ and $w_{repellant}$ are repulsion coefficients, $S$ is the number of cells in the population, $P$ is the number of dimensions on a given cells position vector.
