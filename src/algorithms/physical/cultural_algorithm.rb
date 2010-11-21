@@ -8,33 +8,23 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def create_random_solution(problem_size, search_space)
+  vector = Array.new(problem_size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
+  return {:vector=>vector}
 end
 
-def random_gaussian
-  u1 = u2 = w = g1 = g2 = 0
-  begin
-    u1 = 2 * rand() - 1
-    u2 = 2 * rand() - 1
-    w = u1 * u1 + u2 * u2
-  end while w >= 1
-  w = Math.sqrt((-2 * Math.log(w)) / w)
-  g2, g1 = u1 * w, u2 * w
-  return g1
-end
-
-def mutate(candidate, search_space, lrate)
-  vector = Array.new(candidate.size)
-  candidate[:vector].each_with_index do |v,i|
-    value =  v + (lrate * random_gaussian())
-    value = search_space[i][0] if value < search_space[i][0]
-    value = search_space[i][1] if value > search_space[i][1]
-    vector[i] = value
+def mutate_with_influence(candidate, belief_space, search_space)
+  vector = Array.new(candidate[:vector].size)
+  candidate[:vector].each_with_index do |c,i|
+    range = (belief_space[:normative][i][1] - belief_space[:normative][i][0])
+    v = belief_space[:normative][i][0] + rand() * range
+    v = search_space[i][0] if v < search_space[i][0]
+    v = search_space[i][1] if v > search_space[i][1]
+    vector[i] = v
   end
-  return {:vector=>vector}  
+  return {:vector=>vector}
 end
   
 def binary_tournament(population)
@@ -42,29 +32,63 @@ def binary_tournament(population)
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
 end
 
-def search(max_gens, problem_size, search_space, pop_size, lrate)
-  pop = Array.new(pop_size) { {:vector=>random_vector(problem_size, search_space)} }
+def initialize_beliefspace(problem_size, search_space)
+  belief_space = {}
+  belief_space[:situational] = nil
+  belief_space[:normative] = Array.new(problem_size) {|i| Array.new(search_space[i])}
+  return belief_space
+end
+
+def update_beliefspace_situational!(belief_space, best)
+  curr_best = belief_space[:situational]
+  if curr_best.nil? or best[:fitness] < curr_best[:fitness]
+    belief_space[:situational] = best
+  end
+end
+
+def update_beliefspace_normative!(belief_space, acccepted)
+  belief_space[:normative].each_with_index do |bounds,i|
+    bounds[0] = acccepted.min{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
+    bounds[1] = acccepted.max{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
+  end
+end
+
+def search(max_gens, problem_size, search_space, pop_size, num_accepted)
+  # initialize
+  pop = Array.new(pop_size) { create_random_solution(problem_size, search_space) }
+  belief_space = initialize_beliefspace(problem_size, search_space)  
+  # evaluate
   pop.each{|c| c[:fitness] = objective_function(c[:vector])}
   best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
-  max_gens.times do |gen|    
-    children = Array.new(pop_size) {|i| mutate(pop[i], search_space, lrate)}
+  # update situational knowledge
+  update_beliefspace_situational!(belief_space, best)
+  max_gens.times do |gen|
+    # create next generation
+    children = Array.new(pop_size) {|i| mutate_with_influence(pop[i], belief_space, search_space) }
+    # evaluate
     children.each{|c| c[:fitness] = objective_function(c[:vector])}    
-    union = children + pop
-    union.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-    best = union.first if union.first[:fitness] < best[:fitness]
-    pop = union[0...pop_size]
-    puts " > generation=#{gen}, f=#{best[:fitness]}"
+    best = children.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
+    # update situational knowledge
+    update_beliefspace_situational!(belief_space, best)
+    # select next generation    
+    pop = Array.new(pop_size) { binary_tournament(children) }
+    # update normative knowledge
+    pop.sort!{|x,y| x[:fitness] <=> y[:fitness]}
+    acccepted = pop[0...num_accepted]
+    update_beliefspace_normative!(belief_space, acccepted)
+    # user feedback
+    puts " > generation=#{gen}, f=#{belief_space[:situational][:fitness]}"
   end  
-  return best
+  return belief_space[:situational]
 end
 
 if __FILE__ == $0
-  problem_size = 2
+  problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   max_generations = 200
   population_size = 100
-  lrate = 0.005
+  num_accepted = (population_size*0.20).round
 
-  best = search(max_generations, problem_size, search_space, population_size, lrate)
+  best = search(max_generations, problem_size, search_space, population_size, num_accepted)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
