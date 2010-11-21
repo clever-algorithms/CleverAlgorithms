@@ -83,7 +83,7 @@ It is related to other high-order extensions of Evolutionary Computation such as
 % What is the system or process that motivated the development of a technique?
 The Cultural Algorithm is inspired by the principle of cultural evolution.
 % Which features of the motivating system are relevant to a technique?
-Culture include the habits, knowledge, beliefs, customs, and morals of a member of a society. Culture does not exist independent of the environment, and can interact with the environment via positive or negative feedback cycles. the study of the interaction of culture in the environment is referred to as Cultural Ecology.
+Culture includes the habits, knowledge, beliefs, customs, and morals of a member of society. Culture does not exist independent of the environment, and can interact with the environment via positive or negative feedback cycles. the study of the interaction of culture in the environment is referred to as Cultural Ecology.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -91,7 +91,7 @@ Culture include the habits, knowledge, beliefs, customs, and morals of a member 
 \section{Metaphor}
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
-The Cultural Algorithm may be explained in the context of the inspiring system. As the evolutionary process unfolds, individuals accumulate information about the world which is communicated to other individuals in the population.s Collectively this corpus of information is a knowledge base that members of the population may tap-into and exploit. Positive feedback mechanisms can occur where cultural knowledge indicates useful areas of the environment, information which are passed down between generations, exploited, refined, and adapted as situations change. Additionally, ares of potential hazard may also be communicated through the cultural knowledge base.
+The Cultural Algorithm may be explained in the context of the inspiring system. As the evolutionary process unfolds, individuals accumulate information about the world which is communicated to other individuals in the population. Collectively this corpus of information is a knowledge base that members of the population may tap-into and exploit. Positive feedback mechanisms can occur where cultural knowledge indicates useful areas of the environment, information which is passed down between generations, exploited, refined, and adapted as situations change. Additionally, areas of potential hazard may also be communicated through the cultural knowledge base.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
 
 % Strategy: Problem solving plan
@@ -101,7 +101,7 @@ The Cultural Algorithm may be explained in the context of the inspiring system. 
 % What is the information processing objective of a technique?
 The information processing objective of the algorithm is to improve the learning or convergence of an embedded search technique (typically an evolutionary algorithm) using a higher-order cultural evolution. 
 % What is a techniques plan of action?
-The algorithm operates at two levels: population level and a cultural level. The population level is like an evolutionary search, where individuals represent candidate solutions, are mostly distinct and their characteristics are translated into an objective or cost function in the problem domain. The second level is the knowledge or believe space where information acquired by generations  is stored, which is accessible to the current generation. A communication protocol is used to allow the two spaces to interact and the types of of information that can be exchanged. 
+The algorithm operates at two levels: population level and a cultural level. The population level is like an evolutionary search, where individuals represent candidate solutions, are mostly distinct and their characteristics are translated into an objective or cost function in the problem domain. The second level is the knowledge or believe space where information acquired by generations  is stored, and which is accessible to the current generation. A communication protocol is used to allow the two spaces to interact and the types of of information that can be exchanged. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -111,7 +111,7 @@ The algorithm operates at two levels: population level and a cultural level. The
 The focus of the algorithm is the \texttt{KnowledgeBase} data structure that records different knowledge types based on the nature of the problem. For example, the structure may be used to record the best candidate solution found as well as generalized information about areas of the search space that are expected to payoff (result in good candidate solutions). This cultural knowledge is discovered by the population-based evolutionary search, and is in turn used to influence subsequent generations. The accept functions constrain the communication of knowledge from the population to the knowledge base.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:cultural_algorithm} provides a pseudo-code listing of the Cultural Algorithm. The algorithm is abstract, providing flexibility in the interpretation of the processes such as the acceptance of information and the structure of the knowledge base.
+Algorithm~\ref{alg:cultural_algorithm} provides a pseudo-code listing of the Cultural Algorithm. The algorithm is abstract, providing flexibility in the interpretation of the processes such as the acceptance of information, the structure of the knowledge base, and the specific embedded evolutionary algorithm.
 
 
 \begin{algorithm}[ht]
@@ -173,9 +173,9 @@ Algorithm~\ref{alg:cultural_algorithm} provides a pseudo-code listing of the Cul
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item The Cultural Algorithm was initially used as a simulation tool to investigate Cultural Ecology. It has been adapted for use as an optimization algorithm for a wide variety of domains not-limited to constraint optimization, combinatorial optimization, and continuous function optimization, and many other.
+	\item The Cultural Algorithm was initially used as a simulation tool to investigate Cultural Ecology. It has been adapted for use as an optimization algorithm for a wide variety of domains not-limited to constraint optimization, combinatorial optimization, and continuous function optimization.
 	\item The knowledge base structure provides a mechanism for incorporating problem-specific information into the execution of an evolutionary search.
-	\item The acceptance functions that control the flow of information into the knowledge base are typically greedily, only including the best information from the current generation, and not replacing existing knowledge unless it is an improvement.
+	\item The acceptance functions that control the flow of information into the knowledge base are typically greedy, only including the best information from the current generation, and not replacing existing knowledge unless it is an improvement.
 	\item Acceptance functions are traditionally deterministic, although probabilistic and fuzzy acceptance functions have been investigated.
 \end{itemize}
 
@@ -189,7 +189,11 @@ Listing~\ref{cultural_algorithm} provides an example of the Cultural Algorithm i
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 
 % algorithm
-The Cultural Algorithm was implemented based on the description of the Cultural Algorithm Evolutionary Program (CAEP) presented by Reynolds \cite{Reynolds1999}. The overall best solution is taken as the `situational' cultural knowledge, whereas the bounds of the top 20\% of the best solutions each generation are taken as the `normative' cultural knowledge. The situational knowledge is returned as the result of the search, whereas the normative knowledge is used to influence the evolutionary process. Specifically, the bounds in the normative knowledge are used to define a sub-space from which new candidate solutions are uniformly sampled during the reproduction step of the evolutionary algorithm's variation step. A real-valued representation and a binary tournament selection strategy are used by the evolutionary algorithm.
+The Cultural Algorithm was implemented based on the description of the Cultural Algorithm Evolutionary Program (CAEP) presented by Reynolds \cite{Reynolds1999}. 
+A real-valued Genetic Algorithm was used as the embedded evolutionary algorithm.
+The overall best solution is taken as the `situational' cultural knowledge, whereas the bounds of the top 20\% of the best solutions each generation are taken as the `normative' cultural knowledge. 
+The situational knowledge is returned as the result of the search, whereas the normative knowledge is used to influence the evolutionary process. Specifically, vector the bounds in the normative knowledge are used to define a subspace from which new candidate solutions are uniformly sampled during the reproduction step of the evolutionary algorithm's variation mechanism. 
+A real-valued representation and a binary tournament selection strategy are used by the evolutionary algorithm.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Cultural Algorithm in the Ruby Programming Language, label=cultural_algorithm]{../../src/algorithms/physical/cultural_algorithm.rb}
@@ -207,7 +211,7 @@ The Cultural Algorithm was implemented based on the description of the Cultural 
 % 
 \subsection{Primary Sources}
 % seminal
-The Cultural Algorithm was proposed by Reynolds in 1994 that combined the method with the Version Space Algorithm where generalizations of individual solutions were communicated as cultural knowledge in the form of schema patterns (strings of 1's, 0's and \#'s, where `\#' represents either a 1 or a 0) \cite{Reynolds1994}. 
+The Cultural Algorithm was proposed by Reynolds in 1994 that combined the method with the Version Space Algorithm (a binary string based Genetic Algorithm), where generalizations of individual solutions were communicated as cultural knowledge in the form of schema patterns (strings of 1's, 0's and \#'s, where `\#' represents either a 1 or a 0) \cite{Reynolds1994}. 
 % early
 
 % 
