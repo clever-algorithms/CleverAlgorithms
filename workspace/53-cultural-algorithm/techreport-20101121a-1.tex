@@ -71,9 +71,9 @@ Cultural Algorithm, CA
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-The Cultural Algorithm is an extension to the field of Evolutionary Computation and more broadly to the field of Computational Intelligence and Metaheuristics.
+The Cultural Algorithm is an extension to the field of Evolutionary Computation and may be considered a Meta-Evolutionary Algorithm. It more broadly belongs to the field of Computational Intelligence and Metaheuristics.
 % What are the closely related approaches to a technique?
-It is related to other high-order extensions of Evolutionary Computation such as Memetic Algorithms and is specifically related to the Genetic Algorithm.
+It is related to other high-order extensions of Evolutionary Computation such as the Memetic Algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -92,15 +92,15 @@ Culture include the habits, knowledge, beliefs, customs, and morals of a member 
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the algorithm is to improve the learning or convergence of an embedded search technique (typically an evolutionary algorithm) using a higher-order cultural evolution. 
 % What is a techniques plan of action?
-todo
+The algorithm operates at two levels: population level and a cultural level. The population level is like an evolutionary search, where individuals represent candidate solutions, are mostly distinct and their characteristics are translated into an objective or cost function in the problem domain. The second level is the knowledge or believe space where information acquired by generations  is stored, which is accessible to the current generation. A communication protocol is used to allow the two spaces to interact and the types of of information that can be exchanged. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -148,7 +148,7 @@ The Cultural Algorithm is implemented...
 % 
 \subsection{Primary Sources}
 % seminal
-The Cultural Algorithm was proposed by Reynolds \cite{Reynolds1994}. 
+The Cultural Algorithm was proposed by Reynolds in 1994 \cite{Reynolds1994}. 
 % early
 
 % 
@@ -157,6 +157,7 @@ The Cultural Algorithm was proposed by Reynolds \cite{Reynolds1994}.
 \subsection{Learn More}
 % reviews
 Reynolds provides a detailed overview of the technique as a book chapter \cite{Reynolds1999}.
+Coello Coello and Becerra proposed a variation of the Cultural Algorithm that uses Evolutionary Programming as the embedded weak search method, for use with Multi-Objective Optimization problems \cite{CoelloCoello2003}.
 % books
 
 
