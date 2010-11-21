@@ -55,7 +55,7 @@ end
 
 def search(max_generations, problem_size, search_space, pop_size, num_children)
   strategy_space = Array.new(problem_size) do |i| 
-    [0, (search_space[i][1]-search_space[i][0])*0.02]
+    [0, (search_space[i][1]-search_space[i][0])*0.05]
   end
   population = Array.new(pop_size) do |i|
     {:vector=>random_vector(problem_size, search_space), 
@@ -75,7 +75,7 @@ def search(max_generations, problem_size, search_space, pop_size, num_children)
   return best
 end
 
-max_generations = 200
+max_generations = 100
 pop_size = 30
 num_children = 20
 problem_size = 2

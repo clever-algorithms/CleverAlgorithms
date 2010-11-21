@@ -108,7 +108,79 @@ The algorithm operates at two levels: population level and a cultural level. The
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:cultural_algorithm} provides a pseudo-code listing of the Cultural Algorithm for minimizing a cost function. 
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{NumBees}{$Bees_{num}$}
+	\SetKwData{NumSites}{$Sites_{num}$}
+	\SetKwData{NumEliteSites}{$EliteSites_{num}$}
+	\SetKwData{InitialPatchSize}{$PatchSize_{init}$}
+	\SetKwData{NumEliteBees}{$EliteBees_{num}$}
+	\SetKwData{NumOtherBees}{$OtherBees_{num}$}
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	% data
+	\SetKwData{Neighborhood}{Neighborhood}
+	\SetKwData{Population}{Population}
+	\SetKwData{Best}{$Bee_{best}$}
+	\SetKwData{NextGeneration}{NextGeneration}
+	\SetKwData{BestSites}{$Sites_{best}$}
+	\SetKwData{PatchDecreaseFactor}{$PatchDecrease_{factor}$}
+	\SetKwData{Site}{$Site_{i}$}
+	\SetKwData{NumRecruitedBees}{$RecruitedBees_{num}$}
+	\SetKwData{PatchSize}{$Patch_{size}$}
+	\SetKwData{RemainingBees}{$RemainingBees_{num}$}
+	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{StopCondition}{StopCondition} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectBestSites}{SelectBestSites}
+	\SetKwFunction{CreateNeighbourhoodBee}{CreateNeighbourhoodBee}
+	\SetKwFunction{CreateRandomBee}{CreateRandomBee}
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation}
+  
+	% I/O
+	\KwIn{\ProblemSize, \NumBees, \NumSites, \NumEliteSites, \InitialPatchSize, \NumEliteBees, \NumOtherBees}		
+	\KwOut{\Best}
+  % Algorithm
+
+	\Population $\leftarrow$ \InitializePopulation{\NumBees, \ProblemSize}\;
+
+	\While{$\neg$\StopCondition{}} {
+		\EvaluatePopulation{\Population}\;
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\NextGeneration $\leftarrow 0$\;		
+		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
+		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
+		
+		\ForEach{\Site $\in$ \BestSites} {
+				\NumRecruitedBees $\leftarrow$ $0$\;
+				\eIf{$i <$ \NumEliteSites} {
+					\NumRecruitedBees $\leftarrow$ \NumEliteBees\;
+				} {
+					\NumRecruitedBees $\leftarrow$ \NumOtherBees\;
+				}
+				\Neighborhood $\leftarrow$ $0$\;
+				\For{$j$ \KwTo \NumRecruitedBees} {
+					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
+				}
+				\NextGeneration $\leftarrow$ \GetBestSolution{\Neighborhood}\;
+			}
+		
+		\RemainingBees $\leftarrow$ (\NumBees - \NumSites)\;
+		\For{$j$ \KwTo \RemainingBees} {
+			\NextGeneration $\leftarrow$ \CreateRandomBee{}\;
+		}
+		\Population $\leftarrow$ \NextGeneration\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Cultural Algorithm.}
+	\label{alg:cultural_algorithm}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -156,7 +228,7 @@ The Cultural Algorithm was proposed by Reynolds in 1994 \cite{Reynolds1994}.
 % 
 \subsection{Learn More}
 % reviews
-Reynolds provides a detailed overview of the technique as a book chapter \cite{Reynolds1999}.
+Reynolds provides a detailed overview of the history of the technique as a book chapter that presents the state of the art and summaries of application areas including concept learning and continuous function optimization \cite{Reynolds1999}.
 Coello Coello and Becerra proposed a variation of the Cultural Algorithm that uses Evolutionary Programming as the embedded weak search method, for use with Multi-Objective Optimization problems \cite{CoelloCoello2003}.
 % books
 
