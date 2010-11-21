@@ -71,7 +71,7 @@ def search(max_gens, problem_size, search_space, pop_size, num_accepted)
     # update situational knowledge
     update_beliefspace_situational!(belief_space, best)
     # select next generation    
-    pop = Array.new(pop_size) { binary_tournament(children) }
+    pop = Array.new(pop_size) { binary_tournament(children + pop) }
     # update normative knowledge
     pop.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     acccepted = pop[0...num_accepted]
@@ -83,7 +83,7 @@ def search(max_gens, problem_size, search_space, pop_size, num_accepted)
 end
 
 if __FILE__ == $0
-  problem_size = 3
+  problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   max_generations = 200
   population_size = 100
