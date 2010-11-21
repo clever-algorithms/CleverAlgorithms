@@ -36,6 +36,8 @@ def create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
     if rand() < consideration_rate
       value = memory[rand(memory.size)][:vector][i]
       value = value + range * random_variable(-1.0, 1.0) if rand() < adjust_rate
+      value = search_space[i][0] if value < search_space[i][0]
+      value = search_space[i][1] if value > search_space[i][1]
       vector[i] = value
     else
       vector[i] = random_variable(search_space[i][0], search_space[i][1])

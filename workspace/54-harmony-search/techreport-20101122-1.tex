@@ -97,8 +97,9 @@ Each musician corresponds to an attribute in a candidate solution from a problem
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the technique is to use good candidate solutions already discovered to influence the creation of new candidate solutions toward locating the problems optima.
 % What is a techniques plan of action?
-todo
+This is achieved by stochastically creating candidate solutions in a step-wise manner, where each component is either drawn randomly from a memory of high-quality solutions, adjusted from the memory of high-quality solution, or assigned randomly within the bounds of the problem. The memory of candidate solutions is initially random, and a greedy acceptance criteria is used to admit new candidate solutions only if they have an improved objective value, replacing an existing member.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -107,81 +108,64 @@ todo
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:harmony_search} provides a pseudo-code listing of the Harmony Search algorithm for minimizing a cost function. 
-
-The adjustment of a pitch selected from the harmony memory is typically linear: 
-
+The adjustment of a pitch selected from the harmony memory is typically linear, for example for continuous function optimization: 
 \begin{equation}
 	x\prime \leftarrow x + range \times \epsilon
 \end{equation}
-
 where $range$ is a the user parameter (pitch bandwidth) to control the size of the changes, and $\epsilon$ is a uniformly random number $\in [-1,1]$.
-
 
 \begin{algorithm}[ht]
 	\SetLine
 
 	% params
-	\SetKwData{NumBees}{$Bees_{num}$}
-	\SetKwData{NumSites}{$Sites_{num}$}
-	\SetKwData{NumEliteSites}{$EliteSites_{num}$}
-	\SetKwData{InitialPatchSize}{$PatchSize_{init}$}
-	\SetKwData{NumEliteBees}{$EliteBees_{num}$}
-	\SetKwData{NumOtherBees}{$OtherBees_{num}$}
-	\SetKwData{ProblemSize}{$Problem_{size}$}
+	\SetKwData{NumPitches}{$Pitch_{num}$}
+	\SetKwData{PitchBounds}{$Pitch_{bounds}$}
+	\SetKwData{MemorySize}{$Memory_{size}$}
+	\SetKwData{ConsolidationRate}{$Consolidation_{rate}$}
+	\SetKwData{AdjustRate}{$PitchAdjust_{rate}$}
+	\SetKwData{MaxImprovisations}{$Improvisation_{max}$}	
 	% data
-	\SetKwData{Neighborhood}{Neighborhood}
-	\SetKwData{Population}{Population}
-	\SetKwData{Best}{$Bee_{best}$}
-	\SetKwData{NextGeneration}{NextGeneration}
-	\SetKwData{BestSites}{$Sites_{best}$}
-	\SetKwData{PatchDecreaseFactor}{$PatchDecrease_{factor}$}
-	\SetKwData{Site}{$Site_{i}$}
-	\SetKwData{NumRecruitedBees}{$RecruitedBees_{num}$}
-	\SetKwData{PatchSize}{$Patch_{size}$}
-	\SetKwData{RemainingBees}{$RemainingBees_{num}$}
-	
+	\SetKwData{Harmonies}{Harmonies}
+	\SetKwData{Best}{$Harmony_{best}$}
+	\SetKwData{CandidateHarmony}{$Harmony$}
+	\SetKwData{CandidateHarmonyPitch}{$Harmony_{pitch}^i$}
+	\SetKwData{RandomHarmonyPitch}{$RandomHarmony_{pitch}^i$}
+	\SetKwData{Pitch}{$Pitch_{i}$}
 	% functions
-	\SetKwFunction{InitializePopulation}{InitializePopulation}  
-	\SetKwFunction{StopCondition}{StopCondition} 
-	\SetKwFunction{GetBestSolution}{GetBestSolution} 
-	\SetKwFunction{SelectBestSites}{SelectBestSites}
-	\SetKwFunction{CreateNeighbourhoodBee}{CreateNeighbourhoodBee}
-	\SetKwFunction{CreateRandomBee}{CreateRandomBee}
-	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation}
-  
+	\SetKwFunction{InitializeHarmonyMemory}{InitializeHarmonyMemory} 
+	\SetKwFunction{EvaluateHarmonies}{EvaluateHarmonies} 
+	\SetKwFunction{SelectRandomHarmonyPitch}{SelectRandomHarmonyPitch} 
+  \SetKwFunction{Rand}{Rand} 
+	\SetKwFunction{AdjustPitch}{AdjustPitch} 
+	\SetKwFunction{RandomPitch}{RandomPitch} 
+	\SetKwFunction{Cost}{Cost} 
+	\SetKwFunction{Worst}{Worst} 
+	
 	% I/O
-	\KwIn{\ProblemSize, \NumBees, \NumSites, \NumEliteSites, \InitialPatchSize, \NumEliteBees, \NumOtherBees}		
+	\KwIn{\NumPitches, \PitchBounds, \MemorySize, \ConsolidationRate, \AdjustRate, \MaxImprovisations}		
 	\KwOut{\Best}
+
   % Algorithm
-
-	\Population $\leftarrow$ \InitializePopulation{\NumBees, \ProblemSize}\;
-
-	\While{$\neg$\StopCondition{}} {
-		\EvaluatePopulation{\Population}\;
-		\Best $\leftarrow$ \GetBestSolution{\Population}\;
-		\NextGeneration $\leftarrow 0$\;		
-		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
-		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
-		
-		\ForEach{\Site $\in$ \BestSites} {
-				\NumRecruitedBees $\leftarrow$ $0$\;
-				\eIf{$i <$ \NumEliteSites} {
-					\NumRecruitedBees $\leftarrow$ \NumEliteBees\;
+	\Harmonies $\leftarrow$ \InitializeHarmonyMemory{\NumPitches, \PitchBounds, \MemorySize}\;
+	\EvaluateHarmonies{\Harmonies}\;
+	\For{$i$ \KwTo \MaxImprovisations} {
+		\CandidateHarmony $\leftarrow$ $0$\;		
+		\ForEach{\Pitch $\in$ \NumPitches} {			
+			\eIf{\Rand{} $\leq$ \ConsolidationRate} {
+				\RandomHarmonyPitch $\leftarrow$ \SelectRandomHarmonyPitch{\Harmonies, \Pitch}\;
+				\eIf{\Rand{} $\leq$ \AdjustRate} {
+					\CandidateHarmonyPitch $\leftarrow$ \AdjustPitch{\RandomHarmonyPitch}\;
 				} {
-					\NumRecruitedBees $\leftarrow$ \NumOtherBees\;
+					\CandidateHarmonyPitch $\leftarrow$ \RandomHarmonyPitch\;
 				}
-				\Neighborhood $\leftarrow$ $0$\;
-				\For{$j$ \KwTo \NumRecruitedBees} {
-					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
-				}
-				\NextGeneration $\leftarrow$ \GetBestSolution{\Neighborhood}\;
-			}
-		
-		\RemainingBees $\leftarrow$ (\NumBees - \NumSites)\;
-		\For{$j$ \KwTo \RemainingBees} {
-			\NextGeneration $\leftarrow$ \CreateRandomBee{}\;
+			} {
+				\CandidateHarmonyPitch $\leftarrow$ \RandomPitch{\PitchBounds}\;
+			}		
 		}
-		\Population $\leftarrow$ \NextGeneration\;
+		\EvaluateHarmonies{\CandidateHarmony}\;
+		\If{\Cost{\CandidateHarmony} $\leq$ \Cost{\Worst{\Harmonies}}} {
+			\Worst{\Harmonies} $\leftarrow$ \CandidateHarmony\;
+		}
 	}
 	\Return{\Best}\;
 	% end
