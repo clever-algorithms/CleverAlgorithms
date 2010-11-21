@@ -80,8 +80,8 @@ Harmony Search belongs to the fields of Computational Intelligence and Metaheuri
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
+Harmony Search was inspired by the improvisation of Jazz musicians. Specifically, the process by which the musicians (who may have never played together before) rapidly refine their individual improvisation though variation resulting in an aesthetic harmony.  
 % Which features of the motivating system are relevant to a technique?
-todo
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -90,7 +90,7 @@ todo
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+Each musician corresponds to an attribute in a candidate solution from a problem domain, and each instrument's pitch and range corresponds to the bounds and constraints on the decision variable. The harmony between the musicians is taken a complete candidate solution at a given time, and the audiences aesthetic appreciation of the harmony represent the problem specific cost function for the musicians. The musicians seek harmony over time through small variations and improvisations, which results in am improvement against the cost function.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -106,7 +106,88 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+Algorithm~\ref{alg:harmony_search} provides a pseudo-code listing of the Harmony Search algorithm for minimizing a cost function. 
+
+The adjustment of a pitch selected from the harmony memory is typically linear: 
+
+\begin{equation}
+	x\prime \leftarrow x + range \times \epsilon
+\end{equation}
+
+where $range$ is a the user parameter (pitch bandwidth) to control the size of the changes, and $\epsilon$ is a uniformly random number $\in [-1,1]$.
+
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{NumBees}{$Bees_{num}$}
+	\SetKwData{NumSites}{$Sites_{num}$}
+	\SetKwData{NumEliteSites}{$EliteSites_{num}$}
+	\SetKwData{InitialPatchSize}{$PatchSize_{init}$}
+	\SetKwData{NumEliteBees}{$EliteBees_{num}$}
+	\SetKwData{NumOtherBees}{$OtherBees_{num}$}
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	% data
+	\SetKwData{Neighborhood}{Neighborhood}
+	\SetKwData{Population}{Population}
+	\SetKwData{Best}{$Bee_{best}$}
+	\SetKwData{NextGeneration}{NextGeneration}
+	\SetKwData{BestSites}{$Sites_{best}$}
+	\SetKwData{PatchDecreaseFactor}{$PatchDecrease_{factor}$}
+	\SetKwData{Site}{$Site_{i}$}
+	\SetKwData{NumRecruitedBees}{$RecruitedBees_{num}$}
+	\SetKwData{PatchSize}{$Patch_{size}$}
+	\SetKwData{RemainingBees}{$RemainingBees_{num}$}
+	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{StopCondition}{StopCondition} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{SelectBestSites}{SelectBestSites}
+	\SetKwFunction{CreateNeighbourhoodBee}{CreateNeighbourhoodBee}
+	\SetKwFunction{CreateRandomBee}{CreateRandomBee}
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation}
+  
+	% I/O
+	\KwIn{\ProblemSize, \NumBees, \NumSites, \NumEliteSites, \InitialPatchSize, \NumEliteBees, \NumOtherBees}		
+	\KwOut{\Best}
+  % Algorithm
+
+	\Population $\leftarrow$ \InitializePopulation{\NumBees, \ProblemSize}\;
+
+	\While{$\neg$\StopCondition{}} {
+		\EvaluatePopulation{\Population}\;
+		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\NextGeneration $\leftarrow 0$\;		
+		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
+		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
+		
+		\ForEach{\Site $\in$ \BestSites} {
+				\NumRecruitedBees $\leftarrow$ $0$\;
+				\eIf{$i <$ \NumEliteSites} {
+					\NumRecruitedBees $\leftarrow$ \NumEliteBees\;
+				} {
+					\NumRecruitedBees $\leftarrow$ \NumOtherBees\;
+				}
+				\Neighborhood $\leftarrow$ $0$\;
+				\For{$j$ \KwTo \NumRecruitedBees} {
+					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
+				}
+				\NextGeneration $\leftarrow$ \GetBestSolution{\Neighborhood}\;
+			}
+		
+		\RemainingBees $\leftarrow$ (\NumBees - \NumSites)\;
+		\For{$j$ \KwTo \RemainingBees} {
+			\NextGeneration $\leftarrow$ \CreateRandomBee{}\;
+		}
+		\Population $\leftarrow$ \NextGeneration\;
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Harmony Search algorithm.}
+	\label{alg:harmony_search}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -115,7 +196,12 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item Harmony Search was designed as a generalized optimization method for continuous, discrete, and constrained optimization and has been applied to numerous types of optimization problems.
+	\item The harmony memory considering rate (HMCR) $\in [0,1]$ controls the use of information from the harmony memory and if not the generation of a random pitch. As such, it controls the rate of convergence of the algorithm and is typically configured $\in [0.7,0.95]$.
+	\item The pitch adjustment rate (PAR) $\in [0,1]$ controls the frequency of adjustment of pitches selected from harmony memory, typically configured $\in [0.1,0.5]$. High values can result in the premature convergence of the search.
+	\item The pitch adjustment rate and the adjustment method (amount of adjustment or fret width) are typically fixed having a linear effect through time, although non-linear methods have been considered, for example refer to Geem for an example \cite{Geem2010a}.
+	\item When creating a new harmony, aggregations of pitches can be taken from across musicians in the harmony memory.
+	\item The harmony memory update is typically a greedy process, although other considerations such as diversity may be used where the most similar harmony is replace.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -127,11 +213,10 @@ Listing~\ref{harmony_search} provides an example of the Harmony Search algorithm
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm...
+The algorithm implementation and parameterization are based on the description by Yang \cite{Yang2009}, with refinement from Geem \cite{Geem2010a}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Harmony Search algorithm in the Ruby Programming Language, label=harmony_search]{../../src/algorithms/physical/harmony_search.rb}
-
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -153,9 +238,8 @@ Geem, et al. proposed the Harmony Search algorithm in 2001 \cite{Geem2001}.
 % 
 \subsection{Learn More}
 % reviews
-
 % books
-A book on Harmony Search, edited by Geem provides a collection of papers on the technique and its applications and chapter 1 provides a useful summary of the method \cite{Geem2009}. Similarly a second edited volume also edited by Geem focuses on studies that provide more advanced applications of the approach \cite{Geem2010}. Geem also provides a treatment of Harmony Search applied to the optimal design of water distribution networks \cite{Geem2009a} and edits yet a third volume on papers related to the application of the technique to structural design optimization problems \cite{Geem2009b}.
+A book on Harmony Search, edited by Geem provides a collection of papers on the technique and its applications \cite{Geem2009} and chapter 1 provides a useful summary of the method \cite{Yang2009}. Similarly a second edited volume also edited by Geem focuses on studies that provide more advanced applications of the approach \cite{Geem2010}, and chapter 1 provides a detailed walkthrough of the technique itself and heuristics for its configuration \cite{Geem2010a}. Geem also provides a treatment of Harmony Search applied to the optimal design of water distribution networks \cite{Geem2009a} and edits yet a third volume on papers related to the application of the technique to structural design optimization problems \cite{Geem2009b}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.

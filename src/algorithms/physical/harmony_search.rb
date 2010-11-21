@@ -8,58 +8,53 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
-  end
+def random_variable(min, max)
+  return min + ((max - min) * rand())
 end
 
-def create_random_bee(problem_size, search_space)
-  bee = {}
-  bee[:vector] = random_vector(problem_size, search_space)
-  return bee
+def random_vector(search_space)
+  return Array.new(search_space.length) {|i| random_variable(search_space[i][0], search_space[i][1]) }
 end
 
-def create_neighborhood_bee(site, patch_size, search_space)
-  vector = []
-  site.each_with_index do |v,i|
-    v = (rand()<0.5) ? v+rand()*patch_size : v-rand()*patch_size
-    v = search_space[i][0] if v < search_space[i][0]
-    v = search_space[i][1] if v > search_space[i][1]
-    vector << v
-  end
-  bee = {}
-  bee[:vector] = vector
-  return bee
+def create_random_harmony(search_space)
+  harmony = {}
+  harmony[:vector] = random_vector(search_space)
+  harmony[:fitness] = objective_function(harmony[:vector])
+  return harmony
 end
 
-def search_neighborhood(site, neighborhood_size, patch_size, search_space)
-  neighborhood = []
-  neighborhood_size.times do 
-    neighborhood << create_neighborhood_bee(site[:vector], patch_size, search_space)
-  end
-  neighborhood.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
-  return neighborhood.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
+def initialize_harmony_memory(search_space, memory_size)
+  memory = Array.new(memory_size * 3){ create_random_harmony(search_space) }
+  memory.sort!{|x,y| x[:fitness]<=>y[:fitness]}
+  memory = memory[0...memory_size]
+  return memory
 end
 
-def search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
-  best = nil
-  pop = Array.new(num_bees){ create_random_bee(problem_size, search_space) }
-  max_gens.times do |gen|
-    pop.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
-    pop.sort!{|x,y| x[:fitness]<=>y[:fitness]}
-    best = pop.first if best.nil? or pop.first[:fitness] < best[:fitness]
-    next_generation = []
-    pop[0...num_sites].each_with_index do |site, i|
-      neighborhood_size = (i<elite_sites) ? e_bees : o_bees
-      next_generation << search_neighborhood(site, neighborhood_size, patch_size, search_space)
+def create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
+  vector = Array.new(search_space.length)
+  search_space.length.times do |i|
+    if rand() < consideration_rate
+      value = memory[rand(memory.size)][:vector][i]
+      value = value + range * random_variable(-1.0, 1.0) if rand() < adjust_rate
+      vector[i] = value
+    else
+      vector[i] = random_variable(search_space[i][0], search_space[i][1])
     end
-    (num_bees-num_sites).times do
-      next_generation << create_random_bee(problem_size, search_space)
-    end
-    pop = next_generation
-    patch_size = patch_size * 0.95
-    puts " > iteration=#{gen+1}, patch_size=#{patch_size}, fitness=#{best[:fitness]}"
+  end
+  return {:vector=>vector}
+end
+
+def search(search_space, max_iter, memory_size, consideration_rate, adjust_rate, range)
+  memory = initialize_harmony_memory(search_space, memory_size)
+  best = memory.first
+  max_iter.times do |iter|
+    harmony = create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
+    harmony[:fitness] = objective_function(harmony[:vector])
+    best = harmony if harmony[:fitness] < best[:fitness]
+    memory << harmony
+    memory.sort!{|x,y| x[:fitness]<=>y[:fitness]}
+    memory.delete_at(memory.length-1)
+    puts " > iteration=#{iter}, fitness=#{best[:fitness]}"
   end  
   return best
 end
@@ -67,14 +62,12 @@ end
 if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
-  max_gens = 500
-  num_bees = 45
-  num_sites = 3
-  elite_sites = 1
-  patch_size = 3.0
-  e_bees = 7
-  o_bees = 2
+  memory_size = 20
+  consideration_rate = 0.95
+  adjust_rate = 0.7
+  range = 0.05
+  max_iter = 500
 
-  best = search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
+  best = search(search_space, max_iter, memory_size, consideration_rate, adjust_rate, range)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
