@@ -37,28 +37,28 @@ end
 
 def mean_parameter(samples, i)
   sum = samples.inject(0.0) do |s,sample| 
-    s+sample[:vector][i]
+    s + sample[:vector][i]
   end 
-  return sum / samples.size.to_f
+  return (sum / samples.size.to_f)
 end
 
 def stdev_parameter(samples, mean, i)
   sum = samples.inject(0.0) do |s,sample| 
     s + (sample[:vector][i] - mean)**2.0
   end 
-  return Math.sqrt(sum/samples.size.to_f)
+  return Math.sqrt(sum / samples.size.to_f)
 end
 
-def update_distribution!(samples, means, stdevs)
+def update_distribution!(samples, alpha, means, stdevs)
   means.length.times do |i|
-    means[i] = mean_parameter(samples, i)
-    stdevs[i] = stdev_parameter(samples, means[i], i)
+    means[i] = alpha*means[i] + ((1.0-alpha)*mean_parameter(samples, i))
+    stdevs[i] = alpha*stdevs[i] + ((1.0-alpha)*stdev_parameter(samples, means[i], i))
   end
 end
 
-def search(search_space, max_iter, num_samples, num_update, alpha, sigma)
+def search(search_space, max_iter, num_samples, num_update, learning_rate)
   means = Array.new(search_space.length){|i| random_variable(search_space[i])}
-  stdevs = Array.new(search_space.length){|i| random_variable(search_space[i])}
+  stdevs = Array.new(search_space.length){|i| search_space[i][1]-search_space[i][0]}
   best = nil
   max_iter.times do |iter|
     samples = Array.new(num_samples) {generate_sample(search_space, means, stdevs)}
@@ -66,7 +66,7 @@ def search(search_space, max_iter, num_samples, num_update, alpha, sigma)
     samples.sort!{|x,y| x[:cost]<=>y[:cost]}
     best = samples.first if best.nil? or samples.first[:cost] < best[:cost]
     selected = samples[0...num_update]
-    update_distribution!(selected, means, stdevs)
+    update_distribution!(selected, learning_rate, means, stdevs)
     puts " > iteration=#{iter}, fitness=#{best[:cost]}"
   end
   return best
@@ -77,11 +77,10 @@ if __FILE__ == $0
   search_space = Array.new(problem_size) {|i| [-5, 5]}
   
   max_iter = 100
-  num_samples = 100
-  num_update = 10
-  alpha = 0.7
-  sigma = 0.1
+  num_samples = 50
+  num_update = 5
+  learning_rate = 0.7
   
-  best = search(search_space, max_iter, num_samples, num_update, alpha, sigma)
+  best = search(search_space, max_iter, num_samples, num_update, learning_rate)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end
