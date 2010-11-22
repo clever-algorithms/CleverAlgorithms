@@ -71,8 +71,18 @@ def reverse_network_edge!(network, no_edges)
   raise "error" if offset == -1  
 end
 
-def is_cycle?(network)
-  # TODO
+def dfs_has_double_visit?(network, node, visited=[])
+  return true if visited.include?{node}
+  visited << node
+  node[:edges].each do |i|
+    return true if dfs_has_double_visit?(network, network[i], visited)
+  end
+  return false
+end
+
+def has_cycle?(network)
+  network.each {|node| return true if dfs_has_double_visit?(node) }
+  return false
 end
 
 def assess_network(network)
@@ -133,7 +143,7 @@ if __FILE__ == $0
   max_iterations = 100
   population_size = 50
   selection_size = 30
-  max_non_improving = 50
+  max_non_improving = 10
   
   best = search(num_bits, max_iterations, population_size, selection_size, max_non_improving)
   puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
