@@ -26,7 +26,7 @@ def count_edges(network)
 end
 
 def copy_network(network)
-  return Array.new(num_bits){|i| {:edges=>Array.new(network[i][:edges])}}
+  return Array.new(network.length){|i| {:edges=>Array.new(network[i][:edges])}}
 end
 
 def add_network_edge!(network)
@@ -72,7 +72,7 @@ def reverse_network_edge!(network, no_edges)
 end
 
 def dfs_has_double_visit?(network, node, visited=[])
-  return true if visited.include?{node}
+  return true if visited.include?(node)
   visited << node
   node[:edges].each do |i|
     return true if dfs_has_double_visit?(network, network[i], visited)
@@ -81,35 +81,74 @@ def dfs_has_double_visit?(network, node, visited=[])
 end
 
 def has_cycle?(network)
-  network.each {|node| return true if dfs_has_double_visit?(node) }
+  network.each {|node| return true if dfs_has_double_visit?(network, node) }
   return false
 end
 
-def assess_network(network)
-  return -1 if is_cycle?(network)
-  
-  # TODO
+def conditional_probability(x, y, probs)
+  # independant? 
+  return (probs[x] * probs[y]) / probs[y]
 end
 
-def construct_nework(num_bits, max_non_improving)
+def conditional_entropy(index, parents, probs)
+  sum = 0.0  
+  parents.each do |parent|
+    jp = probs[index] * probs[parent]
+    cp = conditional_probability(index, parent, probs)
+    sum += jp * Math.log(cp)
+  end
+  return -sum
+end
+
+def bayesian_information_criterion(network, samples, probs)
+  n = samples.length.to_f
+  sum = 0.0
+  network.each_with_index do |node, index|
+    parents = []
+    network.each_with_index {|other,i| parents << i if other[:edges].include?(index) }
+    p_parents = parents.inject(0.0){|prod,j| prod * probs[parents[j]]}
+    h = conditional_entropy(index, parents, probs)
+    sum += -h * n - (2.0**p_parents) * (Math.log(n) / 2.0)
+  end
+  return sum
+end
+
+def assess_network(network, samples, probs)
+  # return -999999.99 if has_cycle?(network)
+  bic = bayesian_information_criterion(network, samples, probs)
+  puts " > network=#{bic}"
+  return bic
+end
+
+def construct_nework(num_bits, max_non_improving, samples, probs)
   network = Array.new(num_bits) { {:edges=>[]} }
-  network[:fitness] = assess_network(network)
+  f = assess_network(network, samples, probs)
   non_improving = 0
   begin
     no_edges = count_edges(network)
-    operation = (no_edges==0) ? 0 : rand(3)
+    # operation = (no_edges==0) ? 0 : rand(3)
+    operation = 0
     copy = copy_network(network)
     case operation
-      when 0 add_network_edge!(copy)
-      when 1 remove_network_edge!(copy, no_edges)
-      when 2 reverse_network_edge!(copy, no_edges)
+      when 0 
+        add_network_edge!(copy)
+      when 1 
+        remove_network_edge!(copy, no_edges)
+      when 2 
+        reverse_network_edge!(copy, no_edges)
       else raise "error"
     end
-    copy[:fitness] = assess_network(copy)
-    network,non_improving = copy,0 if copy[:fitness] <= network[:fitness]
-    non_improving += 1 if copy[:fitness] > network[:fitness]
-  end until non_improving >=  max_non_improving
-  network
+    cf = assess_network(copy, samples, probs)
+    if cf <= f
+      network, f = copy, cf
+      non_improving = 0
+    else
+      non_improving += 1
+    end
+  end until non_improving >= max_non_improving and count_edges(network) > 0
+  puts "edges=#{count_edges(network)}"
+  exit
+  return network
 end
 
 def binary_tournament(population)
@@ -117,8 +156,16 @@ def binary_tournament(population)
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
 end
 
-def sample_from_network(network)
-  # TODO
+def sample_from_network(network, prob)
+  vector = []
+  prob.length.times do |index|
+    parents = []
+    network.each_with_index {|other,i| parents << i if other[:edges].include?(index) }
+    s = parents.inject(0.0){|s,i| s+conditional_probability(index, i, probs)}
+    puts s
+  end
+  
+  return {:vector=>vector}
 end
 
 def search(num_bits, max_iterations, pop_size, selection_size, max_non_improving)
@@ -127,8 +174,9 @@ def search(num_bits, max_iterations, pop_size, selection_size, max_non_improving
   best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
   max_iterations.times do |iter|
     selected = Array.new(selection_size) { binary_tournament(pop) }
-    network = construct_nework(num_bits, max_non_improving)
-    samples = Array.new(pop_size) { sample_from_network(network) }
+    probs = calculate_bit_probabilities(num_bits, selected)
+    network = construct_nework(num_bits, max_non_improving, selected, probs)
+    samples = Array.new(pop_size) { sample_from_network(network, probs) }
     samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
     samples.sort{|x,y| y[:fitness] <=> x[:fitness]}
     best = samples.first if samples.first[:fitness] > best[:fitness]
