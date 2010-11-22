@@ -151,8 +151,9 @@ Algorithm~\ref{alg:umda} provides a pseudo-code listing of the Univariate Margin
 		\For{$i$ \KwTo \PopulationSize} {
 			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Vector}\;
 		}
-		\EvaluatePopulation{\Population}\;
-		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\EvaluatePopulation{\OffSpring}\;
+		\Best $\leftarrow$ \GetBestSolution{\OffSpring}\;
+		\Population $\leftarrow$ \OffSpring\;
 	}
 	\Return{\Best}\;
 	
