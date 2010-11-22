@@ -112,26 +112,25 @@ Algorithm~\ref{alg:boa} provides a pseudo-code listing of theBayesian Optimizati
 
 \begin{algorithm}[htp]
 	\SetLine  
-
 	% data
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{NumBits}{$Bits_{num}$}
 	\SetKwData{PopulationSize}{$Population_{size}$}
 	\SetKwData{SelectionSize}{$Selection_{size}$}
-
-	\SetKwData{Vector}{$V$}
+	% data
+	\SetKwData{Model}{Model}
 	\SetKwData{Selected}{Selected}
 	\SetKwData{Population}{Population}
 	\SetKwData{OffSpring}{OffSpring}
-
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
 	\SetKwFunction{GetBestSolution}{GetBestSolution} 
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{SelectFitSolutions}{SelectFitSolutions}
-	\SetKwFunction{CalculateFrequencyOfComponents}{CalculateFrequencyOfComponents}
+	\SetKwFunction{ConstructBayesianNetwork}{ConstructBayesianNetwork}
 	\SetKwFunction{ProbabilisticallyConstructSolution}{ProbabilisticallyConstructSolution}
+	\SetKwFunction{Combine}{Combine}
   
 	% I/O
 	\KwIn{\NumBits, \PopulationSize, \SelectionSize}
@@ -144,13 +143,14 @@ Algorithm~\ref{alg:boa} provides a pseudo-code listing of theBayesian Optimizati
 	
 	\While{$\neg$\StopCondition{}} {
 		\Selected $\leftarrow$ \SelectFitSolutions{\Population}\;
-		\Vector $\leftarrow$ \CalculateFrequencyOfComponents{\Selected}\;
+		\Model $\leftarrow$ \ConstructBayesianNetwork{\Selected}\;
 		\OffSpring $\leftarrow$ $0$\;
 		\For{$i$ \KwTo \PopulationSize} {
-			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Vector}\;
+			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Model}\;
 		}
-		\EvaluatePopulation{\Population}\;
-		\Best $\leftarrow$ \GetBestSolution{\Population}\;
+		\EvaluatePopulation{\OffSpring}\;
+		\Best $\leftarrow$ \GetBestSolution{\OffSpring}\;
+		\Population $\leftarrow$ \Combine{\Population, \OffSpring}\;
 	}
 	\Return{\Best}\;
 	
@@ -197,17 +197,17 @@ The algorithm...
 % 
 \subsection{Primary Sources}
 % seminal
-The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cantu-Paz in 1999 \cite{Pelikan1999a} based on early work \cite{Pelikan1998a}. 
+The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cantu-Paz in 1999 \cite{Pelikan1999a} based on early work \cite{Pelikan2002}. 
 % early
+Followed-up \cite{Pelikan2001}
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-todo
 % books
-
+Pelikan published a book that focused on the technique, walking through the development of probabilistic algorithm inspired by evolutionary computation, a detailed look at the Bayesian Optimization Algorithm (Chapter~3), the Hierarchic extension to Hierarchical Bayesian Optimization Algorithm: Toward a New Generation of Evolutionary Algorithms and demonstration studies of the approach on test problems \cite{Pelikan2005}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
