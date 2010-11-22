@@ -82,6 +82,7 @@ It is similar to other Stochastic Optimization and algorithms such as Simulated 
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 The Cross-Entropy Method does not have an inspiration. It was developed as an efficient estimation technique for rare-event probabilities and was adapted for use in optimization.
+The name from the technique comes from the cross-entropy method for measuring the amount of information (bits) needed to identify an event from a set of probabilities.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -116,7 +117,8 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The Cross-Entropy Method was adapted for combinatorial optimization problems, although has been applied to continuous function optimization as well as noisy simulation problems.
+	\item 
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -126,10 +128,10 @@ todo
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{cross_entropy_method} provides an example of the Cross-Entropy Method algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 
 % algorithm
-The algorithm...
+The algorithm was implemented based on a description of the Cross-Entropy Method algorithm for continuous function optimization by Rubinstein and Kroese in Chapter 5 and Appendix A of their book on the method \cite{Rubinstein2004}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Cross-Entropy Method algorithm in the Ruby Programming Language, label=cross_entropy_method]{../../src/algorithms/probabilistic/cross_entropy_method.rb}
@@ -157,7 +159,7 @@ The Cross-Entropy Method was proposed by Rubinstein in 1997 \cite{Rubinstein1997
 % reviews
 De Boer, et al. provide a detailed presentation of Cross-Entropy method including its application in rate event simulation, its adaptation to combinatorial optimization, and example applications to the max-cut, traveling salesman problem, and a clustering numeric optimization example \cite{DeBoer2005}.
 % books
-Rubinstein and Kroese provide a thorough presentation of the approach in their book \cite{Rubinstein2004}. 
+Rubinstein and Kroese provide a thorough presentation of the approach in their book \cite{Rubinstein2004}, where the main content of the previously mentioned tutorial appears in Chapter~2. 
 
 
 % 
