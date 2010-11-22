@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101122b}
+\newcommand{\myreportdate}{20101123}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -110,6 +110,8 @@ This is achieved by repeating the process of creating and sampling from a Bayesi
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:boa} provides a pseudo-code listing of the Bayesian Optimization Algorithm for minimizing a cost function.
+% network construction
+The Bayesian network is constructed each iteration using a greedy algorithm. The network is assessed based on its fit of the information in the population of candidate solutions using either a Bayesian Dirichlet Metric (BD) \cite{Pelikan1999a}, or a Bayesian Information Criterion (BIC) \cite{Pelikan2005} (Chapter~3).
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -167,10 +169,10 @@ Algorithm~\ref{alg:boa} provides a pseudo-code listing of the Bayesian Optimizat
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item The Bayesian Optimization algorithm was designed and investigated on binary string-base problems, most commonly representing binary string and continuous function optimization problems.
+	\item The Bayesian Optimization algorithm was designed and investigated on binary string-base problems, most commonly representing binary function optimization problems.
 	\item Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionally, past networks may be used as the basis for the process that are in turn verified.
-	\item A greedy hill-climbing algorithm is used to each algorithm iteration optimize a bayesian network to represent a population of candidate solutions.
-	\item The fitness of constructed bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or the Minimum Description length method called the Bayesian Information Criterion (BIC).
+	\item A greedy hill-climbing algorithm is used to each algorithm iteration optimize a Bayesian network to represent a population of candidate solutions.
+	\item The fitness of constructed bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or a Minimum Description length method called the Bayesian Information Criterion (BIC).
 	
 \end{itemize}
 
@@ -211,13 +213,14 @@ Pelikan, Goldberg, and Cantu-Paz also described the approach applied to decelpti
 % 
 \subsection{Learn More}
 % hBOA
-Pelikan and Goldberg described an extension to the approach called the Hierarchical Bayesian Optimization Algorithm (hBOA) \cite{Pelikan2000, Pelikan2001b}. The differences in the hBOA algorithm are that it replaces the decision tables (used to store the conditional probabilities) with decision graphs as well as a niching method called Restricted Tournament Replacement to maintain diversity in the selected set of candidate solutions used to construct the network models.
+Pelikan and Goldberg described an extension to the approach called the Hierarchical Bayesian Optimization Algorithm (hBOA) \cite{Pelikan2000, Pelikan2001b}. The differences in the hBOA algorithm are that it replaces the decision tables (used to store the probabilities) with decision graphs and used a niching method called Restricted Tournament Replacement to maintain diversity in the selected set of candidate solutions used to construct the network models.
 % thesis
 Pelikan's work on BOA culminated in his PhD thesis that provides a detailed treatment of the approach, its configuration and application \cite{Pelikan2002a}.
 % iBOA
 Pelikan, Sastry, and Goldberg proposed the Incremental Bayesian Optimization Algorithm (iBOA) extension of the approach that removes the population and adds incremental updates to the Bayesian network \cite{Pelikan2008}.
+
 % books
-Pelikan published a book that focused on the technique, walking through the development of probabilistic algorithm inspired by evolutionary computation, a detailed look at the Bayesian Optimization Algorithm (Chapter~3), the Hierarchic extension to Hierarchical Bayesian Optimization Algorithm: Toward a New Generation of Evolutionary Algorithms and demonstration studies of the approach on test problems \cite{Pelikan2005}.
+Pelikan published a book that focused on the technique, walking through the development of probabilistic algorithms inspired by evolutionary computation, a detailed look at the Bayesian Optimization Algorithm (Chapter~3), the hierarchic extension to Hierarchical Bayesian Optimization Algorithm and demonstration studies of the approach on test problems \cite{Pelikan2005}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
@@ -226,6 +229,8 @@ Pelikan published a book that focused on the technique, walking through the deve
 \label{sec:conclusions}
 % report
 This report described the Bayesian Optimization Algorithm using the standardized algorithm description template.
+% implementation
+An implementation of the algorithm was adapted although could not be resolved within the time constraints. It is expected that an implementation can be provided with further study of the seminal references, the book, and the sample C++ code provided by Pelikan.
 
 % 
 % Contribute

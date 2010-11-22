@@ -4,6 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+# CURRENTLY, THIS IMPLEMENTATION IS NOT COMPLETE
+
 def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
