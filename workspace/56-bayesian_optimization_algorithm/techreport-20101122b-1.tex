@@ -167,7 +167,11 @@ Algorithm~\ref{alg:boa} provides a pseudo-code listing of theBayesian Optimizati
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The Bayesian Optimization algorithm was designed and investigated on binary string-base problems, most commonly representing binary string and continuous function optimization problems.
+	\item Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionaly, past networks may be used as the basis for the process that are in turn verified.
+	\item A greedy hill-climbing algorithm is used to each algorithm iteration optimize a bayesian network to represent a population of candidate solutions.
+	\item The fitness of constructed bayesian networks may be assessed using...
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -180,7 +184,7 @@ Listing~\ref{boa} provides an example of the Bayesian Optimization Algorithm imp
 The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 
 % algorithm
-The algorithm...
+The algorithm is an implementation based on the description of the technique by Pelikan in Chapter~3 of his book \cite{Pelikan2005a}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Bayesian Optimization Algorithm in the Ruby Programming Language, label=boa]{../../src/algorithms/probabilistic/boa.rb}
