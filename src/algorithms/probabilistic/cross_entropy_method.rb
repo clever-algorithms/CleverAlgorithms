@@ -74,8 +74,7 @@ end
 
 if __FILE__ == $0
   problem_size = 3
-  search_space = Array.new(problem_size) {|i| [-5, 5]}
-  
+  search_space = Array.new(problem_size) {|i| [-5, 5]}  
   max_iter = 100
   num_samples = 50
   num_update = 5

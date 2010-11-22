@@ -73,7 +73,7 @@ Cross-Entropy Method, Cross Entropy Method, CEM
 % To what fields of study does a technique belong?
 The Cross-Entropy Method is a probabilistic optimization belonging to the field of Stochastic Optimization.
 % What are the closely related approaches to a technique?
-It is similar to other Stochastic Optimization and algorithms such as Simulated Annealing, and probabilistic optimization methods such as Estimation of Distribution Algorithms such as the Probabilistic Incremental Learning Algorithm.
+It is similar to other Stochastic Optimization and algorithms such as Simulated Annealing, and to Estimation of Distribution Algorithms such as the Probabilistic Incremental Learning Algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -82,7 +82,7 @@ It is similar to other Stochastic Optimization and algorithms such as Simulated 
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 The Cross-Entropy Method does not have an inspiration. It was developed as an efficient estimation technique for rare-event probabilities in discrete event simulation systems and was adapted for use in optimization.
-The name from the technique comes from the Kullback-Leibler cross-entropy method for measuring the amount of information (bits) needed to identify an event from a set of probabilities.
+The name of the technique comes from the Kullback-Leibler cross-entropy method for measuring the amount of information (bits) needed to identify an event from a set of probabilities.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -101,7 +101,7 @@ The name from the technique comes from the Kullback-Leibler cross-entropy method
 % What is the information processing objective of a technique?
 The information processing strategy of the algorithm is to sample the problem space and approximate the distribution of good solutions.
 % What is a techniques plan of action?
-This is achieved by assuming a distribution of the problem space (such as Gaussian), sampling the problem domain by generating candidate solutions using the distribution, and updating the distribution based on the better candidate solutions discovered. As the algorithm progresses, the distribution becomes more refined until it focuses on the area or scope of optimal solutions in the domain.
+This is achieved by assuming a distribution of the problem space (such as Gaussian), sampling the problem domain by generating candidate solutions using the distribution, and updating the distribution based on the better candidate solutions discovered. Samples are constructed step-wise (one component at a time) based on the summarized distribution of good solutions. As the algorithm progresses, the distribution becomes more refined until it focuses on the area or scope of optimal solutions in the domain.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -210,9 +210,9 @@ The algorithm was implemented based on a description of the Cross-Entropy Method
 % 
 \subsection{Primary Sources}
 % seminal
-The Cross-Entropy method was proposed by Rubinstein in 1997 \cite{Rubinstein1997} for use in optimizing discrete event simulation systems. It was later generalized by Rubinsteinand proposed as an optimization method for combinatorial function optimization problems in 1999 \cite{Rubinstein1999}.
+The Cross-Entropy method was proposed by Rubinstein in 1997 \cite{Rubinstein1997} for use in optimizing discrete event simulation systems. It was later generalized by Rubinstein and proposed as an optimization method for combinatorial function optimization in 1999 \cite{Rubinstein1999}.
 % early
-This work was further elaborated by Rubinstein providing a detailed treatment on the use of the Cross-Entropy method on combinatorial optimization problems \cite{Rubinstein2001}.
+This work was further elaborated by Rubinstein providing a detailed treatment on the use of the Cross-Entropy method for combinatorial optimization \cite{Rubinstein2001}.
 
 
 
@@ -221,9 +221,9 @@ This work was further elaborated by Rubinstein providing a detailed treatment on
 % 
 \subsection{Learn More}
 % reviews
-De Boer, et al. provide a detailed presentation of Cross-Entropy method including its application in rate event simulation, its adaptation to combinatorial optimization, and example applications to the max-cut, traveling salesman problem, and a clustering numeric optimization example \cite{DeBoer2005}.
+De Boer, et al. provide a detailed presentation of Cross-Entropy method including its application in rare event simulation, its adaptation to combinatorial optimization, and example applications to the max-cut, traveling salesman problem, and a clustering numeric optimization example \cite{DeBoer2005}.
 % books
-Rubinstein and Kroese provide a thorough presentation of the approach in their book \cite{Rubinstein2004}, where the main content of the previously mentioned tutorial appears in Chapter~2. 
+Rubinstein and Kroese provide a thorough presentation of the approach in their book, summarizing the relevant theory and the state of the art \cite{Rubinstein2004}. 
 
 
 % 
