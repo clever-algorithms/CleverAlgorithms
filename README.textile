@@ -10,7 +10,9 @@ This is a repository for the Clever Algorithms project for hosting, versioning, 
 
 h2. Outcomes
 
-This section contains a listing of outcomes and deliverables during the project. *Please refer to the book for the final content, all technical reports should be considered preliminary*. 
+This section contains a listing of outcomes and deliverables during the project. 
+
+*Please refer to the book for the final content, all technical reports should be considered preliminary*. 
 
 h3. Technical Reports
 
@@ -83,6 +85,8 @@ h4. Neural Algorithms
 * Jason Brownlee. "Perceptron":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116b-1.pdf. Technical Report CA-TR-20101116b-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Back-propagation Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101117-1.pdf. Technical Report CA-TR-20101117-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Learning Vector Quantization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101118-1.pdf. Technical Report CA-TR-20101118-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Hopfield Network":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101124-1.pdf. Technical Report CA-TR-20101124-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+
 
 h4. Probabilistic Algorithms
 
