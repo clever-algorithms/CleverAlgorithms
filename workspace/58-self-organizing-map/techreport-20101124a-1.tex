@@ -186,7 +186,7 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
 	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
 	\item A rectangular 2D topology is typically used for a SOM, although toroidal and sphere topologies can be used as can higher-dimensions. 
-	
+	\item The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -217,7 +217,7 @@ The algorithm...
 % 
 \subsection{Primary Sources}
 % seminal
-todo
+The Self-Organizing Map was proposed by Kohonen in 1982 \cite{Kohonen1982}.
 % early
 
 % 
