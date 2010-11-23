@@ -73,14 +73,15 @@ def to_binary(vector)
   return Array.new(vector.length){|i| ((vector[i]==-1) ? 0 : 1)}
 end
 
-def print_patterns(expected, actual)
-  a, e = to_binary(expected), to_binary(actual)
+def print_patterns(provided, expected, actual)
+  p, e, a = to_binary(provided), to_binary(expected), to_binary(actual)
+  p1, p2, p3 = p[0..2].join(', '), p[3..5].join(', '), p[6..8].join(', ')
   e1, e2, e3 = e[0..2].join(', '), e[3..5].join(', '), e[6..8].join(', ')
   a1, a2, a3 = a[0..2].join(', '), a[3..5].join(', '), a[6..8].join(', ')
-  puts "Expected     Got"
-  puts "#{e1}      #{a1}"
-  puts "#{e2}      #{a2}"
-  puts "#{e3}      #{a3}"
+  puts "Provided   Expected     Got"
+  puts "#{p1}     #{e1}      #{a1}"
+  puts "#{p2}     #{e2}      #{a2}"
+  puts "#{p3}     #{e3}      #{a3}"
 end
 
 def calculate_error(expected, actual)
@@ -91,13 +92,26 @@ def calculate_error(expected, actual)
   return sum
 end
 
+def perturb_pattern(vector)
+  perturbed = Array.new(vector.length)
+  vector.each_with_index do |v,i|
+    if rand() < (1.0/vector.length.to_f)*0.5
+      perturbed[i] = ((vector[i]==1) ? -1 : 1)
+    else
+      perturbed[i] = vector[i]
+    end
+  end
+  return perturbed
+end
+
 def test_network(neurons, patters)
   error = 0.0
   patters.each do |pattern|
     vector = pattern.flatten
-    output = get_output(neurons, vector)
+    perturbed = perturb_pattern(vector)
+    output = get_output(neurons, perturbed)
     error += calculate_error(vector, output)
-    print_patterns(vector, output)    
+    print_patterns(perturbed, vector, output)
   end
   error /= patters.length.to_f
   puts "Final Result: avg pattern error=#{error}"

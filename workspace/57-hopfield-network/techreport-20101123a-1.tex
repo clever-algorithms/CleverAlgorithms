@@ -165,7 +165,7 @@ all neurons are input and output
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item The transfer function for turning the activation of a neuron into an output is typically a step function $f(a) \in \{-1,1\}$ or $f(a) \in \{0,1\}$.
+	\item The transfer function for turning the activation of a neuron into an output is typically a step function $f(a) \in \{-1,1\}$ (preferred), or more traditionally $f(a) \in \{0,1\}$.
 	\item The input vectors are typically normalized to boolean values $x \in [0,1]$.
 	\item The network can be updated asynchronously (where a random node is selected and updated), or synchronously (where the updates for all nodes are calculated before being applied).
 \end{itemize}
@@ -177,7 +177,7 @@ all neurons are input and output
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{hopfield} provides an example of the Hopfield Network algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem...
+The problem is an instance of a recall problem where 
 
 % algorithm
 The algorithm...
