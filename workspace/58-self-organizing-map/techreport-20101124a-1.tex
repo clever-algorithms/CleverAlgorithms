@@ -64,7 +64,7 @@ This report describes the Self-Organizing Map using the standardized algorithm d
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Self-Organizing Map, SOM, Kohonen Map, Kohonen Network
+Self-Organizing Map, SOM, Self-Organizing Feature Map, SOFM, Kohonen Map, Kohonen Network
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
@@ -75,7 +75,7 @@ The Self-Organizing Map algorithm belongs to the field of Artificial Neural Netw
 % What are the closely related approaches to a technique?
 The Self-Organizing Map is an unsupervised neural network that uses a competitive (winner-take-all) learning strategy.
 It is related to other unsupervised neural networks such as the Adaptive Resonance Theory (ART) method.
-It is related to other competitive learning neural networks such as the the Learning Vector Quantization algorithm that is a similar algorithm for classification without connections between the neurons. 
+It is related to other competitive learning neural networks such as the the Neural Gas Algorithm, and the Learning Vector Quantization algorithm that is a similar algorithm for classification without connections between the neurons. 
 Additionally, SOM is a baseline technique that has inspired many variations and extensions, not limited to the Adaptive-Subspace Self-Organizing Map (ASSOM).
 
 % Inspiration: Motivating system
@@ -184,6 +184,9 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\item The learning rate is typically linearly decayed over the training period from an initial value to close to zero.
 	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
 	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
+	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
+	\item A rectangular 2D topology is typically used for a SOM, although toroidal and sphere topologies can be used as can higher-dimensions. 
+	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
