@@ -73,7 +73,9 @@ end
 
 def print_patterns(e, a)
   e1, e2, e3 = e[0..2].join(', '), e[3..5].join(', '), e[6..8].join(', ')
-  a1, a2, a3 = a[0..2].join(', '), a[3..5].join(', '), a[6..8].join(', ')
+  a1, a2, a3 = a[0..2], a[3..5], a[6..8]
+  a1, a2, a3 = a1.collect{|x| x.to_i}, a2.collect{|x| x.to_i}, a3.collect{|x| x.to_i}
+  a1, a2, a3 = a1.join(', '), a2.join(', '), a3.join(', ')  
   puts "Expected     Got"
   puts "#{e1}      #{a1}"
   puts "#{e2}      #{a2}"
