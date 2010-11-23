@@ -92,7 +92,9 @@ The Hopfield Network algorithm is inspired by the associated memory properties o
 \label{sec:metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-todo
+
+sliding down an energy surface - energy is a metaphor from biological system
+
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -103,6 +105,8 @@ The information processing objective of the system is to associate the component
 % What is a techniques plan of action?
 todo
 
+all about storing patterns and returning them given some cues 
+
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
@@ -112,6 +116,8 @@ todo
 The Hopfield Network is comprised of a graphic data structure with weighted edges and separate procedures for training and applying the structure. 
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:train} provides a pseudo-code algorithm for training the Hopfield Network.
+
+all neurons are input and output
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -203,6 +209,7 @@ An innovative work by Hopfield and Tank considered the use of the Hopfield netwo
 % 
 \subsection{Learn More}
 % reviews
+Popovici and Boncut provide a summary of the Hopfield Network algorithm with worked examples \cite{Popovici2005}.
 Overviews of the Hopfield Network is provided in most good books on Artificial Neural Networks, such as ``The Hopfield Model'' \cite{Rojas1996}.
 % books
 Hertz, Krogh, and Palmer present an in depth study of the the field of Artificial Neural Networks with a detailed treatment of the Hopfield network from a statistical mechanics perspective \cite{Hertz1991}.
