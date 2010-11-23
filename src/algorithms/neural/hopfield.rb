@@ -22,15 +22,6 @@ def create_neuron(num_inputs)
   return neuron
 end
 
-def calculate_activation(weights, vector)
-  sum = 0.0
-  vector.each_with_index do |input, i|
-    sum += weights[i] * input.to_f
-  end
-  sum += weights[vector.length] * 1.0
-  return sum
-end
-
 def transfer(activation)
   return (activation >= 0) ? 1 : -1
 end
@@ -39,7 +30,7 @@ def propagate_was_change?(neurons, vector)
   i = rand(neurons.length)
   activation = 0
   neurons.each_with_index do |other, j|
-    activation += other[:weight][i]*neurons[i][:output]
+    activation += other[:weight][i]*other[:output] if i!=j
   end
   output = transfer(activation)
   change = (output==neurons[i][:output])
@@ -117,7 +108,7 @@ def test_network(neurons, patters)
   puts "Final Result: avg pattern error=#{error}"
 end
 
-def run(patters, num_inputs, iterations)
+def run(patters, num_inputs)
   neurons = Array.new(num_inputs) { create_neuron(num_inputs) }
   train_network(neurons, patters)
   test_network(neurons, patters)
@@ -130,8 +121,6 @@ if __FILE__ == $0
   p2 = [[1,-1,-1],[1,-1,-1],[1,1,1]] # L
   p3 = [[-1,1,-1],[-1,1,-1],[-1,1,-1]] # I
   patters = [p1, p2, p3]  
-  # algorithm parameters
-  iterations = 60
   # execute the algorithm
-  run(patters, num_inputs, iterations)
+  run(patters, num_inputs)
 end
