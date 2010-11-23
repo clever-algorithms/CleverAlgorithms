@@ -109,7 +109,48 @@ todo
 \label{sec:procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-todo
+The Hopfield Network is comprised of a graphic data structure with weighted edges and separate procedures for training and applying the structure. 
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:train} provides a pseudo-code algorithm for training the Hopfield Network.
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}$}
+	\SetKwData{Weights}{Weights}
+	\SetKwData{InputPatterns}{InputPatterns}
+	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{Activation}{$Activation_i$}
+	\SetKwData{Output}{$Output_i$}
+
+	% functions
+	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
+	\SetKwFunction{ActivateNetwork}{ActivateNetwork}
+	\SetKwFunction{TransferActivation}{TransferActivation}
+	\SetKwFunction{UpdateWeights}{UpdateWeights}
+	
+	% I/O
+	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \LearningRate}		
+	\KwOut{\Weights}
+  
+	% Algorithm
+	\Weights $\leftarrow$ \InitializeWeights{\ProblemSize}\;
+	% loop
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
+		\Activation $\leftarrow$ \ActivateNetwork{\Pattern, \Weights}\;
+		\Output $\leftarrow$ \TransferActivation{\Activation}\;
+		\UpdateWeights{\Pattern, \Output, \LearningRate}\;
+	}
+	\Return{\Weights}\;
+	% end
+	\caption{Pseudo Code for the Hopfield Network algorithm.}
+	\label{alg:train}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
@@ -118,7 +159,9 @@ todo
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item todo
+	\item The transfer function for turning the activation of a neuron into an output is typically a step function $f(a) \in \{-1,1\}$ or $f(a) \in \{0,1\}$.
+	\item The input vectors are typically normalized to boolean values $x \in [0,1]$.
+	\item The network can be updated asynchronously (where a random node is selected and updated), or synchronously (where the updates for all nodes are calculated before being applied).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
