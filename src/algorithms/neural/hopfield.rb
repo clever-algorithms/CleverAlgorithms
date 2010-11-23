@@ -10,41 +10,28 @@ def random_vector(minmax)
   end
 end
 
-def normalize_class_index(class_no, domain)
-  return (class_no.to_f/(domain.length-1).to_f)
-end
-
-def denormalize_class_index(normalized_class, domain)
-  return (normalized_class*(domain.length-1).to_f).round.to_i
-end
-
-def generate_random_pattern(domain)  
-  classes = domain.keys
-  selected_class = rand(classes.length)
-  pattern = {}
-  pattern[:class_number] = selected_class
-  pattern[:class_label] = classes[selected_class]
-  pattern[:class_norm] = normalize_class_index(selected_class, domain)
-  pattern[:vector] = random_vector(domain[classes[selected_class]])
-  return pattern
-end
-
 def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[0,0.5]}
+  minmax = Array.new(problem_size + 1) {[-0.5,0.5]}
   return random_vector(minmax)
 end
 
-def update_weights(problem_size, weights, input, out_expected, output_actual, learning_rate)
-  problem_size.times do |i|
-    weights[i] += learning_rate * (out_expected - output_actual) * input[i]
-  end
-  weights[problem_size] += learning_rate * (out_expected - output_actual) * 1.0
+def create_neuron(num_inputs)
+  neuron = {}
+  neuron[:weights] = initialize_weights(num_inputs)
+  return neuron
 end
+
+# def update_weights(problem_size, weights, input, out_expected, output_actual, learning_rate)
+#   problem_size.times do |i|
+#     weights[i] += learning_rate * (out_expected - output_actual) * input[i]
+#   end
+#   weights[problem_size] += learning_rate * (out_expected - output_actual) * 1.0
+# end
 
 def calculate_activation(weights, vector)
   sum = 0.0
   vector.each_with_index do |input, i|
-    sum += weights[i] * input
+    sum += weights[i] * input.to_f
   end
   sum += weights[vector.length] * 1.0
   return sum
@@ -54,43 +41,73 @@ def transfer(activation)
   return (activation >= 0) ? 1.0 : 0.0
 end
 
-def get_output(weights, pattern, domain)
-  activation = calculate_activation(weights, pattern[:vector])
-  out_actual = transfer(activation)
-  out_class = domain.keys[denormalize_class_index(out_actual, domain)]
-  return [out_actual, out_class]
+def get_output(neurons, pattern)
+  output = Array.new(neurons.length)
+  neurons.each_with_index do |neuron, i|
+    activation = calculate_activation(neuron[:weights], pattern)
+    output[i] = transfer(activation)
+  end
+  return output
 end
 
-def train_weights(weights, domain, problem_size, iterations, lrate)
+def calculate_error(expected, actual)
+  sum = 0
+  expected.each_with_index do |v, i|
+    sum += (expected[i] - actual[i]).abs
+  end
+  return sum
+end
+
+def train_network(neurons, patters, iterations, lrate)
   iterations.times do |epoch|
-    pattern = generate_random_pattern(domain)
-    out_v, out_c = get_output(weights, pattern, domain)    
-    puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"    
-    update_weights(problem_size, weights, pattern[:vector], pattern[:class_norm], out_v, lrate)
-  end
+    error = 0.0
+    patters.each do |pattern|
+      vector = pattern.flatten
+      output = get_output(neurons, vector)
+      error += calculate_error(vector, output)
+    end
+    error /= patters.length.to_f
+    puts "> epoch=#{epoch} error=#{error}"
+  end  
 end
 
-def test_weights(weights, domain)
-  correct = 0
-  100.times do 
-    pattern = generate_random_pattern(domain)
-    out_v, out_c = get_output(weights, pattern, domain)
-    correct += 1 if out_c == pattern[:class_label]
-  end
-  puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
+def print_patterns(e, a)
+  e1, e2, e3 = e[0..2].join(', '), e[3..5].join(', '), e[6..8].join(', ')
+  a1, a2, a3 = a[0..2].join(', '), a[3..5].join(', '), a[6..8].join(', ')
+  puts "Expected     Got"
+  puts "#{e1}      #{a1}"
+  puts "#{e2}      #{a2}"
+  puts "#{e3}      #{a3}"
 end
 
-def run(domain, problem_size, iterations, learning_rate)  
-  weights = initialize_weights(problem_size)
-  train_weights(weights, domain, problem_size, iterations, learning_rate)
-  test_weights(weights, domain)
+def test_network(neurons, patters)
+  error = 0.0
+  patters.each do |pattern|
+    vector = pattern.flatten
+    output = get_output(neurons, vector)
+    error += calculate_error(vector, output)
+    print_patterns(vector, output)    
+  end
+  error /= patters.length.to_f
+  puts "Final Result: avg pattern error=#{error}"
+end
+
+def run(patters, num_inputs, iterations, learning_rate)
+  neurons = Array.new(num_inputs) { create_neuron(num_inputs) }
+  train_network(neurons, patters, iterations, learning_rate)
+  test_network(neurons, patters)
 end
 
 if __FILE__ == $0
-  problem_size = 2
-  domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+  # problem definition
+  num_inputs = 9
+  p1 = [[1,1,1],[1,0,0],[1,1,1]] # C
+  p2 = [[1,0,0],[1,0,0],[1,1,1]] # L
+  p3 = [[0,1,0],[0,1,0],[0,1,0]] # I
+  patters = [p1, p2, p3]  
+  # algorithm parameters
   learning_rate = 0.1
   iterations = 60
-
-  run(domain, problem_size, iterations, learning_rate)
+  # execute the algorithm
+  run(patters, num_inputs, iterations, learning_rate)
 end
