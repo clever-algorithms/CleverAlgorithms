@@ -1,4 +1,4 @@
-% Learning Vector Quantization
+% Self-Organizing Map
 
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -19,12 +19,12 @@
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
-\newcommand{\myreporttitle}{Learning Vector Quantization}
+\newcommand{\myreporttitle}{Self-Organizing Map}
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{20101118}
+\newcommand{\myreportdate}{2010MMDD}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -42,10 +42,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-This report describes the Learning Vector Quantization algorithm using the standardized template.
+This report describes the Self-Organizing Map using the standardized algorithm description template.
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Learning, Vector, Quantization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Description, Self-Organizing, Map}}
 \end{description} 
 
 \section{Introduction} 
@@ -55,7 +55,7 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 % this report
-This report describes the Learning Vector Quantization algorithm using the standardized template.
+This report describes the Self-Organizing Map using the standardized algorithm description template.
 
 % Name
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
@@ -64,18 +64,19 @@ This report describes the Learning Vector Quantization algorithm using the stand
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
 % The heading and alternate headings for the algorithm description.
-Learning Vector Quantization, LVQ
+Self-Organizing Map, SOM, Kohonen Map, Kohonen Network
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \section{Taxonomy}
 \label{sec:taxonomy}
-The Learning Vector Quantization algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly to the field of Computational Intelligence.  
+% To what fields of study does a technique belong?
+The Self-Organizing Map algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly to the field of Computational Intelligence.  
 % What are the closely related approaches to a technique?
-The Learning Vector Quantization is an supervised neural network that uses a competitive (winner-take-all) learning strategy.
-It is related to other supervised neural networks such as the Perceptron and the Back-propagation algorithm.
-It is related to other competitive learning neural networks such as the the Self-Organizing Map algorithm that is a similar algorithm for unsupervised learning with the addition of a connections between the neurons.
-Additionally, LVQ is a baseline technique that was defined with a few variants LVQ1, LVQ2, LVQ2.1, LVQ3, OLVQ1, and OLVQ3 as well as many third-party extensions and refinements too numerous to list.
+The Self-Organizing Map is an unsupervised neural network that uses a competitive (winner-take-all) learning strategy.
+It is related to other unsupervised neural networks such as the Adaptive Resonance Theory (ART) method.
+It is related to other competitive learning neural networks such as the the Learning Vector Quantization algorithm that is a similar algorithm for classification without connections between the neurons. 
+Additionally, SOM is a baseline technique that has inspired many variations and extensions, not limited to the Adaptive-Subspace Self-Organizing Map (ASSOM).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -83,9 +84,8 @@ Additionally, LVQ is a baseline technique that was defined with a few variants L
 \section{Inspiration}
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
-The Learning Vector Quantization algorithm is related to the Self-Organizing Map which is in turn inspired by the self-organizing capabilities of neurons in the visual cortex. 
 % Which features of the motivating system are relevant to a technique?
-
+todo
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -105,15 +105,14 @@ The information processing objective of the algorithm is to prepare a set of cod
 % What is a techniques plan of action?
 An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected and adjusted to be closer to the input vector, and in some cases, further away from the winner for runner's up. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset.
 
+
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \section{Procedure}
 \label{sec:procedure}
 % What are the data structures and representations used in a technique?
-Vector Quantization is a technique from signal processing density functions are approximated with prototype vectors for applications such as compression. Learning Vector Quantization is similar in principle, although the prototype vectors are learned through a supervised winner-take-all method.
-
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Learning Vector Quantization method. 
+Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Self-Organizing Map method. 
 Codebook vectors are initialized to small floating point values, or sampled from an available dataset. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}
@@ -166,7 +165,7 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	}
 	\Return{\CodebookVectors}\;
 	% end
-	\caption{Pseudo Code for the Learning Vector Quantization algorithm (LVQ1).}
+	\caption{Pseudo Code for the Self-Organizing Map.}
 	\label{alg:train}
 \end{algorithm}
 
@@ -177,14 +176,14 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Learning Vector Quantization was designed for classification problems that have existing data sets that can be used by supervise the learning by the system. The algorithm does not support regression problems.
-	\item LVQ is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
+	\item Self-Organizing Map was designed for unsupervised learning problems such as visualization and clustering. Some extensions of the approach can label the prepared codebook vectors which can be used for classification.
+	\item SOM is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
 	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
 	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
 	\item There should be sufficient training iterations to expose all the training data to the model multiple times.
 	\item The learning rate is typically linearly decayed over the training period from an initial value to close to zero.
 	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
-	\item Multiple passes of the LVQ training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
+	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -192,15 +191,15 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 \label{sec:code}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{lvq} provides an example of the Learning Vector Quantization algorithm implemented in the Ruby Programming Language. 
+Listing~\ref{som} provides an example of the Self-Organizing Map algorithm implemented in the Ruby Programming Language. 
 % problem
 The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
 
 % algorithm
-The algorithm was implemented using the LVQ1 variant where the best matching codebook vector is located and moved toward the the input vector if it is the same class, or away if the classes differ. A linear decay was used for the learning rate that was updated after each pattern was exposed to the model. The implementation can easily be extended to the other variants of the method.
+The algorithm...
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Learning Vector Quantization algorithm in the Ruby Programming Language, label=lvq]{../../src/algorithms/neural/lvq.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Self-Organizing Map algorithm in the Ruby Programming Language, label=som]{../../src/algorithms/neural/som.rb}
 
 
 % References: Deeper understanding
@@ -215,16 +214,16 @@ The algorithm was implemented using the LVQ1 variant where the best matching cod
 % 
 \subsection{Primary Sources}
 % seminal
-The Learning Vector Quantization algorithm was described by Kohonen in 1988 \cite{Kohonen1988}, and was further described in the same year by Kohonen \cite{Kohonen1988a} and benchmarked by Kohonen, Barna, and Chrisley \cite{Kohonen1988b}.
+todo
+% early
 
 % 
 % Learn More
 % 
 \subsection{Learn More}
 % reviews
-Kohonen provides a detailed overview of the state of LVQ algorithms and variants (LVQ1, LVQ2, and LVQ2.1) \cite{Kohonen1990}. The technical report that comes with the LVQ\_PAK software (written by Kohonen and his students) provides both an excellent summary of the technique and its main variants, as well as summarizing the important considerations when applying the approach \cite{Kohonen1996}.
 % books
-The seminal book on Learning Vector Quantization and the Self-Organizing Map is ``Self-Organizing Maps'' by Kohonen, which includes a chapter (Chapter 6) dedicated to LVQ and its variants \cite{Kohonen1995}.
+The seminal book on the technique is ``Self-Organizing Maps'' by Kohonen, which includes chapters dedicated to the description of the basic approach, physiological interpretations of the algorithm, variations, and summarizes of application areas \cite{Kohonen1995}.
 
 % 
 % Conclusions: What the reader or what thre author learned by completing this this report.
@@ -232,7 +231,7 @@ The seminal book on Learning Vector Quantization and the Self-Organizing Map is 
 \section{Conclusions}
 \label{sec:conclusions}
 % report
-This report described the Learning Vector Quantization algorithm using the standardized template. The algorithm implementation and heuristics for this algorithm were based on past work by the author for the WEKA machine learning workbench, available at \url{http://wekaclassalgos.sourceforge.net}.
+This report described the Self-Organizing Map using the standardized algorithm description template.
 
 % 
 % Contribute
