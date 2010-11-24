@@ -111,9 +111,11 @@ An initially random pool of vectors is prepared which are then exposed to traini
 \section{Procedure}
 \label{sec:procedure}
 % What are the data structures and representations used in a technique?
+The Self-Organizing map is comprised of a collection of codebook vectors connected together in a topological arrangement, typically a one dimensional line or a two dimensional grid. The codebook vectors themselves represent prototypes (points) within the domain, whereas the topological structure imposes an ordering between the vectors during the training process. The result is a low dimensional projection or approximation of the problem domain which may be visualized, or from which clusters may be extracted.
+
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Self-Organizing Map method. 
-Codebook vectors are initialized to small floating point values, or sampled from an available dataset. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
+Codebook vectors are initialized to small floating point values, or sampled from the domain. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}
 	dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2
@@ -121,51 +123,68 @@ Codebook vectors are initialized to small floating point values, or sampled from
 
 where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given codebook vector.
 
+The neighbors of the BMU in the topological structure of the network are selected using a neighborhood size that is linearly decreased during the training of the network. The BMU and all selected neighbors are then adjusted toward the input vector using a learning rate that too is decreased linearly with the training cycles:
+
+\begin{equation}
+	c_i(t+1) = learn_{rate}(t) \times (c_i(t) - x_i)
+\end{equation}
+
+where $c_i(t)$ is the $i^{th}$ attribute of a codebook vector at time $t$, $learn_{rate}$ is the current learning rate, an $x_i$ is the $i^{th}$ attribute of a input vector.
+
+The neighborhood is typically square (called bubble) where all neighborhood nodes are updated using the same learning rate for the iteration, or Gaussian where the learning rate is proportional to the neighborhood distance using a Gaussian distribution (neighbors further away from the BMU are updated less). 
+
 \begin{algorithm}[ht]
 	\SetLine
 
-	% data
-	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{MaxIterations}{$iterations_{max}$}
-	\SetKwData{LearningRate}{$learn_{rate}$}
-	\SetKwData{CodebookVectors}{CodebookVectors}
+	% parametrs
 	\SetKwData{InputPatterns}{InputPatterns}
-	\SetKwData{Pattern}{$Pattern_i$}
-	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
-	\SetKwData{PatternClass}{$Pattern_{i}^{class}$}
-	\SetKwData{Output}{$Output_i$}
-	\SetKwData{NumCodebookVectors}{$CodebookVectors_{num}$}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}^{init}$}	
+	\SetKwData{NeighborhoodSize}{$neighborhood_{size}^{init}$}
+	\SetKwData{GridWidth}{$Grid_{width}$}
+	\SetKwData{GridHeight}{$Grid_{height}$}
+	% data
+	\SetKwData{CodebookVectors}{CodebookVectors}
+	\SetKwData{Neighborhood}{Neighborhood}
+	\SetKwData{Lrate}{$learn_{rate}^{i}$}	
+	\SetKwData{Nsize}{$neighborhood_{size}^{i}$}
+	\SetKwData{Pattern}{$Pattern_i$}	
 	\SetKwData{Bmu}{$Bmu_i$}
-	\SetKwData{BmuClass}{$Bmu_{i}^{class}$}
-	\SetKwData{BmuAttribute}{$Bmu_{i}^{attribute}$}
+	\SetKwData{Vector}{$Vector_i$}
+	\SetKwData{PatternAttribute}{$Pattern_{i}^{attribute}$}
+	\SetKwData{VectorAttribute}{$Vector_{i}^{attribute}$}
 	
 	% functions
 	\SetKwFunction{InitializeCodebookVectors}{InitializeCodebookVectors}
+	\SetKwFunction{CalculateLearningRate}{CalculateLearningRate}
+	\SetKwFunction{CalculateNeighborhoodSize}{CalculateNeighborhoodSize}
 	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
 	\SetKwFunction{SelectBestMatchingUnit}{SelectBestMatchingUnit}
-
+	\SetKwFunction{SelectNeighbors}{SelectNeighbors}
 	
 	% I/O
-	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \NumCodebookVectors \LearningRate}		
+	\KwIn{\InputPatterns, \MaxIterations, \LearningRate, \NeighborhoodSize, \GridWidth, \GridHeight}		
 	\KwOut{\CodebookVectors}
   
 	% Algorithm
-	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\NumCodebookVectors, \ProblemSize}\;
+	\CodebookVectors $\leftarrow$ \InitializeCodebookVectors{\GridWidth, \GridHeight, \InputPatterns}\;
 	% loop
 	\For{$i=1$ \KwTo \MaxIterations} {
+		\Lrate $\leftarrow$ \CalculateLearningRate{$i$, \LearningRate}\;
+		\Nsize $\leftarrow$ \CalculateNeighborhoodSize{$i$, \NeighborhoodSize}\;
 		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
 		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
-		\ForEach{\BmuAttribute $\in$ \Bmu}{
-			\eIf{\BmuClass $\equiv$ \PatternClass} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
-			} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
+		\Neighborhood $\leftarrow$ \Bmu\;
+		\Neighborhood $\leftarrow$ \SelectNeighbors{\Bmu, \CodebookVectors, \Nsize}\;
+		\ForEach{\Vector $\in $\Neighborhood} {
+			\ForEach{\VectorAttribute $\in$ \Vector}{
+				\VectorAttribute $\leftarrow$ \VectorAttribute $+$ \Lrate $\times$ (\PatternAttribute $-$ \VectorAttribute)
 			}
 		}
 	}
 	\Return{\CodebookVectors}\;
 	% end
-	\caption{Pseudo Code for the Self-Organizing Map.}
+	\caption{Pseudo Code for the Self-Organizing Map algorithm.}
 	\label{alg:train}
 \end{algorithm}
 
