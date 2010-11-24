@@ -24,7 +24,7 @@
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportwebsite}{http://www.CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{\myreportwebsite}}
-\newcommand{\myreportdate}{2010MMDD}
+\newcommand{\myreportdate}{20101124a}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -85,7 +85,7 @@ Additionally, SOM is a baseline technique that has inspired many variations and 
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-todo
+The Self-Organizing Map is inspired by postulated feature maps of neurons in the brain comprised of feature-sensitive cells that provide ordered projections between neuronal layers, such as those that may exist in the retina and cochlea. For example, there are acoustic feature maps that respond to sounds that an animal is most frequently exposed, and tonotopic maps that may be responsible for the order preservation of acoustic resonances. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -101,9 +101,9 @@ todo
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The information processing objective of the algorithm is to prepare a set of codebook (or prototype) vectors in the domain of the observed input data samples and to use these vectors to classify unseen examples.
+The information processing objective of the algorithm is to optimally place a topology (grid or lattice) codebook or prototype vectors in the domain of the observed input data samples.
 % What is a techniques plan of action?
-An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected and adjusted to be closer to the input vector, and in some cases, further away from the winner for runner's up. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset.
+An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected, then the selected vector and neighbors of the selected vector are updated to closer resemble the input patter. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset. The result is the mapping of the topology of codebook vectors to the underlying structure in the input samples which may be summarized or visualized to reveal topologically preserved features in a low-dimensional projection of the problem space.
 
 
 % Procedure: Abstract computation
@@ -220,7 +220,7 @@ Listing~\ref{som} provides an example of the Self-Organizing Map algorithm imple
 The problem is a clustering problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape. The expectation is that the system will model the shape based on the observed samples.
 
 % algorithm
-The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure for determining the BMU and neighbors, a Bubble neighborhood function and a linear decreasing neighborhood size and learning rate. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. An extension to this implementation would be to visualize the resulting network structure in the domain - shrining from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
+The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure for determining the BMU and neighbors, a Bubble neighborhood function and a linear decreasing neighborhood size and learning rate. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity. An extension to this implementation would be to visualize the resulting network structure in the domain - shrining from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Self-Organizing Map algorithm in the Ruby Programming Language, label=som]{../../src/algorithms/neural/som.rb}
@@ -238,7 +238,7 @@ The algorithm is an implementation of the basic Self-Organizing Map algorithm ba
 % 
 \subsection{Primary Sources}
 % seminal
-The Self-Organizing Map was proposed by Kohonen in 1982 \cite{Kohonen1982}.
+The Self-Organizing Map was proposed by Kohonen in 1982 in a study that included the mathematical basis for the approach, summary of related physiology, and simulation on demonstration problem domains using one and two dimensional topological structures \cite{Kohonen1982}.
 % early
 
 % 
@@ -246,6 +246,8 @@ The Self-Organizing Map was proposed by Kohonen in 1982 \cite{Kohonen1982}.
 % 
 \subsection{Learn More}
 % reviews
+Kohonen provides a detailed introduction and summary of the Self-Organizing Map in a journal article \cite{Kohonen1990a}.
+Kohonen, et al. provide a practical presentation of the algorithm and heuristics for configuration in the technical report written to accompany the released SOM\_PAK implementation of the algorithm for academic research \cite{Kohonen1996a}.
 % books
 The seminal book on the technique is ``Self-Organizing Maps'' by Kohonen, which includes chapters dedicated to the description of the basic approach, physiological interpretations of the algorithm, variations, and summarizes of application areas \cite{Kohonen1995}.
 
