@@ -50,13 +50,15 @@ def search(num_bits, max_iterations, num_samples, p_mutate, mutate_factor, learn
 end
 
 if __FILE__ == $0
+  # problem configuration
   num_bits = 64
+  # algorithm configuration
   max_iterations = 100
   num_samples = 100
   p_mutate = 1.0/num_bits
   mutate_factor = 0.05
   learn_rate = 0.1
-
+  # execute the algorithm
   best = search(num_bits, max_iterations, num_samples, p_mutate, mutate_factor, learn_rate)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end

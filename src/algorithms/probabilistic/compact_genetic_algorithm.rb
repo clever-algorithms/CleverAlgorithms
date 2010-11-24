@@ -45,10 +45,12 @@ def search(num_bits, max_iterations, population_size)
 end
 
 if __FILE__ == $0
+  # problem configuration
   num_bits = 32
+  # algorithm configuration
   max_iterations = 130
   population_size = 20
-  
+  # execute the algorithm
   best = search(num_bits, max_iterations, population_size)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end

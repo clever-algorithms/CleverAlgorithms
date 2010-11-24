@@ -55,11 +55,13 @@ def search(num_bits, max_iterations, population_size, selection_size)
 end
 
 if __FILE__ == $0
+  # problem configuration
   num_bits = 64
+  # algorithm configuration
   max_iterations = 100
   population_size = 50
   selection_size = 30
-  
+  # execute the algorithm
   best = search(num_bits, max_iterations, population_size, selection_size)
   puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
 end

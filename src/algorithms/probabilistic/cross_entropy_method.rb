@@ -73,13 +73,15 @@ def search(search_space, max_iter, num_samples, num_update, learning_rate)
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 3
-  search_space = Array.new(problem_size) {|i| [-5, 5]}  
+  search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
   max_iter = 100
   num_samples = 50
   num_update = 5
   learning_rate = 0.7
-  
+  # execute the algorithm
   best = search(search_space, max_iter, num_samples, num_update, learning_rate)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end
