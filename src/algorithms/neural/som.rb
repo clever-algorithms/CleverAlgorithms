@@ -10,25 +10,15 @@ def random_vector(minmax)
   end
 end
 
-def generate_random_pattern(domain)  
-  classes = domain.keys
-  selected_class = rand(classes.length)
-  pattern = {}
-  pattern[:class_number] = selected_class
-  pattern[:class_label] = classes[selected_class]
-  pattern[:vector] = random_vector(domain[classes[selected_class]])
-  return pattern
-end
-
-def initialize_vectors(domain, num_vectors)
-  classes = domain.keys
+def initialize_vectors(domain, width, height)
   codebook_vectors = []
-  num_vectors.times do 
-    selected_class = rand(classes.length)
-    codebook = {}
-    codebook[:class_label] = classes[selected_class]
-    codebook[:vector] = random_vector([[0,1],[0,1]])
-    codebook_vectors << codebook
+  width.times do |x|
+    height.times do |y|
+      codebook = {}
+      codebook[:vector] = random_vector(domain)
+      codebook[:coord] = [x,y] 
+      codebook_vectors << codebook
+    end
   end
   return codebook_vectors
 end
@@ -44,55 +34,67 @@ end
 def get_best_matching_unit(codebook_vectors, pattern)
   best, b_dist = nil, nil
   codebook_vectors.each do |codebook|
-    dist = euclidean_distance(codebook[:vector], pattern[:vector])
+    dist = euclidean_distance(codebook[:vector], pattern)
     best,b_dist = codebook,dist if b_dist.nil? or dist<b_dist
   end
-  return best
+  return [best, b_dist]
 end
 
-def update_codebook_vector(bmu, pattern, lrate)
-  bmu[:vector].each_with_index do |v,i|
-    error = pattern[:vector][i]-bmu[:vector][i]
-    if bmu[:class_label] == pattern[:class_label] 
-      bmu[:vector][i] += lrate * error 
-    else
-      bmu[:vector][i] -= lrate * error
-    end
+def get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size)
+  neighborhood = []
+  codebook_vectors.each do |other|
+    neighborhood << other if euclidean_distance(bmu[:coord], other[:coord]) <= neigh_size
+  end
+  return neighborhood
+end
+
+def update_codebook_vector(codebook, pattern, lrate)
+  codebook[:vector].each_with_index do |v,i|
+    error = pattern[i]-codebook[:vector][i]
+    codebook[:vector][i] += lrate * error 
   end
 end
 
-def train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
+def train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
   iterations.times do |iter|
-    pattern = generate_random_pattern(domain)
-    bmu = get_best_matching_unit(codebook_vectors, pattern)
+    pattern = random_vector(shape)
     lrate = learning_rate * (1.0-(iter.to_f/iterations.to_f))
-    puts "> train lrate=#{lrate} got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
-    update_codebook_vector(bmu, pattern, lrate)
+    neigh_size = neighborhood_size * (1.0-(iter.to_f/iterations.to_f))
+    bmu,dist = get_best_matching_unit(codebook_vectors, pattern)
+    neighbors = get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size)
+    neighbors.each do |node|
+      update_codebook_vector(node, pattern, lrate)
+    end
+    puts ">training: neighbors=#{neighbors.size}, bmu_dist=#{dist}"        
   end
 end
 
-def test_network(codebook_vectors, domain)
-  correct = 0
+def test_network(codebook_vectors, shape)
+  error = 0.0
   100.times do 
-    pattern = generate_random_pattern(domain)
-    bmu = get_best_matching_unit(codebook_vectors, pattern)
-    correct += 1 if bmu[:class_label] == pattern[:class_label]
+    pattern = random_vector(shape)
+    bmu,dist = get_best_matching_unit(codebook_vectors, pattern)
+    error += dist
   end
-  puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
+  error /= 100.0
+  puts "Finished, average error=#{error}"
 end
 
-def run(domain, problem_size, iterations, num_vectors, learning_rate)  
-  codebook_vectors = initialize_vectors(domain, num_vectors)
-  train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
-  test_network(codebook_vectors, domain)
+def run(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
+  codebook_vectors = initialize_vectors(domain, width, height)
+  train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
+  test_network(codebook_vectors, shape)
 end
 
 if __FILE__ == $0
-  problem_size = 2
-  domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-  learning_rate = 0.3
+  # problem definition
+  domain = [[0.0,1.0],[0.0,1.0]]
+  shape = [[0.3,0.6],[0.3,0.6]]
+  # algorithm parameters
   iterations = 1000
-  num_vectors = 20
-
-  run(domain, problem_size, iterations, num_vectors, learning_rate)
+  learning_rate = 0.3
+  neighborhood_size = 5
+  width, height = 4, 5
+  # execute the algorithm
+  run(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
 end

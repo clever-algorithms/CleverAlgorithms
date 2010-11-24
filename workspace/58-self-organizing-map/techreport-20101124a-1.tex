@@ -185,7 +185,7 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
 	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
 	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
-	\item A rectangular 2D topology is typically used for a SOM, although toroidal and sphere topologies can be used as can higher-dimensions. 
+	\item A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used, hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated. 
 	\item The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.
 \end{itemize}
 
@@ -196,10 +196,19 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{som} provides an example of the Self-Organizing Map algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
+
+2d domain
+horizontal stripe that represents the data to model
+
+
 
 % algorithm
 The algorithm...
+
+euclidean distance
+bubble neighborhood function
+linear decreasing neighbourhood size and learning rate
+report error, extensions could visualize 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Self-Organizing Map algorithm in the Ruby Programming Language, label=som]{../../src/algorithms/neural/som.rb}
