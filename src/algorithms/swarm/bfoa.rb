@@ -97,8 +97,10 @@ def search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, c
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
   pop_size = 50
   step_size = 0.1 # Ci
   elim_disp_steps = 1 # Ned
@@ -110,7 +112,7 @@ if __FILE__ == $0
   w_attr = 0.2 
   h_rep = d_attr
   w_rep = 10
-
+  # execute the algorithm
   best = search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
   puts "done! Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

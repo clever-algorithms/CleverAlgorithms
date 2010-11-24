@@ -82,14 +82,16 @@ def search(max_gens, problem_size, search_space, vel_space, pop_size, max_vel, c
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
   vel_space = Array.new(problem_size) {|i| [-1, 1]}
   max_gens = 200
   pop_size = 15
   max_vel = 5.0
   c1, c2 = 2.0, 2.0
-
+  # execute the algorithm
   best = search(max_gens, problem_size, search_space, vel_space, pop_size, max_vel, c1, c2)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:position].inspect}"
 end

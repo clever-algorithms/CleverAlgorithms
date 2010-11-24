@@ -65,8 +65,10 @@ def search(max_gens, problem_size, search_space, num_bees, num_sites, elite_site
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
   max_gens = 500
   num_bees = 45
   num_sites = 3
@@ -74,7 +76,7 @@ if __FILE__ == $0
   patch_size = 3.0
   e_bees = 7
   o_bees = 2
-
+  # execute the algorithm
   best = search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
