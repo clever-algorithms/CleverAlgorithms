@@ -187,6 +187,8 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
 	\item A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used, hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated. 
 	\item The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.
+	\item The learning rate and neighborhood size's typically decrease linearly with the training iterations, although non-linear functions may be used.
+	\item Some examples of the neighborhood function (for determining nodes in the neighborhood of a BMU) include Gaussian (based on the distance of the nodes in the projected grid) or Bubble (based on a hard neighborhood size constraint).
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -196,19 +198,10 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{som} provides an example of the Self-Organizing Map algorithm implemented in the Ruby Programming Language. 
 % problem
-
-2d domain
-horizontal stripe that represents the data to model
-
-
+The problem is a clustering problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape. The expectation is that the system will model the shape based on the observed samples.
 
 % algorithm
-The algorithm...
-
-euclidean distance
-bubble neighborhood function
-linear decreasing neighbourhood size and learning rate
-report error, extensions could visualize 
+The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure for determining the BMU and neighbors, a Bubble neighborhood function and a linear decreasing neighborhood size and learning rate. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. An extension to this implementation would be to visualize the resulting network structure in the domain - shrining from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Self-Organizing Map algorithm in the Ruby Programming Language, label=som]{../../src/algorithms/neural/som.rb}
