@@ -254,11 +254,15 @@ def search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error
   return pop
 end
 
-max_gens, length, pop_size = 5000, 6, 150
-all_actions = ['0', '1']
-l_rate, min_error = 0.2, 0.01
-p_explore, p_cross, p_mut = 0.10, 0.80,  0.04
-ga_freq, del_thresh = 50,  20
-
-pop = search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, p_cross, p_mut, del_thresh)
-puts "done! Solution: classifiers=#{pop.size}"
+if __FILE__ == $0
+  # problem configuration
+  all_actions = ['0', '1']
+  # algorithm configuration
+  max_gens, length, pop_size = 5000, 6, 150
+  l_rate, min_error = 0.2, 0.01
+  p_explore, p_cross, p_mut = 0.10, 0.80,  0.04
+  ga_freq, del_thresh = 50,  20
+  # execute the algorithm
+  pop = search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, p_cross, p_mut, del_thresh)
+  puts "done! Solution: classifiers=#{pop.size}"
+end

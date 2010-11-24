@@ -75,11 +75,15 @@ def search(max_generations, problem_size, search_space, pop_size, num_children)
   return best
 end
 
-max_generations = 100
-pop_size = 30
-num_children = 20
-problem_size = 2
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-
-best = search(max_generations, problem_size, search_space, pop_size, num_children)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_generations = 100
+  pop_size = 30
+  num_children = 20  
+  # execute the algorithm
+  best = search(max_generations, problem_size, search_space, pop_size, num_children)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
+end

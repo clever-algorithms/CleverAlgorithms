@@ -69,12 +69,14 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
 end
 
 if __FILE__ == $0
+  # problem configuration
+  num_bits = 64
+  # algorithm configuration
   max_generations = 100
   population_size = 100
-  num_bits = 64
   p_crossover = 0.98
   p_mutation = 1.0/num_bits
-
+  # execute the algorithm
   best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end

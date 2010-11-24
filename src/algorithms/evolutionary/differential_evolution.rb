@@ -57,13 +57,16 @@ def search(max_generations, np, search_space, g, f, cr)
   return best
 end
 
-
-problem_size = 3
-max_generations = 200
-pop_size = 10*problem_size
-weighting_factor = 0.8
-crossover_factor = 0.9
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-
-best = search(max_generations, problem_size, search_space, pop_size, weighting_factor, crossover_factor)
-puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_generations = 200
+  pop_size = 10*problem_size
+  weighting_factor = 0.8
+  crossover_factor = 0.9
+  # execute the algorithm
+  best = search(max_generations, problem_size, search_space, pop_size, weighting_factor, crossover_factor)
+  puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+end

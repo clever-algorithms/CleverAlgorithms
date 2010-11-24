@@ -121,14 +121,18 @@ def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_c
   return best
 end
 
-grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
-bounds = [-1, 1]
-head_length = 24
-tail_length = head_length * (2-1) + 1
-generations = 150
-pop_size = 100
-p_crossover = 0.70
-p_mutation = 2.0/(head_length+tail_length).to_f
-
-best = search(grammar, bounds, head_length, tail_length, generations, pop_size, p_crossover, p_mutation)
-puts "done! Solution: f=#{best[:fitness]}, g=#{best[:genome]}, b=#{best[:program]}"
+if __FILE__ == $0
+  # problem configuration
+  grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
+  bounds = [-1, 1]
+  # algorithm configuration
+  head_length = 24
+  tail_length = head_length * (2-1) + 1
+  generations = 150
+  pop_size = 100
+  p_crossover = 0.70
+  p_mutation = 2.0/(head_length+tail_length).to_f
+  # execute the algorithm
+  best = search(grammar, bounds, head_length, tail_length, generations, pop_size, p_crossover, p_mutation)
+  puts "done! Solution: f=#{best[:fitness]}, g=#{best[:genome]}, b=#{best[:program]}"
+end

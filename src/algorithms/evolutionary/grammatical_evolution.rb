@@ -126,18 +126,22 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar
   return best
 end
 
-grammar = {"S"=>"EXP",
-  "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNIARY(EXP) ", " VAR "],
-  "BINARY"=>["+", "-", "/", "*" ],
-  "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
-  "VAR"=>["INPUT", "1.0"]}
-max_depth = 7
-bounds = [-1, +1]
-generations = 100
-pop_size = 100
-codon_bits = 8
-initial_bits = 10*codon_bits
-p_crossover = 0.30
-
-best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
-puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
+if __FILE__ == $0
+  # problem configuration
+  grammar = {"S"=>"EXP",
+    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNIARY(EXP) ", " VAR "],
+    "BINARY"=>["+", "-", "/", "*" ],
+    "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
+    "VAR"=>["INPUT", "1.0"]}
+  bounds = [-1, +1]
+  # algorithm configuration
+  max_depth = 7
+  generations = 100
+  pop_size = 100
+  codon_bits = 8
+  initial_bits = 10*codon_bits
+  p_crossover = 0.30
+  # execute the algorithm
+  best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
+end

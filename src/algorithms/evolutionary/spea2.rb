@@ -169,12 +169,16 @@ def search(problem_size, search_space, max_gens, pop_size, archive_size, p_cross
   return archive
 end
 
-max_gens = 50
-pop_size = 80
-archive_size = 40
-p_crossover = 0.90
-problem_size = 1
-search_space = Array.new(problem_size) {|i| [-1000, 1000]}
-
-pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
-puts "done!"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 1
+  search_space = Array.new(problem_size) {|i| [-1000, 1000]}
+  # algorithm configuration
+  max_gens = 50
+  pop_size = 80
+  archive_size = 40
+  p_crossover = 0.90
+  # execute the algorithm
+  pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
+  puts "done!"
+end

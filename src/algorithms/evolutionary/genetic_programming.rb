@@ -154,16 +154,20 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
   return best
 end
 
-max_generations = 100
-max_depth = 7
-population_size = 100
-num_trials = 15
-num_bouts = 5
-p_reproduction = 0.08
-p_crossover = 0.90
-p_mutation = 0.02
-terminals = ['X', 'R']
-functions = [:+, :-, :*, :/]
-
-best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
-puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+if __FILE__ == $0
+  # problem configuration
+  terminals = ['X', 'R']
+  functions = [:+, :-, :*, :/]
+  # algorithm configuration
+  max_generations = 100
+  max_depth = 7
+  population_size = 100
+  num_trials = 15
+  num_bouts = 5
+  p_reproduction = 0.08
+  p_crossover = 0.90
+  p_mutation = 0.02
+  # execute the algorithm
+  best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+end

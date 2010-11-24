@@ -183,11 +183,15 @@ def search(problem_size, search_space, max_gens, pop_size, p_crossover)
   return children
 end
 
-max_gens = 50
-pop_size = 100
-p_crossover = 0.98
-problem_size = 1
-search_space = Array.new(problem_size) {|i| [-1000, 1000]}
-
-pop = search(problem_size, search_space, max_gens, pop_size, p_crossover)
-puts "done!"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 1
+  search_space = Array.new(problem_size) {|i| [-1000, 1000]}
+  # algorithm configuration
+  max_gens = 50
+  pop_size = 100
+  p_crossover = 0.98
+  # execute the algorithm
+  pop = search(problem_size, search_space, max_gens, pop_size, p_crossover)
+  puts "done!"
+end
