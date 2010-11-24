@@ -61,7 +61,7 @@ def update_codebook_vector(bmu, pattern, lrate)
   end
 end
 
-def train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
+def train_network(codebook_vectors, domain, iterations, learning_rate)
   iterations.times do |iter|
     pattern = generate_random_pattern(domain)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
@@ -81,18 +81,19 @@ def test_network(codebook_vectors, domain)
   puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
 end
 
-def run(domain, problem_size, iterations, num_vectors, learning_rate)  
+def run(domain, iterations, num_vectors, learning_rate)  
   codebook_vectors = initialize_vectors(domain, num_vectors)
-  train_network(codebook_vectors, domain, problem_size, iterations, learning_rate)
+  train_network(codebook_vectors, domain, iterations, learning_rate)
   test_network(codebook_vectors, domain)
 end
 
 if __FILE__ == $0
-  problem_size = 2
+  # problem configuration
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+  # algorithm configuration
   learning_rate = 0.3
   iterations = 1000
   num_vectors = 20
-
-  run(domain, problem_size, iterations, num_vectors, learning_rate)
+  # execute the algorithm
+  run(domain, iterations, num_vectors, learning_rate)
 end

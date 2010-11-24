@@ -87,10 +87,12 @@ def run(domain, problem_size, iterations, learning_rate)
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 2
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+  # algorithm configuration
   learning_rate = 0.1
   iterations = 60
-
+  # execute the algorithm
   run(domain, problem_size, iterations, learning_rate)
 end

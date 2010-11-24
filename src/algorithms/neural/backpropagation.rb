@@ -148,11 +148,13 @@ def run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 2
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+  # algorithm configuration
   learning_rate = 0.1
   hidden_layer_size = 2
   iterations = 100
-
+  # execute the algorithm
   run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
 end

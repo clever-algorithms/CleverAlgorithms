@@ -115,7 +115,7 @@ def run(patters, num_inputs)
 end
 
 if __FILE__ == $0
-  # problem definition
+  # problem configuration
   num_inputs = 9
   p1 = [[1,1,1],[1,-1,-1],[1,1,1]] # C
   p2 = [[1,-1,-1],[1,-1,-1],[1,1,1]] # L

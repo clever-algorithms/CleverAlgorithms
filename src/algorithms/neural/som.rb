@@ -104,10 +104,10 @@ def run(domain, shape, iterations, learning_rate, neighborhood_size, width, heig
 end
 
 if __FILE__ == $0
-  # problem definition
+  # problem configuration
   domain = [[0.0,1.0],[0.0,1.0]]
   shape = [[0.3,0.6],[0.3,0.6]]
-  # algorithm parameters
+  # algorithm configuration
   iterations = 100
   learning_rate = 0.3
   neighborhood_size = 5
