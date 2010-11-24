@@ -71,11 +71,11 @@ Self-Organizing Map, SOM, Self-Organizing Feature Map, SOFM, Kohonen Map, Kohone
 \section{Taxonomy}
 \label{sec:taxonomy}
 % To what fields of study does a technique belong?
-The Self-Organizing Map algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly to the field of Computational Intelligence.  
+The Self-Organizing Map algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly it belongs to the field of Computational Intelligence.  
 % What are the closely related approaches to a technique?
 The Self-Organizing Map is an unsupervised neural network that uses a competitive (winner-take-all) learning strategy.
 It is related to other unsupervised neural networks such as the Adaptive Resonance Theory (ART) method.
-It is related to other competitive learning neural networks such as the the Neural Gas Algorithm, and the Learning Vector Quantization algorithm that is a similar algorithm for classification without connections between the neurons. 
+It is related to other competitive learning neural networks such as the the Neural Gas Algorithm, and the Learning Vector Quantization algorithm, which is a similar algorithm for classification without connections between the neurons. 
 Additionally, SOM is a baseline technique that has inspired many variations and extensions, not limited to the Adaptive-Subspace Self-Organizing Map (ASSOM).
 
 % Inspiration: Motivating system
@@ -85,7 +85,7 @@ Additionally, SOM is a baseline technique that has inspired many variations and 
 \label{sec:inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-The Self-Organizing Map is inspired by postulated feature maps of neurons in the brain comprised of feature-sensitive cells that provide ordered projections between neuronal layers, such as those that may exist in the retina and cochlea. For example, there are acoustic feature maps that respond to sounds that an animal is most frequently exposed, and tonotopic maps that may be responsible for the order preservation of acoustic resonances. 
+The Self-Organizing Map is inspired by postulated feature maps of neurons in the brain comprised of feature-sensitive cells that provide ordered projections between neuronal layers, such as those that may exist in the retina and cochlea. For example, there are acoustic feature maps that respond to sounds to which an animal is most frequently exposed, and tonotopic maps that may be responsible for the order preservation of acoustic resonances. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -94,16 +94,15 @@ The Self-Organizing Map is inspired by postulated feature maps of neurons in the
 % \label{sec:metaphor}
 % % What is the explanation of a technique in the context of the inspiring system?
 % % What are the functionalities inferred for a technique from the analogous inspiring system?
-% todo
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \section{Strategy}
 \label{sec:strategy}
 % What is the information processing objective of a technique?
-The information processing objective of the algorithm is to optimally place a topology (grid or lattice) codebook or prototype vectors in the domain of the observed input data samples.
+The information processing objective of the algorithm is to optimally place a topology (grid or lattice) of codebook or prototype vectors in the domain of the observed input data samples.
 % What is a techniques plan of action?
-An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected, then the selected vector and neighbors of the selected vector are updated to closer resemble the input patter. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset. The result is the mapping of the topology of codebook vectors to the underlying structure in the input samples which may be summarized or visualized to reveal topologically preserved features in a low-dimensional projection of the problem space.
+An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where the most similar vector to a given input pattern is selected, then the selected vector and neighbors of the selected vector are updated to closer resemble the input pattern. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset. The result is the mapping of the topology of codebook vectors to the underlying structure in the input samples which may be summarized or visualized to reveal topologically preserved features from the input space in a low-dimensional projection.
 
 
 % Procedure: Abstract computation
@@ -195,19 +194,17 @@ The neighborhood is typically square (called bubble) where all neighborhood node
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Self-Organizing Map was designed for unsupervised learning problems such as visualization and clustering. Some extensions of the approach can label the prepared codebook vectors which can be used for classification.
+	\item The Self-Organizing Map was designed for unsupervised learning problems such as feature extraction, visualization and clustering. Some extensions of the approach can label the prepared codebook vectors which can be used for classification.
 	\item SOM is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
 	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
 	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
 	\item There should be sufficient training iterations to expose all the training data to the model multiple times.
-	\item The learning rate is typically linearly decayed over the training period from an initial value to close to zero.
 	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
 	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
 	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
-	\item A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used, hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated. 
+	\item A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used. Hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated. 
 	\item The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.
-	\item The learning rate and neighborhood size's typically decrease linearly with the training iterations, although non-linear functions may be used.
-	\item Some examples of the neighborhood function (for determining nodes in the neighborhood of a BMU) include Gaussian (based on the distance of the nodes in the projected grid) or Bubble (based on a hard neighborhood size constraint).
+	\item The learning rate and neighborhood size parameters typically decrease linearly with the training iterations, although non-linear functions may be used.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -217,10 +214,12 @@ The neighborhood is typically square (called bubble) where all neighborhood node
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{som} provides an example of the Self-Organizing Map algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is a clustering problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape. The expectation is that the system will model the shape based on the observed samples.
+The problem is a feature detection problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape during training. The expectation is that the system will model the shape based on the observed samples.
 
 % algorithm
-The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure for determining the BMU and neighbors, a Bubble neighborhood function and a linear decreasing neighborhood size and learning rate. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity. An extension to this implementation would be to visualize the resulting network structure in the domain - shrining from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
+The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure is used to determine the BMU and neighbors, a Bubble neighborhood function is used. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity. 
+
+An extension to this implementation would be to visualize the resulting network structure in the domain - shrinking from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Self-Organizing Map algorithm in the Ruby Programming Language, label=som]{../../src/algorithms/neural/som.rb}
