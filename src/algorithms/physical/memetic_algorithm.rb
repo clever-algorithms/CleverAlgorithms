@@ -102,15 +102,17 @@ def search(max_gens, problem_size, search_space, pop_size, p_crossover, p_mutati
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
   max_gens = 100
   pop_size = 100  
   p_crossover = 0.98
   p_mutation = 1.0/(problem_size*BITS_PER_PARAM).to_f
   max_local_gens = 20
   p_local = 0.5
-
+  # execute the algorithm
   best = search(max_gens, problem_size, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
   puts "done! Solution: f=#{best[:fitness]}, b=#{best[:bitstring]}, v=#{best[:vector].inspect}"
 end

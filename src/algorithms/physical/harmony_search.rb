@@ -62,14 +62,16 @@ def search(search_space, max_iter, memory_size, consideration_rate, adjust_rate,
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
   memory_size = 20
   consideration_rate = 0.95
   adjust_rate = 0.7
   range = 0.05
   max_iter = 500
-
+  # execute the algorithm
   best = search(search_space, max_iter, memory_size, consideration_rate, adjust_rate, range)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end

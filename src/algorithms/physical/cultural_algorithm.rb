@@ -83,12 +83,14 @@ def search(max_gens, problem_size, search_space, pop_size, num_accepted)
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
   max_generations = 200
   population_size = 100
   num_accepted = (population_size*0.20).round
-
+  # execute the algorithm
   best = search(max_generations, problem_size, search_space, population_size, num_accepted)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
