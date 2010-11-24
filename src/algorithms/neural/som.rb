@@ -43,7 +43,9 @@ end
 def get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size)
   neighborhood = []
   codebook_vectors.each do |other|
-    neighborhood << other if euclidean_distance(bmu[:coord], other[:coord]) <= neigh_size
+    if euclidean_distance(bmu[:coord], other[:coord]) <= neigh_size
+      neighborhood << other 
+    end
   end
   return neighborhood
 end
@@ -69,6 +71,19 @@ def train_network(codebook_vectors, shape, iterations, learning_rate, neighborho
   end
 end
 
+def summarize_vectors(vectors)
+  minmax = Array.new(vectors.first[:vector].length){[1,0]}
+  vectors.each do |c|
+    c[:vector].each_with_index do |v,i|
+      minmax[i][0] = v if v<minmax[i][0]
+      minmax[i][1] = v if v>minmax[i][1]
+    end
+  end
+  s = ""
+  minmax.each_with_index {|bounds,i| s << "#{i}=#{bounds.inspect} "}
+  puts "Vector details: #{s}"
+end
+
 def test_network(codebook_vectors, shape)
   error = 0.0
   100.times do 
@@ -77,13 +92,15 @@ def test_network(codebook_vectors, shape)
     error += dist
   end
   error /= 100.0
-  puts "Finished, average error=#{error}"
+  puts "Finished, average error=#{error}"  
 end
 
 def run(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
   codebook_vectors = initialize_vectors(domain, width, height)
+  summarize_vectors(codebook_vectors)
   train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
   test_network(codebook_vectors, shape)
+  summarize_vectors(codebook_vectors)
 end
 
 if __FILE__ == $0
@@ -91,7 +108,7 @@ if __FILE__ == $0
   domain = [[0.0,1.0],[0.0,1.0]]
   shape = [[0.3,0.6],[0.3,0.6]]
   # algorithm parameters
-  iterations = 1000
+  iterations = 100
   learning_rate = 0.3
   neighborhood_size = 5
   width, height = 4, 5
