@@ -187,4 +187,4 @@ Neural, Widrow Hoff
 Neural, Back Propagation
 Neural, Bold Driver Back Propagation
 Neural, Hopfield net
-Neural, Radial Bias Function
+Neural, Radial Basis Function

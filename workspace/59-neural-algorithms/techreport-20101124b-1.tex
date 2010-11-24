@@ -1,0 +1,150 @@
+% Neural Algorithms
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{Neural Algorithms}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20101124a}
+\newcommand{\myreportfulldate}{November 24, 2010}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\myreportfulldate\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+% project
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
+% template
+The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
+% type
+A collection of algorithms for the project have been described, all of which are classified as Neural Algorithms under the adopted algorithm taxonomy.
+% best practices
+This report provides a point of reflection on the preparation of these algorithms.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Project, Neural, Machine, Learning, Findings}}
+\end{description} 
+
+% summarise the document breakdown with cross references
+\section{Introduction}
+\label{sec:introduction}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+This report provides an overview of the Neural Algorithms in the Clever Algorithms project. 
+Section~\ref{sec:algorithms} provides background information and reviews common themes for the general class of algorithm and summarizes those immune algorithms that have been described for the Clever Algorithms Project.
+
+% 
+% Described Algorithms
+% 
+\section{Neural Algorithms}
+\label{sec:algorithms}
+
+% 
+% Background
+% 
+\subsection{Background}
+% broadly
+The algorithms to be described in the Clever Algorithms project are drawn from a diverse set of subfields of Artificial Intelligence, such as Computational Intelligence, Biologically Inspired Computation, and Metaheuristics. The majority of the algorithms selected for description in the project are optimization algorithms \cite{Brownlee2010b}. 
+% specific
+The recently completed algorithms that have been described for the Clever Algorithms project are referred to as Neural Algorithms. They are differentiated from the remainder of the algorithms described in the project that have been designated a taxonomy including swarm, stochastic, immune, probabilistic, physical, and evolutionary algorithms \cite{Brownlee2010b}. 
+
+\subsubsection{Biological Neural Networks}
+A Biological Neural Network refers to the information processing elements of the nervous system. A neural network is comprised of a collection of neural cells called neurons that are interconnected in networks and interact with each other using electrochemical signals. A biological neuron is generally comprised of a dendrite which provides the input signals and is connected to other neurons via synapses. The neuron reacts to input signals and may produce an output signal on its output connection called an axon.
+
+The study of biological neural networks falls within the domain of neuroscience which is a branch of biology concerned with the nervous system. Neuroanatomy is a subject that is concerned with the the structure and function of groups of neural networks both with regard to parts of the brain and the structures that lead from and to the brain from the rest of the body. For further information, refer to a good textbook on either any of these general topics.
+
+% Neural
+\subsubsection{Artificial Neural Networks}
+The Artificial Neural Networks (ANN) is concerned with the investigation of computational models inspired by theories and observation of the structure and function of biological networks of neural cells in the brain for addressing mathematical, computational, and engineering problems. As such, there is a lot of interdisciplinary research in mathematics, neurobiology and computer science. Neuropsychology is another discipline concerned with the structure and function of the brain as they relate to abstract psychological behaviors.
+
+An Artificial Neural Network is generally comprised of a collection of artificial neurons that are inter connected in order to performs some computation in input patterns and create output patterns. They are adaptive systems capable of modifying their internal structure, typically the weights between nodes in the network, allowing them to be used for a variety of function approximation problems such as classification, regression, feature extraction and content addressable memory.
+
+Given that the focus of the field is on performing computation with networks of discrete computing units, the field is traditionally called a `connectionist' paradigm of Artificial Intelligence and `Neural Computation'.
+
+There are many types of neural networks, not limited to:
+
+\begin{itemize}
+	\item \textbf{Feed-forward Networks} where input is provided on one side of the network and the signals are propagated forward (in one direction) through the network structure to the other side where output signals are read. These networks may be comprised of one cell, one layer or multiple layers of neurons. Some examples include the Perceptron, Radial Basis Function, and the multi-layer perceptron networks.
+	\item \textbf{Recurrent} where cycles in the network are permitted and the structure may be fully interconnected. Examples include the Hopfield Network and Bidirectional Associative Memory.
+\end{itemize}
+
+The neural network structures of nodes and weights typically require training based on samples of patterns from a problem domain. Some examples of learning strategies include:
+
+\begin{itemize}
+	\item \textbf{Supervised Learning} where the network is exposed to the input that has a known expected answer from which the internal state of the network is modified to better match the expected result. Examples of this learning method include the Back-propagation algorithm and the Hebb rule.
+	\item \textbf{Unsupervised Learning} where the network is exposed to input patterns from which it must discern meaning and extract features. The most common type of unsupervised learning is competitive learning where neurons compete based in the input pattern to produce an output pattern. Examples include Neural Gas, Learning Vector Quantization, and the Self-Organizing Map.
+\end{itemize}
+
+Artificial Neural Networks are typically difficult to configure and slow to train, but once prepared are very fast in application. They are generally used for function approximation-based problem domains and prized for their capabilities of generalization and tolerance to noise, although are known to have the limitation of being opaque, meaning there is little explanation to the subject matter expert as to why decisions were made, only how.
+
+% References
+\subsubsection{References}
+% classical
+% books
+There are many excellent reference texts for the field of Artificial Neural Networks, some select texts include: ``Neural Networks for Pattern Recognition'' by Bishop \cite{Bishop1995}, ``Neural Smithing: Supervised Learning in Feedforward Artificial Neural Networks'' by Reed and Marks II \cite{Reed1999} and ``An Introduction to Neural Networks'' by Gurney \cite{Gurney1997}.
+
+% 
+% Described Algorithms
+% 
+\subsection{Described Algorithms}
+\label{subsec:algorithms}
+% overview
+This section lists the Artificial Neural Networks currently described for inclusion in the Clever Algorithms project. It is proposed that these algorithms will collectively comprise a chapter on `Neural Algorithms' in the Clever Algorithms book. 
+
+\begin{enumerate}
+	\item \textbf{Perceptron}: \cite{Brownlee2010af}
+	\item \textbf{Back-propagation Algorithm}: \cite{Brownlee2010ag}
+	\item \textbf{Hopfield Network}: \cite{Brownlee2010ah}
+	\item \textbf{Learning Vector Quantization}: \cite{Brownlee2010ai}
+	\item \textbf{Self-Organizing Map}: \cite{Brownlee2010aj}
+\end{enumerate}
+
+% 
+% Extensions
+% 
+\section{Extensions}
+\label{sec:extensions}
+There are other algorithms and classes of algorithm that were not described from the field of Neural Intelligence. Some areas that may be considered for algorithm description in follow up works include:
+
+\begin{itemize}
+	\item \textbf{Radial Basis Function Network}: A network where activation functions are controlled by Radial Basis Functions \cite{Howlett2001}.
+	\item \textbf{Neural Gas}: Another self-organizing and unsupervised competitive learning algorithm. Unlike SOM (and more like LVQ), the nodes are not organized into a lower-dimensional structure, instead the competitive Hebbian-learning like rule is applied to connect, order, and adapt nodes in feature space \cite{Martinetz1991, Martinetz1993, Martinetz1994}.
+	\item \textbf{Hierarchical Temporal Memory}: A neural network system based on models of some of the structural and algorithmic properties of the neocortex \cite{Hawkins2005}.
+\end{itemize}
+
+% 
+% Conclusions
+% 
+\section{Conclusions}
+\label{sec:conclusions}
+% overview
+This report provided a point of reflection for the batch of Artificial Neural Networks descriptions prepared for the Clever Algorithms project. All described algorithms were assigned to the `Neural Algorithms' kingdom in the chosen algorithm taxonomy. This report highlighted the commonality for all described Neural Algorithms and provided a definition suitable for use in the proposed book and website.
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
