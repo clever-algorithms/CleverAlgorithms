@@ -132,14 +132,18 @@ def search(problem_size, search_space, max_iterations, ref_set_size, div_set_siz
   return best
 end
 
-num_iterations = 100
-problem_size = 3
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-step_size = (search_space[0][1]-search_space[0][0])*0.005
-max_no_improvements = 30
-ref_set_size = 10
-diverse_set_size = 20
-no_elite = 5
-
-best = search(problem_size, search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improvements, step_size, no_elite)
-puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  num_iterations = 100
+  step_size = (search_space[0][1]-search_space[0][0])*0.005
+  max_no_improvements = 30
+  ref_set_size = 10
+  diverse_set_size = 20
+  no_elite = 5
+  # execute the algorithm
+  best = search(problem_size, search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improvements, step_size, no_elite)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end

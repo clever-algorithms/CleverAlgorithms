@@ -34,8 +34,12 @@ def search(max_iterations, problem_size)
   return candidate
 end
 
-max_iterations = 1000
-problem_size = 64
-
-best = search(max_iterations, problem_size)
-puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].join}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 64
+  # algorithm configuration
+  max_iterations = 1000
+  # execute the algorithm
+  best = search(max_iterations, problem_size)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].join}"
+end

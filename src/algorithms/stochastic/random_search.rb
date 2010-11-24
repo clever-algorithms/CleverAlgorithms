@@ -26,9 +26,13 @@ def search(max_iterations, problem_size, search_space)
   return best
 end
 
-max_iterations = 100
-problem_size = 2
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-
-best = search(max_iterations, problem_size, search_space)
-puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_iterations = 100
+  # execute the algorithm
+  best = search(max_iterations, problem_size, search_space)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end

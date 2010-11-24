@@ -60,14 +60,18 @@ def search(max_iterations, problem_size, search_space, init_factor, small_factor
   return current
 end
 
-max_iterations = 1000
-problem_size = 2
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-init_factor = 0.05
-small_factor = 1.3
-large_factor = 3.0
-factor_multiple = 10
-max_no_improvements = 30
-
-best = search(max_iterations, problem_size, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
-puts "Done. Best Solution: cost=#{best[:cost]}, v=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_iterations = 1000
+  init_factor = 0.05
+  small_factor = 1.3
+  large_factor = 3.0
+  factor_multiple = 10
+  max_no_improvements = 30
+  # execute the algorithm
+  best = search(max_iterations, problem_size, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+  puts "Done. Best Solution: cost=#{best[:cost]}, v=#{best[:vector].inspect}"
+end
