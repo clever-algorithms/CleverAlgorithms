@@ -143,12 +143,14 @@ def run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resource
 end
 
 if __FILE__ == $0
+  # problem configuration
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
   num_patterns = 100
+  # algorithm configuration
   clone_rate = 10
   mutate_rate = 2.0
   stim_thresh = 0.9
   max_resources = 150
-
+  # execute the algorithm
   run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
 end

@@ -73,16 +73,25 @@ def generate_self_dataset(num_records, self_space, search_space)
   return self_dataset
 end
 
-max_detectors = 300
-max_self = 150
-min_distance = 0.05
-num_test = 50
-problem_size = 2
-search_space = Array.new(problem_size) {[0.0, 1.0]}
-self_space = Array.new(problem_size) {[0.5, 1.0]}
-self_dataset = generate_self_dataset(max_self, self_space, search_space)
-puts "Done: prepared #{self_dataset.size} self patterns."
-detectors = generate_detectors(max_detectors, search_space, self_dataset, min_distance)
-puts "Done: prepared #{detectors.size} detectors."
-apply_detectors(num_test, detectors, search_space, self_space, min_distance)
-puts "Done. completed testing."
+def run_algorithm(search_space, self_space, max_detectors, max_self, min_distance, num_test)
+  self_dataset = generate_self_dataset(max_self, self_space, search_space)
+  puts "Done: prepared #{self_dataset.size} self patterns."
+  detectors = generate_detectors(max_detectors, search_space, self_dataset, min_distance)
+  puts "Done: prepared #{detectors.size} detectors."
+  apply_detectors(num_test, detectors, search_space, self_space, min_distance)
+  puts "Done. completed testing."
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {[0.0, 1.0]}
+  self_space = Array.new(problem_size) {[0.5, 1.0]}
+  max_self = 150
+  # algorithm configuration
+  max_detectors = 300  
+  min_distance = 0.05
+  num_test = 50
+  # execute the algorithm
+  run_algorithm(search_space, self_space, max_detectors, max_self, min_distance, num_test)
+end

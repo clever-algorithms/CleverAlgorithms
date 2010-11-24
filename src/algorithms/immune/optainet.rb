@@ -104,15 +104,17 @@ def search(problem_size, search_space, max_gens, pop_size, num_clones, beta, num
 end
 
 if __FILE__ == $0
+  # problem configuration
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
   max_gens = 200
   pop_size = 20
   num_clones = 10
   beta = 100
   num_rand = 1
   affinity_thresh = 0.5
-
+  # execute the algorithm
   best = search(problem_size, search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

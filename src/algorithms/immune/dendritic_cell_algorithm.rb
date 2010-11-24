@@ -129,16 +129,18 @@ def run(domain, max_iter, num_cells, p_anomaly, p_normal, threshold, response_si
 end
 
 if __FILE__ == $0
+  # problem configuration
   domain = {}
   domain["Normal"] = Array.new(50){|i| i}
   domain["Anomaly"] = Array.new(5){|i| (i+1)*10}
   domain["Normal"] = domain["Normal"] - domain["Anomaly"]
   p_anomaly = 0.70
   p_normal = 0.95
+  # algorithm configuration
   iterations = 100
   num_cells = 20
   threshold = [5,15]
   response_size = 10
-
+  # execute the algorithm
   run(domain, iterations, num_cells, p_anomaly, p_normal, threshold, response_size)
 end

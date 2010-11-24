@@ -112,13 +112,17 @@ def search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_
   return best
 end
 
-problem_size = 3
-max_gens = 200
-pop_size = 100
-clone_factor = 0.1
-mutate_factor = 2.5
-num_rand = 2
-search_space = Array.new(problem_size) {|i| [-5, +5]}
-
-best = search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
-puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_gens = 200
+  pop_size = 100
+  clone_factor = 0.1
+  mutate_factor = 2.5
+  num_rand = 2
+  # execute the algorithm
+  best = search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
+  puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+end
