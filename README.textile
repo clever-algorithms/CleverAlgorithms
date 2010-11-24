@@ -79,6 +79,7 @@ h4. Physical Algorithms
 * Jason Brownlee. "Extremal Optimization":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101116a-1.pdf. Technical Report CA-TR-20101116a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Cultural Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101121a-1.pdf. Technical Report CA-TR-20101121a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Harmony Search":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101122-1.pdf. Technical Report CA-TR-20101122-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Physical Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101125-1.pdf. Technical Report CA-TR-20101125-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 h4. Neural Algorithms
 
@@ -97,6 +98,9 @@ h4. Probabilistic Algorithms
 * Jason Brownlee. "Cross-Entropy Method":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101122a-1.pdf. Technical Report CA-TR-20101122a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Bayesian Optimization Algorithm":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101123-1.pdf. Technical Report CA-TR-20101123-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
+h4. Advanced Topics
+
+* ...
 
 h3. Software
 
