@@ -101,7 +101,7 @@ h4. Probabilistic Algorithms
 
 h4. Advanced Topics
 
-* ...
+* Jason Brownlee. "The Ruby Programming Language: A Quick-Start Guide":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101126-1.pdf. Technical Report CA-TR-20101126-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 h3. Software
 
