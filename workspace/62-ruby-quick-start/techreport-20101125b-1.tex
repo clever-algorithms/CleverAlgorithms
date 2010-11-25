@@ -1,0 +1,221 @@
+% Ruby Programming Language: A Quick Start Guide
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+\lstset{language=ruby}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{The Ruby Programming Language}
+\newcommand{\myreportsubtitle}{A Quick Start Guide}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20101125b}
+\newcommand{\myreportfulldate}{November 25, 2010}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}: {\myreportsubtitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\myreportfulldate\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+% project
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
+% template
+The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
+% report
+This report provides a quick start guide for the Ruby programming Language, suitable for a programmer proficient in another language to be able to understand the code examples provided in the Clever Algorithms Project.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Ruyb, Programming, Language, Quick, Start, Guide}}
+\end{description} 
+
+% summarise the document breakdown with cross references
+\section{Introduction}
+\label{sec:introduction}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+All code examples in the Clever Algorithms project are provided in the Ruby programming language \cite{Brownlee2010au}.
+This report provides a high-level introduction to the Ruby programming language. This guide is intended for programmers of an existing imperative or programming language (such as Python, Java, C, C++, C\#) to learn enough Ruby to be able to interpret and modify the code examples provided in the Clever Algorithms project.
+
+The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. It's meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's ``\emph{Programming Ruby: The Pragmatic Programmers' Guide}'' referred to as the `pickaxe book' because of the picture of the pickaxe on the cover \cite{Thomas2004}. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's ``\emph{The Ruby Programming Language}'' also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language \cite{Flanagan2008}.
+
+
+% basics
+\section*{Language Basics}
+This section summarizes the basics of the language, including variables, flow control, data structures, and functions.
+
+\subsection{Ruby Files}
+Ruby is an interpreted language, meaning that programs are typed as text into a \texttt{.rb} file which is parsed and executed at the type the script is run. For example, the following example shows how to invoke the Ruby interpreter on a script in the file \texttt{genetic\_algorithm.rb} from the command line:
+
+\texttt{ruby genetic\_algorithm.rb}
+
+Ruby scripts are written in ASCII text and are parsed and executed in a linear manner (top to bottom). A script can define functionality (as modules, functions, and classes) and invoke functionality (such as calling a function). 
+
+Comments in Ruby are defined by a \texttt{\#} character, after which the remainder of the line is ignored. The only exception is in strings, where the character can have a special meaning.
+
+The ruby interpreter can be used in an interactive manner by typing out a ruby script directly. This can be useful for testing specific behavior. For example, it is encouraged that you open the ruby interpreter and follow along this guide by typing out the examples. the ruby interpreter can be opened from the command line by typing \texttt{irb} and exited again by typing \texttt{exit} from within the interpreter.
+
+\subsection{Variables}
+A variable holds a piece of information such as an integer, a scalar or a string.
+
+\begin{lstlisting}
+a = 1               # a holds the integer value '1'
+b = 2.2             # b holds the floating point value '2.2'
+c = "hello, world"  # c holds the string value 'hello, world'
+\end{lstlisting}
+
+Ruby has a number of different data types (such as numbers and strings) although it does not enforce the type safety of variables. Instead it uses `duck typing', where as long as the value of a variable responds appropriately to messages it receives, the interpreter is happy.
+
+Strings can be constructed from static text as well as the values of variables. The following example defines a variable and then defines a string with the variable. The \texttt{\#\{\}} is a special sequence that informs the interrupter to evaluate the contents of inside the brackets, in this case to evaluate the variable n, which happens to be assigned the value 55.
+
+\begin{lstlisting}
+n = 55 # an integer 
+s = "The number is: #{n}"
+\end{lstlisting}
+
+The values of variables can be compared using the == for equality and != for inequality. The following provides an example of testing the equality of two variables and assigning the boolean (true or false) result to a third variable.
+
+\begin{lstlisting}
+a = 1
+b = 2
+c = (a == b) # true
+\end{lstlisting}
+
+\subsection{Flow Control}
+A script is a sequence of statements that invoke pre-defined functionality. There are structures for manipulating the flow of control within the script such as conditional statements and loops.
+
+Conditional statements can take the traditional forms of \texttt{if} <condition> then <action>, with the standard variants of if then else and if then, else if. For example:
+
+\begin{lstlisting}
+a == 1
+b == 2
+if(a == b) 
+	a += 1 # equivalent to a = a + a
+elsif a == 1 # brackets around conditions are optional
+	a = 1
+else 
+ 	a = 0
+end
+\end{lstlisting}
+
+Conditional statements can also be added to the end of statements. For example a variable can be assigned a variable only if a condition holds, defined all on one line.
+
+\begin{lstlisting}
+a = 2
+b = 99 if a == 2
+\end{lstlisting}
+
+Loops allow a set of statements to be repeatedly executed \texttt{until} a condition is met or \texttt{while} a condition is not met
+
+\begin{lstlisting}
+a = 0
+while a < 10 # condition before the statements
+	puts a += 1
+end
+\end{lstlisting}
+
+\begin{lstlisting}
+b = 10
+begin 
+	puts b -= 1
+end until b==0 # condition after the statements
+\end{lstlisting}
+
+As with the if conditions, the loops can be added to the end of statements allowing a loop on a single line.
+
+\begin{lstlisting}
+a = 0
+puts a += 1 while a<10
+\end{lstlisting}
+
+A block is a piece ...
+
+\subsection{Arrays and Hashs}
+An array is a linear collection of variables and can be defined by creating a new \texttt{Array} object.
+
+\begin{lstlisting}
+a = [] # define a new array implicitly
+a = Array.new # explicilty create a new array
+a = Array.new(10) # create a new array with space for 10 items
+b = Array.new(10) {|i| i} # define a new array
+\end{lstlisting}
+
+
+
+
+\subsection{Functions}
+The \texttt{puts} function can be used to write a line to the console.
+
+\begin{lstlisting}
+puts("Testing 1, 2, 3")
+puts "Testing 4, 5, 6" # note brackets are not required for the function call
+\end{lstlisting}
+
+Functions allow a program to be partitioned into discrete actions and pre-defined and reusable. The following is an example of a simple function
+
+\begin{lstlisting}
+def test_function()
+	puts ``Test!''
+end
+\end{lstlisting}
+
+A function can take a list of variables called function arguments.
+
+\begin{lstlisting}
+def test_function(a)
+	puts ``Test: #{a}''
+end
+\end{lstlisting}
+
+And a function can return a variable, called a return value.
+
+\begin{lstlisting}
+def square(x)
+	return x**2 # note the ** is a power-of operator in Ruby
+end
+\end{lstlisting}
+
+% ways of doing stuf
+\section*{Ruby Idioms}
+todo
+
+\subsection{Assignment}
+todo
+
+\subsection{Post-Conditions and Loops}
+todo
+
+\subsection{Looping Structures}
+todo
+
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
