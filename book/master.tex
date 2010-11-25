@@ -8,18 +8,18 @@
 
 % preamble
 \include{definitions}
-\include{title_page}
+\include{f_title_page}
 \makeindex
 
 \begin{document}
 \frontmatter
 	\maketitle	
-	\include{copyright}	
+	\include{f_copyright}	
 	\setcounter{tocdepth}{1}
 	\tableofcontents
-	\include{acknowledgments}
-	\include{foreword}
-	\include{preface}
+	\include{f_acknowledgments}
+	\include{f_foreword}
+	\include{f_preface}
 \mainmatter 
 	\part{Background}
 	\include{c_introduction}
@@ -37,14 +37,18 @@
 	\include{c_advanced}
 
 \backmatter 
+	% appendicies
+	\begin{appendices}
+		\include{b_appendix1}
+	\end{appendices}	
+	
 	% to get index and bib in the toc correctly
 	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
-
 	% index
 	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{part}{Index}
 	\printindex
-	bibliography
+	% bibliography
 	\cleardoublepage\phantomsection
 	\addcontentsline{toc}{part}{Bibliography}
 	\bibliographystyle{plain}
