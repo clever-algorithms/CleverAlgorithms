@@ -268,8 +268,8 @@ a = a.sort {|x,y| x[:quality]<=>y[:quality] } # => [1, 2, 3]
 Given that everything is an object, executing a function on a object (a behavior) can be thought of as sending a message to that object. For some messages sent to objects, there is a convention to adjust the function name accordingly. For example, functions that ask a question of an object (return a boolean) have a question mark (?) on the end of the function name. Those functions that change the internal state of an object (its data) have an exclamation mark on the end (!). When working with an imperative script (a script without objects) this convention applies to the data provided as function arguments.
 
 \begin{lstlisting}
-def	is_rich? (amount)
-	return (amount >= 1000000)
+def is_rich?(amount)
+	return amount >= 1000
 end
 puts is_rich?(99) # => false
 
