@@ -1,11 +1,13 @@
+# Makefile for the book
+
 # build the book
-
-book:
-	pdflatex master
-	makeindex master
+book :
+	pdflatex master 
 	bibtex master 
-	pdflatex master
-	pdflatex master
+	makeindex master 
+	pdflatex master 
+	pdflatex master 
 
-clean: 
-	rm *.pdf *.out *.bbl *.blg *.aux *.idx *.log *.toc 
+# delete all created files
+clean : 
+	rm *.pdf *.out *.bbl *.blg *.aux *.idx *.log *.toc *.ilg *.ind
