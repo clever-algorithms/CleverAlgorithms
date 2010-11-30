@@ -29,6 +29,7 @@ This introduction chapter provides relevant background information on Artificial
 % 
 \subsection{Artificial Intelligence}
 \label{sec:artificial_intelligence}
+\index{Artificial Intelligence}
 The field of classical \emph{Artificial Intelligence} (AI) coalesced in the 1950s drawing on an understanding of the brain from neuroscience, the new mathematics of information theory, control theory referred to as cybernetics, and the dawn of the digital computer. AI is a cross-disciplinary field of research generally concerned with developing and investigating systems that operate or act intelligently. It is generally considered a discipline in the field of computer science given the strong focus on computation.
 
 Russell and Norvig provide a perspective that defines Artificial Intelligence in four categories: (1) systems that think like humans, (2) systems that act like humans, (3) systems that think rationally, (4) systems that act rationally \cite{Russell2009}. In their definition, acting like a human suggests that a system can do some specific things humans can do, this includes fields such as the Turing test, natural language processing, automated reasoning, knowledge representation, machine learning, computer vision, and robotics. Thinking like a human suggests systems that model the cognitive information processing properties of humans, for example a general problem solver and systems that build internal models of their world. Thinking rationally suggests laws of rationalism and structured thought, such as syllogisms and formal logic. Finally, acting rationally suggests systems that do rational things such as expected utility maximization and rational agents. 
@@ -50,17 +51,21 @@ Scruffy AI approaches are defined as relatively simple procedures that result in
 % 
 \subsection{Natural Computation}
 \label{sec:natural_computation}
+\index{Natural Computation}
 An important perspective on scruffy Artificial Intelligence is the motivation and inspiration for the core information processing strategy of a given technique. Computers can only do what they are instructed, therefore a consideration is to distill information processing from other fields of study, such as the physical world and biology. The study of biologically motivated computation is called Biologically Inspired Computing \cite{Castro2005a}, and is one of three related fields of Natural Computing \cite{Forbes2000, Forbes2005, Paton1994}. 
 % more
 Natural Computing is an interdisciplinary field concerned with the relationship of computation and biology, which in addition to Biologically Inspired Computing is also comprised of Computationally Motivated Biology and Computing with Biology \cite{Paun2005, Marrow2000}.
 
 \subsubsection{Biologically Inspired Computation}
+\index{Biologically Inspired Computation}
 Biologically Inspired Computation is computation inspired by biological metaphor, also referred to as \emph{Biomimicry}, and \emph{Biomemetics} in other engineering disciplines \cite{Castro2005, Benyus1998}. The intent of this field is to devise mathematical and engineering tools to generate solutions to computation problems. The field involves using procedures for finding solutions abstracted from the natural world for addressing computationally phrased problems.
 
 \subsubsection{Computationally Motivated Biology}
+\index{Computationally Motivated Biology}
 Computationally Motivated Biology involves investigating biology using computers. The intent of this area is to use information sciences and simulation to model biological systems in digital computers with the aim to replicate and better understand behaviors in biological systems. The field facilitates the ability to better understand life-as-it-is and investigate life-as-it-could-be. Typically, work in this sub-field is not concerned with the construction of mathematical and engineering tools, rather it is focused on simulating natural phenomena. Common examples include Artificial Life, Fractal Geometry (L-systems, Iterative Function Systems, Particle Systems, Brownian motion), and Cellular Automata. A related field is that of Computational Biology generally concerned with modeling biological systems and the application of statistical methods such as in the sub-field of Bioinformatics.
 
 \subsubsection{Computation with Biology}
+\index{Computation with Biology}
 Computation with Biology is the investigation of substrates other than silicon in which to implement computation \cite{Aaronson2005}. Common examples include molecular or DNA Computing and Quantum Computing.
 
 % 
@@ -68,23 +73,29 @@ Computation with Biology is the investigation of substrates other than silicon i
 % 
 \subsection{Computational Intelligence}
 \label{sec:computationl_intelligence}
+\index{Computational Intelligence}
 Computational Intelligence is a modern name for the sub-field of AI concerned with sub-symbolic (also called messy, scruffy, and soft) techniques. Computational Intelligence describes techniques that focus on \emph{strategy} and \emph{outcome}. 
 % examples
 The field broadly covers sub-disciplines that focus on adaptive and intelligence systems, not limited to: Evolutionary Computation, Swarm Intelligence (Particle Swarm and Ant Colony Optimization), Fuzzy Systems, Artificial Immune Systems, and Artificial Neural Networks \cite{Engelbrecht2007, Pedrycz1997}. This section provides a brief summary of the each of the five primary areas of study.
 
 \subsubsection{Evolutionary Computation} 
+\index{Evolutionary Computation}
 A paradigm that is concerned with the investigation of systems inspired by the neo-Darwinian theory of evolution by means of natural selection. Popular evolutionary algorithms include the Genetic Algorithm, Evolution Strategy, Genetic and Evolutionary Programming, and Differential Evolution \cite{Baeck2000, Baeck2000a}. The evolutionary process is considered an adaptive strategy and is typically applied to search and optimization domains \cite{Goldberg1989, Holland1975}.
 
 \subsubsection{Swarm Intelligence} 
+\index{Swarm Intelligence}
 A paradigm that considers collective intelligence as a behavior that emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields (1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the stigmergy and foraging behavior of ants \cite{Bonabeau1999, Dorigo2004}, and (2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish \cite{Shi2001}. Like evolutionary computation, swarm intelligence-based techniques are considered adaptive strategies and are typically applied to search and optimization domains.
 
 \subsubsection{Artificial Neural Networks}
+\index{Artificial Neural Networks}
 Neural Networks are a paradigm that is concerned with the investigation of architectures and learning strategies inspired by the modeling of neurons in the brain \cite{Bishop1995}. Learning strategies are typically divided into supervised and unsupervised which manage environmental feedback in different ways. Neural network learning processes are considered adaptive learning and are typically applied to function approximation and pattern recognition domains.
 
 \subsubsection{Fuzzy Intelligence}
+\index{Fuzzy Intelligence}
 Fuzzy Intelligence is a paradigm that is concerned with the investigation of fuzzy logic, which is a form of logic that is not constrained to true and false like propositional logic, but rather functions which define approximate truth or degree’s of truth \cite{Zadeh1996}. Fuzzy logic and fuzzy systems are a logic system used as a reasoning strategy and are typically applied to expert system and control system domains.
 
 \subsubsection{Artificial Immune Systems}
+\index{Artificial Immune Systems}
 A collection of approaches inspired by the structure and function of the acquired immune system of vertebrates. Popular approaches include clonal selection, negative selection, dendritic cell algorithm, and immune network algorithms. The immune-inspired adaptive processes vary in strategy and show similarities to the fields of Evolutionary Computation and Artificial Neural Networks, and are typically used for optimization and pattern recognition domains \cite{Castro2002}.  
 
 % 
@@ -92,6 +103,7 @@ A collection of approaches inspired by the structure and function of the acquire
 % 
 \subsection{Metaheuristics}
 \label{sec:metaheuristics}
+\index{Metaheuristics}
 Another popular name for the strategy-outcome perspective of scruffy AI is \emph{Metaheuristics}. 
 % heuristics
 A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal \cite{Michalewicz2004}. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The Greedy search procedure that only takes cost-improving steps is an example of heuristic method.
@@ -120,6 +132,7 @@ Hyperheuristics are yet another extension that focuses on heuristics that modify
 % 
 \subsection{Clever Algorithms}
 \label{sec:clever_algorithms}
+\index{Clever Algorithms}
 % algorithm soures
 This book is concerned with Clever Algorithms which are algorithms drawn from many sub-fields of Artificial Intelligence not limited to the scruff fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics. 
 % the name
@@ -151,6 +164,7 @@ This section introduces two problem formalisms that embody many of the most diff
 %
 \subsection{Function Optimization}
 \label{subsec:function_optimization}
+\index{Function Optimization}
 Real-world optimization problems and generalizations thereof can be drawn from most fields of science, engineering, and information technology (for a sample see \cite{Ali1997, Toern1999}). Importantly, optimization problems have had a long tradition in the fields of Artificial Intelligence in motivating basic research into new problem solving techniques, and for investigating and verifying systemic behavior against benchmark problem instances.
 
 %
@@ -178,6 +192,7 @@ The topography of the response surface for the decision variables under the cost
 %
 \subsection{Function Approximation}
 \label{subsec:function_approximation}
+\index{Function Approximation}
 % relation to ai and ci
 The phrasing of real-world problems in the Function Approximation formalism are among the most computationally difficult considered in the broader field of Artificial Intelligence for reasons including: incomplete information, high-dimensionality, noise in the sample observations, and non-linearities in the target function.
 % this section
@@ -222,6 +237,7 @@ Additional difficulties include the incorporation of prior knowledge (such as im
 % 
 \section{Unconventional Optimization}
 \label{sec:unconventional_optimization}
+\index{Unconventional Optimization}
 % unconventional
 Not all algorithms described in this book are for optimization, although, those that are may be referred to as `unconventional' to differentiate them from the more traditional approaches. Examples of traditional approaches include (but are not not limited) to mathematical optimization algorithms (such as Newton's method and Gradient descent that uses derivatives to locate a local minimum) and direct search methods (such as the Simplex method and the Nelder-Mead method that use a search pattern to locate optima).
 % section
@@ -232,6 +248,7 @@ Unconventional optimization algorithms are designed for the more difficult probl
 % 
 \subsection{Black Box Algorithms}
 \label{subsec:black_box}
+\index{Black Box Algorithms}
 % overview
 Black Box optimization algorithms are those that exploit little, if any, information from a problem domain in order to devise a solution. They are generalized problem solving procedures that may be applied to a range of problems with very little modification \cite{Droste2006}.
 % more detail - use info if avaiable
@@ -242,6 +259,7 @@ Domain specific knowledge refers to making use of known relationships between so
 % 
 \subsection{No Free Lunch}
 \label{subsec:nfl}
+\index{No Free Lunch Theorem}
 % intro
 The \emph{No Free Lunch Theorem} of search and optimization by Wolpert and Macready proposes that all black box optimization algorithms are the same for searching for the extremum of a cost function when averaged over all possible functions \cite{Wolpert1997, Wolpert1995}. The theorem has caused a lot of pessimism and misunderstanding, particularly in relation to the evaluation and comparison of Metaheuristic and Computational Intelligence algorithms.
 
@@ -255,6 +273,7 @@ The theorem is an important contribution to computer science, although its impli
 % 
 \subsection{Stochastic Optimization}
 \label{subsec:stochastic}
+\index{Stochastic Optimization}
 % Stochastic
 Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. 
 Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness, are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
@@ -274,6 +293,7 @@ MCMC techniques combine these two approaches to solve integration and optimizati
 % 
 \subsection{Inductive Learning}
 \label{subsec:induction}
+\index{Inductive Learning}
 % adaptation
 Many unconventional optimization algorithms employ a process that includes the iterative improvement of candidate solutions against an objective cost function. This process of adaptation is generally a method by which the process obtains characteristics that improve the system's (candidate solution) relative performance in an environment (cost function). This adaptive behavior is commonly achieved through a `selectionist process' of repetition of the steps: generation, test, and selection. The use of non-deterministic processes mean that the sampling of the domain (the generation step) is typically non-parametric, although guided by past experience. 
 
@@ -377,18 +397,21 @@ This book is not an introduction to Artificial Intelligence or related sub-field
 % Artificial Intelligence
 % 
 \subsection{Artificial Intelligence}
+\index{Artificial Intelligence}
 Artificial Intelligence is large field of study and many excellent texts have been written to introduce the subject. Russell and Novig's ``\emph{Artificial Intelligence: A Modern Approach}'' is an excellent introductory text providing a broad and deep review of what the field has to offer and is useful for students and practitioners alike \cite{Russell2009}. Luger and Stubblefield's ``\emph{Artificial Intelligence: Structures and Strategies for Complex Problem Solving}'' is also an excellent reference text, providing a more empirical approach to the field.
 
 % 
 % Computational Intelligence
 % 
 \subsection{Computational Intelligence}
+\index{Computational Intelligence}
 Introductory books for the field of Computational Intelligence generally focus on a handful of specific sub-fields and their techniques. Engelbrecht's ``\emph{Computational Intelligence: An Introduction}'' provides a modern and detailed introduction to the field covering classic subjects such as Evolutionary Computation and Artificial Neural Networks, as well as more recent techniques such as Swarm Intelligence and Artificial Immune Systems \cite{Engelbrecht2007}. Pedrycz's slightly more dated ``\emph{Computational Intelligence: An Introduction}'' also provides a solid coverage of the core of the field with some deeper insights into fuzzy logic and fuzzy systems \cite{Pedrycz1997}.
 
 % 
 % Biologically Inspired Computation
 % 
 \subsection{Biologically Inspired Computation}
+\index{Biologically Inspired Computation}
 Computational methods inspired by natural and biologically systems represent a large fraction of the algorithms described in this book. The collection of articles published in de Castro and Von Zuben's ``\emph{Recent Developments in Biologically Inspired Computing}'' provide a good overview of the state of the field, and the introductory chapter on need for such methods does an excellent job to motivate the field of study \cite{Castro2005}. Forbes's ``\emph{Imitation of Life: How Biology Is Inspiring Computing}'' set's the scene for Natural Computing and the interrelated disciplines, of which Biologically Inspired Computing is but one useful example \cite{Forbes2000}. Finally, Benyus's ``\emph{Biomimicry: Innovation Inspired by Nature}'' provides a good introduction into the broader related field of a new frontier in science and technology that involves building systems inspired by an understanding of biological systems \cite{Benyus1998}.
 
 
@@ -396,6 +419,7 @@ Computational methods inspired by natural and biologically systems represent a l
 % Metaheuristics
 % 
 \subsection{Metaheuristics}
+\index{Metaheuristics}
 The field of Metaheuristics was initially constrained to heuristics for applying classical optimization procedures, although has expanded to encompass a broader and diverse set of techniques. Michalewicz and Fogel's ``\emph{How to Solve It: Modern Heuristics}'' provides a practical tour of heuristic methods with a consistent set of worked examples \cite{Michalewicz2004}. Glover and Kochenberger's ``\emph{Handbook of Metaheuristics}'' provides a solid introduction into a broad collection of techniques and their capabilities \cite{Glover2003}.
 
 % 
