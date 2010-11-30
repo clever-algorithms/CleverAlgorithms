@@ -14,3 +14,6 @@ clean :
 
 vl:
 	acroread master.pdf
+	
+vm:
+	open -a Preview master.pdf
