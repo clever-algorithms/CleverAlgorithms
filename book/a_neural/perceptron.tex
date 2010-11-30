@@ -9,67 +9,158 @@
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
 \section{Perceptron} 
 \label{sec:perceptron}
+\index{Perceptron}
 
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Perceptron.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+The Perceptron algorithm belongs to the field of Artificial Neural Networks and more broadly Computational Intelligence.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+It is a single layer feedforward neural network (single cell network) that inspired many extensions and variants, not limited to Adalines and Widrow Hoff learning rules.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
 % Optional
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
+The Perceptron is inspired by the information processing of a single neural cell (called a neuron). 
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
+A neuron accepts input signals via the dendrites, a chemical process occurs within the cell based on the input signals, and the cell may or may not produce an output signal on its axon. The point where one cells axon interfaces another cells dendrite is called the synapse, which may fire if the cell is activated.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\subsection{Metaphor}
+% \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% A textual description of the algorithm by analogy.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the technique is to model a given function by modifying internal weightings of input signals to produce an expected output signal.
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+The system is trained using a supervised learning method, where the error between the system's output and a known expected output is presented to the system and used to modify its internal state. State is maintained in a set of weightings on the input signals. The weights are used to represent an abstraction of the mapping of input vectors to the output signal for the examples that the system was exposed to during training.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
-% What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
+
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:train} provides a pseudo-code for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
+\begin{equation}
+	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
+\end{equation}
+
+where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. The weights are updated as follows:
+
+\begin{equation}
+	w_{i}(t+1) = w_{i}(t) + \alpha \times (e(t)-a(t)) \times x_{i}(t)
+\end{equation}
+
+where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learning rate, $e(t)$ and $a(t)$ are the expected and actual output at time $t$, and $x_i$ is the $i^{th}$ input. This update process is applied to each weight in turn (as well as the bias weight with its contact input).
+
+\begin{algorithm}[ht]
+	\SetLine  
+
+	% data
+	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{MaxIterations}{$iterations_{max}$}
+	\SetKwData{LearningRate}{$learn_{rate}$}
+	\SetKwData{Weights}{Weights}
+	\SetKwData{InputPatterns}{InputPatterns}
+	\SetKwData{Pattern}{$Pattern_i$}
+	\SetKwData{Activation}{$Activation_i$}
+	\SetKwData{Output}{$Output_i$}
+
+	% functions
+	\SetKwFunction{InitializeWeights}{InitializeWeights}
+	\SetKwFunction{SelectInputPattern}{SelectInputPattern}
+	\SetKwFunction{ActivateNetwork}{ActivateNetwork}
+	\SetKwFunction{TransferActivation}{TransferActivation}
+	\SetKwFunction{UpdateWeights}{UpdateWeights}
+	
+	% I/O
+	\KwIn{\ProblemSize, \InputPatterns, \MaxIterations, \LearningRate}		
+	\KwOut{\Weights}
+  
+	% Algorithm
+	\Weights $\leftarrow$ \InitializeWeights{\ProblemSize}\;
+	% loop
+	\For{$i=1$ \KwTo \MaxIterations} {
+		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;
+		\Activation $\leftarrow$ \ActivateNetwork{\Pattern, \Weights}\;
+		\Output $\leftarrow$ \TransferActivation{\Activation}\;
+		\UpdateWeights{\Pattern, \Output, \LearningRate}\;
+	}
+	\Return{\Weights}\;
+	% end
+	\caption{Pseudo Code for the Perceptron algorithm (training weights).}
+	\label{alg:train}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The Perceptron can be used to approximate arbitrary linear functions and can be used for regression or classification problems.
+	\item The Perceptron cannot learn a non-linear mapping between the input and output attributes. The XOR problem is a classical example of a problem that the Perceptron cannot learn.
+	\item Input and output values should be normalized such that $x \in [0,1)$.
+	\item The learning rate ($\alpha \in [0,1]$) controls the amount of change each error has on the system, lower learning rages are common such as 0.1.
+	\item The weights can be updated in an online manner (after the exposure to each input pattern) or in batch (after a fixed number of patterns have been observed).
+	\item Batch updates are expected to be more stable than online updates for some complex problems.
+	\item A bias weight is used with a constant input signal to provide stability to the learning process. 
+	\item A step transfer function is commonly used to transfer the activation to a binary output value $1 \leftarrow activation \geq 0$, otherwise $0$.
+	\item It is good practice to expose the system to input patterns in a different random order each enumeration through the input set.
+	\item The initial weights are typically small random values, typically $\in [0, 0.5]$.
+\end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-A code listing and a terse description of the listing.
+Listing~\ref{perceptron} provides an example of the Perceptron algorithm implemented in the Ruby Programming Language. 
+% problem
+The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
+
+% algorithm
+The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Perceptron algorithm in the Ruby Programming Language, label=perceptron]{../src/algorithms/neural/perceptron.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
-\subsection{References}
+\subsubsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The Perceptron algorithm was proposed by Rosenblatt in 1958 \cite{Rosenblatt1958}. Rosenblatt proposed a range of neural network structures and methods. The `Perceptron' as it is known is in fact a simplification of Rosenblatt's models by Minsky and Papert for the purposes of analysis \cite{Minsky1969}.
+% early
+An early proof of convergence was provided by Novikoff \cite{Novikoff1962}
+
+% 
+% Learn More
+% 
+\subsection{Learn More}
+% reviews
+% books
+Minsky and Papert wrote the classical text titled ``Perceptrons'' in 1969 that is known to have discredited the approach, suggesting it was limited to linear discrimination, which limited research in the area for decades afterward \cite{Minsky1969}.
 
 

@@ -9,18 +9,21 @@
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
 \section{Hopfield Network} 
 \label{sec:hopfield}
+\index{Hopfield Network}
 
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Hopfield Network, HN, Hopfield Model.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+The Hopfield Network is a Neural Network and belongs to the field of Artificial Neural Networks and Neural Computation.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+It is a Recurrent Neural Network and is related to other recurrent networks such as the Bidirectional Associative Memory (BAM).
+It is is generally related to feedforward Artificial Neural Networks such as the Perceptron and the Back-propagation algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -28,7 +31,7 @@ A small tree diagram showing related fields and algorithms.
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
+The Hopfield Network algorithm is inspired by the associated memory properties of the human brain.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -36,40 +39,102 @@ A textual description of the inspiring system.
 \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+Through the training process, the weights in the network may be thought to minimize an energy function and slide down an energy surface. In a trained network, each pattern presented to the network provides an attractor, where progress is made towards the point of attraction by propagating information around the network.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+The information processing objective of the system is to associate the components of an input pattern with a holistic representation of the pattern called Content Addressable Memory (CAM). This means that once trained, the system will recall whole patterns, give a portion or a noisy version of the input pattern.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+The Hopfield Network is comprised of a graphic data structure with weighted edges and separate procedures for training and applying the structure. The network structure is fully connected (a node connects to all other nodes except itself) and the edges (weights) between the nodes are bidirectional. 
+
+The weights of the network can be learned via a one-shot method (one-iteration through the patterns) if all patterns to be memorized by the network are known. Alternatively, the weights can be updated incrementally using the Hebb rule where weights are increased or decreased based on the difference between the actual and the expected output. The one-shot calculation of the network weights for a single node occurs as follows:
+
+\begin{equation}
+	w_{i,j} = \sum_{k=1}^{N} v_k^i \times v_k^j
+\end{equation}
+
+where $w_{i,j}$ is the weight between neuron $i$ and $j$, $N$ is the number of input patterns, $v$ is the input pattern and $v_k^i$ is the $i^{th}$ attribute on the $k^{th}$ input pattern.
+
+The propagation of the information through the network can be asynchronous where a random node is selected each iteration, or synchronously, where the output is calculated for each node before being applied for the whole network. Propagation of the information continues until no more changes are made or until a maximum number of iterations has completed, after which the output pattern from the network can be read. The activation for a single node is calculated as follows:
+
+\begin{equation}
+	n_i = \sum_{j=1}^n w_{i,j} \times n_j
+\end{equation}
+
+where $n_i$ is the activation of the $i^{th}$ neuron, $w_{i,j}$ with the weight between the nodes $i$ and $j$, and $n_j$ is the output of the $j^{th}$ neuron. The activation is transferred into an output using a transfer function, typically a step function as follows:
+
+	\[
+	  transfer(n_i) = \left\{ 
+	  \begin{array}{l l}
+	    1 & \quad if \geq \theta\\
+	    -1 & \quad if < \theta\\
+	  \end{array} \right.
+	\]
+
+where the threshold $\theta$ is typically fixed at 0.
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The Hopfield network may be used to solve the recall problem of matching cues for an input pattern to an associated pre-learned pattern.
+	\item The transfer function for turning the activation of a neuron into an output is typically a step function $f(a) \in \{-1,1\}$ (preferred), or more traditionally $f(a) \in \{0,1\}$.
+	\item The input vectors are typically normalized to boolean values $x \in [-1,1]$.
+	\item The network can be propagated asynchronously (where a random node is selected and output generated), or synchronously (where the output for all nodes are calculated before being applied).
+	\item Weights can be learned in a one-shot or incremental method based on how much information is known about the patterns to be learned.
+	\item All neurons in the network are typically both input and output neurons, although other network topologies have been investigated (such as the designation of input and output neurons).
+	\item A Hopfield network has limits on the patterns it can store and retrieve accurately from memory, described by $N<0.15\times n$ where $N$ is the number of patterns that can be stored and retrieved and $n$ is the number of nodes in the network.
+\end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-A code listing and a terse description of the listing.
+Listing~\ref{hopfield} provides an example of the Hopfield Network algorithm implemented in the Ruby Programming Language. 
+% problem
+The problem is an instance of a recall problem where patters are described in terms of a 3$\times$3 matrix of binary values ($\in \{-1,1\}$). Once the network has learned the patterns, the system is exposed to perturbed versions of the patterns (with errors introduced) and must respond with the correct pattern. Three patterns are used in this example, specifically a `C', and `L' and an `I'.
+
+% algorithm
+The algorithm is an implementation of the Hopfield Network with a one-short training method for the network weights, given that all patterns are already known. The information is propagated through the network using an asynchronous method, which is repeated until no more changes in the node outputs are detected. The patterns are displayed to the console during the testing of the network, with the outputs converted from $\{-1,1\}$ to $\{0,1\}$ for readability.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Hopfield Network algorithm in the Ruby Programming Language, label=hopfield]{../src/algorithms/neural/hopfield.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The Hopfield Network was proposed by Hopfield in 1982 where the basic model was described and related to an abstraction of the inspiring biological system \cite{Hopfield1982}.
+% early
+This early work was extend by Hopfield to `graded' neurons capable of outputting a continuous value through use of a logistic (sigmoid) transfer function \cite{Hopfield1984}.
+% optimization
+An innovative work by Hopfield and Tank considered the use of the Hopfield network for solving combinatorial optimization problems, with a specific study into the system applied to instances of the Traveling Salesman Problem \cite{Hopfield1985}. This was achieved with a large number of neurons and a representation that decoded the position of each position in the tour as a sub-problem on which a customized network energy function had to be minimized.
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% reviews
+Popovici and Boncut provide a summary of the Hopfield Network algorithm with worked examples \cite{Popovici2005}.
+Overviews of the Hopfield Network are provided in most good books on Artificial Neural Networks, such as \cite{Rojas1996}.
+% books
+Hertz, Krogh, and Palmer present an in depth study of the the field of Artificial Neural Networks with a detailed treatment of the Hopfield network from a statistical mechanics perspective \cite{Hertz1991}.
 
 
