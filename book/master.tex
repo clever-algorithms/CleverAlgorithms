@@ -18,6 +18,7 @@
 
 \frontmatter
 	\maketitle	
+	\clearpage
 	\include{f_copyright}	
 	\setcounter{tocdepth}{1}
 	\tableofcontents
@@ -40,12 +41,9 @@
 	\part{Extensions}
 	\include{c_advanced}
 
-
+	\appendix
   \part{Appendices}
-	% appendicies
-	\begin{appendix}
-		\include{b_appendix1}
-	\end{appendix}	
+	\include{b_appendix1}
 	
 	% to get index and bib in the toc correctly
 	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
