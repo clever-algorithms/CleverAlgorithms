@@ -4,6 +4,8 @@
 
 % This is a chapter
 
+\renewcommand{\bibsection}{\subsection{\bibname}}
+\begin{bibunit}
 
 \chapter{Swarm Algorithms}
 \label{ch:swarm}
@@ -12,10 +14,12 @@
 todo
 
 
+\putbib
+\end{bibunit}
 
-% updated: 20100112
-\newpage\input{a_swarm/pso}
-\newpage\input{a_swarm/ant_system}
-\newpage\input{a_swarm/ant_colony_system}
-\newpage\input{a_swarm/bees_algorithm}
-\newpage\input{a_swarm/bfoa}
+
+\newpage\begin{bibunit}\input{a_swarm/pso}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_swarm/ant_system}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_swarm/ant_colony_system}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_swarm/bees_algorithm}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_swarm/bfoa}\putbib\end{bibunit}

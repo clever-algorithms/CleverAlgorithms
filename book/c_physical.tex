@@ -4,6 +4,8 @@
 
 % This is a chapter
 
+\renewcommand{\bibsection}{\subsection{\bibname}}
+\begin{bibunit}
 
 \chapter{Physical Algorithms}
 \label{ch:physical}
@@ -12,11 +14,14 @@
 todo
 
 
-\newpage\input{a_physical/simulated_annealing}
-\newpage\input{a_physical/extremal_optimization}
-\newpage\input{a_physical/harmony_search}
-\newpage\input{a_physical/cultural_algorithm}
-\newpage\input{a_physical/memetic_algorithm}
+\putbib
+\end{bibunit}
+
+\newpage\begin{bibunit}\input{a_physical/simulated_annealing}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_physical/extremal_optimization}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_physical/harmony_search}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_physical/cultural_algorithm}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_physical/memetic_algorithm}\putbib\end{bibunit}
 
 
 

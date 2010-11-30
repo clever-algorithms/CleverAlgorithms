@@ -4,6 +4,8 @@
 
 % This is a chapter
 
+\renewcommand{\bibsection}{\subsection{\bibname}}
+\begin{bibunit}
 
 \chapter{Probabilistic Algorithms}
 \label{ch:probabilistic}
@@ -11,8 +13,12 @@
 \section{Overview}
 todo
 
-\newpage\input{a_probabilistic/pbil}
-\newpage\input{a_probabilistic/umda}
-\newpage\input{a_probabilistic/compact_genetic_algorithm}
-\newpage\input{a_probabilistic/boa}
-\newpage\input{a_probabilistic/cross_entropy}
+
+\putbib
+\end{bibunit}
+
+\newpage\begin{bibunit}\input{a_probabilistic/pbil}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_probabilistic/umda}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_probabilistic/compact_genetic_algorithm}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_probabilistic/boa}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_probabilistic/cross_entropy}\putbib\end{bibunit}
