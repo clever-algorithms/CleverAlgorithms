@@ -1,13 +1,11 @@
 # Makefile for the book
 
-# build the book
-book :
-	pdflatex master 
-	bibtex master 
-	makeindex master 
-	pdflatex master 
-	pdflatex master 
-
-# delete all created files
+book : master.tex
+	pdflatex master;true
+	bibtex master;true
+	makeindex master;true
+	pdflatex master;true
+	pdflatex master;true
+	grep -i "undefined" master.log;true
 clean : 
 	rm *.pdf *.out *.bbl *.blg *.aux *.idx *.log *.toc *.ilg *.ind
