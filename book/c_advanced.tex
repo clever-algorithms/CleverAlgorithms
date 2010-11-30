@@ -4,6 +4,7 @@
 
 % This is a chapter
 
+\begin{bibunit}
 \chapter{Advanced Topics}
 \label{ch:advanced}
 A chapter focused on applying, testing, visualizing, saving results, and comparing algorithms. The meta concerns once an algorithm is selected for a given practical problem solving scenario.
@@ -155,7 +156,6 @@ genetic algorithm vs something, use R to compare
 We learned lots of advanced topics, there are more.
 
 
-% \addcontentsline{toc}{section}{References}
-% \bibliographystyle{plain}
-% \bibliography{../workspace/bibtex}
-
+\renewcommand{\bibsection}{\section{\bibname}}
+\putbib
+\end{bibunit}
