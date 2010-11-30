@@ -23,8 +23,6 @@
 % empty == Produces empty heads and feet - no page numbers
 \newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
 
-% change title of bib to references
-\renewcommand\bibname{References}
 
 % 
 % Packages
@@ -79,8 +77,6 @@
 % http://www.ctan.org/tex-archive/macros/latex/contrib/algorithm2e/
 \usepackage[ruled, linesnumbered]{styles/algorithm2e}
 
-% for control over appendicies
-%\usepackage[toc,page,title,header]{styles/appendix}
-
 % for adding in bib for each section or chapter
-\usepackage{chapterbib}
+\usepackage{natbib}
+\usepackage{bibunits}

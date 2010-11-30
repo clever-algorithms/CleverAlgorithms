@@ -11,7 +11,12 @@
 \include{f_title_page}
 \makeindex
 
+
 \begin{document}
+
+\defaultbibliography{../workspace/bibtex}
+\defaultbibliographystyle{plain}
+
 \frontmatter
 	\maketitle	
 	\include{f_copyright}	
@@ -36,7 +41,7 @@
 	\part{Extensions}
 	\include{c_advanced}
 
-\backmatter 
+
   \part{Appendicies}
 	% appendicies
 	\begin{appendix}
@@ -46,6 +51,7 @@
 	% to get index and bib in the toc correctly
 	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
 	% index
+\backmatter
 	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{part}{Index}
 	\printindex

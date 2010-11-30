@@ -4,10 +4,10 @@
 
 % This is a chapter
 
+\begin{bibunit}
 \chapter{Stochastic Algorithms}
 \label{ch:stochastic}
 \index{Stochastic Algorithms}
-
 
 % 
 % Overview
@@ -36,8 +36,10 @@ The majority of the algorithms to be described in the Clever Algorithms project 
 % features
 These described algorithms are predominately global optimization algorithms and metaheuristics that manage the application of an embedded neighborhood exploring (local) search procedure. As such, with the exception of `Stochastic Hill Climbing' and `Random Search' the algorithms may be considered extensions of the multi-start search (also known as multi-restart search). The set of algorithms provide various different strategies by which `better' and varied starting points can be generated and issued to a neighborhood searching technique for refinement, a process that is repeated with potentially improving or unexplored areas to search. 
 
+\putbib
+\end{bibunit}
 
-% 
+%
 %  Algorithms, one per section
 % 
 \newpage\input{a_stochastic/random_search}
@@ -50,5 +52,3 @@ These described algorithms are predominately global optimization algorithms and 
 \newpage\input{a_stochastic/scatter_search}
 \newpage\input{a_stochastic/tabu_search}
 \newpage\input{a_stochastic/reactive_tabu_search}
-
-

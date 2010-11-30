@@ -5,6 +5,7 @@
 % This is a chapter
 
 % Argument and background information the user requires to read and understand the book
+\begin{bibunit}
 \chapter{Introduction}
 \label{chap:intro}
 % welcome
@@ -403,8 +404,10 @@ The field of Metaheuristics was initially constrained to heuristics for applying
 \subsection{The Ruby Programming Language}
 The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. It's meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's ``\emph{Programming Ruby: The Pragmatic Programmers' Guide}'' referred to as the `pickaxe book' because of the picture of the pickaxe on the cover \cite{Thomas2004}. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's ``\emph{The Ruby Programming Language}'' also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language \cite{Flanagan2008}.
 
-\addcontentsline{toc}{section}{References}
-\bibliographystyle{plain}
-\bibliography{../workspace/bibtex}
+% change title of bib to references
 
+\renewcommand{\bibsection}{\section{\bibname}}
+\addcontentsline{toc}{section}{References}
+\putbib
+\end{bibunit}
 % EOF

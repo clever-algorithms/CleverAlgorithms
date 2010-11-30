@@ -4,7 +4,8 @@
 
 % This is a chapter
 
-
+\renewcommand{\bibsection}{\subsection{\bibname}}
+\begin{bibunit}
 \chapter{Evolutionary Algorithms}
 \label{ch:evolutionary}
 \index{Evolutionary Algorithms}
@@ -14,13 +15,13 @@
 This chapter describes Stochastic Algorithms.
 
 % Evolution
-\subsubsection{Evolution}
+\subsection{Evolution}
 Evolutionary Algorithms belong to the Evolutionary Computation field of study concerned with computational methods inspired by the process and mechanisms of biological evolution. The process of evolution by means of natural selection (descent with modification) was proposed by Darwin to account for the variety of life and its suitability (adaptive fit) for its environment. The mechanisms of evolution describe how evolution actually takes place through the modification and propagation of genetic material (proteins). Evolutionary algorithms are concerned with investigating computations that resemble simplified versions of the processes and mechanisms of evolution toward achieving the effects of these processes and mechanisms, namely the development of adaptive systems.
 % related
 Additional subject areas that fall within the realm of Evolutionary Computation are algorithms that seek to exploit the properties from the related fields of Population Genetics, Population Ecology, Coevolutionary Biology, and Developmental Biology. 
 
 % References
-\subsubsection{References}
+\subsection{References}
 Evolutionary Algorithms share properties of adaptation through an iterative process of trial and error that accumulates and amplifies beneficial variation. Candidate solutions represent members of a virtual population striving to survive in an environment defined by a problem specific objective function. In each case, the evolutionary process refines the adaptive fit of the population of candidate solutions in the environment, typically using surrogates for the mechanisms of evolution such as genetic recombination and genetic mutation.
 
 % references
@@ -33,16 +34,18 @@ For a rounded and modern review of the field of Evolutionary Computation B\"ack,
 % other books
 For some additional modern books on the unified field of Evolutionary Computation and Evolutionary Algorithms, see De Jong \cite{Jong2006}, a recent edition of Fogel \cite{Fogel1995}, and Eiben and Smith \cite{Eiben2003}.
 
-\newpage\input{a_evolution/genetic_algorithm}
-\newpage\input{a_evolution/genetic_programming}
-\newpage\input{a_evolution/evolution_strategies}
-\newpage\input{a_evolution/differential_evolution}
-\newpage\input{a_evolution/evolutionary_programming}
-\newpage\input{a_evolution/grammatical_evolution}
-\newpage\input{a_evolution/gene_expression_programming}
-\newpage\input{a_evolution/learning_classifier_system}
-\newpage\input{a_evolution/nsga}
-\newpage\input{a_evolution/spea}
+\putbib
+\end{bibunit}
 
-% \bibliographystyle{plain}
-% \bibliography{../workspace/bibtex}
+
+\newpage\begin{bibunit}\input{a_evolution/genetic_algorithm}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/genetic_programming}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/evolution_strategies}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/differential_evolution}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/evolutionary_programming}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/grammatical_evolution}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/gene_expression_programming}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/learning_classifier_system}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/nsga}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{a_evolution/spea}\putbib\end{bibunit}
+
