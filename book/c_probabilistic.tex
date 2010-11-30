@@ -11,8 +11,40 @@
 \label{ch:probabilistic}
 
 \section{Overview}
-todo
+This chapter describes Probabilistic Algorithms
 
+
+% probabilistic
+\subsection{Probabilistic Models}
+Probabilistic Algorithms are those algorithms that model a problem or search a problem space using an probabilistic model of candidate solutions. Many Metaheuristics and Computational Intelligence algorithms may be considered probabilistic, although the difference with these so-called probabilistic algorithms is the explicit (rather than implicit) use of the tools of probability in problem solving. The vast majority of such algorithms are referred to as Estimation of Distribution Algorithms.
+
+% EDA
+\subsection{Estimation of Distribution Algorithms}
+Estimation of Distribution Algorithms (EDA) also called Probabilistic Model-Building Genetic Algorithms (PMBGA) are an extension of the field of Evolutionary Computation that model a population of candidate solutions as a probabilistic model. The generally involve iterations that alternate between creating candidate solutions in the problem space from a probabilistic model, and reducing a collection of generated candidate solutions into a probabilistic model. 
+
+The model at the heart of an EDA typically provides the probabilistic expectation of a component or component configuration comprising part of an optimal solution. This estimation is typically based on the observed frequency of use of the component in better than average candidate solutions. The probabilistic model is used to generate candidate solutions in the problem space, typically in a component-wise or step-wise manner using a domain specific construction method to ensure validity.
+
+% papers
+Pelikan, et al. provide a comprehensive summary of the field of probabilistic optimization algorithms, summarizing the core approaches and their differences \cite{Pelikan2002b}.
+% books
+The edited volume by Pelikan, Sastry, and Cantu-Paz provides a collection of studies on the popular Estimation of Distribution algorithms as well as methodology for designing algorithms and application demonstration studies \cite{Pelikan2006}.
+An edited volume on studies of EDAs by Larrañaga and Lozano \cite{Larranaga2002} and the follow-up volume by Lozano et al. \cite{Lozano2006} provide an applied foundation for the field.
+
+% 
+% Extensions
+% 
+\subsection{Extensions}
+\label{sec:extensions}
+There are other algorithms and classes of algorithm that were not described from the field of Probabilistic Intelligence. Some areas that may be considered for algorithm description in follow up works include:
+
+\begin{itemize}
+	\item \textbf{Extensions to UMDA}: Extensions to the Univariate Marginal Distribution Algorithm such as the Bivariate Marginal Distribution Algorithm (BMDA) \cite{Pelikan1998, Pelikan1999} and the Factorized Distribution Algorithm (FDA) \cite{Muhlenbein1999}.
+	\item \textbf{Extensions to cGA}: Extensions to the Compact Genetic Algorithm such as the Extended Compact Genetic Algorithm (ECGA) \cite{Harik1999a, Harik2006}.
+	\item \textbf{Extensions to BOA}: Extensions to the Bayesian Optimization Algorithm such as the Hierarchal Bayesian Optimization Algorithm (hBOA) \cite{Pelikan2000, Pelikan2001b} and the Incremental Bayesian Optimization Algorithm (iBOA) \cite{Pelikan2008}.
+	\item \textbf{Bayesian Network Algorithms}: Other Bayesian network algorithms such as The Estimation of Bayesian Network Algorithm \cite{Etxeberria1999}, and the Learning Factorized Distribution Algorithm (LFDA) \cite{Muehlenbein1999}.
+	\item \textbf{PIPE}: The Probabilistic Incremental Program Evolution that uses EDA methods for constructing programs \cite{Salustowicz1997}. 
+	\item \textbf{SHCLVND}: The Stochastic Hill-Climbing with Learning by Vectors of Normal Distributions algorithm \cite{Rudlof1996}.
+\end{itemize}
 
 \putbib
 \end{bibunit}

@@ -9,18 +9,22 @@
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
 \section{Bayesian Optimization Algorithm} 
 \label{sec:boa}
+\index{Bayesian Optimization Algorithm}
+\index{BOA}
 
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Bayesian Optimization Algorithm, BOA.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+The Bayesian Optimization Algorithm belongs to the field of Estimation of Distribution Algorithms, also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation. More broadly, BOA belongs to the field of Computational Intelligence.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+The Bayesian Optimization Algorithm is related to other Estimation of Distribution Algorithms such as the Population Incremental Learning Algorithm, and the Univariate Marginal Distribution Algorithm.
+It is also the basis for extensions such as the Hierarchal Bayesian Optimization Algorithm (hBOA) and the Incremental Bayesian Optimization Algorithm (iBOA).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -28,49 +32,138 @@ A small tree diagram showing related fields and algorithms.
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
+Bayesian Optimization Algorithm is a technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\subsection{Metaphor}
+% \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% A textual description of the algorithm by analogy.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the technique is to construct a probabilistic model that describes the relationships between the components of fit solutions in the problem space.
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+This is achieved by repeating the process of creating and sampling from a Bayesian network that contains the conditional dependancies, independencies, and conditional probabilities between the components of a solution. The network is constructed from the relative frequencies of the components within a population of high fitness candidate solutions. Once the network is constructed, the candidate solutions are discarded and a new population of candidate solutions are generated from the model. The process is repeated until the model converges on a fit prototype solution.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:boa} provides a pseudo-code listing of the Bayesian Optimization Algorithm for minimizing a cost function.
+% network construction
+The Bayesian network is constructed each iteration using a greedy algorithm. The network is assessed based on its fit of the information in the population of candidate solutions using either a Bayesian Dirichlet Metric (BD) \cite{Pelikan1999a}, or a Bayesian Information Criterion (BIC) \cite{Pelikan2005} (Chapter~3).
+
+\begin{algorithm}[htp]
+	\SetLine  
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{NumBits}{$Bits_{num}$}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{SelectionSize}{$Selection_{size}$}
+	% data
+	\SetKwData{Model}{Model}
+	\SetKwData{Selected}{Selected}
+	\SetKwData{Population}{Population}
+	\SetKwData{OffSpring}{OffSpring}
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
+	\SetKwFunction{GetBestSolution}{GetBestSolution} 
+	\SetKwFunction{StopCondition}{StopCondition}
+	\SetKwFunction{SelectFitSolutions}{SelectFitSolutions}
+	\SetKwFunction{ConstructBayesianNetwork}{ConstructBayesianNetwork}
+	\SetKwFunction{ProbabilisticallyConstructSolution}{ProbabilisticallyConstructSolution}
+	\SetKwFunction{Combine}{Combine}
+  
+	% I/O
+	\KwIn{\NumBits, \PopulationSize, \SelectionSize}
+	\KwOut{\Best}
+
+  % Algorithm
+	\Population $\leftarrow$ \InitializePopulation{\NumBits, \PopulationSize}\;
+	\EvaluatePopulation{\Population}\;
+	\Best $\leftarrow$ \GetBestSolution{\Population}\;
+	
+	\While{$\neg$\StopCondition{}} {
+		\Selected $\leftarrow$ \SelectFitSolutions{\Population}\;
+		\Model $\leftarrow$ \ConstructBayesianNetwork{\Selected}\;
+		\OffSpring $\leftarrow$ $0$\;
+		\For{$i$ \KwTo \PopulationSize} {
+			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Model}\;
+		}
+		\EvaluatePopulation{\OffSpring}\;
+		\Best $\leftarrow$ \GetBestSolution{\OffSpring}\;
+		\Population $\leftarrow$ \Combine{\Population, \OffSpring}\;
+	}
+	\Return{\Best}\;
+	
+	% end
+	\caption{Pseudo Code for the Bayesian Optimization Algorithm.}
+	\label{alg:boa}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The Bayesian Optimization algorithm was designed and investigated on binary string-base problems, most commonly representing binary function optimization problems.
+	\item Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionally, past networks may be used as the basis for the process that are in turn verified.
+	\item A greedy hill-climbing algorithm is used to each algorithm iteration optimize a Bayesian network to represent a population of candidate solutions.
+	\item The fitness of constructed bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or a Minimum Description length method called the Bayesian Information Criterion (BIC).
+	
+\end{itemize}
 
 % Code Listing
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-A code listing and a terse description of the listing.
+% Listing~\ref{boa} provides an example of the Bayesian Optimization Algorithm implemented in the Ruby Programming Language. 
+% % problem
+% The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+% 
+% % algorithm
+% The algorithm is an implementation based on the description of the technique by Pelikan in Chapter~3 of his book \cite{Pelikan2005a}.
+% 
+% % the listing
+% \lstinputlisting[firstline=7,language=ruby,caption=Bayesian Optimization Algorithm in the Ruby Programming Language, label=boa]{../src/algorithms/probabilistic/boa.rb}
+A listing of the algorithm is currently not provided.
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cantu-Paz in the technical report \cite{Pelikan1998a}, that was later published \cite{Pelikan2002}. The technique was proposed as an extension to the state of Estimation of Distribution algorithms (such as the Univariate Marginal Distribution Algorithm and the Bivariate Marginal Distribution Algorithm) that used a Bayesian Network to model the relationships and conditional probabilities for the components expressed in a population of fit candidate solutions.
+% early 
+Pelikan, Goldberg, and Cantu-Paz also described the approach applied to decelptive binary optimization problems (trap functions) in a paper that was published before the seminal journal article \cite{Pelikan1999a}.
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% hBOA
+Pelikan and Goldberg described an extension to the approach called the Hierarchical Bayesian Optimization Algorithm (hBOA) \cite{Pelikan2000, Pelikan2001b}. The differences in the hBOA algorithm are that it replaces the decision tables (used to store the probabilities) with decision graphs and used a niching method called Restricted Tournament Replacement to maintain diversity in the selected set of candidate solutions used to construct the network models.
+% thesis
+Pelikan's work on BOA culminated in his PhD thesis that provides a detailed treatment of the approach, its configuration and application \cite{Pelikan2002a}.
+% iBOA
+Pelikan, Sastry, and Goldberg proposed the Incremental Bayesian Optimization Algorithm (iBOA) extension of the approach that removes the population and adds incremental updates to the Bayesian network \cite{Pelikan2008}.
+
+% books
+Pelikan published a book that focused on the technique, walking through the development of probabilistic algorithms inspired by evolutionary computation, a detailed look at the Bayesian Optimization Algorithm (Chapter~3), the hierarchic extension to Hierarchical Bayesian Optimization Algorithm and demonstration studies of the approach on test problems \cite{Pelikan2005}.
 
 

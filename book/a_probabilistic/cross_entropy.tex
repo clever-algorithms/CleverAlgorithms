@@ -9,68 +9,162 @@
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
 \section{Cross-Entropy Method} 
 \label{sec:cross_entropy}
+\index{Cross-Entropy Method}
 
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Cross-Entropy Method, Cross Entropy Method, CEM.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+The Cross-Entropy Method is a probabilistic optimization belonging to the field of Stochastic Optimization.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+It is similar to other Stochastic Optimization and algorithms such as Simulated Annealing, and to Estimation of Distribution Algorithms such as the Probabilistic Incremental Learning Algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
 % Optional
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
+The Cross-Entropy Method does not have an inspiration. It was developed as an efficient estimation technique for rare-event probabilities in discrete event simulation systems and was adapted for use in optimization.
+The name of the technique comes from the Kullback-Leibler cross-entropy method for measuring the amount of information (bits) needed to identify an event from a set of probabilities.
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\subsection{Metaphor}
+% \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% A textual description of the algorithm by analogy.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
+The information processing strategy of the algorithm is to sample the problem space and approximate the distribution of good solutions.
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+This is achieved by assuming a distribution of the problem space (such as Gaussian), sampling the problem domain by generating candidate solutions using the distribution, and updating the distribution based on the better candidate solutions discovered. Samples are constructed step-wise (one component at a time) based on the summarized distribution of good solutions. As the algorithm progresses, the distribution becomes more refined until it focuses on the area or scope of optimal solutions in the domain.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+Algorithm~\ref{alg:cross_entropy_method} provides a pseudo-code listing of the Cross-Entropy Method algorithm for minimizing a cost function.
+
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	\SetKwData{NumSamples}{$Samples_{num}$}
+	\SetKwData{NumUpdateSamples}{$UpdateSamples_{num}$}
+	\SetKwData{LearningRate}{$Learn_{rate}$}
+	\SetKwData{MinVariance}{$Variance{min}$}
+	% data
+	\SetKwData{Means}{Means}
+	\SetKwData{Variances}{Variances}
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{Samples}{Samples}
+	\SetKwData{SelectedSamples}{$Samples_{selected}$}
+	\SetKwData{Meani}{$Means_i$}
+	\SetKwData{Variancei}{$Variances_i$}
+	% functions
+	\SetKwFunction{InitializeMeans}{InitializeMeans} 
+	\SetKwFunction{InitializeVariances}{InitializeVariances} 
+	\SetKwFunction{Max}{Max} 	
+	\SetKwFunction{GenerateSample}{GenerateSample} 
+	\SetKwFunction{EvaluateSamples}{EvaluateSamples} 
+	\SetKwFunction{SortSamplesByQuality}{SortSamplesByQuality} 
+	\SetKwFunction{Cost}{Cost} 
+	\SetKwFunction{SelectBestSamples}{SelectBestSamples} 	
+	\SetKwFunction{Mean}{Mean} 
+	\SetKwFunction{Variance}{Variance} 
+	
+	% I/O
+	\KwIn{\ProblemSize, \NumSamples, \NumUpdateSamples, \LearningRate, \MinVariance}		
+	\KwOut{\Best}
+
+  % Algorithm
+	\Means $\leftarrow$ \InitializeMeans{}\;
+	\Variances $\leftarrow$ \InitializeVariances{}\;
+	\Best $\leftarrow$ $0$\;
+	\While{\Max{\Variances} $\leq$ \MinVariance} {
+		\Samples $\leftarrow$ $0$\;
+		\For{$i=0$ \KwTo \NumSamples} {
+			\Samples $\leftarrow$ \GenerateSample{\Means, \Variances}\;
+		}
+		\EvaluateSamples{\Samples}\;
+		\SortSamplesByQuality{\Samples}\;
+		\If{\Cost{$\Samples_0$} $\leq$ \Cost{\Best}} {
+			\Best $\leftarrow \Samples_0$\;
+		}
+		\SelectedSamples $\leftarrow $\SelectBestSamples{\Samples, \NumUpdateSamples}\;
+		\For{$i=0$ \KwTo \ProblemSize} {
+			\Meani $\leftarrow$ \Meani + \LearningRate $\times$ \Mean{\SelectedSamples, $i$}\;
+			\Variancei $\leftarrow$ \Variancei + \LearningRate $\times$ \Variance{\SelectedSamples, $i$}\;
+		}
+	}
+	\Return{\Best}\;
+	% end
+	\caption{Pseudo Code for the Cross-Entropy Method algorithm.}
+	\label{alg:cross_entropy_method}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The Cross-Entropy Method was adapted for combinatorial optimization problems, although has been applied to continuous function optimization as well as noisy simulation problems.
+	\item A alpha ($\alpha$) parameter or learning rate $\in [0.1]$ is typically set high, such as 0.7.
+	\item A smoothing function can be used to further control the updates the summarizes of the distribution(s) of samples from the problem space. For example, in continuous function optimization a $\beta$ parameter may replace $\alpha$ for updated the standard deviation, calculated at time $t$ as $\beta_{t} = \beta - \beta \times (1-\frac{1}{t})^q$, where $\beta$ is initially set high $\in [0.8, 0.99]$ and $q$ is a small integer $\in [5, 10]$.
+\end{itemize}
 
 % Code Listing
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-A code listing and a terse description of the listing.
+Listing~\ref{cross_entropy_method} provides an example of the Cross-Entropy Method algorithm implemented in the Ruby Programming Language. 
+% problem
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+
+% algorithm
+The algorithm was implemented based on a description of the Cross-Entropy Method algorithm for continuous function optimization by Rubinstein and Kroese in Chapter 5 and Appendix A of their book on the method \cite{Rubinstein2004}. The algorithm maintains means and standard deviations  of the distribution of samples for connivence. The means and standard deviations were initialized based on random positions in the problem space and the bounds of the whole problem space respectively. A smoothing parameter is not used on the standard deviations.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Cross-Entropy Method algorithm in the Ruby Programming Language, label=cross_entropy_method]{../src/algorithms/probabilistic/cross_entropy_method.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The Cross-Entropy method was proposed by Rubinstein in 1997 \cite{Rubinstein1997} for use in optimizing discrete event simulation systems. It was later generalized by Rubinstein and proposed as an optimization method for combinatorial function optimization in 1999 \cite{Rubinstein1999}.
+% early
+This work was further elaborated by Rubinstein providing a detailed treatment on the use of the Cross-Entropy method for combinatorial optimization \cite{Rubinstein2001}.
+
+
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% reviews
+De Boer, et al. provide a detailed presentation of Cross-Entropy method including its application in rare event simulation, its adaptation to combinatorial optimization, and example applications to the max-cut, traveling salesman problem, and a clustering numeric optimization example \cite{DeBoer2005}.
+% books
+Rubinstein and Kroese provide a thorough presentation of the approach in their book, summarizing the relevant theory and the state of the art \cite{Rubinstein2004}.
 
 

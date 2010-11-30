@@ -9,68 +9,160 @@
 % The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used in terms of the heading and sub-headings of an algorithm description.
 \section{Compact Genetic Algorithm} 
 \label{sec:compact_genetic_algorithm}
+\index{Compact Genetic Algorithm}
+\index{cGA}
 
 % other names
 % What is the canonical name and common aliases for a technique?
 % What are the common abbreviations and acronyms for a technique?
-\emph{The heading and alternate headings for the algorithm description.}
+\emph{Compact Genetic Algorithm, CGA, cGA.}
 
 % Taxonomy: Lineage and locality
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
+The Compact Genetic Algorithm is an Estimation of Distribution Algorithm (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA), an extension to the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-A small tree diagram showing related fields and algorithms.
+The Compact Genetic Algorithm is the basis for extensions such as the Extended Compact Genetic Algorithm (ECGA).
+It is related to other EDAs such as the Univariate Marginal Probability Algorithm, the Population-Based Incremental Learning algorithm, and the Bayesian Optimization Algorithm.
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
 % Optional
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
+The Compact Genetic Algorithm is a probabilistic technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
-A textual description of the inspiring system.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
 % Optional
-\subsection{Metaphor}
+% \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-A textual description of the algorithm by analogy.
+% A textual description of the algorithm by analogy.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
+The information processing objective of the algorithm is to simulate the behavior of a Genetic Algorithm with a much smaller memory footprint (without requiring a population to be maintained). 
 % What is a techniques plan of action?
-A textual description of the information processing strategy.
+This is achieved by maintaining a vector that specifies the probability of including each component in a solution in new candidate solutions. Candidate solutions are probabilistically generated from the vector and the components in the better solution are used to make small changes to the probabilities in the vector.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
-% What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-A pseudo code description of the algorithms procedure.
+The Compact Genetic Algorithm maintains a real-valued prototype vector that represents the probability of each component being expressed in a candidate solution. 
+% What is the computational recipe for a technique?
+Algorithm~\ref{alg:cga} provides a pseudo-code listing of the Compact Genetic Algorithm for maximizing a cost function. The parameter $n$ indicates the amount to update probabilities for conflicting bits in each algorithm iteration.
+
+\begin{algorithm}[htp]
+	\SetLine  
+
+	% data
+	\SetKwData{Best}{$S_{best}$}
+	\SetKwData{NumBits}{$Bits_{num}$}
+	\SetKwData{VectorUpdate}{$n$}
+	
+	\SetKwData{Vector}{$V$}
+	\SetKwData{CandidateOne}{$S_{1}$}
+	\SetKwData{CandidateTwo}{$S_{2}$}	
+	\SetKwData{Winner}{$S_{winner}$}
+	\SetKwData{Loser}{$S_{loser}$}
+	
+	\SetKwData{WinnerBit}{$S_{winner}^i$}
+	\SetKwData{LoserBit}{$S_{loser}^i$}
+	\SetKwData{VectorBit}{$V_{i}^i$}
+
+	% functions
+	\SetKwFunction{InitializeVector}{InitializeVector}  
+	\SetKwFunction{StopCondition}{StopCondition} 
+	\SetKwFunction{GenerateSamples}{GenerateSamples} 
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{SelectWinnerAndLoser}{SelectWinnerAndLoser}
+  
+	% I/O
+	\KwIn{\NumBits, \VectorUpdate}		
+	\KwOut{\Best}
+
+  % Algorithm
+	\Vector $\leftarrow$ \InitializeVector{\NumBits, 0.5}\;
+	\Best $\leftarrow$ $0$\;
+	
+	\While{$\neg$\StopCondition{}} {
+		\CandidateOne $\leftarrow$ \GenerateSamples{\Vector}\;
+		\CandidateTwo $\leftarrow$ \GenerateSamples{\Vector}\;
+		\Winner, \Loser $\leftarrow$ \SelectWinnerAndLoser{\CandidateOne, \CandidateTwo}\;
+
+		\If{\Cost{\Winner} $\leq$ \Cost{\Best}} {
+			\Best $\leftarrow$ \Winner\;
+		}
+
+		\For{$i$ \KwTo \NumBits} {
+			\If{\WinnerBit $\neq$ \LoserBit} {
+				\eIf{\WinnerBit $\equiv$ 1} {
+					\VectorBit $\leftarrow$ \VectorBit $+$ $\frac{1}{\VectorUpdate}$\;
+				}{
+					\VectorBit $\leftarrow$ \VectorBit $-$ $\frac{1}{\VectorUpdate}$\;
+				}
+			}
+		}		
+	}
+	\Return{\Best}\;
+	
+	% end
+	\caption{Pseudo Code for the Compact Genetic Algorithm.}
+	\label{alg:cga}
+\end{algorithm}
 
 % Heuristics: Usage guidelines
 % The heuristics element describe the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations not specific problem instances). The heuristics are described textually, such as a series of guidelines in a bullet-point structure.
 \subsection{Heuristics}
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
-A bullet-point listing of best practice usage.
+\begin{itemize}
+	\item The vector update parameter ($n$) influences the amount that the probabilities are updated each algorithm iteration.
+	\item The vector update parameter ($n$) may be considered to be comparable to the population size parameter in the Genetic Algorithm.
+	\item Initial results demonstrate that the cGA may be comparable to a standard Genetic Algorithm on classical binary string optimization problems (such as onemax).	
+	\item The algorithm may be considered to have converged if the vector probabilities are all $>0$ or $<1$
+\end{itemize}
 
 % Code Listing
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-A code listing and a terse description of the listing.
+Listing~\ref{compact_genetic_algorithm} provides an example of the Compact Genetic Algorithm implemented in the Ruby Programming Language. 
+% problem
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+% algorithm
+The algorithm is an implementation of Compact Genetic Algorithm that uses integer values to represent 1 and 0 nits in a binary string representation. 
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Compact Genetic Algorithm in the Ruby Programming Language, label=compact_genetic_algorithm]{../src/algorithms/probabilistic/compact_genetic_algorithm.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
 \subsection{References}
 % What are the primary sources for a technique?
 % What are the suggested reference sources for learning more about a technique?
-An bullet-point annotated reference list of primary sources and useful resources.
+
+% 
+% Primary Sources
+% 
+\subsubsection{Primary Sources}
+% seminal
+The Compact Genetic Algorithm was proposed by Harik, Lobo, and Goldberg in 1999 \cite{Harik1999}, based on a random walk model perviously introduced by Harik, et al. \cite{Harik1997}. In the introductory paper, the cGA is demonstrated to be comparable to the Genetic Algorithm on standard binary string optimization problems.
+% early
+
+% 
+% Learn More
+% 
+\subsubsection{Learn More}
+% reviews
+Harik, et al. extend the Compact Genetic Algorithm (called the Extended Compact Genetic Algorithm) to generate populations of candidate solutions and perform selection (much like the Univariate Marginal Probabilist Algorithm), although it uses Marginal Product Models \cite{Harik1999a, Harik2006}. Sastry and Goldberg performed further analysis into the Extended Compact Genetic Algorithm applying the method to a complex optimization problem \cite{Sastry2000}.
+% books
 
 
