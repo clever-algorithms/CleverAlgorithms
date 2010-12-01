@@ -56,7 +56,7 @@ This is achieved by using evolutionary operators on candidate programs with a tr
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function, based on Koza and Poli's tutorial \cite{Koza2003a}. 
+Algorithm~\ref{alg:genetic_programming} provides a pseudo-code listing of the Genetic Programming algorithm for minimizing a cost function, based on Koza and Poli's tutorial \cite{Koza2005}. 
 
 % more
 The Genetic Program uses LISP-like symbolic expressions called S-expressions that represent the graph of a program with function nodes and terminal nodes. While the algorithm is running, the programs are treated like data, and when they are evaluated they are executed. The traversal of a program graph is always depth first, and functions must always return a value.
@@ -175,7 +175,7 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-Listing~\ref{genetic_programming} provides an example of the Genetic Programming algorithm implemented in the Ruby Programming Language based on Koza and Poli's tutorial \cite{Koza2003a}.
+Listing~\ref{genetic_programming} provides an example of the Genetic Programming algorithm implemented in the Ruby Programming Language based on Koza and Poli's tutorial \cite{Koza2005}.
  
 % problem
 The demonstration problem is an instance of a symbolic regression, where a function must be devised to match a set of observations. In this case the target function is a quadratic polynomial $x^2+x+1$ where $x \in [-1,1]$. The observations are generated directly from the target function without noise for the purposes of this example. In practical problems, if one knew and had access to the target function then the genetic program would not be required.
@@ -221,7 +221,7 @@ The field of Genetic Programming is vast, including many books, dedicated confer
 % koza
 Koza is generally credited with the development and popularizing of the field, publishing a large number of books and papers himself. 
 % intro papers 
-Koza provides a practical introduction to the field as a tutorial \cite{Koza2003a}, and provides recent overview of the broader field and usage of the technique \cite{Koza2005}.
+Koza provides a practical introduction to the field as a tutorial and provides recent overview of the broader field and usage of the technique \cite{Koza2005}.
 
 % books
 In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on automatically defined functions (ADFs) \cite{Koza1994}, volume III that considered the Genetic Programming Problem Solver (GPPS) for automatically defining the function set and program structure for a given problem \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical demonstration problem instances.
