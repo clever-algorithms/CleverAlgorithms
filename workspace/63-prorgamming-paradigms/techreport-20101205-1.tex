@@ -10,6 +10,12 @@
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
 % Dear template user: fill these in
@@ -52,12 +58,44 @@ The project requires all algorithms to be described using a standardized templat
 % this report
 This report considers the use of a range of different programming paradigms for implementing the algorithms described in this project.
 
-% Procedural
-\section{Procedural}
+This report discusses a number of standard programming paradigms that may be used to implement the algorithms described in the Clever Algorithms Project. Each paradigm is described and an example implementation is provided using the Genetic Algorithm as a context.
 
+% Procedural
+\section{Procedural Programming}
+All algorithms in the Clever Algorithms project were implemented using a procedural programming paradigm in the Ruby Programming Language \cite{Brownlee2010au}. A procedural representation was chosen to provide the most transferrable instantiation of the algorithm. Many languages support the procedural paradigm and procedural code examples are expected to be easily ported to popular paradigms such as object-oriented and functional.
+
+\subsection{Description}
+The procedural programming paradigm is concerned with defining a linear procedure or sequence of programming statements. A key feature of the paradigm is the partitioning of functionality into small discrete re-usable modules called procedures (subroutines or functions) that act like small programs themselves with their own scope, inputs and outputs. A procedural code example is executed from a single point of control or entry point which calls out into declared procedures, which in turn may call other procedures.
+
+\subsection{Example}
+Listing~\ref{ga_procedural} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the procedural programming paradigm (taken from \cite{Brownlee2010p}).  
+% problem
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+% algorithm
+The Genetic Algorithm is implemented with a conservative configuration including binary tournament selection for the selection operator, uniform crossover for the recombination operator, and point mutations for the mutation operator.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Procedural Programming Paradigm, label=ga_procedural]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
 
 % Object-Oriented
-\section{Object-Oriented}
+\section{Object-Oriented Programming}
+% overview
+This section considers the implementation of algorithms from the Clever Algorithms project in the Object-Oriented Programming Paradigm.
+
+% description
+\subsection{Description}
+The Object-Oriented Programming (OOP) paradigm is concerned with modeling problems in terms of entities called objects that have attributes and behaviors (data and methods) that may interact with other entities via message passing (calling methods on other entities). An object defines a class or template for the entity, which is instantiated or constructed and then may be used in the program.
+
+Objects can extend other objects, inheriting some or all of the attributes and behaviors from the parent providing specific modular reuse. Objects can be treated as a parent type (an object in its inheritance tree) allowing the use or application of the objects in the program without the caller knowing the specifics of the behavior or data inside the object. This general property is called polymorphism, which exploits the encapsulation of attributes and behavior within objects and their capability of being treated (viewed or interacted with) as a parent type.
+
+Organizing functionality into objects allows for additional constructs such as abstract types where functionality is only partially defined and must be completed by descendant objects, overriding where descending objects re-define behavior defined in a parent object, and static classes and behaviors where behavior is executed on the object template rather than the object instance. 
+
+There are common ways of solving discrete problems using object-oriented programs called patterns. They are organizations of behavior and data that have been abstracted and presented as a solution or idiom for a class of problem. The Strategy Pattern is an Object-oriented pattern that is suited to implementing an algorithm. This pattern...
+
+\subsection{Example}
+Listing~\ref{ga_oop} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Object-Oriented Programming Paradigm. 
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Object-Oriented Programming Paradigm, label=ga_oop]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
 
 % Functional
 \section{Functional}
@@ -74,10 +112,23 @@ A GA under a data flow or pipeline model.
 \section{Map Reduce}
 A GA under a map reduce paradigm.
 
+\section{Other Paradigms}
+A number of popular and common programming paradigms have been considered in this report, although many more have not been described. This section lists some additional popular and common programming paradigms and gives a brief indication of how the paradigm may be considered for implementing an algorithm.
+
+\begin{itemize}
+	\item \textbf{Structured Programming}: asdf
+	\item \textbf{Logic Programming}: asdf
+	\item \textbf{Declarative Programming}: asdf
+	\item \textbf{Aspect-Oriented Programming}: asdf
+	\item \textbf{Event-Driven Programming}: asdf
+\end{itemize}
+
 % summarise the document message and areas for future consideration
 \section{Conclusions}
 \label{sec:conclusions}
-This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
+% overview
+This report considered the implementation of Clever Algorithms in a range of common and popular programming languages. 
+
 
 % bibliography
 \bibliographystyle{plain}
