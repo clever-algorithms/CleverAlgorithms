@@ -67,6 +67,8 @@ All algorithms in the Clever Algorithms project were implemented using a procedu
 \subsection{Description}
 The procedural programming paradigm is concerned with defining a linear procedure or sequence of programming statements. A key feature of the paradigm is the partitioning of functionality into small discrete re-usable modules called procedures (subroutines or functions) that act like small programs themselves with their own scope, inputs and outputs. A procedural code example is executed from a single point of control or entry point which calls out into declared procedures, which in turn may call other procedures.
 
+benefits?
+
 \subsection{Example}
 Listing~\ref{ga_procedural} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the procedural programming paradigm (taken from \cite{Brownlee2010p}).  
 % problem
@@ -90,12 +92,29 @@ Objects can extend other objects, inheriting some or all of the attributes and b
 
 Organizing functionality into objects allows for additional constructs such as abstract types where functionality is only partially defined and must be completed by descendant objects, overriding where descending objects re-define behavior defined in a parent object, and static classes and behaviors where behavior is executed on the object template rather than the object instance. 
 
-There are common ways of solving discrete problems using object-oriented programs called patterns. They are organizations of behavior and data that have been abstracted and presented as a solution or idiom for a class of problem. The Strategy Pattern is an Object-oriented pattern that is suited to implementing an algorithm. This pattern...
+For more information on Object-Oriented programming and software design refer to a good text book on the subject, such as Booch \cite{Booch1997} or Meyer \cite{Meyer1997}.
+
+There are common ways of solving discrete problems using object-oriented programs called patterns. They are organizations of behavior and data that have been abstracted and presented as a solution or idiom for a class of problem. The Strategy Pattern is an Object-oriented pattern that is suited to implementing an algorithm. This pattern is intended to encapsulate the behavior of an algorithm as a strategy object where different strategies can be used interchangeably on a given context or problem domain. This strategy can be useful in situations where the performance or capability of a range of different techniques needs to be assessed on a given problem (such as algorithm racing or bake-off's). Additionally, the problem or context can also be modelled as an interchangeable object, allowing both algorithms and problems to be used interchangeably. This method is used in Object-Oriented algorithm frameworks.
+
+For more information on the strategy pattern or Object-Oriented design patterns in general, refer to the so-called gang-of-four design patterns book \cite{Gamma1995}.
 
 \subsection{Example}
 Listing~\ref{ga_oop} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Object-Oriented Programming Paradigm. 
+
+The implementation defines a general problem and strategy classes that define their behavioral expectations. A \texttt{OneMax} problem class is defined as is a \texttt{GeneticAlgorithm} strategy class. The algorithm makes few assumptions of the problem other than it can assess candidate solutions and indicate the number of bits a candidate solution should require. The problem makes very few assumptions about candidate solutions other than they are hash maps that contain a binary string and fitness key-value pairs. The use of the Object-Oriented strategy pattern means that a new algorithm could easily be defined to work with the defined problem, and that new problems could be defined for the Genetic Algorithm to execute.
+
+Note that Ruby does not support abstract classes, so this construct is simulated by defining methods that raise an exception if they are not overridden by descendant classes.
+
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Object-Oriented Programming Paradigm, label=ga_oop]{../../src/algorithms/evolutionary/genetic_algorithm.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Object-Oriented Programming Paradigm, label=ga_oop]{../../src/programming_paradigms/oop.rb}
+
+\section{Flow Programming}
+% overview
+This section considers the implementation of algorithms from the Clever Algorithms project in the Flow Programming Paradigm.
+
+% description
+\subsection{Description}
+Flow or pipeline programming involves chaining a sequence of smaller programs together and allowing a flow of information through the sequence in order to perform the desired computation. 
 
 % Functional
 \section{Functional}
@@ -106,8 +125,7 @@ Listing~\ref{ga_oop} provides an example of the Genetic Algorithm implemented in
 % Meta-Programming
 \section{Meta-Programming}
 
-\section{Flow Programming}
-A GA under a data flow or pipeline model.
+
 
 \section{Map Reduce}
 A GA under a map reduce paradigm.

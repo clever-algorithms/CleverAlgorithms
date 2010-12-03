@@ -4,79 +4,124 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def onemax(bitstring)
-  sum = 0
-  bitstring.each_char {|x| sum+=1 if x=='1'}
-  return sum
-end
-
-def random_bitstring(num_bits)
-  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
-end
-
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
-end
-
-def point_mutation(bitstring, prob_mutation)
-  child = ""
-   bitstring.each_char do |bit|
-    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+# A problem template
+class Problem
+  def assess(candidate_solution)
+    raise "A problem has not been defined"
   end
-  return child
+  
+  def is_optimal?(candidate_solution)
+    raise "A problem has not been defined"
+  end
 end
 
-def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1 if rand()>=p_crossover
-  child = ""
-  parent1.length.times do |i| 
-    child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
+# An strategy template 
+class Strategy
+  def execute(problem)
+    raise "A strategy has not been defined!"
   end
-  return child
 end
 
-def reproduce(selected, population_size, p_crossover, p_mutation)
-  children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
-    child = {}
-    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
-    child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
-    children << child
-    break if children.size >= population_size
+# An implementation of the OneMax problem using the problem template
+class OneMax < Problem
+  
+  attr_reader :num_bits
+  
+  def initialize(num_bits=64)
+    @num_bits = num_bits
   end
-  return children
+  
+  def assess(candidate_solution)
+    if candidate_solution[:bitstring].length != @num_bits
+      rase "Expected #{@num_bits} in candidate solution." 
+    end
+    sum = 0
+    candidate_solution[:bitstring].each_char {|x| sum+=1 if x=='1'}
+    return sum
+  end
+  
+  def is_optimal?(candidate_solution)
+    return candidate_solution[:fitness] == @num_bits
+  end
 end
 
-def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-  population = Array.new(population_size) do |i|
-    {:bitstring=>random_bitstring(num_bits)}
+# An implementation of the Genetic algorithm using the strategy template
+class GeneticAlgorithm < Problem
+  
+  attr_reader :max_generations, :population_size, :p_crossover, :p_mutation
+  
+  def initialize(max_gens=100, pop_size=100, crossover=0.98, mutation=1.0/64.0)
+    @max_generations = max_gens
+    @population_size = pop_size
+    @p_crossover = crossover
+    @p_mutation = mutation
   end
-  population.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  while best[:fitness]!=num_bits and gen<max_generations
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover, p_mutation)    
-    children.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
-    population = children
-    gen += 1
-    puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
-  end  
-  return best
+  
+  def random_bitstring(num_bits)
+    return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
+  end
+  
+  def binary_tournament(population)
+    s1, s2 = population[rand(population.size)], population[rand(population.size)]
+    return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  end
+
+  def point_mutation(bitstring)
+    child = ""
+     bitstring.each_char do |bit|
+      child << ((rand()<@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+    end
+    return child
+  end
+
+  def uniform_crossover(parent1, parent2)
+    return ""+parent1 if rand()>=@p_crossover
+    child = ""
+    parent1.length.times do |i| 
+      child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
+    end
+    return child
+  end
+
+  def reproduce(selected)
+    children = []  
+    selected.each_with_index do |p1, i|    
+      p2 = (i.even?) ? selected[i+1] : selected[i-1]
+      child = {}
+      child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring])
+      child[:bitstring] = point_mutation(child[:bitstring])
+      children << child
+      break if children.size >= @population_size
+    end
+    return children
+  end
+
+  def execute(problem)
+    population = Array.new(@population_size) do |i|
+      {:bitstring=>random_bitstring(problem.num_bits)}
+    end
+    population.each{|c| c[:fitness] = problem.assess(c)}
+    best = population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first      
+    @max_generations.times do |gen|
+      selected = Array.new(population_size){|i| binary_tournament(population)}
+      children = reproduce(selected)
+      children.each{|c| c[:fitness] = problem.assess(c)}
+      children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
+      best = children.first if children.first[:fitness] >= best[:fitness]
+      population = children
+      puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
+      break if problem.is_optimal?(best)
+    end
+    return best
+  end
 end
 
 if __FILE__ == $0
   # problem configuration
-  num_bits = 64
+  problem = OneMax.new
   # algorithm configuration
-  max_generations = 100
-  population_size = 100
-  p_crossover = 0.98
-  p_mutation = 1.0/num_bits
+  strategy = GeneticAlgorithm.new
   # execute the algorithm
-  best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
+  best = strategy.execute(problem)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end
