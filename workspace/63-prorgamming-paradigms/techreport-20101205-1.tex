@@ -1,0 +1,87 @@
+% Programming Paradigms
+
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+\documentclass[a4paper, 11pt]{article}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
+% Dear template user: fill these in
+\newcommand{\myreporttitle}{Programming Paradigms}
+\newcommand{\myreportauthor}{Jason Brownlee}
+\newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
+\newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
+\newcommand{\myreportdate}{20101205}
+\newcommand{\myreportfulldate}{December 05, 2010}
+\newcommand{\myreportversion}{1}
+\newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
+
+% leave this alone, it's templated baby!
+\title{{\myreporttitle}\footnote{\myreportlicense}}
+\author{\myreportauthor\\{\myreportemail}\\\small\myreportproject}
+\date{\myreportfulldate\\{\small{Technical Report: CA-TR-{\myreportdate}-\myreportversion}}}
+\begin{document}
+\maketitle
+
+% write a summary sentence for each major section
+\section*{Abstract} 
+% project
+The Clever Algorithms project aims to describe a large number of Artificial Intelligence algorithms in a complete, consistent, and centralized manner, to improve their general accessibility. 
+% template
+The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
+% report
+This report considers the use of a range of different programming paradigms used when realizing an algorithm as an implementation.
+
+\begin{description}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Programming, Paradigms}}
+\end{description} 
+
+% summarise the document breakdown with cross references
+\section{Introduction}
+\label{sec:introduction}
+% project
+The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
+% description
+The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+% this report
+This report considers the use of a range of different programming paradigms for implementing the algorithms described in this project.
+
+% Procedural
+\section{Procedural}
+
+
+% Object-Oriented
+\section{Object-Oriented}
+
+% Functional
+\section{Functional}
+
+% Agent-Oriented
+\section{Agent-Oriented}
+
+% Meta-Programming
+\section{Meta-Programming}
+
+\section{Flow Programming}
+A GA under a data flow or pipeline model.
+
+\section{Map Reduce}
+A GA under a map reduce paradigm.
+
+% summarise the document message and areas for future consideration
+\section{Conclusions}
+\label{sec:conclusions}
+This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
+
+% bibliography
+\bibliographystyle{plain}
+\bibliography{../bibtex}
+
+\end{document}
+% EOF
