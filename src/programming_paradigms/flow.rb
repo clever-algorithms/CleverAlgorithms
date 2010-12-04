@@ -1,4 +1,4 @@
-# Genetic Algorithm in the Ruby Programming Language
+# Genetic Algorithm in the Ruby Programming Language: Flow Programming
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -54,17 +54,17 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
     {:bitstring=>random_bitstring(num_bits)}
   end
   population.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  best = population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  max_generations.times do |gen|
+  gen, best = 0, population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  while best[:fitness]!=num_bits and gen<max_generations
     selected = Array.new(population_size){|i| binary_tournament(population)}
     children = reproduce(selected, population_size, p_crossover, p_mutation)    
     children.each{|c| c[:fitness] = onemax(c[:bitstring])}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
     population = children
+    gen += 1
     puts " > gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
-    break if best[:fitness] == num_bits
-  end
+  end  
   return best
 end
 

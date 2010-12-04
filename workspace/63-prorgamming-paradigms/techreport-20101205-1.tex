@@ -114,22 +114,39 @@ This section considers the implementation of algorithms from the Clever Algorith
 
 % description
 \subsection{Description}
-Flow or pipeline programming involves chaining a sequence of smaller programs together and allowing a flow of information through the sequence in order to perform the desired computation. 
+Flow or pipeline programming involves chaining a sequence of smaller programs together and allowing a flow of information through the sequence in order to perform the desired computation. Units in the flow are considered black-boxes that communicate with each other via message passing. The information that is passed between the units is considered a stream and a given application may have one or more streams of potentially varying direction. Discrete information in a stream is partitioned into information packets which are passed from unit to unit via message buffers, queues or similar data structures.
+
+A flow organization of functionality allows computing units to be interchanged readily with variations. It also allows for variations of the pipeline to be considered with minor reconfiguration. A flow or pipelining organization is commonly used by algorithm frameworks for the organization within a given algorithm implementation, allowing the specification of operators that manipulate the flow of candidate solutions to be varied and interchanged.
+
+For more information on Flow-based programming see a good textbook on the subject, such as Morrison \cite{Morrison2010}.
+
+\subsection{Example}
+Listing~\ref{ga_flow} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Flow Programming Paradigm.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Flow Programming Paradigm, label=ga_flow]{../../src/programming_paradigms/flow.rb}
 
 % Functional
-\section{Functional}
+\section{Functional Programming Paradigm}
+% overview
+This section considers the implementation of algorithms from the Clever Algorithms project in the Functional Programming Paradigm.
 
-% Agent-Oriented
-\section{Agent-Oriented}
+% description
+\subsection{Description}
+Functional...words
 
-% Meta-Programming
-\section{Meta-Programming}
+Map Reduce...
+
+\subsection{Example}
+Listing~\ref{ga_functional} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Functional Programming Paradigm.
+
+words
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Functional Programming Paradigm, label=ga_functional]{../../src/programming_paradigms/functional.rb}
 
 
-
-\section{Map Reduce}
-A GA under a map reduce paradigm.
-
+% other
 \section{Other Paradigms}
 A number of popular and common programming paradigms have been considered in this report, although many more have not been described. This section lists some additional popular and common programming paradigms and gives a brief indication of how the paradigm may be considered for implementing an algorithm.
 
@@ -138,7 +155,9 @@ A number of popular and common programming paradigms have been considered in thi
 	\item \textbf{Logic Programming}: asdf
 	\item \textbf{Declarative Programming}: asdf
 	\item \textbf{Aspect-Oriented Programming}: asdf
+	\item \textbf{Agent-Oriented Programming}: asdf
 	\item \textbf{Event-Driven Programming}: asdf
+	\item \textbf{Meta-Programming}: asdf
 \end{itemize}
 
 % summarise the document message and areas for future consideration
