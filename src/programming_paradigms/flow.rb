@@ -6,6 +6,7 @@
 
 require 'thread'
 
+# Generic flow unit 
 class FlowUnit
   attr_reader :queue_in, :queue_out, :thread
   
@@ -20,10 +21,13 @@ class FlowUnit
   
   def start
     puts "Starting flow unit: #{self.class.name}!"
-    @thread = Thread.new { run() while true }
+    @thread = Thread.new do 
+      run() while true 
+    end
   end
 end
 
+# Evaluation of solutions flow unit
 class EvalFlowUnit < FlowUnit
   def onemax(bitstring)
     sum = 0
@@ -31,13 +35,14 @@ class EvalFlowUnit < FlowUnit
     return sum
   end
 
-  def run
-    data = @queue_in.pop
+  def run   
+    data = @queue_in.pop    
     data[:fitness] = onemax(data[:bitstring])
-    @queue_out << data
+    @queue_out.push(data)
   end
 end
 
+# Fitness-based selection flow unit
 class SelectFlowUnit < FlowUnit
   def initialize(q_in=Queue.new, q_out=Queue.new, pop_size=100)
     super(q_in, q_out)
@@ -49,14 +54,16 @@ class SelectFlowUnit < FlowUnit
     return (s1[:fitness] > s2[:fitness]) ? s1 : s2
   end
 
-  def run
-    population = Array.new(@pop_size) { @queue_in.pop }
+  def run    
+    population = Array.new
+    population << @queue_in.pop while population.size < 100    
     @pop_size.times do
-      @queue_out << binary_tournament(population)
+      @queue_out.push(binary_tournament(population))
     end
   end
 end
 
+# Variation flow unit
 class VariationFlowUnit < FlowUnit
   def initialize(q_in=Queue.new, q_out=Queue.new, crossover=0.98, mutation=1.0/64.0)
     super(q_in, q_out)
@@ -91,11 +98,12 @@ class VariationFlowUnit < FlowUnit
   def run
     parent1 = @queue_in.pop
     parent2 = @queue_in.pop    
-    @queue_out << reproduce(parent1, parent2)
-    @queue_out << reproduce(parent2, parent1)
+    @queue_out.push(reproduce(parent1, parent2))
+    @queue_out.push(reproduce(parent2, parent1))
   end
 end
 
+# Stop condition flow unit
 class StopConditionUnit < FlowUnit
   attr_reader :best, :num_bits, :max_evaluations, :evals
   
@@ -115,8 +123,9 @@ class StopConditionUnit < FlowUnit
     @evals += 1
     if @best[:fitness]==@num_bits or @evals>=@max_evaluations
       puts "done! Solution: f=#{@best[:fitness]}, s=#{@best[:bitstring]}"
-      exit() 
+      @thread.exit() 
     end
+    @queue_out.push(data)
   end
 end
 
@@ -127,12 +136,13 @@ end
 if __FILE__ == $0
   # create the pipeline
   eval = EvalFlowUnit.new
-  select = SelectFlowUnit.new(eval.queue_out)
-  variation = VariationFlowUnit.new(select.queue_out,eval.queue_in)
-  stopcondition = StopConditionUnit.new(eval.queue_out, nil)
+  stopcondition = StopConditionUnit.new(eval.queue_out) 
+  select = SelectFlowUnit.new(stopcondition.queue_out)
+  variation = VariationFlowUnit.new(select.queue_out, eval.queue_in) 
   # push random solutions into the top of the pipeline
   100.times do 
-    eval.queue_in << {:bitstring=>random_bitstring(64)}
+    solution = {:bitstring=>random_bitstring(64)}
+    eval.queue_in.push(solution)
   end
   stopcondition.thread.join
 end
