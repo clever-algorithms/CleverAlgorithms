@@ -42,6 +42,32 @@ class EvalFlowUnit < FlowUnit
   end
 end
 
+# Stop condition flow unit
+class StopConditionUnit < FlowUnit
+  attr_reader :best, :num_bits, :max_evaluations, :evals
+  
+  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000,num_bits=64)
+    super(q_in, q_out)
+    @best, @evals = nil, 0
+    @num_bits = num_bits
+    @max_evaluations = max_evaluations
+  end
+  
+  def run
+    data = @queue_in.pop
+    if @best.nil? or data[:fitness] > @best[:fitness]
+      @best = data 
+      puts " >new best: #{@best[:fitness]}, #{@best[:bitstring]}"
+    end
+    @evals += 1
+    if @best[:fitness]==@num_bits or @evals>=@max_evaluations
+      puts "done! Solution: f=#{@best[:fitness]}, s=#{@best[:bitstring]}"
+      @thread.exit() 
+    end
+    @queue_out.push(data)
+  end
+end
+
 # Fitness-based selection flow unit
 class SelectFlowUnit < FlowUnit
   def initialize(q_in=Queue.new, q_out=Queue.new, pop_size=100)
@@ -103,32 +129,6 @@ class VariationFlowUnit < FlowUnit
   end
 end
 
-# Stop condition flow unit
-class StopConditionUnit < FlowUnit
-  attr_reader :best, :num_bits, :max_evaluations, :evals
-  
-  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000,num_bits=64)
-    super(q_in, q_out)
-    @best, @evals = nil, 0
-    @num_bits = num_bits
-    @max_evaluations = max_evaluations
-  end
-  
-  def run
-    data = @queue_in.pop
-    if @best.nil? or data[:fitness] > @best[:fitness]
-      @best = data 
-      puts " >new best: #{@best[:fitness]}, #{@best[:bitstring]}"
-    end
-    @evals += 1
-    if @best[:fitness]==@num_bits or @evals>=@max_evaluations
-      puts "done! Solution: f=#{@best[:fitness]}, s=#{@best[:bitstring]}"
-      @thread.exit() 
-    end
-    @queue_out.push(data)
-  end
-end
-
 def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
@@ -139,7 +139,7 @@ if __FILE__ == $0
   stopcondition = StopConditionUnit.new(eval.queue_out) 
   select = SelectFlowUnit.new(stopcondition.queue_out)
   variation = VariationFlowUnit.new(select.queue_out, eval.queue_in) 
-  # push random solutions into the top of the pipeline
+  # push random solutions into the pipeline
   100.times do 
     solution = {:bitstring=>random_bitstring(64)}
     eval.queue_in.push(solution)
