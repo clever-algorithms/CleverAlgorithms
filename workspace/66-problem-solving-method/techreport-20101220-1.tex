@@ -52,9 +52,54 @@ The project requires all algorithms to be described using a standardized templat
 % this report
 This report...
 
-
-
 This section considers a general methodology for solving the types of problems suited to the algorithms described in this book. Like a KDD method but for optimization with weak methods.
+
+
+%
+% Suitability of Application
+%
+\section{Suitability of Application}
+% utility as problems solvers
+From a problem-solving perspective, the tools that emerge from the field of Computational Intelligence are generally assessed with regard to their utility as \emph{efficiently} or \emph{effectively} solving problems.
+% nfl
+An important lesson from the `no-free-lunch theorem' was to \emph{bound claims of applicability}. An approach toward this end is to consider the suitability of a given strategy with regard to the feature overlap with the attributes of a given problem domain. From a Computational Intelligence perspective, one may consider the architecture, processes, and constraints of a given strategy as the features of an approach. 
+
+The suitability of the application of an `approach' to a `problem' takes into considerations concerns such as the \emph{appropriateness} (can the approach address the problem), the \emph{feasibility} (available resources and related efficiency concerns), and the \emph{flexibility} (ability to address unexpected or unintended effects).
+% my approach
+This section summarizes a general methodology toward addressing the problem of suitability in the context of Computational Intelligence tools. This methodology involves (1) the systematic elicitation of system and problem features, and (2) the consideration of the overlap of problem-problem, algorithm-algorithm, and problem-algorithm overlap of feature sets. 
+
+% Systematic Feature Elicitation
+\subsection{Systematic Feature Elicitation}
+A \emph{feature} of a system (tool, strategy, model) or a problem is a distinctive element or property that may be used to differentiate it from similar and/or related cases. Examples may include functional concerns such as: processes, data structures, architectures, and constraints, as well as emergent concerns that may have a more subjective quality such as general behaviors, organizations, and higher-order structures. The process of the elicitation of features may be taken from a system or problem perspective as follows:
+
+\begin{itemize}
+	\item \emph{System Perspective}: This requires a strong focus on the lower level functional elements and investigations that work toward correlating specific controlled organizations towards predictable emergent behaviors. 
+	\item \emph{Problem Perspective}: May require both a generalization of the specific case to the general problem case, as well as a functional or logical decomposition into constituent parts.
+\end{itemize}
+
+Problem \emph{generalization} and \emph{functional decomposition} are important and well used patterns for problem solving in the broader fields of Artificial Intelligence and Machine Learning as the promotion of simplification and modularity can reduce the cost and complexity of achieving solutions \cite{Russell2009, Brooks1986}.
+
+%
+% Feature Overlap
+%
+\subsection{Feature Overlap}
+% general overlap
+Overlap in elicited features may be considered from three important perspectives: \emph{between systems}, \emph{between problems}, and \emph{between a system and a problem}. Further, such overlap may be considered at different levels of detail with regard to generalized problem solving strategies and problem definitions.
+% cases
+These overlap cases are considered as follows:
+
+\begin{itemize}
+	\item \emph{System Overlap}: Defines the suitability of comparing one system to another, referred to as \emph{comparability}. For example, systems may be considered for the same general problems and compared in terms of theoretical or empirical capability, the results of which may only be meaningful if the systems are significantly similar to each other as assessed in terms of feature overlap. 
+	\item \emph{Problem Overlap}: Defines the suitability of comparing one problem to another, referred to as \emph{transferability}. From a systems focus for example, transferability refers to the capability of a technique on a given problem to be transferred to another problem, the result of which is only meaningful if there is a strong overlap between the problems under consideration.
+	\item \emph{System-Problem Overlap}: Defines the suitability of a system on a given problem, referred to as \emph{applicability}. For example, a system is considered suitable for a given problem if it has a significant overlap in capabilities with the requirements of the problem definition.
+\end{itemize}
+
+% noise
+Such mappings are expected to have noise given the subjective assessment and/or complexity required in both the elicitation and consideration overlap of the of features, the noisiest of which is expected to be the mapping between systems and problems. 
+% nfl
+The mapping of salient features of algorithms and problems was proposed as an important reconciliation of the `no-free-lunch theorem' by Wolpert and Macready \cite{Wolpert1997}, although the important difference of this approach is that the system and algorithm are given prior to the assessment. In \cite{Wolpert1995}, Wolpert and Macready specifically propose the elicitation of the features from a problem first perspective, for which specialized algorithms can be defined. Therefore, this methodology of suitability may be considered a generalization of this reconciliation suitable for the altered `Computational Intelligence' (strategy first) perspective on Artificial Intelligence.
+% this argument also supports outlining capability by analogy
+
 
 \section{Weak and Strong Methods}
 there are weak and strong methods
@@ -78,7 +123,9 @@ search as innovation...
 % summarise the document message and areas for future consideration
 \section{Conclusions}
 \label{sec:conclusions}
-This is the conclusion. Consider summarizing the message of the document once again, and highlighting areas for future consideration.
+This report...
+
+Some of the content of this report was derived from the dissertation work of the author \cite{Brownlee2008}.
 
 % bibliography
 \bibliographystyle{plain}
