@@ -37,7 +37,7 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-This report...
+This report considers methodology for apply Clever Algorithms for solving practical problems.
 
 \begin{description}
 	\item[Keywords:] {\small\texttt{Clever, Algorithms, Problem, Solving, Methodology}}
@@ -49,16 +49,22 @@ This report...
 The Clever Algorithms project aims to describe a large number of algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics in a complete, consistent and centralized manner \cite{Brownlee2010}.
 % description
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
+
 % this report
-This report...
+The field of Data Mining has a clear methodologies that guides a practitioner to solve problems, such as Knowledge Discovery in Databases (KDD) \cite{Fayyad1996}. Metaheuristics and Computational Intelligence algorithms have no such methodology, although some methods can be used for classification and regression and as such may fit into methodologies such as KDD.
 
-This section considers a general methodology for solving the types of problems suited to the algorithms described in this book. Like a KDD method but for optimization with weak methods.
+This report describes some of the considerations when applying algorithms from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation to practical problem domains. This discussion includes:
 
+\begin{itemize} 
+  \item A discussion on the suitability of application of a given technique and the transferability of algorithm and problem features (Section~\cite{sec:suitability})
+  \item other..
+\end{itemize}
 
 %
 % Suitability of Application
 %
 \section{Suitability of Application}
+\label{sec:suitability}
 % utility as problems solvers
 From a problem-solving perspective, the tools that emerge from the field of Computational Intelligence are generally assessed with regard to their utility as \emph{efficiently} or \emph{effectively} solving problems.
 % nfl
@@ -100,22 +106,34 @@ Such mappings are expected to have noise given the subjective assessment and/or 
 The mapping of salient features of algorithms and problems was proposed as an important reconciliation of the `no-free-lunch theorem' by Wolpert and Macready \cite{Wolpert1997}, although the important difference of this approach is that the system and algorithm are given prior to the assessment. In \cite{Wolpert1995}, Wolpert and Macready specifically propose the elicitation of the features from a problem first perspective, for which specialized algorithms can be defined. Therefore, this methodology of suitability may be considered a generalization of this reconciliation suitable for the altered `Computational Intelligence' (strategy first) perspective on Artificial Intelligence.
 % this argument also supports outlining capability by analogy
 
+%
+% Strong and Weak Methods
+%
+\section{Strong and Weak Methods}
+\label{sec:strong_methods}
+% weak
+Generally, the methods from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation may be considered weak methods. They are weak because they are general purpose problem solves that are typically considers black-box solvers for a range of problem domains. 
+% weak and strong
+Discriminating techniques into weak and strong is not a useful classification, it is better to consider a continuum of methods from pure block box techniques that have none or few assumptions about the problem domain, to strong methods that exploit most or all of the problem specific information available.
 
-\section{Weak and Strong Methods}
-there are weak and strong methods
+For example, the Traveling Salesman Problem is an example of a combinatorial optimization problem. A na\"ive (such a Random Search) black box method may simple explore permutations of the cities. Slightly stronger methods may initialize the search with a heuristic-generated technique (such as nearest neighbor) and explore the search space using a variation method that also exploits heuristic information about the domain (such as a 2-opt variation). Continuing along this theme, a stochastic method may explore the search space using a combination of probabilistic and heuristic information (such as Ant Colony Optimization algorithms). At the other end of the scale the stochastic elements are decreased or removed until one is left with  dynamic programming methods such as Lin-Kernighan and Concord.
 
+% strategy
+Approaching a problem is not as simple as selecting the strongest method available and solving the problem. The following describes two potential strategies:
 
-\section{Global and Local Search}
+\begin{itemize}
+  \item \emph{Start Strong}: Select the strongest technique available and apply it to the problem. Difficult problems can be resistant to traditional methods for many intrinsic and extrinsic reasons. Use products from a strong technique (best solution found, heuristics) to seed the next weaker method in line. 
+  \item \emph{Start Weak}: Strong methods do not exist for all problems, and if they do exist, the computation, skill, and/or time resources may not be available to exploit them. Start with a weak technique and use it to learn about the problem domain. Use this information to make decisions or better decisions about subsequent techniques to try that can exploit what has been learned.
+\end{itemize}
+
+In a real-world engineering or business scenario, the objective is to solve a problem, or achieve the best possible solution to the problem within the operating constraints.
+Both of the above strategies suggest an iterative methodology, where the product or knowledge gained from one technique may be used to prime a subsequent stronger or weaker technique. 
+
+%
+% Local and Global Search
+% 
+\section{Local and Global Search}
 we search at different scales
-
-
-\section{Methodology}
-use problem specific info
-global search
-restarts
-local search
-
-search as innovation...
 
 
 
