@@ -104,7 +104,7 @@ h4. Advanced Topics
 * Jason Brownlee. "The Ruby Programming Language: A Quick-Start Guide":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101126-1.pdf. Technical Report CA-TR-20101126-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Clever Algorithms: Programming Paradigms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101205-1.pdf. Technical Report CA-TR-20101205-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Clever Algorithms: Devising New Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101205a-1.pdf. Technical Report CA-TR-20101205a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
-
+* Jason Brownlee. "Clever Algorithms: Benchmarking Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101206-1.pdf. Technical Report CA-TR-20101206-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 h3. Software
 
