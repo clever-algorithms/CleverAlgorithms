@@ -24,8 +24,8 @@
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
-\newcommand{\myreportdate}{20101220}
-\newcommand{\myreportfulldate}{December 20, 2010}
+\newcommand{\myreportdate}{20101206}
+\newcommand{\myreportfulldate}{December 06, 2010}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -146,6 +146,16 @@ The following provide 10 guidelines that may help when it comes time to unit tes
 	\item \emph{Probabilistic testing}: Metaheuristics and Computational Intelligence algorithms generally make use of stochastic or probabilistic decisions. This means that some behaviors are not deterministic and are more difficult to test. As with the example, write probabilistic tests to verify that such processes behave as intended. Probabilistic tests are weaker than deterministic tests, consider writing deterministic tests first. A probabilistic behavior can be made deterministic by replacing the random number generator with a proxy that returns deterministic values, called a mock. This level of testing may require further impact to the original code to allow for dependent modules and objects to be mocked.
 	\item \emph{Consider test-first}: Writing the tests first in a Test-Driven methodology can help to crystallize expectations when implementing an algorithm from the literature, and help to solidify thoughts when developing or prototyping a new idea.
 \end{itemize}
+
+% 
+% References
+% 
+\section{References}
+\label{sec:refs}
+For more information on software testing, consult a good book on software engineering. Two good book's dedicated to testing are ``Beautiful Testing: Leading Professionals Reveal How They Improve Software'' that provides a compendium of best practices from professional programers and testers \cite{Goucher2009}, and ``Software testing'' by Patton that provides a more traditional treatment \cite{Patton2005}.
+
+Unit testing is covered in any good book on software testing.
+Two good books that focus on unit testing include ``Test Driven Development: By Example'' of the TDD methodology by Beck, a pioneer of Extreme Programming and Test Drive Development \cite{Beck2002} and ``Pragmatic unit testing in Java with JUnit'' by Hunt and Thomas dedicated to the popular JUnit framework for Java \cite{Hunt2003}.
 
 % summarise the document message and areas for future consideration
 \section{Conclusions}
