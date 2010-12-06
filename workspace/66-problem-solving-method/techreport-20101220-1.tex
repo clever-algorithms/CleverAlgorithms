@@ -134,14 +134,13 @@ Both of the above strategies suggest an iterative methodology, where the product
 % 
 \section{Local and Global Search}
 As with the continuum between strong and weak methods for solving a problem, one may also consider methods that operate locally and globally in a search space. A global search method will consider the entire domain in an effort to locate an a solution, typically an approximate solution. A local search technique will focus on a constrained area of the search space.
+The global search provides the benefit of making few if any assumptions about where promising areas of the search space may be, potentially highlighting unintuitive combination's of parameters. The local search provides the benefit if focus and refinement of an existing candidate solution.
 
 Hill climbing algorithms are generally considered local search methods, and it is common for black-box stochastic optimization algorithms to provide a global search capability.
-A general strategy when searching for a `good enough' solution to a difficult optimization problem is to start with a global search method and refine the result with a local search method. The application of the global search may be repeated to provide different potentially-good starting positions for the local search method (referred to as random restarts).
+A general strategy when searching for a `good enough' solution to a difficult optimization problem is to start with a global search method and refine the result with a local search method. The application of the global search may be repeated to provide different potentially-good starting positions for the local search method (referred to as random restarts). 
 
 As with the weak-strong classification of methods, this local-global taxonomy of algorithms can also rapidly break down when specific algorithms are examined.
 Some methods focus or converge on a area of the domain as they progress, ultimately arriving at a single solution (such as the Genetic Algorithm). Other methods can alternate between variations local and global search procedures under the banner of a single algorithm (such as GRASP). 
-
-
 
 % summarise the document message and areas for future consideration
 \section{Conclusions}
