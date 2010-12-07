@@ -18,8 +18,8 @@
 \newcommand{\myreportauthor}{Jason Brownlee}
 \newcommand{\myreportemail}{jasonb@CleverAlgorithms.com}
 \newcommand{\myreportproject}{The Clever Algorithms Project\\\url{http://www.CleverAlgorithms.com}}
-\newcommand{\myreportdate}{20101220}
-\newcommand{\myreportfulldate}{December 20, 2010}
+\newcommand{\myreportdate}{20101208}
+\newcommand{\myreportfulldate}{December 08, 2010}
 \newcommand{\myreportversion}{1}
 \newcommand{\myreportlicense}{\copyright\ Copyright 2010 Jason Brownlee. Some Rights Reserved. This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.}
 
@@ -57,7 +57,8 @@ This report describes some of the considerations when applying algorithms from t
 
 \begin{itemize} 
   \item A discussion on the suitability of application of a given technique and the transferability of algorithm and problem features (Section~\ref{sec:suitability})
-  \item other..
+  \item A discussion on the distinction between strong and weak methods that describes a continuum of methods that use more or less problem specific information respectively (Section~\ref{sec:strong_methods}).
+	\item A summary of problem solving strategies that suggest different ways of applying a given technique in the fields of function optimization and approximation (Section~\ref{sec:strategies}).
 \end{itemize}
 
 %
@@ -130,23 +131,11 @@ In a real-world engineering or business scenario, the objective is to solve a pr
 Both of the above strategies suggest an iterative methodology, where the product or knowledge gained from one technique may be used to prime a subsequent stronger or weaker technique. 
 
 %
-% Local and Global Search
-% 
-% \section{Local and Global Search}
-% As with the continuum between strong and weak methods for solving a problem, one may also consider methods that operate locally and globally in a search space. A global search method will consider the entire domain in an effort to locate an a solution, typically an approximate solution. A local search technique will focus on a constrained area of the search space.
-% The global search provides the benefit of making few if any assumptions about where promising areas of the search space may be, potentially highlighting unintuitive combination's of parameters. The local search provides the benefit if focus and refinement of an existing candidate solution.
-% 
-% Hill climbing algorithms are generally considered local search methods, and it is common for black-box stochastic optimization algorithms to provide a global search capability.
-% A general strategy when searching for a `good enough' solution to a difficult optimization problem is to start with a global search method and refine the result with a local search method. The application of the global search may be repeated to provide different potentially-good starting positions for the local search method (referred to as random restarts). 
-% 
-% As with the weak-strong classification of methods, this local-global taxonomy of algorithms can also rapidly break down when specific algorithms are examined.
-% Some methods focus or converge on a area of the domain as they progress, ultimately arriving at a single solution (such as the Genetic Algorithm). Other methods can alternate between variations local and global search procedures under the banner of a single algorithm (such as GRASP). 
-
-%
 % Domain-Specific Strategies
 %
 \section{Domain-Specific Strategies}
-An algorithm may be considered a strategy for problem solving. On top of that, there are a wide range of ways in which a given algorithm can be used to solve a problem. This section summarizes a selection of such strategies from the fields of function optimization and function optimization.
+\label{sec:strategies}
+An algorithm may be considered a strategy for problem solving. There are a wide range of ways in which a given algorithm can be used to solve a problem. This section summarizes a selection of such strategies from the fields of function optimization and function optimization.
 
 %
 % Function Optimisation
@@ -173,11 +162,11 @@ Many real-world optimization problems with continuous decision variables cannot 
 % Selected Examples
 %
 \subsubsection{Selected Strategies}
-This section reviews a select set of strategies for addressing optimization problems from the field of Artificial and Computational Intelligence to provide general insight into the state of the interaction between stochastic algorithms and the field of optimization. This section draws heavily from the field of Evolutionary Computation, Swarm Intelligence, and related Computational Intelligence sub-fields.
+This section reviews a select set of strategies for addressing optimization problems from the field of Metaheuristics and Computational Intelligence to provide general insight into the state of the interaction between stochastic algorithms and the field of optimization. This section draws heavily from the field of Evolutionary Computation, Swarm Intelligence, and related Computational Intelligence sub-fields.
 
 \begin{itemize}
 	
-	\item \emph{Global and Local Optimization}: Global Optimization refers to seeking a globally optimal structure or approximation thereof, typically in an unconstrained $n$-dimensional real valued space. Global is differentiated from Local Optimization in that the latter focuses on locating an optimal structure within a constrained region of the decision variable search space, such as a single peak or valley (basin of attraction). In AI and CI literature, global optimization problems refers to the class of optimization problems that generally cannot be addressed through more conventional approaches such as gradient decent methods (that require derivatives), and pattern search (that can get `stuck' in local optima and/or may never converge) \cite{Price1977, Toern1999}. Such problems are typically addressed through a directed search strategy with stochastic elements, typically involving a population-based model in the case of global search (for example a Genetic Algorithm), and a mutation hill climbing-based model for local search. The general strategy involves sampling broadly initially, and converging on those areas of the search space that are most likely to payoff toward the end of the search. It is common to apply a local search method to the solutions of a global search procedure as an refinement strategy.
+	\item \emph{Global and Local Optimization}: Global Optimization refers to seeking a globally optimal structure or approximation thereof in a given problem domain. Global is differentiated from Local Optimization in that the latter focuses on locating an optimal structure within a constrained region of the decision variable search space, such as a single peak or valley (basin of attraction). In the literature, global optimization problems refers to the class of optimization problems that generally cannot be addressed through more conventional approaches such as gradient decent methods (that require derivatives), and pattern search (that can get `stuck' in local optima and/or may never converge) \cite{Price1977, Toern1999}. A global search strategy provides the benefit of making few if any assumptions about where promising areas of the search space may be, potentially highlighting unintuitive combination's of parameters. A local search strategy provides the benefit of focus and refinement of an existing candidate solution. It is common to apply a local search method to the solutions located by a global search procedure as an refinement strategy (such as using a Hill CLimber after a Genetic Algorithm), and some methods have both techniques built in (such as GRASP).
 	
 	\item \emph{Parallel Optimization}: A natural first step in addressing difficult (large and rugged cost landscapes) is to exploit parallel and distributed hardware, to get an improved result in the same amount of time, or the same result in less time, or both \cite{Crainic2005}. Towards unifying the myriad of approaches and hardware configurations, a general consensus and taxonomy has been defined by the Parallel Evolutionary Algorithms (PEA) and Parallel Metaheuristics fields that considers the ratio of \emph{communication} to \emph{computation} called \emph{granularity} \cite{Cantu-Paz2000, Alba2005a}. This taxonomy is presented concisely by Alba and Tomassini as a plot or trade-off of three concerns: (1) the number of sub-populations (models or parallel strategies working on the problem), (2) the coupling between the sub-populations (frequency and amplitude of communication), and (3) the size of the sub-populations (size or extent of the sub-models) \cite{Alba2002}. Two important and relevant findings from the narrower field of Parallel Evolutionary Algorithms include (1) that tightly coupled (frequent migration) between coarse-grained models typically results in worse performance than a non-distributed approach \cite{Alba2000}, and (2) that loose coupling (infrequent migration) between coarse-grained models has been consistently shown to provide a super-linear increase in performance \cite{Alba2002a, Belding1995, Cantu-Paz2000}.
 	
