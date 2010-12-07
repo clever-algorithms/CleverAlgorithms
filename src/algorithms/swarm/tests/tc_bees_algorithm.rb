@@ -56,9 +56,4 @@ class TC_BEES_ALGORITHM < Test::Unit::TestCase
 		assert_equal objective_function(vector), vector.inject(0){|sum, v| sum = sum+v*v}
 	end
 	
-	#def test_search_neighborhood
-	#Function combines the following other functions with an stl sort:
-	#1. create_neighborhood_bee
-	#2. objective_function
-	#All individual parts have existing tests.
 end
