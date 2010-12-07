@@ -106,6 +106,7 @@ h4. Advanced Topics
 * Jason Brownlee. "Clever Algorithms: Devising New Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101205a-1.pdf. Technical Report CA-TR-20101205a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Clever Algorithms: Benchmarking Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101206-1.pdf. Technical Report CA-TR-20101206-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 * Jason Brownlee. "Clever Algorithms: Unit Testing Algorithms":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101206a-1.pdf. Technical Report CA-TR-20101206a-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
+* Jason Brownlee. "Clever Algorithms: Problem Solving Methodology":http://github.com/jbrownlee/CleverAlgorithms/raw/master/workspace/release/techreport-20101208-1.pdf. Technical Report CA-TR-20101208-1, The Clever Algorithms Project http://www.CleverAlgorithms.com, November 2010.
 
 
 h3. Software
