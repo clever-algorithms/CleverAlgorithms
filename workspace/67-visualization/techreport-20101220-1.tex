@@ -114,14 +114,14 @@ set yrange [-5:5]
 splot x*x + y*y
 \end{lstlisting}
 
+Both plots clearly show the optima in the center of the domain at $x=0.0$ in one dimension and $x,y=0.0$ in two dimensions.
 
 % Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
-words
+The Traveling Salesman Problem description is comprised of a list of cities, each with a different coordinate (at least in the case of the symmetric TSP). This can easily be visualized as a map if the coordinates at latitudes and longitudes, or as a scatter plot.
+A second possible visualization is to prepare a distance matrix (distance between each point and all other points) and visualize the matrix directly, with each cell shaded relative to the distances of all other cells (largest distances darker and the shorter distances lighter). The light areas in the matrix highlight short or possible nearest-neighbor cities.
 
-Figure~\ref{plot:tsp1} provides a plot of the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp1} provides the gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space.
-
-Shows cities clumped...
+Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp1} provides the gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space.
 
 \begin{figure}[htp]
 \input{tsp1}
@@ -133,24 +133,53 @@ Shows cities clumped...
 plot "berlin52.tsp"
 \end{lstlisting}
 
+The scatter plot shows some clustering of points as well as many points of the periphery of the plot. An optimal solution is not obvious from looking at a plot.
+
 %
 % Performance
 %
-\section{Performance}
-easy, first thing
+\section{Algorithm Performance}
+Visualizing the performance of an algorithm can give indications that it is converging (implemented correctly) and provide insight into its dynamic behavior. Many algorithms are very simple to implement but exhibit complex dynamical behavior that is difficult to model and predict beforehand. An understanding of such behavior and the effects of changing an algorithms parameters can be understood through systematic and methodological investigation. Although, by exploring parameter configurations and visualization plots of an algorithms performance can give a quick first-pass approximation and potentially highlight fruitful areas for focused investigation.
 
+Two quite different perspectives on visualization algorithm performance are: a single algorithm run and a comparison between multiple algorithm runs.
+
+% Single Algorithm Run
 \subsection{Single Algorithm Run}
-line graphs
+The performance of an algorithm over the course of a single run can easily be visualized as a line graph, regardless of the specific measures used. The graph can be prepared after the algorithm execution has completed, although, many algorithm frameworks provide dynamic line graphs to provide insight into an algorithms behavior during a run.
 
-TODO: give example with a GA
+Figure~\ref{} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run. Listing~\ref{ga_performance} provides the gnuplot script used to prepare the plot, where \texttt{ga\_best.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
 
-\subsection{Multiple Algorithm Run}
-same algorithm, different random seed
+% TODO algorithm run plot
 
-compare using boxplots generally
+\begin{lstlisting}[caption=Plot of the best candidate solution found by the Genetic Algorithm each iteration, label=ga_performance]
+plot "ga_best.txt"
+\end{lstlisting}
 
-TODO: give example with a GA, ES, EP, ...
+% Multiple Algorithm Runs
+\subsection{Multiple Algorithm Runs}
+Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given problem. This distribution may be visualized directly. 
 
+Figure~\ref{} provides a scatterplot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga\_runs.txt} is a text file that provides the number evaluations and fitness of the best solution each algorithm run on a new line. 
+
+% TODO algorithm run plot
+
+\begin{lstlisting}[caption=Scatterplot of objective function evaluations against quality of best solution found over 100 runs of a Genetic Algorithm, label=ga_runs]
+plot "ga_runs.txt"
+\end{lstlisting}
+
+% Multiple Distributions of Algorithm Runs
+\subsection{Multiple Distributions of Algorithm Runs}
+Algorithms can be compared against each other based on their distributions of algorithm performance over a number of runs. This comparison usually takes the form of statistical tests that can make meaningful statements about the differences between distributions. A visualization of the relative difference between the distributions can aid in an interpretation of such statistical measures. 
+
+A compact way for representing a distribution is to use a box and whisker plot that partitions the data into quartiles, showing the central tendency of the distribution, the middle mass of the data (the second and third quartiles), the limits of the distribution and any outliers. Algorithm run distributions may be summarized as a box and whisker plots and plotted together to show relative spatial relationships.
+
+Figure~\ref{} provides box and whisker plots for algorithm distributions over 100 runs for the Differential Evolution, Evolution Strategies, and Evolution Programming algorithms on the same 3-dimensional basin problem. The measure collected from each run was the quality of the best candidate solution found. This comparison is provided for demonstration purposes and can not be taken as an indication of the relative capabilities of the selected algorithms as no algorithm configuring tuning was performed. Listing~\ref{ea_comparison} provide the gnuplot script used to prepare the plot.
+
+% TODO algorithm run plot
+
+\begin{lstlisting}[caption=Boxplots of the best solutions found by DE ES and EP algorithms on a 3-dimensional basin problem over 100 runs, label=ea_comparison]
+plot "ga_runs.txt"
+\end{lstlisting}
 
 %
 % Candidate Solutions
