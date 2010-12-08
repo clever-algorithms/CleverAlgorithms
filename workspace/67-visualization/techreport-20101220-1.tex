@@ -10,7 +10,14 @@
 \usepackage{url}
 \usepackage[pdftex,breaklinks=true,colorlinks=true,urlcolor=blue,linkcolor=blue,citecolor=blue,]{hyperref}
 \usepackage{geometry}
+\usepackage[ruled, linesnumbered]{../algorithm2e}
+\usepackage{listings} 
+\usepackage{textcomp}
+\ifx\pdfoutput\@undefined\usepackage[usenames,dvips]{color}
+\else\usepackage[usenames,dvipsnames]{color}
+\lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
+
 
 % Dear template user: fill these in
 \newcommand{\myreporttitle}{Clever Algorithms}
@@ -37,10 +44,10 @@ The Clever Algorithms project aims to describe a large number of Artificial Inte
 % template
 The project makes use of a standardized algorithm description template that uses well-defined topics that motivate the collection of specific and useful information about each algorithm described.
 % report
-This report...
+This report provides a description and examples of visualization as a form of exploration and weak algorithm testing. 
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, Visualization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, GNUPlot, Optimization, Visualization}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -51,34 +58,60 @@ The Clever Algorithms project aims to describe a large number of algorithms from
 The project requires all algorithms to be described using a standardized template that includes a fixed number of sections, each of which is motivated by the presentation of specific information about the technique \cite{Brownlee2010a}.
 
 % this report
-This report...
+This report considers the role of visualization in the development and application of algorithms from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation.
 
-the idea is to provide the tools and examples for visualizing algorithms used in book
+% on visualization
+Visualization is can be a powerful technique for exploration the spatial relationships between data (such as an algorithm's performance over time), and investigatory tool (such as plotting an objective problem domain or search space). Visualization can also provide a weak form of algorithm testing, providing metrics on an algorithms efficiency or efficacy that may be indicative of the expected algorithm behavior.
 
-all examples provided in gnu plot. it's focused, simple ad accessible.... also free
+% on visualization in this report
+This report provides a discussion of the techniques and the tools that may be used to explore and evaluate the problems and algorithms described in the Clever Algorithms project. 
+% examples
+A discussion of tools and libraries is provided, although all examples in this report are provided using GNUPlot and include both the resulting plot and the script used to generate it. This provides a useful starting point for applying the same methods to the problems and algorithms throughout the Clever Algorithms project.
 
-provide script examples as well as images
-
+The discussion and examples are primarily focused on function optimization problems, although the principles of visualization as exploration and weak algorithm testing are generally applicable to function approximation problem instances.
 
 %
 % Problems
 %
 \section{Problems}
-should be the first thing
-consider at reduced dimensions
-consider at different scales, focused regions
+The visualization of the problem under study is an excellent place to get started. A simple spatial representation of the search space or objective function can help to motivate the selection of an appropriate technique and/or help to configure that technique. 
 
-problem specific
+The visualization method is specific to the problem type and instance being considered. 
+This section provides examples of visualization problems from the fields of continuous and combinatorial function optimization, two types of problems that appear frequently in the Clever Algorithms project.
 
+% Continuous Function Optimization
 \subsection{Continuous Function Optimization}
+A continuous function optimization problem is typically visualized in two dimensions as a line where $x=input, y=f(input)$ or three dimensions as a surface where $x,y=input, z=f(input)$. 
 
-plot the surface
+Some functions may have many more dimensions, which if the function is linearly separable can be visualized in lower dimensions. For example, visualize the first two dimensions of a function with 30 inputs. Functions that are not linearly-separable may be able to make use of projection techniques such as Principle Component Analysis (PCA). For example prepare a stratified sample of the search space as vectors with associated cost function for the PCA.
+
+Similarly, the range of each variable input to the function may be large. This may mean that some of the complexity or detail may be lost when the function is visualized as a line or surface. An indication of this detail may be achieved by creating spot-sample plots of narrow sub-sections of the function. 
+
+Figure~\ref{} provides an example of the basin function used through out the algorithm description in the Clever Algorithms in one dimension and Listing~\ref{basin_1d} provides the gnuplot script used to prepare the plot.
+
+\input{basin1}
+
+\begin{lstlisting}[caption=Basin Function in 1-dimension, label=basin_1d]
+set xrange [-5:5]
+plot x*x
+\end{lstlisting}
 
 
+Figure~\ref{} provides an example of the basin function in two-dimensions and Listing~\ref{basin_2d} provides the gnuplot script used to prepare the plot.
+
+\input{basin2}
+
+\begin{lstlisting}[caption=Basin Function in 2-dimensions, label=basin_2d]
+set xrange [-5:5]
+set yrange [-5:5]
+splot x*x + y*y
+\end{lstlisting}
+
+
+% Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
 
 plot the domain
-
 plot optimal solutions
 
 
@@ -151,9 +184,7 @@ last resort, better to use a lib
 %
 \section{Conclusions}
 \label{sec:conclusions}
-This repor...
-
-
+This report provided a description and examples of visualization as a form of exploration and weak algorithm testing. 
 
 % bibliography
 \bibliographystyle{plain}
