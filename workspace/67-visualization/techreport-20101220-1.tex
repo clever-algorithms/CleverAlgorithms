@@ -87,18 +87,26 @@ Some functions may have many more dimensions, which if the function is linearly 
 
 Similarly, the range of each variable input to the function may be large. This may mean that some of the complexity or detail may be lost when the function is visualized as a line or surface. An indication of this detail may be achieved by creating spot-sample plots of narrow sub-sections of the function. 
 
-Figure~\ref{} provides an example of the basin function used through out the algorithm description in the Clever Algorithms in one dimension and Listing~\ref{basin_1d} provides the gnuplot script used to prepare the plot.
+Figure~\ref{plot:basin1} provides an example of the basin function used through out the algorithm description in the Clever Algorithms in one dimension and Listing~\ref{basin_1d} provides the gnuplot script used to prepare the plot.
 
+\begin{figure}[htp]
 \input{basin1}
+\caption{Plot of the cities of the Basin function in 1-dimension.}
+\label{plot:basin1}
+\end{figure}
 
 \begin{lstlisting}[caption=Basin Function in 1-dimension, label=basin_1d]
 set xrange [-5:5]
 plot x*x
 \end{lstlisting}
 
-Figure~\ref{} provides an example of the basin function in two-dimensions and Listing~\ref{basin_2d} provides the gnuplot script used to prepare the plot.
+Figure~\ref{plot:basin2} provides an example of the basin function in two-dimensions and Listing~\ref{basin_2d} provides the gnuplot script used to prepare the plot.
 
+\begin{figure}[htp]
 \input{basin2}
+\caption{Plot of the cities of the Basin function in 2-dimensions.}
+\label{plot:basin2}
+\end{figure}
 
 \begin{lstlisting}[caption=Basin Function in 2-dimensions, label=basin_2d]
 set xrange [-5:5]
@@ -109,11 +117,21 @@ splot x*x + y*y
 
 % Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
+words
 
-plot the domain
-plot optimal solutions
+Figure~\ref{plot:tsp1} provides a plot of the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp1} provides the gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space.
 
-look at \url{http://www.dcs.gla.ac.uk/~pat/52219/tsp.html}
+Shows cities clumped...
+
+\begin{figure}[htp]
+\input{tsp1}
+\caption{Plot of the cities of the Berlin52 Traveling Salesman Problem.}
+\label{plot:tsp1}
+\end{figure}
+
+\begin{lstlisting}[caption=Basin Function in 2-dimensions, label=tsp1]
+plot "berlin52.tsp"
+\end{lstlisting}
 
 %
 % Performance
