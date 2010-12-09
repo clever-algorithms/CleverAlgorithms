@@ -62,7 +62,7 @@ def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
     population = children
-    puts "#{best[:bitstring]}"
+    puts "#{best[:fitness]}"
     break if best[:fitness] == num_bits
   end
   return best

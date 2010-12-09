@@ -146,12 +146,16 @@ Two quite different perspectives on visualization algorithm performance are: a s
 \subsection{Single Algorithm Run}
 The performance of an algorithm over the course of a single run can easily be visualized as a line graph, regardless of the specific measures used. The graph can be prepared after the algorithm execution has completed, although, many algorithm frameworks provide dynamic line graphs to provide insight into an algorithms behavior during a run.
 
-Figure~\ref{} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run. Listing~\ref{ga_performance} provides the gnuplot script used to prepare the plot, where \texttt{ga\_best.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
+Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run. Listing~\ref{ga_performance} provides the gnuplot script used to prepare the plot, where \texttt{ga\_best.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
 
-% TODO algorithm run plot
+\begin{figure}[htp]
+\input{ga1}
+\caption{Line graph of the best solution found by the Genetic Algorithm on the 64-bit OneMax problem.}
+\label{plot:ga1}
+\end{figure}
 
 \begin{lstlisting}[caption=Plot of the best candidate solution found by the Genetic Algorithm each iteration, label=ga_performance]
-plot "ga_best.txt"
+plot "ga1.txt" with linespoints
 \end{lstlisting}
 
 % Multiple Algorithm Runs
@@ -209,7 +213,7 @@ optimal solution
 \end{figure}
 
 \begin{lstlisting}[caption=Plot cities and draw optimal tour from the Berlin52 Traveling Salesman Problem, label=tsp2]
-plot "berlin52.optimal"
+plot "berlin52.optimal" with linespoints
 \end{lstlisting}
 
 
@@ -220,7 +224,7 @@ plot "berlin52.optimal"
 asdasd
 
 \subsection{Tools}
-first step should be to use a specailized tool if available
+first step should be to use a specialized tool if available
 
 \subsection{GNU Plot}
 focused on plotting
