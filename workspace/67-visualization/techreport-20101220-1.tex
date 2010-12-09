@@ -162,12 +162,16 @@ plot "ga1.txt" with linespoints
 \subsection{Multiple Algorithm Runs}
 Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given problem. This distribution may be visualized directly. 
 
-Figure~\ref{} provides a scatterplot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga\_runs.txt} is a text file that provides the number evaluations and fitness of the best solution each algorithm run on a new line. 
+Figure~\ref{plot:ga2} provides a scatterplot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs on a 300-bit OneMax function. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs/
 
-% TODO algorithm run plot
+\begin{figure}[htp]
+\input{ga2}
+\caption{Histogram of the best solution found by a Genetic Algorithm on a 300-bit One Max problem over 100 runs.}
+\label{plot:ga2}
+\end{figure}
 
 \begin{lstlisting}[caption=Scatterplot of objective function evaluations against quality of best solution found over 100 runs of a Genetic Algorithm, label=ga_runs]
-plot "ga_runs.txt"
+plot "ga2.histogram.txt" w boxes
 \end{lstlisting}
 
 % Multiple Distributions of Algorithm Runs
