@@ -48,7 +48,7 @@ The project makes use of a standardized algorithm description template that uses
 This report provides a description and examples of visualization as a form of exploration and weak algorithm testing. 
 
 \begin{description}
-	\item[Keywords:] {\small\texttt{Clever, Algorithms, GNUPlot, Optimization, Visualization}}
+	\item[Keywords:] {\small\texttt{Clever, Algorithms, Gnuplot, Optimization, Visualization}}
 \end{description} 
 
 % summarise the document breakdown with cross references
@@ -65,16 +65,28 @@ This report considers the role of visualization in the development and applicati
 Visualization is can be a powerful technique for exploration the spatial relationships between data (such as an algorithm's performance over time), and investigatory tool (such as plotting an objective problem domain or search space). Visualization can also provide a weak form of algorithm testing, providing metrics on an algorithms efficiency or efficacy that may be indicative of the expected algorithm behavior.
 
 % on visualization in this report
-This report provides a discussion of the techniques and the tools that may be used to explore and evaluate the problems and algorithms described in the Clever Algorithms project. 
-% examples
-A discussion of tools and libraries is provided, although all examples in this report are provided using GNUPlot and include both the resulting plot and the script used to generate it. This provides a useful starting point for applying the same methods to the problems and algorithms throughout the Clever Algorithms project.
+This report provides a discussion of the techniques and methods that may be used to explore and evaluate the problems and algorithms described in the Clever Algorithms project. 
+The discussion and examples is this report are primarily focused on function optimization problems, although the principles of visualization as exploration and weak algorithm testing are generally applicable to function approximation problem instances.
 
-The discussion and examples are primarily focused on function optimization problems, although the principles of visualization as exploration and weak algorithm testing are generally applicable to function approximation problem instances.
+%
+% GNUPlot
+%
+\section{Gnuplot}
+Gnuplot is a free open source command line tool used to generate plots from data. It supports a large number of different plot types and provides near infinite configurability. Plots are shown to the screen by default, but the tool can easily be configured to generate image files as well as latex, postscript and PDF documents.
+
+It was chosen for the demonstrations in this report as useful plots can be created with a minimum number of commands, it is easily integrated into a range of scripting languages and the software is supported on a range of modern operating systems. 
+
+Gnuplot can be downloaded from the website \url{http://www.gnuplot.info/}.
+
+The Gnuplot webpage provides many demonstrations of different plot types with sample scripts showing how the plots were created. There are many tutorials and examples on the web, and help is provided inside the Gnuplot software by typing \texttt{help} followed by the command name (for example: \texttt{help plot}). For a more comprehensive reference on Gnuplot, see Janert's introductory book to the software, titled ``Gnuplot in Action'' \cite{Janert2009}.
+
+% examples
+All examples in this report are provided using Gnuplot and include both the resulting plot and the script used to generate it. The scripts may be typed directly into the Gnuplot interpreter (accessed by typing \texttt{gnuplot} on the command line) or typed into a file which is processed by the Gnuplot command line tool. This provides a useful starting point for applying the same methods to the problems and algorithms throughout the Clever Algorithms project.
 
 %
 % Problems
 %
-\section{Problems}
+\section{Plotting Problems}
 The visualization of the problem under study is an excellent place to get started. A simple spatial representation of the search space or objective function can help to motivate the selection of an appropriate technique and/or help to configure that technique. 
 
 The visualization method is specific to the problem type and instance being considered. 
@@ -88,41 +100,42 @@ Some functions may have many more dimensions, which if the function is linearly 
 
 Similarly, the range of each variable input to the function may be large. This may mean that some of the complexity or detail may be lost when the function is visualized as a line or surface. An indication of this detail may be achieved by creating spot-sample plots of narrow sub-sections of the function. 
 
-Figure~\ref{plot:basin1} provides an example of the basin function used through out the algorithm description in the Clever Algorithms in one dimension and Listing~\ref{basin_1d} provides the gnuplot script used to prepare the plot.
+Figure~\ref{plot:basin1} provides an example of the Basin function used through out the algorithm description in the Clever Algorithms in one dimension. The Basin function is a  continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$. Listing~\ref{basin_1d} provides the Gnuplot script used to prepare the plot ($n=1$).
 
 \begin{figure}[htp]
 \input{basin1}
-\caption{Plot of the cities of the Basin function in 1-dimension.}
+\caption{Plot of the Basin function in one-dimension.}
 \label{plot:basin1}
 \end{figure}
 
-\begin{lstlisting}[caption=Basin Function in 1-dimension, label=basin_1d]
+\begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in one-dimension., label=basin_1d]
 set xrange [-5:5]
 plot x*x
 \end{lstlisting}
 
-Figure~\ref{plot:basin2} provides an example of the basin function in two-dimensions and Listing~\ref{basin_2d} provides the gnuplot script used to prepare the plot.
+Figure~\ref{plot:basin2} provides an example of the basin function in two-dimensions and Listing~\ref{basin_2d} provides the Gnuplot script used to prepare the plot.
 
 \begin{figure}[htp]
 \input{basin2}
-\caption{Plot of the cities of the Basin function in 2-dimensions.}
+\caption{Plot of the Basin function in one-dimensions.}
 \label{plot:basin2}
 \end{figure}
 
-\begin{lstlisting}[caption=Basin Function in 2-dimensions, label=basin_2d]
+\begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in two-dimensions, label=basin_2d]
 set xrange [-5:5]
 set yrange [-5:5]
 splot x*x + y*y
 \end{lstlisting}
 
-Both plots clearly show the optima in the center of the domain at $x=0.0$ in one dimension and $x,y=0.0$ in two dimensions.
+Both plots clearly show the optima in the center of the domain at $x=0.0$ in one-dimension and $x,y=0.0$ in two-dimensions.
 
 % Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
 The Traveling Salesman Problem description is comprised of a list of cities, each with a different coordinate (at least in the case of the symmetric TSP). This can easily be visualized as a map if the coordinates at latitudes and longitudes, or as a scatter plot.
+
 A second possible visualization is to prepare a distance matrix (distance between each point and all other points) and visualize the matrix directly, with each cell shaded relative to the distances of all other cells (largest distances darker and the shorter distances lighter). The light areas in the matrix highlight short or possible nearest-neighbor cities.
 
-Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp1} provides the gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space.
+Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesman Problem (TSP) used through out the algorithm description in the Clever Algorithms. The Berlin problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units. Listing~\ref{tsp1} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space.
 
 \begin{figure}[htp]
 \input{tsp1}
@@ -130,25 +143,25 @@ Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesma
 \label{plot:tsp1}
 \end{figure}
 
-\begin{lstlisting}[caption=Plot cities from the Berlin52 Traveling Salesman Problem, label=tsp1]
+\begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 Traveling Salesman Problem., label=tsp1]
 plot "berlin52.tsp"
 \end{lstlisting}
 
-The scatter plot shows some clustering of points as well as many points of the periphery of the plot. An optimal solution is not obvious from looking at a plot.
+The scatter plot shows some clustering of points as well as many points of the periphery of the plot. An optimal solution is not obvious from looking at a plot, although one can see the potential for nearest-neighbor heuristics and importance of structure preserving operations on candidate solutions.
 
 %
 % Performance
 %
-\section{Algorithm Performance}
-Visualizing the performance of an algorithm can give indications that it is converging (implemented correctly) and provide insight into its dynamic behavior. Many algorithms are very simple to implement but exhibit complex dynamical behavior that is difficult to model and predict beforehand. An understanding of such behavior and the effects of changing an algorithms parameters can be understood through systematic and methodological investigation. Although, by exploring parameter configurations and visualization plots of an algorithms performance can give a quick first-pass approximation and potentially highlight fruitful areas for focused investigation.
+\section{Plotting Algorithm Performance}
+Visualizing the performance of an algorithm can give indications that it is converging (implemented correctly) and provide insight into its dynamic behavior. Many algorithms are very simple to implement but exhibit complex dynamical behavior that is difficult to model and predict beforehand. An understanding of such behavior and the effects of changing an algorithms parameters can be understood through systematic and methodological investigation. Although, by exploring parameter configurations and plots of an algorithms performance can give a quick first-pass approximation and potentially highlight fruitful areas for focused investigation.
 
-Two quite different perspectives on visualization algorithm performance are: a single algorithm run and a comparison between multiple algorithm runs.
+Two quite different perspectives on visualization algorithm performance are: a single algorithm run and a comparison between multiple algorithm runs. The visualization of algorithm runs is explored in this section in the context of the Genetic Algorithm applied to a binary optimization problem called OneMax.
 
 % Single Algorithm Run
 \subsection{Single Algorithm Run}
 The performance of an algorithm over the course of a single run can easily be visualized as a line graph, regardless of the specific measures used. The graph can be prepared after the algorithm execution has completed, although, many algorithm frameworks provide dynamic line graphs to provide insight into an algorithms behavior during a run.
 
-Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run. Listing~\ref{ga_performance} provides the gnuplot script used to prepare the plot, where \texttt{ga\_best.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
+Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run applied to a 64-bit OneMax problem. Listing~\ref{ga_performance} provides the Gnuplot script used to prepare the plot, where \texttt{ga\_best.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
 
 \begin{figure}[htp]
 \input{ga1}
@@ -156,15 +169,15 @@ Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the
 \label{plot:ga1}
 \end{figure}
 
-\begin{lstlisting}[caption=Plot of the best candidate solution found by the Genetic Algorithm each iteration, label=ga_performance]
+\begin{lstlisting}[caption=Gnuplot script for creating a line graph of algorithm performance over time., label=ga_performance]
 plot "ga1.txt" with linespoints
 \end{lstlisting}
 
 % Multiple Algorithm Runs
 \subsection{Multiple Algorithm Runs}
-Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given problem. This distribution may be visualized directly. 
+Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given instance of a problem. This distribution may be visualized directly. 
 
-Figure~\ref{plot:ga2} provides a scatter plot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs on a 300-bit OneMax function. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs/
+Figure~\ref{plot:ga2} provides a histogram plot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs on a 300-bit OneMax function. Listing~\ref{ga_runs} provide the Gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs.
 
 \begin{figure}[htp]
 \input{ga2}
@@ -172,22 +185,22 @@ Figure~\ref{plot:ga2} provides a scatter plot showing the number of function eva
 \label{plot:ga2}
 \end{figure}
 
-\begin{lstlisting}[caption=Scatter plot of objective function evaluations against quality of best solution found over 100 runs of a Genetic Algorithm, label=ga_runs]
+\begin{lstlisting}[caption=Gnuplot script for creating a histogram of algorithm performance from multiple runs., label=ga_runs]
 plot "ga2.histogram.txt" w boxes
 \end{lstlisting}
 
 % Multiple Distributions of Algorithm Runs
 \subsection{Multiple Distributions of Algorithm Runs}
-Algorithms can be compared against each other based on their distributions of algorithm performance over a number of runs. This comparison usually takes the form of statistical tests that can make meaningful statements about the differences between distributions. A visualization of the relative difference between the distributions can aid in an interpretation of such statistical measures. 
+Algorithms can be compared against each other based on the distributions of algorithm performance over a number of runs. This comparison usually takes the form of statistical tests that can make meaningful statements about the differences between distributions. A visualization of the relative difference between the distributions can aid in an interpretation of such statistical measures. 
 
-A compact way for representing a distribution is to use a box and whisker plot that partitions the data into quartiles, showing the central tendency of the distribution, the middle mass of the data (the second and third quartiles), the limits of the distribution and any outliers. Algorithm run distributions may be summarized as a box and whisker plots and plotted together to show relative spatial relationships.
+A compact way for representing a distribution is to use a box-and-whisker plot that partitions the data into quartiles, showing the central tendency of the distribution, the middle mass of the data (the second and third quartiles), the limits of the distribution and any outliers. Algorithm run distributions may be summarized as a box-and-whisker plots and plotted together to spatially show relative performance relationships.
 
-Figure~\ref{plot:ga3} provides box and whisker plots for algorithm distributions over 100 runs for the Genetic Algorithm applied to a 300-bit OneMax problem with there different mutation configurations. The measure collected from each run was the quality of the best candidate solution found. 
-Listing~\ref{ea_comparison} provide the gnuplot script used to prepare the plot, where the file \texttt{boxplots1.txt} contains summaries of the results one run per line, each each line containing the min, first, second, and third quartiles and the max values separated by a space.
+Figure~\ref{plot:ga3} provides box-and-whisker plots of the best score distribution of 100 runs for the Genetic Algorithm applied to a 300-bit OneMax problem with there different mutation configurations. The measure collected from each run was the quality of the best candidate solution found. 
+Listing~\ref{ea_comparison} provide the Gnuplot script used to prepare the plot, where the file \texttt{boxplots1.txt} contains summaries of the results one run per line, each each line containing the min, first, second, and third quartiles and the max values separated by a space.
 
 \begin{figure}[htp]
 \input{ga3}
-\caption{Boxplots showing the performance of the Genetic Algorithm on a 300-bit OneMax problem with three different mutation rages}
+\caption{Box-and-whisker plots showing the performance of the Genetic Algorithm on a 300-bit OneMax problem with three different mutation rages.}
 \label{plot:ga3}
 \end{figure}
 
@@ -200,28 +213,34 @@ plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
 %
 % Candidate Solutions
 %
-\section{Candidate Solutions}
-Visualizing candidate solutions can provide an insight into the complexity of the problem and the behavior of an algorithm. Visualizing the results of a combinatorial optimization can provide insight into the areas of the problem with which a selected technique is handling well and handling poorly. 
-
+\section{Plotting Candidate Solutions}
+Visualizing candidate solutions can provide an insight into the complexity of the problem and the behavior of an algorithm.  This section provides examples of visualizing candidate solutions in the context of their problem domains from both continuous and combinatorial function optimization.
 
 % Continuous Function Optimization
 \subsection{Continuous Function Optimization}
-todo
-on the plot
+% general
+Visualizing candidate solutions from a continuous function optimization domain at periodic times over the course of a run can provide an indication of the algorithms behavior in moving through a search space. In low dimensions (such as one or two dimensions) this can provide qualitative insights into the relationship between algorithm configurations and behavior.
+
+% example
+Figure~\ref{plot:pso1} provides a plot of the best solution found each iteration by the Particle Swarm Optimization algorithm on the Basin function in two dimensions. The positions of the candidate solutions are projected on top of a contour map of the Basin function in two-dimensions, with contours representing the cost of solutions at each point. Listing~\ref{pso1} provides the Gnuplot script used to prepare the plot, where \texttt{pso1.txt} is a file that contains the coordinates of the best solution found by the algorithm, with one coordinate per line separated by a space.
+
+\begin{figure}[htp]
+\input{pso1.tex}
+\caption{Contour plot of the basin function showing the position of selected samples in the domain.}
+\label{plot:pso1}
+\end{figure}
 
 
+% \begin{lstlisting}[caption=asdasd., label=pso1]
+% set xrange [-5:5]
+% set yrange [-5:5]
+% set pm3d map
+% set samples 50
+% set isosamples 50
+% splot x*x+y*y, "pso1.txt" using 1:2:(100) with point
+%  \end{lstlisting}
 
-
-\begin{lstlisting}[caption=asdasd., label=tspa3]
-set xrange [-5:5]
-set yrange [-5:5]
-set pm3d map
-set samples 50
-set isosamples 50
-splot x*x+y*y, "pso1.txt" using 1:2:(100) with point
-\end{lstlisting}
-
-\begin{lstlisting}[caption=asdasd., label=tspa3]
+\begin{lstlisting}[caption=Gnuplot script use to create a contour plot and the position of selected samples from the domain., label=pso1]
 set xrange [-5:5]
 set yrange [-5:5]
 set view map
@@ -232,12 +251,15 @@ set isosamples 50
 splot x*x+y*y, "pso1.txt" using 1:2:(100) with point
 \end{lstlisting}
 
-
 % Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
-todo
+% general
+Visualizing the results of a combinatorial optimization can provide insight into the areas of the problem with which a selected technique is handling well and handling poorly.
+Candidate solutions can be visualized over the course of a run to observe how the complexity of solutions found by a technique change over time. Alternatively, the best candidate solutions can be visualized at the end of a run. 
 
-Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution for the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp3} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.nn.tour} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
+Candidate solutions for the Traveling Salesman Problem are easily visualized as tours (order of city visits) in the context of the city coordinates of the problem definition.
+
+Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution for the Berlin52 Traveling Salesman problem. Listing~\ref{tsp3} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.nn.tour} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
 \begin{figure}[htp]
 \input{tsp3}
@@ -249,8 +271,7 @@ Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution f
 plot "berlin52.nn.tour" with linespoints
 \end{lstlisting}
 
-
-Figure~\ref{pplot:tsp2} provides a plot of the optimal solution for the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp2} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.optimal} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
+Figure~\ref{plot:tsp2} provides a plot of the optimal solution for the Berlin52 Traveling Salesman problem. Listing~\ref{tsp2} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.optimal} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
 \begin{figure}[htp]
 \input{tsp2}
@@ -261,37 +282,6 @@ Figure~\ref{pplot:tsp2} provides a plot of the optimal solution for the Berlin52
 \begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp2]
 plot "berlin52.optimal" with linespoints
 \end{lstlisting}
-
-
-%
-% Tools
-%
-\section{Visualization Methods}
-asdasd
-
-\subsection{Tools}
-first step should be to use a specialized tool if available
-
-\subsection{GNU Plot}
-focused on plotting
-
-great for performance graphics and surfaces
-
-\subsection{R Project}
-stats methods and visualization
-
-
-\subsection{Libraries}
-write code if you must, but use a lib
-
-may, for example, some used in java, ruby etc
-
-open source physics, jfreegraph, jung, etc
-
-
-\subsection{DIY}
-last resort, better to use a lib
-
 
 %
 % Conclusions
