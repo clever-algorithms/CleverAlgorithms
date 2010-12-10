@@ -111,6 +111,7 @@ Figure~\ref{plot:basin1} provides an example of the Basin function used through 
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in one-dimension., label=basin_1d]
+unset key
 set xrange [-5:5]
 plot x*x
 \end{lstlisting}
@@ -125,9 +126,11 @@ Figure~\ref{plot:basin2} provides an example of the basin function in two-dimens
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in two-dimensions, label=basin_2d]
+unset key
 set xrange [-5:5]
 set yrange [-5:5]
-splot x*x + y*y
+set zrange [0:50]
+splot x*x+y*y
 \end{lstlisting}
 
 Both plots clearly show the optima in the center of the domain at $x=0.0$ in one-dimension and $x,y=0.0$ in two-dimensions.
@@ -148,6 +151,7 @@ Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesma
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 Traveling Salesman Problem., label=tsp1]
+unset key
 plot "berlin52.tsp"
 \end{lstlisting}
 
@@ -175,6 +179,8 @@ Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for creating a line graph of algorithm performance over time., label=ga_performance]
+unset key
+set yrange [45:64]
 plot "ga1.txt" with linespoints
 \end{lstlisting}
 
@@ -192,7 +198,10 @@ Figure~\ref{plot:ga2} provides a histogram plot showing the number of function e
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for creating a histogram of algorithm performance from multiple runs., label=ga_runs]
-plot "ga2.histogram.txt" w boxes
+unset key
+set yrange [0:17]
+set xrange [275:290]
+plot "ga2.histogram.txt" with boxes
 \end{lstlisting}
 
 % Multiple Distributions of Algorithm Runs
@@ -212,7 +221,8 @@ Listing~\ref{ea_comparison} provide the Gnuplot script used to prepare the plot,
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for creating a boxplot., label=ea_comparison]
-set bars 8.0
+unset key
+set bars 15.0
 set xrange [-1:3]
 plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
 \end{lstlisting}
@@ -267,6 +277,7 @@ Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution f
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp3]
+unset key
 plot "berlin52.nn.tour" with linespoints
 \end{lstlisting}
 
@@ -280,6 +291,7 @@ Figure~\ref{plot:tsp2} provides a plot of the optimal solution for the Berlin52 
 \end{figure}
 
 \begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp2]
+unset key
 plot "berlin52.optimal" with linespoints
 \end{lstlisting}
 
