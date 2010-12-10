@@ -18,6 +18,8 @@
 \lstset{basicstyle=\footnotesize\ttfamily,numbers=left,numberstyle=\tiny,frame=single,columns=flexible,upquote=true,showstringspaces=false,tabsize=2,captionpos=b,breaklines=true,breakatwhitespace=true,keywordstyle=\color{blue},stringstyle=\color{ForestGreen}}
 \geometry{verbose,a4paper,tmargin=25mm,bmargin=25mm,lmargin=25mm,rmargin=25mm}
 
+\usepackage{latexsym}
+
 % Dear template user: fill these in
 \newcommand{\myreporttitle}{Clever Algorithms}
 \newcommand{\myreportsubtitle}{Algorithm Visualization}
@@ -162,7 +164,7 @@ plot "ga1.txt" with linespoints
 \subsection{Multiple Algorithm Runs}
 Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given problem. This distribution may be visualized directly. 
 
-Figure~\ref{plot:ga2} provides a scatterplot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs on a 300-bit OneMax function. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs/
+Figure~\ref{plot:ga2} provides a scatter plot showing the number of function evaluations against the best solution found by the Genetic Algorithm over 100 runs on a 300-bit OneMax function. Listing~\ref{ga_runs} provide the gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs/
 
 \begin{figure}[htp]
 \input{ga2}
@@ -170,7 +172,7 @@ Figure~\ref{plot:ga2} provides a scatterplot showing the number of function eval
 \label{plot:ga2}
 \end{figure}
 
-\begin{lstlisting}[caption=Scatterplot of objective function evaluations against quality of best solution found over 100 runs of a Genetic Algorithm, label=ga_runs]
+\begin{lstlisting}[caption=Scatter plot of objective function evaluations against quality of best solution found over 100 runs of a Genetic Algorithm, label=ga_runs]
 plot "ga2.histogram.txt" w boxes
 \end{lstlisting}
 
@@ -180,12 +182,19 @@ Algorithms can be compared against each other based on their distributions of al
 
 A compact way for representing a distribution is to use a box and whisker plot that partitions the data into quartiles, showing the central tendency of the distribution, the middle mass of the data (the second and third quartiles), the limits of the distribution and any outliers. Algorithm run distributions may be summarized as a box and whisker plots and plotted together to show relative spatial relationships.
 
-Figure~\ref{} provides box and whisker plots for algorithm distributions over 100 runs for the Differential Evolution, Evolution Strategies, and Evolution Programming algorithms on the same 3-dimensional basin problem. The measure collected from each run was the quality of the best candidate solution found. This comparison is provided for demonstration purposes and can not be taken as an indication of the relative capabilities of the selected algorithms as no algorithm configuring tuning was performed. Listing~\ref{ea_comparison} provide the gnuplot script used to prepare the plot.
+Figure~\ref{plot:ga3} provides box and whisker plots for algorithm distributions over 100 runs for the Genetic Algorithm applied to a 300-bit OneMax problem with there different mutation configurations. The measure collected from each run was the quality of the best candidate solution found. 
+Listing~\ref{ea_comparison} provide the gnuplot script used to prepare the plot, where the file \texttt{boxplots1.txt} contains summaries of the results one run per line, each each line containing the min, first, second, and third quartiles and the max values separated by a space.
 
-% TODO algorithm run plot
+\begin{figure}[htp]
+\input{ga3}
+\caption{Boxplots showing the performance of the Genetic Algorithm on a 300-bit OneMax problem with three different mutation rages}
+\label{plot:ga3}
+\end{figure}
 
-\begin{lstlisting}[caption=Boxplots of the best solutions found by DE ES and EP algorithms on a 3-dimensional basin problem over 100 runs, label=ea_comparison]
-plot "ga_runs.txt"
+\begin{lstlisting}[caption=Gnuplot script for creating a boxplot., label=ea_comparison]
+set bars 8.0
+set xrange [-1:3]
+plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
 \end{lstlisting}
 
 %
@@ -201,14 +210,47 @@ todo
 on the plot
 
 
+
+
+\begin{lstlisting}[caption=asdasd., label=tspa3]
+set xrange [-5:5]
+set yrange [-5:5]
+set pm3d map
+set samples 50
+set isosamples 50
+splot x*x+y*y, "pso1.txt" using 1:2:(100) with point
+\end{lstlisting}
+
+\begin{lstlisting}[caption=asdasd., label=tspa3]
+set xrange [-5:5]
+set yrange [-5:5]
+set view map
+set contour
+unset surface
+set samples 50
+set isosamples 50
+splot x*x+y*y, "pso1.txt" using 1:2:(100) with point
+\end{lstlisting}
+
+
 % Traveling Salesman Problem
 \subsection{Traveling Salesman Problem}
 todo
 
-nearest neighbor solution...
+Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution for the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp3} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.nn.tour} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
+
+\begin{figure}[htp]
+\input{tsp3}
+\caption{Plot of the cities of a Nearest-Neighbor tour for the Berlin52 Traveling Salesman Problem.}
+\label{plot:tsp3}
+\end{figure}
+
+\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp3]
+plot "berlin52.nn.tour" with linespoints
+\end{lstlisting}
 
 
-optimal solution
+Figure~\ref{pplot:tsp2} provides a plot of the optimal solution for the Berlin52 Traveling Salesman problem used through out the algorithm description in the Clever Algorithms. Listing~\ref{tsp2} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.optimal} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
 \begin{figure}[htp]
 \input{tsp2}
@@ -216,7 +258,7 @@ optimal solution
 \label{plot:tsp2}
 \end{figure}
 
-\begin{lstlisting}[caption=Plot cities and draw optimal tour from the Berlin52 Traveling Salesman Problem, label=tsp2]
+\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp2]
 plot "berlin52.optimal" with linespoints
 \end{lstlisting}
 
