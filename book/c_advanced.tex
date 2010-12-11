@@ -4,158 +4,20 @@
 
 % This is a chapter
 
-\begin{bibunit}
+\renewcommand{\bibsection}{\subsection{\bibname}}
 \chapter{Advanced Topics}
 \label{ch:advanced}
-A chapter focused on applying, testing, visualizing, saving results, and comparing algorithms. The meta concerns once an algorithm is selected for a given practical problem solving scenario.
+This chapter provides discussion on a number of advanced topics that may be considered once one or more of the algorithms described in this book have been mastered.
 
-% 
-% Programming Paradigms
-% 
-\section{Programming Paradigms}
-\label{advanced:sec:paradigms}
-Algorithms can be implements on many different programming paradigms.
-Take the GA for example and realize it using a bunch of different paradigms.
+The topics in this section consider some practical concerns such as: How to implement an algorithm using a different programming paradigm (Section~\ref{advanced:sec:paradigms}), How to devise and investigate a new biologically inspired algorithm (Section~\ref{advanced:sec:new_algorithms}), How to test algorithm implementations to ensure they are implemented correctly (Section~\ref{advanced:sec:testing_algorithms}), How to visualize problems, algorithm behavior and candidate solutions (Section~\ref{advanced:sec:visualizing_algorithms}), How to direct these algorithms toward practical problem solving (Section~\ref{advanced:sec:problem_solving}), and Issues to consider when benchmarking and comparing the capabilities of algorithms (Section~\ref{advanced:sec:racing_algorithms}).
 
-\subsection{Procedural Programming}
-The GA under a procedural paradigm
+The hope of this chapter is to provide some suggestion at the concerns and skills necessary for taking the algorithms described in this book into the real-world.
 
-\subsection{Object-Oriented Programming}
-The GA under a object oriented paradigm. Strategy pattern. modular operators, etc.
+% sections
+\newpage\begin{bibunit}\input{c_advanced/paradigms}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{c_advanced/new_algorithms}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{c_advanced/testing_algorithms}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{c_advanced/visualizing_algorithms}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{c_advanced/problem_solving}\putbib\end{bibunit}
+\newpage\begin{bibunit}\input{c_advanced/racing_algorithms}\putbib\end{bibunit}
 
-\subsection{Agent Oriented Programming}
-A GA under an agent oriented programming paradigm. not really suited. algorithm as an agent with goals?
-
-\subsection{Functional Programming}
-The GA under a functional paradigm. closure etc
-
-\subsection{Meta-Programming}
-A GA under meta programming. A DSL i guess.
-
-\subsection{Flow Programming}
-A GA under a data flow or pipeline model.
-
-\subsection{Map Reduce}
-A GA under a map reduce paradigm.
-
-
-% 
-% Devising New Algorithms
-% 
-\section{Devising New Algorithms}
-\label{advanced:sec:devising}
-A methodology for devising new unconventional optimization algorithms...
-
-\subsection{Conceptual Framework for Bio-Inspired Algorithms}
-A generic methodology for devising new biologically inspired algorithms
-
-\subsection{Information Processing Methodology}
-An info processing centric approach to devising new algorithms
-
-\subsection{Investigation}
-small models, rigor
-
-\subsection{Communication}
-you need to effectively describe them, like as in this book!
-goal is to be known and used, make it open and usable by anyone. like open source, documented, common languages, benchmark problems, a website, lots of papers
-
-
-% 
-% Testing Algorithms
-% 
-\section{Testing Algorithms}
-\label{advanced:sec:testing}
-This section will focus on the problem that `adaptive systems work even when they are not implemented correctly' (they work in-spite of the developer). Topics will include unit testing algorithms, system testing software, specific concerns when testing inspired algorithms, examples of testing algorithms with the ruby unit testing framework, examples of testing algorithms with rspec.
-
-\subsection{Types of Testing}
-unit, TDD, system, user acceptance, black box, white box
-
-\subsection{Algorithm Testing Methodology}
-testing is hard
-these systems `work' even with bugs, hard to test
-present a methodology for testing - discrete unit tests, behavior testing
-
-\subsection{Example}
-develop and show tests for the GA
-
-% 
-% Visualizing Algorithms
-% 
-\section{Visualizing Algorithms}
-\label{advanced:sec:visualizing}
-This section will focus on the use of visualization as a low-fidelity form of system testing. Topics will include free visualization packages such as R, GNUPlot and Processing. Examples visualizing a decision surface, a functions response surface, and candidate solutions.
-
-\subsection{Visualizing}
-we can do it as a form of testing.
-research aid - view on a complex process, can observe, take notes, formulate hypothesis
-think of all the measures you can, than measure them
-
-\subsubsection{Offline Plots}
-examples?
-
-\subsubsection{Online Plots}
-examples?
-
-
-\subsection{Visualization Tools}
-can use lots of things, can use lots of things
-
-\subsection{Example}
-Visuzlize genes through time for a ga run, with fitness graphs, and plots of domain
-
-
-% 
-% Problem Solving Method
-% 
-\section{Problem Solving Method}
-\label{advanced:sec:method}
-This section considers a general methodology for solving the types of problems suited to the algorithms described in this book. Like a KDD method but for optimization with weak methods.
-
-\subsection{Weak and Strong Methods}
-there are weak and strong methods
-
-\subsection{Global and Local Search}
-we search at different scales
-
-\subsection{Methodology}
-use problem specific info
-global search
-restarts
-local search
-
-search as innovation...
-
-
-% 
-% Racing Algorithms
-% 
-\section{Racing Algorithms}
-\label{advanced:sec:comparing}
-This section will focus on comparing algorithm's based on the solutions they provide. Topics will include the use statistical hypothesis testing and free software such as R, algorithm parameter selection, distribution testing, distribution comparisons. Examples will be given for algorithm parameter selection, result distribution classification, and pair-wise result distribution comparison.
-
-\subsection{No Free Lunch}
-all same over all problems with no prior info
-
-\subsection{Benchmarking}
-standard problem instances
-what problems? what algorithms? what configurations
-what are you measuring? what are you comparing? 
-
-\subsection{Statistical Hypothesis Testing}
-you need stats or you will be killed by Zed Shaw
-need stats to compare results
-
-\subsection{Example}
-genetic algorithm vs something, use R to compare
-
-% 
-% Summary
-% 
-\section{Summary}
-\label{advanced:sec:summary}
-We learned lots of advanced topics, there are more.
-
-
-\renewcommand{\bibsection}{\section{\bibname}}
-\putbib
-\end{bibunit}

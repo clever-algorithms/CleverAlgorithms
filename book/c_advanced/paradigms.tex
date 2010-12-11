@@ -1,0 +1,107 @@
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+% Programming Paradigms
+\section{Programming Paradigms} 
+\label{advanced:sec:paradigms}
+\index{Programming Paradigms}
+
+% this section
+This section discusses three standard programming paradigms that may be used to implement the algorithms described throughput the book:
+
+\begin{itemize}
+	\item Procedural Programming (Section~\ref{sec:procedural})
+	\item Object-Oriented Programming (Section~\ref{sec:oop})
+	\item Flow Programming (Section~\ref{sec:flow})
+\end{itemize}
+
+Each paradigm is described and an example implementation is provided using the Genetic Algorithm (described in Section~\ref{sec:genetic_algorithm}) as a context.
+
+% 
+% Procedural
+% 
+\subsection{Procedural Programming}
+\label{sec:procedural}
+\index{Procedural Programming}
+All algorithms in this book were implemented using a procedural programming paradigm in the Ruby Programming Language. A procedural representation was chosen to provide the most transferrable instantiation of the algorithm implementations. Many languages support the procedural paradigm and procedural code examples are expected to be easily ported to popular paradigms such as object-oriented and functional.
+
+\subsection{Description}
+The procedural programming paradigm (also called imperative programming) is concerned with defining a linear procedure or sequence of programming statements. A key feature of the paradigm is the partitioning of functionality into small discrete re-usable modules called procedures (subroutines or functions) that act like small programs themselves with their own scope, inputs and outputs. A procedural code example is executed from a single point of control or entry point which calls out into declared procedures, which in turn may call other procedures.
+
+Procedural programming was the first so-called `high-level programming paradigm' compared to lower level machine code and is the most common and well understood form of programming. Newer paradigms (such as Object-Oriented) and modern businesses programming languages (such as C++, Java and C\#) are built on the principles of procedural programming.
+
+\subsubsection{Example}
+Listing~\ref{genetic_algorithm} in Section~\ref{sec:genetic_algorithm} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the procedural programming paradigm.
+
+
+% Object-Oriented
+\subsection{Object-Oriented Programming}
+\label{sec:oop}
+\index{Object-Oriented Programming}
+% overview
+This section considers the implementation of algorithms from the Clever Algorithms project in the Object-Oriented Programming Paradigm.
+
+% description
+\subsection{Description}
+The Object-Oriented Programming (OOP) paradigm is concerned with modeling problems in terms of entities called objects that have attributes and behaviors (data and methods) that may interact with other entities via message passing (calling methods on other entities). An object defines a class or template for the entity, which is instantiated or constructed and then may be used in the program.
+
+Objects can extend other objects, inheriting some or all of the attributes and behaviors from the parent providing specific modular reuse. Objects can be treated as a parent type (an object in its inheritance tree) allowing the use or application of the objects in the program without the caller knowing the specifics of the behavior or data inside the object. This general property is called polymorphism, which exploits the encapsulation of attributes and behavior within objects and their capability of being treated (viewed or interacted with) as a parent type.
+
+Organizing functionality into objects allows for additional constructs such as abstract types where functionality is only partially defined and must be completed by descendant objects, overriding where descending objects re-define behavior defined in a parent object, and static classes and behaviors where behavior is executed on the object template rather than the object instance. 
+For more information on Object-Oriented programming and software design refer to a good text book on the subject, such as Booch \cite{Booch1997} or Meyer \cite{Meyer1997}.
+
+There are common ways of solving discrete problems using object-oriented programs called patterns. They are organizations of behavior and data that have been abstracted and presented as a solution or idiom for a class of problem. The Strategy Pattern is an object-oriented pattern that is suited to implementing an algorithm. This pattern is intended to encapsulate the behavior of an algorithm as a strategy object where different strategies can be used interchangeably on a given context or problem domain. This strategy can be useful in situations where the performance or capability of a range of different techniques needs to be assessed on a given problem (such as algorithm racing or bake-off's). Additionally, the problem or context can also be modelled as an interchangeable object, allowing both algorithms and problems to be used interchangeably. This method is used in Object-Oriented algorithm frameworks.
+For more information on the strategy pattern or object-oriented design patterns in general, refer to the so-called `gang-of-four' design patterns book \cite{Gamma1995}.
+
+\subsubsection{Example}
+Listing~\ref{ga_oop} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Object-Oriented Programming Paradigm. 
+
+The implementation provides a general problem and strategy classes that define their behavioral expectations. A \texttt{OneMax} problem class is defined as is a \texttt{GeneticAlgorithm} strategy class. The algorithm makes few assumptions of the problem other than it can assess candidate solutions and indicate the number of bits a candidate solution requires. The problem makes very few assumptions about candidate solutions other than they are hash maps that contain a binary string and fitness key-value pairs. The use of the Object-Oriented strategy pattern means that a new algorithm could easily be defined to work with the defined problem, and that new problems could be defined for the Genetic Algorithm to execute.
+
+Note that Ruby does not support abstract classes, so this construct is simulated by defining methods that raise an exception if they are not overridden by descendant classes.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Object-Oriented Programming Paradigm, label=ga_oop]{../src/programming_paradigms/oop.rb}
+
+
+% 
+% flow
+% 
+\subsection{Flow Programming}
+\label{sec:flow}
+\index{Flow Programming}
+% overview
+This section considers the implementation of algorithms from the Clever Algorithms project in the Flow Programming Paradigm.
+
+% description
+\subsection{Description}
+Flow, data-flow, or pipeline programming involves chaining a sequence of smaller processes together and allowing a flow of information through the sequence in order to perform the desired computation. Units in the flow are considered black-boxes that communicate with each other via message passing. The information that is passed between the units is considered a stream and a given application may have one or more streams of potentially varying direction. Discrete information in a stream is partitioned into information packets which are passed from unit-to-unit via message buffers, queues or similar data structures.
+
+A flow organization of functionality allows computing units to be interchanged readily with variations. It also allows for variations of the pipeline to be considered with minor reconfiguration. A flow or pipelining organization is commonly used by algorithm frameworks for the organization within a given algorithm implementation, allowing the specification of operators that manipulate the flow of candidate solutions to be varied and interchanged.
+
+For more information on Flow-based programming see a good textbook on the subject, such as Morrison \cite{Morrison2010}.
+
+\subsubsection{Example}
+Listing~\ref{ga_flow} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Flow Programming Paradigm.
+Each unit is implemented as an object that executes its logic within a standalone thread that forever will attempt to read input from the input queue and write data to the output queue. The implementation shows four flow units organized into a cyclic graph where the output message queue of one unit is used as the input message queue of the next unit in the directional cycle (\texttt{EvalFlowUnit} to \texttt{StopConditionUnit} to \texttt{SelectFlowUnit} to \texttt{VariationFlowUnit}). 
+
+Candidate solutions are the unit of data that is passed around in the flow between units.
+The system is started although does not have any information to process until a set of random solutions are injected into the evaluation unit's input queue. The solution are evaluated and sent to the stop condition unit where the constraints of the algorithm execution are tested (optima found or max number of evaluations) and the candidates are passed on to the selection flow unit. The selection unit collects a fixed number of candidate solutions then fitness-proportionally selects candidate solutions that are passed onto the variation unit. The variation unit performs crossover and mutation on each pair of candidate solutions then sends the results to the evaluation unit, completing the cycle.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Flow Programming Paradigm, label=ga_flow]{../src/programming_paradigms/flow.rb}
+
+% 
+% other
+% 
+\subsection{Other Paradigms}
+\label{sec:other}
+A number of popular and common programming paradigms have been considered in this report, although many more have not been described. 
+
+Many programming paradigms are not appropriate for implementing the algorithm as-is, but may be useful with the algorithm as a component in a broader system, such as Agent-Oriented Programming where the algorithm may be a procedure available to the agent. Meta-programming is another interesting case where capabilities of the paradigm may be used for parts of an algorithm implementation, such as the manipulation of candidates program in algorithms such as Genetic Programming (Section~\ref{sec:genetic_programming}).
+
+Other programming paradigms provide variations on what has already been described, such as Functional Programming which would not be too dissimilar to the procedural example, and Event-Driven Programming that would not be too dissimilar in principle to the Flow-Based Programming. Another example is the popular idioms such as the Map-Reduce paradigm is an application of functional programming principles organized into a data flow model.
+
+Finally, there are programming paradigms that are not relevant or feasible to consider implementing such algorithms, for example Logic Programming, Declarative Programming and Aspect-Oriented Programming.
+

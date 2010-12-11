@@ -11,11 +11,11 @@
 \include{f_title_page}
 \makeindex
 
+% testing
+% \includeonly{c_advanced}
 
 \begin{document}
-
 \defaultbibliography{../workspace/bibtex}
-
 \frontmatter
 	\maketitle	
 	\clearpage
@@ -27,8 +27,7 @@
 	\include{f_preface}
 \mainmatter 
 	\part{Background}
-	\include{c_introduction}
-		
+	\include{c_introduction}		
 	\part{Algorithms}
 	\include{c_stochastic}
 	\include{c_evolution}
@@ -37,14 +36,11 @@
 	\include{c_swarm}
 	\include{c_immune}
 	\include{c_neural}
-	
 	\part{Extensions}
 	\include{c_advanced}
-
 	\appendix
   \part{Appendices}
 	\include{b_appendix1}
-	
 	% to get index and bib in the toc correctly
 	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
 	% index
@@ -52,5 +48,4 @@
 	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{part}{Index}
 	\printindex
-
 \end{document}

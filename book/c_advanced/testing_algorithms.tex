@@ -1,0 +1,110 @@
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+% Testing Algorithms
+\section{Test Algorithms} 
+\label{advanced:sec:testing_algorithms}
+\index{Testing Algorithms}
+
+% section
+This section provides an introduction to software testing and the testing of Artificial Intelligence algorithms. Section~\ref{sec:testing} introduces software testing and focuses on a type of testing relevant to testing algorithms called unit testing. Section~\ref{sec:example} provides a specific example of an algorithm and a prepared suite of unit tests, and Section~\ref{sec:suggestions} provides some rules-of-thumb for testing algorithms in general.
+
+
+%
+% Software Testing
+%
+\subsection{Software Testing}
+\label{sec:testing}
+\index{Software Testing}
+\index{Unit Testing}
+% software
+Software testing in the field of Software Engineering is a process in the life-cycle of a software project that verifies that the product or service meets quality expectations and validates that software meets the requirements specification. Software testing is intended to locate defects in a program, although a given testing method cannot grantee to locate all defects. As such, it is common for an application to be subjected to a range of testing methodologies throughout the software life-cycle, such as unit testing during development, integration system testing once modules and systems are completed, and user acceptance testing to allow the stakeholders to determine if their needs have been met.
+
+% unit testing
+Unit testing is a type of software testing that involves the preparation of well-defined procedural tests of discrete functionality of a program that provide confidence that a module or function behaves as intended. Unit tests are referred to as `white-box' tests (contrasted to `black-box' tests) given that they are written with full knowledge of the internal structure of the functions and modules under tests. Unit tests are typically prepared by the developer that wrote the code under test and are commonly automated, themselves written as small programmers that are executed by a unit testing framework (such as JUnit for Java). The objective is not to test each path of execution within a unit (called complete-test or complete-code coverage), but instead to focus tests on areas of risk, uncertainty, or criticality. Each test should focus on one aspect of the code (test one thing) and are organized into test suites of commonality. 
+
+Some of the benefits of unit testing include:
+
+\begin{itemize}
+  \item \emph{Documentation}: The preparation of a suite of tests for a given system provide a type of programming documentation highlighting the expected behavior of functions and modules and providing examples of how to interact with key components.
+  \item \emph{Readability}: Unit testing encourages a programming style of small modules, clear input and output and possibly fewer inter-component dependencies. Code written for easy of testing (testability) may be easier to read and follow by third parties.
+  \item \emph{Regression}: Together, the suite of tests can be executed as a regression-test of the system. The automation of the tests means that any defects caused by changes to the code can easily be identified, when a defect is found that slipped through, a new test can be written to catch it to ensure it will be identified in the future.
+\end{itemize}
+
+% test driven development
+Unit tests were traditionally written after the program was completed. A popular alternative is to prepare the tests before the functionality of the application is prepared, called Test-First or Test-Driven Development (TDD). In this method, the tests are written and executed, failing until the application functionality is written to make the test pass. The early preparation of tests allow the programmer to consider the behavior required from the program and the interfaces or functions that the program needs to expose, before they are written. 
+
+% algorithm testing
+The concerns of software testing are very relevant to the development, investigation, and application of Metaheuristic and Computational Intelligence algorithms. In particular the strong culture of empirical investigation and prototype-based development demand a baseline level of trust in the systems that are presented in articles and papers. Trust can be instilled in an algorithm by assessing the quality of the algorithm implementation itself. 
+% testing algorithms
+Unit testing is lightweight (requiring only the writing of automated test code) and meets the needs of promoting quality and trust in the code while prototyping and developing algorithms. It is strongly suggested as a step in the process of empirical algorithm research in the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation.
+
+%
+% Example
+%
+\subsection{Unit Testing Example}
+\label{sec:example}
+\index{Unit Testing}
+This section provides an example of an algorithm and its associated unit tests as an illustration of the presented concepts. Section~\ref{subsec:algorithm} presents the Genetic Algorithm and Section~\ref{subsec:tests} presents the unit tests for the Genetic Algorithm.
+
+% Algorithm
+\subsubsection{Algorithm}
+\label{subsec:algorithm}
+Listing~\ref{genetic_algorithm} in Section~\ref{sec:genetic_algorithm} provides the source code for the Genetic Algorithm in the Ruby Programming language. An important consideration in using the Ruby test framework, is ensuring that functions of the algorithm are exposed for testing and that the algorithm demonstration itself does not execute. This is achieved through the use of the (\texttt{if \_\_FILE\_\_ == \$0}) condition that ensures the example only executes when the file called directly, allowing the functions to be imported and executed independently by a unit test script.
+
+The Genetic Algorithm is used as the basis for example as it is well understood ad provides an implementation that is a good case for demonstrating unit testing methodology. The algorithm is very modular with its behavior partitioned into well-contained functions, most of which are independently testable. 
+
+The \texttt{reproduce} function has some dependencies although is still testable. The \texttt{search} function is the only monolithic function, which both depends on all other functions in the implementation (directly or indirectly) and is difficult to unit test. At best the \texttt{search} function may be a case for system testing addressing functional requirements, such as ``\emph{does the algorithm deliver optimized solutions}''.
+
+
+% Unit Test
+\subsubsection{Unit Tests}
+\label{subsec:tests}
+Listing~\ref{gatests} provides the \texttt{TC\_GeneticAlgorithm} class that makes use of the built-in Ruby unit testing framework by extending the \texttt{Test::Unit::TestCase} class.
+The listing provides an example of 10 unit tests for 6 of the 7 functions in the Genetic Algorithm implementation. Two types of unit tests are provided: 
+
+\begin{itemize}
+	\item \emph{Deterministic}: Tests that directly test the function in question, addressing questions such as: does \texttt{onemax} add correctly? and does \texttt{point\_mutation} behave correctly?
+	\item \emph{Probabilistic}: Tests the probabilistic properties of the function in question, addressing questions such as: does \texttt{random\_bitstring} provide an expected 50/50 mixture of $1$'s and $0$'s over a large number of cases? and does \texttt{point\_mutation} make an expected number of changes over a large number of cases?
+\end{itemize}
+
+This second type that tests for probabilistic expectations is a weaker form of unit testing that can be used to either provide additional confidence to deterministically tested functions, or to be used as a last resort when direct methods cannot be used.
+
+Given that a unit test should `test one thing' it is common for a given function to have more than one unit tests. The \texttt{reproduce} function is a good example of this with three tests in the suite. This is because it is a larger function with behavior called in dependent functions which is varied based on parameters.
+
+% the listing
+\lstinputlisting[firstline=10,language=ruby,caption=Unit Tests for the Genetic Algorithm the Ruby Programming Language, label=gatests]{../src/algorithms/evolutionary/tests/tc_genetic_algorithm.rb}
+
+%
+% Rules-of-Thumb
+%
+\subsection{Rules-of-Thumb}
+\label{sec:suggestions}
+\index{Unit Testing}
+Unit testing is easy, although writing good unit tests is difficult given the complex relationship the tests have with the code under test. Testing Metaheuristics and Computational Intelligence algorithms is harder again given their probabilist nature and their ability to `work in-spite of you', that is, provide some kind of result even when implemented with defects.
+
+The following provide 10 guidelines that may help when it comes time to unit testing an algorithm:
+
+\begin{itemize}
+ 	\item \emph{Start Small}: Some unit tests are better than no unit test and each additional test can improve the trust and potentially the quality of the code. For an existing algorithm implementation, start by writing a test for a small and simple behavior and slowly build up a test suite.
+  \item \emph{Test one thing}: Each test should focus on verifying the behavior of one aspect of one unit of code. Writing concise and behavior-focused unit tests are the objective of the methodology.
+  \item \emph{Test once}: A behavior or expectation only needs to be tested once, do not repeat a test each time a given unit is tested.
+  \item \emph{Don't forget the I//O}: Remember to test the inputs and outputs of a unit of code, specifically the pre-conditions and post-conditions. It can be easy to focus on the decision points within a unit and forget its primary purpose.
+	\item \emph{Write code for testability}: The tests should help to shape the code they test. Write small functions or modules, think about testing while writing code (or write tests first), and refactor code (update code after the fact) to make it easier to test.
+	\item \emph{Function independence}: Attempt to limit the direct dependence between functions, modules, objects and other constructs. This is related to testability and writing small functions although suggests limits on how much interaction there is between units of code in the algorithm. Less dependence means less side-effects of a given unit of code and ultimately complicated tests.
+  \item \emph{Test Independence}: Test should be independent from each other. Frameworks provide hooks to set-up and tear-down state prior to the execution of each test, there should be no needed to have one test prepare data or state for other tests. Tests should be able to execute independently and in any order.
+	\item \emph{Test your own code}: Avoid writing tests that verify the behavior of framework or library code, such as the randomness of a random number generator or whether a math or string function behaves as expected. Focus on writing test for the manipulation of data performed by the code you have written.
+	\item \emph{Probabilistic testing}: Metaheuristics and Computational Intelligence algorithms generally make use of stochastic or probabilistic decisions. This means that some behaviors are not deterministic and are more difficult to test. As with the example, write probabilistic tests to verify that such processes behave as intended. Given that probabilistic tests are weaker than deterministic tests, consider writing deterministic tests first. A probabilistic behavior can be made deterministic by replacing the random number generator with a proxy that returns deterministic values, called a mock. This level of testing may require further impact to the original code to allow for dependent modules and objects to be mocked.
+	\item \emph{Consider test-first}: Writing the tests first in a Test-Driven methodology can help to crystallize expectations when implementing an algorithm from the literature, and help to solidify thoughts when developing or prototyping a new idea.
+\end{itemize}
+
+% 
+% References
+% 
+\subsection{References}
+For more information on software testing, consult a good book on software engineering. Two good book's dedicated to testing are ``Beautiful Testing: Leading Professionals Reveal How They Improve Software'' that provides a compendium of best practices from professional programers and testers \cite{Goucher2009}, and ``Software testing'' by Patton that provides a more traditional treatment \cite{Patton2005}.
+
+Unit testing is covered in any good book on software testing.
+Two good books that focus on unit testing include ``Test Driven Development: By Example'' on the TDD methodology by Beck, a pioneer of Extreme Programming and Test Drive Development \cite{Beck2002} and ``Pragmatic unit testing in Java with JUnit'' by Hunt and Thomas dedicated to the popular JUnit framework for Java \cite{Hunt2003}.
+

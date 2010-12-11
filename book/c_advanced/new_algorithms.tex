@@ -1,0 +1,252 @@
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+% Devising New Algorithms
+\section{Devising New Algorithms} 
+\label{advanced:sec:new_algorithms}
+\index{New Algorithms}
+
+% this section
+This section provides a discussion of some of the approaches that may be used to devise new algorithms and systems inspired by biological systems that may be used for addressing mathematical and engineering problems.
+This discussion covers:
+
+\begin{itemize}
+	\item An introduction to adaptive systems and complex adaptive systems as an approach for studying natural phenomenon and deducing adaptive strategies that may be the basis for algorithms (Section~\ref{sub:adaptive}).
+	\item An introduction into some frameworks and methodologies for deducing a natural systems into an abstract information processing procedures and ultimately an algorithms (Section~\ref{sub:bia}).
+	\item A summary of a methodology that may be used to investigate a devised adaptive system that considers the trade-off in model fidelity and descriptive power proposed by a pioneer from the field of Evolutionary Computation (Section~\ref{sub:engineers}).
+\end{itemize}
+
+
+% 
+% Adaptive Systems
+% 
+\subsection{Adaptive Systems}
+\label{sub:adaptive}
+\index{Adaptive Systems Formalism}
+Many algorithms have come the study and models of complex and adaptive systems, such as evolutionary computation. Adaptive systems research provides a methodology by which these systems can systematically investigated resulting in adaptive plans or strategies that can provide the basis for new and interesting algorithms. 
+
+Holland proposed a formalism in his seminal work on adaptive systems that provides a general manner in which to define an adaptive system \cite{Holland1975}. Phrasing systems in this way provides a framework under which adaptive systems may be evaluated and compared relative to each other, the difficulties and obstacles of investigating specific adaptive systems are exposed, and the abstracted principles of different system types may be distilled. This section provides a summary of the Holland's seminal adaptive systems formalism and considers clonal selection as an example of an adaptive plan.
+
+% Adaptive Systems Formalism
+\subsubsection{Adaptive Systems Formalism}
+This section presents a brief review of Holland's adaptive systems formalism taken from \cite{Holland1975} (Chapter 2). This presentation focuses particularly on the terms and their description, and has been hybridized with the concise presentation of the formalism by De~Jong \cite{Jong1975} (page 6). The formalism is divided in two sections: (1) Primary Objects summarized in Table~\ref{tab:adaptsys:primary} and (2) Secondary Objects summarized in Table~\ref{tab:adaptsys:secondary}. \emph{Primary Objects} are the conventional objects of an adaptive system: the environment $e$, the strategy or adaptive plan that creates solutions in the environment $s$, and the utility assigned to created solutions $U$.
+
+\begin{table}[ht]
+	\centering\small
+		\begin{tabularx}{\textwidth}{llX}
+		\toprule
+		\textbf{Term} & \textbf{Object} & \textbf{Description} \\ 
+		\toprule
+		$e$ & Environment & The environment of the system undergoing adaptation. \\ 
+		\midrule
+		$s$ & Strategy & The adaptive plan which determines successive structural modifications in response to the environment. \\ 
+		\midrule
+		$U$ & Utility & A measure of performance or payoff of different structures in the environment. Maps a given solution ($A$) to a real number evaluation. \\ 
+		\bottomrule
+		\end{tabularx}	
+	\caption{Summary of primary objects in the adaptive systems formalism.}
+	\label{tab:adaptsys:primary}
+\end{table}
+
+\emph{Secondary Objects} extend beyond the primary objects providing the detail of the formalism. These objects suggest a broader context than that of the instance specific primary objects, permitting the evaluation and comparison of sets of objects such as plans ($S$), environments ($E$), search spaces ($A$), and operators ($O$).
+
+\begin{table}[ht]
+	\centering\small
+		\begin{tabularx}{\textwidth}{llX}
+		\toprule
+		\textbf{Term} & \textbf{Object} & \textbf{Description} \\ 
+		\toprule
+		$A$ & Search Space & The set of attainable structures, solutions, and the domain of action for an adaptive plan. \\ 
+		\midrule
+		$E$ & Environments & The range of different environments, where $e$ is an instance. It may also represent the unknowns of the strategy about the environment.  \\ 
+		\midrule
+		$O$ & Operators & Set of operators applied to an instance of $A$ at time $t$ ($A_t$) to transform it into $A_{t+1}$. \\ 
+		\midrule
+		$S$ & Strategies & Set of plans applicable for a given environment (where $s$ is an instance), that use operators from the set $O$.  \\ 
+		\midrule
+		$X$ & Criterion & Used to compare strategies (in the set $S$), under the set of environments ($E$). Takes into account the efficiency of a plan in different environments. \\ 
+		\midrule
+		$I$ & Feedback & Set of possible environmental inputs and signals providing dynamic information to the system about the performance of a particular solution $A$ in a particular environment $E$. \\ 
+		\midrule
+		$M$ & Memory & The memory or retained parts of the input history ($I$) for a solution ($A$). \\ 
+		\bottomrule		
+		\end{tabularx}	
+	\caption{Summary of secondary objects in the adaptive systems formalism.}
+	\label{tab:adaptsys:secondary}
+\end{table}
+
+A given adaptive plan acts in discrete time $t$ which is a useful simplification for analysis and computer simulation. A framework for a given adaptive system requires the definition of a set of strategies $S$, a set of environments $E$, and criterion for ranking strategies $X$. A given adaptive plan is specified within this framework given the following set of objects: a search space $A$, a set of operators $O$, and feedback from the environment $I$. Holland proposed a series of fundamental questions when considering the definition for an adaptive system, which he rephrases within the context of the formalism (see Table~\ref{tab:adaptsys:questions}).
+
+\begin{table}[ht]
+	\centering\small
+		\begin{tabularx}{\textwidth}{Xl}
+		\toprule
+		\textbf{Question} & \textbf{Formal} \\ 
+		\toprule
+		To what parts of its environment is the organism (system, organization) adapting? & What is $E$? \\ 
+		\midrule
+		How does the environment act upon the adapting organism (system, organization)? & What is $I$? \\ 
+		\midrule
+		What structures are undergoing adaptation? & What is $A$? \\ 
+		\midrule
+		What are the mechanisms of adaptation? & What is $O$? \\ 
+		\midrule
+		What part of the history of its interaction with the environment does the organism (system, organization) retain in addition to that summarized in the structure tested? & What is $M$? \\ 
+		\midrule
+		What limits are there to the adaptive process? & What is $S$? \\ 
+		\midrule
+		How are different (hypotheses about) adaptive processes to be compared? & What is $X$? \\ 
+		\bottomrule
+		\end{tabularx}	
+	\caption{Fundamental questions regarding adaptive systems, taken from \cite{Holland1975} (page 29).}
+	\label{tab:adaptsys:questions}
+\end{table}
+
+
+% Examples
+\subsubsection{Some Examples}
+Holland provides a series of illustrations rephrasing common adaptive systems in the context of the formalism \cite{Holland1975} (pages 35-36). Examples include: genetics, economics, game playing, pattern recognition, control, function optimization and the central nervous system. THe formalism is applied to investigate his schemata theorem, reproductive plans, and genetic plans, the foundational models became the field of Evolutionary Computation (Chapter~\ref{ch:evolutionary}). 
+
+From working within the formalism, Holland makes six observations regarding obstacles that may be encountered whilst investigating adaptive systems \cite{Holland1975} (pages 159-160): 
+
+\begin{itemize}
+	\item \emph{High cardinality of $A$}: makes searches long and storage of relevant data difficult.
+	\item \emph{Appropriateness of credit}: knowledge of the properties about `successful' structures is incomplete, making it hard to predict good future structures from past structures.
+	\item \emph{High dimensionality of $U$ on an $e$}: performance is a function of a large number of variables which is difficult for classical optimization methods.
+	\item \emph{Non-linearity of $U$ on an $e$}: many false optima or false peaks, resulting in the potential for a lot of wasted computation.
+	\item \emph{Mutual interference of search and exploitation}: the exploration (acquisition of new information), exploitation (application of known information) trade-off.
+	\item \emph{Relevant non-payoff information}: the environment may provide a lot more information in addition to payoff, some of which may be relevant to improved performance.
+\end{itemize}
+
+Cavicchio provides perhaps one of the first applications of the formalism (after Holland) in his dissertation investigating Holland's reproductive plans \cite{Cavicchio1970} (and to a lesser extent in \cite{Daniel1972}). The work summarizes the formalism, presenting essentially the same framework, although he provides a specialization of the search space $A$. The search space is broken down into a representation (codes), devices (solutions), and a mapping function from codes to devices. The variation highlights the restriction the representation and mapping have on the designs available to the adaptive plan. Further, such mappings may not be one-to-one, there may be many instances in the representation space that map to the same solution (or the reverse). 
+
+Although not explicitly defined, Holland's specification of structures $A$ is clear in pointing out that the structures are not bound to a level of abstraction, that his definition covers structures at all levels. Nevertheless, Cavicchio's specialization for a representation-solution mapping was demonstrated to be useful in his exploration of reproductive plans (early genetic algorithms). He proposed that an adaptive system is \emph{first order} if the utility function $U$ for structures on an environment encompasses feedback $I$.
+
+Cavicchio described the potential independence (component-wise) and linearity of the utility function with respect to the representation used. De~Jong also employed the formalism to investigate reproductive plans in his dissertation research \cite{Jong1975}. He indicated that the formalism covers the essential characteristics of adaptation, where the performance of a solution is a function of its characteristics and its environment. Adaptation is defined as a strategy for generating better-performing solutions to a problem by reducing initial uncertainty about the environment via feedback from the evaluation of individual solutions. De~Jong used the formalism to define a series of genetic reproductive plans, which he investigated in the context of function optimization.
+
+% Complex Adaptive Systems
+\subsubsection{Complex Adaptive Systems}
+\index{Complex Adaptive Systems}
+% general
+Adaptive strategies are typically complex because they result in irreducible emergent behavior that occur as a result of the non-linear interactions of systems components.
+% cas
+The study of Complex Adaptive Systems is the study of high-level abstractions of natural and artificial systems that are generally impervious to traditional analysis techniques. Macroscopic patterns emerge from the dynamic and non-linear interactions of the systems low-level (microscopic) adaptive agents. The emergent patterns are more than the sum of their parts. As such, the traditional reductionist methodologies fail to describe how the macroscopic patterns emerge. Rather, holistic and totalistic investigatory approaches are applied that relate the simple rules and interactions of the simple adaptive agents to their emergent effects in a `bottom-up' manner. 
+
+% examples
+Some relevant examples of CAS include: the development of embryos, ecologies, genetic evolution, thinking and learning in the brain, weather systems, social systems, insect swarms, \emph{bacteria becoming resistant to an antibiotic}, and the \emph{function of the adaptive immune system}. 
+
+% history
+The field of Complex Adaptive Systems was founded at the Santa~Fe Institute (SFI), in the late 1980's by a group of physicists, economists, and others interested in the study of complex systems in which the agents of those systems change \cite{Anderson1988}. Perhaps one of the largest contributors to the inception of the field from the perspective of adaptation was Holland. He was interested in the question of how computers could be programmed so that problem-solving capabilities are built up by specifying: ``\emph{what is to be done}'' (inductive information processing) rather than ``\emph{how to do it}" (deductive information processing). In the 1992 reprint of his book he provided a summary of CAS with a computational example called ECHO \cite{Holland1975}. His work on CAS was expanded in a later book which provided an in depth study of the topic \cite{Holland1995}.
+ 
+% definition
+There is no clear definition of a Complex Adaptive System, rather sets of parsimonious principles and properties, many different researches in the field defining their own nomenclature. Popular definitions beyond Holland's work include that of Gell-Mann \cite{Gell-Mann1994} and Arthur \cite{Arthur1997}.
+
+
+
+% 
+% Biologically Inspired Algorithms
+% 
+\subsection{Biologically Inspired Algorithms}
+\label{sub:bia}
+\index{Frameworks for Biologically Inspired Algorithms}
+Explicit methodologies have been devised and used for investigating natural systems with the intent of devising new computational intelligence techniques. This section introduces two such methodologies taken from the field of Artificial Immune Systems (Chapter~\ref{ch:immune}).
+
+
+% 
+% Conceptual Framework
+% 
+\subsubsection{Conceptual Framework}
+Although a progression from inspiring biological system to inspired computation system may appear to be an intuitive process, it can involve problems of standardization of nomenclature, effective abstraction and departure from biology, and rigor. Stepney, et~al. caution that by following a process that lacks the detail of \emph{modeling}, one may fall into the trap of \emph{reasoning by metaphor} \cite{Twycross2005, Stepney2004, Stepney2005}. 
+
+Besides the lack of rigor, the trap suggests that such reasoning and lack of objective analysis limits and biases the suitability and applicability of resultant algorithms. They propose that many algorithms in the field of Artificial Immune Systems (and beyond) have succumbed to this trap. This observation resulted in the development and application of a conceptual framework to provide a general process that may be applied in the field of Biological Inspired Computation toward realizing Biological Inspired Computational Intelligence systems. 
+
+The conceptual framework is comprised of the following actors and steps:
+
+\begin{enumerate}
+	\item \emph{Biological System}: The driving motivation for the work that possess some innate information processing qualities. 
+	\item \emph{Probes}: Observations and experiments that provide a partial or noisy perspective of the biological system.
+	\item \emph{Models}: From the probes abstract and simplified models of the information processing qualities of the system are build and validated.
+	\item \emph{Framework}: Build and validate analytical computational frameworks. Validation may use mathematical analysis, benchmark problems and engineering demonstration.
+	\item \emph{Algorithms}: The framework provides the principles for designing and analyzing algorithms that may be general and applicable to domains unrelated to the biological motivation.
+\end{enumerate}
+
+
+
+% 
+% Immunology as Information Processing
+% 
+\subsubsection{Immunology as Information Processing}
+Forrest and Hofmeyr summarized their AIS research efforts at the University of New Mexico and the Santa~Fe Institute as ``\emph{immunology as information processing}'' \cite{Forrest2001}. They define information as spatio-temporal patterns that can be abstracted and described independent of the biological system, and information processing as computation with these patterns. They proposed that such patterns are encoded in the proteins and other molecules of the immune system, and that they govern the behavior of the biological system. They suggest that their information processing perspective can be contrasted with the conventional structural perspective of cellular interactions as mechanical devices. They consider a simple four-step procedure for the investigation of \emph{immunology as information processing}, transitioning from the biological system to a usable computational tool:
+
+\begin{enumerate}
+	\item Identify a specific mechanism that appears to be interesting computationally.
+	\item Write a computer program that implements or models the mechanism.
+	\item Study its properties through simulation and mathematical analysis.
+	\item Demonstrate capabilities either by applying the model to a biological question of interest or by showing how it can be used profitably in a computer science setting.
+\end{enumerate}
+
+The procedure is similar to the outlined in the conceptual framework for Biologically Inspired Algorithms in that in addition to identifying biological mechanisms (input) and demonstrating a resultant algorithms (output), the procedure (1) highlights the need for abstraction involving modeling the identified mechanism, and (2) highlights the need to analyze the models and abstractions. The procedure of Forrest and Hofmeyr can be used to specialize Stepney, et~al. conceptual framework by clearly specifying the immunological information processing focus.
+
+
+%
+% Engineers and Mathematicians
+%
+\subsection{Modeling a New Strategy}
+\label{sub:engineers}
+\index{Small Models}
+Once an abstract information processing system is devised it must be investigated in a systematic manner. There are a range of modeling techniques for such a system from weak and fast to realize to strong and slow to realize. This section considers the trade-off's in modeling an adaptive technique.
+
+% Engineers and Mathematicians
+\subsubsection{Engineers and Mathematicians}
+Goldberg describes the airplane and other products of engineering as \emph{material machines}, and distinguishes them from the engineering of genetic algorithms and other adaptive systems as \emph{conceptual machines}. He argues the methodological distinction between the two is counter-productive and harmful from the perspective of conceptual machines, specifically that the methodology of the material is equally applicable to that of the conceptual \cite{Goldberg1999a}. 
+
+The obsession of mathematical rigor in computer science, although extremely valuable, is not effective in the investigation of adaptive systems given their complexity. Goldberg sights the airplane as an example where the engineering invention is used and trusted without a formal proof that the invention works (that an airplane can fly\footnote{Goldberg is quick to point out that sets of equations do exist for various aspects of flight, although no integrated mathematical proof for airplane flight exists.}). 
+
+This defense leads to what Goldberg refers to the \emph{economy of design} which is demonstrated with a trade-off that distinguishes `model description' (mathematician-scientists) that is concerned with model fidelity, and model prescription (engineer-inventor) that is concerned with a working product. In descriptive modeling \emph{the model is the thing} (of interest) whereas in `prescriptive modeling', \emph{the object is the thing} (of interest). In the latter, the model (and thus its utility) serves the object, in the former model accuracy may be of primary concern. This economy of modeling provides a perspective that distinguishes the needs of the prescriptive and descriptive fields of investigation. 
+
+The mathematician-scientist is interested in increasing model accuracy at the expense of the speed (slow), whereas the engineer may require a marginally predictive (inaccurate) model relatively quickly. This trade-off between high-cost high-accuracy models and low-cost low-fidelity models is what may be referred to as the \emph{modeling spectrum} that assists in selecting an appropriate level of modeling. Goldberg proposes that the field of genetic algorithms expend too much effort at either ends of this spectrum. There is much work where there is an obsession with blind-prototyping many different tweaks in the hope of striking it lucky with the \emph{right} mechanism, operator, or parameter. Alternatively, there is also an obsession with detailed mathematical models such as full-blown differential equations and Markov chains. The middle ground of the spectrum, what Goldberg refers to as \emph{little models} is a valuable economic modeling consideration for the investigation of conceptual machines to \emph{do good science through good engineering}. 
+
+% Methodology
+\subsubsection{Methodology}
+The methodology has been referred to as post-modern systems engineering and is referred to by Goldberg as a methodology of innovation \cite{Goldberg2004}. The core principles of the process are as follows: 
+
+\begin{enumerate}
+	\item \emph{Decomposition}: Decompose the large problem approximately and intuitively, breaking into quasi-separate sub-problems.
+	\item \emph{Modeling}: Investigate each sub-problem separately (or as separate as possible) using empirical testing coupled with adequately predictive, low-cost models.
+	\item \emph{Integration}: Assemble the sub-solutions and test the overall invention, paying attention to unforeseen interactions between the sub-problems.
+\end{enumerate}
+
+% Decomposition
+\paragraph{Decomposition} 
+Problem decomposition and decomposition design is an axiom of reductionism and is at the very heart of problem solving in computer science. Therefore, it is not worth dwelling on the topic other than to comment as to its meaning within the context of adaptive systems. One may consider the base or medium on which the system is performing its computation mechanisms, the so-called building blocks of information processing. A structural decomposition may involve the architecture and data structures of the system. Additionally, one may also consider a functional breakdown of mechanisms such as the operators applied at each discrete step of an algorithmic process or mechanisms. The reductions achieved provide the basis of investigation and modeling.
+
+% Small Models
+\paragraph{Small Models} 
+Given the principle of the economy of modeling presented as a spectrum, one may extend the description of each of the five presented model types. \emph{Small Models} refers to the middle of the spectrum, specifically to the application of dimensional and facet-wise models. These are mid-range quantitative models that make accurate prediction over a limited range of states at moderate cost. Once derived, this class of models generally requires a small amount of formal manipulation and large amounts of data for calibration and verification. The following summarizes the modeling spectrum:
+
+\begin{itemize}
+	\item \emph{Unarticulated Wisdom}: (low-cost, high-error) Intuition, what is used when there is nothing else.
+	\item \emph{Articulated Qualitative Models}: Descriptions of mechanisms, graphical representations of processes and/or relationships, empirical observation or statistical data collection and analysis.
+	\item \emph{Dimensional Models}: Investigate dimensionless parameters of the system.
+	\item \emph{Facet-wise Models}: Investigation of a decomposition element of a model in relative isolation.
+	\item \emph{Equations of Motion}: (high-cost, low-error) Differential equations and Markov chains.
+\end{itemize}
+
+Facet-wise models are an exercise in simple mathematics that may be used to investigate a decomposition element of a model in relative isolation. They are based on the idea of \emph{bracketing high-order phenomena} by simplifying or making assumptions about the state of the system. An example used by Goldberg from fluid mechanics is a series of equations that simplify the model by assuming that a fluid or gas has no viscosity, which matches no known substance. A common criticism of this modeling approach is ``\emph{system X doesn't work like that, the model is unrealistic}''. The source of such concerns with adaptive systems is that their interactions are typically high-dimensional and non-linear. Goldberg's response is that for a given poorly understood area of research, any useful model is better than no model. Dimensional analysis or the so-called dimensional reasoning and scaling laws are another common conceptual tool in engineering and the sciences. Such models may be used to investigate dimensionless parameters of the system, which may be considered the formalization of the systemic behaviors.
+
+% Integration
+\paragraph{Integration} 
+Integration is a unification process of combining the findings of various models together to form a \emph{patch-quilt} coherent theory of the system. Integration obviously is not limited to holistic unification, one may address specific hypothesis regarding the system resulting in conclusions about existing systems, and design decisions pertaining to the next generation of systems.
+
+% Application
+\paragraph{Application} 
+In addition to elucidating the methodology, Goldberg specifies a series of five useful heuristics for the application of the methodology as follows (taken from \cite{Goldberg1999a}, page 8):
+
+\begin{enumerate}
+	\item \emph{Keep the goal of a working conceptual machine in mind}. Experiments commonly get side tracked by experimental design and statistical verification; theoreticians get side tracked with notions of mathematical rigor and model fidelity.
+	\item \emph{Decompose the design ruthlessly}. One cannot address the analytical analysis of a system like a genetic algorithm in one big `gulp'.
+	\item \emph{Use facet-wise models with almost reckless abandon}. One should build easy models that can be solved by bracketing everything that gets in the way.
+	\item \emph{Integrate facet-wise models using dimensional arguments}. One can combine many small models together in a patch-quilt manner and defend the results of such models using dimensional analysis.
+	\item \emph{Build high-order models when small models become inadequate}. Add complexity to models as complexity is needed (economy of modeling).
+\end{enumerate}
