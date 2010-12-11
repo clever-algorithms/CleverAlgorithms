@@ -2,9 +2,13 @@ Clever Algorithms
 
 This is the content and structure for the Clever Algorithms book by Jason Brownlee.
 
-The book was prepared using LaTex and can be compiled using a popular fully-featured LateX distribution pointed at the file: master.tex. Compilation should produce the book as PDF.
-
 Developed using the MacTeX-2009 Distribution: http://www.tug.org/mactex/2009/
 Specifically, BasicTeX: http://www.tug.org/mactex/2009/morepackages.html
 
 JabRef is proposed for managing the bibtex: http://jabref.sourceforge.net/
+
+To build, refer to to the Makefile.
+
+
+Language rules I need to remember:
+* Do not capitalize field names in text: http://www.sc.edu/webpresence/editorial_guide/capitalization.html

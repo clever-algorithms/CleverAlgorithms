@@ -4,8 +4,10 @@
 
 % This is a chapter
 
-% Argument and background information the user requires to read and understand the book
+
 \begin{bibunit}
+
+% Argument and background information the user requires to read and understand the book
 \chapter{Introduction}
 \label{chap:intro}
 % welcome
@@ -13,10 +15,10 @@
 % they are for using
 Clever Algorithms are interesting, practical, and fun to learn about and implement.
 % briefly the audience
-Research scientists may be interested in browsing algorithm inspirations in search of an interesting system or process analogues to investigate. Developers and software engineers may compare various problem solving algorithms and technique-specific guidelines. Practitioners, students, and interested amateurs may implement state-of-the-art algorithms to address business or scientific needs, or simply play with the fascinating systems they represent.
+Research scientists may be interested in browsing algorithm inspirations in search of an interesting system or process analogs to investigate. Developers and software engineers may compare various problem solving algorithms and technique-specific guidelines. Practitioners, students, and interested amateurs may implement state-of-the-art algorithms to address business or scientific needs, or simply play with the fascinating systems they represent.
 
 % briefly book overview
-This introduction chapter provides relevant background information on Artificial Intelligence and Algorithms. The core of the book provides a large corpus of algorithm described in a complete and consistent manner. The final chapter covers some advanced topics to consider once a number of algorithms have been mastered. This book has been designed as a reference text rather then being read cover-to-cover, where specific techniques are looked up, or where the algorithms across whole fields of study are browsed. This book is an algorithm handbook and a technique guidebook, and I hope you find something useful.
+This introduction chapter provides relevant background information on Artificial Intelligence and Algorithms. The core of the book provides a large corpus of algorithms described in a complete and consistent manner. The final chapter covers some advanced topics to consider once a number of algorithms have been mastered. This book has been designed as a reference text, where specific techniques are looked up, or where the algorithms across whole fields of study are browsed, rather than being read cover-to-cover. This book is an algorithm handbook and a technique guidebook, and I hope you find something useful.
 
 
 % 
@@ -104,12 +106,12 @@ A collection of approaches inspired by the structure and function of the acquire
 \subsection{Metaheuristics}
 \label{sec:metaheuristics}
 \index{Metaheuristics}
-Another popular name for the strategy-outcome perspective of scruffy AI is \emph{Metaheuristics}. 
+Another popular name for the strategy-outcome perspective of scruffy AI is \emph{metaheuristics}. 
 % heuristics
-A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal \cite{Michalewicz2004}. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The Greedy search procedure that only takes cost-improving steps is an example of heuristic method.
+A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal \cite{Michalewicz2004}. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The greedy search procedure that only takes cost-improving steps is an example of heuristic method.
 
 % meta
-Like heuristics, Metaheuristic may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Glover2003, Talbi2009}. The difference is that Metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is considered black-box in that little (if any) prior knowledge is known about it by the meta-heuristic, and as such it may be replaced with a different procedure. Procedures may be as simple as the manipulation of a representation, or as complex as another complete metaheuristic. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
+Like heuristics, metaheuristics may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Glover2003, Talbi2009}. The difference is that metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is considered black-box in that little (if any) prior knowledge is known about it by the metaheuristic, and as such it may be replaced with a different procedure. Procedures may be as simple as the manipulation of a representation, or as complex as another complete metaheuristic. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
 
 Blum and Roli outline nine properties of metaheuristics \cite{Blum2003}, as follows: 
 \begin{itemize}
@@ -134,11 +136,11 @@ Hyperheuristics are yet another extension that focuses on heuristics that modify
 \label{sec:clever_algorithms}
 \index{Clever Algorithms}
 % algorithm soures
-This book is concerned with Clever Algorithms which are algorithms drawn from many sub-fields of Artificial Intelligence not limited to the scruff fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics. 
+This book is concerned with `clever algorithms', which are algorithms drawn from many sub-fields of artificial intelligence not limited to the scruff fields of biologically inspired computation, computational intelligence and metaheuristics. 
 % the name
-The term \emph{Clever Algorithms} is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner. An alternative name (\emph{Inspired Algorithms}) was considered, although ultimately rejected given that not all of the algorithms to be described in the project have an inspiration (specifically a biological or physical inspiration) for their computational strategy. 
+The term `\emph{clever algorithms}' is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner. An alternative name (\emph{Inspired Algorithms}) was considered, although ultimately rejected given that not all of the algorithms to be described in the project have an inspiration (specifically a biological or physical inspiration) for their computational strategy. 
 % focus
-The set of algorithms described in this book may generally be referred to as `unconventional optimization algorithms' (for example, see \cite{Corne1999}), as optimization is the main form of computation provided by the listed approaches. A technically more appropriate name for these approaches is Stochastic Global Optimization (for example, see \cite{Weise2007} and \cite{Luke2009}).
+The set of algorithms described in this book may generally be referred to as `unconventional optimization algorithms' (for example, see \cite{Corne1999}), as optimization is the main form of computation provided by the listed approaches. A technically more appropriate name for these approaches is stochastic global optimization (for example, see \cite{Weise2007} and \cite{Luke2009}).
 
 % 
 %  Problems - based on copy from my thesis
@@ -172,7 +174,7 @@ Real-world optimization problems and generalizations thereof can be drawn from m
 %
 \subsubsection{Problem Description}
 % definition
-Mathematically, optimization is defined as the search for a combination of parameters commonly referred to as decision variables ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an objective function or cost function ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x\prime) \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space. In applied mathematics the field may be referred to as Mathematical Programming. More generally the field may be referred to as Global or Function Optimization given the focus on the objective function (for more general information on optimization refer to \cite{Horst2000}). 
+Mathematically, optimization is defined as the search for a combination of parameters commonly referred to as decision variables ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an objective function or cost function ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x') \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space. In applied mathematics the field may be referred to as Mathematical Programming. More generally the field may be referred to as Global or Function Optimization given the focus on the objective function (for more general information on optimization refer to \cite{Horst2000}). 
 
 %
 % Sub-fields
@@ -184,7 +186,7 @@ The study of optimization is comprised of many specialized sub-fields, based on 
 For example, with regard to the decision variables, one may consider univariate and multivariate optimization problems. The type of decision variables promotes specialities for continuous, discrete, and permutations of variables. Dependencies between decision variables under a cost function define the fields of Linear Programming, Quadratic Programming, and Nonlinear Programming. A large class of optimization problems can be reduced to discrete sets and are considered in the field of Combinatorial Optimization, to which many theoretical properties are known, most importantly that many interesting and relevant problems cannot be solved by an approach with polynomial time complexity (so-called NP-complete, for example see \cite{Papadimitriou1998}).
 
 % need for more complex models
-The topography of the response surface for the decision variables under the cost function may be convex, which is a class of functions to which many important theoretical findings have been made, not limited to the fact that location of the local optimal configuration also means the global optimal configuration of decisional variables has been located \cite{Boyd2004}. Many interesting and real-world optimization problems produce cost surfaces that are non-convex or so called multi-modal\footnote{Taken from statistics referring to the centers of mass in distributions, although in optimization it refers to `regions of interest' in the search space, in particular valleys in minimization, and peaks in maximization cost surfaces.} (rather than uni-modal) suggesting that there are multiple peaks and valleys. Further, many real-world optimization problems with continuous decision variables cannot be differentiated given their complexity or limited information availability meaning that derivative-based gradient decent methods that are well understood are not applicable, requiring the use of so-called `direct search' (sample or pattern-based) methods \cite{Lewis2000}. Real-world objective function evaluation may be noisy, discontinuous, dynamic, and the constraints of real-world problem solving may require an approximate solution in limited time or using resources, motivating the need for heuristic approaches.
+The topography of the response surface for the decision variables under the cost function may be convex, which is a class of functions to which many important theoretical findings have been made, not limited to the fact that location of the local optimal configuration also means the global optimal configuration of decision variables has been located \cite{Boyd2004}. Many interesting and real-world optimization problems produce cost surfaces that are non-convex or so called multi-modal\footnote{Taken from statistics referring to the centers of mass in distributions, although in optimization it refers to `regions of interest' in the search space, in particular valleys in minimization, and peaks in maximization cost surfaces.} (rather than unimodal) suggesting that there are multiple peaks and valleys. Further, many real-world optimization problems with continuous decision variables cannot be differentiated given their complexity or limited information availability, meaning that derivative-based gradient decent methods (that are well understood) are not applicable, necessitating the use of so-called `direct search' (sample or pattern-based) methods \cite{Lewis2000}. Real-world objective function evaluation may be noisy, discontinuous, and/or dynamic, and the constraints of real-world problem solving may require an approximate solution in limited time or using resources, motivating the need for heuristic approaches.
 
 
 % 
@@ -221,15 +223,15 @@ Some important problem-based sub-fields include:
 	\item \emph{Feature Selection} where a feature is considered an aggregation of one-or-more attributes, where only those features that have meaning in the context of the target function are necessary to the modeling function \cite{Kudo2000, Guyon2003}.
 	\item \emph{Classification} where observations are inherently organized into labelled groups (classes) and a supervised process models an underlying discrimination function to classify unobserved samples.
 	\item \emph{Clustering} where observations may be organized into groups based on underlying common features, although the groups are unlabeled requiring a process to model an underlying discrimination function without corrective feedback.
-	\item \emph{Curve or Surface Fitting} where a model is prepared that provides a `best-fit' (called a regression) for a set of observations that may be used for interpolation over known observations and extrapolation for observations outside what has been modelled.
+	\item \emph{Curve or Surface Fitting} where a model is prepared that provides a `best-fit' (called a regression) for a set of observations that may be used for interpolation over known observations and extrapolation for observations outside what has been modeled.
 \end{itemize}
 
 % optimisation
 The field of Function Optimization is related to Function Approximation, as many-sub-problems of Function Approximation may be defined as optimization problems. Many of the technique paradigms used for function approximation are differentiated based on the representation and the optimization process used to minimize error or maximize effectiveness on a given approximation problem. 
 % problems
-The difficulty of Function Approximation problems centre around (i) the nature of the unknown relationships between attributes and features, (ii) the number (dimensionality) of of attributes and features, and (iii) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
+The difficulty of Function Approximation problems centre around (i) the nature of the unknown relationships between attributes and features, (ii) the number (dimensionality) of attributes and features, and (iii) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
 % other problems
-Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling and skewing of features).
+Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling, and skewing of features).
 
 
 % 
@@ -252,21 +254,21 @@ Unconventional optimization algorithms are designed for the more difficult probl
 % overview
 Black Box optimization algorithms are those that exploit little, if any, information from a problem domain in order to devise a solution. They are generalized problem solving procedures that may be applied to a range of problems with very little modification \cite{Droste2006}.
 % more detail - use info if avaiable
-Domain specific knowledge refers to making use of known relationships between solution representations and the objective cost function. Generally speaking, the less domain specific information incorporated into a technique, the more flexible the technique, although the less efficient it will be for a given problem. For example, `random search' is the most general black box approach and is also the most flexible requiring only the generation of random solutions for a given problem. Random search also has a worst case behavior, that is worse than enumerating an entire search domain given the freedom it has to resample. In practice, the more prior knowledge available about a problem, the more information that should be exploited by a technique in order to efficiently locate a solution for the problem, heuristically or otherwise. Therefore, black box methods are those methods suitable for those problems where little information from the problem domain is available to be used by a problem solving approach.  
+Domain specific knowledge refers to making use of known relationships between solution representations and the objective cost function. Generally speaking, the less domain specific information incorporated into a technique, the more flexible the technique, although the less efficient it will be for a given problem. For example, `random search' is the most general black box approach and is also the most flexible requiring only the generation of random solutions for a given problem. Random search allows resampling of the domain which gives it a worst case behavior that is worse than enumerating an entire search domain. In practice, the more prior knowledge available about a problem, the more information that can be exploited by a technique in order to efficiently locate a solution for the problem, heuristically or otherwise. Therefore, black box methods are those methods suitable for those problems where little information from the problem domain is available to be used by a problem solving approach.  
 
 % 
 % No Free Lunch - based on copy from my thesis
 % 
-\subsection{No Free Lunch}
+\subsection{No-Free-Lunch}
 \label{subsec:nfl}
 \index{No Free Lunch Theorem}
 % intro
-The \emph{No Free Lunch Theorem} of search and optimization by Wolpert and Macready proposes that all black box optimization algorithms are the same for searching for the extremum of a cost function when averaged over all possible functions \cite{Wolpert1997, Wolpert1995}. The theorem has caused a lot of pessimism and misunderstanding, particularly in relation to the evaluation and comparison of Metaheuristic and Computational Intelligence algorithms.
+The \emph{No-Free-Lunch Theorem} of search and optimization by Wolpert and Macready proposes that all black box optimization algorithms are the same for searching for the extremum of a cost function when averaged over all possible functions \cite{Wolpert1997, Wolpert1995}. The theorem has caused a lot of pessimism and misunderstanding, particularly in relation to the evaluation and comparison of Metaheuristic and Computational Intelligence algorithms.
 
 % overview
-The implication of the theorem is that searching for the `best' general-purpose black box optimization algorithm is irresponsible as no such procedure is theoretically possible. The theory applies to stochastic and deterministic optimization algorithms as well as to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used and the representation selected. 
+The implication of the theorem is that searching for the `best' general-purpose black box optimization algorithm is irresponsible as no such procedure is theoretically possible. No-Free-Lunch applies to stochastic and deterministic optimization algorithms as well as to algorithms that learn and adjust their search strategy over time. It is invariant to the performance measure used and the representation selected. 
 % more
-The theorem is an important contribution to computer science, although its implications are theoretical. The original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to encourage practitioners to bound claims of applicability for search and optimization algorithms. Wolpert and Macready encouraged effort be put into devising practical problem classes and into the matching of suitable algorithms to problem classes. Further, they compelled practitioners to exploit domain knowledge in optimization algorithm application, which is now an axiom in the field.
+The theorem is an important contribution to computer science, although its implications are theoretical. Wolpert and Macready's original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to encourage practitioners to bound claims of applicability for search and optimization algorithms. Wolpert and Macready encouraged effort be put into devising practical problem classes and into the matching of suitable algorithms to problem classes. Further, they compelled practitioners to exploit domain knowledge in optimization algorithm application, which is now an axiom in the field.
 
 % 
 % Randomness
@@ -275,10 +277,10 @@ The theorem is an important contribution to computer science, although its impli
 \label{subsec:stochastic}
 \index{Stochastic Optimization}
 % Stochastic
-Stochastic optimization algorithms those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. 
-Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness, are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
+Stochastic optimization algorithms are those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. 
+Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
 % mcmc
-A class of techniques that focus on the stochastic sampling of a domain are called Markov Chain Monte Carlo (MCMC) algorithms that provide good average performance, quickly, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large, high-dimensional spaces. MCMC approaches involve stochastically sampling from a target distribution function similar to Monte Carlo simulation methods using a process that resembles a biased Markov chain.
+A class of techniques that focus on the stochastic sampling of a domain called Markov Chain Monte Carlo (MCMC) algorithms provide good average performance, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large, high-dimensional spaces. MCMC approaches involve stochastically sampling from a target distribution function similar to Monte Carlo simulation methods using a process that resembles a biased Markov chain.
 
 \begin{itemize}
 	\item \emph{Monte Carlo} methods are used for selecting a statistical sample to approximate a given target probability density function and are traditionally used in statistical physics. Samples are drawn sequentially and the process may include criteria for rejecting samples and biasing the sampling locations within high-dimensional spaces. 
@@ -325,34 +327,34 @@ The remainder of this book is organized into two parts: \emph{Algorithms} that d
 Algorithms are presented in six groups or kingdoms distilled from the broader fields of study each in their own chapter, as follows: 
 
 \begin{itemize}
-	\item \emph{Stochastic Algorithms} that focus on the introduction of randomness into heuristic methods (Chapter~\ref{ch:stochastic}).
-	\item \emph{Evolutionary Algorithms} that focus on methods in spired by evolution by means of natural selection (Chapter~\ref{ch:evolutionary}).
-	\item \emph{Physical Algorithms} that focus on methods inspired by physical and social systems  (Chapter~\ref{ch:physical}).
-	\item \emph{Probabilistic Algorithms} that focus on methods that build models and estimate distributions in search domains (Chapter~\ref{ch:probabilistic}).
-	\item \emph{Swarm Algorithms} that focus on methods that exploit the properties of collective intelligence (Chapter~\ref{ch:swarm}).
-	\item \emph{Immune Algorithms} that focus on methods inspired by the adaptive immune system of mammals (Chapter~\ref{ch:immune}). 
-	\item \emph{Neural Algorithms} that focus on methods inspired by the plasticity and learning qualities of the human nervous system (Chapter~\ref{ch:neural}). 
+	\item \emph{Stochastic Algorithms} that focuses on the introduction of randomness into heuristic methods (Chapter~\ref{ch:stochastic}).
+	\item \emph{Evolutionary Algorithms} inspired by evolution by means of natural selection (Chapter~\ref{ch:evolutionary}).
+	\item \emph{Physical Algorithms} inspired by physical and social systems  (Chapter~\ref{ch:physical}).
+	\item \emph{Probabilistic Algorithms} that focuses on methods that build models and estimate distributions in search domains (Chapter~\ref{ch:probabilistic}).
+	\item \emph{Swarm Algorithms} that focuses on methods that exploit the properties of collective intelligence (Chapter~\ref{ch:swarm}).
+	\item \emph{Immune Algorithms} inspired by the adaptive immune system of mammals (Chapter~\ref{ch:immune}). 
+	\item \emph{Neural Algorithms} inspired by the plasticity and learning qualities of the human nervous system (Chapter~\ref{ch:neural}). 
 \end{itemize}
 
 % requirements
-A given algorithm is more than just a procedure or code listing. Each approach is an island of research and the meta-information that define the context of a technique are just as important to understanding and application as abstract recipes and concrete implementations. A standardized algorithm description was adopted to provide a consistent presentation of algorithms with a mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.  
+A given algorithm is more than just a procedure or code listing, each approach is an island of research. The meta-information that define the context of a technique is just as important to understanding and application as abstract recipes and concrete implementations. A standardized algorithm description is adopted to provide a consistent presentation of algorithms with a mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.
 
 % template
 The standardized algorithm description template covers the following subjects:
 \begin{itemize}
-	\item \emph{Name}: The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used as the heading of an algorithm descriptions.
-	\item \emph{Taxonomy}: The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relationships between algorithms.
-	\item \emph{Inspiration}: (optional) The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique.
-	\item \emph{Metaphor}: (optional) The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the `inspiration' topic, which represents a loose dependency for this topic.
-	\item \emph{Strategy}: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems.
+	\item \emph{Name}: The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used as the heading of an algorithm description.
+	\item \emph{Taxonomy}: The algorithm taxonomy defines where a technique fits into the field, both the specific sub-fields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relationships between algorithms.
+	\item \emph{Inspiration}: (where appropriate) The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique.
+	\item \emph{Metaphor}: (where appropriate) The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the `inspiration' topic, which represents a loose dependency for this topic.
+	\item \emph{Strategy}: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective, providing a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number of specific algorithms or problem solving systems.
 	\item \emph{Procedure}: The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the computation, data structures, and representations. 
-	\item \emph{Heuristics}: The heuristics section describes the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the techniques procedure and data structures for general classes of application (neither specific implementations nor specific problem instances).
+	\item \emph{Heuristics}: The heuristics section describes the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the technique's procedure and data structures for general classes of application (neither specific implementations nor specific problem instances).
 	\item \emph{Code Listing}: The code listing description provides a minimal but functional version of the technique implemented with a programming language. The code description can be typed into an computer and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing with a terse introductory summary.
 	\item \emph{References}: The references section includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites.
 \end{itemize}
 
 % sample code
-Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm that was adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is interpreted meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the website\footnote{Ruby can be downloaded for free from \url{http://www.ruby-lang.org}}. Finally, Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples. All of the source code for the algorithms presented in this book is available from the books website at \url{http://www.CleverAlgorithms.com}. 
+Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm that was adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is an interpreted language, meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the website.\footnote{Ruby can be downloaded for free from \url{http://www.ruby-lang.org}} Finally, Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples. All of the source code for the algorithms presented in this book is available from \url{http://www.CleverAlgorithms.com}. 
 
 % 
 % Extensions
@@ -361,9 +363,9 @@ Source code examples are included in the algorithm descriptions, and the Ruby Pr
 %  overview
 There are some some advanced topics that cannot be meaningfully considered until one has a firm grasp of a number of algorithms, and these are discussed at the back of the book. 
 % examples
-The Advanced Topics chapter addresses topics such as: the use of alternative programming paradigms when implementing clever algorithms, methodologies used when devising entirely new approaches, strategies to consider when testing clever algorithms, visualizing the behavior and results of algorithms, and finally comparing algorithms based on the results they produce using statistical methods.
+The Advanced Topics chapter addresses topics such as: the use of alternative programming paradigms when implementing clever algorithms, methodologies used when devising entirely new approaches, strategies to consider when testing clever algorithms, visualizing the behavior and results of algorithms, and comparing algorithms based on the results they produce using statistical methods.
 % starting point
-Like the background information provided in this chapter, the extensions provide a gentle introduction and starting point into some advanced topics and plenty of references for seeking a deeper understanding. 
+Like the background information provided in this chapter, the extensions provide a gentle introduction and starting point into some advanced topics, and references for seeking a deeper understanding. 
 
 
 % 
@@ -374,10 +376,10 @@ Like the background information provided in this chapter, the extensions provide
 % overview
 This book is a reference text that provides a large compendium of algorithm descriptions. 
 % how to read it
-It is a trusted handbook of practical computational recipes to consulted when one is confronted with difficult function optimization and approximation problems. It is also an encompassing guidebook of modern heuristic methods that may be browsed for inspiration, exploration, and general interest.
+It is a trusted handbook of practical computational recipes to be consulted when one is confronted with difficult function optimization and approximation problems. It is also an encompassing guidebook of modern heuristic methods that may be browsed for inspiration, exploration, and general interest.
 
 % audience
-The audience for this work may be interested with the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics and may count themselves as belonging to one of the following broader groups:
+The audience for this work may be interested in the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics and may count themselves as belonging to one of the following broader groups:
 
 \begin{itemize}
 	\item \emph{Scientists}: Research scientists concerned with theoretically or empirically investigating algorithms, addressing questions such as: \emph{What is the motivating system and strategy for a given technique? What are some algorithms that may be used in a comparison within a given subfield or across subfields?}
@@ -399,7 +401,7 @@ This book is not an introduction to Artificial Intelligence or related sub-field
 % 
 \subsection{Artificial Intelligence}
 \index{Artificial Intelligence}
-Artificial Intelligence is large field of study and many excellent texts have been written to introduce the subject. Russell and Novig's ``\emph{Artificial Intelligence: A Modern Approach}'' is an excellent introductory text providing a broad and deep review of what the field has to offer and is useful for students and practitioners alike \cite{Russell2009}. Luger and Stubblefield's ``\emph{Artificial Intelligence: Structures and Strategies for Complex Problem Solving}'' is also an excellent reference text, providing a more empirical approach to the field.
+Artificial Intelligence is large field of study and many excellent texts have been written to introduce the subject. Russell and Novig's ``\emph{Artificial Intelligence: A Modern Approach}'' is an excellent introductory text providing a broad and deep review of what the field has to offer and is useful for students and practitioners alike \cite{Russell2009}. Luger and Stubblefield's ``\emph{Artificial Intelligence: Structures and Strategies for Complex Problem Solving}'' is also an excellent reference text, providing a more empirical approach to the field \cite{Luger1993}.
 
 % 
 % Computational Intelligence
@@ -413,8 +415,7 @@ Introductory books for the field of Computational Intelligence generally focus o
 % 
 \subsection{Biologically Inspired Computation}
 \index{Biologically Inspired Computation}
-Computational methods inspired by natural and biologically systems represent a large fraction of the algorithms described in this book. The collection of articles published in de Castro and Von Zuben's ``\emph{Recent Developments in Biologically Inspired Computing}'' provide a good overview of the state of the field, and the introductory chapter on need for such methods does an excellent job to motivate the field of study \cite{Castro2005}. Forbes's ``\emph{Imitation of Life: How Biology Is Inspiring Computing}'' set's the scene for Natural Computing and the interrelated disciplines, of which Biologically Inspired Computing is but one useful example \cite{Forbes2000}. Finally, Benyus's ``\emph{Biomimicry: Innovation Inspired by Nature}'' provides a good introduction into the broader related field of a new frontier in science and technology that involves building systems inspired by an understanding of biological systems \cite{Benyus1998}.
-
+Computational methods inspired by natural and biologically systems represent a large portion of the algorithms described in this book. The collection of articles published in de Castro and Von Zuben's ``\emph{Recent Developments in Biologically Inspired Computing}'' provides an overview of the state of the field, and the introductory chapter on need for such methods does an excellent job to motivate the field of study \cite{Castro2005}. Forbes's ``\emph{Imitation of Life: How Biology Is Inspiring Computing}'' sets the scene for Natural Computing and the interrelated disciplines, of which Biologically Inspired Computing is but one useful example \cite{Forbes2000}. Finally, Benyus's ``\emph{Biomimicry: Innovation Inspired by Nature}'' provides a good introduction into the broader related field of a new frontier in science and technology that involves building systems inspired by an understanding of the biological world \cite{Benyus1998}.
 
 % 
 % Metaheuristics
@@ -427,7 +428,7 @@ The field of Metaheuristics was initially constrained to heuristics for applying
 % The Ruby Programming Language
 % 
 \subsection{The Ruby Programming Language}
-The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. It's meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's ``\emph{Programming Ruby: The Pragmatic Programmers' Guide}'' referred to as the `pickaxe book' because of the picture of the pickaxe on the cover \cite{Thomas2004}. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's ``\emph{The Ruby Programming Language}'' also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language \cite{Flanagan2008}. For more information on the Ruby Programming Language, see the quick-start guide in Appendix~\ref{ch:appendix1}.
+The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. Its meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's ``\emph{Programming Ruby: The Pragmatic Programmers' Guide}'' referred to as the `pickaxe book' because of the picture of the pickaxe on the cover \cite{Thomas2004}. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's ``\emph{The Ruby Programming Language}'' also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language \cite{Flanagan2008}. For more information on the Ruby Programming Language, see the quick-start guide in Appendix~\ref{ch:appendix1}.
 
 % change title of bib to references
 
