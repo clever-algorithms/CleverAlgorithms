@@ -14,14 +14,14 @@ def random_variable(minmax)
 end
 
 def random_gaussian(mean=0.0, stdev=1.0)
-  u1 = u2 = w = g1 = g2 = 0
+  u1 = u2 = w = 0
   begin
     u1 = 2 * rand() - 1
     u2 = 2 * rand() - 1
     w = u1 * u1 + u2 * u2
   end while w >= 1
-  w = Math.sqrt((-2 * Math.log(w)) / w)
-  g1, g2 = u1 * w, u2 * w
+  w = Math.sqrt((-2.0 * Math.log(w)) / w)
+  g1 = u2 * w
   return mean + g1 * stdev
 end
 

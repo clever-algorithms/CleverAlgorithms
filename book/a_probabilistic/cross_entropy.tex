@@ -64,7 +64,7 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudo-code listing of the C
 	\SetKwData{NumSamples}{$Samples_{num}$}
 	\SetKwData{NumUpdateSamples}{$UpdateSamples_{num}$}
 	\SetKwData{LearningRate}{$Learn_{rate}$}
-	\SetKwData{MinVariance}{$Variance{min}$}
+	\SetKwData{MinVariance}{$Variance_{min}$}
 	% data
 	\SetKwData{Means}{Means}
 	\SetKwData{Variances}{Variances}
@@ -123,7 +123,7 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudo-code listing of the C
 \begin{itemize}
 	\item The Cross-Entropy Method was adapted for combinatorial optimization problems, although has been applied to continuous function optimization as well as noisy simulation problems.
 	\item A alpha ($\alpha$) parameter or learning rate $\in [0.1]$ is typically set high, such as 0.7.
-	\item A smoothing function can be used to further control the updates the summarizes of the distribution(s) of samples from the problem space. For example, in continuous function optimization a $\beta$ parameter may replace $\alpha$ for updated the standard deviation, calculated at time $t$ as $\beta_{t} = \beta - \beta \times (1-\frac{1}{t})^q$, where $\beta$ is initially set high $\in [0.8, 0.99]$ and $q$ is a small integer $\in [5, 10]$.
+	\item A smoothing function can be used to further control the updates the summaries of the distribution(s) of samples from the problem space. For example, in continuous function optimization a $\beta$ parameter may replace $\alpha$ for updating the standard deviation, calculated at time $t$ as $\beta_{t} = \beta - \beta \times (1-\frac{1}{t})^q$, where $\beta$ is initially set high $\in [0.8, 0.99]$ and $q$ is a small integer $\in [5, 10]$.
 \end{itemize}
 
 % Code Listing
@@ -133,10 +133,10 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudo-code listing of the C
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{cross_entropy_method} provides an example of the Cross-Entropy Method algorithm implemented in the Ruby Programming Language. 
 % problem
-The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The demonstration problem is an instance of a continuous function optimization problem that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 
 % algorithm
-The algorithm was implemented based on a description of the Cross-Entropy Method algorithm for continuous function optimization by Rubinstein and Kroese in Chapter 5 and Appendix A of their book on the method \cite{Rubinstein2004}. The algorithm maintains means and standard deviations  of the distribution of samples for connivence. The means and standard deviations were initialized based on random positions in the problem space and the bounds of the whole problem space respectively. A smoothing parameter is not used on the standard deviations.
+The algorithm was implemented based on a description of the Cross-Entropy Method algorithm for continuous function optimization by Rubinstein and Kroese in Chapter 5 and Appendix A of their book on the method \cite{Rubinstein2004}. The algorithm maintains means and standard deviations of the distribution of samples for convenience. The means and standard deviations are initialized based on random positions in the problem space and the bounds of the whole problem space respectively. A smoothing parameter is not used on the standard deviations.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Cross-Entropy Method algorithm in the Ruby Programming Language, label=cross_entropy_method]{../src/algorithms/probabilistic/cross_entropy_method.rb}
