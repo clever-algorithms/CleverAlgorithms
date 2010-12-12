@@ -14,23 +14,21 @@ def random_vector(problem_size, search_space)
   end
 end
 
-def gaussian
-  u1 = u2 = w = g1 = g2 = 0
+def random_gaussian()
+  u1 = u2 = w = 0
   begin
     u1 = 2 * rand() - 1
     u2 = 2 * rand() - 1
     w = u1 * u1 + u2 * u2
   end while w >= 1
-  w = Math::sqrt((-2 * Math::log(w)) / w)
-  g2 = u1 * w;
-  g1 = u2 * w;
-  return g1
+  w = Math.sqrt((-2.0 * Math.log(w)) / w)
+  return u2 * w
 end
 
 def mutate_problem(vector, stdevs, search_space)
   child = Array(vector.length)
   vector.each_with_index do |v, i|
-    child[i] = v + stdevs[i] * gaussian()
+    child[i] = v + stdevs[i] * random_gaussian()
     child[i] = search_space[i][0] if child[i] < search_space[i][0]
     child[i] = search_space[i][1] if child[i] > search_space[i][1]
   end
@@ -41,7 +39,7 @@ def mutate_strategy(stdevs)
   tau = Math.sqrt(2.0*stdevs.length.to_f)**-1.0
   tau_prime = Math.sqrt(2.0*Math.sqrt(stdevs.length.to_f))**-1.0
   child = Array.new(stdevs.length) do |i|
-    stdevs[i] * Math::exp(tau_prime*gaussian() + tau*gaussian())
+    stdevs[i] * Math.exp(tau_prime*random_gaussian() + tau*random_gaussian())
   end
   return child
 end
@@ -68,7 +66,7 @@ def search(max_generations, problem_size, search_space, pop_size, num_children)
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
     union = children+population
     union.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-    best = union.first if union.first[:fitness] < best[:fitness]
+    best = union.first
     population = union[0...pop_size]
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
   end  
