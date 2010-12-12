@@ -31,7 +31,7 @@ It is related to other EDAs such as the Univariate Marginal Probability Algorith
 % Optional
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
-The Compact Genetic Algorithm is a probabilistic technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
+The Compact Genetic Algorithm is a probabilistic technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary Algorithms that are inspired by the biological theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -125,8 +125,8 @@ Algorithm~\ref{alg:cga} provides a pseudo-code listing of the Compact Genetic Al
 \begin{itemize}
 	\item The vector update parameter ($n$) influences the amount that the probabilities are updated each algorithm iteration.
 	\item The vector update parameter ($n$) may be considered to be comparable to the population size parameter in the Genetic Algorithm.
-	\item Initial results demonstrate that the cGA may be comparable to a standard Genetic Algorithm on classical binary string optimization problems (such as onemax).	
-	\item The algorithm may be considered to have converged if the vector probabilities are all $>0$ or $<1$
+	\item Early results demonstrate that the cGA may be comparable to a standard Genetic Algorithm on classical binary string optimization problems (such as OneMax).	
+	\item The algorithm may be considered to have converged if the vector probabilities are all either $0$ or $1$.
 \end{itemize}
 
 % Code Listing
@@ -136,9 +136,9 @@ Algorithm~\ref{alg:cga} provides a pseudo-code listing of the Compact Genetic Al
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{compact_genetic_algorithm} provides an example of the Compact Genetic Algorithm implemented in the Ruby Programming Language. 
 % problem
-The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function only provides an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 % algorithm
-The algorithm is an implementation of Compact Genetic Algorithm that uses integer values to represent 1 and 0 nits in a binary string representation. 
+The algorithm is an implementation of Compact Genetic Algorithm that uses integer values to represent 1 and 0 bits in a binary string representation. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Compact Genetic Algorithm in the Ruby Programming Language, label=compact_genetic_algorithm]{../src/algorithms/probabilistic/compact_genetic_algorithm.rb}
@@ -154,7 +154,7 @@ The algorithm is an implementation of Compact Genetic Algorithm that uses intege
 % 
 \subsubsection{Primary Sources}
 % seminal
-The Compact Genetic Algorithm was proposed by Harik, Lobo, and Goldberg in 1999 \cite{Harik1999}, based on a random walk model perviously introduced by Harik, et al. \cite{Harik1997}. In the introductory paper, the cGA is demonstrated to be comparable to the Genetic Algorithm on standard binary string optimization problems.
+The Compact Genetic Algorithm was proposed by Harik, Lobo, and Goldberg in 1999 \cite{Harik1999}, based on a random walk model previously introduced by Harik, et al. \cite{Harik1997}. In the introductory paper, the cGA is demonstrated to be comparable to the Genetic Algorithm on standard binary string optimization problems.
 % early
 
 % 
@@ -162,7 +162,7 @@ The Compact Genetic Algorithm was proposed by Harik, Lobo, and Goldberg in 1999 
 % 
 \subsubsection{Learn More}
 % reviews
-Harik, et al. extend the Compact Genetic Algorithm (called the Extended Compact Genetic Algorithm) to generate populations of candidate solutions and perform selection (much like the Univariate Marginal Probabilist Algorithm), although it uses Marginal Product Models \cite{Harik1999a, Harik2006}. Sastry and Goldberg performed further analysis into the Extended Compact Genetic Algorithm applying the method to a complex optimization problem \cite{Sastry2000}.
+Harik, et al. extended the Compact Genetic Algorithm (called the Extended Compact Genetic Algorithm) to generate populations of candidate solutions and perform selection (much like the Univariate Marginal Probabilist Algorithm), although it used Marginal Product Models \cite{Harik1999a, Harik2006}. Sastry and Goldberg performed further analysis into the Extended Compact Genetic Algorithm applying the method to a complex optimization problem \cite{Sastry2000}.
 % books
 
 
