@@ -30,7 +30,7 @@ PBIL is related to other EDAs such as the Compact Genetic Algorithm, the Probabi
 % Optional
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
-Population-Based Incremental Learning is a Population technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
+Population-Based Incremental Learning is a population-based technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
 % Which features of the motivating system are relevant to a technique?
 
 % Metaphor: Explanation via analogy
@@ -53,7 +53,7 @@ This is done by reducing the population of a candidate solutions to a single pro
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What are the data structures and representations used in a technique?
-The Population-Based Incremental Learning algorithm maintains on a real-valued prototype vector that represents the probability of each component being expressed in a candidate solution. 
+The Population-Based Incremental Learning algorithm maintains a real-valued prototype vector that represents the probability of each component being expressed in a candidate solution. 
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based Incremental Learning algorithm for maximizing a cost function.
 
@@ -101,9 +101,9 @@ Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based 
 			}			
 		}
 		\ForEach{\Bit $\in$ \CurrentBest} {
-			\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0-\LearningRate) + \Bit $\times$ \LearningRate\;
+			\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0$-$\LearningRate) $+$ \Bit $\times$ \LearningRate\;
 			\If{\Rand{} $<$ \ProbabilityMutate} {
-				\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0-\MutationFactor) + \Rand{} $\times$ \MutationFactor\;
+				\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0$-$\MutationFactor) $+$ \Rand{} $\times$ \MutationFactor\;
 			}
 		}
 	}
@@ -134,7 +134,7 @@ Algorithm~\ref{alg:pbil} provides a pseudo-code listing of the Population-Based 
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{pbil} provides an example of the Population-Based Incremental Learning algorithm implemented in the Ruby Programming Language. 
 % problem
-The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function only provides an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
 % algorithm
 The algorithm is an implementation of the simple PBIL algorithm that updates the prototype vector based on the best candidate solution generated each iteration. 
 
