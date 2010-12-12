@@ -22,7 +22,7 @@
 % To what fields of study does a technique belong?
 Differential Evolution is a Stochastic Direct Search and Global Optimization algorithm, and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
 % What are the closely related approaches to a technique?
-It is related to sibling Evolutionary Algorithms such as the Genetic Algorithm and Evolutionary Programming, and Evolution Strategies, and shows some similarities to Particle Swarm Optimization.
+It is related to sibling Evolutionary Algorithms such as the Genetic Algorithm, Evolutionary Programming, and Evolution Strategies, and has some similarities with Particle Swarm Optimization.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -49,15 +49,15 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\SetKwData{Sample}{$S_{i}$}
 	\SetKwData{Population}{Population}
 	\SetKwData{NewPopulation}{NewPopulation}	
-	\SetKwData{PopulationSize}{G}
-	\SetKwData{NumParameters}{NP}
-	\SetKwData{WeightingFactor}{F}
-	\SetKwData{CrossoverRate}{CR}
+	\SetKwData{PopulationSize}{$Population_{size}$}
+	\SetKwData{NumParameters}{$Problem_{size}$}
+	\SetKwData{WeightingFactor}{$Weighting_{factor}$}
+	\SetKwData{CrossoverRate}{$Crossover_{rate}$}
 	
 	% functions
 	\SetKwFunction{StopCondition}{StopCondition}
 	\SetKwFunction{InitializePopulation}{InitializePopulation}
-	\SetKwFunction{EvaluateCost}{EvaluateCost}
+	\SetKwFunction{EvaluateCost}{EvaluatePopulation}
 	\SetKwFunction{GetBestSolution}{GetBestSolution}
 	\SetKwFunction{NewSample}{NewSample}
 	\SetKwFunction{Cost}{Cost}
@@ -105,10 +105,10 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\SetKwData{Memberb}{$P_{1}$}
 	\SetKwData{Memberc}{$P_{2}$}
 	\SetKwData{Memberd}{$P_{3}$}
-	\SetKwData{Memberai}{$P0_{i}$}
-	\SetKwData{Memberbi}{$P1_{i}$}
-	\SetKwData{Memberci}{$P2_{i}$}
-	\SetKwData{Memberdi}{$P3_{i}$}
+	\SetKwData{Memberai}{$P_{0_i}$}
+	\SetKwData{Memberbi}{$P_{1_i}$}
+	\SetKwData{Memberci}{$P_{2_i}$}
+	\SetKwData{Memberdi}{$P_{3_i}$}
 	\SetKwData{Sample}{$S$}
 	\SetKwData{SampleVar}{$S_{i}$}
 	\SetKwData{Population}{Population}
@@ -118,7 +118,7 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	\SetKwData{CutPoint}{CutPoint}
 	
 	% functions
-	\SetKwFunction{RandomMemeber}{RandomMemeber}
+	\SetKwFunction{RandomMemeber}{RandomMember}
 	\SetKwFunction{RandomPosition}{RandomPosition}
 	\SetKwFunction{Rand}{Rand}
   
@@ -141,7 +141,7 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudo-code listing of the
 	
 	\Return{\Sample}\;
 	% end
-	\caption{Pseudo Code for the NewSample function in the Differential Evolution algorithm.}
+	\caption{Pseudo Code for the \texttt{NewSample} function in the Differential Evolution algorithm.}
 	\label{alg:new_sample}
 \end{algorithm}
 
@@ -185,7 +185,7 @@ The algorithm is an implementation of Differential Evolution with the DE/rand/1/
 % seminal
 The Differential Evolution algorithm was presented by Storn and Price in a technical report that considered DE1 and DE2 variants of the approach applied to a suite of continuous function optimization problems \cite{Storn1995}. 
 % early papers, maturation
-An early paper by Storn applied the approach to the optimization of an IIR-filter (Infinite Impulse Response) \cite{Storn1996a}. A second early paper applied the approach to a second suite of benchmark problem instances, adopting the contemporary nomenclature for describing the approach, including the DE/rand/1 and DE/best/2 variations \cite{Storn1996b}.
+An early paper by Storn applied the approach to the optimization of an IIR-filter (Infinite Impulse Response) \cite{Storn1996a}. A second early paper applied the approach to a second suite of benchmark problem instances, adopting the contemporary nomenclature for describing the approach, including the DE/rand/1/* and DE/best/2/* variations \cite{Storn1996b}.
 % seminal
 The early work including technical reports and conference papers by Storn and Price culminated in a seminal journal article \cite{Storn1997}.
 
@@ -194,8 +194,8 @@ The early work including technical reports and conference papers by Storn and Pr
 % 
 \subsubsection{Learn More}
 % historical reviews
-A classical overview of Differential Evolution is presented by Price and Storn \cite{Price1997}, and terse introduction to the approach for function optimization is presented by Storn \cite{Storn1996}. A seminal extended description of the algorithm with sample applications was presented by Storn and Price as a book chapter \cite{Price1999}.
+A classical overview of Differential Evolution was presented by Price and Storn \cite{Price1997}, and terse introduction to the approach for function optimization is presented by Storn \cite{Storn1996}. A seminal extended description of the algorithm with sample applications was presented by Storn and Price as a book chapter \cite{Price1999}.
 % books
-Price, Storn, and Lampinen release a contemporary book dedicated to Differential Evolution including theory, benchmarks, sample code and numerous application demonstrations \cite{Price2005}. Chakraborty also released a book considering extensions to the approach to address complexities such as rotation invariance and stopping criteria  \cite{Chakraborty2008}.
+Price, Storn, and Lampinen released a contemporary book dedicated to Differential Evolution including theory, benchmarks, sample code, and numerous application demonstrations \cite{Price2005}. Chakraborty also released a book considering extensions to address complexities such as rotation invariance and stopping criteria  \cite{Chakraborty2008}.
 
 
