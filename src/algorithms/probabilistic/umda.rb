@@ -18,11 +18,11 @@ def binary_tournament(population)
 end
 
 def calculate_bit_probabilities(num_bits, pop)
-  vector= Array.new(num_bits, 0.0)
+  vector = Array.new(num_bits, 0.0)
   pop.each do |member|
     member[:bitstring].each_with_index {|v, i| vector[i] += v}
   end
-  vector.each_with_index {|f,i| vector[i] = (f.to_f/pop.length.to_f)}
+  vector.each_with_index {|f, i| vector[i] = (f.to_f/pop.length.to_f)}
   return vector
 end
 
