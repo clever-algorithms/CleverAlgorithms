@@ -21,9 +21,9 @@
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
-The Non-dominated Sorting Genetic Algorithm is a Multiple Objective Optimization (MOO) algorithm and is an instance of an Evolutionary Algorithm (EA) from the field of Evolutionary Computation (EC). 
+The Non-dominated Sorting Genetic Algorithm is a Multiple Objective Optimization (MOO) algorithm and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation. 
 % What are the closely related approaches to a technique?
-NSGA is an extension of the Genetic Algorithm (GA) for multiple objective function optimization.
+NSGA is an extension of the Genetic Algorithm for multiple objective function optimization.
 % related
 It is related to other Evolutionary Multiple Objective Optimization Algorithms (EMOO) (or Multiple Objective Evolutionary Algorithms MOEA) such as the Vector-Evaluated Genetic Algorithm (VEGA), Strength Pareto Evolutionary Algorithm (SPEA), and Pareto Archived Evolution Strategy (PAES).
 % taxonomy
@@ -52,7 +52,6 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 	\SetLine  
 
 	% data
-	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{ProbabilityMutate}{$P_{mutation}$}
 	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
 	\SetKwData{Selected}{Selected}
@@ -82,7 +81,7 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 	
 	% I/O
 	\KwIn{\PopulationSize, \ProblemSize, \ProbabilityCrossover, \ProbabilityMutate}		
-	\KwOut{\Best}
+	\KwOut{\Children}
 	% Algorithm
 	% initialize	
 	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
@@ -93,7 +92,7 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 	\Children $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-	\EvaluateAgainstObjectiveFunctions{\Children}\;
+		\EvaluateAgainstObjectiveFunctions{\Children}\;
 		\Union $\leftarrow$ \Merge{\Population, \Children}\;
 		\Fronts $\leftarrow$ \FastNondominatedSort{\Union}\;		
 		% classical loop in paper
@@ -121,7 +120,7 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 	}
 	\Return{\Children}\;
 	% end
-	\caption{Pseudo Code for the Non-dominated Sorting Genetic Algorithm II.}
+	\caption{Pseudo Code for the Non-dominated Sorting Genetic Algorithm~II.}
 	\label{alg:nsga}
 \end{algorithm}
 
@@ -146,7 +145,7 @@ The demonstration problem is an instance of continuous multiple objective functi
 % algorithm
 The algorithm is an implementation of NSGA-II based on the presentation by Deb, et al. \cite{Deb2002}.
 %  cfg
-The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded using the binary coded decimal method and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
+The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Non-dominated Sorting Genetic Algorithm II (NSGA-II) in the Ruby Programming Language, label=nsga]{../src/algorithms/evolutionary/nsga_ii.rb}
@@ -162,7 +161,7 @@ The algorithm uses a binary string representation (16 bits per objective functio
 % 
 \subsubsection{Primary Sources}
 % seminal
-Srinivas and Deb proposed the NSGA algorithm inspired by Goldberg's notion of a non-dominated sorting procedure \cite{Srinivas1994}. Goldberg proposed a non-dominated sorting procedure in his book in considering the biases in the Pareto optimal solutions provided by VEGA \cite{Goldberg1989}. Srinivas and Deb's NSGA used the sorting procedure as a ranking selection method, and a fitness sharing niching method to maintain stable sub-populations across the Pareto front.
+Srinivas and Deb proposed the NSGA inspired by Goldberg's notion of a non-dominated sorting procedure \cite{Srinivas1994}. Goldberg proposed a non-dominated sorting procedure in his book in considering the biases in the Pareto optimal solutions provided by VEGA \cite{Goldberg1989}. Srinivas and Deb's NSGA used the sorting procedure as a ranking selection method, and a fitness sharing niching method to maintain stable sub-populations across the Pareto front.
 % extension
 Deb, et al. later extended NSGA to address three criticism of the approach: i) the $O(mN^3)$ time complexity, the lack of elitism, and the need for a sharing parameter for the fitness sharing niching method \cite{Deb2000, Deb2002}.
 
