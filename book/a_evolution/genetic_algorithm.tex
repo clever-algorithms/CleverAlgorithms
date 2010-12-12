@@ -38,7 +38,7 @@ The Genetic Algorithm is inspired by population genetics (including heredity and
 \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Individuals of a population contribute their genetic material (called the genotype) proportional to their suitability of their expressed genome (called their phenotype) to their environment. The next generation is created through a process of mating that involves recombination of two individuals genomes in the population with the introduction of random copying errors (called mutation). This iterative process may result in an improved adaptive-fit between the phenotypes of individuals in a population and the environment.
+Individuals of a population contribute their genetic material (called the genotype) proportional to their suitability of their expressed genome (called their phenotype) to their environment, in the form of offspring. The next generation is created through a process of mating that involves recombination of two individuals genomes in the population with the introduction of random copying errors (called mutation). This iterative process may result in an improved adaptive-fit between the phenotypes of individuals in a population and the environment.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -64,7 +64,7 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 	\SetKwData{ProbabilityCrossover}{$P_{crossover}$}
 	\SetKwData{Parents}{Parents}
 	\SetKwData{Children}{Children}
-	\SetKwData{ProblemSize}{ProblemSize}
+	\SetKwData{ProblemSize}{$Problem_{size}$}
 	\SetKwData{Population}{Population}
 	\SetKwData{PopulationSize}{$Population_{size}$}
 	\SetKwData{ParentOne}{$Parent_{1}$}
@@ -121,9 +121,9 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudo-code listing of the Gene
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item Binary strings (bitstrings) are the classical representation as they can be decoded to almost any desired representation. Real-valued variables can be decoded using the binary coded decimal method or the gray code method, the latter of which is generally preferred.
+	\item Binary strings (referred to as `bitstrings') are the classical representation as they can be decoded to almost any desired representation. Real-valued and integer variables can be decoded using the binary coded decimal method, one's or two's complement methods, or the gray code method, the latter of which is generally preferred.
 	\item Problem specific representations and customized genetic operators should be adopted, incorporating as much prior information about the problem domain as possible.
-	\item The algorithm is highly-modular and a sub-field exists to study each sub-process, such as selection, recombination, mutation, and representation. 
+	\item The algorithm is highly-modular and a sub-field exists to study each sub-process, specifically: selection, recombination, mutation, and representation. 
 	\item The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}.
 	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
 	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution  \cite{Goldberg1992}.
@@ -176,7 +176,7 @@ The field of genetic algorithms is very large, resulting in large numbers of var
 % historical reviews
 Goldberg provides a classical overview of the field in a review article \cite{Goldberg1994}, as does Mitchell \cite{Mitchell1995}.
 % tutorial
-Whitley describes a classical tutorial for the genetic algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
+Whitley describes a classical tutorial for the Genetic Algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
 % good introductions to the ga
 The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provides a modern study of the field, the lessons learned, and reviews the broader toolset of optimization algorithms that the field has produced \cite{Goldberg2002}.
 
