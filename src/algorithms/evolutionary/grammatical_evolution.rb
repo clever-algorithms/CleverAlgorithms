@@ -120,7 +120,7 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar
     children = reproduce(selected, pop_size, p_crossover,codon_bits)    
     children.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
+    best = children.first if children.first[:fitness] <= best[:fitness]
     pop = children
     puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].length/codon_bits}, s=#{best[:bitstring]}"
   end  

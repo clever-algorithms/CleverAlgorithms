@@ -6,7 +6,7 @@
 
 def binary_tournament(population)
   s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  return (s1[:fitness] < s2[:fitness]) ? s1 : s2
 end
 
 def point_mutation(grammar, genome, p_mutation, head_length)
@@ -55,12 +55,12 @@ def random_genome(grammar, head_length, tail_length)
 end
 
 def target_function(x)
-  x**4.0 + x**3.0 + x**2.0 + x
+  return x**4.0 + x**3.0 + x**2.0 + x
 end
 
 def cost(program, bounds)
   errors = 0.0    
-  10.times do
+  20.times do
     x = bounds[0] + ((bounds[1] - bounds[0]) * rand())
     expression = program.gsub("x", x.to_s)
     target = target_function(x)
@@ -75,7 +75,7 @@ def breadth_first_mapping(genome, grammar)
   root = {}
   root[:node] = genome[off].chr;off+=1
   queue.push(root)
-  while !queue.empty? do    
+  while !queue.empty? do
     current = queue.shift
     if grammar["FUNC"].include?(current[:node])
       current[:left] = {}
@@ -90,7 +90,7 @@ def breadth_first_mapping(genome, grammar)
 end
 
 def tree_to_string(exp)
-  return exp[:node] if (exp[:left].nil? and exp[:right].nil?)
+  return exp[:node] if (exp[:left].nil? or exp[:right].nil?)
   left = tree_to_string(exp[:left])
   right = tree_to_string(exp[:right])
   return "(#{left} #{exp[:node]} #{right})"
@@ -107,13 +107,13 @@ def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_c
     {:genome=>random_genome(grammar, head_length, tail_length)}
   end
   pop.each{|c| evaluate(c, grammar, bounds)}
-  gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   generations.times do |gen|
     selected = Array.new(pop){|i| binary_tournament(pop)}
     children = reproduce(grammar, selected, pop_size, p_crossover, p_mutation, head_length)    
     children.each{|c| evaluate(c, grammar, bounds)}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-    best = children.first if children.first[:fitness] >= best[:fitness]
+    children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
+    best = children.first if children.first[:fitness] <= best[:fitness]
     pop = children
     gen += 1
     puts " > gen=#{gen}, f=#{best[:fitness]}, g=#{best[:genome]}"
@@ -128,7 +128,7 @@ if __FILE__ == $0
   # algorithm configuration
   head_length = 24
   tail_length = head_length * (2-1) + 1
-  generations = 150
+  generations = 100
   pop_size = 100
   p_crossover = 0.70
   p_mutation = 2.0/(head_length+tail_length).to_f
