@@ -6,13 +6,13 @@
 
 def binary_tournament(population)
   s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  return (s1[:fitness] < s2[:fitness]) ? s1 : s2
 end
 
 def point_mutation(bitstring)
-  rate = 1.0/bitstring.to_f
+  rate = 1.0/bitstring.length.to_f
   child = ""
-  bitstring.size.times do |i|
+  bitstring.length.times do |i|
     bit = bitstring[i]
     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
@@ -89,12 +89,13 @@ def map(grammar, integers, max_depth)
 end
 
 def target_function(x)
-  x**4.0 + x**3.0 + x**2.0 + x
+  return x**4.0 + x**3.0 + x**2.0 + x
 end
 
 def cost(program, bounds)
+  return 99999999 if program.strip == "INPUT"
   errors = 0.0    
-  10.times do
+  20.times do
     x = bounds[0] + ((bounds[1] - bounds[0]) * rand())
     expression = program.gsub("INPUT", x.to_s)
     target = target_function(x)
@@ -113,12 +114,12 @@ end
 def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
   pop = Array.new(pop_size) {|i| {:bitstring=>random_bitstring(initial_bits)}}
   pop.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
-  gen, best = 0, pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
+  best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
   generations.times do |gen|
     selected = Array.new(pop_size){|i| binary_tournament(pop)}
     children = reproduce(selected, pop_size, p_crossover,codon_bits)    
     children.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
-    children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
+    children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
     pop = children
     puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].length/codon_bits}, s=#{best[:bitstring]}"
@@ -129,13 +130,13 @@ end
 if __FILE__ == $0
   # problem configuration
   grammar = {"S"=>"EXP",
-    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNIARY(EXP) ", " VAR "],
+    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNARY(EXP) ", " VAR "],
     "BINARY"=>["+", "-", "/", "*" ],
     "UNIARY"=>["Math.sin", "Math.cos", "Math.exp", "Math.log"],
     "VAR"=>["INPUT", "1.0"]}
   bounds = [-1, +1]
   # algorithm configuration
-  max_depth = 7
+  max_depth = 9
   generations = 100
   pop_size = 100
   codon_bits = 8

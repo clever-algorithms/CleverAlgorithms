@@ -41,7 +41,7 @@ The genome is comprised of DNA as a string of building blocks that are transcrib
 % mapping
 The phenotype is a computer program that is created from a binary string-based genome. The genome is decoded into a sequence of integers that are in turn mapped onto pre-defined rules that makeup the program. 
 % wrapping
-The mapping from genotype to the phenotype is many-to-many process that uses a wrapping feature. This is like the biological process observed in many bacteria, viruses, and mitochondria, where the same genetic material is used in the expression of different genes.
+The mapping from genotype to the phenotype is a one-to-many process that uses a wrapping feature. This is like the biological process observed in many bacteria, viruses, and mitochondria, where the same genetic material is used in the expression of different genes.
 % What are the functionalities inferred for a technique from the analogous inspiring system?
 The mapping adds robustness to the process both in the ability to adopt structure-agnostic genetic operators used during the evolutionary process on the sub-symbolic representation and the transcription of well-formed executable programs from the representation.
 
@@ -60,7 +60,7 @@ This is achieved through an iterative process with surrogates of evolutionary me
 % grammar
 A grammar is defined in Backus Normal Form (BNF), which is a context free grammar expressed as a series of production rules comprised of terminals and non-terminals.
 % mapping
-A variable-length binary string representation is used for the optimization process. Bits are read from the a candidate solutions genome in blocks of 8 and decoded to an integer (in the range between 0 and $2^{8-1}$). If the end of the binary string is reached when reading integers, the reading process loops back to the start of the string, effectively creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not use a solutions entire genome, or use the decoded genome more than once given it's circular nature.
+A variable-length binary string representation is used for the optimization process. Bits are read from the a candidate solutions genome in blocks of 8 called a codon, and decoded to an integer (in the range between 0 and $2^{8}-1$). If the end of the binary string is reached when reading integers, the reading process loops back to the start of the string, effectively creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not use a solutions entire genome, or use the decoded genome more than once given it's circular nature.
 % What is the computational recipe for a technique?
 Algorithm~\ref{alg:grammatical_evolution} provides a pseudo-code listing of the Grammatical Evolution algorithm for minimizing a cost function.
 
@@ -103,7 +103,7 @@ Algorithm~\ref{alg:grammatical_evolution} provides a pseudo-code listing of the 
 	\SetKwFunction{Execute}{Execute}
   
 	% I/O
-	\KwIn{\Grammar, \CodonBits \PopulationSize, \ProbabilityCrossover, \ProbabilityMutate, \ProbabilityDeleteCodon, \ProbabilityDuplicateCodon}		
+	\KwIn{\Grammar, \CodonBits, \PopulationSize, \ProbabilityCrossover, \ProbabilityMutate, \ProbabilityDeleteCodon, \ProbabilityDuplicateCodon}		
 	\KwOut{\Best}
   	% Algorithm
 	% initialize	
@@ -160,8 +160,8 @@ Algorithm~\ref{alg:grammatical_evolution} provides a pseudo-code listing of the 
 \begin{itemize}
 	\item Grammatical Evolution was designed to optimize programs (such as mathematical equations) to specific cost functions.
 	\item Classical genetic operators used by the Genetic Algorithm may be used in the Grammatical Evolution algorithm, such as point mutations and one-point crossover.
-	\item Codon's (groups of bits mapped to an integer) are commonly fixed at 8-bits, proving a range of integers $\in [0,2^{8-1}]$ that may be scaled to the range of rules using a modulo function.
-	\item Additional genetic operators may be used with variable-length representations such as codon duplication (add to the end) and deletion.
+	\item Codons (groups of bits mapped to an integer) are commonly fixed at 8 bits, proving a range of integers $\in [0,2^{8}-1]$ that is scaled to the range of rules using a modulo function.
+	\item Additional genetic operators may be used with variable-length representations such as codon segments, duplication (add to the end), number of codons selected at random, and deletion.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -189,7 +189,9 @@ The production rules for the grammar in BNF are:
 % algorithm
 The algorithm uses point mutation and a codon-respecting one-point crossover operator. Binary tournament selection is used to determine the parent population's contribution to the subsequent generation. 
 % eval
-Binary strings are decoded to integers using the Binary Coded Decimal method. Candidate solutions are then mapped directly into executable ruby code and executed. A given candidate solution is evaluated by comparing its output against the target function and taking the sum of the absolute errors over a number of trials. The probabilities of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
+Binary strings are decoded to integers using an unsigned binary. Candidate solutions are then mapped directly into executable Ruby code and executed. A given candidate solution is evaluated by comparing its output against the target function and taking the sum of the absolute errors over a number of trials. The probabilities of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
+
+The implementation uses a maximum depth in the expression tree, whereas traditionally such deep expression trees are marked as invalid. Programs that resolve to a single expression that returns the output are penalized. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Grammatical Evolution algorithm in the Ruby Programming Language, label=grammatical_evolution]{../src/algorithms/evolutionary/grammatical_evolution.rb}
