@@ -91,7 +91,7 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 	\Population $\leftarrow$ \InitializePopulation{\PopulationSize, \ProblemSize}\;
 	\Archive $\leftarrow 0$\;
 	% loop
-	\While{True} {
+	\While{$\neg$\StopCondition{}} {
 		% calculate fitnes
 		\For{\Candidate $\in$ \Population}{
 			\CandidateObjectives $\leftarrow$ \CalculateObjectives{\Candidate}\;
@@ -110,18 +110,12 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 		\ElseIf{\Size{\Archive} $>$ \ArchiveSize}{
 			\RemoveMostSimilar{\Archive, \ArchiveSize}\;
 		}
-		\eIf{\StopCondition{}}{
-			% termination
-			\Archive $\leftarrow$ \GetNonDominated{\Archive}\;
-			\Break{}\;
-		}{
-			% selection
-			\Selected $\leftarrow$ \SelectParents{\Archive, \PopulationSize}\;
-			% mating
-			\Population $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;
-		}
+		% selection
+		\Selected $\leftarrow$ \SelectParents{\Archive, \PopulationSize}\;
+		% mating
+		\Population $\leftarrow$ \CrossoverAndMutation{\Selected, \ProbabilityCrossover, \ProbabilityMutate}\;		
 	}
-	\Return{\Archive}\;
+	\Return{GetNonDominated{\Archive}}\;
 	
 	% end
 	\caption{Pseudo Code for the Strength Pareto Evolutionary Algorithm 2 (SPEA2).}
@@ -138,7 +132,7 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 	\item A binary representation can be used for continuous function optimization problems in conjunction with classical genetic operators such as one-point crossover and point mutation.
 	\item A $k$ value of 1 may be used for efficiency whilst still providing useful results.
 	\item The size of the archive is commonly smaller than the size of the population.
-	\item There is a lot of room for implementation optimizations in density and Pareto dominance calculations.
+	\item There is a lot of room for implementation optimization in density and Pareto dominance calculations.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -147,14 +141,14 @@ The \texttt{SelectParents} function selects parents from a population using a Ge
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{spea} provides an example of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) implemented in the Ruby Programming Language.
 % problem
-The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solution for this function are $x \in [0,2]$.
+The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solutions for this function are $x \in [0,2]$.
 % algorithm
 The algorithm is an implementation of SPEA2 based on the presentation by Zitzler, Laumanns, and Thiele \cite{Zitzler2002}.
 %  cfg
-The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded using the binary coded decimal method and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
+The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Strength Pareto Evolutionary Algorithm 2 SPEA2) in the Ruby Programming Language, label=spea]{../src/algorithms/evolutionary/spea2.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=SPEA2 in the Ruby Programming Language, label=spea]{../src/algorithms/evolutionary/spea2.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -169,12 +163,13 @@ The algorithm uses a binary string representation (16 bits per objective functio
 % seminal
 Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm as a technical report on a multiple objective optimization algorithm with elitism and clustering along the Pareto front \cite{Zitzler1998}. The technical report was later published \cite{Zitzler1999}.
 % thesis
-The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler PhD thesis \cite{Zitzler1999a}.
+The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler's PhD thesis \cite{Zitzler1999a}.
 % extension
-Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies the approach, called SPEA2 that was released as a technical report \cite{Zitzler2001} and later published \cite{Zitzler2002}. SPEA2 provided a fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
+Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies the approach, called SPEA2 that was released as a technical report \cite{Zitzler2001} and later published \cite{Zitzler2002}. SPEA2 provided fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
 
 % Learn More
 % 
 \subsubsection{Learn More}
 % reviews
 Zitzler, Laumanns, and Bleuler provide a tutorial on SPEA2 as a book chapter that considers the basics of multiple objective optimization, and the differences from SPEA and the other related Multiple Objective Evolutionary Algorithms \cite{Zitzler2004}.
+
