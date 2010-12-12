@@ -32,7 +32,7 @@ It is also the basis for extensions such as the Hierarchal Bayesian Optimization
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-Bayesian Optimization Algorithm is a technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary algorithms that are inspired by the biological theory of evolution by means of natural selection.
+Bayesian Optimization Algorithm is a technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary Algorithms that are inspired by the biological theory of evolution by means of natural selection.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -70,7 +70,7 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 	\SetKwData{Model}{Model}
 	\SetKwData{Selected}{Selected}
 	\SetKwData{Population}{Population}
-	\SetKwData{OffSpring}{OffSpring}
+	\SetKwData{OffSpring}{Offspring}
 	% functions
 	\SetKwFunction{InitializePopulation}{InitializePopulation}  
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation} 
@@ -91,7 +91,7 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	
 	\While{$\neg$\StopCondition{}} {
-		\Selected $\leftarrow$ \SelectFitSolutions{\Population}\;
+		\Selected $\leftarrow$ \SelectFitSolutions{\Population, \SelectionSize}\;
 		\Model $\leftarrow$ \ConstructBayesianNetwork{\Selected}\;
 		\OffSpring $\leftarrow$ $0$\;
 		\For{$i$ \KwTo \PopulationSize} {
@@ -114,10 +114,10 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item The Bayesian Optimization algorithm was designed and investigated on binary string-base problems, most commonly representing binary function optimization problems.
-	\item Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionally, past networks may be used as the basis for the process that are in turn verified.
-	\item A greedy hill-climbing algorithm is used to each algorithm iteration optimize a Bayesian network to represent a population of candidate solutions.
-	\item The fitness of constructed bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or a Minimum Description length method called the Bayesian Information Criterion (BIC).
+	\item The Bayesian Optimization Algorithm was designed and investigated on binary string-base problems, most commonly representing binary function optimization problems.
+	\item Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionally, past networks may be used as the basis for the subsequent generation.
+	\item A greedy hill-climbing algorithm is used each algorithm iteration to optimize a Bayesian network to represent a population of candidate solutions.
+	\item The fitness of constructed Bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or a Minimum Description length method called the Bayesian Information Criterion (BIC).
 	
 \end{itemize}
 
@@ -135,7 +135,7 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 % 
 % % the listing
 % \lstinputlisting[firstline=7,language=ruby,caption=Bayesian Optimization Algorithm in the Ruby Programming Language, label=boa]{../src/algorithms/probabilistic/boa.rb}
-A listing of the algorithm is currently not provided.
+A listing of the Bayesian Optimization Algorithm is currently not provided.
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.
@@ -148,9 +148,9 @@ A listing of the algorithm is currently not provided.
 % 
 \subsubsection{Primary Sources}
 % seminal
-The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cantu-Paz in the technical report \cite{Pelikan1998a}, that was later published \cite{Pelikan2002}. The technique was proposed as an extension to the state of Estimation of Distribution algorithms (such as the Univariate Marginal Distribution Algorithm and the Bivariate Marginal Distribution Algorithm) that used a Bayesian Network to model the relationships and conditional probabilities for the components expressed in a population of fit candidate solutions.
+The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cant\'u-Paz in the technical report \cite{Pelikan1998a}, that was later published \cite{Pelikan2002}. The technique was proposed as an extension to the state of Estimation of Distribution algorithms (such as the Univariate Marginal Distribution Algorithm and the Bivariate Marginal Distribution Algorithm) that used a Bayesian Network to model the relationships and conditional probabilities for the components expressed in a population of fit candidate solutions.
 % early 
-Pelikan, Goldberg, and Cantu-Paz also described the approach applied to decelptive binary optimization problems (trap functions) in a paper that was published before the seminal journal article \cite{Pelikan1999a}.
+Pelikan, Goldberg, and Cant\'u-Paz also described the approach applied to deceptive binary optimization problems (trap functions) in a paper that was published before the seminal journal article \cite{Pelikan1999a}.
 
 % 
 % Learn More
