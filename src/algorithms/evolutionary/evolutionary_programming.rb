@@ -14,17 +14,15 @@ def random_vector(problem_size, search_space)
   end
 end
 
-def random_gaussian
-  u1 = u2 = w = g1 = g2 = 0
+def random_gaussian()
+  u1 = u2 = w = 0
   begin
     u1 = 2 * rand() - 1
     u2 = 2 * rand() - 1
     w = u1 * u1 + u2 * u2
   end while w >= 1
-  w = Math::sqrt((-2 * Math::log(w)) / w)
-  g2 = u1 * w;
-  g1 = u2 * w;
-  return g1
+  w = Math.sqrt((-2.0 * Math.log(w)) / w)
+  return u2 * w
 end
 
 def mutate(candidate, search_space)
@@ -36,8 +34,7 @@ def mutate(candidate, search_space)
     v = search_space[i][0] if v < search_space[i][0]
     v = search_space[i][1] if v > search_space[i][1]
     child[:vector] << v
-    s = s_old + ((s_old<0) ? s_old*-1.0 : s_old)**0.5 * random_gaussian()
-    child[:strategy] << s
+    child[:strategy] << s_old + random_gaussian() * s_old.abs**0.5
   end
   return child
 end

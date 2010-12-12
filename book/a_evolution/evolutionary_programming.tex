@@ -45,9 +45,9 @@ A population of a species reproduce, creating progeny with small phenotypical va
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
-The objective of the Evolutionary Programming algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from the domain.
+The objective of the Evolutionary Programming algorithm is to maximize the suitability of a collection of candidate solutions in the context of an objective function from the domain.
 % What is a techniques plan of action?
-This objective is pursued by using an adaptive model with surrogates for the processes of evolution, specifically hereditary (reproduction with variation) under competition. The representation used for candidate solutions is directly assessable by a cost or objective function from the domain, and credit assignment is directly apportioned to this representation. 
+This objective is pursued by using an adaptive model with surrogates for the processes of evolution, specifically hereditary (reproduction with variation) under competition. The representation used for candidate solutions is directly assessable by a cost or objective function from the domain. 
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
@@ -93,7 +93,7 @@ Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of t
 	% loop
 	\While{$\neg$\StopCondition{}} {
 		% mutate
-		\Children $\leftarrow 0$\;
+		\Children $\leftarrow \emptyset$\;
 		\ForEach{\Parent $\in$ \Population}{
 			\Child $\leftarrow$ \Mutate{\Parent}\;
 			\Children $\leftarrow$ \Child\;
@@ -129,7 +129,7 @@ Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of t
 	\item The sample size (bout size) for tournament selection during competition is commonly between 5\% and 10\% of the population size.
 	\item Evolutionary Programming traditionally only uses the mutation operator to create new candidate solutions from existing candidate solutions. The crossover operator that is used in some other Evolutionary Algorithms is not employed in Evolutionary Programming.
 	\item Evolutionary Programming is concerned with the linkage between parent and child candidate solutions and is not concerned with surrogates for genetic mechanisms.
-	\item Continuous function optimization is a popular application for the approach, where real-valued representations are with a Gaussian-based mutation operator.
+	\item Continuous function optimization is a popular application for the approach, where real-valued representations are used  with a Gaussian-based mutation operator.
 	\item The mutation-specific parameters used in the application of the algorithm to continuous function optimization can be adapted in concert with the candidate solutions \cite{Fogel1991a}.
 \end{itemize}
 
@@ -139,7 +139,7 @@ Algorithm~\ref{alg:evolutionary_programming} provides a pseudo-code listing of t
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{evolutionary_programming} provides an example of the Evolutionary Programming algorithm implemented in the Ruby Programming Language.
 % problem
-The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The demonstration problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
 The algorithm is an implementation of Evolutionary Programming based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a} with per-variable adaptive variance based on Fogel's description for a self-adaptive variation on page 160 of his 1995 book \cite{Fogel1995}.
 
@@ -161,14 +161,14 @@ The algorithm is an implementation of Evolutionary Programming based on Fogel et
 % early work
 Evolutionary Programming was developed by Lawrence Fogel, outlined in early papers (such as \cite{Fogel1962}) and later became the focus of his PhD dissertation \cite{Fogel1964}. Fogel focused on the use of an evolutionary process for the development of control systems using Finite State Machine (FSM) representations. 
 % book
-Fogel's early work on Evolutionary Programming culminated in a book, co-authored with Owens and Walsh that elaborated the approach, focusing on the evolution of state machines for the prediction of symbols in time series data \cite{Fogel1966}.
+Fogel's early work on Evolutionary Programming culminated in a book (co-authored with Owens and Walsh) that elaborated the approach, focusing on the evolution of state machines for the prediction of symbols in time series data \cite{Fogel1966}.
 
 % 
 % Learn More
 % 
 \subsubsection{Learn More}
 % revival
-The field of Evolutionary Programming lay relatively dormant for 30 years until it was revived by Fogel's son, David Fogel. Early works considered the application of Evolutionary Programming to control systems \cite{Sebald1990}, and later function optimization (system identification) culminating in a book on the approach \cite{Fogel1991}, and David Fogel's PhD dissertation \cite{Fogel1992}.
+The field of Evolutionary Programming lay relatively dormant for 30 years until it was revived by Fogel's son, David. Early works considered the application of Evolutionary Programming to control systems \cite{Sebald1990}, and later function optimization (system identification) culminating in a book on the approach \cite{Fogel1991}, and David Fogel's PhD dissertation \cite{Fogel1992}.
 % Lawrence
 Lawrence Fogel collaborated in the revival of the technique, including reviews \cite{Fogel1990, Fogel1994} and extensions on what became the focus of the approach on function optimization \cite{Fogel1991a}.
 
