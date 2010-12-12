@@ -20,7 +20,7 @@
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
-The Genetic Programming algorithm is an example of a Evolutionary Algorithm (EA) and belongs to the field of Evolutionary Computation (EC) and more broadly Computational Intelligence and Biologically Inspired Computation. 
+The Genetic Programming algorithm is an example of a Evolutionary Algorithm and belongs to the field of Evolutionary Computation and more broadly Computational Intelligence and Biologically Inspired Computation. 
 % What are the closely related approaches to a technique?
 The Genetic Programming algorithm is a sibling to other Evolutionary Algorithms such as the Genetic Algorithm, Evolution Strategies, Evolutionary Programming, and Learning Classifier Systems. Technically, the Genetic Programming algorithm is an extension of the Genetic Algorithm. The Genetic Algorithm is a parent to a host of variations and extensions.
 
@@ -30,7 +30,7 @@ The Genetic Programming algorithm is a sibling to other Evolutionary Algorithms 
 \subsection{Inspiration}
 % What is the system or process that motivated the development of a technique?
 % Which features of the motivating system are relevant to a technique?
-The Genetic Algorithm is inspired by population genetics (including heredity and gene frequencies), and evolution at the population level, as well as the Mendelian understanding of the structure (such as chromosomes, genes, alleles) and mechanisms (such as recombination and mutation). This is the so-called new or modern synthesis of evolutionary biology. 
+The Genetic Programming algorithm is inspired by population genetics (including heredity and gene frequencies), and evolution at the population level, as well as the Mendelian understanding of the structure (such as chromosomes, genes, alleles) and mechanisms (such as recombination and mutation). This is the so-called new or modern synthesis of evolutionary biology. 
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -41,7 +41,7 @@ The Genetic Algorithm is inspired by population genetics (including heredity and
 Individuals of a population contribute their genetic material (called the genotype) proportional to their suitability of their expressed genome (called their phenotype) to their environment. The next generation is created through a process of mating that involves genetic operators such as recombination of two individuals genomes in the population and the introduction of random copying errors (called mutation). This iterative process may result in an improved adaptive-fit between the phenotypes of individuals in a population and the environment.
 
 % advanced
-Programs may be evolved and used in a secondary adaptive process, where an assessment of candidates at the end of the secondary adaptive process is used for differential reproductive success in the first evolutionary process. This system may be understood as the inter-dependencies experienced in evolutionary development where evolution operates upon an embryo that in turn develops into an individual in an environment that eventually may reproduce.
+Programs may be evolved and used in a secondary adaptive process, where an assessment of candidates at the end of that secondary adaptive process is used for differential reproductive success in the first evolutionary process. This system may be understood as the inter-dependencies experienced in evolutionary development where evolution operates upon an embryo that in turn develops into an individual in an environment that eventually may reproduce.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -113,7 +113,7 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 	\While{$\neg$\StopCondition{}} {
 		% build up child generation
 		\Children $\leftarrow 0$\;
-		\While{$\neg$\StopCondition{\Size{\Children} $<$ \PopulationSize}} {
+		\While{\Size{\Children} $<$ \PopulationSize} {
 			\Operator $\leftarrow$ \SelectGeneticOperator{\ProbabilityCrossover, \ProbabilityMutate, \ProbabilityReproduction, \ProbabilityAlteration}\;
 		
 			\If{\Operator $\equiv$ \CrossoverOperator}{
@@ -140,7 +140,7 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 		% best
 		\Best $\leftarrow$ \GetBestSolution{\Children, \Best}\;
 		% replace
-		\Population $\leftarrow$ \Replace{\Population, \Children}\;
+		\Population $\leftarrow$ \Children\;
 	}
 	\Return{\Best}\;
 	% end
@@ -156,11 +156,11 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Genetic Programming algorithm was designed for inductive automatic programming and is well suited to symbolic regression, controller design, and machine learning tasks under the broader name of function approximation.
-	\item Traditionally symbolic expressions are evolved and evaluated in a virtual machine, although the approach has been applied with real programming languages.	
+	\item Traditionally Lisp symbolic expressions are evolved and evaluated in a virtual machine, although the approach has been applied with compiled programming languages.
 	\item The evaluation (fitness assignment) of a candidate solution typically takes the structure of the program into account, rewarding parsimony.
 	\item The selection process should be balanced between random selection and greedy selection to bias the search towards fitter candidate solutions (exploitation), whilst promoting useful diversity into the population (exploration).
 	\item A program may respond to zero or more input values and may produce one or more outputs.
-	\item All functions used in the function node set must return a usable result. For example, the division function must return a value (such as zero or one) when a division by zero occurs.
+	\item All functions used in the function node set must return a usable result. For example, the division function must return a sensible value (such as zero or one) when a division by zero occurs.
 	\item All genetic operations ensure (or should ensure) that syntactically valid and executable programs are produced as a result of their application.
 	\item The Genetic Programming algorithm is commonly configured with a high-probability of crossover ($\geq 90\%$) and a low-probability of mutation ($\leq 1\%$). Other operators such as reproduction and architecture alterations are used with moderate-level probabilities and fill in the probabilistic gap.
 	\item Architecture altering operations are not limited to the duplication and deletion of sub-structures of a given program. 
@@ -185,7 +185,7 @@ The algorithm is configured to search for a program with the function set $\{ +,
 % fitness
 The fitness of a candidate solution is calculated by evaluating the program on range of random input values and calculating the Root Mean Squared Error (RMSE).
 % config
-The algorithm is configured with a 90\% probability of crossover, 9\% probability of reproduction (copying), and a 2\% probability of mutation.
+The algorithm is configured with a 90\% probability of crossover, 8\% probability of reproduction (copying), and a 2\% probability of mutation.
 % missing
 For brevity, the algorithm does not implement the architecture altering genetic operation and does not bias crossover points towards functions over terminals.
 
@@ -224,9 +224,9 @@ Koza is generally credited with the development and popularizing of the field, p
 Koza provides a practical introduction to the field as a tutorial and provides recent overview of the broader field and usage of the technique \cite{Koza2005}.
 
 % books
-In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on automatically defined functions (ADFs) \cite{Koza1994}, volume III that considered the Genetic Programming Problem Solver (GPPS) for automatically defining the function set and program structure for a given problem \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical demonstration problem instances.
+In addition his the seminal 1992 book, Koza has released three more volumes in the series including volume II on Automatically Defined Functions (ADFs) \cite{Koza1994}, volume III that considered the Genetic Programming Problem Solver (GPPS) for automatically defining the function set and program structure for a given problem \cite{Koza1999}, and volume IV that focuses on the human competitive results the technique is able to achieve in a routine manner \cite{Koza2003}. All books are rich with targeted and practical demonstration problem instances.
 
 % additional books
-Some additional excellent books include Banzhaf, et al's introduction to the field \cite{Banzhaf1998}, Langdon and Poli's detailed look at the technique \cite{Langdon2002}, and Poli, Langdon, and McPhee's contemporary and practical field guide to Genetic Programming \cite{Poli2008}.
+Some additional excellent books include a text by Banzhaf et al. that provides an introduction to the field \cite{Banzhaf1998}, Langdon and Poli's detailed look at the technique \cite{Langdon2002}, and Poli, Langdon, and McPhee's contemporary and practical field guide to Genetic Programming \cite{Poli2008}.
 
 
