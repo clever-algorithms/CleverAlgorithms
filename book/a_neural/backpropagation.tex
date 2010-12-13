@@ -54,7 +54,7 @@ The system is trained using a supervised learning method, where the error betwee
 Each layer of the network provides an abstraction of the information processing of the previous layer, allowing the combination of sub-functions and higher order modeling.
 
 % Procedure: Abstract computation
-% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What are the data structures and representations used in a technique?
 The Back-propagation algorithm is a method for training the weights in a multi-layer feed-forward neural network. As such, it requires a network structure to be defined of one or more layers where one layer is fully connected to the next layer. A standard network structure is one input layer, one hidden layer, and one output layer. The method is primarily concerned with adapting the weights to the calculated error in the presence of input patterns, and the method is applied backward from the network output layer through to the input layer.
@@ -106,7 +106,7 @@ The weight updates use the delta rule, specifically a changed delta rule where e
 	}
 	\Return{\Network}\;
 	% end
-	\caption{Pseudo Code for the Back-propagation algorithm (training weights).}
+	\caption{Pseudocode for the Back-propagation algorithm (training weights).}
 	\label{alg:train}
 \end{algorithm}
 

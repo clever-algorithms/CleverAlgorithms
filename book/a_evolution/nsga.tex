@@ -40,13 +40,13 @@ The algorithm uses an evolutionary process with surrogates for evolutionary oper
 The population is sorted into a hierarchy of sub-populations based on the ordering of Pareto dominance. Similarity between members of each sub-group is evaluated on the Pareto front, and the resulting groups and similarity measures are used to promote a diverse front of non-dominated solutions.
 
 % Procedure: Abstract computation
-% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:nsga} provides a pseudocode listing of the Non-dominated Sorting Genetic Algorithm II (NSGA-II) for minimizing a cost function. 
 % explaination
-The \texttt{SortByRankAndDistance} function orders the population into a hierarchy of non-dominated Pareto fronts. The \texttt{CrowdingDistanceAssignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al.\ for a clear presentation of the pseudo code and explanation of these functions \cite{Deb2002}. The \texttt{CrossoverAndMutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{SelectParentsByRankAndDistance} and \texttt{SortByRankAndDistance} functions discriminate members of the population first by rank (order of dominated precedence of the front to which the solution belongs) and then distance within the front (calculated by \texttt{CrowdingDistanceAssignment}).
+The \texttt{SortByRankAndDistance} function orders the population into a hierarchy of non-dominated Pareto fronts. The \texttt{CrowdingDistanceAssignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al.\ for a clear presentation of the Pseudocode and explanation of these functions \cite{Deb2002}. The \texttt{CrossoverAndMutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{SelectParentsByRankAndDistance} and \texttt{SortByRankAndDistance} functions discriminate members of the population first by rank (order of dominated precedence of the front to which the solution belongs) and then distance within the front (calculated by \texttt{CrowdingDistanceAssignment}).
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -120,7 +120,7 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 	}
 	\Return{\Children}\;
 	% end
-	\caption{Pseudo Code for the Non-dominated Sorting Genetic Algorithm~II.}
+	\caption{Pseudocode for the Non-dominated Sorting Genetic Algorithm~II.}
 	\label{alg:nsga}
 \end{algorithm}
 

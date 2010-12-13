@@ -50,7 +50,7 @@ The information processing objective of the algorithm is to improve the learning
 The algorithm operates at two levels: population level and a cultural level. The population level is like an evolutionary search, where individuals represent candidate solutions, are mostly distinct and their characteristics are translated into an objective or cost function in the problem domain. The second level is the knowledge or believe space where information acquired by generations  is stored, and which is accessible to the current generation. A communication protocol is used to allow the two spaces to interact and the types of of information that can be exchanged.
 
 % Procedure: Abstract computation
-% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What are the data structures and representations used in a technique?
 The focus of the algorithm is the \texttt{KnowledgeBase} data structure that records different knowledge types based on the nature of the problem. For example, the structure may be used to record the best candidate solution found as well as generalized information about areas of the search space that are expected to payoff (result in good candidate solutions). This cultural knowledge is discovered by the population-based evolutionary search, and is in turn used to influence subsequent generations. The accept functions constrain the communication of knowledge from the population to the knowledge base.
@@ -107,7 +107,7 @@ Algorithm~\ref{alg:cultural_algorithm} provides a pseudocode listing of the Cult
 	}
 	\Return{\KnowledgeBase}\;
 	% end
-	\caption{Pseudo Code for the Cultural Algorithm.}
+	\caption{Pseudocode for the Cultural Algorithm.}
 	\label{alg:cultural_algorithm}
 \end{algorithm}
 

@@ -50,7 +50,7 @@ The information processing objective of the technique is to model a given functi
 The system is trained using a supervised learning method, where the error between the system's output and a known expected output is presented to the system and used to modify its internal state. State is maintained in a set of weightings on the input signals. The weights are used to represent an abstraction of the mapping of input vectors to the output signal for the examples that the system was exposed to during training.
 
 % Procedure: Abstract computation
-% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What are the data structures and representations used in a technique?
 The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
@@ -104,7 +104,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	}
 	\Return{\Weights}\;
 	% end
-	\caption{Pseudo Code for the Perceptron algorithm (training weights).}
+	\caption{Pseudocode for the Perceptron algorithm (training weights).}
 	\label{alg:train}
 \end{algorithm}
 

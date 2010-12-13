@@ -34,13 +34,13 @@ The objective of Tabu Search is to avoid cycles while applying a local search te
 The strategy of the broader field of Reactive Search Optimization is to automate the process by which a practitioner configures a search procedure by monitoring its online behavior and to use machine learning techniques to adapt a techniques configuration.
 
 % Procedure: Abstract computation
-% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
+% The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:reactive_tabu_search} provides a pseudocode listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
 % specifics
-The pseudo code is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
+The Pseudocode is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
 
 \begin{algorithm}[Htp]
 	\SetLine
@@ -88,7 +88,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	}
 	\Return{\Best}\;
 	% caption
-	\caption{Pseudo Code for the Reactive Tabu Search algorithm.}
+	\caption{Pseudocode for the Reactive Tabu Search algorithm.}
 	\label{alg:reactive_tabu_search}
 \end{algorithm}
 
@@ -142,7 +142,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	}
 
 	% caption
-	\caption{Pseudo Code for the \texttt{MemoryBasedReaction} function in the Reactive Tabu Search algorithm.}
+	\caption{Pseudocode for the \texttt{MemoryBasedReaction} function in the Reactive Tabu Search algorithm.}
 	\label{alg:memory_based_reaction}
 \end{algorithm}
 
@@ -183,7 +183,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	}
 	\Return{\Current}\;
 	% caption
-	\caption{Pseudo Code for the \texttt{BestMove} function in the Reactive Tabu Search algorithm.}
+	\caption{Pseudocode for the \texttt{BestMove} function in the Reactive Tabu Search algorithm.}
 	\label{alg:best_move}
 \end{algorithm}
 
@@ -208,7 +208,7 @@ The pseudo code is based on a the version of the Reactive Tabu Search described 
 	}
 	\Return{\Tabu}\;
 	% caption
-	\caption{Pseudo Code for the \texttt{IsTabu} function in the Reactive Tabu Search algorithm.}
+	\caption{Pseudocode for the \texttt{IsTabu} function in the Reactive Tabu Search algorithm.}
 	\label{alg:tabu}
 \end{algorithm}
 
