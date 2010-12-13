@@ -62,7 +62,7 @@ A grammar is defined in Backus Normal Form (BNF), which is a context free gramma
 % mapping
 A variable-length binary string representation is used for the optimization process. Bits are read from the a candidate solutions genome in blocks of 8 called a codon, and decoded to an integer (in the range between 0 and $2^{8}-1$). If the end of the binary string is reached when reading integers, the reading process loops back to the start of the string, effectively creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not use a solutions entire genome, or use the decoded genome more than once given it's circular nature.
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:grammatical_evolution} provides a pseudo-code listing of the Grammatical Evolution algorithm for minimizing a cost function.
+Algorithm~\ref{alg:grammatical_evolution} provides a pseudocode listing of the Grammatical Evolution algorithm for minimizing a cost function.
 
 
 \begin{algorithm}[ht]

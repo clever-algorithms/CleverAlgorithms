@@ -41,7 +41,7 @@ This is achieved by using an evolutionary process (with surrogate procedures for
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:spea} provides a pseudo-code listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
+Algorithm~\ref{alg:spea} provides a pseudocode listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
 % explaination
 The \texttt{CalculateRawFitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that a give solution dominate.
 The \texttt{CandidateDensity} function estimates the density of an area of the Pareto front as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive combined.

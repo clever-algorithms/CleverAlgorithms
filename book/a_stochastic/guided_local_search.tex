@@ -39,7 +39,7 @@ A Local Search algorithm is run until it gets stuck in a local optima. The featu
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:guided_local_search} provides a pseudo-code listing of the Guided Local Search algorithm for minimization. 
+Algorithm~\ref{alg:guided_local_search} provides a pseudocode listing of the Guided Local Search algorithm for minimization. 
 % cost function
 The Local Search algorithm used by the Guided Local Search algorithm uses an augmented cost function in the form  $h(s)=g(s)+\lambda\cdot\sum_{i=1}^{M}f_i$, where 
 $h(s)$ is the augmented cost function, $g(s)$ is the problem cost function,$\lambda$ is the `regularization parameter' (a coefficient for scaling the penalties), $s$ is a locally optimal solution of $M$ features, and $f_i$ is the $i$'th feature in locally optimal solution. The augmented cost function is only used by the local search procedure, the Guided Local Search algorithm uses the problem specific cost function without augmentation.

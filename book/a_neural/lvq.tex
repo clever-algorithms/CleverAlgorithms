@@ -57,7 +57,7 @@ An initially random pool of vectors is prepared which are then exposed to traini
 Vector Quantization is a technique from signal processing density functions are approximated with prototype vectors for applications such as compression. Learning Vector Quantization is similar in principle, although the prototype vectors are learned through a supervised winner-take-all method.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudo-code for preparing codebook vectors using the Learning Vector Quantization method. 
+Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing codebook vectors using the Learning Vector Quantization method. 
 Codebook vectors are initialized to small floating point values, or sampled from an available dataset. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}

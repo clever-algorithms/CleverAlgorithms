@@ -55,7 +55,7 @@ Solutions are constructed one discrete piece at a time in a probabilistic step-w
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:acs} provides a pseudo-code listing of the main Ant Colony System algorithm for minimizing a cost function. 
+Algorithm~\ref{alg:acs} provides a pseudocode listing of the main Ant Colony System algorithm for minimizing a cost function. 
 The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
 
 \begin{equation}

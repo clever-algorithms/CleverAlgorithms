@@ -40,7 +40,7 @@ The strategy of the procedure is centered on the stochastic and greedy step-wise
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
+Algorithm~\ref{alg:grasp} provides a pseudocode listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -75,7 +75,7 @@ Algorithm~\ref{alg:grasp} provides a pseudo-code listing of the Greedy Randomize
 	\label{alg:grasp}
 \end{algorithm}
 
-Algorithm~\ref{alg:construction} provides the pseudo-code the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The functions works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
+Algorithm~\ref{alg:construction} provides the pseudocode the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The functions works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
 
 \begin{algorithm}[htp]
 	\SetLine

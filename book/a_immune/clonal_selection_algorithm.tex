@@ -57,7 +57,7 @@ This strategy involves a population of adaptive information units (each represen
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:clonalg} provides a pseudo-code listing of the Clonal Selection Algorithm (CLONALG) for minimizing a cost function. 
+Algorithm~\ref{alg:clonalg} provides a pseudocode listing of the Clonal Selection Algorithm (CLONALG) for minimizing a cost function. 
 % description
 The general CLONALG model involves the selection of antibodies (candidate solutions) based on affinity either by matching against an antigen pattern or via evaluation of a pattern by a cost function. Selected antibodies are subjected to cloning proportional to affinity, and the hypermutation of clones inversely-proportional to clone affinity. The resultant clonal-set competes with the existent antibody population for membership in the next generation. In addition, low-affinity population members are replaced by randomly generated antibodies. The pattern recognition variation of the algorithm includes the maintenance of a memory solution set which in its entirety represents a solution to the problem. A binary-encoding scheme is employed for the binary-pattern recognition and continuous function optimization examples, and an integer permutation scheme is employed for the Traveling Salesman Problem (TSP).
 
