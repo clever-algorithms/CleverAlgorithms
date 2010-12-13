@@ -46,7 +46,7 @@ The population is sorted into a hierarchy of sub-populations based on the orderi
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:nsga} provides a pseudo-code listing of the Non-dominated Sorting Genetic Algorithm II (NSGA-II) for minimizing a cost function. 
 % explaination
-The \texttt{SortByRankAndDistance} function orders the population into a hierarchy of non-dominated Pareto fronts. The \texttt{CrowdingDistanceAssignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al. for a clear presentation of the pseudo code and explanation of these functions \cite{Deb2002}. The \texttt{CrossoverAndMutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{SelectParentsByRankAndDistance} and \texttt{SortByRankAndDistance} functions discriminate members of the population first by rank (order of dominated precedence of the front to which the solution belongs) and then distance within the front (calculated by \texttt{CrowdingDistanceAssignment}).
+The \texttt{SortByRankAndDistance} function orders the population into a hierarchy of non-dominated Pareto fronts. The \texttt{CrowdingDistanceAssignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al.\ for a clear presentation of the pseudo code and explanation of these functions \cite{Deb2002}. The \texttt{CrossoverAndMutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{SelectParentsByRankAndDistance} and \texttt{SortByRankAndDistance} functions discriminate members of the population first by rank (order of dominated precedence of the front to which the solution belongs) and then distance within the front (calculated by \texttt{CrowdingDistanceAssignment}).
 
 \begin{algorithm}[htp]
 	\SetLine  
@@ -143,7 +143,7 @@ Listing~\ref{nsga} provides an example of the Non-dominated Sorting Genetic Algo
 % problem
 The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solution for this function are $x \in [0,2]$.
 % algorithm
-The algorithm is an implementation of NSGA-II based on the presentation by Deb, et al. \cite{Deb2002}.
+The algorithm is an implementation of NSGA-II based on the presentation by Deb et al.\ \cite{Deb2002}.
 %  cfg
 The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
 
@@ -163,7 +163,7 @@ The algorithm uses a binary string representation (16 bits per objective functio
 % seminal
 Srinivas and Deb proposed the NSGA inspired by Goldberg's notion of a non-dominated sorting procedure \cite{Srinivas1994}. Goldberg proposed a non-dominated sorting procedure in his book in considering the biases in the Pareto optimal solutions provided by VEGA \cite{Goldberg1989}. Srinivas and Deb's NSGA used the sorting procedure as a ranking selection method, and a fitness sharing niching method to maintain stable sub-populations across the Pareto front.
 % extension
-Deb, et al. later extended NSGA to address three criticism of the approach: i) the $O(mN^3)$ time complexity, the lack of elitism, and the need for a sharing parameter for the fitness sharing niching method \cite{Deb2000, Deb2002}.
+Deb et al.\ later extended NSGA to address three criticism of the approach: i) the $O(mN^3)$ time complexity, the lack of elitism, and the need for a sharing parameter for the fitness sharing niching method \cite{Deb2000, Deb2002}.
 
 % 
 % Learn More

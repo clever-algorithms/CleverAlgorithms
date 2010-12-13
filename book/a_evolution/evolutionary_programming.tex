@@ -141,7 +141,7 @@ Listing~\ref{evolutionary_programming} provides an example of the Evolutionary P
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is an implementation of Evolutionary Programming based on Fogel et al's classical implementation for continuous function optimization \cite{Fogel1991a} with per-variable adaptive variance based on Fogel's description for a self-adaptive variation on page 160 of his 1995 book \cite{Fogel1995}.
+The algorithm is an implementation of Evolutionary Programming based on the classical implementation for continuous function optimization by Fogel et al.\ \cite{Fogel1991a} with per-variable adaptive variance based on Fogel's description for a self-adaptive variation on page 160 of his 1995 book \cite{Fogel1995}.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Evolutionary Programming algorithm in the Ruby Programming Language, label=evolutionary_programming]{../src/algorithms/evolutionary/evolutionary_programming.rb}
@@ -173,6 +173,6 @@ The field of Evolutionary Programming lay relatively dormant for 30 years until 
 Lawrence Fogel collaborated in the revival of the technique, including reviews \cite{Fogel1990, Fogel1994} and extensions on what became the focus of the approach on function optimization \cite{Fogel1991a}.
 
 % recent
-Yao, et al. provide a seminal study of Evolutionary Programming proposing an extension and racing it against the classical approach on a large number of test problems \cite{Yao1999}. Finally, Porto provides an excellent contemporary overview of the field and the technique \cite{Porto2000}.
+Yao et al.\ provide a seminal study of Evolutionary Programming proposing an extension and racing it against the classical approach on a large number of test problems \cite{Yao1999}. Finally, Porto provides an excellent contemporary overview of the field and the technique \cite{Porto2000}.
 
 
