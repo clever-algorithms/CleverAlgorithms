@@ -96,7 +96,7 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudocode listing of the Genet
 		% select
 		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
 		% recombine
-		\Children $\leftarrow 0$\;
+		\Children $\leftarrow \emptyset$\;
 		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
 			\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;
 			\Children $\leftarrow$ \Mutate{\ChildOne, \ProbabilityMutate}\;

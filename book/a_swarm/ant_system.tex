@@ -109,7 +109,7 @@ where $\tau_{i,j}$ is the maximizing contribution to the overall score of select
 	\Pheromone $\leftarrow$ \InitializePheromone{\BestCost}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		\Candidates $\leftarrow$ $0$\;
+		\Candidates $\leftarrow$ $\emptyset$\;
 		\For{$i=1$ $\KwTo$ \NumAnts} {
 			\Solution $\leftarrow$ \ProbabilisticStepwiseConstruction{\Pheromone, \ProblemSize, \HistoryContribution, \HeuristicContribution}\;
 			\SolutionCost $\leftarrow$ \Cost{\Solution}\;

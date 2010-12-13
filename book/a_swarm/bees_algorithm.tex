@@ -99,18 +99,18 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudocode listing of the Bees Alg
 	\While{$\neg$\StopCondition{}} {
 		\EvaluatePopulation{\Population}\;
 		\Best $\leftarrow$ \GetBestSolution{\Population}\;
-		\NextGeneration $\leftarrow 0$\;		
+		\NextGeneration $\leftarrow \emptyset$\;		
 		\PatchSize $\leftarrow$ ( \InitialPatchSize $\times$ \PatchDecreaseFactor )\;
 		\BestSites $\leftarrow$ \SelectBestSites{\Population, \NumSites}\;
 		
 		\ForEach{\Site $\in$ \BestSites} {
-				\NumRecruitedBees $\leftarrow$ $0$\;
+				\NumRecruitedBees $\leftarrow$ $\emptyset$\;
 				\eIf{$i <$ \NumEliteSites} {
 					\NumRecruitedBees $\leftarrow$ \NumEliteBees\;
 				} {
 					\NumRecruitedBees $\leftarrow$ \NumOtherBees\;
 				}
-				\Neighborhood $\leftarrow$ $0$\;
+				\Neighborhood $\leftarrow$ $\emptyset$\;
 				\For{$j$ \KwTo \NumRecruitedBees} {
 					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
 				}

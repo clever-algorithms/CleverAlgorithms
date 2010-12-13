@@ -89,9 +89,9 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudocode listing of 
 	
 	\Environment $\leftarrow$ \InitializeEnvironment{\EnvironmentDetails}\;
 	\Population $\leftarrow$ \InitializePopulation{}\;
-	\LastActionset $\leftarrow$ $0$\;
-	\LastInput $\leftarrow$ $0$\;
-	\LastReward $\leftarrow$ $0$\;
+	\LastActionset $\leftarrow$ $\emptyset$\;
+	\LastInput $\leftarrow$ $\emptyset$\;
+	\LastReward $\leftarrow$ $\emptyset$\;
 		
 	\While{$\neg$\StopCondition{}}{
 		\Input $\leftarrow$ \Environment\;
@@ -100,7 +100,7 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudocode listing of 
 		\Action $\leftarrow$ \SelectionAction{\Prediction}\;
 		\Actionset $\leftarrow$ \GenerateActionSet{\Action, \Matchset}\;
 		\Reward $\leftarrow$ \ExecuteAction{\Action, \Environment}\;
-		\If{\LastActionset $\neq$ $0$}{
+		\If{\LastActionset $\neq$ $\emptyset$}{
 			\Payoff $\leftarrow$ \CalculatePayoff{\LastReward, \Prediction}\;
 			\PerformLearning{\LastActionset, \Payoff, \Population}\;
 			\RunGeneticAlgorithm{\LastActionset, \LastInput, \Population}\;
@@ -110,7 +110,7 @@ Algorithm~\ref{alg:learning_classifier_system} provides a pseudocode listing of 
 			\Payoff $\leftarrow$ \Reward\;
 			\PerformLearning{\Actionset, \Payoff, \Population}\;
 			\RunGeneticAlgorithm{\Actionset, \Input, \Population}\;
-			\LastActionset $\leftarrow$ $0$\;
+			\LastActionset $\leftarrow$ $\emptyset$\;
 		}{
 			\LastActionset $\leftarrow$ \Actionset\;
 			\LastInput $\leftarrow$ \Input\;

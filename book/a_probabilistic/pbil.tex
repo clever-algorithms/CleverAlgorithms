@@ -87,10 +87,10 @@ Algorithm~\ref{alg:pbil} provides a pseudocode listing of the Population-Based I
 
   % Algorithm
 	\Vector $\leftarrow$ \InitializeVector{\NumBits}\;
-	\Best $\leftarrow$ $0$\;
+	\Best $\leftarrow$ $\emptyset$\;
 	
 	\While{$\neg$\StopCondition{}} {
-		\CurrentBest $\leftarrow$ $0$\;		
+		\CurrentBest $\leftarrow$ $\emptyset$\;		
 		\For{$i$ \KwTo \NumSamples} {
 			\Sample $\leftarrow$ \GenerateSamples{\Vector}\;
 			\If{\Cost{\Sample} $\leq$ \Cost{\CurrentBest}} {

@@ -114,7 +114,7 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudocode listing of
 		% select
 		\Parents $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
 		% recombine
-		\Children $\leftarrow 0$\;
+		\Children $\leftarrow \emptyset$\;
 		\ForEach{\ParentOne, \ParentTwo $\in$ \Parents}{
 			% crossover
 			\SolutionGenome $\leftarrow$ \Crossover{\ParentOne, \ParentTwo, \ProbabilityCrossover}\;

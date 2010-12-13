@@ -98,7 +98,7 @@ The resulting migrated cells can then be used to classify input patterns as norm
   
 	% Algorithm
 	\ImmatureCells $\leftarrow$ \InitializeCells{\NumCells, \MigrationThresholdBounds}\;
-	\MigratedCells $\leftarrow$ $0$\;
+	\MigratedCells $\leftarrow$ $\emptyset$\;
 	% loop
 	\For{$i=1$ \KwTo \MaxIterations} {
 		\Pattern $\leftarrow$ \SelectInputPattern{\InputPatterns}\;

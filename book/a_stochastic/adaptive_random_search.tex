@@ -66,14 +66,14 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
 	\KwOut{\Current}
   	% Algorithm
 	% init
-	$nochng_{count} \leftarrow 0$\;
+	$nochng_{count} \leftarrow \emptyset$\;
 	$step_{size} \leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
 	\Current $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
 	% main loop
 	\ForEach{$iter_i \in$ \NumIterations} {
 		% small step
 		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace, \Current, $step_{size}$}\;		
-		$largestep_{size} \leftarrow 0$\;
+		$largestep_{size} \leftarrow \emptyset$\;
 		% bigger step
 		\If{$iter_i \bmod{\LargeStepSizeFactorIter}$} {
 			$largestep_{size} \leftarrow$ $step_{size} \times \LargeStepSizeFactor$\;
@@ -92,13 +92,13 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
 			\Else {
 				\Current $\leftarrow candidate_1$\;
 			}
-			$nochng_{count} \leftarrow 0$\;
+			$nochng_{count} \leftarrow \emptyset$\;
 		} 
 		\Else {
 			$nochng_{count} \leftarrow nochng_{count} + 1$\;
 			% step size modification
 			\If{$nochng_{count} > \MaxIterNoImprovement$} {
-				$nochng_{count} \leftarrow 0$\;
+				$nochng_{count} \leftarrow \emptyset$\;
 				$step_{size} \leftarrow \frac{step_{size}}{\SmallStepSizeFactor}$
 			}
 		}

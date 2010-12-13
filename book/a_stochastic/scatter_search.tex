@@ -68,7 +68,7 @@ Algorithm~\ref{alg:scatter_search} provides a pseudocode listing of the Scatter 
 	\KwOut{\ReferenceSet}
   	% Algorithm
 	\InitialSet $\leftarrow$ \ConstructInitialSolution{\DiverseSetSize}\;
-	\RefinedSet $\leftarrow 0$\;
+	\RefinedSet $\leftarrow \emptyset$\;
 	\For{\ithCandidate $\in$ \InitialSet}{
 		\RefinedSet $\leftarrow$ \LocalSearch{\ithCandidate}\;
 	} 
@@ -78,7 +78,7 @@ Algorithm~\ref{alg:scatter_search} provides a pseudocode listing of the Scatter 
 		% select subsets
 		\Subsets $\leftarrow$ \SelectSubset{\ReferenceSet}\;
 		% recombine subsets
-		\CandidateSet $\leftarrow 0$\;
+		\CandidateSet $\leftarrow \emptyset$\;
 		\For{\ithCandidateSet $\in$ \Subsets}{
 			\RecombinedCandidates $\leftarrow$ \RecombineMembers{\ithCandidateSet}\;
 			% improve

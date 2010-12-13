@@ -104,7 +104,7 @@ Algorithm~\ref{alg:opt_ainet} provides a pseudocode listing of the Optimization 
 		% best
 		\Best $\leftarrow$ \GetBestSolution{\Population}\;
 		% state of population
-		\Progeny $\leftarrow 0$\;
+		\Progeny $\leftarrow \emptyset$\;
 		\Cost $\leftarrow$ \CalculateAveragePopulationCost{\Population}\;
 		\Repeat{\CalculateAveragePopulationCost{\Population} $\leq$ \Cost} {
 			clone

@@ -124,7 +124,7 @@ The remaining parameters of the algorithm are as follows $Cells_{num}$ is the nu
 				\ForEach{\Cell $\in$ \Population} {
 					\CellFitness $\leftarrow$ \Cost{\Cell} $+$ \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
 					\CellHealth $\leftarrow$ \CellFitness\;
-					\CellNewPosition $\leftarrow$ $0$\;
+					\CellNewPosition $\leftarrow$ $\emptyset$\;
 					% swim
 					\For{$i=0$ \KwTo \SwimSteps}{
 						\RandomStepDirection $\leftarrow$ \CreateStep{\ProblemSize}\;

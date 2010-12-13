@@ -112,7 +112,7 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 	% loop
 	\While{$\neg$\StopCondition{}} {
 		% build up child generation
-		\Children $\leftarrow 0$\;
+		\Children $\leftarrow \emptyset$\;
 		\While{\Size{\Children} $<$ \PopulationSize} {
 			\Operator $\leftarrow$ \SelectGeneticOperator{\ProbabilityCrossover, \ProbabilityMutate, \ProbabilityReproduction, \ProbabilityAlteration}\;
 		

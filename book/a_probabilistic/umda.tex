@@ -92,7 +92,7 @@ Algorithm~\ref{alg:umda} provides a pseudocode listing of the Univariate Margina
 	\While{$\neg$\StopCondition{}} {
 		\Selected $\leftarrow$ \SelectFitSolutions{\Population, \SelectionSize}\;
 		\Vector $\leftarrow$ \CalculateFrequencyOfComponents{\Selected}\;
-		\OffSpring $\leftarrow$ $0$\;
+		\OffSpring $\leftarrow$ $\emptyset$\;
 		\For{$i$ \KwTo \PopulationSize} {
 			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Vector}\;
 		}

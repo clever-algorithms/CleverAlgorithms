@@ -94,7 +94,7 @@ The general CLONALG model involves the selection of antibodies (candidate soluti
 	 	\Affinity{$p_i$}\;
 	 }
 	 $Population_{select} \leftarrow$ \Select{\Pop, \Selectsize}\;		%// clonal selection
-	 $Population_{clones} \leftarrow$ 0\;
+	 $Population_{clones} \leftarrow \emptyset$\;
 	 \ForEach{$p_i \in Population_{select}$}	%	// clonal expansion
 	 {
 	 	$Population_{clones} \leftarrow$ \Clone{$p_i$, \CloneRate}\;

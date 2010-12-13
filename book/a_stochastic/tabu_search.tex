@@ -68,10 +68,10 @@ Algorithm~\ref{alg:tabu_search} provides a pseudocode listing of the Tabu Search
 	\KwOut{\Best}
   	% Algorithm
 	\Best $\leftarrow$ \ConstructInitialSolution{}\;
-	\TabuList $\leftarrow$ 0\;
+	\TabuList $\leftarrow \emptyset$\;
 	\While{$\neg$ \StopCondition{}} {
 		% generate non-tabu candidates
-		\CandidateList $\leftarrow$ 0\;
+		\CandidateList $\leftarrow \emptyset$\;
 		\For{\Candidate $\in$ \CandidateNeighborhood}{
 			\If{$\neg$ \ContainsAnyFeatures{\Candidate, \TabuList}}{
 				\CandidateList $\leftarrow$ \Candidate\;

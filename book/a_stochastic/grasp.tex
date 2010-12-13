@@ -100,15 +100,15 @@ Algorithm~\ref{alg:construction} provides the pseudocode the Greedy Randomized C
 	\KwIn{\Alpha}
 	\KwOut{\Candidate}
 	% greedy randomized solution
-	\Candidate $\leftarrow 0$\;
+	\Candidate $\leftarrow \emptyset$\;
 	\While{\Candidate $\neq$ \ProblemSize} {
 		% calculate
-		\FeatureCosts $\leftarrow 0$\;
+		\FeatureCosts $\leftarrow \emptyset$\;
 		\For{\ProblemFeature $\notin$ \Candidate}{
 			\FeatureCosts $\leftarrow$ \CostImpactOfFeature{\Candidate, \ProblemFeature}\;
 		}
 		% build RCL
-		\RCL $\leftarrow 0$\;
+		\RCL $\leftarrow \emptyset$\;
 		\ProblemFeatureMinCost $\leftarrow$ \MinCost{\FeatureCosts}\;
 		\ProblemFeatureMaxCost $\leftarrow$ \MaxCost{\FeatureCosts}\;
 		\For{\ProblemFeatureCost $\in$ \FeatureCosts} {

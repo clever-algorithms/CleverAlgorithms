@@ -74,7 +74,7 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the 
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
 	\While{$\neg$\StopCondition{}} {
-		\NewPopulation $\leftarrow 0$\;
+		\NewPopulation $\leftarrow \emptyset$\;
 		% create new 
 		\ForEach{\Member $\in$ \Population}{
 			\Sample $\leftarrow$ \NewSample{\Member, \Population, \NumParameters, \WeightingFactor, \CrossoverRate}\;

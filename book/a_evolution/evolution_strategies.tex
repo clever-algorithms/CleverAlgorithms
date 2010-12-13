@@ -98,10 +98,10 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudocode listing of the $(
 	% loop
 	\While{$\neg$\StopCondition{}} {
 		% mutate
-		\Children $\leftarrow 0$\;
+		\Children $\leftarrow \emptyset$\;
 		\For{$i=0$ \KwTo \ChildPopulationSize} {
 			\Parent $\leftarrow$ \GetParent{\Population, $i$}\;	
-			\Candidate $\leftarrow 0$\;			
+			\Candidate $\leftarrow \emptyset$\;			
 			\CandidateObjective $\leftarrow$ \Mutate{\ParentObjective, \ParentStrategy}\;
 			\CandidateStrategy $\leftarrow$ \Mutate{\ParentStrategy}\;
 			\Children $\leftarrow$ \Candidate\;

@@ -96,8 +96,8 @@ The \texttt{SortByRankAndDistance} function orders the population into a hierarc
 		\Union $\leftarrow$ \Merge{\Population, \Children}\;
 		\Fronts $\leftarrow$ \FastNondominatedSort{\Union}\;		
 		% classical loop in paper
-		\Parents $\leftarrow$ 0\;
-		\LastFront $\leftarrow$ 0\;
+		\Parents $\leftarrow \emptyset$\;
+		\LastFront $\leftarrow \emptyset$\;
 		\ForEach{\Front $\in$ \Fronts}{
 			\CrowdingDistanceAssignment{\Front}\;
 			\eIf{\Size{\Parents}$+$\Size{\Front} $>$ \PopulationSize}{

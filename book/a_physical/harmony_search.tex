@@ -95,7 +95,7 @@ where $range$ is a the user parameter (pitch bandwidth) to control the size of t
 	\Harmonies $\leftarrow$ \InitializeHarmonyMemory{\NumPitches, \PitchBounds, \MemorySize}\;
 	\EvaluateHarmonies{\Harmonies}\;
 	\For{$i$ \KwTo \MaxImprovisations} {
-		\CandidateHarmony $\leftarrow$ $0$\;		
+		\CandidateHarmony $\leftarrow$ $\emptyset$\;		
 		\ForEach{\Pitch $\in$ \NumPitches} {			
 			\eIf{\Rand{} $\leq$ \ConsolidationRate} {
 				\RandomHarmonyPitch $\leftarrow$ \SelectRandomHarmonyPitch{\Harmonies, \Pitch}\;

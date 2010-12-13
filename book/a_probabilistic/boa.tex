@@ -93,7 +93,7 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 	\While{$\neg$\StopCondition{}} {
 		\Selected $\leftarrow$ \SelectFitSolutions{\Population, \SelectionSize}\;
 		\Model $\leftarrow$ \ConstructBayesianNetwork{\Selected}\;
-		\OffSpring $\leftarrow$ $0$\;
+		\OffSpring $\leftarrow$ $\emptyset$\;
 		\For{$i$ \KwTo \PopulationSize} {
 			\OffSpring $\leftarrow$ \ProbabilisticallyConstructSolution{\Model}\;
 		}

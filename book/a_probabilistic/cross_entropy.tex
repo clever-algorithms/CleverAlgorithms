@@ -92,7 +92,7 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudocode listing of the Cr
   % Algorithm
 	\Means $\leftarrow$ \InitializeMeans{}\;
 	\Variances $\leftarrow$ \InitializeVariances{}\;
-	\Best $\leftarrow$ $0$\;
+	\Best $\leftarrow$ $\emptyset$\;
 	\While{\Max{\Variances} $\leq$ \MinVariance} {
 		\Samples $\leftarrow$ $0$\;
 		\For{$i=0$ \KwTo \NumSamples} {

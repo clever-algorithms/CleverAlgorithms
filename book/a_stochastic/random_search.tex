@@ -56,7 +56,7 @@ Algorithm~\ref{alg:random_search} provides a pseudocode listing of the Random Se
 	\KwIn{\NumIterations, \ProblemSize, \SearchSpace}
 	\KwOut{\Best}
   	% Algorithm
-	\Best $\leftarrow 0$\;
+	\Best $\leftarrow \emptyset$\;
 	\ForEach{$iter_i \in$ \NumIterations} {
 		$candidate_i$ $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
 		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {

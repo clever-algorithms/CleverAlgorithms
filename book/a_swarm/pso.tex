@@ -98,8 +98,8 @@ Algorithm~\ref{alg:pso} provides a pseudocode listing of the Particle Swarm Opti
   % Algorithm
 
 	% initialize	
-	\Population $\leftarrow$ $0$\;
-	\GlobalBest $\leftarrow$ $0$\;
+	\Population $\leftarrow$ $\emptyset$\;
+	\GlobalBest $\leftarrow$ $\emptyset$\;
 	\For{$i=1$ $\KwTo$ \PopulationSize} {
 		\CurrentVelocity $\leftarrow$ \RandomVelocity{}\;
 		\CurrentPosition $\leftarrow$ \RandomPosition{\PopulationSize}\;

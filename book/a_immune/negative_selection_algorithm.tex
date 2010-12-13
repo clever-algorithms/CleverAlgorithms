@@ -73,7 +73,7 @@ Algorithm~\ref{alg:detector_gen} provides a pseudocode listing of the detector g
   \KwIn{\SelfData}
   \KwOut{\Repertoire}
 	% algorithm
-	\Repertoire $\leftarrow 0$\;
+	\Repertoire $\leftarrow \emptyset$\;
   \While{$\neg$\StopCondition{}}{
 		\Detectors $\leftarrow$ \GenerateRandomDetectors{}\;
 		\ForEach{\CurrentDetector $\in$ \Repertoire}{
