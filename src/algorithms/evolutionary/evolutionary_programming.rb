@@ -14,7 +14,7 @@ def random_vector(problem_size, search_space)
   end
 end
 
-def random_gaussian()
+def random_gaussian(mean=0.0, stdev=1.0)
   u1 = u2 = w = 0
   begin
     u1 = 2 * rand() - 1
@@ -22,7 +22,7 @@ def random_gaussian()
     w = u1 * u1 + u2 * u2
   end while w >= 1
   w = Math.sqrt((-2.0 * Math.log(w)) / w)
-  return u2 * w
+  return mean + (u2 * w) * stdev
 end
 
 def mutate(candidate, search_space)
