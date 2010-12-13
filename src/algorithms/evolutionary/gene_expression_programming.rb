@@ -14,9 +14,9 @@ def point_mutation(grammar, genome, p_mutation, head_length)
   genome.each_char do |v|
     if rand()<p_mutation
       if (i<head_length)
-        child << grammar["FUNC"][rand(grammar["FUNC"].length)]
+        child << grammar["FUNC"][rand(grammar["FUNC"].size)]
       else 
-        child << grammar["TERM"][rand(grammar["TERM"].length)]
+        child << grammar["TERM"][rand(grammar["TERM"].size)]
       end
     else 
       child << v
@@ -29,7 +29,7 @@ end
 def uniform_crossover(parent1, parent2, p_crossover)
   return ""+parent1 if rand()>=p_crossover
   child = ""
-  parent1.length.times do |i| 
+  parent1.size.times do |i| 
     child << ((rand()<0.5) ? parent1[i] : parent2[i])
   end
   return child
@@ -49,8 +49,8 @@ end
 
 def random_genome(grammar, head_length, tail_length)
   s = ""
-  head_length.times { s<<grammar["FUNC"][rand(grammar["FUNC"].length)]}
-  tail_length.times { s<<grammar["TERM"][rand(grammar["TERM"].length)]}
+  head_length.times { s<<grammar["FUNC"][rand(grammar["FUNC"].size)]}
+  tail_length.times { s<<grammar["TERM"][rand(grammar["TERM"].size)]}
   return s
 end
 

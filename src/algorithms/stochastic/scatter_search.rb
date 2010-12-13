@@ -16,7 +16,7 @@ end
 
 def take_step(current, search_space, step_size)
   step = []
-  current.length.times do |i|
+  current.size.times do |i|
     max, min = current[i]+step_size, current[i]-step_size
     max = search_space[i][1] if max > search_space[i][1]
     min = search_space[i][0] if min < search_space[i][0]
@@ -48,7 +48,7 @@ def construct_initial_set(problem_size, search_space, div_set_size, max_no_impro
     candidate[:cost] = cost(candidate[:vector])
     candidate = local_search(candidate, search_space, max_no_improvements, step_size)
     diverse_set << candidate if !diverse_set.any? {|x| x[:vector]==candidate[:vector]}
-  end until diverse_set.length == div_set_size
+  end until diverse_set.size == div_set_size
   return diverse_set
 end
 
@@ -72,7 +72,7 @@ def diversify(diverse_set, numElite, ref_set_size)
   reference_set = Array.new(numElite){|i| diverse_set[i]}
   remainder = diverse_set - reference_set
   remainder.sort!{|x,y| distance(y[:vector], reference_set) <=> distance(x[:vector], reference_set)}
-  reference_set = reference_set + remainder[0..(ref_set_size-reference_set.length)]
+  reference_set = reference_set + remainder[0..(ref_set_size-reference_set.size)]
   return reference_set, reference_set[0]
 end
 
@@ -111,7 +111,7 @@ def search(problem_size, search_space, max_iterations, ref_set_size, div_set_siz
     reference_set.each{|c| c[:new] = false}
     subsets.each do |subset|
       candidates = recombine(subset, problem_size, search_space)
-      improved = Array.new(candidates.length) {|i| local_search(candidates[i], search_space, max_no_improvements, step_size)}
+      improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improvements, step_size)}
       improved.each do |c|
         if !reference_set.any? {|x| x[:vector]==c[:vector]}
           c[:new] = true

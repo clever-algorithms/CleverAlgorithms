@@ -1,4 +1,4 @@
-# Unit tests for genetic_algorithm.rb
+# Unit tests for bees_algorithm.rb
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 David Howden. Some Rights Reserved.
@@ -15,7 +15,7 @@ class TC_BEES_ALGORITHM < Test::Unit::TestCase
 		search_space = Array.new(problem_size) {|i| [-1, 3]}
 		pop = Array.new(1000) {|i| create_random_bee(problem_size, search_space)}
 		sum = pop.inject(0){|sum, bee| sum += bee[:vector].inject(0){|sum, dimension| sum+= dimension}}
-		assert_in_delta (sum / (pop.length * problem_size)), 1, 0.1
+		assert_in_delta (sum / (pop.size * problem_size)), 1, 0.1
 	end
 	
 	#test that create_neighbourhood_bee centres bee on the correct site
@@ -24,7 +24,7 @@ class TC_BEES_ALGORITHM < Test::Unit::TestCase
 		search_space = Array.new(problem_size) {|i| [-10, 10]}
 		site = Array.new(problem_size){|i| i}
 		pop = Array.new(10000) {|i| create_neighborhood_bee(site, 4.5, search_space)}
-		problem_size.times{|i| assert_in_delta pop.inject(0){|sum, bee| sum += bee[:vector][i]} / pop.length, i, 0.1}
+		problem_size.times{|i| assert_in_delta pop.inject(0){|sum, bee| sum += bee[:vector][i]} / pop.size, i, 0.1}
 	end
 	
 	#test that create_neighbourhood_bee stays within patch_size and does not exceed search_space boundary

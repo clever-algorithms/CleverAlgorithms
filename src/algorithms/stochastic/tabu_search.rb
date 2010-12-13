@@ -11,21 +11,21 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
 end
 
 def random_permutation(cities)
-  all = Array.new(cities.length) {|i| i}
-  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
+  all = Array.new(cities.size) {|i| i}
+  return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
 end
 
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = rand(perm.size), rand(perm.size)
+  c2 = rand(perm.size) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
@@ -51,7 +51,7 @@ end
 
 def is_tabu?(permutation, tabu_list)
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     tabu_list.each do |forbidden_edge|
       return true if forbidden_edge == [c1, c2]
     end
@@ -83,7 +83,7 @@ def search(cities, tabu_list_size, candidate_list_size, max_iterations, max_no_i
       current = best_candidate
       best = best_candidate if best_candidate[:cost] < best[:cost]
       best_candidate_edges.each {|edge| tabu_list.push(edge)}
-      tabu_list.pop while tabu_list.length > tabu_list_size
+      tabu_list.pop while tabu_list.size > tabu_list_size
     end
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end

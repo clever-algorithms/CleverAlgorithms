@@ -17,7 +17,7 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
       assert_in_delta(mean, r, 4*stdev) # 4 stdevs
       a << r
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.length.to_f
+    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
     assert_in_delta(mean, mean, 0.1)
   end
   
@@ -29,7 +29,7 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
       assert_in_delta(mean, r, 4*stdev) # 4 stdevs
       a << r
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.length.to_f
+    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
     assert_in_delta(mean, mean, 0.1)
   end
   

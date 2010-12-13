@@ -25,8 +25,8 @@ def random_gaussian(mean=0.0, stdev=1.0)
 end
 
 def generate_sample(search_space, means, stdevs)
-  vector = Array.new(means.length)
-  means.length.times do |i|
+  vector = Array.new(means.size)
+  means.size.times do |i|
     vector[i] = random_gaussian(means[i], stdevs[i])
     vector[i] = search_space[i][0] if vector[i] < search_space[i][0]
     vector[i] = search_space[i][1] if vector[i] > search_space[i][1]
@@ -49,15 +49,15 @@ def stdev_parameter(samples, mean, i)
 end
 
 def update_distribution!(samples, alpha, means, stdevs)
-  means.length.times do |i|
+  means.size.times do |i|
     means[i] = alpha*means[i] + ((1.0-alpha)*mean_parameter(samples, i))
     stdevs[i] = alpha*stdevs[i] + ((1.0-alpha)*stdev_parameter(samples, means[i], i))
   end
 end
 
 def search(search_space, max_iter, num_samples, num_update, learning_rate)
-  means = Array.new(search_space.length){|i| random_variable(search_space[i])}
-  stdevs = Array.new(search_space.length){|i| search_space[i][1]-search_space[i][0]}
+  means = Array.new(search_space.size){|i| random_variable(search_space[i])}
+  stdevs = Array.new(search_space.size){|i| search_space[i][1]-search_space[i][0]}
   best = nil
   max_iter.times do |iter|
     samples = Array.new(num_samples) {generate_sample(search_space, means, stdevs)}

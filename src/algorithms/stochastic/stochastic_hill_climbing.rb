@@ -14,7 +14,7 @@ end
 
 def random_neighbor(bitstring)  
   mutant = Array.new(bitstring)
-  pos = rand(bitstring.length)
+  pos = rand(bitstring.size)
   mutant[pos] = (mutant[pos]=='1') ? '0' : '1'
   return mutant
 end

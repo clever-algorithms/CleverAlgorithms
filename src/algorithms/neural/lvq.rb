@@ -5,14 +5,14 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
 def generate_random_pattern(domain)  
   classes = domain.keys
-  selected_class = rand(classes.length)
+  selected_class = rand(classes.size)
   pattern = {}
   pattern[:class_number] = selected_class
   pattern[:class_label] = classes[selected_class]
@@ -24,7 +24,7 @@ def initialize_vectors(domain, num_vectors)
   classes = domain.keys
   codebook_vectors = []
   num_vectors.times do 
-    selected_class = rand(classes.length)
+    selected_class = rand(classes.size)
     codebook = {}
     codebook[:class_label] = classes[selected_class]
     codebook[:vector] = random_vector([[0,1],[0,1]])

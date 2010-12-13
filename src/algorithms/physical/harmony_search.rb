@@ -13,7 +13,7 @@ def random_variable(min, max)
 end
 
 def random_vector(search_space)
-  return Array.new(search_space.length) {|i| random_variable(search_space[i][0], search_space[i][1]) }
+  return Array.new(search_space.size) {|i| random_variable(search_space[i][0], search_space[i][1]) }
 end
 
 def create_random_harmony(search_space)
@@ -31,8 +31,8 @@ def initialize_harmony_memory(search_space, memory_size)
 end
 
 def create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
-  vector = Array.new(search_space.length)
-  search_space.length.times do |i|
+  vector = Array.new(search_space.size)
+  search_space.size.times do |i|
     if rand() < consideration_rate
       value = memory[rand(memory.size)][:vector][i]
       value = value + range * random_variable(-1.0, 1.0) if rand() < adjust_rate
@@ -55,7 +55,7 @@ def search(search_space, max_iter, memory_size, consideration_rate, adjust_rate,
     best = harmony if harmony[:fitness] < best[:fitness]
     memory << harmony
     memory.sort!{|x,y| x[:fitness]<=>y[:fitness]}
-    memory.delete_at(memory.length-1)
+    memory.delete_at(memory.size-1)
     puts " > iteration=#{iter}, fitness=#{best[:fitness]}"
   end  
   return best

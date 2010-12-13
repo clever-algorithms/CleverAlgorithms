@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
@@ -72,7 +72,7 @@ def train_network(codebook_vectors, shape, iterations, learning_rate, neighborho
 end
 
 def summarize_vectors(vectors)
-  minmax = Array.new(vectors.first[:vector].length){[1,0]}
+  minmax = Array.new(vectors.first[:vector].size){[1,0]}
   vectors.each do |c|
     c[:vector].each_with_index do |v,i|
       minmax[i][0] = v if v<minmax[i][0]

@@ -11,7 +11,7 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -19,8 +19,8 @@ end
 
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = rand(perm.size), rand(perm.size)
+  c2 = rand(perm.size) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
@@ -43,14 +43,14 @@ end
 
 def construct_randomized_greedy_solution(cities, alpha)
   candidate = {}
-  candidate[:vector] = [rand(cities.length)]
-  allCities = Array.new(cities.length) {|i| i}
-  while candidate[:vector].length < cities.length
+  candidate[:vector] = [rand(cities.size)]
+  allCities = Array.new(cities.size) {|i| i}
+  while candidate[:vector].size < cities.size
     candidates = allCities - candidate[:vector]
-    costs = Array.new(candidates.length){|i| euc_2d(cities[candidate[:vector].last], cities[i])}
+    costs = Array.new(candidates.size){|i| euc_2d(cities[candidate[:vector].last], cities[i])}
     rcl, max, min = [], costs.max, costs.min
     costs.each_with_index { |c,i| rcl<<candidates[i] if c <= (min + alpha*(max-min)) }  
-    candidate[:vector] << rcl[rand(rcl.length)]
+    candidate[:vector] << rcl[rand(rcl.size)]
   end
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate

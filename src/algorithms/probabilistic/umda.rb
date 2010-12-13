@@ -8,8 +8,8 @@ def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
 
-def random_bitstring(length)
-  return Array.new(length){ ((rand()<0.5) ? 1 : 0) }
+def random_bitstring(size)
+  return Array.new(size){ ((rand()<0.5) ? 1 : 0) }
 end
 
 def binary_tournament(population)
@@ -22,13 +22,13 @@ def calculate_bit_probabilities(num_bits, pop)
   pop.each do |member|
     member[:bitstring].each_with_index {|v, i| vector[i] += v}
   end
-  vector.each_with_index {|f, i| vector[i] = (f.to_f/pop.length.to_f)}
+  vector.each_with_index {|f, i| vector[i] = (f.to_f/pop.size.to_f)}
   return vector
 end
 
 def generate_candidate(vector)
   candidate = {}
-  candidate[:bitstring] = Array.new(vector.length)
+  candidate[:bitstring] = Array.new(vector.size)
   vector.each_with_index do |p, i|
     candidate[:bitstring][i] = (rand()<p) ? 1 : 0
   end

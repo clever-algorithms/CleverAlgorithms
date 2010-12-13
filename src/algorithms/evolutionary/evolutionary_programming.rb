@@ -42,7 +42,7 @@ end
 def tournament(candidate, population, bout_size)
   candidate[:wins] = 0
   bout_size.times do |i|
-    other = population[rand(population.length)]
+    other = population[rand(population.size)]
     candidate[:wins] += 1 if candidate[:fitness] < other[:fitness]
   end  
 end

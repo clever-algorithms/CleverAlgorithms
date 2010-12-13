@@ -25,13 +25,13 @@ end
 
 def generate_random_program(max, funcs, terms, depth=0)
   if depth==max-1 or (depth>1 and rand()<0.1)
-    t = terms[rand(terms.length)] 
+    t = terms[rand(terms.size)] 
     return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end  
   depth += 1 
   arg1 = generate_random_program(max, funcs, terms, depth)
   arg2 = generate_random_program(max, funcs, terms, depth)
-  return [funcs[rand(funcs.length)], arg1, arg2]
+  return [funcs[rand(funcs.size)], arg1, arg2]
 end
 
 def count_nodes(node)
@@ -91,7 +91,7 @@ end
 
 def prune(node, max_depth, terms, depth=0)
   if depth >= max_depth-1
-    t = terms[rand(terms.length)] 
+    t = terms[rand(terms.size)] 
     return ((t=='R') ? random_num(-5.0, +5.0) : t)
   end
   depth += 1
@@ -128,7 +128,7 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
   max_generations.times do |gen|
     children = []
-    while children.length < population_size
+    while children.size < population_size
       operation = rand()
       parent = tournament_selection(population, num_bouts)
       child = {}      
@@ -142,7 +142,7 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
       elsif operation < p_reproduction+p_crossover+p_mutation
         child[:program] = mutation(parent[:program], max_depth, functions, terminals)      
       end
-      children << child if children.length < population_size      
+      children << child if children.size < population_size      
     end    
     children.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
     population = children

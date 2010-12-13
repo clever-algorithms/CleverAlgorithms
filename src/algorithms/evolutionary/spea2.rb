@@ -32,7 +32,7 @@ def point_mutation(bitstring)
   child = ""
   bitstring.size.times do |i|
     bit = bitstring[i]
-    child << ((rand()<1.0/bitstring.length.to_f) ? ((bit=='1') ? "0" : "1") : bit)
+    child << ((rand()<1.0/bitstring.size.to_f) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
@@ -103,7 +103,7 @@ end
 def calculate_density(p1, pop)
   pop.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
   list = pop.sort{|x,y| x[:dist]<=>y[:dist]}
-  k = Math.sqrt(pop.length).to_i
+  k = Math.sqrt(pop.size).to_i
   return 1.0 / (list[k][:dist] + 2.0)
 end
 
@@ -121,15 +121,15 @@ end
 def environmental_selection(pop, archive, archive_size)
   union = archive + pop
   environment = union.select {|p| p[:fitness]<1.0}
-  if environment.length < archive_size
+  if environment.size < archive_size
     union.sort!{|x,y| x[:fitness]<=>y[:fitness]}
     union.each do |p|
       environment << p if p[:fitness] >= 1.0
-      break if environment.length >= archive_size
+      break if environment.size >= archive_size
     end
-  elsif environment.length > archive_size
+  elsif environment.size > archive_size
     begin
-      k = Math.sqrt(environment.length).to_i
+      k = Math.sqrt(environment.size).to_i
       environment.each do |p1|
         environment.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
         list = environment.sort{|x,y| x[:dist]<=>y[:dist]}
@@ -137,7 +137,7 @@ def environmental_selection(pop, archive, archive_size)
       end
       environment.sort!{|x,y| x[:density]<=>y[:density]}
       environment.shift
-    end until environment.length >= archive_size
+    end until environment.size >= archive_size
   end  
   return environment
 end

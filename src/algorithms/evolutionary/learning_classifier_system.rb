@@ -20,8 +20,8 @@ def copy_classifier(parent)
   return copy
 end
 
-def generate_problem_string(length)
-  return (0...length).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
+def generate_problem_string(size)
+  return (0...size).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
 end
 
 def neg(bit) 
@@ -29,7 +29,7 @@ def neg(bit)
 end
   
 def target_function(s)
-  ints = Array.new(s.length){|i| s[i].chr.to_i}
+  ints = Array.new(s.size){|i| s[i].chr.to_i}
   x0,x1,x2,x3,x4,x5 = ints
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
 end
@@ -68,7 +68,7 @@ end
 def generate_random_classifier(input, actions, gen)
   condition = ""
   input.each_char {|s| condition << ((rand<1.0/3.0) ? '#' : s)}
-  action = actions[rand(actions.length)]
+  action = actions[rand(actions.size)]
   return new_classifier(condition, action, gen)
 end
 
@@ -95,7 +95,7 @@ end
 def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
   match_set = pop.select{|c| does_match(input, c[:condition])}
   actions = get_actions(match_set)
-  while actions.length < all_actions.length do
+  while actions.size < all_actions.size do
     remaining = all_actions - actions
     classifier = generate_random_classifier(input, remaining, gen)
     pop << classifier
@@ -122,7 +122,7 @@ end
 
 def select_action(prediction_array, p_explore)
   keys = prediction_array.keys
-  return true, keys[rand(keys.length)] if rand() < p_explore    
+  return true, keys[rand(keys.size)] if rand() < p_explore    
   keys.sort!{|x,y| prediction_array[y][:weight]<=>prediction_array[x][:weight]}
   return false, keys.first
 end
@@ -141,7 +141,7 @@ end
 
 def update_fitness(action_set, min_error, l_rate)
   sum = 0.0
-  accuracy = Array.new(action_set.length)
+  accuracy = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
     accuracy[i] = (c[:error]<min_error) ? 1.0 : 0.1*(c[:error]/min_error)**-5.0
     sum += accuracy[i] * c[:num]
@@ -171,7 +171,7 @@ def select_parent(pop)
 end
 
 def mutation(classifier, p_mut, action_set, input)
-  classifier[:condition].length.times do |i|
+  classifier[:condition].size.times do |i|
     if rand() < p_mut
       if classifier[:condition][i].chr == '#'
         classifier[:condition][i] = input[i]
@@ -183,7 +183,7 @@ def mutation(classifier, p_mut, action_set, input)
   if rand() < p_mut
     new_action = nil
     begin
-      new_action = action_set[rand(action_set.length)]
+      new_action = action_set[rand(action_set.size)]
     end until new_action != classifier[:action]
     classifier[:action] = new_action
   end
@@ -191,7 +191,7 @@ end
 
 def uniform_crossover(string1, string2)
   rs = ""
-  string1.length.times do |i|
+  string1.size.times do |i|
     rs << ((rand()<0.5) ? string1[i] : string2[i])
   end  
   return rs

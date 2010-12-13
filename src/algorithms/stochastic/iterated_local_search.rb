@@ -11,21 +11,21 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
 end
 
 def random_permutation(cities)
-  all = Array.new(cities.length) {|i| i}
-  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
+  all = Array.new(cities.size) {|i| i}
+  return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
 end
 
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = rand(perm.size), rand(perm.size)
+  c2 = rand(perm.size) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
@@ -47,10 +47,10 @@ def local_search(best, cities, max_no_improvements)
 end
 
 def double_bridge_move(perm)
-  pos1 = 1 + rand(perm.length / 4)
-  pos2 = pos1 + 1 + rand(perm.length / 4)
-  pos3 = pos2 + 1 + rand(perm.length / 4)
-  return perm[0...pos1] + perm[pos3..perm.length] + perm[pos2...pos3] + perm[pos1...pos2]
+  pos1 = 1 + rand(perm.size / 4)
+  pos2 = pos1 + 1 + rand(perm.size / 4)
+  pos3 = pos2 + 1 + rand(perm.size / 4)
+  return perm[0...pos1] + perm[pos3..perm.size] + perm[pos2...pos3] + perm[pos1...pos2]
 end
 
 def perturbation(cities, best)

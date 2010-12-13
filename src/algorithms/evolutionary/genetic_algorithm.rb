@@ -30,7 +30,7 @@ end
 def uniform_crossover(parent1, parent2, p_crossover)
   return ""+parent1 if rand()>=p_crossover
   child = ""
-  parent1.length.times do |i| 
+  parent1.size.times do |i| 
     child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
   end
   return child

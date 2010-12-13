@@ -10,9 +10,9 @@ def binary_tournament(population)
 end
 
 def point_mutation(bitstring)
-  rate = 1.0/bitstring.length.to_f
+  rate = 1.0/bitstring.size.to_f
   child = ""
-  bitstring.length.times do |i|
+  bitstring.size.times do |i|
     bit = bitstring[i]
     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
@@ -21,23 +21,23 @@ end
 
 def one_point_crossover(parent1, parent2, p_crossover, codon_bits)
   return ""+parent1[:bitstring] if rand()>=p_crossover
-  cut = rand([parent1.length, parent2.length].min/codon_bits)
+  cut = rand([parent1.size, parent2.size].min/codon_bits)
   cut *= codon_bits
-  p2length = parent2[:bitstring].length
-  return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2length]
+  p2size = parent2[:bitstring].size
+  return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2size]
 end
 
 def codon_duplication(bitstring, codon_bits)
-  codons = bitstring.length/codon_bits
+  codons = bitstring.size/codon_bits
   return bitstring if rand() >= 1.0/codons.to_f
   return bitstring + bitstring[rand(codons)*codon_bits, codon_bits]
 end
 
 def codon_deletion(bitstring, codon_bits)
-  codons = bitstring.length/codon_bits
+  codons = bitstring.size/codon_bits
   return bitstring if rand() >= 0.5/codons.to_f
   off = rand(codons)*codon_bits
-  return bitstring[0...off] + bitstring[off+codon_bits...bitstring.length]
+  return bitstring[0...off] + bitstring[off+codon_bits...bitstring.size]
 end
 
 def reproduce(selected, population_size, p_crossover, codon_bits)
@@ -60,7 +60,7 @@ end
 
 def decode_integers(bitstring, codon_bits)
   ints = []
-  (bitstring.length/codon_bits).times do |off|
+  (bitstring.size/codon_bits).times do |off|
     codon = bitstring[off*codon_bits, codon_bits]
     sum, i = 0, 0
     codon.each_char {|x| sum+=((x=='1') ? 1 : 0) * (2 ** i);i+=1}
@@ -78,8 +78,8 @@ def map(grammar, integers, max_depth)
       symbolic_string = symbolic_string.gsub(key) do |k| 
         done = false
         set = (k=="EXP" and depth>=max_depth-1) ? grammar["VAR"] : grammar[k]
-        integer = integers[offset].modulo(set.length)
-        offset = (offset==integers.length-1) ? 0 : offset+1
+        integer = integers[offset].modulo(set.size)
+        offset = (offset==integers.size-1) ? 0 : offset+1
         set[integer]
       end
     end
@@ -122,7 +122,7 @@ def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] <= best[:fitness]
     pop = children
-    puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].length/codon_bits}, s=#{best[:bitstring]}"
+    puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].size/codon_bits}, s=#{best[:bitstring]}"
   end  
   return best
 end

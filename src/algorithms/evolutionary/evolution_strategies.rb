@@ -26,7 +26,7 @@ def random_gaussian(mean=0.0, stdev=1.0)
 end
 
 def mutate_problem(vector, stdevs, search_space)
-  child = Array(vector.length)
+  child = Array(vector.size)
   vector.each_with_index do |v, i|
     child[i] = v + stdevs[i] * random_gaussian()
     child[i] = search_space[i][0] if child[i] < search_space[i][0]
@@ -36,9 +36,9 @@ def mutate_problem(vector, stdevs, search_space)
 end
 
 def mutate_strategy(stdevs)
-  tau = Math.sqrt(2.0*stdevs.length.to_f)**-1.0
-  tau_prime = Math.sqrt(2.0*Math.sqrt(stdevs.length.to_f))**-1.0
-  child = Array.new(stdevs.length) do |i|
+  tau = Math.sqrt(2.0*stdevs.size.to_f)**-1.0
+  tau_prime = Math.sqrt(2.0*Math.sqrt(stdevs.size.to_f))**-1.0
+  child = Array.new(stdevs.size) do |i|
     stdevs[i] * Math.exp(tau_prime*random_gaussian() + tau*random_gaussian())
   end
   return child

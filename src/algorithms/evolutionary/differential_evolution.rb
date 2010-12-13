@@ -15,11 +15,11 @@ def random_vector(problem_size, search_space)
 end
 
 def new_sample(p0, p1, p2, p3, f, cr, search_space)
-  length = p0[:vector].length
+  size = p0[:vector].size
   sample = {}
   sample[:vector] = []
-  cut = rand(length-1) + 1
-  length.times do |i|
+  cut = rand(size-1) + 1
+  size.times do |i|
     if (i==cut or rand() < cr)
       v = p3[:vector][i] + f * (p1[:vector][i] - p2[:vector][i])
       v = search_space[i][0] if v < search_space[i][0]
@@ -40,9 +40,9 @@ def search(max_generations, np, search_space, g, f, cr)
     samples = []
     pop.each_with_index do |p0, i|
       p1 = p2 = p3 = -1
-      p1 = rand(pop.length) until p1!=i
-      p2 = rand(pop.length) until p2!=i and p2!=p1
-      p3 = rand(pop.length) until p3!=i and p3!=p1 and p3!=p2
+      p1 = rand(pop.size) until p1!=i
+      p2 = rand(pop.size) until p2!=i and p2!=p1
+      p3 = rand(pop.size) until p3!=i and p3!=p1 and p3!=p2
       samples << new_sample(p0, pop[p1], pop[p2], pop[p3], f, cr, search_space)
     end
     samples.each{|c| c[:cost] = objective_function(c[:vector])}

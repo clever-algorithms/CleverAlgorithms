@@ -11,21 +11,21 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
 end
 
 def random_permutation(cities)
-  all = Array.new(cities.length) {|i| i}
-  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
+  all = Array.new(cities.size) {|i| i}
+  return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
 end
 
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = rand(perm.size), rand(perm.size)
+  c2 = rand(perm.size) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
@@ -79,7 +79,7 @@ end
 def to_edge_list(permutation)
   list = []
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c1 > c2
     list << [c1, c2]
   end
@@ -134,30 +134,30 @@ def search(cities, max_no_improvements, max_candidates, max_iterations, increase
   current = generate_initial_solution(cities, max_no_improvements)
   best = current
   tabu_list, prohibition_period = [], 1
-  visited_list, avg_length, last_change = [], 1, 0
+  visited_list, avg_size, last_change = [], 1, 0
   max_iterations.times do |iter|
     candidate_entry = get_candidate_entry(visited_list, current[:vector])
     if !candidate_entry.nil?
       repetition_interval = iter - candidate_entry[:iteration]
       candidate_entry[:iteration] = iter
       candidate_entry[:visits] += 1
-      if repetition_interval < 2*(cities.length-1)
-        avg_length = 0.1*(iter-candidate_entry[:iteration]) + 0.9*avg_length
+      if repetition_interval < 2*(cities.size-1)
+        avg_size = 0.1*(iter-candidate_entry[:iteration]) + 0.9*avg_size
         prohibition_period = (prohibition_period.to_f * increase)
         last_change = iter
       end
     else
       store_permutation(visited_list, current[:vector], iter)
     end
-    if iter-last_change > avg_length
+    if iter-last_change > avg_size
       prohibition_period = [prohibition_period*decrease,1].max
       last_change = iter
     end
     candidates = Array.new(max_candidates) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
     tabu, admissible = sort_neighbourhood(candidates, tabu_list, prohibition_period, iter)
-    if admissible.length < 2
-      prohibition_period = cities.length-2
+    if admissible.size < 2
+      prohibition_period = cities.size-2
       last_change = iter
     end
     current, best_move_edges = (admissible.empty?) ? tabu.first : admissible.first

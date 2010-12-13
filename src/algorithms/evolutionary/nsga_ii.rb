@@ -32,7 +32,7 @@ def point_mutation(bitstring)
   child = ""
   bitstring.size.times do |i|
     bit = bitstring[i]
-    child << ((rand()<1.0/bitstring.length.to_f) ? ((bit=='1') ? "0" : "1") : bit)
+    child << ((rand()<1.0/bitstring.size.to_f) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
@@ -108,20 +108,20 @@ def fast_nondominated_sort(pop)
     end
     curr += 1
     fronts << next_front if !next_front.empty?
-  end while curr < fronts.length
+  end while curr < fronts.size
   return fronts
 end
 
 def calculate_crowding_distance(pop)
   pop.each {|p| p[:distance] = 0.0}
-  num_obs = pop.first[:objectives].length
+  num_obs = pop.first[:objectives].size
   num_obs.times do |i|
     pop.sort!{|x,y| x[:objectives][i]<=>y[:objectives][i]}
     min, max = pop.first[:objectives][i], pop.last[:objectives][i]
     range, inf = max-min, 1.0/0.0
     pop.first[:distance], pop.last[:distance] = inf, inf
     next if range == 0
-    (1...(pop.length-2)).each do |j|
+    (1...(pop.size-2)).each do |j|
       pop[j][:distance] += (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
     end  
   end
@@ -144,11 +144,11 @@ def select_parents(fronts, pop_size)
   offspring = []
   last_front = 0
   fronts.each do |front|
-    break if (offspring.length+front.length) > pop_size
+    break if (offspring.size+front.size) > pop_size
     front.each {|p| offspring << p}
     last_front += 1
   end  
-  if (remaining = pop_size-offspring.length) > 0
+  if (remaining = pop_size-offspring.size) > 0
     fronts[last_front].sort! {|x,y| crowded_comparison_operator(x,y)}
     offspring += fronts[last_front][0...remaining]
   end
@@ -178,7 +178,7 @@ def search(problem_size, search_space, max_gens, pop_size, p_crossover)
     calculate_objectives(children, search_space)
     best = children.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
     best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
-    puts " > gen=#{gen+1}, fronts=#{fronts.length}, best=#{best_s}"
+    puts " > gen=#{gen+1}, fronts=#{fronts.size}, best=#{best_s}"
   end  
   return children
 end

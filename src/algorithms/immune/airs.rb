@@ -5,13 +5,13 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
 def generate_random_pattern(domain)  
-  class_label = domain.keys[rand(domain.keys.length)]
+  class_label = domain.keys[rand(domain.keys.size)]
   pattern = {:class_label=>class_label}
   pattern[:vector] = random_vector(domain[class_label])
   return pattern
@@ -77,7 +77,7 @@ def competition_for_resournces(pool, clone_rate, max_resources)
   pool.sort!{|x,y| x[:resources] <=> y[:resources]}
   total_resources = pool.inject(0.0){|sum,cell| sum + cell[:resources]}
   while total_resources > max_resources
-    cell = pool.delete_at(pool.length-1)
+    cell = pool.delete_at(pool.size-1)
     total_resources -= cell[:resources]
   end
 end

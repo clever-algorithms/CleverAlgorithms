@@ -10,7 +10,7 @@ end
 
 def generate_candidate(vector)
   candidate = {}
-  candidate[:bitstring] = Array.new(vector.length)
+  candidate[:bitstring] = Array.new(vector.size)
   vector.each_with_index do |p, i|
     candidate[:bitstring][i] = (rand()<p) ? 1 : 0
   end

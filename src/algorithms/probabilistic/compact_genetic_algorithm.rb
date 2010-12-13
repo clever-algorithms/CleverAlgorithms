@@ -10,7 +10,7 @@ end
 
 def generate_candidate(vector)
   candidate = {}
-  candidate[:bitstring] = Array.new(vector.length)
+  candidate[:bitstring] = Array.new(vector.size)
   vector.each_with_index do |p, i|
     candidate[:bitstring][i] = (rand()<p) ? 1 : 0
   end
@@ -19,7 +19,7 @@ def generate_candidate(vector)
 end
 
 def update_vector(vector, winner, loser, population_size)
-  vector.length.times do |i|  
+  vector.size.times do |i|  
     if winner[:bitstring][i] != loser[:bitstring][i]
       if winner[:bitstring][i] == 1
         vector[i] = vector[i] + 1.0/population_size.to_f

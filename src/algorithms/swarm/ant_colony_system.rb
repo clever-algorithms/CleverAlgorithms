@@ -11,7 +11,7 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -22,8 +22,8 @@ def initialise_pheromone_matrix(num_cities, init_pher)
 end
 
 def random_permutation(cities)
-  all = Array.new(cities.length) {|i| i}
-  return Array.new(all.length) {|i| all.delete_at(rand(all.length))}
+  all = Array.new(cities.size) {|i| i}
+  return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
 end
 
 def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
@@ -42,10 +42,10 @@ end
 
 def prob_select_next_city(choices)
   sum = choices.inject(0.0){|sum,element| sum + element[:prob]}
-  return choices[rand(choices.length)][:city] if sum == 0.0
+  return choices[rand(choices.size)][:city] if sum == 0.0
   v, next_city = rand(), -1
   choices.each_with_index do |choice, i|
-    if i==choices.length-1
+    if i==choices.size-1
       next_city = choice[:city] 
     else
       v -= (choice[:prob]/sum)
@@ -65,19 +65,19 @@ end
 
 def stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
   perm = []
-  perm << rand(cities.length)
+  perm << rand(cities.size)
   begin
     choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, 1.0)
     greedy = rand() <= c_greediness
     next_city = (greedy) ? greedy_select_next_city(choices) : prob_select_next_city(choices)
     perm << next_city
-  end until perm.length == cities.length
+  end until perm.size == cities.size
   return perm
 end
 
 def global_update_pheromone(pheromone, candidate, decay_factor)
   candidate[:vector].each_with_index do |x, i|
-    y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
+    y = (i==candidate[:vector].size-1) ? candidate[:vector][0] : candidate[:vector][i+1]
     value = ((1.0-decay_factor)*pheromone[x][y]) + (decay_factor*(1.0/candidate[:cost]))
     pheromone[x][y] = value
     pheromone[y][x] = value
@@ -86,7 +86,7 @@ end
 
 def local_update_pheromone(pheromone, candidate, c_local_pheromone, init_pheromone)
   candidate[:vector].each_with_index do |x, i|
-    y = (i==candidate[:vector].length-1) ? candidate[:vector][0] : candidate[:vector][i+1]
+    y = (i==candidate[:vector].size-1) ? candidate[:vector][0] : candidate[:vector][i+1]
     value = ((1.0-c_local_pheromone)*pheromone[x][y]) + (c_local_pheromone * init_pheromone)
     pheromone[x][y] = value
     pheromone[y][x] = value
@@ -96,8 +96,8 @@ end
 def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_local_pheromone, c_greediness)
   best = {:vector=>random_permutation(cities)}
   best[:cost] = cost(best[:vector], cities)
-  init_pheromone = 1.0 / (cities.length.to_f * best[:cost])
-  pheromone = initialise_pheromone_matrix(cities.length, init_pheromone)
+  init_pheromone = 1.0 / (cities.size.to_f * best[:cost])
+  pheromone = initialise_pheromone_matrix(cities.size, init_pheromone)
   max_iterations.times do |iter|
     solutions = []
     num_ants.times do

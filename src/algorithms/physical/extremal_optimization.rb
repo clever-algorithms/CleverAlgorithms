@@ -11,7 +11,7 @@ end
 def cost(permutation, cities)
   distance =0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -30,8 +30,8 @@ def calculate_neighbour_rank(city_number, cities, ignore=[])
 end
 
 def nearest_neighbor_solution(cities)
-  perm = [rand(cities.length)]
-  while perm.length < cities.length
+  perm = [rand(cities.size)]
+  while perm.size < cities.size
     neighbors = calculate_neighbour_rank(perm.last, cities, perm)
     perm << neighbors.first[:number]
   end  
@@ -43,7 +43,7 @@ def get_edges_for_city(city_number, permutation)
   permutation.each_with_index do |c, i|
     if c == city_number
       c1 = (i==0) ? permutation.last : permutation[i-1]
-      c2 = (i==permutation.length-1) ? permutation.first : permutation[i+1]
+      c2 = (i==permutation.size-1) ? permutation.first : permutation[i+1]
       break
     end
   end
@@ -84,7 +84,7 @@ def probabilistic_selection(ordered_components, tau)
   selection = rand()
   ordered_components.each_with_index do |component, i|
     selection -= (component[:prob]/sum)
-    if selection<=0.0 or i==ordered_components.length-1
+    if selection<=0.0 or i==ordered_components.size-1
       selected_city = component[:number]
       break
     end

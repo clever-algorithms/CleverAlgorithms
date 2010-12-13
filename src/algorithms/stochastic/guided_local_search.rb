@@ -9,9 +9,9 @@ def euc_2d(c1, c2)
 end
 
 def random_permutation(cities)
-  perm = Array.new(cities.length){|i|i}
-  for i in 0...perm.length
-    r = rand(perm.length-i) + i
+  perm = Array.new(cities.size){|i|i}
+  for i in 0...perm.size
+    r = rand(perm.size-i) + i
     perm[r], perm[i] = perm[i], perm[r]
   end
   return perm
@@ -19,8 +19,8 @@ end
 
 def two_opt(permutation)
   perm = Array.new(permutation)
-  c1, c2 = rand(perm.length), rand(perm.length)
-  c2 = rand(perm.length) while c1 == c2
+  c1, c2 = rand(perm.size), rand(perm.size)
+  c2 = rand(perm.size) while c1 == c2
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
@@ -29,7 +29,7 @@ end
 def augmented_cost(permutation, penalties, cities, lambda)
   distance, augmented = 0, 0
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
     d = euc_2d(cities[c1], cities[c2])
     distance += d
@@ -55,9 +55,9 @@ def local_search(current, cities, penalties, max_no_improvements, lambda)
 end
 
 def calculate_feature_utilities(penalties, cities, permutation)
-  utilities = Array.new(permutation.length,0)
+  utilities = Array.new(permutation.size,0)
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
     utilities[i] = euc_2d(cities[c1], cities[c2]) / (1.0 + penalties[c1][c2])
   end
@@ -67,7 +67,7 @@ end
 def update_penalties!(penalties, cities, permutation, utilities)
   max = utilities.max()
   permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.length-1) ? permutation[0] : permutation[i+1]
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
     penalties[c1][c2] += 1 if utilities[i] == max
   end
@@ -77,7 +77,7 @@ end
 def search(max_iterations, cities, max_no_improvements, lambda)
   best, current = nil, {}  
   current[:vector] = random_permutation(cities)
-  penalties = Array.new(cities.length){Array.new(cities.length,0)}
+  penalties = Array.new(cities.size){Array.new(cities.size,0)}
   max_iterations.times do |iter|
     current = local_search(current, cities, penalties, max_no_improvements, lambda)
     utilities = calculate_feature_utilities(penalties, cities, current[:vector])
@@ -105,7 +105,7 @@ if __FILE__ == $0
   max_no_improvements = 15
   alpha = 0.3
   local_search_optima = 15000.0
-  lambda = alpha * (local_search_optima/berlin52.length.to_f)
+  lambda = alpha * (local_search_optima/berlin52.size.to_f)
   # execute the algorithm
   best = search(max_iterations, berlin52, max_no_improvements, lambda)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"

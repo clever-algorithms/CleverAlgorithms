@@ -10,8 +10,8 @@ def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
 
-def random_bitstring(length)
-  return Array.new(length){ ((rand()<0.5) ? 1 : 0) }
+def random_bitstring(size)
+  return Array.new(size){ ((rand()<0.5) ? 1 : 0) }
 end
 
 def calculate_bit_probabilities(num_bits, pop)
@@ -19,7 +19,7 @@ def calculate_bit_probabilities(num_bits, pop)
   pop.each do |member|
     member[:bitstring].each_with_index {|v, i| vector[i] += v}
   end
-  vector.each_with_index {|f,i| vector[i] = (f.to_f/pop.length.to_f)}
+  vector.each_with_index {|f,i| vector[i] = (f.to_f/pop.size.to_f)}
   return vector
 end
 
@@ -28,7 +28,7 @@ def count_edges(network)
 end
 
 def copy_network(network)
-  return Array.new(network.length){|i| {:edges=>Array.new(network[i][:edges])}}
+  return Array.new(network.size){|i| {:edges=>Array.new(network[i][:edges])}}
 end
 
 def add_network_edge!(network)
@@ -103,7 +103,7 @@ def conditional_entropy(index, parents, probs)
 end
 
 def bayesian_information_criterion(network, samples, probs)
-  n = samples.length.to_f
+  n = samples.size.to_f
   sum = 0.0
   network.each_with_index do |node, index|
     parents = []
@@ -160,7 +160,7 @@ end
 
 def sample_from_network(network, prob)
   vector = []
-  prob.length.times do |index|
+  prob.size.times do |index|
     parents = []
     network.each_with_index {|other,i| parents << i if other[:edges].include?(index) }
     s = parents.inject(0.0){|s,i| s+conditional_probability(index, i, probs)}

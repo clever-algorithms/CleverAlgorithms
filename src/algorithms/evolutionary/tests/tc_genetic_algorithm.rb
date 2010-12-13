@@ -17,15 +17,15 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       
       # test the creation of random strings
       def test_random_bitstring
-        assert_equal(10, random_bitstring(10).length)
-        assert_equal(0, random_bitstring(10).delete('0').delete('1').length)
+        assert_equal(10, random_bitstring(10).size)
+        assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
       end
       
       # test the approximate proportion of 1's and 0's
       def test_random_bitstring_ratio
         s = random_bitstring(1000)
-        assert_in_delta(0.5, (s.delete('1').length/1000.0), 0.05)
-        assert_in_delta(0.5, (s.delete('0').length/1000.0), 0.05)
+        assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+        assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
       end
       
       # test that members of the population are selected
@@ -47,7 +47,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
         changes = 0
         100.times do
           s = point_mutation("0000000000", 0.5)
-          changes += (10 - s.delete('1').length)
+          changes += (10 - s.delete('1').size)
         end
         assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
       end
@@ -59,13 +59,13 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
         assert_equal(p1, uniform_crossover(p1,p2,0))
         assert_not_same(p1, uniform_crossover(p1,p2,0))      
         s = uniform_crossover(p1,p2,1)        
-        s.length.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+        s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
       end
       
       # test reproduce cloning case
       def test_reproduce_clone
         pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
-        children = reproduce(pop, pop.length, 0, 0)
+        children = reproduce(pop, pop.size, 0, 0)
         children.each_with_index do |c,i| 
           assert_equal(pop[i][:bitstring], c[:bitstring])
           assert_not_same(pop[i][:bitstring], c[:bitstring])  
@@ -75,7 +75,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       # test reproduce mutate case
       def test_reproduce_clone
         pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
-        children = reproduce(pop, pop.length, 0, 1)
+        children = reproduce(pop, pop.size, 0, 1)
         children.each_with_index do |c,i| 
           assert_not_equal(pop[i][:bitstring], c[:bitstring])
           assert_equal("1111111111", c[:bitstring])
@@ -87,6 +87,6 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       def test_reproduce_mismatch
         pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
         children = reproduce(pop, 9, 0, 0)
-        assert_equal(9, children.length)
+        assert_equal(9, children.size)
       end
 end

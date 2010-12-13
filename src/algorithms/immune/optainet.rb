@@ -26,7 +26,7 @@ def random_gaussian(mean=0.0, stdev=1.0)
 end
 
 def clone(parent)
-  v = Array.new(parent[:vector].length) {|i| parent[:vector][i]}
+  v = Array.new(parent[:vector].size) {|i| parent[:vector][i]}
   return {:vector=>v}
 end
 
@@ -51,7 +51,7 @@ def average_cost(population)
   population.each do |p| 
     sum += p[:cost]
   end
-  return sum / population.length.to_f
+  return sum / population.size.to_f
 end
 
 def euclidean_distance(c1, c2)

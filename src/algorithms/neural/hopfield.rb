@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
@@ -27,7 +27,7 @@ def transfer(activation)
 end
 
 def propagate_was_change?(neurons, vector)
-  i = rand(neurons.length)
+  i = rand(neurons.size)
   activation = 0
   neurons.each_with_index do |other, j|
     activation += other[:weight][i]*other[:output] if i!=j
@@ -42,12 +42,12 @@ def get_output(neurons, pattern)
   vector = pattern.flatten
   neurons.each_with_index {|neuron,i| neuron[:output] = vector[i]}
   change = propagate(neurons, vector) while change
-  return Array.new(neurons.length){|i| neurons[i][:output]}
+  return Array.new(neurons.size){|i| neurons[i][:output]}
 end
 
 def train_network(neurons, patters)
   neurons.each_with_index do |neuron, i|   
-    for j in ((i+1)...neurons.length) do
+    for j in ((i+1)...neurons.size) do
       next if i==j
       wij = 0
       patters.each do |pattern|
@@ -61,7 +61,7 @@ def train_network(neurons, patters)
 end
 
 def to_binary(vector)
-  return Array.new(vector.length){|i| ((vector[i]==-1) ? 0 : 1)}
+  return Array.new(vector.size){|i| ((vector[i]==-1) ? 0 : 1)}
 end
 
 def print_patterns(provided, expected, actual)
@@ -84,9 +84,9 @@ def calculate_error(expected, actual)
 end
 
 def perturb_pattern(vector)
-  perturbed = Array.new(vector.length)
+  perturbed = Array.new(vector.size)
   vector.each_with_index do |v,i|
-    if rand() < (1.0/vector.length.to_f)*0.5
+    if rand() < (1.0/vector.size.to_f)*0.5
       perturbed[i] = ((vector[i]==1) ? -1 : 1)
     else
       perturbed[i] = vector[i]
@@ -104,7 +104,7 @@ def test_network(neurons, patters)
     error += calculate_error(vector, output)
     print_patterns(perturbed, vector, output)
   end
-  error /= patters.length.to_f
+  error /= patters.size.to_f
   puts "Final Result: avg pattern error=#{error}"
 end
 

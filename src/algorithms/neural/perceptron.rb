@@ -5,22 +5,22 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
 def normalize_class_index(class_no, domain)
-  return (class_no.to_f/(domain.length-1).to_f)
+  return (class_no.to_f/(domain.size-1).to_f)
 end
 
 def denormalize_class_index(normalized_class, domain)
-  return (normalized_class*(domain.length-1).to_f).round.to_i
+  return (normalized_class*(domain.size-1).to_f).round.to_i
 end
 
 def generate_random_pattern(domain)  
   classes = domain.keys
-  selected_class = rand(classes.length)
+  selected_class = rand(classes.size)
   pattern = {}
   pattern[:class_number] = selected_class
   pattern[:class_label] = classes[selected_class]
@@ -46,7 +46,7 @@ def calculate_activation(weights, vector)
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
-  sum += weights[vector.length] * 1.0
+  sum += weights[vector.size] * 1.0
   return sum
 end
 

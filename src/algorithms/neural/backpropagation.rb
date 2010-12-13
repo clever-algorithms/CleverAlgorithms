@@ -5,22 +5,22 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def random_vector(minmax)
-  return Array.new(minmax.length) do |i|      
+  return Array.new(minmax.size) do |i|      
     minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
 def normalize_class_index(class_no, domain)
-  return (class_no.to_f/(domain.length-1).to_f)
+  return (class_no.to_f/(domain.size-1).to_f)
 end
 
 def denormalize_class_index(normalized_class, domain)
-  return (normalized_class*(domain.length-1).to_f).round.to_i
+  return (normalized_class*(domain.size-1).to_f).round.to_i
 end
 
 def generate_random_pattern(domain)  
   classes = domain.keys
-  selected_class = rand(classes.length)
+  selected_class = rand(classes.size)
   pattern = {}
   pattern[:class_number] = selected_class
   pattern[:class_label] = classes[selected_class]
@@ -39,7 +39,7 @@ def activate(weights, vector)
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
-  sum += weights[vector.length] * 1.0
+  sum += weights[vector.size] * 1.0
   return sum
 end
 
@@ -86,11 +86,11 @@ def calculate_error_derivatives_for_weights(network, pattern)
   network.each_with_index do |layer, i|
     input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
-      derivatives = Array.new(neuron[:weights].length)
+      derivatives = Array.new(neuron[:weights].size)
       input.each_with_index do |signal, j|
         derivatives[j] = neuron[:error_delta] * signal
       end
-      derivatives[derivatives.length-1] = neuron[:error_delta] * 1.0
+      derivatives[derivatives.size-1] = neuron[:error_delta] * 1.0
       neuron[:error_derivative] = derivatives
     end
   end
