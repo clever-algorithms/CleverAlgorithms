@@ -105,8 +105,8 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudocode listing of the Cr
 		}
 		\SelectedSamples $\leftarrow $\SelectBestSamples{\Samples, \NumUpdateSamples}\;
 		\For{$i=0$ \KwTo \ProblemSize} {
-			\Meani $\leftarrow$ \Meani + \LearningRate $\times$ \Mean{\SelectedSamples, $i$}\;
-			\Variancei $\leftarrow$ \Variancei + \LearningRate $\times$ \Variance{\SelectedSamples, $i$}\;
+			\Meani $\leftarrow$ \Meani $+$ \LearningRate $\times$ \Mean{\SelectedSamples, $i$}\;
+			\Variancei $\leftarrow$ \Variancei $+$ \LearningRate $\times$ \Variance{\SelectedSamples, $i$}\;
 		}
 	}
 	\Return{\Best}\;

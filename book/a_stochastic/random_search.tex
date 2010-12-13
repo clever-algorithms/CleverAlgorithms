@@ -58,7 +58,7 @@ Algorithm~\ref{alg:random_search} provides a pseudocode listing of the Random Se
   	% Algorithm
 	\Best $\leftarrow 0$\;
 	\ForEach{$iter_i \in$ \NumIterations} {
-		$candidate_i$ = \RandomSolution{\ProblemSize, \SearchSpace}\;
+		$candidate_i$ $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
 		\If{\Cost{$candidate_i$} $<$ \Cost{\Best}} {
 			\Best $\leftarrow$ $candidate_i$\;
 		}

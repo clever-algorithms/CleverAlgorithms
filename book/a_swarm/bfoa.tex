@@ -122,7 +122,7 @@ The remaining parameters of the algorithm are as follows $Cells_{num}$ is the nu
 			\For{$j=0$ \KwTo \ChemotaxisSteps}{
 				% perform chemotaxis
 				\ForEach{\Cell $\in$ \Population} {
-					\CellFitness $\leftarrow$ \Cost{\Cell} + \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
+					\CellFitness $\leftarrow$ \Cost{\Cell} $+$ \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
 					\CellHealth $\leftarrow$ \CellFitness\;
 					\CellNewPosition $\leftarrow$ $0$\;
 					% swim
