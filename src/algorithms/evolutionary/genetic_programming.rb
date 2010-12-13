@@ -52,7 +52,7 @@ def fitness(program, num_trials)
     error = eval_program(program, {'X'=>input}) - target_function(input)
     sum_error += error**2.0
   end
-  return Math::sqrt(sum_error/num_trials.to_f)
+  return Math.sqrt(sum_error/num_trials.to_f)
 end
 
 def tournament_selection(population, num_bouts)
