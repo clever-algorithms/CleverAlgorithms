@@ -11,6 +11,8 @@
 \include{f_title_page}
 \makeindex
 
+% \includeonly{c_advanced}
+
 \begin{document}
 \defaultbibliography{../workspace/bibtex}
 \frontmatter
@@ -35,13 +37,15 @@
 	\include{c_neural}
 	\part{Extensions}
 	\include{c_advanced}
-	\appendix
+
   \part{Appendices}
+	\appendix
 	\include{b_appendix1}
 	% to get index and bib in the toc correctly
 	% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=tocbibind
 	% index
-\backmatter
+	
+	\backmatter
 	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{part}{Index}
 	\printindex
