@@ -5,14 +5,9 @@
 % Clever Algorithms Book
 
 \documentclass[a4paper, 11pt]{book}
-
-% preamble
 \include{definitions}
 \include{f_title_page}
 \makeindex
-
-% \includeonly{c_advanced}
-
 \begin{document}
 \defaultbibliography{../workspace/bibtex}
 \frontmatter
@@ -26,21 +21,21 @@
 	\include{f_preface}
 \mainmatter 
 	\part{Background}
-	\include{c_introduction}		
+		\include{c_introduction}		
 	\part{Algorithms}
-	\include{c_stochastic}
-	\include{c_evolution}
-	\include{c_physical}
-	\include{c_probabilistic}
-	\include{c_swarm}
-	\include{c_immune}
-	\include{c_neural}
+		\include{c_stochastic}
+		\include{c_evolution}
+		\include{c_physical}
+		\include{c_probabilistic}
+		\include{c_swarm}
+		\include{c_immune}
+		\include{c_neural}
 	\part{Extensions}
-	\include{c_advanced}
-  \part{Appendices}
-	\appendix
-	\include{b_appendix1}	
-	\backmatter
+		\include{c_advanced}
+	  \part{Appendices}
+		\appendix
+		\include{b_appendix1}	
+\backmatter
 	\cleardoublepage\phantomsection 
 	\addcontentsline{toc}{part}{Index}
 	\printindex
