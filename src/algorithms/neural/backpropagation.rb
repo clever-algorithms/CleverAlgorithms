@@ -88,12 +88,11 @@ def calculate_error_derivatives_for_weights(network, pattern)
   network.each_with_index do |layer, i|
     input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
-      derivatives = Array.new(neuron[:weights].size)
+      neuron[:error_derivative] = Array.new(neuron[:weights].size)
       input.each_with_index do |signal, j|
-        derivatives[j] = neuron[:error_delta] * signal
+        neuron[:error_derivative][j] = neuron[:error_delta] * signal
       end
-      derivatives[derivatives.size-1] = neuron[:error_delta] * 1.0
-      neuron[:error_derivative] = derivatives
+      neuron[:error_derivative][-1] = neuron[:error_delta] * 1.0
     end
   end
 end

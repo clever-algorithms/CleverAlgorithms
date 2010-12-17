@@ -95,6 +95,12 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test the calculation of error derivatives
   def test_calculate_error_derivatives_for_weights
+    pattern = {:vector=>[0.1,0.1]}
+    n1 = {:weights=>[0.2,0.2,0.2], :error_delta=>0.5}
+    n2 = {:weights=>[0.3,0.3,0.3], :error_delta=>-0.6}
+    n3 = {:weights=>[0.4,0.4,0.4], :error_delta=>0.7}
+    network = [[n1,n2],[n3]]    
+    calculate_error_derivatives_for_weights(network, pattern)
     
   end
   
