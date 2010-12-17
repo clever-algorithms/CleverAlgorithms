@@ -67,7 +67,37 @@ Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing a netwo
 
 where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. A logistic transfer function (sigmoid) is used to calculate the output for a neuron $\in [0,1]$ and provide nonlinearities between in the input and output signals: $\frac{1}{1+exp(-a)}$, where $a$ represents the neuron activation. 
 
-The weight updates use the delta rule, specifically a changed delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. Error derivatives are assigned to each neuron weight and the weights are updated to reduce the error, metered by a learning coefficient. The equations for the back propagation of error are not included for brevity.
+The weight updates use the delta rule, specifically a changed delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. The following describes the back-propagation of error and weight updates for a single pattern.
+
+An error signal is calculated for each node and propagated back through the network. For the output nodes this is the sum of the error between the node outputs and the expected outputs: 
+
+\begin{equation}
+	es_i = (c_i - o_i) \times td_i
+\end{equation}
+
+where $es_i$ is the error signal for the $i^{th}$ node, $c_i$ is the expected output and $o_i$ is the actual output for the $i^{th}$ node. The $td$ term is the derivative of the output of the $i^{th}$ node. If the sigmod transfer function is used, $td_i$ would be $o_i \times (1-o_i)$ For the hidden nodes, the error signal is the sum of the weighted error signals from the next layer.
+
+\begin{equation}
+	es_i = \bigg(\sum_{k=1}^n (w_{ik} \times es_k)\bigg) \times td_i
+\end{equation}
+
+where $es_i$ is the error signal for the $i^{th}$ node, $w_{ik}$ is the weight between the $i^{th}$ and the $k^{th}$ nodes, and $es_k$ is the error signal of the $k_th$ node.
+
+The error derivatives for each weight are calculated by combining the input to each node and the error signal for the node.
+
+\begin{equation}
+	ed_i = \sum_{k=1}^n es_i \times x_k
+\end{equation}
+
+where $ed_i$ is the error derivative for the $i^{th}$ node, $es_i$ is the error signal for the $i^{th}$ node and $x_k$ is the input from the $k^{th}$ node in the previous layer. This process include the bias input that has a constant value.
+
+Weights are updated in a direction that reduces the error derivative $ed_i$ (error assigned to the weight), metered by a learning coefficient.
+
+\begin{equation}
+	w_i(t+1) = w_i(t) + (ed_k \times learn_{rate})
+\end{equation}
+
+where $w_i(t+1)$ is the updated $i^{th}$ weight, $ed_k$ is the error derivative for the $k^{th}$ node and $learn_{rate}$ is an update coefficient parameter.
 
 \begin{algorithm}[ht]
 	\SetLine

@@ -65,19 +65,21 @@ def forward_propagate(network, pattern, domain)
 end
 
 def backward_propagate_error(network, pattern)
-  network = network.reverse
-  network.each_with_index do |layer, i|
-    back_signal = pattern[:class_norm]
-    layer.each_with_index do |neuron, k|
-      if i > 0        
-        prev_layer, back_signal = network[i-1], 0.0
-        prev_layer.each_with_index do |prev_neuron, j|
-          # only sum errors weighted by connection to k'th neuron
-          back_signal += (prev_neuron[:weights][k] * prev_neuron[:error_delta])
-        end
-      end
-      error = (back_signal - neuron[:output])
+  network.size.times do |n|
+    index = network.size - 1 - n
+    if index == network.size-1
+      neuron = network[index][0] # assume one node in output layer
+      error = (pattern[:class_norm] - neuron[:output])
       neuron[:error_delta] = error * transfer_derivative(neuron[:output])
+    else
+      network[index].each_with_index do |neuron, k|
+        sum = 0.0
+        network[index+1].each do |next_neuron|
+          # only sum errors weighted by connection to the current k'th neuron
+          sum += (next_neuron[:weights][k] * next_neuron[:error_delta])
+        end
+        neuron[:error_delta] = sum * transfer_derivative(neuron[:output])
+      end            
     end
   end
 end
