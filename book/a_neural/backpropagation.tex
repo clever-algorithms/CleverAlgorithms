@@ -165,12 +165,12 @@ where $w_i(t+1)$ is the updated $i^{th}$ weight, $ed_k$ is the error derivative 
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{backpropagation} provides an example of the Back-propagation algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: `A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and `B' ($x\in[0.5,1], y\in[0.5,1]$).
+The problem is the classical XOR boolean problem, where the inputs of the boolean truth table are provided as inputs and the result of the boolean XOR operation are expected as output. This is a classical problem for Back-Propagation because it was the problem instance referenced by Minsky and Papert in their analysis of the Perceptron highlighting the limitations of their simplified models of neural networks \cite{Minsky1969}.
 
 % algorithm
 The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A logistic (sigmoid) transfer function is used to convert the activation into an output signal. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. 
 
-A three layer network is demonstrated with 2 nodes in the input layer, 2 nodes in the hidden layer and 1 node in the output layer, which is more than sufficient for the problem. A bias weight is used on each neuron for stability with a constant input of 1.0. The learning process is separated into four steps: forward propagation, backward propagation of error, calculation of error derivatives (assigning blame to the weights) and the weight update. This separation facilities easy extensions such as adding a momentum term and/or weight decay to the update process.
+A three layer network is demonstrated with 2 nodes in the input layer (two inputs), 2 nodes in the hidden layer and 1 node in the output layer, which is sufficient for the chosen problem. A bias weight is used on each neuron for stability with a constant input of 1.0. The learning process is separated into four steps: forward propagation, backward propagation of error, calculation of error derivatives (assigning blame to the weights) and the weight update. This separation facilities easy extensions such as adding a momentum term and/or weight decay to the update process.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Back-propagation algorithm in the Ruby Programming Language, label=backpropagation]{../src/algorithms/neural/backpropagation.rb}
