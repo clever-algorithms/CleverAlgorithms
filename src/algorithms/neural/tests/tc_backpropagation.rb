@@ -26,47 +26,6 @@ class TC_BackPropagation < Test::Unit::TestCase
     end    
   end
   
-  # test that a class can be turned into a regression problem in [0,1]
-  def test_normalize_class_index
-    assert_equal(0.0, normalize_class_index(0, Array.new(2)))
-    assert_equal(1.0, normalize_class_index(1, Array.new(2)))
-    
-    assert_equal(0.0, normalize_class_index(0, Array.new(3)))    
-    assert_equal(0.5, normalize_class_index(1, Array.new(3)))
-    assert_equal(1.0, normalize_class_index(2, Array.new(3)))
-  end
-  
-  # test that a value in [0,1] can be turned into a class index
-  def test_denormalize_class_index
-    assert_equal(0, denormalize_class_index(0.0, Array.new(2)))
-    assert_equal(1, denormalize_class_index(1.0, Array.new(2)))
-    assert_equal(0, denormalize_class_index(0.25, Array.new(2)))
-    assert_equal(1, denormalize_class_index(0.75, Array.new(2)))
-    
-    assert_equal(0, denormalize_class_index(0.0, Array.new(3)))
-    assert_equal(1, denormalize_class_index(0.5, Array.new(3)))
-    assert_equal(2, denormalize_class_index(1.0, Array.new(3)))
-  end
-  
-  # test the generation of random patterns
-  def test_generate_random_pattern
-    domain = {"A"=>[[0,1],[2,3]],"B"=>[[2,3],[4,5]]}
-    500.times do
-      p = generate_random_pattern(domain)
-      assert(p[:class_number] == 0 || p[:class_number] == 1)
-      assert(p[:class_label] == "A" || p[:class_label] == "B")
-      assert(p[:class_norm] == 1 || p[:class_norm] == 0)
-      assert_equal(2, p[:vector].size)
-      if p[:class_label] == "A"
-        assert(p[:vector][0] >= domain["A"][0][0] && p[:vector][0] <= domain["A"][0][1])
-        assert(p[:vector][1] >= domain["A"][1][0] && p[:vector][1] <= domain["A"][1][1])
-      else
-        assert(p[:vector][0] >= domain["B"][0][0] && p[:vector][0] <= domain["B"][0][1])
-        assert(p[:vector][1] >= domain["B"][1][0] && p[:vector][1] <= domain["B"][1][1])        
-      end
-    end
-  end
-  
   # test the generation of small random weights
   def test_initialize_weights
     weights = initialize_weights(100)
@@ -106,9 +65,7 @@ class TC_BackPropagation < Test::Unit::TestCase
   def test_forward_propagate
     n1, n2, n3 = {:weights=>[0.2,0.2,0.2]}, {:weights=>[0.3,0.3,0.3]}, {:weights=>[0.4,0.4,0.4]}
     network = [[n1,n2],[n3]]
-    pattern = {:vector=>[0.1,0.1]}
-    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-    out_actual, out_class = forward_propagate(network, pattern, domain)
+    output = forward_propagate(network, [0.1,0.1])
     # input layer
     t1 = 0.02+0.02+0.2
     assert_equal(t1, n1[:activation])    
@@ -121,20 +78,19 @@ class TC_BackPropagation < Test::Unit::TestCase
     assert_equal(t3, n3[:activation])
     assert_equal(transfer(t3), n3[:output])
     # outputs
-    assert_equal(transfer(t3), out_actual) # 0.702556520749393
-    assert_equal("B", out_class)
+    assert_equal(transfer(t3), output) # 0.702556520749393
   end
   
   # test the calculation of error signals
   def test_backward_propagate_error
-    pattern = {:vector=>[0.1,0.1], :class_norm=>1.0} # B
     n1 = {:weights=>[0.2,0.2,0.2], :output=>transfer(0.02+0.02+0.2)}
     n2 = {:weights=>[0.3,0.3,0.3], :output=>transfer(0.03+0.03+0.3)}
     n3 = {:weights=>[0.4,0.4,0.4], :output=>transfer((0.4*n1[:output])+(0.4*n2[:output])+0.4)}
+    expected = 1.0
     network = [[n1,n2],[n3]]    
-    backward_propagate_error(network, pattern)
+    backward_propagate_error(network, expected)
     # output node
-    e1 = (pattern[:class_norm]-n3[:output]) * transfer_derivative(n3[:output])
+    e1 = (expected-n3[:output]) * transfer_derivative(n3[:output])
     assert_equal(e1, n3[:error_delta])
     # input nodes
     e2 = (0.4*e1) * transfer_derivative(n1[:output])
@@ -145,13 +101,24 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test the calculation of error derivatives
   def test_calculate_error_derivatives_for_weights
-    pattern = {:vector=>[0.1,0.1]}
     n1 = {:weights=>[0.2,0.2,0.2], :error_delta=>0.5, :output=>transfer(0.02+0.02+0.2)}
     n2 = {:weights=>[0.3,0.3,0.3], :error_delta=>-0.6, :output=>transfer(0.03+0.03+0.3)}
     n3 = {:weights=>[0.4,0.4,0.4], :error_delta=>0.7, :output=>transfer((0.4*n1[:output])+(0.4*n2[:output])+0.4)}
     network = [[n1,n2],[n3]]    
-    calculate_error_derivatives_for_weights(network, pattern)
-    # TODO
+    vector = [0.1,0.1]
+    calculate_error_derivatives_for_weights(network, vector)
+    # n1 error
+    assert_equal(vector[0]*n1[:error_delta], n1[:error_derivative][0])
+    assert_equal(vector[1]*n1[:error_delta], n1[:error_derivative][1])
+    assert_equal(1*n1[:error_delta], n1[:error_derivative][2])
+    # n2 error
+    assert_equal(vector[0]*n2[:error_delta], n2[:error_derivative][0])
+    assert_equal(vector[1]*n2[:error_delta], n2[:error_derivative][1])
+    assert_equal(1*n2[:error_delta], n2[:error_derivative][2])
+    # n3 error
+    assert_equal(n1[:output]*n3[:error_delta], n3[:error_derivative][0])
+    assert_equal(n2[:output]*n3[:error_delta], n3[:error_derivative][1])
+    assert_equal(1*n3[:error_delta], n3[:error_derivative][2])
   end
   
   # test that weights are updated as expected

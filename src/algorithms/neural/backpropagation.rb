@@ -10,27 +10,8 @@ def random_vector(minmax)
   end
 end
 
-def normalize_class_index(class_no, domain)
-  return (class_no.to_f/(domain.size-1).to_f)
-end
-
-def denormalize_class_index(normalized_class, domain)
-  return (normalized_class*(domain.size-1).to_f).round.to_i
-end
-
-def generate_random_pattern(domain)  
-  classes = domain.keys
-  selected_class = rand(classes.size)
-  pattern = {}
-  pattern[:class_number] = selected_class
-  pattern[:class_label] = classes[selected_class]
-  pattern[:class_norm] = normalize_class_index(selected_class, domain)
-  pattern[:vector] = random_vector(domain[classes[selected_class]])
-  return pattern
-end
-
 def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[-0.5,0.5]}
+  minmax = Array.new(problem_size + 1) {[-0.3,0.3]}
   return random_vector(minmax)
 end
 
@@ -51,25 +32,23 @@ def transfer_derivative(output)
   return output * (1.0 - output)
 end
 
-def forward_propagate(network, pattern, domain)
+def forward_propagate(network, vector)
   network.each_with_index do |layer, i|
-    input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
+    input = (i==0) ? vector : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
       neuron[:activation] = activate(neuron[:weights], input)
       neuron[:output] = transfer(neuron[:activation])
     end
   end
-  out_actual = network.last[0][:output]
-  out_class = domain.keys[denormalize_class_index(out_actual, domain)]
-  return [out_actual, out_class]
+  return network.last[0][:output]
 end
 
-def backward_propagate_error(network, pattern)
+def backward_propagate_error(network, expected_output)
   network.size.times do |n|
     index = network.size - 1 - n
     if index == network.size-1
       neuron = network[index][0] # assume one node in output layer
-      error = (pattern[:class_norm] - neuron[:output])
+      error = (expected_output - neuron[:output])
       neuron[:error_delta] = error * transfer_derivative(neuron[:output])
     else
       network[index].each_with_index do |neuron, k|
@@ -84,9 +63,9 @@ def backward_propagate_error(network, pattern)
   end
 end
 
-def calculate_error_derivatives_for_weights(network, pattern)
+def calculate_error_derivatives_for_weights(network, vector)
   network.each_with_index do |layer, i|
-    input = (i==0) ? pattern[:vector] : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
+    input = (i==0) ? vector : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
       neuron[:error_derivative] = Array.new(neuron[:weights].size)
       input.each_with_index do |signal, j|
@@ -107,49 +86,50 @@ def update_weights(network, lrate)
   end
 end
 
-def train_network(network, domain, problem_size, iterations, lrate)
+def train_network(network, domain, num_inputs, iterations, lrate)
   iterations.times do |it|
-    pattern = generate_random_pattern(domain)
-    out_v, out_c = forward_propagate(network, pattern, domain)    
-    puts "> train got=#{out_v}(#{out_c}), exp=#{pattern[:class_norm]}(#{pattern[:class_label]})"
-    backward_propagate_error(network, pattern)
-    calculate_error_derivatives_for_weights(network, pattern)
+    pattern = domain[rand(domain.size)]
+    vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
+    output = forward_propagate(network, vector)
+    error = expected - output
+    puts "> pattern=#{vector.inspect}, expected=#{expected}, got=#{output}, error=#{error}"
+    backward_propagate_error(network, expected)
+    calculate_error_derivatives_for_weights(network, vector)
     update_weights(network, lrate)
   end
 end
 
-def test_network(network, domain)
+def test_network(network, domain, num_inputs)
   correct = 0
-  100.times do 
-    pattern = generate_random_pattern(domain)
-    out_v, out_c = forward_propagate(network, pattern, domain)
-    correct += 1 if out_c == pattern[:class_label]
+  domain.each do |pattern|
+    input_vector = Array.new(num_inputs) {|k| pattern[k].to_f}
+    output = forward_propagate(network, input_vector)
+    correct += 1 if output.round == pattern.last
   end
-  puts "Finished test with a score of #{correct}/#{100} (#{correct}%)"
+  puts "Finished test with a score of #{correct}/#{domain.length} (#{correct}%)"
 end
 
 def create_neuron(num_inputs)
   return {:weights => initialize_weights(num_inputs)}
 end
 
-def run(domain, problem_size, iterations, hidden_layer_size, learning_rate)  
+def run(domain, num_inputs, iterations, num_hidden_nodes, learning_rate)  
   network = []
-  network << Array.new(problem_size){create_neuron(problem_size)}
-  network << Array.new(hidden_layer_size){create_neuron(network.last.size)}
-  network << Array.new(1){create_neuron(network.last.size)}
-  puts "Network Topology: #{network.inject(""){|m,i| m + "#{i.size} "}}"
-  train_network(network, domain, problem_size, iterations, learning_rate)  
-  test_network(network, domain)
+  network << Array.new(num_hidden_nodes){create_neuron(num_inputs)}
+  network << Array.new(1){create_neuron(network.last.size)} 
+  puts "Network Topology: in=#{num_inputs} #{network.inject(""){|m,i| m + "#{i.size} "}}"
+  train_network(network, domain, num_inputs, iterations, learning_rate)  
+  test_network(network, domain, num_inputs)
 end
 
 if __FILE__ == $0
   # problem configuration
-  problem_size = 2
-  domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+  xor = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
+  inputs = 2
   # algorithm configuration
-  learning_rate = 0.1
-  hidden_layer_size = 3
+  learning_rate = 0.3
+  num_hidden_nodes = 2
   iterations = 100
   # execute the algorithm
-  run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
+  run(xor, inputs, iterations, num_hidden_nodes, learning_rate)
 end
