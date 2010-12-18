@@ -74,8 +74,8 @@ def backward_propagate_error(network, pattern)
     else
       network[index].each_with_index do |neuron, k|
         sum = 0.0
+        # only sum errors weighted by connection to the current k'th neuron
         network[index+1].each do |next_neuron|
-          # only sum errors weighted by connection to the current k'th neuron
           sum += (next_neuron[:weights][k] * next_neuron[:error_delta])
         end
         neuron[:error_delta] = sum * transfer_derivative(neuron[:output])
@@ -129,21 +129,15 @@ def test_network(network, domain)
 end
 
 def create_neuron(num_inputs)
-  neuron = {}
-  neuron[:weights] = initialize_weights(num_inputs)
-  return neuron
-end
-
-def create_layer(num_neurons, num_inputs)
-  return Array.new(num_neurons){create_neuron(num_inputs)}
+  return {:weights => initialize_weights(num_inputs)}
 end
 
 def run(domain, problem_size, iterations, hidden_layer_size, learning_rate)  
   network = []
-  network << create_layer(problem_size, problem_size)
-  network << create_layer(hidden_layer_size, problem_size)
-  network << create_layer(1, hidden_layer_size)
-  
+  network << Array.new(problem_size){create_neuron(problem_size)}
+  network << Array.new(hidden_layer_size){create_neuron(network.last.size)}
+  network << Array.new(1){create_neuron(network.last.size)}
+  puts "Network Topology: #{network.inject(""){|m,i| m + "#{i.size} "}}"
   train_network(network, domain, problem_size, iterations, learning_rate)  
   test_network(network, domain)
 end
@@ -154,7 +148,7 @@ if __FILE__ == $0
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
   # algorithm configuration
   learning_rate = 0.1
-  hidden_layer_size = 2
+  hidden_layer_size = 3
   iterations = 100
   # execute the algorithm
   run(domain, problem_size, iterations, hidden_layer_size, learning_rate)
