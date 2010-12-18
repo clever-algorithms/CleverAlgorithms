@@ -67,8 +67,8 @@ class TC_BackPropagation < Test::Unit::TestCase
     network = [[n1,n2],[n3]]
     output = forward_propagate(network, [0.1,0.1])
     # input layer
-    t1 = 0.02+0.02+0.2
-    assert_equal(t1, n1[:activation])    
+    t1 = (0.02+0.02+0.2)
+    assert_equal(t1, n1[:activation])
     assert_equal(transfer(t1), n1[:output])
     t2 = 0.03+0.03+0.3
     assert_equal(t2, n2[:activation])
@@ -108,14 +108,17 @@ class TC_BackPropagation < Test::Unit::TestCase
     vector = [0.1,0.1]
     calculate_error_derivatives_for_weights(network, vector)
     # n1 error
+    assert_equal(n1[:weights].size, n1[:error_derivative].size)
     assert_equal(vector[0]*n1[:error_delta], n1[:error_derivative][0])
     assert_equal(vector[1]*n1[:error_delta], n1[:error_derivative][1])
     assert_equal(1*n1[:error_delta], n1[:error_derivative][2])
     # n2 error
+    assert_equal(n2[:weights].size, n2[:error_derivative].size)
     assert_equal(vector[0]*n2[:error_delta], n2[:error_derivative][0])
     assert_equal(vector[1]*n2[:error_delta], n2[:error_derivative][1])
     assert_equal(1*n2[:error_delta], n2[:error_derivative][2])
     # n3 error
+    assert_equal(n3[:weights].size, n3[:error_derivative].size)
     assert_equal(n1[:output]*n3[:error_delta], n3[:error_derivative][0])
     assert_equal(n2[:output]*n3[:error_delta], n3[:error_derivative][1])
     assert_equal(1*n3[:error_delta], n3[:error_derivative][2])

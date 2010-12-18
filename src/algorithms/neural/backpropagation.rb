@@ -20,7 +20,7 @@ def activate(weights, vector)
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
-  sum += weights[vector.size] * 1.0
+  sum += weights[-1] * 1.0
   return sum
 end
 
@@ -91,8 +91,7 @@ def train_network(network, domain, num_inputs, iterations, lrate)
     pattern = domain[rand(domain.size)]
     vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
     output = forward_propagate(network, vector)
-    error = expected - output
-    puts "> pattern=#{vector.inspect}, expected=#{expected}, got=#{output}, error=#{error}"
+    puts "> pattern=#{vector.inspect}, expected=#{expected}, got=#{output.round} (#{output})"
     backward_propagate_error(network, expected)
     calculate_error_derivatives_for_weights(network, vector)
     update_weights(network, lrate)
@@ -106,7 +105,7 @@ def test_network(network, domain, num_inputs)
     output = forward_propagate(network, input_vector)
     correct += 1 if output.round == pattern.last
   end
-  puts "Finished test with a score of #{correct}/#{domain.length} (#{correct}%)"
+  puts "Finished test with a score of #{correct}/#{domain.length}"
 end
 
 def create_neuron(num_inputs)
