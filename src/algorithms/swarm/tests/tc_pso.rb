@@ -5,14 +5,14 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../pso"
+require Pathname.new(File.dirname(__FILE__)) + "../pso"
 
-class TC_PSO < Test::Unit::TestCase
+class TC_Pso < Test::Unit::TestCase
 
   # test that the random_vector function behaves as expected
   def test_random_vector
-    problem_size = 65536
-    tolerance = 0.1
+    problem_size = 50
+    tolerance = 0.5
 
     do_test_random_vector(problem_size, -2, 2, tolerance)
     do_test_random_vector(problem_size, -7, -3, tolerance)
@@ -35,7 +35,7 @@ class TC_PSO < Test::Unit::TestCase
       sum = sum + i
     end
 
-    assert_in_delta median, (sum / problem_size), tolerance
+    assert_in_delta(median, (sum / problem_size), tolerance)
   end
 
   # test that objective_function behaves as expected

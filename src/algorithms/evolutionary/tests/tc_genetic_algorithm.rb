@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../genetic_algorithm"
+require Pathname.new(File.dirname(__FILE__)) + "../genetic_algorithm"
 
 class TC_GeneticAlgorithm < Test::Unit::TestCase
       

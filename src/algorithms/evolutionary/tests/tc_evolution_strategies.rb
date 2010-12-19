@@ -5,7 +5,8 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../evolution_strategies"
+
+require Pathname.new(File.dirname(__FILE__)) + "../evolution_strategies"
 
 class TC_EvolutionStrategies < Test::Unit::TestCase
   

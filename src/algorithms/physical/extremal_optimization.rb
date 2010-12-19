@@ -39,7 +39,7 @@ def nearest_neighbor_solution(cities)
 end
 
 def get_edges_for_city(city_number, permutation)
-  c1, c2 = -1, -1
+  c1, c2 = nil, nil
   permutation.each_with_index do |c, i|
     if c == city_number
       c1 = (i==0) ? permutation.last : permutation[i-1]
@@ -47,7 +47,6 @@ def get_edges_for_city(city_number, permutation)
       break
     end
   end
-  raise "error" if c1==-1 or c2==-1
   return [c1, c2]
 end
 
@@ -77,10 +76,10 @@ end
 def probabilistic_selection(ordered_components, tau)
   sum = 0.0
   ordered_components.each_with_index do |component, i|
-    component[:prob] = (i.to_f+1.0)**(-tau)
+    component[:prob] = (i+1.0)**(-tau)
     sum += component[:prob]    
   end
-  selected_city = -1
+  selected_city = nil
   selection = rand()
   ordered_components.each_with_index do |component, i|
     selection -= (component[:prob]/sum)
@@ -136,7 +135,7 @@ if __FILE__ == $0
    [875,920],[700,500],[555,815],[830,485],[1170,65],[830,610],[605,625],
    [595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 500
+  max_iterations = 100
   tau = 1.2
   # execute the algorithm
   best = search(berlin52, max_iterations, tau)

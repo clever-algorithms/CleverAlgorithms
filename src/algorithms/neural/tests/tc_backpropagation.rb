@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../backpropagation"
+require Pathname.new(File.dirname(__FILE__)) + "../backpropagation"
 
 class TC_BackPropagation < Test::Unit::TestCase
   

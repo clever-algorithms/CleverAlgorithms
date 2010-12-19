@@ -5,9 +5,9 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../bees_algorithm"
+require Pathname.new(File.dirname(__FILE__)) + "../bees_algorithm"
 
-class TC_BEES_ALGORITHM < Test::Unit::TestCase
+class TC_BeesAlgorithm < Test::Unit::TestCase
 
 	#test that create_random_bee returns a correctly initialised bee
 	def test_create_random_bee
