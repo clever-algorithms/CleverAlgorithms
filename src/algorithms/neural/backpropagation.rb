@@ -11,21 +11,20 @@ def random_vector(minmax)
 end
 
 def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[-0.3,0.3]}
+  minmax = Array.new(problem_size + 1) {[-2,2]}
   return random_vector(minmax)
 end
 
 def activate(weights, vector)
-  sum = 0.0
+  sum = weights[-1] * 1.0
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
-  sum += weights[-1] * 1.0
   return sum
 end
 
 def transfer(activation)
-  return 1.0 / (1.0 + Math.exp(-activation)) 
+  return 1.0 / (1.0 + Math.exp(-1.0 * activation)) 
 end
 
 def transfer_derivative(output)
@@ -80,7 +79,7 @@ def update_weights(network, lrate)
   network.each do |layer|
     layer.each do |neuron|
       neuron[:weights].each_with_index do |w, j|
-        neuron[:weights][j] = w + (lrate * neuron[:error_derivative][j])
+        neuron[:weights][j] += (lrate * neuron[:error_derivative][j])
       end
     end
   end
@@ -126,7 +125,7 @@ if __FILE__ == $0
   xor = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
   inputs = 2
   # algorithm configuration
-  learning_rate = 0.3
+  learning_rate = 0.7
   num_hidden_nodes = 2
   iterations = 100
   # execute the algorithm

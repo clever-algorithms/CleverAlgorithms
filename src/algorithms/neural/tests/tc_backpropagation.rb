@@ -18,8 +18,8 @@ class TC_BackPropagation < Test::Unit::TestCase
       sum = 0.0
       assert_equal(20, vector.size)
       vector.each do |v|
-        assert(v >= bounds[0])
-        assert(v <= bounds[1])
+        assert(v >= bounds[0], "#{v}")
+        assert(v <= bounds[1], "#{v}")
         sum += v
       end
       assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/300.0, 0.1)
@@ -31,10 +31,10 @@ class TC_BackPropagation < Test::Unit::TestCase
     weights = initialize_weights(100)
     # adds a bias
     assert_equal(101, weights.size)
-    # check values in [-0.5,0.5]
+    # check values in [-2,2]
     weights.each do |w|
-      assert(w <= 0.5)
-      assert(w > -0.5)
+      assert(w <= 2, "#{w}")
+      assert(w >= -2, "#{w}")
     end
   end
 
@@ -42,6 +42,7 @@ class TC_BackPropagation < Test::Unit::TestCase
   def test_activate
     assert_equal(5.0, activate([1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]))
     assert_equal(2.5, activate([0.5, 0.5, 0.5, 0.5, 0.5], [1.0, 1.0, 1.0, 1.0]))
+    assert_equal(-6.062263, activate([-6.072185,2.454509,-6.062263], [0, 0]))
   end
   
   # test the transfer function
@@ -52,6 +53,7 @@ class TC_BackPropagation < Test::Unit::TestCase
     # large/small values get squashed
     assert_in_delta(1.0, transfer(10.0), 0.0001)
     assert_in_delta(0.0, transfer(-10.0), 0.0001)
+    assert_in_delta(0.00232, transfer(-6.062263), 0.00001)
   end
   
   # test derivative of transfer function
@@ -61,24 +63,26 @@ class TC_BackPropagation < Test::Unit::TestCase
     assert_equal(0.25, transfer_derivative(0.5))
   end
   
-  # test the forward propagation of output
-  def test_forward_propagate
-    n1, n2, n3 = {:weights=>[0.2,0.2,0.2]}, {:weights=>[0.3,0.3,0.3]}, {:weights=>[0.4,0.4,0.4]}
+  # test for propagatin a xor example
+  # http://www.generation5.org/content/2001/xornet.asp
+  def test_forward_propagate_xor
+    n1 = {:weights=>[0.129952,-0.923123,0.341232]}
+    n2 = {:weights=>[0.570345,-0.328932,-0.115223]}
+    n3 = {:weights=>[0.164732,0.752621,-0.993423]}
     network = [[n1,n2],[n3]]
-    output = forward_propagate(network, [0.1,0.1])
-    # input layer
-    t1 = (0.02+0.02+0.2)
-    assert_equal(t1, n1[:activation])
-    assert_equal(transfer(t1), n1[:output])
-    t2 = 0.03+0.03+0.3
-    assert_equal(t2, n2[:activation])
-    assert_equal(transfer(t2), n2[:output])
-    # hidden
-    t3 = (0.4*transfer(t1))+(0.4*transfer(t2))+0.4
-    assert_equal(t3, n3[:activation])
-    assert_equal(transfer(t3), n3[:output])
-    # outputs
-    assert_equal(transfer(t3), output) # 0.702556520749393
+    output = forward_propagate(network, [0,0])
+    # n1
+    assert_in_delta(0.341232, n1[:activation], 0.000001)
+    assert_in_delta(0.584490, n1[:output], 0.000001)
+    # n2
+    assert_in_delta(-0.115223, n2[:activation], 0.000001)
+    assert_in_delta(0.471226, n2[:output], 0.000001)
+    # n3
+    assert_in_delta(-0.542484, n3[:activation], 0.000001)
+    assert_in_delta(0.367610, n3[:output], 0.000001)
+    # output
+    assert_equal(output, n3[:output])
+    assert_in_delta(0.367610, output, 0.000001)
   end
   
   # test the calculation of error signals
@@ -97,6 +101,22 @@ class TC_BackPropagation < Test::Unit::TestCase
     assert_equal(e2, n1[:error_delta])
     e3 = (0.4*e1) * transfer_derivative(n2[:output])
     assert_equal(e3, n2[:error_delta])
+  end
+  
+  # test the calculation of error signals for xor
+  # http://www.generation5.org/content/2001/xornet.asp
+  def test_backward_propagate_error_xor
+    n1 = {:weights=>[0.129952,-0.923123,0.341232], :output=>0.584490}
+    n2 = {:weights=>[0.570345,-0.328932,-0.115223], :output=>0.471226}
+    n3 = {:weights=>[0.164732,0.752621,-0.993423], :output=>0.367610}
+    expected = 0.0
+    network = [[n1,n2],[n3]]    
+    backward_propagate_error(network, expected)
+    # output node
+    assert_in_delta(-0.085459, n3[:error_delta], 0.000001)
+    # input nodes
+    assert_in_delta(-0.0034190, n1[:error_delta], 0.000001)
+    assert_in_delta(-0.0160263, n2[:error_delta], 0.000001)
   end
   
   # test the calculation of error derivatives
@@ -122,6 +142,28 @@ class TC_BackPropagation < Test::Unit::TestCase
     assert_equal(n1[:output]*n3[:error_delta], n3[:error_derivative][0])
     assert_equal(n2[:output]*n3[:error_delta], n3[:error_derivative][1])
     assert_equal(1*n3[:error_delta], n3[:error_derivative][2])
+  end
+  
+  # test the calculation of error derivatives for xor
+  # http://www.generation5.org/content/2001/xornet.asp
+  def test_calculate_error_derivatives_for_weights_xor
+    n1 = {:weights=>[0.129952,-0.923123,0.341232], :output=>0.584490, :error_delta=>-0.0034190}
+    n2 = {:weights=>[0.570345,-0.328932,-0.115223], :output=>0.471226, :error_delta=>-0.0160263}
+    n3 = {:weights=>[0.164732,0.752621,-0.993423], :output=>0.367610, :error_delta=>-0.085459}
+    network = [[n1,n2],[n3]]
+    calculate_error_derivatives_for_weights(network, [0,0])
+    # n1 
+    assert_in_delta(0.0, n1[:error_derivative][0]*0.5, 0.000001)
+    assert_in_delta(0.0, n1[:error_derivative][1]*0.5, 0.000001)
+    assert_in_delta(-0.0017095, n1[:error_derivative][2]*0.5, 0.000001)
+    # n2
+    assert_in_delta(0.0, n2[:error_derivative][0]*0.5, 0.000001)
+    assert_in_delta(0.0, n2[:error_derivative][1]*0.5, 0.000001)
+    assert_in_delta(-0.0080132, n2[:error_derivative][2]*0.5, 0.000001)
+    # n3
+    assert_in_delta(-0.024975, n3[:error_derivative][0]*0.5, 0.000001)
+    assert_in_delta(-0.020135, n3[:error_derivative][1]*0.5, 0.000001)
+    assert_in_delta(-0.042730, n3[:error_derivative][2]*0.5, 0.000001)
   end
   
   # test that weights are updated as expected
