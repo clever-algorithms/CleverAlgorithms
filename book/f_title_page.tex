@@ -7,34 +7,34 @@
 
 
 % def
-\makeatletter
-\def\thickhrulefill{\leavevmode \leaders \hrule height 1pt\hfill \kern \z@}
-\renewcommand{\maketitle}{\begin{titlepage}%
-    \let\footnotesize\small
-    \let\footnoterule\relax
-    \parindent \z@
-    \reset@font
-    \null
-    \vskip 10\p@
-    \hbox{\mbox{\hspace{3em}}%
-      \vrule depth 0.6\textheight%
-      \mbox{\hspace{2em}}
-      \vbox{
-        \vskip 40\p@
-        \begin{flushleft}
-          \Large \@author \par
-        \end{flushleft}
-        \vskip 70\p@
-        \begin{flushleft}
-          \huge \bfseries \@title \par
-        \end{flushleft}
-        \vfil
-        }}
-    \null
-  \end{titlepage}%
-  \setcounter{footnote}{0}%
-}
-\makeatother
+% \makeatletter
+% \def\thickhrulefill{\leavevmode \leaders \hrule height 1pt\hfill \kern \z@}
+% \renewcommand{\maketitle}{\begin{titlepage}%
+%     \let\footnotesize\small
+%     \let\footnoterule\relax
+%     \parindent \z@
+%     \reset@font
+%     \null
+%     \vskip 10\p@
+%     \hbox{\mbox{\hspace{3em}}%
+%       \vrule depth 0.6\textheight%
+%       \mbox{\hspace{2em}}
+%       \vbox{
+%         \vskip 40\p@
+%         \begin{flushleft}
+%           \Large \@author \par
+%         \end{flushleft}
+%         \vskip 70\p@
+%         \begin{flushleft}
+%           \huge \bfseries \@title \par
+%         \end{flushleft}
+%         \vfil
+%         }}
+%     \null
+%   \end{titlepage}%
+%   \setcounter{footnote}{0}%
+% }
+% \makeatother
 \author{\mybookauthor}
 \title{\mybooktitle\\{\large\mybooksubtitle}}
 \date{\mybookdate}

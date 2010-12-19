@@ -1,0 +1,46 @@
+% The Clever Algorithms Project: http://www.CleverAlgorithms.com
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
+% Paperback
+
+\documentclass[9pt]{book}
+\include{definitions}
+\include{f_title_page}
+\makeindex
+
+% paperback only
+\geometry{paperwidth=6in, paperheight=9in}
+
+\begin{document}
+\defaultbibliography{../workspace/bibtex}
+\frontmatter
+	\maketitle	
+	\clearpage
+	\include{f_copyright}	
+	\setcounter{tocdepth}{1}
+	\tableofcontents
+	\include{f_acknowledgments}
+	\include{f_foreword}
+	\include{f_preface}
+\mainmatter 
+	\part{Background}
+		\include{c_introduction}		
+	\part{Algorithms}
+		\include{c_stochastic}
+		\include{c_evolution}
+		\include{c_physical}
+		\include{c_probabilistic}
+		\include{c_swarm}
+		\include{c_immune}
+		\include{c_neural}
+	\part{Extensions}
+		\include{c_advanced}
+	  \part{Appendices}
+		\appendix
+		\include{b_appendix1}	
+\backmatter
+	\cleardoublepage\phantomsection 
+	\addcontentsline{toc}{part}{Index}
+	\printindex
+\end{document}

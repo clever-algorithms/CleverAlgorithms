@@ -1,18 +1,37 @@
 # Makefile for the book
 
+EBOOK=master
+PAPERBACK=paperback
+
+# function build {
+# 	pdflatex ${1};true
+# 	./make_bibtex.sh;true
+# 	makeindex ${1};true
+# 	pdflatex ${1};true
+# 	pdflatex ${1};true
+# 	pdflatex ${1};true
+# 	grep -i "undefined" ${1}.log;true
+# }
+
 # Build the PDF of the ebook
-build_ebook : master.tex
-	pdflatex master;true
+ebook : ${EBOOK}.tex
+	pdflatex ${EBOOK};true
 	./make_bibtex.sh;true
-	makeindex master;true
-	pdflatex master;true
-	pdflatex master;true
-	pdflatex master;true
-	grep -i "undefined" master.log;true
+	makeindex ${EBOOK};true
+	pdflatex ${EBOOK};true
+	pdflatex ${EBOOK};true
+	pdflatex ${EBOOK};true
+	grep -i "undefined" ${EBOOK}.log;true
 
 # Build the PDF for the paperback
-build_paperback: master.tex
-	echo "N/A"
+paperback : master.tex
+	pdflatex ${PAPERBACK};true
+	./make_bibtex.sh;true
+	makeindex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	grep -i "undefined" ${PAPERBACK}.log;true
 
 # Delete all the guff and build matter
 clean : 
