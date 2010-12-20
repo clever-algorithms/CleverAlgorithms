@@ -69,7 +69,7 @@ def calculate_city_fitnesses(cities, permutation)
     city_fitness[:fitness] = calculate_city_fitness(permutation, i, cities)
     city_fitnesses << city_fitness
   end
-  city_fitnesses.sort!{|x,y| x[:fitness] <=> y[:fitness]}
+  city_fitnesses.sort!{|x,y| y[:fitness] <=> x[:fitness]}
   return city_fitnesses
 end
 
@@ -102,6 +102,7 @@ end
 
 def update_permutation(permutation, p1, p2)
   perm = Array.new(permutation)
+  p1, p2 = p2, p1 if p1 > p2
   perm[p1...p2] = perm[p1...p2].reverse
   return perm
 end
