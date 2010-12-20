@@ -117,7 +117,7 @@ Algorithm~\ref{alg:eo} provides a pseudocode listing of the Extremal Optimizatio
 	\item Extremal Optimization was designed for combinatorial optimization problems, although variations have been applied to continuous function optimization.
 	\item The selection of the worst component and the replacement component each iteration can be deterministic or probabilistic, the latter of which is referred to as $\tau$-Extremal Optimization given the use of a $\tau$ parameter.
 	\item The selection of an appropriate scoring function of the components of a solution is the most difficult part in the application of the technique.
-	\item For $\tau$-Extremal Optimization, low $\tau$ values are used (such as $\tau \in [1,2]$) have been found to be effective.
+	\item For $\tau$-Extremal Optimization, low $\tau$ values are used (such as $\tau \in [1.2,1.6]$) have been found to be effective for the TSP.
 \end{itemize}
 
 % Code Listing
@@ -130,9 +130,7 @@ Listing~\ref{extremal_optimization} provides an example of the Extremal Optimiza
 The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-The algorithm implementation is based on the seminal work by Boettcher and Percus \cite{Boettcher1999}. A solution is comprised of a permutation of city components. Each city can potentially form a connection to any other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected: $fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$. A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. 
-
-An extension to the provided implementation would be to always replace the longest edge on the selected worst component city.
+The algorithm implementation is based on the seminal work by Boettcher and Percus \cite{Boettcher1999}. A solution is comprised of a permutation of city components. Each city can potentially form a connection to any other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected: $fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$. A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. The longest connection is borken, and the city is connected with another neighbouring city that is also probabilistically selected.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Extremal Optimization algorithm in the Ruby Programming Language, label=extremal_optimization]{../src/algorithms/physical/extremal_optimization.rb}

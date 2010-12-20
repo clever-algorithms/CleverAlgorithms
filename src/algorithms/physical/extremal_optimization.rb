@@ -17,7 +17,7 @@ def cost(permutation, cities)
   return distance
 end
 
-def calculate_neighbour_rank(city_number, cities, ignore=[])
+def calculate_neighbor_rank(city_number, cities, ignore=[])
   neighbors = []
   cities.each_with_index do |city, i|
     next if i==city_number or ignore.include?(i)
@@ -32,7 +32,7 @@ end
 def nearest_neighbor_solution(cities)
   perm = [rand(cities.size)]
   while perm.size < cities.size
-    neighbors = calculate_neighbour_rank(perm.last, cities, perm)
+    neighbors = calculate_neighbor_rank(perm.last, cities, perm)
     perm << neighbors.first[:number]
   end  
   return perm
@@ -52,7 +52,7 @@ end
 
 def calculate_city_fitness(permutation, city_number, cities)
   c1, c2 = get_edges_for_city(city_number, permutation)
-  neighbors = calculate_neighbour_rank(city_number, cities)
+  neighbors = calculate_neighbor_rank(city_number, cities)
   n1, n2 = -1, -1
   neighbors.each_with_index do |neighbor,i|
     n1 = i+1 if neighbor[:number] == c1
@@ -73,50 +73,69 @@ def calculate_city_fitnesses(cities, permutation)
   return city_fitnesses
 end
 
-def probabilistic_selection(ordered_components, tau)
+def calculate_component_probabilities(ordered_components, tau)
   sum = 0.0
   ordered_components.each_with_index do |component, i|
     component[:prob] = (i+1.0)**(-tau)
     sum += component[:prob]    
   end
-  selected_city = nil
+  return sum
+end
+
+def make_selection(components, sum_probability)
   selection = rand()
-  ordered_components.each_with_index do |component, i|
-    selection -= (component[:prob]/sum)
-    if selection<=0.0 or i==ordered_components.size-1
-      selected_city = component[:number]
-      break
-    end
+  components.each_with_index do |component, i|
+    selection -= (component[:prob] / sum_probability)
+    return component[:number] if selection <= 0.0
   end
+  return components.last[:number]
+end
+
+def probabilistic_selection(ordered_components, tau, exclude=[])
+  sum = calculate_component_probabilities(ordered_components, tau)  
+  selected_city = nil
+  begin
+    selected_city = make_selection(ordered_components, sum) 
+  end while exclude.include?(selected_city)
   return selected_city
 end
 
-def select_replacement_city(cities, weak_component, tau)
-  neighbors = calculate_neighbour_rank(weak_component, cities)
-  return probabilistic_selection(neighbors, tau)
-end
-
-def select_weak_city(city_fitnesses, tau)
-  return probabilistic_selection(city_fitnesses, tau)
-end
-
-def update_permutation(permutation, p1, p2)
+def vary_permutation(permutation, selected, new, long_edge)
   perm = Array.new(permutation)
-  p1, p2 = p2, p1 if p1 > p2
-  perm[p1...p2] = perm[p1...p2].reverse
+  c1, c2 = perm.rindex(selected), perm.rindex(new)
+  p1,p2 = (c1<c2) ? [c1,c2] : [c2,c1]
+  right = (c1==perm.size-1) ? 0 : c1+1
+  if perm[right] == long_edge
+    perm[p1+1..p2] = perm[p1+1..p2].reverse
+  else 
+    perm[p1...p2] = perm[p1...p2].reverse
+  end
   return perm
 end
 
-def search(cities, max_iter, tau)
+def get_long_edge(edges, neighbor_distances)
+  n1 = neighbor_distances.find {|x| x[:number]==edges[0]}
+  n2 = neighbor_distances.find {|x| x[:number]==edges[1]}
+  return (n1[:distance] > n2[:distance]) ? n1[:number] : n2[:number]
+end
+
+def create_new_permutation(cities, tau, permutation)
+  city_fitnesses = calculate_city_fitnesses(cities, permutation)
+  selected_city = probabilistic_selection(city_fitnesses, tau)
+  edges = get_edges_for_city(selected_city, permutation)
+  neighbors = calculate_neighbor_rank(selected_city, cities)
+  new_neighbor = probabilistic_selection(neighbors, tau, edges)
+  long_edge = get_long_edge(edges, neighbors)
+  return vary_permutation(permutation, selected_city, new_neighbor, long_edge)
+end
+
+def search(cities, max_iterations, tau)
   current = {:vector=>nearest_neighbor_solution(cities)}
   current[:cost] = cost(current[:vector], cities)
   best = current
-  max_iter.times do |iter|
-    city_fitnesses = calculate_city_fitnesses(cities, current[:vector])
-    weak_c = select_weak_city(city_fitnesses, tau)
-    replacement_c = select_replacement_city(cities, weak_c, tau)
+  max_iterations.times do |iter|
     candidate = {}
-    candidate[:vector] = update_permutation(current[:vector], weak_c, replacement_c)
+    candidate[:vector] = create_new_permutation(cities, tau, current[:vector])
     candidate[:cost] = cost(candidate[:vector], cities)
     current = candidate
     best = candidate if candidate[:cost] < best[:cost]
