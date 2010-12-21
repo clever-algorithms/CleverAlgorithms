@@ -170,11 +170,11 @@ Algorithm~\ref{alg:grammatical_evolution} provides a pseudocode listing of the G
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{grammatical_evolution} provides an example of the Grammatical Evolution algorithm implemented in the Ruby Programming Language based on the version described by O'Neill and Ryan \cite{O'Neill2001}.
 % problem
-The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[-1,1]$. 
+The demonstration problem is an instance of symbolic regression $f(x)=x^3+x^2+x$, where $x\in[-1,1]$. 
 The grammar used in this problem is: 
 \begin{itemize}
 	\item Non-terminals: $N=\{expr,op,pre\_op\}$
-	\item Terminals: $T=\{sin,cos,exp,log,+,-,/,*,x,1.0\}$
+	\item Terminals: $T=\{+,-,/,*,x,1.0\}$
 	\item Expression (program): $S=<expr>$
 \end{itemize}
 
@@ -182,7 +182,6 @@ The production rules for the grammar in BNF are:
 \begin{itemize}
 	\item $<expr>$ ::= $<expr><op><expr>$, $(<expr><op><expr>)$, $<pre\_op>(<expr>)$, $<var>$
 	\item $<op>$ ::= +, -, $\div$, $\times$
-	\item $<pre\_op>$ ::= Sin, Cos, Exp, Log
 	\item $<var>$ ::= x, 1.0
 \end{itemize}
 
@@ -191,6 +190,7 @@ The algorithm uses point mutation and a codon-respecting one-point crossover ope
 % eval
 Binary strings are decoded to integers using an unsigned binary. Candidate solutions are then mapped directly into executable Ruby code and executed. A given candidate solution is evaluated by comparing its output against the target function and taking the sum of the absolute errors over a number of trials. The probabilities of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
 
+Solutions are evaluated by generating a number of random samples from the domain and calculating the mean error of the program to the expected outcome. Programs that contain a single term or those that return an invalid (NaN) or infinite result are penalized with an enormous error value.
 The implementation uses a maximum depth in the expression tree, whereas traditionally such deep expression trees are marked as invalid. Programs that resolve to a single expression that returns the output are penalized. 
 
 % the listing
