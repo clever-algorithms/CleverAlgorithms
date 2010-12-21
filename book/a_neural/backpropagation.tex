@@ -172,6 +172,8 @@ The algorithm was implemented using an online learning method, meaning the weigh
 
 A three layer network is demonstrated with 2 nodes in the input layer (two inputs), 2 nodes in the hidden layer and 1 node in the output layer, which is sufficient for the chosen problem. A bias weight is used on each neuron for stability with a constant input of 1.0. The learning process is separated into four steps: forward propagation, backward propagation of error, calculation of error derivatives (assigning blame to the weights) and the weight update. This separation facilities easy extensions such as adding a momentum term and/or weight decay to the update process.
 
+Extensions to this implementation should cosider changes such as batch updates (rather than online learning) and the use of a weight decay and momentium (dampen large changes) coefficients. 
+
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Back-propagation algorithm in the Ruby Programming Language, label=backpropagation]{../src/algorithms/neural/backpropagation.rb}
 
