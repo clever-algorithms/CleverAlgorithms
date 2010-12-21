@@ -10,6 +10,14 @@ This is a repository for the Clever Algorithms project for hosting, versioning, 
 
 h2. Outcomes
 
+h3. Book
+
+*Clever Algorithms: Nature-Inspired Programming Recipes* (Coming Jan 2011)
+
+h3. Website
+
+It's coming together, but soon all content will be browsable on the projects homepage: "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+
 h3. Technical Reports
 
 A large number of standalone technical reports were written during the development of the content for the book. The book is the primary source now, but if you really really want to see these now outdated technical reports: "click here":https://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace and scroll down to see a human readable listing.
