@@ -16,7 +16,7 @@ def initialize_weights(problem_size)
 end
 
 def activate(weights, vector)
-  sum = weights[-1] * 1.0
+  sum = weights[weights.size-1] * 1.0
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
@@ -24,7 +24,7 @@ def activate(weights, vector)
 end
 
 def transfer(activation)
-  return 1.0 / (1.0 + Math.exp(-1.0 * activation)) 
+  return 1.0 / (1.0 + Math.exp(-activation)) 
 end
 
 def transfer_derivative(output)
@@ -86,14 +86,19 @@ def update_weights(network, lrate)
 end
 
 def train_network(network, domain, num_inputs, iterations, lrate)
+  correct = 0
   iterations.times do |it|
     pattern = domain[rand(domain.size)]
     vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
     output = forward_propagate(network, vector)
-    puts "> pattern=#{vector.inspect}, expected=#{expected}, got=#{output.round} (#{output})"
+    correct += 1 if output.round == expected
     backward_propagate_error(network, expected)
     calculate_error_derivatives_for_weights(network, vector)
     update_weights(network, lrate)
+    if (it+1).modulo(1000) == 0
+      puts "> iteration=#{it+1}, Correct=#{correct}/1000"
+      correct = 0
+    end
   end
 end
 
@@ -105,19 +110,21 @@ def test_network(network, domain, num_inputs)
     correct += 1 if output.round == pattern.last
   end
   puts "Finished test with a score of #{correct}/#{domain.length}"
+  return correct
 end
 
 def create_neuron(num_inputs)
   return {:weights => initialize_weights(num_inputs)}
 end
 
-def run(domain, num_inputs, iterations, num_hidden_nodes, learning_rate)  
+def compute(domain, num_inputs, iterations, num_nodes, lrate)  
   network = []
-  network << Array.new(num_hidden_nodes){create_neuron(num_inputs)}
+  network << Array.new(num_nodes){create_neuron(num_inputs)}
   network << Array.new(1){create_neuron(network.last.size)} 
   puts "Network Topology: in=#{num_inputs} #{network.inject(""){|m,i| m + "#{i.size} "}}"
-  train_network(network, domain, num_inputs, iterations, learning_rate)  
+  train_network(network, domain, num_inputs, iterations, lrate)  
   test_network(network, domain, num_inputs)
+  return network
 end
 
 if __FILE__ == $0
@@ -125,9 +132,9 @@ if __FILE__ == $0
   xor = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
   inputs = 2
   # algorithm configuration
-  learning_rate = 0.7
+  learning_rate = 0.5
   num_hidden_nodes = 2
-  iterations = 100
+  iterations = 10000
   # execute the algorithm
-  run(xor, inputs, iterations, num_hidden_nodes, learning_rate)
+  compute(xor, inputs, iterations, num_hidden_nodes, learning_rate)
 end

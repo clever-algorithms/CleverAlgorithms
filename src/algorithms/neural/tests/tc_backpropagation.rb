@@ -5,7 +5,8 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require Pathname.new(File.dirname(__FILE__)) + "../backpropagation"
+# require Pathname.new(File.dirname(__FILE__)) + "../backpropagation"
+require "../backpropagation"
 
 class TC_BackPropagation < Test::Unit::TestCase
   
@@ -174,6 +175,70 @@ class TC_BackPropagation < Test::Unit::TestCase
     assert_equal((0.2 + (0.1*1.0)), n1[:weights][0])
     assert_equal((0.2 + (-0.5*1.0)), n1[:weights][1])
     assert_equal((0.2 + (100*1.0)), n1[:weights][2])
+  end
+  
+  def test_train_network
+    # TODO
+  end
+  
+  # helper for turning off STDOUT
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  def silence_stream(stream)
+    old_stream = stream.dup
+    stream.reopen('/dev/null')
+    stream.sync = true
+    yield
+  ensure
+    stream.reopen(old_stream)
+  end  
+  
+  # test the network can compute correct outcomes 
+  # based on http://www.generation5.org/content/2001/xornet.asp
+  def test_test_network
+    # note the order difference
+    n1 = {:weights=>[-6.062263, -6.072185, 2.454509]}
+    n2 = {:weights=>[-4.893081, -4.894898, 7.293063]}
+    n3 = {:weights=>[-9.792470, 9.484580, -4.473972]}
+    network = [[n1,n2],[n3]]    
+    domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
+    # specifics
+    assert_in_delta(0.017622, forward_propagate(network, domain[0]), 0.001)    
+    assert_in_delta(0.981504, forward_propagate(network, domain[1]), 0.06)
+    assert_in_delta(0.981491, forward_propagate(network, domain[2]), 0.06)
+    assert_in_delta(0.022782, forward_propagate(network, domain[3]), 0.001)    
+    # all 
+    output = nil
+    silence_stream(STDOUT) do
+      output = test_network(network, domain, 2)
+    end
+    assert_equal(4, output)
+  end
+  
+  # test that a neuron is created as expected
+  def test_create_neuron
+    assert_equal(2, create_neuron(1)[:weights].size)
+    assert_equal(3, create_neuron(2)[:weights].size)
+    assert_equal(11, create_neuron(10)[:weights].size)
+  end
+  
+  # test that the system can learn xor
+  # NOTE: this test passes most (50/50 really) of the time, but not all
+  def test_compute
+    domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
+    network = nil 
+    silence_stream(STDOUT) do
+      network = compute(domain, 2, 5000, 2, 0.5)
+    end     
+    # structure    
+    assert_equal(2, network.size)
+    assert_equal(2, network[0].size)
+    assert_equal(1, network[1].size)
+    # output
+    output = nil
+    silence_stream(STDOUT) do
+      output = test_network(network, domain, 2)
+    end
+    assert_equal(4, output)
   end
   
 end
