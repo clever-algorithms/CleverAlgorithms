@@ -46,7 +46,7 @@ end
 class StopConditionUnit < FlowUnit
   attr_reader :best, :num_bits, :max_evaluations, :evals
   
-  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000,num_bits=64)
+  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000, num_bits=64)
     super(q_in, q_out)
     @best, @evals = nil, 0
     @num_bits = num_bits
@@ -82,7 +82,7 @@ class SelectFlowUnit < FlowUnit
 
   def run    
     population = Array.new
-    population << @queue_in.pop while population.size < 100    
+    population << @queue_in.pop while population.size < @pop_size    
     @pop_size.times do
       @queue_out.push(binary_tournament(population))
     end
@@ -108,7 +108,7 @@ class VariationFlowUnit < FlowUnit
 
   def point_mutation(bitstring)
     child = ""
-     bitstring.each_char do |bit|
+    bitstring.each_char do |bit|
       child << ((rand()<@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
     end
     return child

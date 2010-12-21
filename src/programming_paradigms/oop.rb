@@ -33,7 +33,7 @@ class OneMax < Problem
   
   def assess(candidate_solution)
     if candidate_solution[:bitstring].length != @num_bits
-      rase "Expected #{@num_bits} in candidate solution." 
+      raise "Expected #{@num_bits} in candidate solution." 
     end
     sum = 0
     candidate_solution[:bitstring].each_char {|x| sum+=1 if x=='1'}
@@ -46,7 +46,7 @@ class OneMax < Problem
 end
 
 # An implementation of the Genetic algorithm using the strategy template
-class GeneticAlgorithm < Problem
+class GeneticAlgorithm < Strategy
   
   attr_reader :max_generations, :population_size, :p_crossover, :p_mutation
   
