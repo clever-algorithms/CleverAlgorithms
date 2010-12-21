@@ -92,9 +92,10 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
   end
   
   def test_make_selection
-    components = [{}, {}, {}, {}, {}]
+    components = [{:number=>0}, {:number=>1}, {:number=>2}, {:number=>3}, {:number=>4}]
     sum = calculate_component_probabilities(components, 1.0)
-    selection = make_selection(components, sum_probability)
+    selection = make_selection(components, sum)
+    assert([0,1,2,3,4].include?(selection))
   end
 
   def test_probabilistic_selection
@@ -158,9 +159,9 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
     nn_solution[:cost] = cost(nn_solution[:vector], berlin52)
     best = nil
     silence_stream(STDOUT) do
-      #best = search(berlin52, 100, 1.3)
+      best = search(berlin52, 100, 1.3)
     end    
-    #assert(best[:cost] < nn_solution[:cost])
+    assert(best[:cost] < nn_solution[:cost])
   end
 
 end
