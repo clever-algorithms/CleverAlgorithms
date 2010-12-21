@@ -4,7 +4,7 @@ EBOOK=master
 PAPERBACK=paperback
 
 # Build the PDF for the paperback
-paperback : master.tex
+paperback : ${PAPERBACK}.tex
 	pdflatex ${PAPERBACK};true
 	./make_bibtex.sh;true
 	makeindex ${PAPERBACK};true
@@ -12,7 +12,8 @@ paperback : master.tex
 	pdflatex ${PAPERBACK};true
 	pdflatex ${PAPERBACK};true
 	grep -i "undefined" ${PAPERBACK}.log;true
-
+	ps2pdf13 -dPDFSETTINGS=/prepress paperback.pdf paperback1.pdf
+	
 
 # Build the PDF of the ebook
 ebook : ${EBOOK}.tex
