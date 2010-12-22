@@ -58,7 +58,7 @@ This is achieved as a system of three asynchronous processes of 1) migrating suf
 Algorithm~\ref{alg:dca} provides pseudocode for training a pool of cells in the Dendritic Cell Algorithm, specifically the Deterministic Dendritic Cell Algorithm. Mature migrated cells associate their collected input patterns with anomalies, whereas semi-mature migrated cells associate their collected input patterns as normal.
 The resulting migrated cells can then be used to classify input patterns as normal or anomalous. This can be done through sampling the cells and using a voting mechanism, or more elaborate methods such as a `mature context antigen value' (MCAV) which is $\frac{M}{Ag}$ (where $M$ is the number of mature cells with the antigen and $Ag$ is the sum of the exposures to the antigen by those mature cells), which gives a probability of a pattern being an anomaly.
 
-\begin{algorithm}[htp]
+\begin{algorithm}[ht]
 	\SetLine
 
 	% data
