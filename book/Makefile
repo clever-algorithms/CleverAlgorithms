@@ -32,8 +32,8 @@ clean :
 
 # View the PDF on Linux
 vl:
-	acroread master.pdf
+	acroread paperback.pdf
 
 # View the PDF on Mac
 vm:
-	open -a Preview master.pdf
+	open -a Preview paperback.pdf
