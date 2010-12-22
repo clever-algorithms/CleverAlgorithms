@@ -44,18 +44,24 @@ The Strategy of the Adaptive Step Size Random Search algorithm (the specific tec
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the Adaptive Random Search Algorithm for minimizing a cost function based on the specification for `Adaptive Step-Size Random Search' by Schummer and Steiglitz \cite{Schumer1968}.
 
-\begin{algorithm}[Htp]
+\begin{algorithm}[htp]
 	\SetLine
 	% data
 	\SetKwData{NumIterations}{$Iter_{max}$}
-	\SetKwData{ProblemSize}{ProblemSize}
-	\SetKwData{SearchSpace}{SearchSpace}
-	\SetKwData{InitialStepSizeFactor}{$StepSize_{init}$}
-	\SetKwData{SmallStepSizeFactor}{$StepSizeF_{small}$}
-	\SetKwData{LargeStepSizeFactor}{$StepSizeF_{large}$}
-	\SetKwData{LargeStepSizeFactorIter}{$StepSizeIter_{large}$}
-	\SetKwData{MaxIterNoImprovement}{$NoChng_{max}$}
-	\SetKwData{Current}{Current}
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	\SetKwData{SearchSpace}{SearchSpace}	
+	\SetKwData{InitialStepSizeFactor}{$StepSize_{factor}^{init}$}
+	\SetKwData{SmallStepSizeFactor}{$StepSize_{factor}^{small}$}
+	\SetKwData{LargeStepSizeFactor}{$StepSize_{factor}^{large}$}
+	\SetKwData{LargeStepSizeFactorIter}{$StepSize_{factor}^{iter}$}	
+	\SetKwData{MaxIterNoImprovement}{$NoChange_{max}$}
+	% data
+	\SetKwData{StepSize}{$StepSize_{i}$}
+	\SetKwData{LargeStepSize}{$StepSize_{i}^{large}$}	
+	\SetKwData{NoChangeCount}{$NoChange_{count}$}
+	\SetKwData{Current}{$S$}
+	\SetKwData{CandidateOne}{$S_1$}
+	\SetKwData{CandidateTwo}{$S_2$}
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{RandomSolution}{RandomSolution}
@@ -64,48 +70,44 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
   	% I/O
 	\KwIn{\NumIterations, \ProblemSize, \SearchSpace, \InitialStepSizeFactor, \SmallStepSizeFactor, \LargeStepSizeFactor, \LargeStepSizeFactorIter, \MaxIterNoImprovement}
 	\KwOut{\Current}
-  	% Algorithm
-	% init
-	$nochng_{count} \leftarrow \emptyset$\;
-	$step_{size} \leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
+  % Algorithm
+	\NoChangeCount $\leftarrow$ 0\;
+	\StepSize $\leftarrow$ \InitializeStepSize{\SearchSpace, \InitialStepSizeFactor}\;
 	\Current $\leftarrow$ \RandomSolution{\ProblemSize, \SearchSpace}\;
 	% main loop
-	\ForEach{$iter_i \in$ \NumIterations} {
+	\For{$i=0$ \KwTo \NumIterations} {
 		% small step
-		$candidate_1 \leftarrow$ \TakeStep{\SearchSpace, \Current, $step_{size}$}\;		
-		$largestep_{size} \leftarrow \emptyset$\;
+		\CandidateOne $\leftarrow$ \TakeStep{\SearchSpace, \Current, \StepSize}\;		
+		\LargeStepSize $\leftarrow$ 0\;
 		% bigger step
-		\If{$iter_i \bmod{\LargeStepSizeFactorIter}$} {
-			$largestep_{size} \leftarrow$ $step_{size} \times \LargeStepSizeFactor$\;
-		} 
-		\Else {
-			$largestep_{size} \leftarrow$ $step_{size} \times \SmallStepSizeFactor$\;
+		\eIf{$i \bmod{\LargeStepSizeFactorIter}$} {
+			\LargeStepSize $\leftarrow$ \StepSize $\times$ \LargeStepSizeFactor\;
+		}{
+			\LargeStepSize $\leftarrow$ \StepSize $\times$ \SmallStepSizeFactor\;
 		}
-		$candidate_2 \leftarrow$ \TakeStep{\SearchSpace, \Current, $largestep_{size}$}\;
+		\CandidateTwo $\leftarrow$ \TakeStep{\SearchSpace, \Current, \LargeStepSize}\;
 		
 		% step size selection
-		\If{\Cost{$candidate_1$}$\leq$\Cost{\Current} or \Cost{$candidate_2$}$\leq$\Cost{\Current}} {
-			\If{\Cost{$candidate_2$}$<$\Cost{$candidate_1$}} {
-				\Current $\leftarrow candidate_2$\; 
-				$step_{size} \leftarrow largestep_{size}$\;
+		\eIf{\Cost{\CandidateOne}$\leq$\Cost{\Current} or \Cost{\CandidateTwo}$\leq$\Cost{\Current}} {
+			\eIf{\Cost{\CandidateTwo}$<$\Cost{\CandidateOne}} {
+				\Current $\leftarrow$ \CandidateTwo\; 
+				\StepSize $\leftarrow$ \LargeStepSize\;
+			}{
+				\Current $\leftarrow$ \CandidateOne\;
 			}
-			\Else {
-				\Current $\leftarrow candidate_1$\;
-			}
-			$nochng_{count} \leftarrow \emptyset$\;
-		} 
-		\Else {
-			$nochng_{count} \leftarrow nochng_{count} + 1$\;
+			\NoChangeCount $\leftarrow$ 0\;
+		}{
+			\NoChangeCount $\leftarrow$ \NoChangeCount $+$ 1\;
 			% step size modification
-			\If{$nochng_{count} > \MaxIterNoImprovement$} {
-				$nochng_{count} \leftarrow \emptyset$\;
-				$step_{size} \leftarrow \frac{step_{size}}{\SmallStepSizeFactor}$
+			\If{\NoChangeCount $>$ \MaxIterNoImprovement} {
+				\NoChangeCount $\leftarrow$ 0\;
+				\StepSize $\leftarrow \frac{\StepSize}{\SmallStepSizeFactor}$\;
 			}
 		}
 	}
 	\Return{\Current}\;
 	% caption
-	\caption{Pseudocode Listing for the Adaptive Random Search Algorithm.}
+	\caption{Pseudocode for Adaptive Random Search.}
 	\label{alg:adaptive_random_search}
 \end{algorithm}
 

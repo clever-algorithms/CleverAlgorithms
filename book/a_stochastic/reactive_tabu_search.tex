@@ -42,7 +42,7 @@ Algorithm~\ref{alg:reactive_tabu_search} provides a pseudocode listing of the Re
 % specifics
 The Pseudocode is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{IsTabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{ProhibitionPeriod} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{ProhibitionPeriod}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
 
-\begin{algorithm}[Htp]
+\begin{algorithm}[htp]
 	\SetLine
 	% data
 	\SetKwData{Best}{$S_{best}$}
@@ -92,7 +92,7 @@ The Pseudocode is based on a the version of the Reactive Tabu Search described b
 	\label{alg:reactive_tabu_search}
 \end{algorithm}
 
-\begin{algorithm}[Htp]
+\begin{algorithm}[htp]
 	\SetLine
 	% data
 	\SetKwData{Current}{$S_{curr}$}
