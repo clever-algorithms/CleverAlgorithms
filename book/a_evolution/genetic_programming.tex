@@ -116,16 +116,16 @@ The Genetic Program uses LISP-like symbolic expressions called S-expressions tha
 		\While{\Size{\Children} $<$ \PopulationSize} {
 			\Operator $\leftarrow$ \SelectGeneticOperator{\ProbabilityCrossover, \ProbabilityMutate, \ProbabilityReproduction, \ProbabilityAlteration}\;
 		
-			\If{\Operator $\equiv$ \CrossoverOperator}{
+			\uIf{\Operator $\equiv$ \CrossoverOperator}{
 				\ParentOne, \ParentTwo $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
 				\ChildOne, \ChildTwo $\leftarrow$ \Crossover{\ParentOne, \ParentTwo}\;
 				\Children $\leftarrow$ \ChildOne\;
 				\Children $\leftarrow$ \ChildTwo\;
-			}\ElseIf{\Operator $\equiv$ \MutationOperator}{
+			}\uElseIf{\Operator $\equiv$ \MutationOperator}{
 				\ParentOne $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
 				\ChildOne $\leftarrow$ \Mutate{\ParentOne}\;
 				\Children $\leftarrow$ \ChildOne\;
-			}\ElseIf{\Operator $\equiv$ \ReproductionOperator}{
+			}\uElseIf{\Operator $\equiv$ \ReproductionOperator}{
 				\ParentOne $\leftarrow$ \SelectParents{\Population, \PopulationSize}\;
 				\ChildOne $\leftarrow$ \Reproduce{\ParentOne}\;
 				\Children $\leftarrow$ \ChildOne\;

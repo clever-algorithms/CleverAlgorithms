@@ -38,9 +38,9 @@ The Differential Evolution algorithm involves maintaining a population of candid
 Differential Evolution has a specialized nomenclature that describes the adopted configuration. This takes the form of DE$/x/y/z$, where $x$ represents the solution to be perturbed (such a random or best). The $y$ signifies the number of difference vectors used in the perturbation of $x$, where a difference vectors is the difference between two randomly selected although distinct members of the population. Finally, $z$ signifies the recombination operator performed such as bin for binomial and exp for exponential. 
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/rand/1/bin configuration. Algorithm~\ref{alg:new_sample} provides a pseudocode listing of the $NewSample$ function from the Differential Evolution algorithm.
+Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/\-rand/\-1/\-bin configuration. Algorithm~\ref{alg:new_sample} provides a pseudocode listing of the $NewSample$ function from the Differential Evolution algorithm.
 
-\begin{algorithm}[htp]
+\begin{algorithm}[ht]
 	\SetLine  
 
 	% data
@@ -97,7 +97,7 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the 
 \end{algorithm}
 
 
-\begin{algorithm}[htp]
+\begin{algorithm}[ht]
 	\SetLine  
 
 	% data
