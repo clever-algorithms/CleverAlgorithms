@@ -55,20 +55,103 @@ This is achieved through a series of three processes on a population of simulate
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:bfoa} provides a pseudocode listing of the Bacterial Foraging Optimization Algorithm for minimizing a cost function. 
-A bacteria cost is derated by its interaction with other cells. This interaction is calculated as follows: 
+Algorithm~\ref{alg:bfoa} provides a pseudocode listing of the Bacterial Foraging Optimization Algorithm for minimizing a cost function. Algorithm~\ref{alg:chemotaxis} provides the pseudocode listing for the chemotaxis and swing behaviour of the BFOA algorithm.
+A bacteria cost is derated by its interaction with other cells. This interaction function ($g()$) is calculated as follows: 
 
 \begin{align*}
-	interaction(cell_k) = 
-	&\sum_{i=1}^S\bigg[-d_{attract}\times exp\bigg(-w_{attract}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg] + \\
-	&\sum_{i=1}^S\bigg[h_{repellant}\times exp\bigg(-w_{repellant}\times \sum_{m=1}^P cell_m^k - other_m^i)^2 \bigg) \bigg]
+	g(cell_k) = 
+	&\sum_{i=1}^S\bigg[-d_{attr}\times exp\bigg(-w_{attr}\times \sum_{m=1}^P (cell_m^k - other_m^i)^2 \bigg) \bigg] + \\
+	&\sum_{i=1}^S\bigg[h_{repel}\times exp\bigg(-w_{repel}\times \sum_{m=1}^P cell_m^k - other_m^i)^2 \bigg) \bigg]
 \end{align*}
 
-where $cell_k$ is a given cell, $d_{attract}$ and $w_{attract}$ are attraction coefficients, $h_{repellant}$ and $w_{repellant}$ are repulsion coefficients, $S$ is the number of cells in the population, $P$ is the number of dimensions on a given cells position vector.
+where $cell_k$ is a given cell, $d_{attr}$ and $w_{attr}$ are attraction coefficients, $h_{repel}$ and $w_{repel}$ are repulsion coefficients, $S$ is the number of cells in the population, $P$ is the number of dimensions on a given cells position vector.
 
 The remaining parameters of the algorithm are as follows $Cells_{num}$ is the number of cells maintained in the population, $N_{ed}$ is the number of elimination-dispersal steps, $N_{re}$ is the number of reproduction steps, $N_{c}$ is the number of chemotaxis steps, $N_{s}$ is the number of swim steps for a given cell, $Step_{size}$ is a random direction vector with the same number of dimensions as the problem space, and each value $\in [-1,1]$, and $P_{ed}$ is the probability of a cell being subjected to elimination and dispersal. 
 
-\begin{algorithm}[Htp]
+\begin{algorithm}[ht]
+	\SetLine
+
+	% params
+	\SetKwData{ProblemSize}{$Problem_{size}$}
+	\SetKwData{NumCells}{$Cells_{num}$}
+	\SetKwData{EliminationDispersalSteps}{$N_{ed}$}
+	\SetKwData{ReproductionSteps}{$N_{re}$}
+	\SetKwData{ChemotaxisSteps}{$N_{c}$}
+	\SetKwData{SwimSteps}{$N_{s}$}
+	\SetKwData{StepSize}{$Step_{size}$}
+	\SetKwData{ProbElimination}{$P_{ed}$}
+	
+	\SetKwData{DA}{$d_{attract}$}
+	\SetKwData{DW}{$w_{attract}$}
+	\SetKwData{HR}{$h_{repellant}$}
+	\SetKwData{WR}{$w_{repellant}$}
+	
+	% data
+	\SetKwData{Population}{Population}
+	\SetKwData{Cell}{Cell}
+	\SetKwData{CellNewPosition}{$Cell\prime$}
+	\SetKwData{CellFitness}{$Cell_{fitness}$}
+	\SetKwData{CellNewPositionFitness}{${Cell\prime}_{fitness}$}
+	\SetKwData{RandomStepDirection}{RandomStepDirection}
+	\SetKwData{Best}{$Cell_{best}$}
+	\SetKwData{CellHealth}{$Cell_{health}$}
+	\SetKwData{Selected}{Selected}
+	
+	% functions
+	\SetKwFunction{InitializePopulation}{InitializePopulation}  
+	\SetKwFunction{Interaction}{Interaction}
+	\SetKwFunction{CreateStep}{CreateStep}
+	\SetKwFunction{TakeStep}{TakeStep}
+	\SetKwFunction{Cost}{Cost}
+	\SetKwFunction{SortByCellHealth}{SortByCellHealth}
+	\SetKwFunction{SelectByCellHealth}{SelectByCellHealth}
+	\SetKwFunction{Rand}{Rand}
+	\SetKwFunction{CreateCellAtRandomLocation}{CreateCellAtRandomLocation}
+  \SetKwFunction{ChemotaxisAndSwim}{ChemotaxisAndSwim}
+	% I/O
+	\KwIn{\ProblemSize, \NumCells, \EliminationDispersalSteps, \ReproductionSteps, \ChemotaxisSteps, \SwimSteps, \StepSize, \DA, \DW, \HR, \WR, \ProbElimination}		
+	\KwOut{\Best}
+  % Algorithm
+
+	\Population $\leftarrow$ \InitializePopulation{\NumCells, \ProblemSize}\;
+
+	\For{$l=0$ \KwTo \EliminationDispersalSteps}{
+	
+		\For{$k=0$ \KwTo \ReproductionSteps}{
+		
+			\For{$j=0$ \KwTo \ChemotaxisSteps}{
+				% perform chemotaxis and swim steps
+				  \ChemotaxisAndSwim{\Population, \ProblemSize, \NumCells, \SwimSteps, \StepSize, \DA, \DW, \HR, \WR}\;
+				  \ForEach{\Cell $\in$ \Population} {
+				    \If{\Cost{\Cell} $\leq$ \Cost{\Best}} {
+						  \Best $\leftarrow$ \Cell\;
+					  }
+				  }
+			}			
+			% perform reproduction
+			\SortByCellHealth{\Population}\;
+			\Selected $\leftarrow$ \SelectByCellHealth{\Population, $\frac{\NumCells}{2}$}\;
+			\Population $\leftarrow$ \Selected\;
+			\Population $\leftarrow$ \Selected\;
+		}
+	
+		% perform elimination and dispersal
+		\ForEach{\Cell $\in$ \Population} {
+			\If{\Rand{} $\leq$ \ProbElimination} {
+				\Cell $\leftarrow$ \CreateCellAtRandomLocation{}\;
+			}
+		}
+	}
+	
+	\Return{\Best}\;
+	% end
+	\caption{Pseudocode for the BFOA.}
+	\label{alg:bfoa}
+\end{algorithm}
+
+
+
+\begin{algorithm}[ht]
 	\SetLine
 
 	% params
@@ -109,58 +192,29 @@ The remaining parameters of the algorithm are as follows $Cells_{num}$ is the nu
 	\SetKwFunction{CreateCellAtRandomLocation}{CreateCellAtRandomLocation}
   
 	% I/O
-	\KwIn{\ProblemSize, \NumCells, \EliminationDispersalSteps, \ReproductionSteps, \ChemotaxisSteps, \SwimSteps, \StepSize, \DA, \DW, \HR, \WR, \ProbElimination}		
-	\KwOut{\Best}
-  % Algorithm
+	\KwIn{\Population, \ProblemSize, \NumCells, \SwimSteps, \StepSize, \DA, \DW, \HR, \WR}		
 
-	\Population $\leftarrow$ \InitializePopulation{\NumCells, \ProblemSize}\;
-
-	\For{$l=0$ \KwTo \EliminationDispersalSteps}{
-	
-		\For{$k=0$ \KwTo \ReproductionSteps}{
-		
-			\For{$j=0$ \KwTo \ChemotaxisSteps}{
-				% perform chemotaxis
-				\ForEach{\Cell $\in$ \Population} {
-					\CellFitness $\leftarrow$ \Cost{\Cell} $+$ \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
-					\CellHealth $\leftarrow$ \CellFitness\;
-					\CellNewPosition $\leftarrow$ $\emptyset$\;
-					% swim
-					\For{$i=0$ \KwTo \SwimSteps}{
-						\RandomStepDirection $\leftarrow$ \CreateStep{\ProblemSize}\;
-						\CellNewPosition $\leftarrow$ \TakeStep{\RandomStepDirection, \StepSize}\;
-						\CellNewPositionFitness $\leftarrow$ \Cost{\CellNewPosition} + \Interaction{\CellNewPosition, \Population, \DA, \DW, \HR, \WR}\;
-						\eIf {\CellNewPositionFitness $>$ \CellFitness} {
-							$i \leftarrow$ \SwimSteps\;
-						}{
-							\Cell $\leftarrow$ \CellNewPosition\;
-							\CellHealth $\leftarrow$ \CellHealth + \CellNewPositionFitness\;
-						}						
-					}	
-					\If{\Cost{\Cell} $\leq$ \Cost{\Best}} {
-						\Best $\leftarrow$ \Cell\;
-					}
-				}
-			}			
-			% perform reproduction
-			\SortByCellHealth{\Population}\;
-			\Selected $\leftarrow$ \SelectByCellHealth{\Population, $\frac{\NumCells}{2}$}\;
-			\Population $\leftarrow$ \Selected\;
-			\Population $\leftarrow$ \Selected\;
-		}
-	
-		% perform elimination and dispersal
-		\ForEach{\Cell $\in$ \Population} {
-			\If{\Rand{} $\leq$ \ProbElimination} {
-				\Cell $\leftarrow$ \CreateCellAtRandomLocation{}\;
-			}
+	% perform chemotaxis
+	\ForEach{\Cell $\in$ \Population} {
+		\CellFitness $\leftarrow$ \Cost{\Cell} $+$ \Interaction{\Cell, \Population, \DA, \DW, \HR, \WR}\;
+		\CellHealth $\leftarrow$ \CellFitness\;
+		\CellNewPosition $\leftarrow$ $\emptyset$\;
+		% swim
+		\For{$i=0$ \KwTo \SwimSteps}{
+			\RandomStepDirection $\leftarrow$ \CreateStep{\ProblemSize}\;
+			\CellNewPosition $\leftarrow$ \TakeStep{\RandomStepDirection, \StepSize}\;
+			\CellNewPositionFitness $\leftarrow$ \Cost{\CellNewPosition} + \Interaction{\CellNewPosition, \Population, \DA, \DW, \HR, \WR}\;
+			\eIf {\CellNewPositionFitness $>$ \CellFitness} {
+				$i \leftarrow$ \SwimSteps\;
+			}{
+				\Cell $\leftarrow$ \CellNewPosition\;
+				\CellHealth $\leftarrow$ \CellHealth + \CellNewPositionFitness\;
+			}						
 		}
 	}
-	
-	\Return{\Best}\;
 	% end
-	\caption{Pseudocode for the Bacterial Foraging Optimization Algorithm.}
-	\label{alg:bfoa}
+	\caption{Pseudocode for the \texttt{ChemotaxisAndSwim} function.}
+	\label{alg:chemotaxis}
 \end{algorithm}
 
 % Heuristics: Usage guidelines

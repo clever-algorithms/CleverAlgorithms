@@ -54,11 +54,11 @@ This is achieved by assigning initially random positions to all particles in the
 % What are the data structures and representations used in a technique?
 The Particle Swarm Optimization algorithm is comprised of a collection of particles that move around the search space influenced by their own best past location and the best past location of the whole swarm or a close neighbor. Each iteration a particle's velocity is updated using:
 
-\begin{equation}
+\begin{align*}
 	v_{i}(t+1) = v_{i}(t) + 
-	\big( c_1 \times rand() \times (p_{i}^{best} - p_{i}(t)) \big) + 
-	\big( c_2 \times rand() \times (p_{gbest} - p_{i}(t)) \big)
-\end{equation}
+	&\big( c_1 \times rand() \times (p_{i}^{best} - p_{i}(t)) \big) +  \\
+	&\big( c_2 \times rand() \times (p_{gbest} - p_{i}(t)) \big)
+\end{align*}
 
 where $v_{i}(t+1)$ is the new velocity for the $i^{th}$ particle, $c_1$ and $c_2$ are the weighting coefficients for the personal best and global best positions respectively, $p_{i}(t)$ is the $i^{th}$ particle's position at time $t$, $p_{i}^{best}$ is the $i^{th}$ particle's best known position, and $p_{gbest}$ is the best position known to the swarm. The $rand()$ function generate a uniformly random variable $\in [0,1]$. Variants on this update equation consider best positions within a particles local neighborhood at time $t$.
 
