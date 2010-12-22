@@ -67,7 +67,7 @@ END
 gnuplot <<END
 set terminal postscript
 set output "pso1.ps"
-set size 4/5., 3/3.
+set size square
 unset key
 set xrange [-5:5]
 set yrange [-5:5]

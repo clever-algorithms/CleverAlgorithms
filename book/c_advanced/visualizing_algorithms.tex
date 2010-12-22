@@ -59,7 +59,6 @@ Figure~\ref{plot:basin1} provides an example of the Basin function in one dimens
 Listing~\ref{basin_1d} provides the Gnuplot script used to prepare the plot ($n=1$).
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in one-dimension., label=basin_1d]
-unset key
 set xrange [-5:5]
 plot x*x
 \end{lstlisting}
@@ -76,7 +75,6 @@ Figure~\ref{plot:basin2} provides an example of the basin function in two-dimens
 Listing~\ref{basin_2d} provides the Gnuplot script used to prepare the surface plot.
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in two-dimensions, label=basin_2d]
-unset key
 set xrange [-5:5]
 set yrange [-5:5]
 set zrange [0:50]
@@ -103,7 +101,6 @@ Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 Traveling Salesma
 Listing~\ref{tsp1} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space. 
 
 \begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 Traveling Salesman Problem., label=tsp1]
-unset key
 plot "berlin52.tsp"
 \end{lstlisting}
 
@@ -144,7 +141,6 @@ Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the
 Listing~\ref{ga_performance} provides the Gnuplot script used to prepare the plot, where \texttt{ga1.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line.
 
 \begin{lstlisting}[caption=Gnuplot script for creating a line graph of algorithm performance over time., label=ga_performance]
-unset key
 set yrange [45:64]
 plot "ga1.txt" with linespoints
 \end{lstlisting}
@@ -176,7 +172,6 @@ Figure~\ref{plot:ga2} provides a histogram plot showing the best solutions found
 Listing~\ref{ga_runs} provide the Gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs.
 
 \begin{lstlisting}[caption=Gnuplot script for creating a histogram of algorithm performance from multiple runs., label=ga_runs]
-unset key
 set yrange [0:17]
 set xrange [275:290]
 plot "ga2.histogram.txt" with boxes
@@ -211,7 +206,6 @@ Figure~\ref{plot:ga3} provides box-and-whisker plots of the best score distribut
 Listing~\ref{ea_comparison} provide the Gnuplot script used to prepare the plot, where the file \texttt{boxplots1.txt} contains summaries of the results one run per line, each each line containing the min, first, second, and third quartiles and the max values separated by a space.
 
 \begin{lstlisting}[caption=Gnuplot script for creating a boxplot., label=ea_comparison]
-unset key
 set bars 15.0
 set xrange [-1:3]
 plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
@@ -239,9 +233,10 @@ Visualizing candidate solutions from a continuous function optimization domain a
 % example
 Figure~\ref{plot:pso1} provides a plot of the best solution found each iteration by the Particle Swarm Optimization algorithm on the Basin function in two dimensions (see Section~\ref{sec:pso}). The positions of the candidate solutions are projected on top of a contour map of the Basin function in two-dimensions, with contours representing the cost of solutions at each point. 
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 \centering
-\includegraphics[scale=0.5]{graphics/pso1.pdf}
+% trim=l b r t
+\includegraphics[trim = 2in 1.5in 2in 1.5in, clip, scale=0.5]{graphics/pso1.pdf}
 \caption{Contour plot of the basin function showing the position of selected samples in the domain.}
 \label{plot:pso1}
 \end{figure}
@@ -249,7 +244,6 @@ Figure~\ref{plot:pso1} provides a plot of the best solution found each iteration
 Listing~\ref{pso1} provides the Gnuplot script used to prepare the plot, where \texttt{pso1.txt} is a file that contains the coordinates of the best solution found by the algorithm, with one coordinate per line separated by a space.
 
 \begin{lstlisting}[caption=Gnuplot script use to create a contour plot and the position of selected samples from the domain., label=pso1]
-unset key
 set xrange [-5:5]
 set yrange [-5:5]
 set pm3d map
@@ -290,7 +284,6 @@ Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution f
 Listing~\ref{tsp3} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.nn.tour} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
 \begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp3]
-unset key
 plot "berlin52.nn.tour" with linespoints
 \end{lstlisting}
 
@@ -317,7 +310,6 @@ Figure~\ref{plot:tsp2} provides a plot of the known optimal solution for the Ber
 Listing~\ref{tsp2} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.optimal} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
 \begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp2]
-unset key
 plot "berlin52.optimal" with linespoints
 \end{lstlisting}
 
