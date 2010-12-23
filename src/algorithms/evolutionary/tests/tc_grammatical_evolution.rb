@@ -13,7 +13,7 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
   # test that members of the population are selected
   def test_binary_tournament
     pop = Array.new(10) {|i| {:fitness=>i} }
-    10.times {assert(pop.include?(binary_tournament(pop)))}  
+    10.times {assert(pop.include?(binary_tournament(pop)))}
   end
   
   # test point mutations at the limits

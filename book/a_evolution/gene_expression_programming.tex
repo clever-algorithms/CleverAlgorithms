@@ -151,7 +151,7 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudocode listing of
 	\item Crossover occurs between two selected parents from the population and can occur based on a one-point cross, two point cross, or a gene-based approach where genes are selected from the parents with uniform probability.
 	\item An inversion operator may be used with a low probability that reverses a small sequence of symbols (1-3) within a section of a gene (tail or head). 
 	\item A transposition operator may be used that has a number of different modes, including: duplicate a small sequences (1-3) from somewhere on a gene to the head, small sequences on a gene to the root of the gene, and moving of entire genes in the chromosome. In the case of intra-gene transpositions, the sequence in the head of the gene is moved down to accommodate the copied sequence and the length of the head is truncated to maintain consistent gene sizes.
-	\item A `?' is included in the terminal set that represents a numeric constant from an array that is evolved on the end of the genome. The constants are read from the end of the genome and are substituted for `?' as the expression tree is created (in breadth first order). Finally the numeric constants are used as array indices in yet another chromosome of numerical values which are substituted into the expression tree.
+	\item A `?' may be included in the terminal set that represents a numeric constant from an array that is evolved on the end of the genome. The constants are read from the end of the genome and are substituted for `?' as the expression tree is created (in breadth first order). Finally the numeric constants are used as array indices in yet another chromosome of numerical values which are substituted into the expression tree.
 	\item Mutation is low (such as $\frac{1}{L}$), selection can be any of the classical approaches (such as roulette wheel or tournament), and crossover rates are typically high (0.7 of offspring)
 	\item Use multiple sub-expressions linked together on hard problems when one gene is not sufficient to address the problem. The sub-expressions are linked using link expressions which are function nodes that are either statically defined (such as a conjunction) or evolved on the genome with the genes.
 \end{itemize}
@@ -162,9 +162,11 @@ Algorithm~\ref{alg:gene_expression_programming} provides a pseudocode listing of
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{gene_expression_programming} provides an example of the Gene Expression Programming algorithm implemented in the Ruby Programming Language based on the seminal version proposed by Ferreira \cite{Ferreira2001}.
 % problem
-The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[-1,1]$. The grammar used in this problem is: Functions: $F=\{+,-,\div,\times,\}$ and Terminals: $T=\{x\}$.
+The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[1,10]$. The grammar used in this problem is: Functions: $F=\{+,-,\div,\times,\}$ and Terminals: $T=\{x\}$.
+
 % algorithm
 The algorithm uses binary tournament selection, uniform crossover and point mutations. The K-expression is decoded to an expression tree in a breadth-first manner, which is then parsed depth first as a Ruby expression string for display and direct evaluation.
+Solutions are evaluated by generating a number of random samples from the domain and calculating the mean error of the program to the expected outcome. Programs that contain a single term or those that return an invalid (NaN) or infinite result are penalized with an enormous error value.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Gene Expression Programming algorithm in the Ruby Programming Language, label=gene_expression_programming]{../src/algorithms/evolutionary/gene_expression_programming.rb}
