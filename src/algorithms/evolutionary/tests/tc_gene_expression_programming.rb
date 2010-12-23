@@ -16,23 +16,26 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     10.times {assert(pop.include?(binary_tournament(pop)))}
   end
   
-  # test point mutations at the limits
-#  def test_point_mutation
-#    grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
-#    head = 3
-#    assert_equal("***000", point_mutation(grammar, "***000000000", head, 0))
-#    assert_not_equal("***000", point_mutation(grammar, "***000000000", head, 1))
-#  end
-
-  # test that the observed changes approximate the intended probability
-#  def test_point_mutation_ratio
-#    changes = 0
-#    100.times do
-#      s = point_mutation("0000000000", 0.5)
-#      changes += (10 - s.delete('1').size)
-#    end
-#    assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
-#  end  
+  # test point mutation
+  def test_point_mutation
+    grammar = {"FUNC"=>["A"], "TERM"=>["B"]}
+    # no change
+    20.times do
+      assert_equal("AAAABBBBBBBB", point_mutation(grammar, "AAAABBBBBBBB", 4, 0))
+    end
+    # constrained change
+    20.times do
+      s = point_mutation(grammar, "AAAABBBBBBBB", 4, 1)
+      assert_equal(12, s.length)
+      s.size.times do |i|
+        if i <= 3
+          assert(grammar["FUNC"].include?(s[i].chr) || grammar["TERM"].include?(s[i].chr))
+        else 
+          assert(grammar["TERM"].include?(s[i].chr))
+        end
+      end
+    end
+  end
   
   # test recombination
   def test_uniform_crossover
@@ -44,12 +47,39 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
+  # test reproduction
   def test_reproduce
-    # TODO
+    # create valid children
+    grammar = {"FUNC"=>["A"], "TERM"=>["B", "C"]}
+    selected = Array.new(20) { {:genome=>"AAAABBBBBBBB"} }
+    children = reproduce(grammar, selected, selected.size, 1.0, 4)
+    children.each do |c|
+      s = c[:genome]
+      assert_equal(12, s.length)
+      s.size.times do |i|
+        if i <= 3
+          assert(grammar["FUNC"].include?(s[i].chr) || grammar["TERM"].include?(s[i].chr))
+        else 
+          assert(grammar["TERM"].include?(s[i].chr))
+        end
+      end    
+    end
   end
   
+  # test that valid genomes are created
   def test_random_genome
-    # TODO
+    grammar = {"FUNC"=>["A", "B"], "TERM"=>["C", "D"]}
+    20.times do
+      s = random_genome(grammar, 4, 4*2)
+      assert_equal(12, s.length)
+      s.size.times do |i|
+        if i <= 3
+          assert(grammar["FUNC"].include?(s[i].chr) || grammar["TERM"].include?(s[i].chr))
+        else 
+          assert(grammar["TERM"].include?(s[i].chr))
+        end
+      end
+    end
   end
   
   # test the target function
@@ -81,26 +111,73 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     assert_in_delta(0.0, cost(optima, [-1, +1]), 0.00000001)
   end
   
+  # test the conversio of structure to tree
   def test_breadth_first_mapping
-    # TODO
+    grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
+    # single node
+    node = breadth_first_mapping("x", grammar)
+    assert_equal("x", node[:node])
+    assert_nil(node[:left])
+    assert_nil(node[:right])
+    # left leaning tree 
+    node = breadth_first_mapping("**xxx", grammar)
+    assert_equal("*", node[:node])
+    assert_equal("*", node[:left][:node])
+    assert_equal("x", node[:right][:node])
+    assert_equal("x", node[:left][:left][:node])
+    assert_equal("x", node[:left][:right][:node])
+    # right leaning tree
+    node = breadth_first_mapping("*x*xx", grammar)
+    assert_equal("*", node[:node])
+    assert_equal("x", node[:left][:node])
+    assert_equal("*", node[:right][:node])
+    assert_equal("x", node[:right][:left][:node])
+    assert_equal("x", node[:right][:right][:node])
   end
   
+  # test the conversion of tree to expression
   def test_tree_to_string
-    # TODO
+    # simplest
+    assert_equal("x", tree_to_string({:node=>"x"}))
+    # simple addition expression
+    assert_equal("(x + x)", tree_to_string({:node=>"+", :left=>{:node=>"x"}, :right=>{:node=>"x"}}))
+    # expression with sub-expression
+    assert_equal("(x + (x * x))", tree_to_string({:node=>"+", :left=>{:node=>"x"}, 
+      :right=>{:node=>"*", :left=>{:node=>"x"}, :right=>{:node=>"x"} }}))
   end
   
   # test the optimal solution evaluates correctly
   def test_evaluate
     grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
     bounds = [1, 10]  
-    optima = {:genome=>"+++***x*x*xxx*xxxxxxxxxxx"}
+    optima = {:genome=>"+++***x*x*xxx*xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"} #l=48
     evaluate(optima, grammar, bounds)
     assert_equal("(((((x * x) * x) * x) + ((x * x) * x)) + ((x * x) + x))", optima[:program])
     assert_in_delta(0.0, optima[:fitness], 0.00000001)
   end
   
-  def test_search
-    # TODO
-  end
+  # helper for turning off STDOUT
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  def silence_stream(stream)
+    old_stream = stream.dup
+    stream.reopen('/dev/null')
+    stream.sync = true
+    yield
+  ensure
+    stream.reopen(old_stream)
+  end 
   
+  # test that the system returns something better than random
+  def test_search
+    grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
+    bounds = [1, 10]  
+    head, tail = 10, 2*10
+    random = {:genome=>random_genome(grammar, head, tail)}
+    evaluate(random, grammar, bounds)
+    best = nil
+    silence_stream(STDOUT) do
+      best = search(grammar, bounds, head, tail, 10, 50, 0.9)
+    end
+    assert(best[:fitness] < random[:fitness])
+  end  
 end

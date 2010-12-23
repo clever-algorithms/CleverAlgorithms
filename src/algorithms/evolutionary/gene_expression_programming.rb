@@ -121,7 +121,7 @@ def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_c
     children.each{|c| evaluate(c, grammar, bounds)}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] <= best[:fitness]
-    pop = children
+    pop = (children+pop).first(pop_size)
     puts " > gen=#{gen}, f=#{best[:fitness]}, g=#{best[:genome]}"
   end  
   return best
