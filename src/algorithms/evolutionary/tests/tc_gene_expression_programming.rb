@@ -187,17 +187,15 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     stream.reopen(old_stream)
   end 
   
-  # test that the system returns something better than random
+  # test that the system can reliably solve the problem 
   def test_search
-    grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
+    grammar = {"FUNC"=>["+","*"], "TERM"=>["x"]}
     bounds = [1, 10]  
-    head, tail = 10, 2*10
-    random = {:genome=>random_genome(grammar, head, tail)}
-    evaluate(random, grammar, bounds)
+    head, tail = 20, 2*10
     best = nil
     silence_stream(STDOUT) do
-      best = search(grammar, bounds, head, tail, 10, 50, 0.9)
+      best = search(grammar, bounds, head, tail, 50, 50, 0.9)
     end
-    assert(best[:fitness] < random[:fitness])
+    assert_in_delta(0.0, best[:fitness], 1.0)
   end  
 end

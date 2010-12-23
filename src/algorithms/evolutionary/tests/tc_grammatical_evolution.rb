@@ -160,8 +160,30 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     # TODO
   end
   
+  # helper for turning off STDOUT
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  def silence_stream(stream)
+    old_stream = stream.dup
+    stream.reopen('/dev/null')
+    stream.sync = true
+    yield
+  ensure
+    stream.reopen(old_stream)
+  end   
+  
+  # test that the system can reliably solve the problem 
   def test_search
-    # TODO
+    grammar = {"S"=>"EXP",
+      "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " VAR "],
+      "BINARY"=>["+", "-", "/", "*" ],
+      "VAR"=>["INPUT", "1.0"]}
+    bounds = [1, 10]
+    # srand(10)
+    best = nil
+    silence_stream(STDOUT) do
+      best = search(50, 50, 4, 30, 0.7, grammar, 5, bounds)
+    end    
+    assert_in_delta(0.0, best[:fitness], 1.0)
   end
   
 end
