@@ -5,7 +5,6 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-#require Pathname.new(File.dirname(__FILE__)) + "../gene_expression_programming"
 require "../gene_expression_programming"
 
 class TC_GeneExpressionProgramming < Test::Unit::TestCase

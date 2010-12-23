@@ -39,6 +39,7 @@ def reproduce(grammar, selected, pop_size, p_crossover, head_length)
   children = []  
   selected.each_with_index do |p1, i|    
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
     child = {}
     child[:genome] = uniform_crossover(p1[:genome], p2[:genome], p_crossover)
     child[:genome] = point_mutation(grammar, child[:genome], head_length)

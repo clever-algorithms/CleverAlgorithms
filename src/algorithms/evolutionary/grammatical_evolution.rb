@@ -39,16 +39,18 @@ def codon_deletion(bitstring, codon_bits, rate=0.5/codon_bits.to_f)
   return bitstring[0...off] + bitstring[off+codon_bits...bitstring.size]
 end
 
-def reproduce(selected, population_size, p_crossover, codon_bits)
+def reproduce(selected, pop_size, p_crossover, codon_bits)
   children = []
   selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
     child = {}
     child[:bitstring] = one_point_crossover(p1, p2, codon_bits, p_crossover)
     child[:bitstring] = codon_deletion(child[:bitstring], codon_bits)
     child[:bitstring] = codon_duplication(child[:bitstring], codon_bits)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
+    break if children.size == pop_size
   end
   return children
 end
@@ -90,7 +92,7 @@ def map(grammar, integers, max_depth)
 end
 
 def target_function(x)
-  return x**3.0 + x**2.0 + x
+  return x**4.0 + x**3.0 + x**2.0 + x
 end
 
 def sample_from_bounds(bounds)
@@ -103,10 +105,9 @@ def cost(program, bounds, test_iterations=30)
   test_iterations.times do
     x = sample_from_bounds(bounds)
     expression = program.gsub("INPUT", x.to_s)
-    target = target_function(x)
     begin score = eval(expression) rescue score = 0.0/0.0 end
     return 9999999 if score.nan? or score.infinite?
-    sum_error += (score - target).abs
+    sum_error += (score - target_function(x)).abs
   end
   return sum_error / test_iterations.to_f
 end
@@ -137,13 +138,13 @@ end
 if __FILE__ == $0
   # problem configuration
   grammar = {"S"=>"EXP",
-    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNARY(EXP) ", " VAR "],
+    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " VAR "],
     "BINARY"=>["+", "-", "/", "*" ],
     "VAR"=>["INPUT", "1.0"]}
-  bounds = [-1, +1]
+  bounds = [1, 10]
   # algorithm configuration
-  max_depth = 8
-  generations = 100
+  max_depth = 7
+  generations = 50
   pop_size = 100
   codon_bits = 4
   initial_bits = 10*codon_bits

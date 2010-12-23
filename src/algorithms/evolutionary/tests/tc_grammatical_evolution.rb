@@ -5,7 +5,6 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-#require Pathname.new(File.dirname(__FILE__)) + "../grammatical_evolution"
 require "../grammatical_evolution"
 
 class TC_GrammaticalEvolution < Test::Unit::TestCase
@@ -67,8 +66,27 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     assert_equal("0000", p)
   end
   
+  # test reproduce
   def test_reproduce
-    # TODO
+    pop = Array.new(10) {|i| {:bitstring=>"00000000"} }
+    children = reproduce(pop, 10, 0, 4)
+    children.each_with_index do |c,i| 
+      assert_not_same(pop[i][:bitstring], c[:bitstring])
+    end
+  end
+  
+  # test odd sized population
+  def test_reproduce_mismatch
+    pop = Array.new(9) {|i| {:bitstring=>"00000000"} }
+    children = reproduce(pop, 10, 0, 4)
+    assert_equal(9, children.size)
+  end  
+
+  # test reproduce size mismatch
+  def test_reproduce_mismatch
+    pop = Array.new(10) {|i| {:bitstring=>"00000000"} }
+    children = reproduce(pop, 9, 0, 4)
+    assert_equal(9, children.size)
   end
   
   # test the creation of random strings
@@ -98,15 +116,22 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     assert_equal(2, p[1])
   end
   
+  # test mapping integers onto a program
   def test_map
-    # TODO
+    grammar = {"S"=>"EXP",
+    "EXP"=>[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " UNARY(EXP) ", " VAR "],
+    "BINARY"=>["+", "-", "/", "*" ],
+    "VAR"=>["INPUT", "1.0"]}
+    # simplest expression
+    #map(grammar, integers, 999)
+    # TODO write this    
   end
   
   # test the target function
   def test_target_function
     assert_equal(0.0, target_function(0.0))
-    assert_equal(3.0, target_function(1.0))
-    assert_equal((2**3+2**2+2), target_function(2.0))
+    assert_equal(4.0, target_function(1.0))
+    assert_equal((2**4+2**3+2**2+2), target_function(2.0))
   end
   
   # test sampling from the domain
@@ -127,10 +152,8 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     # bad program
     assert_equal(9999999, cost("INPUT", [-1, +1]))
     # optima
-    optima = "(INPUT * (INPUT * INPUT)) + (INPUT * INPUT) + INPUT"
+    optima = "(INPUT * (INPUT * (INPUT * INPUT))) + (INPUT * (INPUT * INPUT)) + (INPUT * INPUT) + INPUT"
     assert_in_delta(0.0, cost(optima, [-1, +1]), 0.00000001)
-    # a program that comes up a lot
-    assert_in_delta(0.3, cost("INPUT  /  1.0", [-1, +1], 100), 0.1)
   end
   
   def test_evaluate
