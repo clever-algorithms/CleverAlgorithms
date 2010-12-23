@@ -6,7 +6,7 @@
 
 def onemax(bitstring)
   sum = 0
-  bitstring.each_char {|x| sum+=1 if x=='1'}
+  bitstring.size.times {|i| sum+=1 if bitstring[i].chr == '1'}
   return sum
 end
 
@@ -14,15 +14,15 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def point_mutation(bitstring, prob_mutation)
+def point_mutation(bitstring, rate=1.0/bitstring.size)
   child = ""
-   bitstring.each_char do |bit|
-    child << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+   bitstring.size.times do |i|
+    child << ((rand()<rate) ? ((bitstring[i].chr=='1') ? "0" : "1") : bitstring[i].chr)
   end
   return child
 end
@@ -36,15 +36,16 @@ def uniform_crossover(parent1, parent2, p_crossover)
   return child
 end
 
-def reproduce(selected, population_size, p_crossover, p_mutation)
+def reproduce(selected, pop_size, p_crossover, p_mutation)
   children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
     child = {}
     child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
     child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
     children << child
-    break if children.size >= population_size
+    break if children.size >= pop_size
   end
   return children
 end

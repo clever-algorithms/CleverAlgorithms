@@ -5,7 +5,8 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require Pathname.new(File.dirname(__FILE__)) + "../genetic_algorithm"
+# require Pathname.new(File.dirname(__FILE__)) + "../genetic_algorithm"
+require "../genetic_algorithm"
 
 class TC_GeneticAlgorithm < Test::Unit::TestCase
       
@@ -81,7 +82,14 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
       assert_equal("1111111111", c[:bitstring])
       assert_not_same(pop[i][:bitstring], c[:bitstring])  
     end
-  end      
+  end
+  
+  # test odd sized population
+  def test_reproduce_mismatch
+    pop = Array.new(9) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 0, 1)
+    assert_equal(9, children.size)
+  end  
 
   # test reproduce size mismatch
   def test_reproduce_mismatch

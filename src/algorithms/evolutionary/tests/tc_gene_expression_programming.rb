@@ -47,12 +47,33 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
-  # test reproduction
-  def test_reproduce
+  # test reproduction with even sized pop
+  def test_reproduce_even
     # create valid children
     grammar = {"FUNC"=>["A"], "TERM"=>["B", "C"]}
     selected = Array.new(20) { {:genome=>"AAAABBBBBBBB"} }
     children = reproduce(grammar, selected, selected.size, 1.0, 4)
+    assert_equal(20, children.size)
+    children.each do |c|
+      s = c[:genome]
+      assert_equal(12, s.length)
+      s.size.times do |i|
+        if i <= 3
+          assert(grammar["FUNC"].include?(s[i].chr) || grammar["TERM"].include?(s[i].chr))
+        else 
+          assert(grammar["TERM"].include?(s[i].chr))
+        end
+      end    
+    end
+  end
+  
+  # test reproduction with odd sized pop
+  def test_reproduce_odd
+    # create valid children
+    grammar = {"FUNC"=>["A"], "TERM"=>["B", "C"]}
+    selected = Array.new(19) { {:genome=>"AAAABBBBBBBB"} }
+    children = reproduce(grammar, selected, selected.size, 1.0, 4)
+    assert_equal(19, children.size)
     children.each do |c|
       s = c[:genome]
       assert_equal(12, s.length)
