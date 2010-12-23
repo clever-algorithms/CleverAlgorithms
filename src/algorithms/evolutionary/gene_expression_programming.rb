@@ -9,7 +9,7 @@ def binary_tournament(pop)
   return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def point_mutation(grammar, genome, head_length, rate=1/genome.size.to_f)
+def point_mutation(grammar, genome, head_length, rate=1.0/genome.size.to_f)
   child =""
   genome.size.times do |i|
     bit = genome[i].chr
@@ -130,7 +130,7 @@ end
 if __FILE__ == $0
   # problem configuration
   grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
-  bounds = [1, 10]
+  bounds = [1.0, 10.0]
   # algorithm configuration
   head_length = 24
   tail_length = head_length * (2-1) + 1
