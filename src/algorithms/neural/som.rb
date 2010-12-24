@@ -93,14 +93,16 @@ def test_network(codebook_vectors, shape, num_trials=100)
   end
   error /= num_trials.to_f
   puts "Finished, average error=#{error}"  
+  return error
 end
 
-def run(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
+def compute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
   codebook_vectors = initialize_vectors(domain, width, height)
   summarize_vectors(codebook_vectors)
   train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
   test_network(codebook_vectors, shape)
   summarize_vectors(codebook_vectors)
+  return codebook_vectors
 end
 
 if __FILE__ == $0
@@ -113,5 +115,5 @@ if __FILE__ == $0
   neighborhood_size = 5
   width, height = 4, 5
   # execute the algorithm
-  run(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
+  compute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
 end

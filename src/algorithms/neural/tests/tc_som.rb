@@ -25,7 +25,18 @@ class TC_SOM < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    # problem
+    domain = [[0.0,1.0],[0.0,1.0]]
+    shape = [[0.3,0.6],[0.3,0.6]]
+    # compute
+    codebooks = nil
+    silence_stream(STDOUT) do
+      codebooks = compute(domain, shape, 1000, 0.3, 5, 5, 4)
+    end
+    # verify structure
+    assert_equal(20, codebooks.size)
+    # test result
+    assert_in_delta(0.0, test_network(codebooks, shape), 0.1)
   end
   
 end
