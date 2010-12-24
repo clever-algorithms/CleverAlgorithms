@@ -13,7 +13,7 @@ class TC_Hopfield < Test::Unit::TestCase
   
   
   # helper for turning off STDOUT
-  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb
   def silence_stream(stream)
     old_stream = stream.dup
     stream.reopen('/dev/null')
@@ -25,7 +25,27 @@ class TC_Hopfield < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    # test problem
+    num_inputs = 9
+    p1 = [[1,1,1],[1,-1,-1],[1,1,1]] # C
+    p2 = [[1,-1,-1],[1,-1,-1],[1,1,1]] # L
+    p3 = [[-1,1,-1],[-1,1,-1],[-1,1,-1]] # I
+    patters = [p1, p2, p3] 
+    # get output
+    neurons = nil
+    silence_stream(STDOUT) do
+      neurons = compute(patters, num_inputs)
+    end
+    # test structure
+    assert_equal(num_inputs, neurons.size)
+    # test output
+    patters.each do |pattern|
+      vector = pattern.flatten
+      output = get_output(neurons, vector)    
+      vector.each_with_index do |x,i|
+        assert_equal(x, output[i])
+      end      
+    end
   end
   
 end

@@ -13,7 +13,7 @@ class TC_LVQ < Test::Unit::TestCase
   
   
   # helper for turning off STDOUT
-  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb
   def silence_stream(stream)
     old_stream = stream.dup
     stream.reopen('/dev/null')
@@ -25,7 +25,17 @@ class TC_LVQ < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    # domain
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    # compute
+    codebooks = nil
+    silence_stream(STDOUT) do
+      codebooks = compute(domain, 1000, 10, 0.3)
+    end
+    # structure
+    assert_equal(10, codebooks.size)
+    # performance
+    assert_in_delta(100, test_network(codebooks, domain, 100), 10)
   end
   
 end

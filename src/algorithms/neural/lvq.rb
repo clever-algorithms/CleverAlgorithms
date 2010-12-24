@@ -78,13 +78,15 @@ def test_network(codebook_vectors, domain, num_trials=100)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
     correct += 1 if bmu[:class_label] == pattern[:class_label]
   end
-  puts "Finished test with a score of #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100}%)"
+  puts "Done. Score: #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100}%)"
+  return correct
 end
 
-def run(domain, iterations, num_vectors, learning_rate)  
+def compute(domain, iterations, num_vectors, learning_rate)  
   codebook_vectors = initialize_vectors(domain, num_vectors)
   train_network(codebook_vectors, domain, iterations, learning_rate)
   test_network(codebook_vectors, domain)
+  return codebook_vectors
 end
 
 if __FILE__ == $0

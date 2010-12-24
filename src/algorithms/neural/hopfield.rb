@@ -107,7 +107,7 @@ def test_network(neurons, patters)
   puts "Final Result: avg pattern error=#{error}"
 end
 
-def run(patters, num_inputs)
+def compute(patters, num_inputs)
   neurons = Array.new(num_inputs) { create_neuron(num_inputs) }
   train_network(neurons, patters)
   test_network(neurons, patters)
@@ -122,5 +122,5 @@ if __FILE__ == $0
   p3 = [[-1,1,-1],[-1,1,-1],[-1,1,-1]] # I
   patters = [p1, p2, p3]  
   # execute the algorithm
-  run(patters, num_inputs)
+  compute(patters, num_inputs)
 end
