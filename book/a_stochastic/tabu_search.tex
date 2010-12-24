@@ -119,7 +119,7 @@ The algorithm is applied to the Berlin52 instance of the Traveling Salesman Prob
 The algorithm is an implementation of the simple Tabu Search with a short term memory structure that executes for a fixed number of iterations. The starting point for the search is prepared using a random permutation that is refined using a stochastic 2-opt Local Search procedure. The stochastic 2-opt procedure is used as the embedded hill climbing heuristic with a fixed sized candidate list. The two edges that are deleted in each 2-opt move are stored on the tabu list. This general approach is similar to that used by Knox in his work on Tabu Search for symmetrical TSP \cite{Knox1994} and Fiechter for the Parallel Tabu Search for the TSP \cite{Fiechter1994}.
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Tabu Search algorithm in the Ruby Programming Language, label=tabu_search]{../src/algorithms/stochastic/tabu_search.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Tabu Search in Ruby, label=tabu_search]{../src/algorithms/stochastic/tabu_search.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.

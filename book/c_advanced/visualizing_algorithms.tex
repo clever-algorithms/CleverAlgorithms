@@ -55,7 +55,7 @@ Figure~\ref{plot:basin1} provides an example of the Basin function in one dimens
 \label{plot:basin1}
 \end{figure}
 
-\begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in one-dimension., label=basin_1d]
+\begin{lstlisting}[caption=Gnuplot script for plotting a function in one-dimension., label=basin_1d]
 set xrange [-5:5]
 plot x*x
 \end{lstlisting}
@@ -69,7 +69,7 @@ Figure~\ref{plot:basin2} provides an example of the basin function in two-dimens
 \label{plot:basin2}
 \end{figure}
 
-\begin{lstlisting}[caption=Gnuplot script for plotting the Basin function in two-dimensions, label=basin_2d]
+\begin{lstlisting}[caption=Gnuplot script for plotting a function in two-dimensions, label=basin_2d]
 set xrange [-5:5]
 set yrange [-5:5]
 set zrange [0:50]
@@ -89,13 +89,13 @@ Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 TSP used through 
 \begin{figure}[htp]
 \centering
 \input{graphics/tsp1}
-\caption{Plot of the cities of the Berlin52 Traveling Salesman Problem.}
+\caption{Plot of the cities of the Berlin52 TSP.}
 \label{plot:tsp1}
 \end{figure}
 
-Listing~\ref{tsp1} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space. Listing~\ref{tsp1.file} provides a snippet of the first five lines of the \texttt{berlin52.tsp} file.
+Listing~\ref{tsp1} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52\-.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space. Listing~\ref{tsp1.file} provides a snippet of the first five lines of the \texttt{berlin52\-.tsp} file.
 
-\begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 Traveling Salesman Problem., label=tsp1]
+\begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 TSP., label=tsp1]
 plot "berlin52.tsp"
 \end{lstlisting}
 
@@ -127,11 +127,11 @@ Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the
 \begin{figure}[htp]
 \centering
 \input{graphics/ga1}
-\caption{Line graph of the best solution found by the Genetic Algorithm on the 64-bit OneMax problem.}
+\caption{Line graph of the best solution found by the Genetic Algorithm.}
 \label{plot:ga1}
 \end{figure}
 
-\begin{lstlisting}[caption=Gnuplot script for creating a line graph of algorithm performance over time., label=ga_performance]
+\begin{lstlisting}[caption=Gnuplot script for creating a line graph., label=ga_performance]
 set yrange [45:64]
 plot "ga1.txt" with linespoints
 \end{lstlisting}
@@ -154,13 +154,13 @@ Figure~\ref{plot:ga2} provides a histogram plot showing the best solutions found
 \begin{figure}[htp]
 \centering
 \input{graphics/ga2}
-\caption{Histogram of the best solution found by a Genetic Algorithm on a 300-bit OneMax problem over 100 runs.}
+\caption{Histogram of the best solutions found by a Genetic Algorithm.}
 \label{plot:ga2}
 \end{figure}
 
 Listing~\ref{ga_runs} provide the Gnuplot script used to prepare the plot, where \texttt{ga2.histogram.txt} is a text file that contains discrete fitness values and the number of times it was discovered by the algorithm over 100 runs.
 
-\begin{lstlisting}[caption=Gnuplot script for creating a histogram of algorithm performance from multiple runs., label=ga_runs]
+\begin{lstlisting}[caption=Gnuplot script for creating a histogram., label=ga_runs]
 set yrange [0:17]
 set xrange [275:290]
 plot "ga2.histogram.txt" with boxes
@@ -188,13 +188,13 @@ Figure~\ref{plot:ga3} provides box-and-whisker plots of the best score distribut
 \begin{figure}[htp]
 \centering
 \input{graphics/ga3}
-\caption{Box-and-whisker plots showing the performance of the Genetic Algorithm on a 300-bit OneMax problem with three different mutation rates.}
+\caption{Box-and-whisker plots of the Genetic Algorithm's performance.}
 \label{plot:ga3}
 \end{figure}
 
 Listing~\ref{ea_comparison} provide the Gnuplot script used to prepare the plot, where the file \texttt{boxplots1.txt} contains summaries of the results one run per line, each each line containing the min, first, second, and third quartiles and the max values separated by a space. Listing~\ref{ga3.file} provides a complete listing of the three lines of the \texttt{boxplots1.txt} file.
 
-\begin{lstlisting}[caption=Gnuplot script for creating a boxplot., label=ea_comparison]
+\begin{lstlisting}[caption=Gnuplot script for creating a Box-and-whisker plot., label=ea_comparison]
 set bars 15.0
 set xrange [-1:3]
 plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
@@ -220,17 +220,17 @@ Visualizing candidate solutions from a continuous function optimization domain a
 % example
 Figure~\ref{plot:pso1} provides a plot of the best solution found each iteration by the Particle Swarm Optimization algorithm on the Basin function in two dimensions (see Section~\ref{sec:pso}). The positions of the candidate solutions are projected on top of a heat map of the Basin function in two-dimensions, with the gradient representing the cost of solutions at each point. 
 Listing~\ref{pso1} provides the Gnuplot script used to prepare the plot, where \texttt{pso1.txt} is a file that contains the coordinates of the best solution found by the algorithm, with one coordinate per line separated by a space.
-
+Listing~\ref{pso.file} provides a snippet of the first five lines of the \texttt{pso1.txt} file.
 
 \begin{figure}[ht]
 \centering
 % trim=l b r t
 \includegraphics[trim = 2in 1.5in 2in 1.5in, clip, scale=0.5]{graphics/pso1.pdf}
-\caption{Heat map plot of the basin function showing the position of selected samples in the domain.}
+\caption{Heat map plot showing selected samples in the domain.}
 \label{plot:pso1}
 \end{figure}
 
-\begin{lstlisting}[caption=Gnuplot script use to create a heat map and the position of selected samples from the domain., label=pso1]
+\begin{lstlisting}[caption=Gnuplot script use to create a heat map and selected samples., label=pso1]
 set xrange [-5:5]
 set yrange [-5:5]
 set pm3d map
@@ -239,8 +239,6 @@ set samples 20
 set isosamples 20
 splot x*x+y*y, "pso1.txt" using 1:2:(0) with points
 \end{lstlisting}
-
-Listing~\ref{pso.file} provides a snippet of the first five lines of the \texttt{pso1.txt} file.
 
 \begin{lstlisting}[caption=Snippet of the \texttt{pso1.txt} file., label=pso.file]
 -3.9986483808224222 3.8910758979126956 31.12966051677087
@@ -264,14 +262,14 @@ Figure~\ref{plot:tsp3} provides a plot of an example Nearest-Neighbor solution f
 \begin{figure}[htp]
 \centering
 \input{graphics/tsp3}
-\caption{Plot of the cities of a Nearest-Neighbor tour for the Berlin52 Traveling Salesman Problem.}
+\caption{Plot of a Nearest-Neighbor tour for the Berlin52 TSP.}
 \label{plot:tsp3}
 \end{figure}
 
 Listing~\ref{tsp3} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.nn.tour} is a file that contains a listing of the coordinates of all cities separated by white space in order that the cities are visited with one city per line. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 Listing~\ref{tsp3.file} provides a snippet of the first five lines of the \texttt{berlin52.nn.tour} file.
 
-\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp3]
+\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a TSP., label=tsp3]
 plot "berlin52.nn.tour" with linespoints
 \end{lstlisting}
 
@@ -289,13 +287,13 @@ Figure~\ref{plot:tsp2} provides a plot of the known optimal solution for the Ber
 \begin{figure}[htp]
 \centering
 \input{graphics/tsp2}
-\caption{Plot of the cities of the optimal tour for the Berlin52 Traveling Salesman Problem.}
+\caption{Plot of the optimal tour for the Berlin52 TSP.}
 \label{plot:tsp2}
 \end{figure}
 
 Listing~\ref{tsp2} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52.optimal} is a file that contains a listing of the coordinates of all cities in order that the cities are visited with one city per line separated by white space. The first city in the tour is repeated as the last city in the tour to provide a closed polygon in the plot.
 
-\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a Traveling Salesman Problem., label=tsp2]
+\begin{lstlisting}[caption=Gnuplot script for plotting a tour for a TSP., label=tsp2]
 plot "berlin52.optimal" with linespoints
 \end{lstlisting}
 

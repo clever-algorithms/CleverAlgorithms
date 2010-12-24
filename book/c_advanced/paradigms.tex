@@ -60,12 +60,12 @@ For more information on the strategy pattern or object-oriented design patterns 
 \subsubsection{Example}
 Listing~\ref{ga_oop} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Object-Oriented Programming Paradigm. 
 
-The implementation provides general problem and strategy classes that define their behavioral expectations. A \texttt{OneMax} problem class and a \texttt{GeneticAlgorithm} strategy class are specified. The algorithm makes few assumptions of the problem other than it can assess candidate solutions and determine whether a given solution is optimal. The problem makes very few assumptions about candidate solutions other than they are map data structures that contain a binary string and fitness key-value pairs. The use of the Strategy Pattern allows a new algorithm to easily be defined to work with the existing problem, and that new problems could be defined for the Genetic Algorithm to execute.
+The implementation provides general problem and strategy classes that define their behavioral expectations. A \texttt{One\-Max} problem class and a \texttt{Genetic\-Algorithm} strategy class are specified. The algorithm makes few assumptions of the problem other than it can assess candidate solutions and determine whether a given solution is optimal. The problem makes very few assumptions about candidate solutions other than they are map data structures that contain a binary string and fitness key-value pairs. The use of the Strategy Pattern allows a new algorithm to easily be defined to work with the existing problem, and that new problems could be defined for the Genetic Algorithm to execute.
 
 Note that Ruby does not support abstract classes, so this construct is simulated by defining methods that raise an exception if they are not overridden by descendant classes.
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Object-Oriented Programming paradigm, label=ga_oop]{../src/programming_paradigms/oop.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in Ruby using OOP, label=ga_oop]{../src/programming_paradigms/oop.rb}
 
 
 % 
@@ -87,13 +87,13 @@ For more information on Flow Programming see a good textbook on the subject, suc
 
 \subsubsection{Example}
 Listing~\ref{ga_flow} provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Flow Programming paradigm.
-Each unit is implemented as an object that executes its logic within a standalone thread that reads input from the input queue and writes data to its output queue. The implementation shows four flow units organized into a cyclic graph where the output queue of one unit is used as the input of the next unit in the cycle (\texttt{EvalFlowUnit} to \texttt{StopConditionUnit} to \texttt{SelectFlowUnit} to \texttt{VariationFlowUnit}). 
+Each unit is implemented as an object that executes its logic within a standalone thread that reads input from the input queue and writes data to its output queue. The implementation shows four flow units organized into a cyclic graph where the output queue of one unit is used as the input of the next unit in the cycle (\texttt{Eval\-Flow\-Unit} to \texttt{Stop\-Condition\-Unit} to \texttt{Select\-Flow\-Unit} to \texttt{Variation\-Flow\-Unit}). 
 
 Candidate solutions are the unit of data that is passed around in the flow between units.
 When the system is started it does not have any information to process until a set of random solutions are injected into the evaluation unit's input queue. The solution are evaluated and sent to the stop condition unit where the constraints of the algorithm execution are tested (optima found or maximum number of evaluations) and the candidates are passed on to the selection flow unit. The selection unit collects a predefined number of candidate solutions then passes the better solutions onto the variation unit. The variation unit performs crossover and mutation on each pair of candidate solutions and sends the results to the evaluation unit, completing the cycle.
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in the Ruby Programming Language using the Flow Programming Paradigm, label=ga_flow]{../src/programming_paradigms/flow.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=Genetic Algorithm in Ruby using the Flow Programming, label=ga_flow]{../src/programming_paradigms/flow.rb}
 
 % 
 % other
