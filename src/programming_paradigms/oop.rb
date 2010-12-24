@@ -36,7 +36,9 @@ class OneMax < Problem
       raise "Expected #{@num_bits} in candidate solution." 
     end
     sum = 0
-    candidate_solution[:bitstring].each_char {|x| sum+=1 if x=='1'}
+    candidate_solution[:bitstring].size.times do |i| 
+      sum += 1 if candidate_solution[:bitstring][i].chr =='1'
+    end
     return sum
   end
   
@@ -61,14 +63,15 @@ class GeneticAlgorithm < Strategy
     return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
   end
   
-  def binary_tournament(population)
-    s1, s2 = population[rand(population.size)], population[rand(population.size)]
-    return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  def binary_tournament(pop)
+    i, j = rand(pop.size), rand(pop.size)
+    return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
   end
 
   def point_mutation(bitstring)
     child = ""
-     bitstring.each_char do |bit|
+     bitstring.size.times do |i|
+      bit = bitstring[i].chr
       child << ((rand()<@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
     end
     return child
@@ -86,7 +89,8 @@ class GeneticAlgorithm < Strategy
   def reproduce(selected)
     children = []  
     selected.each_with_index do |p1, i|    
-      p2 = (i.even?) ? selected[i+1] : selected[i-1]
+      p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+      p2 = selected[0] if i == selected.size-1
       child = {}
       child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring])
       child[:bitstring] = point_mutation(child[:bitstring])

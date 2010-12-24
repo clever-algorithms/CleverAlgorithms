@@ -133,16 +133,22 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-if __FILE__ == $0
+def search(population_size=100)
   # create the pipeline
   eval = EvalFlowUnit.new
   stopcondition = StopConditionUnit.new(eval.queue_out) 
   select = SelectFlowUnit.new(stopcondition.queue_out)
   variation = VariationFlowUnit.new(select.queue_out, eval.queue_in) 
   # push random solutions into the pipeline
-  100.times do 
+  population_size.times do 
     solution = {:bitstring=>random_bitstring(64)}
     eval.queue_in.push(solution)
   end
-  stopcondition.thread.join
+  stopcondition.thread.join  
+  return stopcondition.best
+end
+
+if __FILE__ == $0
+  best = search()
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end
