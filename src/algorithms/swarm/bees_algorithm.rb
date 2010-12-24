@@ -8,16 +8,14 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
-def create_random_bee(problem_size, search_space)
-  bee = {}
-  bee[:vector] = random_vector(problem_size, search_space)
-  return bee
+def create_random_bee(search_space)
+  return {:vector=>random_vector(search_space)}
 end
 
 def create_neighborhood_bee(site, patch_size, search_space)
@@ -42,15 +40,15 @@ def search_neighborhood(parent, neighborhood_size, patch_size, search_space)
   return neighborhood.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
 end
 
-def create_scout_bees(problem_size, search_space, num_scouts)
+def create_scout_bees(search_space, num_scouts)
   return Array.new(num_scouts) do
-    create_random_bee(problem_size, search_space)
+    create_random_bee(search_space)
   end
 end
 
-def search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
+def search(max_gens, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
   best = nil
-  pop = Array.new(num_bees){ create_random_bee(problem_size, search_space) }
+  pop = Array.new(num_bees){ create_random_bee(search_space) }
   max_gens.times do |gen|
     pop.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
     pop.sort!{|x,y| x[:fitness]<=>y[:fitness]}
@@ -60,7 +58,7 @@ def search(max_gens, problem_size, search_space, num_bees, num_sites, elite_site
       neighborhood_size = (i<elite_sites) ? e_bees : o_bees
       next_generation << search_neighborhood(parent, neighborhood_size, patch_size, search_space)
     end
-    scouts = create_scout_bees(problem_size, search_space, (num_bees-num_sites))
+    scouts = create_scout_bees(search_space, (num_bees-num_sites))
     pop = next_generation + scouts
     patch_size = patch_size * 0.95
     puts " > iteration=#{gen+1}, patch_size=#{patch_size}, fitness=#{best[:fitness]}"
@@ -81,6 +79,6 @@ if __FILE__ == $0
   e_bees = 7
   o_bees = 2
   # execute the algorithm
-  best = search(max_gens, problem_size, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
+  best = search(max_gens, search_space, num_bees, num_sites, elite_sites, patch_size, e_bees, o_bees)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end

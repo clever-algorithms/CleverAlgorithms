@@ -8,8 +8,8 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
@@ -51,23 +51,23 @@ def mutate(parent, search_space)
   return child
 end
 
-def search(max_generations, problem_size, search_space, pop_size, num_children)
-  strategy_space = Array.new(problem_size) do |i| 
+def search(max_gens, search_space, pop_size, num_children)
+  strategy_space = Array.new(search_space.size) do |i| 
     [0, (search_space[i][1]-search_space[i][0])*0.05]
   end
   population = Array.new(pop_size) do |i|
-    {:vector=>random_vector(problem_size, search_space), 
-      :strategy=>random_vector(problem_size, strategy_space)}
+    {:vector=>random_vector(search_space), 
+     :strategy=>random_vector(strategy_space)}
   end
   population.each{|c| c[:fitness] = objective_function(c[:vector])}
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
-  max_generations.times do |gen|
+  max_gens.times do |gen|
     children = Array.new(num_children) {|i| mutate(population[i], search_space)}
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
     union = children+population
     union.sort!{|x,y| x[:fitness] <=> y[:fitness]}
-    best = union.first
-    population = union[0...pop_size]
+    best = union.first if union.first[:fitness] < best[:fitness]
+    population = union.first(pop_size)
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
   end  
   return best
@@ -78,10 +78,10 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_generations = 100
+  max_gens = 100
   pop_size = 30
   num_children = 20  
   # execute the algorithm
-  best = search(max_generations, problem_size, search_space, pop_size, num_children)
+  best = search(max_gens, search_space, pop_size, num_children)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end

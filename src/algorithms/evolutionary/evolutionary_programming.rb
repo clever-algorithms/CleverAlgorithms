@@ -8,8 +8,8 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
@@ -47,17 +47,17 @@ def tournament(candidate, population, bout_size)
   end  
 end
 
-def search(max_generations, problem_size, search_space, pop_size, bout_size)
-  strategy_space = Array.new(problem_size) do |i| 
+def search(max_gens, search_space, pop_size, bout_size)
+  strategy_space = Array.new(search_space.size) do |i| 
     [0, (search_space[i][1]-search_space[i][0])*0.02]
   end
   population = Array.new(pop_size) do |i|
-    {:vector=>random_vector(problem_size, search_space), 
-      :strategy=>random_vector(problem_size, strategy_space)}
+    {:vector=>random_vector(search_space), 
+     :strategy=>random_vector(strategy_space)}
   end
   population.each{|c| c[:fitness] = objective_function(c[:vector])}
-  gen, best = 0, population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
-  max_generations.times do |gen|
+  best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
+  max_gens.times do |gen|
     children = Array.new(pop_size) {|i| mutate(population[i], search_space)}
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
@@ -65,7 +65,7 @@ def search(max_generations, problem_size, search_space, pop_size, bout_size)
     union = children+population
     union.each{|c| tournament(c, union, bout_size)}
     union.sort!{|x,y| y[:wins] <=> x[:wins]}
-    population = union[0...pop_size]
+    population = union.first(pop_size)
     puts " > gen #{gen}, fitness=#{best[:fitness]}"
   end  
   return best
@@ -76,10 +76,10 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_generations = 200
-  population_size = 100
+  max_gens = 200
+  pop_size = 100
   bout_size = 5
   # execute the algorithm
-  best = search(max_generations, problem_size, search_space, population_size, bout_size)
+  best = search(max_gens, search_space, pop_size, bout_size)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end

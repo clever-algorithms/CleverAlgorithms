@@ -86,26 +86,26 @@ def greedy_merge(pop, clones)
   return union[0...pop.size]
 end
 
-def random_insertion(search_space, pop, problem_size, num_rand)
+def random_insertion(search_space, pop, num_rand)
   return pop if num_rand == 0
   rands = Array.new(num_rand) do |i|
-    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
   end
   evaluate(rands, search_space)
   return greedy_merge(pop, rands)
 end
 
-def search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
+def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
   end
   evaluate(pop, search_space)
-  gen, best = 0, pop.min{|x,y| x[:cost]<=>y[:cost]}
+  best = pop.min{|x,y| x[:cost]<=>y[:cost]}
   max_gens.times do |gen|
     clones = clone_and_hypermutate(pop, clone_factor, mutate_factor)
     evaluate(clones, search_space)
     pop = greedy_merge(pop, clones)    
-    pop = random_insertion(search_space, pop, problem_size, num_rand)
+    pop = random_insertion(search_space, pop, num_rand)
     best = (pop + [best]).min{|x,y| x[:cost]<=>y[:cost]}
     puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]} s=#{best[:vector].inspect}"
   end  
@@ -123,6 +123,6 @@ if __FILE__ == $0
   mutate_factor = 2.5
   num_rand = 2
   # execute the algorithm
-  best = search(problem_size, search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
+  best = search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

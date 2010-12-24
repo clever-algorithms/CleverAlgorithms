@@ -99,17 +99,17 @@ def sample_from_bounds(bounds)
   return bounds[0] + ((bounds[1] - bounds[0]) * rand())
 end
 
-def cost(program, bounds, test_iterations=30)
+def cost(program, bounds, num_trials=30)
   return 9999999 if program.strip == "INPUT"
   sum_error = 0.0    
-  test_iterations.times do
+  num_trials.times do
     x = sample_from_bounds(bounds)
     expression = program.gsub("INPUT", x.to_s)
     begin score = eval(expression) rescue score = 0.0/0.0 end
     return 9999999 if score.nan? or score.infinite?
     sum_error += (score - target_function(x)).abs
   end
-  return sum_error / test_iterations.to_f
+  return sum_error / num_trials.to_f
 end
 
 def evaluate(candidate, codon_bits, grammar, max_depth, bounds)

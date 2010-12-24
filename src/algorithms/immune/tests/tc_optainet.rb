@@ -1,13 +1,13 @@
-# Unit tests for evolution_strategies.rb
+# Unit tests for optainet.rb
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require File.expand_path(File.dirname(__FILE__)) + "/../evolution_strategies"
+require File.expand_path(File.dirname(__FILE__)) + "/../optainet"
 
-class TC_EvolutionStrategies < Test::Unit::TestCase
+class TC_Optainet < Test::Unit::TestCase 
   
   # test default rand gaussian
   def test_random_gaussian_default
@@ -33,7 +33,7 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
     end
     mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
     assert_in_delta(mean, mean, 0.1)
-  end 
+  end  
   
   # TODO write tests
   
@@ -47,15 +47,15 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
     yield
   ensure
     stream.reopen(old_stream)
-  end   
+  end
   
   # test that the algorithm can solve the problem
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search(50, [[-5,5],[-5,5]], 30, 20)
+      best = search([[-5,5],[-5,5]], 60, 50, 10, 100, 1, 0.5)
     end  
-    assert_in_delta(0.0, best[:fitness], 0.001)
+    assert_in_delta(0.0, best[:cost], 0.1)
   end
   
 end

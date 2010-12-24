@@ -8,19 +8,19 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
-def create_particle(problem_size, search_space, vel_space)
+def create_particle(search_space, vel_space)
   particle = {}
-  particle[:position] = random_vector(problem_size, search_space)
+  particle[:position] = random_vector(search_space)
   particle[:cost] = objective_function(particle[:position])
   particle[:b_position] = Array.new(particle[:position])
   particle[:b_cost] = particle[:cost]
-  particle[:velocity] = random_vector(problem_size, vel_space)
+  particle[:velocity] = random_vector(vel_space)
   return particle
 end
 
@@ -65,9 +65,9 @@ def update_best_position(particle)
   end
 end
 
-def search(max_gens, problem_size, search_space, vel_space, pop_size, max_vel, c1, c2)
-  pop = Array.new(pop_size) {create_particle(problem_size, search_space, vel_space)}
-  gbest = get_global_best(pop, gbest)
+def search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
+  pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
+  gbest = get_global_best(pop)
   max_gens.times do |gen|
     pop.each do |particle|
       update_velocity(particle, gbest, max_vel, c1, c2)
@@ -92,6 +92,6 @@ if __FILE__ == $0
   max_vel = 5.0
   c1, c2 = 2.0, 2.0
   # execute the algorithm
-  best = search(max_gens, problem_size, search_space, vel_space, pop_size, max_vel, c1, c2)
+  best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:position].inspect}"
 end

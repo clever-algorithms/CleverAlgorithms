@@ -112,6 +112,7 @@ def run(patters, num_inputs)
   neurons = Array.new(num_inputs) { create_neuron(num_inputs) }
   train_network(neurons, patters)
   test_network(neurons, patters)
+  return neurons
 end
 
 if __FILE__ == $0

@@ -8,8 +8,8 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
@@ -81,10 +81,10 @@ def affinity_supress(population, affinity_thresh)
   return pop
 end
 
-def search(problem_size, search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
-  pop = Array.new(pop_size) {|i| {:vector=>random_vector(problem_size, search_space)} }
+def search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
+  pop = Array.new(pop_size) {|i| {:vector=>random_vector(search_space)} }
   pop.each{|c| c[:cost] = objective_function(c[:vector])}
-  gen, best = 0, nil
+  best = nil
   max_gens.times do |gen|
     pop.each{|c| c[:cost] = objective_function(c[:vector])}
     pop.sort!{|x,y| x[:cost] <=> y[:cost]}
@@ -95,7 +95,7 @@ def search(problem_size, search_space, max_gens, pop_size, num_clones, beta, num
       pop.each_with_index {|cell, i| progeny << clone_cell(beta, num_clones, cell, i+1)}
     end until average_cost(progeny) < avgCost
     pop = affinity_supress(progeny, affinity_thresh)
-    num_rand.times {pop << {:vector=>random_vector(problem_size, search_space)}} 
+    num_rand.times {pop << {:vector=>random_vector(search_space)}} 
     puts " > gen #{gen+1}, popSize=#{pop.size}, fitness=#{best[:cost]}"
   end
   return best
@@ -113,6 +113,6 @@ if __FILE__ == $0
   num_rand = 1
   affinity_thresh = 0.5
   # execute the algorithm
-  best = search(problem_size, search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
+  best = search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

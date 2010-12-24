@@ -8,15 +8,15 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
 def generate_random_direction(problem_size)
   bounds = Array.new(problem_size){[-1.0,1.0]}
-  return random_vector(problem_size, bounds)
+  return random_vector(bounds)
 end
 
 def compute_cell_interaction(cell, cells, d, w)
@@ -51,7 +51,7 @@ def tumble_cell(problem_size, cell, step_size)
   return {:vector=>vector}
 end
 
-def chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
+def chemotaxis(cells, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
   best = nil
   chem_steps.times do |j|
     moved_cells = []   
@@ -61,7 +61,7 @@ def chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_
       best = cell if best.nil? or cell[:cost] < best[:cost]
       sum_nutrients += cell[:fitness]
       swim_length.times do |m|
-        new_cell = tumble_cell(problem_size, cell, step_size)
+        new_cell = tumble_cell(search_space.size, cell, step_size)
         evaluate(new_cell, cells, d_attr, w_attr, h_rep, w_rep)          
         best = cell if cell[:cost] < best[:cost]
         break if new_cell[:fitness] > cell[:fitness]
@@ -77,19 +77,19 @@ def chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_
   return [best, cells]
 end
 
-def search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)  
-  cells = Array.new(pop_size) { {:vector=>random_vector(problem_size, search_space)} }
+def search(search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)  
+  cells = Array.new(pop_size) { {:vector=>random_vector(search_space)} }
   best = nil
   elim_disp_steps.times do |l|
     repro_steps.times do |k|      
-      c_best, cells = chemotaxis(cells, problem_size, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
+      c_best, cells = chemotaxis(cells, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
       best = c_best if best.nil? or c_best[:cost] < best[:cost]
       cells.sort{|x,y| x[:sum_nutrients]<=>y[:sum_nutrients]}
       cells = cells[0...(pop_size/2)] + cells[0...(pop_size/2)]
     end
     cells.each do |cell|
       if rand() <= p_eliminate
-        cell[:vector] = random_vector(problem_size, search_space) 
+        cell[:vector] = random_vector(search_space) 
       end
     end    
   end
@@ -113,6 +113,6 @@ if __FILE__ == $0
   h_rep = d_attr
   w_rep = 10
   # execute the algorithm
-  best = search(problem_size, search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
+  best = search(search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
   puts "done! Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

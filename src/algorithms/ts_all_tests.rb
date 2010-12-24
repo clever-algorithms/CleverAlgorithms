@@ -1,4 +1,4 @@
-# Unit tests for run all unit tests
+# Test Suite for all Clever Algorithms
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -7,26 +7,28 @@
 require 'test/unit/testsuite'
 require 'test/unit/ui/console/testrunner'
 
-
 # Evolutionary Algorithms
-require "evolutionary/tests/tc_evolution_strategies"
-require "evolutionary/tests/tc_genetic_algorithm"
+require File.expand_path(File.dirname(__FILE__)) + "/evolutionary/tests/tc_evolution_strategies"
+require File.expand_path(File.dirname(__FILE__)) + "/evolutionary/tests/tc_gene_expression_programming"
+require File.expand_path(File.dirname(__FILE__)) + "/evolutionary/tests/tc_genetic_algorithm"
+require File.expand_path(File.dirname(__FILE__)) + "/evolutionary/tests/tc_grammatical_evolution"
+
 
 # Immune Algorithms
 
 # Neural Algorithms
-require "neural/tests/tc_backpropagation"
+require File.expand_path(File.dirname(__FILE__)) + "/neural/tests/tc_backpropagation"
 
 # Physical Algorithms
-require "physical/tests/tc_extremal_optimization"
+require File.expand_path(File.dirname(__FILE__)) + "/physical/tests/tc_extremal_optimization"
 
 # Stochastic Algorithms
 
 # Probabilistic Algorithms
 
 # Swarm Algroithms
-require "swarm/tests/tc_pso"
-require "swarm/tests/tc_bees_algorithm"
+require File.expand_path(File.dirname(__FILE__)) + "/swarm/tests/tc_pso"
+require File.expand_path(File.dirname(__FILE__)) + "/swarm/tests/tc_bees_algorithm"
 
 class TS_AllTests
   def self.suite
@@ -35,7 +37,9 @@ class TS_AllTests
     # Evolutionary Computation
     suite << TC_EvolutionStrategies.suite
     suite << TC_GeneticAlgorithm.suite
-        
+    suite << TC_GeneExpressionProgramming.suite
+    suite << TC_GrammaticalEvolution.suite
+
     # Immune Algorithms
 
     # Neural Algorithms

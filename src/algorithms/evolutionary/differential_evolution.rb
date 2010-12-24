@@ -8,13 +8,13 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
-def new_sample(p0, p1, p2, p3, f, cr, search_space)
+def de_rand_1_bin(p0, p1, p2, p3, f, cr, search_space)
   size = p0[:vector].size
   sample = {}
   sample[:vector] = []
@@ -32,24 +32,37 @@ def new_sample(p0, p1, p2, p3, f, cr, search_space)
   return sample
 end
 
-def search(max_generations, np, search_space, g, f, cr)
-  pop = Array.new(g) {|i| {:vector=>random_vector(np, search_space)} }
+def select_parents(pop, current)
+  p1 = p2 = p3 = -1
+  p1 = rand(pop.size) until p1 != current
+  p2 = rand(pop.size) until p2 != current and p2 != p1
+  p3 = rand(pop.size) until p3 != current and p3 != p1 and p3 != p2
+  return [p1,p2,p3]
+end
+
+def create_children(pop, search_space, f, cr)
+  children = []
+  pop.each_with_index do |p0, i|
+    p1, p2, p3 = select_parents(pop, i)
+    children << de_rand_1_bin(p0, pop[p1], pop[p2], pop[p3], f, cr, search_space)
+  end
+  return children
+end
+
+def select_population(parents, children)
+  return Array.new(parents.size) do |i| 
+    (children[i][:cost]<=parents[i][:cost]) ? children[i] : parents[i]
+  end
+end
+
+def search(max_gens, search_space, pop_size, f, cr)
+  pop = Array.new(pop_size) {|i| {:vector=>random_vector(search_space)}}
   pop.each{|c| c[:cost] = objective_function(c[:vector])}
-  gen, best = 0, pop.sort{|x,y| x[:cost] <=> y[:cost]}.first  
-  max_generations.times do |gen|
-    samples = []
-    pop.each_with_index do |p0, i|
-      p1 = p2 = p3 = -1
-      p1 = rand(pop.size) until p1!=i
-      p2 = rand(pop.size) until p2!=i and p2!=p1
-      p3 = rand(pop.size) until p3!=i and p3!=p1 and p3!=p2
-      samples << new_sample(p0, pop[p1], pop[p2], pop[p3], f, cr, search_space)
-    end
-    samples.each{|c| c[:cost] = objective_function(c[:vector])}
-    nextgen = Array.new(g) do |i| 
-      (samples[i][:cost]<=pop[i][:cost]) ? samples[i] : pop[i]
-    end
-    pop = nextgen    
+  best = pop.sort{|x,y| x[:cost] <=> y[:cost]}.first
+  max_gens.times do |gen|
+    children = create_children(pop, search_space, f, cr)
+    children.each{|c| c[:cost] = objective_function(c[:vector])}
+    pop = select_population(pop, children)
     pop.sort!{|x,y| x[:cost] <=> y[:cost]}
     best = pop.first if pop.first[:cost] < best[:cost]
     puts " > gen #{gen+1}, fitness=#{best[:cost]}"
@@ -67,6 +80,6 @@ if __FILE__ == $0
   weighting_factor = 0.8
   crossover_factor = 0.9
   # execute the algorithm
-  best = search(max_generations, problem_size, search_space, pop_size, weighting_factor, crossover_factor)
+  best = search(max_generations, search_space, pop_size, weighting_factor, crossover_factor)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

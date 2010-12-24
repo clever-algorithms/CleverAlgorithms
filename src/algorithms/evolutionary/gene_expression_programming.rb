@@ -66,16 +66,16 @@ def sample_from_bounds(bounds)
   return bounds[0] + ((bounds[1] - bounds[0]) * rand())
 end
 
-def cost(program, bounds)
+def cost(program, bounds, num_trials=30)
   errors = 0.0    
-  30.times do
+  num_trials.times do
     x = sample_from_bounds(bounds)
     expression, score = program.gsub("x", x.to_s), 0.0
     begin score = eval(expression) rescue score = 0.0/0.0 end
     return 9999999 if score.nan? or score.infinite?
     errors += (score - target_function(x)).abs
   end    
-  return errors
+  return errors / num_trials.to_f
 end
 
 def breadth_first_mapping(genome, grammar)

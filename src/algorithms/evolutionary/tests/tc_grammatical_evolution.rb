@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require "../grammatical_evolution"
+require File.expand_path(File.dirname(__FILE__)) + "/../grammatical_evolution"
 
 class TC_GrammaticalEvolution < Test::Unit::TestCase
   

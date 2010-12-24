@@ -79,9 +79,9 @@ def bitclimber(child, search_space, p_mutation, max_local_gens)
   return current
 end
 
-def search(max_gens, problem_size, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
+def search(max_gens, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
   end
   pop.each{|candidate| fitness(candidate, search_space) }
   gen, best = 0, pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
@@ -113,6 +113,6 @@ if __FILE__ == $0
   max_local_gens = 20
   p_local = 0.5
   # execute the algorithm
-  best = search(max_gens, problem_size, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
+  best = search(max_gens, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
   puts "done! Solution: f=#{best[:fitness]}, b=#{best[:bitstring]}, v=#{best[:vector].inspect}"
 end

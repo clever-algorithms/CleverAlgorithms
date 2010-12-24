@@ -45,14 +45,14 @@ def target_function(input)
   return input**2 + input + 1
 end
 
-def fitness(program, num_trials)
+def fitness(program, num_trials=20)
   sum_error = 0.0
   num_trials.times do |i|
     input = random_num(-1.0, 1.0)
     error = eval_program(program, {'X'=>input}) - target_function(input)
-    sum_error += error**2.0
+    sum_error += error.abs
   end
-  return Math.sqrt(sum_error/num_trials.to_f)
+  return sum_error / num_trials.to_f
 end
 
 def tournament_selection(population, num_bouts)
@@ -120,15 +120,15 @@ def mutation(parent, max_depth, functions, terms)
   return child
 end
 
-def search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
-  population = Array.new(population_size) do |i| 
+def search(max_generations, pop_size, max_depth, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
+  population = Array.new(pop_size) do |i| 
     {:program=>generate_random_program(max_depth, functions, terminals)}
   end
-  population.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
+  population.each{|c| c[:fitness] = fitness(c[:program])}
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
   max_generations.times do |gen|
     children = []
-    while children.size < population_size
+    while children.size < pop_size
       operation = rand()
       parent = tournament_selection(population, num_bouts)
       child = {}      
@@ -142,9 +142,9 @@ def search(max_generations, population_size, max_depth, num_trials, num_bouts, p
       elsif operation < p_reproduction+p_crossover+p_mutation
         child[:program] = mutation(parent[:program], max_depth, functions, terminals)      
       end
-      children << child if children.size < population_size      
+      children << child if children.size < pop_size  
     end    
-    children.each{|c| c[:fitness] = fitness(c[:program], num_trials)}
+    children.each{|c| c[:fitness] = fitness(c[:program])}
     population = children
     population.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = population.first if population.first[:fitness] <= best[:fitness]
@@ -159,15 +159,14 @@ if __FILE__ == $0
   terminals = ['X', 'R']
   functions = [:+, :-, :*, :/]
   # algorithm configuration
-  max_generations = 100
+  max_gens = 100
   max_depth = 7
-  population_size = 100
-  num_trials = 15
+  pop_size = 100
   num_bouts = 5
   p_reproduction = 0.08
   p_crossover = 0.90
   p_mutation = 0.02
   # execute the algorithm
-  best = search(max_generations, population_size, max_depth, num_trials, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
+  best = search(max_gens, pop_size, max_depth, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
   puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
 end

@@ -5,9 +5,9 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require Pathname.new(File.dirname(__FILE__)) + "../pso"
+require File.expand_path(File.dirname(__FILE__)) + "/../pso"
 
-class TC_Pso < Test::Unit::TestCase
+class TC_PSO < Test::Unit::TestCase
 
   # test that the random_vector function behaves as expected
   def test_random_vector
@@ -27,7 +27,7 @@ class TC_Pso < Test::Unit::TestCase
     sum = 0
 
     search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
-    test_vector = random_vector(problem_size, search_space)
+    test_vector = random_vector(search_space)
 
     for i in test_vector
       assert_operator i, :>=, lower_bound
@@ -69,8 +69,8 @@ class TC_Pso < Test::Unit::TestCase
     search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
     vel_space = [0]
 
-    particle = create_particle(problem_size, search_space, vel_space)
-    gbest = create_particle(problem_size, search_space, vel_space)
+    particle = create_particle(search_space, vel_space)
+    gbest = create_particle(search_space, vel_space)
 
     do_test_update_velocity(5, particle, gbest, 0, 0, 0, 0, 0)
     do_test_update_velocity(5, particle, gbest, 0, 5, 0, 0, 5)
@@ -108,7 +108,7 @@ class TC_Pso < Test::Unit::TestCase
     lower_bound = -10
     upper_bound = 10
     search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
-    particle = create_particle(problem_size, search_space, [-1,1])
+    particle = create_particle(search_space, [-1,1])
 
     particle[:position] = [0,9]
     particle[:velocity] = [4,4]
@@ -132,16 +132,16 @@ class TC_Pso < Test::Unit::TestCase
   end
 
   # test that the get_global_best function behaves as expected
-  def get_global_best
+  def test_get_global_best
     problem_size = 2
     lower_bound = -10
     upper_bound = 10
     search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
-    particle = create_particle(problem_size, search_space, [-1,1])
+    particle = create_particle(search_space, [-1,1])
     vel_space = [-1,1]
 
     pop_size = 100
-    pop = Array.new(pop_size) {create_particle(problem_size, search_space, vel_space)}
+    pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
 
     #test ascending order
     i = 0
@@ -150,7 +150,7 @@ class TC_Pso < Test::Unit::TestCase
       i += 1
     end
     gbest = get_global_best(pop, gbest)
-    assert_equals gbest[:cost], pop_size
+    assert_equal(0, gbest[:cost])
 
     #test descending order
     i = 0
@@ -159,6 +159,26 @@ class TC_Pso < Test::Unit::TestCase
       i += 1
     end
     gbest = get_global_best(pop, gbest)
-    assert_equals gbest[:cost], pop_size
+    assert_equal(0, gbest[:cost])
   end
+  
+  # helper for turning off STDOUT
+  # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
+  def silence_stream(stream)
+    old_stream = stream.dup
+    stream.reopen('/dev/null')
+    stream.sync = true
+    yield
+  ensure
+    stream.reopen(old_stream)
+  end   
+  
+  # test that the algorithm can solve the problem
+  def test_search    
+    best = nil
+    silence_stream(STDOUT) do
+      best = search(100, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 50, 5.0, 2, 2)
+    end  
+    assert_in_delta(0.0, best[:cost], 0.1)
+  end	  
 end

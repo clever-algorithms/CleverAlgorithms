@@ -8,8 +8,8 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def create_random_solution(problem_size, search_space)
-  vector = Array.new(problem_size) do |i|      
+def create_random_solution(search_space)
+  vector = Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
   return {:vector=>vector}
@@ -32,10 +32,12 @@ def binary_tournament(population)
   return (s1[:fitness] > s2[:fitness]) ? s1 : s2
 end
 
-def initialize_beliefspace(problem_size, search_space)
+def initialize_beliefspace(search_space)
   belief_space = {}
   belief_space[:situational] = nil
-  belief_space[:normative] = Array.new(problem_size) {|i| Array.new(search_space[i])}
+  belief_space[:normative] = Array.new(search_space.size) do |i| 
+    Array.new(search_space[i])  
+  end
   return belief_space
 end
 
@@ -53,10 +55,10 @@ def update_beliefspace_normative!(belief_space, acccepted)
   end
 end
 
-def search(max_gens, problem_size, search_space, pop_size, num_accepted)
+def search(max_gens, search_space, pop_size, num_accepted)
   # initialize
-  pop = Array.new(pop_size) { create_random_solution(problem_size, search_space) }
-  belief_space = initialize_beliefspace(problem_size, search_space)  
+  pop = Array.new(pop_size) { create_random_solution(search_space) }
+  belief_space = initialize_beliefspace(search_space)  
   # evaluate
   pop.each{|c| c[:fitness] = objective_function(c[:vector])}
   best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
@@ -87,10 +89,10 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_generations = 200
-  population_size = 100
-  num_accepted = (population_size*0.20).round
+  max_gens = 200
+  pop_size = 100
+  num_accepted = (pop_size*0.20).round
   # execute the algorithm
-  best = search(max_generations, problem_size, search_space, population_size, num_accepted)
+  best = search(max_gens, search_space, pop_size, num_accepted)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
 end
