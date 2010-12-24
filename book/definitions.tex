@@ -24,7 +24,6 @@
 \newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
 
 
-
 % 
 % Packages
 % 
@@ -32,6 +31,14 @@
 % a replacement for fancyheadings
 % http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/
 \usepackage{fancyhdr}
+% \pagestyle{fancy}
+\fancyhead[LE,RO]{\thepage}
+\fancyhead[LO]{\slshape \leftmark}
+\fancyhead[RE]{\slshape \rightmark}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
+\renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
 
 % If you want to generate an index, automatically
 % http://en.wikibooks.org/wiki/LaTeX/Indexing

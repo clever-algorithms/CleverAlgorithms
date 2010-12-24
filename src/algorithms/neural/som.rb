@@ -84,14 +84,14 @@ def summarize_vectors(vectors)
   puts "Vector details: #{s}"
 end
 
-def test_network(codebook_vectors, shape)
+def test_network(codebook_vectors, shape, num_trials=100)
   error = 0.0
-  100.times do 
+  num_trials.times do 
     pattern = random_vector(shape)
     bmu,dist = get_best_matching_unit(codebook_vectors, pattern)
     error += dist
   end
-  error /= 100.0
+  error /= num_trials.to_f
   puts "Finished, average error=#{error}"  
 end
 

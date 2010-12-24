@@ -25,7 +25,12 @@ class TC_Perceptron < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,1]]
+    weights = nil
+    silence_stream(STDOUT) do
+      weights = compute(domain, 2, 20, 0.1)
+    end
+    assert_equal(4, test_weights(weights, domain, 2))
   end
   
 end

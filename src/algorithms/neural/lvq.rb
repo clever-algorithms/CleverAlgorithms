@@ -71,14 +71,14 @@ def train_network(codebook_vectors, domain, iterations, learning_rate)
   end
 end
 
-def test_network(codebook_vectors, domain)
+def test_network(codebook_vectors, domain, num_trials=100)
   correct = 0
-  100.times do 
+  num_trials.times do 
     pattern = generate_random_pattern(domain)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
     correct += 1 if bmu[:class_label] == pattern[:class_label]
   end
-  puts "Finished test with a score of #{correct}/#{100} (#{(correct/100)*100}%)"
+  puts "Finished test with a score of #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100}%)"
 end
 
 def run(domain, iterations, num_vectors, learning_rate)  

@@ -11,14 +11,13 @@ def random_vector(minmax)
 end
 
 def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[-0.5,0.5]}
+  minmax = Array.new(problem_size) {[-0.5,0.5]}
   return random_vector(minmax)
 end
 
 def create_neuron(num_inputs)
   neuron = {}
   neuron[:weights] = initialize_weights(num_inputs)
-  neuron[:output] = -1
   return neuron
 end
 
@@ -49,7 +48,7 @@ def train_network(neurons, patters)
   neurons.each_with_index do |neuron, i|   
     for j in ((i+1)...neurons.size) do
       next if i==j
-      wij = 0
+      wij = 0.0
       patters.each do |pattern|
         vector = pattern.flatten
         wij += vector[i]*vector[j]
