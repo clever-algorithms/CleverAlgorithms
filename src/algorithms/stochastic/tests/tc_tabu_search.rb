@@ -1,13 +1,13 @@
-# Unit tests for ant_system.rb
+# Unit tests for tabu_search.rb
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require File.expand_path(File.dirname(__FILE__)) + "/../ant_system"
+require File.expand_path(File.dirname(__FILE__)) + "/../tabu_search"
 
-class TC_AntSystem < Test::Unit::TestCase
+class TC_TabuSearch < Test::Unit::TestCase
     
   # TODO write tests
   
@@ -36,7 +36,7 @@ class TC_AntSystem < Test::Unit::TestCase
      [830,610],[605,625],[595,360],[1340,725],[1740,245]]
     best = nil
     silence_stream(STDOUT) do
-      best = search(berlin52, 30, 30, 0.5, 2.5, 1.0)
+      best = search(berlin52, 15, 50, 50, 50)
     end  
     # better than a NN solution's cost
     assert_not_nil(best[:cost])

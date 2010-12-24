@@ -183,6 +183,7 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(50, 50, 4, 30, 0.7, grammar, 5, bounds)
     end    
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 1.0)
   end
   

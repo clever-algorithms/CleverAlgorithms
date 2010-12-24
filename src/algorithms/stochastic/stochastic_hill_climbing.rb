@@ -8,8 +8,8 @@ def cost(bitstring)
   return bitstring.inject(0) {|sum,x| sum = sum + ((x=='1') ? 1 : 0)}
 end
 
-def random_solution(problem_size)
-  return Array.new(problem_size){|i| (rand<0.5) ? "1" : "0"}
+def random_bitstring(num_bits)
+  return Array.new(num_bits){|i| (rand<0.5) ? "1" : "0"}
 end
 
 def random_neighbor(bitstring)  
@@ -19,9 +19,9 @@ def random_neighbor(bitstring)
   return mutant
 end
 
-def search(max_iterations, problem_size)
+def search(max_iterations, num_bits)
   candidate = {}
-  candidate[:vector] = random_solution(problem_size)
+  candidate[:vector] = random_bitstring(num_bits)
   candidate[:cost] = cost(candidate[:vector])
   max_iterations.times do |iter|
     neighbor = {}
@@ -29,17 +29,17 @@ def search(max_iterations, problem_size)
     neighbor[:cost] = cost(neighbor[:vector])
     candidate = neighbor if neighbor[:cost] >= candidate[:cost]
     puts " > iteration #{(iter+1)}, best=#{candidate[:cost]}"
-    break if candidate[:cost] == problem_size
+    break if candidate[:cost] == num_bits
   end 
   return candidate
 end
 
 if __FILE__ == $0
   # problem configuration
-  problem_size = 64
+  num_bits = 64
   # algorithm configuration
   max_iterations = 1000
   # execute the algorithm
-  best = search(max_iterations, problem_size)
+  best = search(max_iterations, num_bits)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].join}"
 end

@@ -39,7 +39,8 @@ class TC_AntColonySystem < Test::Unit::TestCase
       best = search(berlin52, 30, 30, 0.1, 2.5, 0.1, 0.9)
     end  
     # better than a NN solution's cost
-    assert(best[:cost] <= 10000)
+    assert_not_nil(best[:cost])
+    assert(best[:cost] <= 10000, "#{best[:cost]}")
   end
   
 end

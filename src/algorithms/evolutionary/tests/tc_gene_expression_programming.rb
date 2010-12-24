@@ -196,6 +196,7 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(grammar, bounds, head, tail, 50, 50, 0.9)
     end
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 1.0)
   end  
 end

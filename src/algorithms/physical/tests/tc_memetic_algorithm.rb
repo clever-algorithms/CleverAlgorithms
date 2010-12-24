@@ -28,7 +28,8 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
     best = nil
     silence_stream(STDOUT) do
       best = search(100, [[-5,5],[-5,5]], 50, 0.95, 0.05, 20, 0.5)
-    end  
+    end
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 0.01)
   end
   

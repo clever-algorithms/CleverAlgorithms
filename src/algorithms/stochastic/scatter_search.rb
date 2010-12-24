@@ -8,8 +8,8 @@ def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_solution(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_solution(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
@@ -40,11 +40,11 @@ def local_search(best, search_space, max_no_improvements, step_size)
   return best
 end
 
-def construct_initial_set(problem_size, search_space, div_set_size, max_no_improvements, step_size)
+def construct_initial_set(search_space, div_set_size, max_no_improvements, step_size)
   diverse_set = []
   begin
     candidate = {}
-    candidate[:vector] = random_solution(problem_size, search_space)
+    candidate[:vector] = random_solution(search_space)
     candidate[:cost] = cost(candidate[:vector])
     candidate = local_search(candidate, search_space, max_no_improvements, step_size)
     diverse_set << candidate if !diverse_set.any? {|x| x[:vector]==candidate[:vector]}
@@ -67,9 +67,9 @@ def distance(vector1, reference_set)
   return sum
 end
 
-def diversify(diverse_set, numElite, ref_set_size)
+def diversify(diverse_set, num_elite, ref_set_size)
   diverse_set.sort!{|x,y| x[:cost] <=> y[:cost]}
-  reference_set = Array.new(numElite){|i| diverse_set[i]}
+  reference_set = Array.new(num_elite){|i| diverse_set[i]}
   remainder = diverse_set - reference_set
   remainder.sort!{|x,y| distance(y[:vector], reference_set) <=> distance(x[:vector], reference_set)}
   reference_set = reference_set + remainder[0..(ref_set_size-reference_set.size)]
@@ -85,14 +85,14 @@ def select_subsets(reference_set)
   return subsets
 end
 
-def recombine(subset, problem_size, search_space)
+def recombine(subset, search_space)
   a, b = subset
   d = rand(euclidean(a[:vector], b[:vector]))/2.0
   children = []
   subset.each do |p|
     step = (rand<0.5) ? +d : -d
     child = {}
-    child[:vector] = Array.new(problem_size){|i| p[:vector][i]+step}
+    child[:vector] = Array.new(search_space.size){|i| p[:vector][i]+step}
     child[:vector].each_with_index {|m,i| child[:vector][i]=search_space[i][0] if m<search_space[i][0]}
     child[:vector].each_with_index {|m,i| child[:vector][i]=search_space[i][1] if m>search_space[i][1]}
     child[:cost] = cost(child[:vector])
@@ -101,8 +101,8 @@ def recombine(subset, problem_size, search_space)
   return children
 end
 
-def search(problem_size, search_space, max_iterations, ref_set_size, div_set_size, max_no_improvements, step_size, max_elite)
-  diverse_set = construct_initial_set(problem_size, search_space, div_set_size, max_no_improvements, step_size)
+def search(search_space, max_iterations, ref_set_size, div_set_size, max_no_improvements, step_size, max_elite)
+  diverse_set = construct_initial_set(search_space, div_set_size, max_no_improvements, step_size)
   reference_set, best = diversify(diverse_set, max_elite, ref_set_size)
   reference_set.each{|c| c[:new] = true}
   max_iterations.times do |iter|
@@ -110,7 +110,7 @@ def search(problem_size, search_space, max_iterations, ref_set_size, div_set_siz
     subsets = select_subsets(reference_set)
     reference_set.each{|c| c[:new] = false}
     subsets.each do |subset|
-      candidates = recombine(subset, problem_size, search_space)
+      candidates = recombine(subset, search_space)
       improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improvements, step_size)}
       improved.each do |c|
         if !reference_set.any? {|x| x[:vector]==c[:vector]}
@@ -144,6 +144,6 @@ if __FILE__ == $0
   diverse_set_size = 20
   no_elite = 5
   # execute the algorithm
-  best = search(problem_size, search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improvements, step_size, no_elite)
+  best = search(search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improvements, step_size, no_elite)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

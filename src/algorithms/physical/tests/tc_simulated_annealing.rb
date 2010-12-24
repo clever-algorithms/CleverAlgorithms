@@ -39,7 +39,8 @@ class TC_SimulatedAnnealing < Test::Unit::TestCase
       best = search(berlin52, 5000, 100000.0, 0.98)
     end  
     # better than a NN solution's cost
-    assert(best[:cost] <= 10000)
+    assert_not_nil(best[:cost])
+    assert(best[:cost] <= 10000, "#{best[:cost]}")
   end
   
 end

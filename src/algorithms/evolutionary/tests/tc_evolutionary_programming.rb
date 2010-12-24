@@ -55,6 +55,7 @@ class TC_EvolutionaryProgramming < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(50, [[-5,5],[-5,5]], 50, 3)
     end  
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 0.001)
   end
   

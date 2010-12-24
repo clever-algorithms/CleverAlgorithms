@@ -54,7 +54,8 @@ class TC_Optainet < Test::Unit::TestCase
     best = nil
     silence_stream(STDOUT) do
       best = search([[-5,5],[-5,5]], 60, 50, 10, 100, 1, 0.5)
-    end  
+    end
+    assert_not_nil(best[:cost])
     assert_in_delta(0.0, best[:cost], 0.1)
   end
   

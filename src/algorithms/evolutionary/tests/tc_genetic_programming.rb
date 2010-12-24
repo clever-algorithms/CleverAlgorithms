@@ -31,6 +31,7 @@ class TC_GeneticProgramming < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(50, 50, 6, 3, 0.08, 0.9, 0.02, functions, terminals)
     end  
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 0.5)
   end
   

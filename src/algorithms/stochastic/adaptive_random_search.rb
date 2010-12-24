@@ -8,15 +8,15 @@ def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_solution(problem_size, search_space)
-  return Array.new(problem_size) do |i|      
+def random_solution(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
 end
 
-def take_step(problem_size, search_space, current, step_size)
+def take_step(search_space, current, step_size)
   step = []
-  problem_size.times do |i|
+  search_space.size.times do |i|
     max, min = current[i]+step_size, current[i]-step_size
     max = search_space[i][1] if max > search_space[i][1]
     min = search_space[i][0] if min < search_space[i][0]
@@ -32,17 +32,17 @@ def large_step_size(iteration, step_size, small_factor, large_factor, factor_mul
   return  step_size * small_factor
 end
 
-def search(max_iterations, problem_size, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+def search(max_iterations, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
   step_size = (search_space[0][1]-search_space[0][0]) * init_factor
   current, count = {}, 0
-  current[:vector] = random_solution(problem_size, search_space)
+  current[:vector] = random_solution(search_space)
   current[:cost] = cost(current[:vector])
   max_iterations.times do |iter|
     step, bigger_step = {}, {}
-    step[:vector] = take_step(problem_size, search_space, current[:vector], step_size)
+    step[:vector] = take_step(search_space, current[:vector], step_size)
     step[:cost] = cost(step[:vector])
     bigger_step_size = large_step_size(iter, step_size, small_factor, large_factor, factor_multiple)
-    bigger_step[:vector] = take_step(problem_size, search_space, current[:vector], bigger_step_size)
+    bigger_step[:vector] = take_step(search_space, current[:vector], bigger_step_size)
     bigger_step[:cost] = cost(bigger_step[:vector])    
     if step[:cost] <= current[:cost] or bigger_step[:cost] <= current[:cost]
       if bigger_step[:cost] < step[:cost]
@@ -72,6 +72,6 @@ if __FILE__ == $0
   factor_multiple = 10
   max_no_improvements = 30
   # execute the algorithm
-  best = search(max_iterations, problem_size, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+  best = search(max_iterations, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
   puts "Done. Best Solution: cost=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

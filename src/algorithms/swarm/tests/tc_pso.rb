@@ -179,6 +179,7 @@ class TC_PSO < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(100, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 50, 5.0, 2, 2)
     end  
+    assert_not_nil(best[:cost])
     assert_in_delta(0.0, best[:cost], 0.1)
   end	  
 end
