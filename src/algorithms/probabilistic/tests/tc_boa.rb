@@ -25,12 +25,13 @@ class TC_BOA < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    best = nil
-    silence_stream(STDOUT) do
-      best = search(30, 50, 50, 30, 5)
-    end  
-    assert_not_nil(best[:fitness])
-    assert_equal(30, best[:fitness])
+    # best = nil
+    # silence_stream(STDOUT) do
+    #   best = search(30, 50, 50, 30, 5)
+    # end  
+    # assert_not_nil(best[:fitness])
+    # assert_equal(30, best[:fitness])
+    fail("BOA is not written yet")
   end
   
 end
