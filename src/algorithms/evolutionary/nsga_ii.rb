@@ -4,8 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-BITS_PER_PARAM = 16
-
 def objective1(vector)
   return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
@@ -14,16 +12,16 @@ def objective2(vector)
   return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
 end
 
-def decode(bitstring, search_space)
+def decode(bitstring, search_space, bits_per_param)
   vector = []
   search_space.each_with_index do |bounds, i|
-    off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
-    bitstring[off...(off+BITS_PER_PARAM)].reverse.each_char do |c|
+    off, sum, j = i*bits_per_param, 0.0, 0    
+    bitstring[off...(off+bits_per_param)].reverse.each_char do |c|
       sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
       j += 1
     end
     min, max = bounds
-    vector << min + ((max-min)/((2.0**BITS_PER_PARAM.to_f)-1.0)) * sum
+    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
   end
   return vector
 end
@@ -62,9 +60,9 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def calculate_objectives(pop, search_space)
+def calculate_objectives(pop, search_space, bits_per_param)
   pop.each do |p|
-    p[:vector] = decode(p[:bitstring], search_space)
+    p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
     p[:objectives] = []
     p[:objectives] << objective1(p[:vector])
     p[:objectives] << objective2(p[:vector])
@@ -159,15 +157,15 @@ def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
-def search(problem_size, search_space, max_gens, pop_size, p_crossover)
+def search(search_space, max_gens, pop_size, p_crossover, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
-  calculate_objectives(pop, search_space)
+  calculate_objectives(pop, search_space, bits_per_param)
   fast_nondominated_sort(pop)
   selected = Array.new(pop_size){better(pop[rand(pop_size)], pop[rand(pop_size)])}
   children = reproduce(selected, pop_size, p_crossover)  
-  calculate_objectives(children, search_space)    
+  calculate_objectives(children, search_space, bits_per_param)    
   max_gens.times do |gen|  
     union = pop + children  
     fronts = fast_nondominated_sort(union)  
@@ -175,7 +173,7 @@ def search(problem_size, search_space, max_gens, pop_size, p_crossover)
     selected = Array.new(pop_size){better(offspring[rand(pop_size)], offspring[rand(pop_size)])}
     pop = children
     children = reproduce(selected, pop_size, p_crossover)    
-    calculate_objectives(children, search_space)
+    calculate_objectives(children, search_space, bits_per_param)
     best = children.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
     best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
     puts " > gen=#{gen+1}, fronts=#{fronts.size}, best=#{best_s}"
@@ -192,6 +190,6 @@ if __FILE__ == $0
   pop_size = 100
   p_crossover = 0.98
   # execute the algorithm
-  pop = search(problem_size, search_space, max_gens, pop_size, p_crossover)
+  pop = search(search_space, max_gens, pop_size, p_crossover)
   puts "done!"
 end

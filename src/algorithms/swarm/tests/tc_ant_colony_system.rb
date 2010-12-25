@@ -40,7 +40,7 @@ class TC_AntColonySystem < Test::Unit::TestCase
     end  
     # better than a NN solution's cost
     assert_not_nil(best[:cost])
-    assert(best[:cost] <= 10000, "#{best[:cost]}")
+    assert_in_delta(7542, best[:cost], 3000)
   end
   
 end
