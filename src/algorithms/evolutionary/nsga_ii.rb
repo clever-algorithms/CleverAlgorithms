@@ -184,7 +184,7 @@ end
 if __FILE__ == $0
   # problem configuration
   problem_size = 1
-  search_space = Array.new(problem_size) {|i| [-1000, 1000]}
+  search_space = Array.new(problem_size) {|i| [-10, 10]}
   # algorithm configuration
   max_gens = 50
   pop_size = 100

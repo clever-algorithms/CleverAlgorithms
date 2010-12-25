@@ -4,8 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-BITS_PER_PARAM = 16
-
 def objective1(vector)
   return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
@@ -14,16 +12,16 @@ def objective2(vector)
   return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
 end
 
-def decode(bitstring, search_space)
+def decode(bitstring, search_space, bits_per_param)
   vector = []
   search_space.each_with_index do |bounds, i|
-    off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
-    bitstring[off...(off+BITS_PER_PARAM)].reverse.each_char do |c|
+    off, sum, j = i*bits_per_param, 0.0, 0    
+    bitstring[off...(off+bits_per_param)].reverse.each_char do |c|
       sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
       j += 1
     end
     min, max = bounds
-    vector << min + ((max-min)/((2.0**BITS_PER_PARAM.to_f)-1.0)) * sum
+    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
   end
   return vector
 end
@@ -62,9 +60,9 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def calculate_objectives(pop, search_space)
+def calculate_objectives(pop, search_space, bits_per_param)
   pop.each do |p|
-    p[:vector] = decode(p[:bitstring], search_space)
+    p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
     p[:objectives] = []
     p[:objectives] << objective1(p[:vector])
     p[:objectives] << objective2(p[:vector])
@@ -107,8 +105,8 @@ def calculate_density(p1, pop)
   return 1.0 / (list[k][:dist] + 2.0)
 end
 
-def calculate_fitness(pop, archive, search_space)
-  calculate_objectives(pop, search_space)
+def calculate_fitness(pop, archive, search_space, bits_per_param)
+  calculate_objectives(pop, search_space, bits_per_param)
   union = archive + pop
   calculate_dominated(union)
   union.each do |p1|
@@ -147,13 +145,13 @@ def binary_tournament(pop)
   return (s1[:fitness] < s2[:fitness]) ? s1 : s2
 end
 
-def search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
+def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(problem_size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
   gen, archive = 0, []
   begin    
-    calculate_fitness(pop, archive, search_space)    
+    calculate_fitness(pop, archive, search_space, bits_per_param)    
     archive = environmental_selection(pop, archive, archive_size)    
     best = archive.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
     puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
@@ -172,13 +170,13 @@ end
 if __FILE__ == $0
   # problem configuration
   problem_size = 1
-  search_space = Array.new(problem_size) {|i| [-1000, 1000]}
+  search_space = Array.new(problem_size) {|i| [-10, 10]}
   # algorithm configuration
   max_gens = 50
   pop_size = 80
   archive_size = 40
   p_crossover = 0.90
   # execute the algorithm
-  pop = search(problem_size, search_space, max_gens, pop_size, archive_size, p_crossover)
+  pop = search(search_space, max_gens, pop_size, archive_size, p_crossover)
   puts "done!"
 end

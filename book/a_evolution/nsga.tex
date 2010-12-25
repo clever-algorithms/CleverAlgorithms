@@ -141,7 +141,7 @@ The \texttt{Sort\-By\-Rank\-And\-Distance} function orders the population into a
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{nsga} provides an example of the Non-dominated Sorting Genetic Algorithm II (NSGA-II) implemented in the Ruby Programming Language.
 % problem
-The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10^3\leq x_i \leq 10^3$ and $n=1$. The optimal solution for this function are $x \in [0,2]$.
+The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in \cite{Deb2002}). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10\leq x_i \leq 10$ and $n=1$. The optimal solution for this function are $x \in [0,2]$.
 % algorithm
 The algorithm is an implementation of NSGA-II based on the presentation by Deb et al.\ \cite{Deb2002}.
 %  cfg

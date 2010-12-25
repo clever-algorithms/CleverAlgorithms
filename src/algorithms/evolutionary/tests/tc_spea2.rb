@@ -9,6 +9,25 @@ require File.expand_path(File.dirname(__FILE__)) + "/../spea2"
 
 class TC_SPEA2 < Test::Unit::TestCase 
   
+  # test 1st objective function
+  def test_objective1
+    # optima
+    assert_equal(0, objective1([0,0])) # 0,0
+    # limits
+    assert_equal(2000000, objective1([-1000,-1000]))
+    assert_equal(2000000, objective1([1000,1000]))
+  end
+  
+  # test 2nd objective function
+  def test_objective2
+    # optima
+    assert_equal(0, objective2([2,2])) # 2,2
+    # limits
+    assert_equal(2000000, objective1([-1000,-1000]))
+    assert_equal(2000000, objective1([1000,1000]))
+  end
+    
+  
   # TODO write tests
   
   
@@ -25,7 +44,17 @@ class TC_SPEA2 < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    pop = nil
+    silence_stream(STDOUT) do
+      pop = search([[-10,10]], 50, 50, 20, 0.95)
+    end    
+    assert_equal(50, pop.size)
+    pop.each do |p|
+      assert_not_nil(p[:objectives])
+      assert_equal(2, p[:objectives].size)
+      assert_in_delta(0.0, p[:objectives][0], 1)
+      assert_in_delta(0.0, p[:objectives][1], 1)
+    end    
   end
   
 end
