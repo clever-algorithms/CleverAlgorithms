@@ -26,7 +26,13 @@ class TC_SPEA2 < Test::Unit::TestCase
     assert_equal(2000000, objective1([-1000,-1000]))
     assert_equal(2000000, objective1([1000,1000]))
   end
-    
+  
+  # test euclidean distance
+  def test_euclidean_distance
+    assert_equal(0, euclidean_distance([0,0],[0,0]))
+    assert_equal(0, euclidean_distance([1,5],[1,5]))
+    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
+  end  
   
   # TODO write tests
   
@@ -48,7 +54,7 @@ class TC_SPEA2 < Test::Unit::TestCase
     silence_stream(STDOUT) do
       pop = search([[-10,10]], 50, 50, 20, 0.95)
     end    
-    assert_equal(50, pop.size)
+    assert_equal(20, pop.size)
     pop.each do |p|
       assert_not_nil(p[:objectives])
       assert_equal(2, p[:objectives].size)

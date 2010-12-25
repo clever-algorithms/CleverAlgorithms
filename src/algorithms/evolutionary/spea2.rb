@@ -80,9 +80,9 @@ def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
-def distance(c1, c2)
+def euclidean_distance(c1, c2)
   sum = 0.0
-  c1.each_with_index {|x,i| sum += (c1[i]-c2[i])**2.0}
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
   return Math.sqrt(sum)
 end
 
@@ -99,7 +99,7 @@ def calculate_raw_fitness(p1, pop)
 end
 
 def calculate_density(p1, pop)
-  pop.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
+  pop.each {|p2| p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])}
   list = pop.sort{|x,y| x[:dist]<=>y[:dist]}
   k = Math.sqrt(pop.size).to_i
   return 1.0 / (list[k][:dist] + 2.0)
@@ -129,7 +129,7 @@ def environmental_selection(pop, archive, archive_size)
     begin
       k = Math.sqrt(environment.size).to_i
       environment.each do |p1|
-        environment.each {|p2| p2[:dist] = distance(p1[:objectives], p2[:objectives])}
+        environment.each {|p2| p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])}
         list = environment.sort{|x,y| x[:dist]<=>y[:dist]}
         p1[:density] = list[k][:dist]
       end
@@ -141,8 +141,8 @@ def environmental_selection(pop, archive, archive_size)
 end
 
 def binary_tournament(pop)
-  s1, s2 = pop[rand(pop.size)], pop[rand(pop.size)]
-  return (s1[:fitness] < s2[:fitness]) ? s1 : s2
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
 def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per_param=16)
@@ -156,7 +156,7 @@ def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per
     best = archive.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
     puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
     if gen >= max_gens
-      archive = archive.select {|p| p[:fitness]<1.0}
+      # archive = archive.select {|p| p[:fitness]<1.0}
       break
     else
       selected = Array.new(pop_size){binary_tournament(archive)}
