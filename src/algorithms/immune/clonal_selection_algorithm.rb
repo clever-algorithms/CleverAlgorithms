@@ -4,29 +4,27 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-BITS_PER_PARAM = 16
-
 def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
 
-def decode(bitstring, search_space)
+def decode(bitstring, search_space, bits_per_param)
   vector = []
   search_space.each_with_index do |bounds, i|
-    off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
-    bitstring[off...(off+BITS_PER_PARAM)].reverse.each_char do |c|
+    off, sum, j = i*bits_per_param, 0.0, 0    
+    bitstring[off...(off+bits_per_param)].reverse.each_char do |c|
       sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
       j += 1
     end
     min, max = bounds
-    vector << min + ((max-min)/((2.0**BITS_PER_PARAM.to_f)-1.0)) * sum
+    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
   end
   return vector
 end
 
-def evaluate(pop, search_space)
+def evaluate(pop, search_space, bits_per_param)
   pop.each do |p|
-    p[:vector] = decode(p[:bitstring], search_space)
+    p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
     p[:cost] = objective_function(p[:vector])
   end
 end
@@ -86,26 +84,26 @@ def greedy_merge(pop, clones)
   return union[0...pop.size]
 end
 
-def random_insertion(search_space, pop, num_rand)
+def random_insertion(search_space, pop, num_rand, bits_per_param)
   return pop if num_rand == 0
   rands = Array.new(num_rand) do |i|
-    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
-  evaluate(rands, search_space)
+  evaluate(rands, search_space, bits_per_param)
   return greedy_merge(pop, rands)
 end
 
-def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
+def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
-  evaluate(pop, search_space)
+  evaluate(pop, search_space, bits_per_param)
   best = pop.min{|x,y| x[:cost]<=>y[:cost]}
   max_gens.times do |gen|
     clones = clone_and_hypermutate(pop, clone_factor, mutate_factor)
-    evaluate(clones, search_space)
+    evaluate(clones, search_space, bits_per_param)
     pop = greedy_merge(pop, clones)    
-    pop = random_insertion(search_space, pop, num_rand)
+    pop = random_insertion(search_space, pop, num_rand, bits_per_param)
     best = (pop + [best]).min{|x,y| x[:cost]<=>y[:cost]}
     puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]} s=#{best[:vector].inspect}"
   end  
@@ -117,7 +115,7 @@ if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_gens = 200
+  max_gens = 100
   pop_size = 100
   clone_factor = 0.1
   mutate_factor = 2.5
