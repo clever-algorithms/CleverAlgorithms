@@ -24,8 +24,17 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end   
   
   # test that the algorithm can solve the problem
-  def test_search    
-    fail("I don't know how to test this!")
+  def test_search
+    # execute
+    pop = nil
+    silence_stream(STDOUT) do
+      pop = search(6, 150, 2000, ['0','1'], 0.1, 0.2, 0.01, 50, 0.80, 0.04, 20)
+    end    
+    # check reuslt
+    assert_in_delta(70, pop.size, 30)
+    100.times do
+      
+    end
   end
   
 end
