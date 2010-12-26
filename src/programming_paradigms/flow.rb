@@ -15,14 +15,14 @@ class FlowUnit
     start()
   end
   
-  def run
+  def execute
     raise "FlowUnit not defined!"
   end    
   
   def start
     puts "Starting flow unit: #{self.class.name}!"
     @thread = Thread.new do 
-      run() while true 
+      execute() while true 
     end
   end
 end
@@ -35,7 +35,7 @@ class EvalFlowUnit < FlowUnit
     return sum
   end
 
-  def run   
+  def execute   
     data = @queue_in.pop    
     data[:fitness] = onemax(data[:bitstring])
     @queue_out.push(data)
@@ -46,14 +46,14 @@ end
 class StopConditionUnit < FlowUnit
   attr_reader :best, :num_bits, :max_evaluations, :evals
   
-  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000, num_bits=64)
-    super(q_in, q_out)
+  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000, num_bits=64)    
     @best, @evals = nil, 0
     @num_bits = num_bits
     @max_evaluations = max_evaluations
+    super(q_in, q_out)
   end
   
-  def run
+  def execute
     data = @queue_in.pop
     if @best.nil? or data[:fitness] > @best[:fitness]
       @best = data 
@@ -71,19 +71,19 @@ end
 # Fitness-based selection flow unit
 class SelectFlowUnit < FlowUnit
   def initialize(q_in=Queue.new, q_out=Queue.new, pop_size=100)
+    @pop_size = pop_size
     super(q_in, q_out)
-    @pop_size = 100
   end
   
-  def binary_tournament(population)
-    s1, s2 = population[rand(population.size)], population[rand(population.size)]
-    return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+  def binary_tournament(pop)
+    i, j = rand(pop.size), rand(pop.size)
+    return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
   end
 
-  def run    
+  def execute    
     population = Array.new
-    population << @queue_in.pop while population.size < @pop_size    
-    @pop_size.times do
+    population << @queue_in.pop while population.size < @pop_size   
+    @pop_size.times do |i| 
       @queue_out.push(binary_tournament(population))
     end
   end
@@ -92,9 +92,9 @@ end
 # Variation flow unit
 class VariationFlowUnit < FlowUnit
   def initialize(q_in=Queue.new, q_out=Queue.new, crossover=0.98, mutation=1.0/64.0)
-    super(q_in, q_out)
     @p_crossover = crossover
     @p_mutation = mutation
+    super(q_in, q_out)
   end
   
   def uniform_crossover(parent1, parent2)
@@ -108,7 +108,8 @@ class VariationFlowUnit < FlowUnit
 
   def point_mutation(bitstring)
     child = ""
-    bitstring.each_char do |bit|
+    bitstring.size.times do |i|
+      bit = bitstring[i].chr
       child << ((rand()<@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
     end
     return child
@@ -121,7 +122,7 @@ class VariationFlowUnit < FlowUnit
     return child
   end
 
-  def run
+  def execute
     parent1 = @queue_in.pop
     parent2 = @queue_in.pop    
     @queue_out.push(reproduce(parent1, parent2))
@@ -133,22 +134,22 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def search(population_size=100)
+def search(population_size=100, num_bits=64)
   # create the pipeline
   eval = EvalFlowUnit.new
   stopcondition = StopConditionUnit.new(eval.queue_out) 
-  select = SelectFlowUnit.new(stopcondition.queue_out)
-  variation = VariationFlowUnit.new(select.queue_out, eval.queue_in) 
+  selection = SelectFlowUnit.new(stopcondition.queue_out)
+  variation = VariationFlowUnit.new(selection.queue_out, eval.queue_in) 
   # push random solutions into the pipeline
   population_size.times do 
-    solution = {:bitstring=>random_bitstring(64)}
+    solution = {:bitstring=>random_bitstring(num_bits)}
     eval.queue_in.push(solution)
   end
-  stopcondition.thread.join  
+  stopcondition.thread.join
   return stopcondition.best
 end
 
 if __FILE__ == $0
-  best = search()
+  best = search()  
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end

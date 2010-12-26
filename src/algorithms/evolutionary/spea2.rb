@@ -142,7 +142,7 @@ end
 
 def binary_tournament(pop)
   i, j = rand(pop.size), rand(pop.size)
-  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
+  return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
 def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per_param=16)

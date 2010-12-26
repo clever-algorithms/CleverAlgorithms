@@ -92,8 +92,8 @@ date > $LOG
 # physical
 # probabilistic
 # stochastic
-swarm
-# paradigms
+# swarm
+paradigms
 
 # summary
 echo "\nSummary of Results:"
