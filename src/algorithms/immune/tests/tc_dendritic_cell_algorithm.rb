@@ -25,7 +25,22 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    domain = {}
+    domain["Normal"] = Array.new(50){|i| i}
+    domain["Anomaly"] = Array.new(5){|i| (i+1)*10}
+    domain["Normal"] = domain["Normal"] - domain["Anomaly"]
+    cells = nil
+    silence_stream(STDOUT) do
+      cells = execute(domain, 100, 50, 0.7, 0.95, [5,15], 10)  
+    end  
+    # assert_in_delta(50, cells.size, 50)
+    correct = nil
+    silence_stream(STDOUT) do
+      correct = test_system(cells, domain, 0.7, 0.95, 10)
+    end
+    assert_equal(2, correct.size)    
+    assert_in_delta(100, correct[0], 10)
+    assert_in_delta(100, correct[1], 10)
   end
   
 end
