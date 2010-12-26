@@ -91,8 +91,8 @@ date > $LOG
 # neural
 # physical
 # probabilistic
-stochastic
-# swarm
+# stochastic
+swarm
 # paradigms
 
 # summary

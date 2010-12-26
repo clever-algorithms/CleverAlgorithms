@@ -11,67 +11,47 @@ class TC_PSO < Test::Unit::TestCase
 
   # test that the random_vector function behaves as expected
   def test_random_vector
-    problem_size = 50
-    tolerance = 0.5
-
-    do_test_random_vector(problem_size, -2, 2, tolerance)
-    do_test_random_vector(problem_size, -7, -3, tolerance)
-    do_test_random_vector(problem_size, 3, 7, tolerance)
-    do_test_random_vector(problem_size, 0, 10, tolerance)
-    do_test_random_vector(problem_size, -10, 0, tolerance)
+    do_test_random_vector(-2, 2)
+    do_test_random_vector(-7, -3)
+    do_test_random_vector(3, 7)
+    do_test_random_vector(0, 10)
+    do_test_random_vector(-10, 0)
   end
 
   #helper function for test_random_vector
-  def do_test_random_vector(problem_size, lower_bound, upper_bound, tolerance)
+  def do_test_random_vector(lower_bound, upper_bound, problem_size=50, tolerance=1.0)
     median = (lower_bound + upper_bound) / 2
-    sum = 0
-
     search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
     test_vector = random_vector(search_space)
-
-    for i in test_vector
-      assert_operator i, :>=, lower_bound
-      assert_operator i, :<=, upper_bound
-      sum = sum + i
+    sum = 0
+    test_vector.each do |x|
+      assert_operator(x, :>=, lower_bound)
+      assert_operator(x, :<=, upper_bound)
+      sum = sum + x
     end
-
     assert_in_delta(median, (sum / problem_size), tolerance)
   end
 
   # test that objective_function behaves as expected
   def test_objective_function
+    # test with int
     vector = [-2, -1, 0, 7]
-    sum = 0
-
-    for i in vector
-      sum = sum + i * i
-    end
-
-    #test with int
-    assert_equal objective_function(vector), sum
-
-    vector = [-20.2, 9000]
-    sum = 0
-
-    for i in vector
-      sum = sum + i * i
-    end
-
+    expected = vector.inject(0.0) {|m,x| m + x*x }
+    assert_equal(expected, objective_function(vector))
     #test with float
-    assert_in_delta objective_function(vector), sum, 0.01
+    vector = [-20.2, 9000]
+    expected = vector.inject(0.0) {|m,x| m + x*x }
+    assert_in_delta(expected, objective_function(vector), 0.01)
   end
   
   # test that the update_velocity function behaves as expected
   def test_update_velocity
     problem_size = 1
-    lower_bound = -10
-    upper_bound = 10
-    search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
+    search_space = Array.new(problem_size) {[-10, 10]}
     vel_space = [0]
-
     particle = create_particle(search_space, vel_space)
     gbest = create_particle(search_space, vel_space)
-
+    # test vel updates
     do_test_update_velocity(5, particle, gbest, 0, 0, 0, 0, 0)
     do_test_update_velocity(5, particle, gbest, 0, 5, 0, 0, 5)
     do_test_update_velocity(50, particle, gbest, 0, 0, -10, 10, 0)
@@ -89,75 +69,47 @@ class TC_PSO < Test::Unit::TestCase
     sum = 0
     count = 0
     while count < 20000
-      particle[:position] = [pos]
-      particle[:velocity] = [vel]
-      particle[:b_position] = [l_pos]
-      gbest[:position] = [g_pos]
-
+      particle[:position],particle[:velocity] = [pos],[vel]
+      particle[:b_position],gbest[:position] = [l_pos],[g_pos]
       update_velocity(particle, gbest, max_vel, 1, 1)
-      assert_operator (particle[:velocity][0]).abs, :<=, max_vel
+      assert_operator((particle[:velocity][0]).abs, :<=, max_vel)
       sum += particle[:velocity][0]
       count += 1
     end
-    assert_in_delta expected, (sum / count), 0.05
+    assert_in_delta(expected, (sum / count), 0.1)
   end
 
   # test that the update_position function behaves as expected
   def test_update_position
     problem_size = 2
-    lower_bound = -10
-    upper_bound = 10
-    search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
+    search_space = Array.new(problem_size) {[-10, 10]}
     particle = create_particle(search_space, [-1,1])
-
+    # positive integers
     particle[:position] = [0,9]
     particle[:velocity] = [4,4]
     update_position(particle, search_space)
-    assert_equal particle[:position], [4,7]
-
-    particle[:position] = [9,0]
-    particle[:velocity] = [4,4]
-    update_position(particle, search_space)
-    assert_equal particle[:position], [7,4]
-
-    particle[:position] = [-10,0]
-    particle[:velocity] = [0,-4]
-    update_position(particle, search_space)
-    assert_equal particle[:position], [-10,-4]
-
+    assert_equal([4,7], particle[:position])
+    # negative integers
     particle[:position] = [-8,-9]
     particle[:velocity] = [-2,-4]
     update_position(particle, search_space)
-    assert_equal particle[:position], [-10,-7]
+    assert_equal([-10,-7], particle[:position])
   end
 
   # test that the get_global_best function behaves as expected
   def test_get_global_best
     problem_size = 2
-    lower_bound = -10
-    upper_bound = 10
-    search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
+    search_space = Array.new(problem_size) {[-10, 10]}
     particle = create_particle(search_space, [-1,1])
     vel_space = [-1,1]
-
     pop_size = 100
     pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
-
-    #test ascending order
-    i = 0
-    while i < pop_size
-      pop[i][:cost] = i
-      i += 1
-    end
+    # test ascending order
+    pop.each_with_index {|p,i| pop[i][:cost] = i}
     gbest = get_global_best(pop, gbest)
     assert_equal(0, gbest[:cost])
-
-    #test descending order
-    i = 0
-    while i < pop_size
-      pop[i][:cost] = pop_size - i
-      i += 1
-    end
+    # test descending order
+    pop.each_with_index {|p,i| pop[i][:cost] = pop_size-i}
     gbest = get_global_best(pop, gbest)
     assert_equal(0, gbest[:cost])
   end
@@ -177,9 +129,9 @@ class TC_PSO < Test::Unit::TestCase
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search(100, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 50, 5.0, 2, 2)
+      best = search(200, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 20, 20.0, 2, 2)
     end  
     assert_not_nil(best[:cost])
-    assert_in_delta(0.0, best[:cost], 0.1)
+    assert_in_delta(0.0, best[:cost], 1.0)
   end	  
 end
