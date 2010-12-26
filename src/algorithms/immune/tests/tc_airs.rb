@@ -25,7 +25,17 @@ class TC_AIRS < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    cells = nil
+    silence_stream(STDOUT) do
+      cells = execute(domain, 100, 10, 2.0, 0.9, 150)
+    end  
+    assert_in_delta(50, cells.size, 50)
+    correct = -1
+    silence_stream(STDOUT) do
+      correct = test_system(cells, domain)
+    end
+    assert_in_delta(50, correct, 5)
   end
   
 end

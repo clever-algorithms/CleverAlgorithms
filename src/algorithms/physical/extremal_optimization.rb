@@ -17,6 +17,15 @@ def cost(permutation, cities)
   return distance
 end
 
+def random_permutation(cities)
+  perm = Array.new(cities.size){|i|i}
+  for i in 0...perm.size
+    r = rand(perm.size-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
+end
+
 def calculate_neighbor_rank(city_number, cities, ignore=[])
   neighbors = []
   cities.each_with_index do |city, i|
@@ -27,15 +36,6 @@ def calculate_neighbor_rank(city_number, cities, ignore=[])
   end
   neighbors.sort!{|x,y| x[:distance] <=> y[:distance]}
   return neighbors
-end
-
-def nearest_neighbor_solution(cities)
-  perm = [rand(cities.size)]
-  while perm.size < cities.size
-    neighbors = calculate_neighbor_rank(perm.last, cities, perm)
-    perm << neighbors.first[:number]
-  end  
-  return perm
 end
 
 def get_edges_for_city(city_number, permutation)
@@ -130,7 +130,7 @@ def create_new_permutation(cities, tau, permutation)
 end
 
 def search(cities, max_iterations, tau)
-  current = {:vector=>nearest_neighbor_solution(cities)}
+  current = {:vector=>random_permutation(cities)}
   current[:cost] = cost(current[:vector], cities)
   best = current
   max_iterations.times do |iter|
@@ -156,8 +156,8 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 100
-  tau = 1.2
+  max_iterations = 250
+  tau = 1.3
   # execute the algorithm
   best = search(berlin52, max_iterations, tau)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"

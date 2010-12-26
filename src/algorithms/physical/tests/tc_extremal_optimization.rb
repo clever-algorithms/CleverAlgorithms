@@ -43,12 +43,12 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
   end
   
   # test the creation of a nn solution
-  def test_nearest_neighbor_solution
-    cities = [[-2,-2], [1,1], [2,2], [4,4], [66,66]]
-    perm = nearest_neighbor_solution(cities)
-    assert_equal(5, perm.size)
-    # TODO test that most edges are nearest neighbors
-  end
+  # def test_nearest_neighbor_solution
+  #   cities = [[-2,-2], [1,1], [2,2], [4,4], [66,66]]
+  #   perm = nearest_neighbor_solution(cities)
+  #   assert_equal(5, perm.size)
+  #   # TODO test that most edges are nearest neighbors
+  # end
 
   # test getting the edges for a city
   def test_get_edges_for_city
@@ -156,11 +156,11 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
      [595,360],[1340,725],[1740,245]]  
     best = nil
     silence_stream(STDOUT) do
-      best = search(berlin52, 100, 1.3)
+      best = search(berlin52, 250, 1.3)
     end    
     # better than an estimated NN solution
     assert_not_nil(best[:cost])
-    assert(best[:cost] <= 10000, "#{best[:cost]}")
+    assert_in_delta(7542, best[:cost], 3000)
   end
 
 end

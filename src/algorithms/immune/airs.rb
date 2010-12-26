@@ -117,7 +117,7 @@ def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, st
       candidate = refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
       add_candidate_to_memory_pool(candidate, best_match, memory_cells)
     end
-    puts " > iteration#{i+1} memory_cells=#{memory_cells.size}"
+    puts " > iter=#{i+1}, memory_cells=#{memory_cells.size}"
   end
 end
 
@@ -126,31 +126,33 @@ def classify_pattern(memory_cells, pattern)
   return memory_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
 end
 
-def test_system(memory_cells, domain)
+def test_system(memory_cells, domain, num_trials=50)
   correct = 0
-  100.times do 
+  num_trials.times do 
     pattern = generate_random_pattern(domain)
     best = classify_pattern(memory_cells, pattern)
     correct += 1 if best[:class_label] == pattern[:class_label]
   end
-  puts "Finished test with a score of #{correct}/#{100} (#{correct}%)"
+  puts "Finished test with a score of #{correct}/#{num_trials} (#{correct}%)"
+  return correct
 end
 
-def run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)  
+def execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)  
   memory_cells = initialize_cells(domain)
   train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
   test_system(memory_cells, domain)
+  return memory_cells
 end
 
 if __FILE__ == $0
   # problem configuration
   domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-  num_patterns = 100
+  num_patterns = 50
   # algorithm configuration
   clone_rate = 10
   mutate_rate = 2.0
   stim_thresh = 0.9
   max_resources = 150
   # execute the algorithm
-  run(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+  execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
 end
