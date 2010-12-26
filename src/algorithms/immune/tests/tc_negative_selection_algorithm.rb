@@ -25,7 +25,18 @@ class TC_NegativeSelectionAlgorithm < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
-    fail("I don't know how to test this!")
+    search_space = Array.new(2) {[0.0, 1.0]}
+    self_space = Array.new(2) {[0.5, 1.0]}
+    detectors = nil
+    silence_stream(STDOUT) do
+      detectors = execute(search_space, self_space, 300, 150, 0.05)
+    end  
+    assert_in_delta(300, detectors.size, 0)
+    correct = -1
+    silence_stream(STDOUT) do
+      correct = apply_detectors(detectors, search_space, self_space, 0.05)
+    end
+    assert_in_delta(50, correct, 5)
   end
   
 end

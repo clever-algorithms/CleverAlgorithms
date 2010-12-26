@@ -46,18 +46,19 @@ def generate_detectors(max_detectors, search_space, self_dataset, min_distance)
   return detectors
 end
 
-def apply_detectors(num_test, detectors, search_space, self_space, min_distance)
+def apply_detectors(detectors, search_space, self_space, min_distance, num_trials=50)
   correct = 0
-  num_test.times do |i|
+  num_trials.times do |i|
     input = {}
     input[:vector] = random_vector(search_space)
     predicted = matches?(input[:vector], detectors, min_distance) ? "non-self" : "self"
     actual = contains?(input[:vector], self_space) ? "self" : "non-self"
     result = (predicted==actual) ? "Correct" : "Incorrect"
     correct += 1.0 if predicted==actual
-    puts "#{i+1}/#{num_test}: #{result} - predicted=#{predicted}, actual=#{actual}, vector=#{input[:vector].inspect}"
+    puts "#{i+1}/#{num_trials}: #{result} - predicted=#{predicted}, actual=#{actual}, vector=#{input[:vector].inspect}"
   end
-  puts "Total Correct: #{correct}/#{num_test} (#{(correct/num_test.to_f)*100.0}%)"
+  puts "Total Correct: #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100.0}%)"
+  return correct
 end
 
 def generate_self_dataset(num_records, self_space, search_space)
@@ -73,13 +74,14 @@ def generate_self_dataset(num_records, self_space, search_space)
   return self_dataset
 end
 
-def run_algorithm(search_space, self_space, max_detectors, max_self, min_distance, num_test)
+def execute(search_space, self_space, max_detectors, max_self, min_distance)
   self_dataset = generate_self_dataset(max_self, self_space, search_space)
   puts "Done: prepared #{self_dataset.size} self patterns."
   detectors = generate_detectors(max_detectors, search_space, self_dataset, min_distance)
   puts "Done: prepared #{detectors.size} detectors."
-  apply_detectors(num_test, detectors, search_space, self_space, min_distance)
+  apply_detectors(detectors, search_space, self_space, min_distance)
   puts "Done. completed testing."
+  return detectors
 end
 
 if __FILE__ == $0
@@ -89,9 +91,8 @@ if __FILE__ == $0
   self_space = Array.new(problem_size) {[0.5, 1.0]}
   max_self = 150
   # algorithm configuration
-  max_detectors = 300  
+  max_detectors = 300
   min_distance = 0.05
-  num_test = 50
   # execute the algorithm
-  run_algorithm(search_space, self_space, max_detectors, max_self, min_distance, num_test)
+  execute(search_space, self_space, max_detectors, max_self, min_distance)
 end
