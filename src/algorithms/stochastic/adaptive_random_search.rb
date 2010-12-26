@@ -32,18 +32,23 @@ def large_step_size(iteration, step_size, small_factor, large_factor, factor_mul
   return  step_size * small_factor
 end
 
-def search(max_iterations, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+def take_steps(search_space, current, step_size, bigger_step_size)
+  step, bigger_step = {}, {}
+  step[:vector] = take_step(search_space, current[:vector], step_size)
+  step[:cost] = cost(step[:vector])
+  bigger_step[:vector] = take_step(search_space, current[:vector], bigger_step_size)
+  bigger_step[:cost] = cost(bigger_step[:vector])    
+  return step, bigger_step
+end
+
+def search(max_iter, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
   step_size = (search_space[0][1]-search_space[0][0]) * init_factor
   current, count = {}, 0
   current[:vector] = random_solution(search_space)
   current[:cost] = cost(current[:vector])
-  max_iterations.times do |iter|
-    step, bigger_step = {}, {}
-    step[:vector] = take_step(search_space, current[:vector], step_size)
-    step[:cost] = cost(step[:vector])
+  max_iter.times do |iter|
     bigger_step_size = large_step_size(iter, step_size, small_factor, large_factor, factor_multiple)
-    bigger_step[:vector] = take_step(search_space, current[:vector], bigger_step_size)
-    bigger_step[:cost] = cost(bigger_step[:vector])    
+    step, bigger_step = take_steps(search_space, current, step_size, bigger_step_size)
     if step[:cost] <= current[:cost] or bigger_step[:cost] <= current[:cost]
       if bigger_step[:cost] < step[:cost]
         step_size, current = bigger_step_size, bigger_step

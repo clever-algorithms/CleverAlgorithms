@@ -86,14 +86,14 @@ function paradigms {
 date > $LOG
 
 # execute
-evolutionary
-immune
-neural
-physical
-probabilistic
+# evolutionary
+# immune
+# neural
+# physical
+# probabilistic
 stochastic
-swarm
-paradigms
+# swarm
+# paradigms
 
 # summary
 echo "\nSummary of Results:"

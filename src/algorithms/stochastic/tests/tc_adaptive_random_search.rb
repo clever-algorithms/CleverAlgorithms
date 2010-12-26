@@ -27,10 +27,10 @@ class TC_AdaptiveRandomSearch < Test::Unit::TestCase
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search(100, [[-5,5],[-5,5]], 0.05, 1.3, 3.0, 10, 30)
+      best = search(1000, [[-5,5],[-5,5]], 0.05, 1.3, 3.0, 10, 30)
     end  
     assert_not_nil(best[:cost])
-    assert_in_delta(0.0, best[:cost], 0.0001)
+    assert_in_delta(0.0, best[:cost], 0.1)
   end
   
 end
