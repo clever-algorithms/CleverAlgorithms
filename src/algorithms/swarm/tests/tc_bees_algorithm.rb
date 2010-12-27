@@ -73,6 +73,7 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search(50, [[-5,5],[-5,5]], 50, 5, 2, 3, 7, 2)
     end  
+    assert_not_nil(best[:fitness])
     assert_in_delta(0.0, best[:fitness], 0.01)
   end	
 	

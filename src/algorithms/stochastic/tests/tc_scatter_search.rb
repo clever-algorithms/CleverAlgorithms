@@ -29,6 +29,7 @@ class TC_ScatterSearch < Test::Unit::TestCase
     silence_stream(STDOUT) do
       best = search([[-5,5],[-5,5]], 100, 10, 20, 30, 0.05, 5)
     end  
+    assert_not_nil(best[:cost])
     assert_in_delta(0.0, best[:cost], 0.0001)
   end
   
