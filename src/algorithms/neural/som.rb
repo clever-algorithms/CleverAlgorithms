@@ -96,7 +96,7 @@ def test_network(codebook_vectors, shape, num_trials=100)
   return error
 end
 
-def compute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
+def execute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
   codebook_vectors = initialize_vectors(domain, width, height)
   summarize_vectors(codebook_vectors)
   train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
@@ -115,5 +115,5 @@ if __FILE__ == $0
   neighborhood_size = 5
   width, height = 4, 5
   # execute the algorithm
-  compute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
+  execute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
 end

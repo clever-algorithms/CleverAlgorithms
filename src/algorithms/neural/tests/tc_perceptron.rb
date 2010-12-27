@@ -28,7 +28,7 @@ class TC_Perceptron < Test::Unit::TestCase
     domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,1]]
     weights = nil
     silence_stream(STDOUT) do
-      weights = compute(domain, 2, 20, 0.1)
+      weights = execute(domain, 2, 20, 0.1)
     end
     assert_equal(4, test_weights(weights, domain, 2))
   end

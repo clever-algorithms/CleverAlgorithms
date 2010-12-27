@@ -64,7 +64,7 @@ def test_weights(weights, domain, num_inputs)
   return correct
 end
 
-def compute(domain, num_inputs, iterations, learning_rate)  
+def execute(domain, num_inputs, iterations, learning_rate)  
   weights = initialize_weights(num_inputs)
   train_weights(weights, domain, num_inputs, iterations, learning_rate)
   test_weights(weights, domain, num_inputs)
@@ -79,5 +79,5 @@ if __FILE__ == $0
   iterations = 20
   learning_rate = 0.1  
   # execute the algorithm
-  compute(or_problem, inputs, iterations, learning_rate)
+  execute(or_problem, inputs, iterations, learning_rate)
 end

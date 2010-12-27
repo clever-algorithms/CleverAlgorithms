@@ -226,7 +226,7 @@ class TC_BackPropagation < Test::Unit::TestCase
     domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
     network = nil 
     silence_stream(STDOUT) do
-      network = compute(domain, 2, 5000, 2, 0.5)
+      network = execute(domain, 2, 5000, 2, 0.5)
     end     
     # structure    
     assert_equal(2, network.size)

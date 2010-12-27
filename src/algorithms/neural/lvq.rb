@@ -82,7 +82,7 @@ def test_network(codebook_vectors, domain, num_trials=100)
   return correct
 end
 
-def compute(domain, iterations, num_vectors, learning_rate)  
+def execute(domain, iterations, num_vectors, learning_rate)  
   codebook_vectors = initialize_vectors(domain, num_vectors)
   train_network(codebook_vectors, domain, iterations, learning_rate)
   test_network(codebook_vectors, domain)
@@ -97,5 +97,5 @@ if __FILE__ == $0
   iterations = 1000
   num_vectors = 20
   # execute the algorithm
-  run(domain, iterations, num_vectors, learning_rate)
+  execute(domain, iterations, num_vectors, learning_rate)
 end

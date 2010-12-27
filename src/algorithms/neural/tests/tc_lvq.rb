@@ -30,7 +30,7 @@ class TC_LVQ < Test::Unit::TestCase
     # compute
     codebooks = nil
     silence_stream(STDOUT) do
-      codebooks = compute(domain, 1000, 10, 0.3)
+      codebooks = execute(domain, 1000, 10, 0.3)
     end
     # structure
     assert_equal(10, codebooks.size)

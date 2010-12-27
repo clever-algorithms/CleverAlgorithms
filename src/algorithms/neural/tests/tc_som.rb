@@ -31,7 +31,7 @@ class TC_SOM < Test::Unit::TestCase
     # compute
     codebooks = nil
     silence_stream(STDOUT) do
-      codebooks = compute(domain, shape, 1000, 0.3, 5, 5, 4)
+      codebooks = execute(domain, shape, 1000, 0.3, 5, 5, 4)
     end
     # verify structure
     assert_equal(20, codebooks.size)

@@ -117,7 +117,7 @@ def create_neuron(num_inputs)
   return {:weights => initialize_weights(num_inputs)}
 end
 
-def compute(domain, num_inputs, iterations, num_nodes, lrate)  
+def execute(domain, num_inputs, iterations, num_nodes, lrate)  
   network = []
   network << Array.new(num_nodes){create_neuron(num_inputs)}
   network << Array.new(1){create_neuron(network.last.size)} 
@@ -136,5 +136,5 @@ if __FILE__ == $0
   num_hidden_nodes = 2
   iterations = 10000
   # execute the algorithm
-  compute(xor, inputs, iterations, num_hidden_nodes, learning_rate)
+  execute(xor, inputs, iterations, num_hidden_nodes, learning_rate)
 end

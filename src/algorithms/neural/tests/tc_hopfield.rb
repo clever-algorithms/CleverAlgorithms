@@ -34,7 +34,7 @@ class TC_Hopfield < Test::Unit::TestCase
     # get output
     neurons = nil
     silence_stream(STDOUT) do
-      neurons = compute(patters, num_inputs)
+      neurons = execute(patters, num_inputs)
     end
     # test structure
     assert_equal(num_inputs, neurons.size)
