@@ -6,13 +6,13 @@ LOG=all_tests.log
 function evolutionary { 
 	ruby evolutionary/tests/tc_differential_evolution.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_evolution_strategies.rb | tee -a $LOG
-	ruby evolutionary/tests/tc_evolution_programming.rb | tee -a $LOG
+	ruby evolutionary/tests/tc_evolutionary_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_gene_expression_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_genetic_algorithm.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_genetic_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_grammatical_evolution.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_learning_classifier_system.rb | tee -a $LOG
-	ruby evolutionary/tests/tc_nsga_ii.rb | tee -a $LOG
+	ruby evolutionary/tests/tc_nsgaii.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_spea2.rb | tee -a $LOG
 }
 
@@ -87,18 +87,18 @@ date > $LOG
 
 # execute
 
-# evolutionary
+evolutionary
 immune
-# neural
-# physical
-# probabilistic
-# stochastic
-# swarm
-# paradigms
+neural
+physical
+probabilistic
+stochastic
+swarm
+paradigms
 
 # summary
 TESTS=`cat ./all_tests.log | grep Started | wc -l`
 
-printf "\nSummary of Results: (total tests=%d)\n", $TESTS
+printf "\nSummary of Results: (total tests=%d)\n" $TESTS
 echo "------------------------------------------------------------"
 cat all_tests.log | grep -E ' Error:| Failure:|No such file or directory'
