@@ -181,10 +181,10 @@ class TC_GrammaticalEvolution < Test::Unit::TestCase
     # srand(10)
     best = nil
     silence_stream(STDOUT) do
-      best = search(50, 50, 4, 30, 0.7, grammar, 5, bounds)
+      best = search(50, 100, 4, 40, 0.3, grammar, 7, bounds)
     end    
     assert_not_nil(best[:fitness])
-    assert_in_delta(0.0, best[:fitness], 1.0)
+    assert_in_delta(0.0, best[:fitness], 5.0)
   end
   
 end
