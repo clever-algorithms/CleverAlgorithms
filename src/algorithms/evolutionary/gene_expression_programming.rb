@@ -133,11 +133,11 @@ if __FILE__ == $0
   grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
   bounds = [1.0, 10.0]
   # algorithm configuration
-  head_length = 24
+  head_length = 20
   tail_length = head_length * (2-1) + 1
-  generations = 100
-  pop_size = 100
-  p_crossover = 0.70
+  generations = 150
+  pop_size = 80
+  p_crossover = 0.85
   # execute the algorithm
   best = search(grammar, bounds, head_length, tail_length, generations, pop_size, p_crossover)
   puts "done! Solution: f=#{best[:fitness]}, g=#{best[:genome]}, b=#{best[:program]}"

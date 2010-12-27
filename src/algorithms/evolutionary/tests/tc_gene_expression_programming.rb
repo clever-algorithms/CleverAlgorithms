@@ -194,9 +194,9 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
     head, tail = 20, 2*10
     best = nil
     silence_stream(STDOUT) do
-      best = search(grammar, bounds, head, tail, 50, 50, 0.9)
+      best = search(grammar, bounds, head, tail, 150, 85, 0.85)
     end
     assert_not_nil(best[:fitness])
-    assert_in_delta(0.0, best[:fitness], 1.0)
+    assert_in_delta(0.0, best[:fitness], 10.0)
   end  
 end
