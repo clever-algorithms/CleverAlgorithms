@@ -30,7 +30,7 @@ class TC_ClonalSelectionAlgorithm < Test::Unit::TestCase
       best = search([[-5,5],[-5,5]], 100, 100, 0.1, 2.5, 1)
     end  
     assert_not_nil(best[:cost])
-    assert_in_delta(0.0, best[:cost], 0.1)
+    assert_in_delta(0.0, best[:cost], 0.5)
   end
   
 end

@@ -35,7 +35,7 @@ class TC_AIRS < Test::Unit::TestCase
     silence_stream(STDOUT) do
       correct = test_system(cells, domain)
     end
-    assert_in_delta(50, correct, 5)
+    assert_in_delta(50, correct, 10)
   end
   
 end

@@ -22,7 +22,7 @@ function immune {
 	ruby immune/tests/tc_clonal_selection_algorithm.rb | tee -a $LOG
 	ruby immune/tests/tc_dendritic_cell_algorithm.rb | tee -a $LOG
 	ruby immune/tests/tc_negative_selection_algorithm.rb | tee -a $LOG
-	ruby immune/tests/tc_optiainet.rb | tee -a $LOG
+	ruby immune/tests/tc_optainet.rb | tee -a $LOG
 }
 
 # neural
@@ -97,6 +97,8 @@ immune
 # paradigms
 
 # summary
-echo "\nSummary of Results:"
+TESTS=`cat ./all_tests.log | grep Started | wc -l`
+
+printf "\nSummary of Results: (total tests=%d)\n", $TESTS
 echo "------------------------------------------------------------"
 cat all_tests.log | grep -E ' Error:| Failure:|No such file or directory'
