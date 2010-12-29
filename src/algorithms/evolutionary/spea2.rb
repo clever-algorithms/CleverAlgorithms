@@ -35,6 +35,11 @@ def point_mutation(bitstring)
   return child
 end
 
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
 def uniform_crossover(parent1, parent2, p_crossover)
   return ""+parent1[:bitstring] if rand()>=p_crossover
   child = ""
@@ -140,11 +145,6 @@ def environmental_selection(pop, archive, archive_size)
   return environment
 end
 
-def binary_tournament(pop)
-  i, j = rand(pop.size), rand(pop.size)
-  return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
-end
-
 def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
@@ -155,14 +155,10 @@ def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per
     archive = environmental_selection(pop, archive, archive_size)    
     best = archive.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
     puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
-    if gen >= max_gens
-      # archive = archive.select {|p| p[:fitness]<1.0}
-      break
-    else
-      selected = Array.new(pop_size){binary_tournament(archive)}
-      pop = reproduce(selected, pop_size, p_crossover)
-      gen += 1
-    end
+    break if gen >= max_gens
+    selected = Array.new(pop_size){binary_tournament(archive)}
+    pop = reproduce(selected, pop_size, p_crossover)
+    gen += 1
   end while true
   return archive
 end
@@ -179,4 +175,5 @@ if __FILE__ == $0
   # execute the algorithm
   pop = search(search_space, max_gens, pop_size, archive_size, p_crossover)
   puts "done!"
+  pop.each {|p| puts p[:fitness] }
 end
