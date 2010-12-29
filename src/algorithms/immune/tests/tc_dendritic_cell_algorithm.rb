@@ -56,7 +56,7 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
   def test_generate_pattern
     domain = {"Anomaly"=>[10,20,30], "Normal"=>[1,2,3]}
     p_anom, p_norm = 0.5, 0.9
-    # anomoly
+    # anomaly
     p = nil
     silence_stream(STDOUT) do
       p = generate_pattern(domain, p_anom, p_norm, 1.0)
@@ -83,7 +83,7 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     # new
     10.times do
       c = initialize_cell([10, 20])
-      assert_equal(100, c[:lifespan])
+      assert_equal(1000, c[:lifespan])
       assert_equal(0, c[:k])
       assert_equal(0, c[:cms])
       assert_operator(c[:migration_threshold], :<, 20)
@@ -95,7 +95,7 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
       c = initialize_cell([0, 1])
       assert_not_nil(c)
       c = initialize_cell([10, 20], c)
-      assert_equal(100, c[:lifespan])
+      assert_equal(1000, c[:lifespan])
       assert_equal(0, c[:k])
       assert_equal(0, c[:cms])
       assert_operator(c[:migration_threshold], :<, 20)
@@ -130,7 +130,7 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     expose_cell(c, 100, 0.9, {:input=>666}, [-5,5])
     assert_equal(0, c[:cms])
     assert_equal(0, c[:k])
-    assert_equal(100, c[:lifespan])
+    assert_equal(1000, c[:lifespan])
     assert_equal(0, c[:antigen].size)
   end
   
@@ -182,12 +182,29 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     assert_equal("Anomaly", c[:class_label])
   end
   
+  # test the training of the system (we get some migrated cells)
   def test_train_system
-        
+    domain = {"Anomaly"=>[10,20,30], "Normal"=>[1,2,3]}
+    migrated = nil
+    silence_stream(STDOUT) do
+      migrated = train_system(domain, 100, 10, 0.10, 0.90, [500,1500])
+    end
+    assert_not_nil(migrated)
+    assert_operator(migrated.size, :>, 0)
   end
   
+  # test the classification of a pattern by a set of migrated cells
   def test_classify_pattern
-    
+    pattern = {:input=>5}
+    # normal
+    migrated = [{:class_label=>"Anomaly", :antigen=>{5=>5}}, {:class_label=>"Normal", :antigen=>{5=>2}}]
+    assert_equal("Normal", classify_pattern(migrated, pattern))
+    # anomaly
+    migrated = [{:class_label=>"Anomaly", :antigen=>{5=>1}}, {:class_label=>"Normal", :antigen=>{5=>2}}]
+    assert_equal("Anomaly", classify_pattern(migrated, pattern))
+    # border line (0.5)
+    migrated = [{:class_label=>"Anomaly", :antigen=>{5=>2}}, {:class_label=>"Normal", :antigen=>{5=>2}}]
+    assert_equal("Normal", classify_pattern(migrated, pattern))
   end
   
   def test_test_system
@@ -206,14 +223,14 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     assert_equal(5, domain["Anomaly"].size) # {10,20,30,40,50}
     cells = nil
     silence_stream(STDOUT) do
-      cells = execute(domain, 100, 50, 0.7, 0.95, [5,15], 10)  
+      cells = execute(domain, 100, 50, 0.6, 0.95, [50,150])  
     end
     correct = nil
     silence_stream(STDOUT) do
-      correct = test_system(cells, domain, 0.7, 0.95, 10)
+      correct = test_system(cells, domain, 0.7, 0.95)
     end
     assert_equal(2, correct.size)    
-    assert_in_delta(100, correct[0], 10)
+    assert_in_delta(100, correct[0], 30) # This could be better
     assert_in_delta(100, correct[1], 10)
   end
   

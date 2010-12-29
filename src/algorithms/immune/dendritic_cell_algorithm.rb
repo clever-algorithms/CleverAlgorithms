@@ -29,7 +29,7 @@ def generate_pattern(domain, p_anomaly, p_normal, prob_create_anom=0.5)
   pattern = nil  
   if rand() < prob_create_anom
     pattern = construct_pattern("Anomaly", domain, 1.0-p_normal, p_anomaly)
-    puts ">Generated Anomoly [#{pattern[:input]}]"
+    puts ">Generated Anomaly [#{pattern[:input]}]"
   else
     pattern = construct_pattern("Normal", domain, p_normal, 1.0-p_anomaly)
   end
@@ -37,7 +37,7 @@ def generate_pattern(domain, p_anomaly, p_normal, prob_create_anom=0.5)
 end
 
 def initialize_cell(thresh, cell={})
-  cell[:lifespan] = 100.0
+  cell[:lifespan] = 1000.0
   cell[:k] = 0.0
   cell[:cms] = 0.0
   cell[:migration_threshold] = rand_in_bounds(thresh[0], thresh[1])
@@ -95,40 +95,40 @@ def train_system(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)
   return migrated
 end
 
-def classify_pattern(migrated, pattern, response_size)
+def classify_pattern(migrated, pattern)
   input = pattern[:input]
   num_cells, num_antigen = 0, 0
   migrated.each do |cell|
-    if cell[:class_label] == "Anomoly" and !cell[:antigen][input].nil?
+    if cell[:class_label] == "Anomaly" and !cell[:antigen][input].nil?
       num_cells += 1
       num_antigen += cell[:antigen][input]
     end
   end
-  mcav = num_cells.to_f / num_antigen.to_f  
+  mcav = num_cells.to_f / num_antigen.to_f
   return (mcav>0.5) ? "Anomaly" : "Normal"
 end
 
-def test_system(migrated, domain, p_anomaly, p_normal, response_size, trial_norm=100, trial_anom=100)
+def test_system(migrated, domain, p_anomaly, p_normal, trial_norm=100, trial_anom=100)
   correct_norm = 0
   trial_norm.times do
     pattern = construct_pattern("Normal", domain, p_normal, 1.0-p_anomaly)
-    class_label = classify_pattern(migrated, pattern, response_size)
+    class_label = classify_pattern(migrated, pattern)
     correct_norm += 1 if class_label == "Normal"
   end
   puts "Finished testing Normal inputs #{correct_norm}/#{trial_norm}"
   correct_anom = 0
   trial_anom.times do
     pattern = construct_pattern("Anomaly", domain, 1.0-p_normal, p_anomaly)
-    class_label = classify_pattern(migrated, pattern, response_size)
+    class_label = classify_pattern(migrated, pattern)
     correct_anom += 1 if class_label == "Anomaly"
   end
   puts "Finished testing Anomaly inputs #{correct_anom}/#{trial_anom}"
   return [correct_norm, correct_anom]
 end
 
-def execute(domain, max_iter, num_cells, p_anomaly, p_normal, threshold, response_size)  
+def execute(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)  
   migrated = train_system(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)
-  test_system(migrated, domain, p_anomaly, p_normal, response_size)
+  test_system(migrated, domain, p_anomaly, p_normal)
   return migrated
 end
 
@@ -144,7 +144,6 @@ if __FILE__ == $0
   iterations = 100
   num_cells = 20
   threshold = [5,15]
-  response_size = 10
   # execute the algorithm
-  execute(domain, iterations, num_cells, p_anomaly, p_normal, threshold, response_size)
+  execute(domain, iterations, num_cells, p_anomaly, p_normal, threshold)
 end
