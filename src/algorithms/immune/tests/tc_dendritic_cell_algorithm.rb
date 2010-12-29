@@ -207,11 +207,17 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     assert_equal("Normal", classify_pattern(migrated, pattern))
   end
   
+  # test the testing of a system
   def test_test_system
-    
+    domain = {"Anomaly"=>[10,20], "Normal"=>[1,2]}
+    migrated = [{:class_label=>"Anomaly", :antigen=>{10=>1,20=>1}}, {:class_label=>"Normal", :antigen=>{1=>1,2=>1}}]
+    rs = nil
+    silence_stream(STDOUT) do
+      rs = test_system(migrated, domain, 0.7, 0.9)
+    end
+    assert_equal(100, rs[0])
+    assert_equal(100, rs[1])
   end
-  
-
   
   # test that the algorithm can solve the problem
   def test_search    
@@ -223,14 +229,15 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     assert_equal(5, domain["Anomaly"].size) # {10,20,30,40,50}
     cells = nil
     silence_stream(STDOUT) do
-      cells = execute(domain, 100, 50, 0.6, 0.95, [50,150])  
+      cells = execute(domain, 100, 10, 0.70, 0.95, [5,15])  
     end
     correct = nil
     silence_stream(STDOUT) do
       correct = test_system(cells, domain, 0.7, 0.95)
     end
+    puts correct.inspect
     assert_equal(2, correct.size)    
-    assert_in_delta(100, correct[0], 30) # This could be better
+    assert_in_delta(100, correct[0], 20) # This could be better
     assert_in_delta(100, correct[1], 10)
   end
   

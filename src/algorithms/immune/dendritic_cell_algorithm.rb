@@ -142,7 +142,7 @@ if __FILE__ == $0
   p_normal = 0.95
   # algorithm configuration
   iterations = 100
-  num_cells = 20
+  num_cells = 10
   threshold = [5,15]
   # execute the algorithm
   execute(domain, iterations, num_cells, p_anomaly, p_normal, threshold)

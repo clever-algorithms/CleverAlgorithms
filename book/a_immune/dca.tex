@@ -149,7 +149,7 @@ The resulting migrated cells can then be used to classify input patterns as norm
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{dca} provides an example of the Dendritic Cell Algorithm implemented in the Ruby Programming Language, specifically the Deterministic Dendritic Cell Algorithm (dDCA).
 % problem
-The problem is a contrived anomaly-detection problem with ordinal inputs $\in [0,50]$ , where values that divide by 10 with no remainder are considered anomalies. Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
+The problem is a contrived anomaly-detection problem with ordinal inputs $x\ \in\ [0,50)$ , where values that divide by 10 with no remainder are considered anomalies. Probabilistic safe and danger signal functions are provided, suggesting danger signals correctly with $P(danger)=0.70$, and safe signals correctly with $P(safe)=0.95$.
 
 % algorithm
 The algorithm is an implementation of the Deterministic Dendritic Cell Algorithm (dDCA) as described in \cite{Stibor2009, Greensmith2008}, with verification from \cite{Greensmith2006a}. The algorithm was designed to be executed as three asynchronous processes in a real-time or semi-real time environment. For demonstration purposes, the implementation separated out the three main processes and executed the sequentially as a training and cell promotion phase followed by a test (labeling phase).
