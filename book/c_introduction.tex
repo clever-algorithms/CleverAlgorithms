@@ -18,7 +18,7 @@ Clever Algorithms are interesting, practical, and fun to learn about and impleme
 Research scientists may be interested in browsing algorithm inspirations in search of an interesting system or process analogs to investigate. Developers and software engineers may compare various problem solving algorithms and technique-specific guidelines. Practitioners, students, and interested amateurs may implement state-of-the-art algorithms to address business or scientific needs, or simply play with the fascinating systems they represent.
 
 % briefly book overview
-This introduction chapter provides relevant background information on Artificial Intelligence and Algorithms. The core of the book provides a large corpus of algorithms described in a complete and consistent manner. The final chapter covers some advanced topics to consider once a number of algorithms have been mastered. This book has been designed as a reference text, where specific techniques are looked up, or where the algorithms across whole fields of study are browsed, rather than being read cover-to-cover. This book is an algorithm handbook and a technique guidebook, and I hope you find something useful.
+This introduction chapter provides relevant background information on Artificial Intelligence and Algorithms. The core of the book provides a large corpus of algorithms presented in a complete and consistent manner. The final chapter covers some advanced topics to consider once a number of algorithms have been mastered. This book has been designed as a reference text, where specific techniques are looked up, or where the algorithms across whole fields of study can be browsed, rather than being read cover-to-cover. This book is an algorithm handbook and a technique guidebook, and I hope you find something useful.
 
 
 % 
@@ -34,7 +34,7 @@ This introduction chapter provides relevant background information on Artificial
 \index{Artificial Intelligence}
 The field of classical \emph{Artificial Intelligence} (AI) coalesced in the 1950s drawing on an understanding of the brain from neuroscience, the new mathematics of information theory, control theory referred to as cybernetics, and the dawn of the digital computer. AI is a cross-disciplinary field of research generally concerned with developing and investigating systems that operate or act intelligently. It is generally considered a discipline in the field of computer science given the strong focus on computation.
 
-Russell and Norvig provide a perspective that defines Artificial Intelligence in four categories: (1) systems that think like humans, (2) systems that act like humans, (3) systems that think rationally, (4) systems that act rationally \cite{Russell2009}. In their definition, acting like a human suggests that a system can do some specific things humans can do, this includes fields such as the Turing test, natural language processing, automated reasoning, knowledge representation, machine learning, computer vision, and robotics. Thinking like a human suggests systems that model the cognitive information processing properties of humans, for example a general problem solver and systems that build internal models of their world. Thinking rationally suggests laws of rationalism and structured thought, such as syllogisms and formal logic. Finally, acting rationally suggests systems that do rational things such as expected utility maximization and rational agents. 
+Russell and Norvig provide a perspective that defines Artificial Intelligence in four categories: 1) systems that think like humans, 2) systems that act like humans, 3) systems that think rationally, 4) systems that act rationally \cite{Russell2009}. In their definition, acting like a human suggests that a system can do some specific things humans can do, this includes fields such as the Turing test, natural language processing, automated reasoning, knowledge representation, machine learning, computer vision, and robotics. Thinking like a human suggests systems that model the cognitive information processing properties of humans, for example a general problem solver and systems that build internal models of their world. Thinking rationally suggests laws of rationalism and structured thought, such as syllogisms and formal logic. Finally, acting rationally suggests systems that do rational things such as expected utility maximization and rational agents. 
 
 Luger and Stubblefield suggest that AI is a sub-field of computer science concerned with the automation of intelligence, and like other sub-fields of computer science has both theoretical concerns (\emph{how and why do the systems work?}) and application concerns (\emph{where and when can the systems be used?}) \cite{Luger1993}. They suggest a strong empirical focus to research, because although there may be a strong desire for mathematical analysis, the systems themselves defy analysis given their complexity. The machines and software investigated in AI are not black boxes, rather analysis proceeds by observing the systems interactions with their environment, followed by an internal assessment of the system to relate its structure back to their behavior.
 
@@ -86,7 +86,7 @@ A paradigm that is concerned with the investigation of systems inspired by the n
 
 \subsubsection{Swarm Intelligence} 
 \index{Swarm Intelligence}
-A paradigm that considers collective intelligence as a behavior that emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields (1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the stigmergy and foraging behavior of ants \cite{Bonabeau1999, Dorigo2004}, and (2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish \cite{Kennedy2001}. Like evolutionary computation, swarm intelligence-based techniques are considered adaptive strategies and are typically applied to search and optimization domains.
+A paradigm that considers collective intelligence as a behavior that emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields 1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the stigmergy and foraging behavior of ants \cite{Bonabeau1999, Dorigo2004}, and 2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish \cite{Kennedy2001}. Like evolutionary computation, swarm intelligence-based techniques are considered adaptive strategies and are typically applied to search and optimization domains.
 
 \subsubsection{Artificial Neural Networks}
 \index{Artificial Neural Networks}
@@ -94,7 +94,7 @@ Neural Networks are a paradigm that is concerned with the investigation of archi
 
 \subsubsection{Fuzzy Intelligence}
 \index{Fuzzy Intelligence}
-Fuzzy Intelligence is a paradigm that is concerned with the investigation of fuzzy logic, which is a form of logic that is not constrained to true and false like propositional logic, but rather functions which define approximate truth or degree’s of truth \cite{Zadeh1996}. Fuzzy logic and fuzzy systems are a logic system used as a reasoning strategy and are typically applied to expert system and control system domains.
+Fuzzy Intelligence is a paradigm that is concerned with the investigation of fuzzy logic, which is a form of logic that is not constrained to true and false determinations like propositional logic, but rather functions which define approximate truth, or degree’s of truth \cite{Zadeh1996}. Fuzzy logic and fuzzy systems are a logic system used as a reasoning strategy and are typically applied to expert system and control system domains.
 
 \subsubsection{Artificial Immune Systems}
 \index{Artificial Immune Systems}
@@ -108,7 +108,7 @@ A collection of approaches inspired by the structure and function of the acquire
 \index{Metaheuristics}
 Another popular name for the strategy-outcome perspective of scruffy AI is \emph{metaheuristics}. 
 % heuristics
-A heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal \cite{Michalewicz2004}. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The greedy search procedure that only takes cost-improving steps is an example of heuristic method.
+In this context, heuristic is an algorithm that locates `good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal \cite{Michalewicz2004}. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The greedy search procedure that only takes cost-improving steps is an example of heuristic method.
 
 % meta
 Like heuristics, metaheuristics may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to make them adapted to a specific problem \cite{Glover2003, Talbi2009}. The difference is that metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence `meta'). A procedure in a metaheuristic is considered black-box in that little (if any) prior knowledge is known about it by the metaheuristic, and as such it may be replaced with a different procedure. Procedures may be as simple as the manipulation of a representation, or as complex as another complete metaheuristic. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
@@ -167,7 +167,7 @@ This section introduces two problem formalisms that embody many of the most diff
 \subsection{Function Optimization}
 \label{subsec:function_optimization}
 \index{Function Optimization}
-Real-world optimization problems and generalizations thereof can be drawn from most fields of science, engineering, and information technology (for a sample see \cite{Ali1997, Toern1999}). Importantly, optimization problems have had a long tradition in the fields of Artificial Intelligence in motivating basic research into new problem solving techniques, and for investigating and verifying systemic behavior against benchmark problem instances.
+Real-world optimization problems and generalizations thereof can be drawn from most fields of science, engineering, and information technology (for a sample see \cite{Ali1997, Toern1999}). Importantly, function optimization problems have had a long tradition in the fields of Artificial Intelligence in motivating basic research into new problem solving techniques, and for investigating and verifying systemic behavior against benchmark problem instances.
 
 %
 % Problem Definition
@@ -216,7 +216,7 @@ In machine learning, the function approximation formalism is used to describe ge
 % really hard
 The function approximation formalism can be used to phrase some of the hardest problems faced by Computer Science, and Artificial Intelligence in particular, such as natural language processing and computer vision. 
 % general process
-The general process focuses on (i) the collection and preparation of the observations from the target function, (ii) the selection and/or preparation of a model of the target function, and (ii) the application and ongoing refinement of the prepared model. 
+The general process focuses on 1) the collection and preparation of the observations from the target function, 2) the selection and/or preparation of a model of the target function, and 3) the application and ongoing refinement of the prepared model. 
 % important problem types 
 Some important problem-based sub-fields include: 
 \begin{itemize}
@@ -229,7 +229,7 @@ Some important problem-based sub-fields include:
 % optimisation
 The field of Function Optimization is related to Function Approximation, as many-sub-problems of Function Approximation may be defined as optimization problems. Many of the technique paradigms used for function approximation are differentiated based on the representation and the optimization process used to minimize error or maximize effectiveness on a given approximation problem. 
 % problems
-The difficulty of Function Approximation problems centre around (i) the nature of the unknown relationships between attributes and features, (ii) the number (dimensionality) of attributes and features, and (iii) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
+The difficulty of Function Approximation problems centre around 1) the nature of the unknown relationships between attributes and features, 2) the number (dimensionality) of attributes and features, and 3) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
 % other problems
 Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling, and skewing of features).
 
@@ -332,7 +332,7 @@ Algorithms are presented in six groups or kingdoms distilled from the broader fi
 	\item \emph{Physical Algorithms} inspired by physical and social systems  (Chapter~\ref{ch:physical}).
 	\item \emph{Probabilistic Algorithms} that focuses on methods that build models and estimate distributions in search domains (Chapter~\ref{ch:probabilistic}).
 	\item \emph{Swarm Algorithms} that focuses on methods that exploit the properties of collective intelligence (Chapter~\ref{ch:swarm}).
-	\item \emph{Immune Algorithms} inspired by the adaptive immune system of mammals (Chapter~\ref{ch:immune}). 
+	\item \emph{Immune Algorithms} inspired by the adaptive immune system of vertebrates (Chapter~\ref{ch:immune}). 
 	\item \emph{Neural Algorithms} inspired by the plasticity and learning qualities of the human nervous system (Chapter~\ref{ch:neural}). 
 \end{itemize}
 
@@ -349,12 +349,12 @@ The standardized algorithm description template covers the following subjects:
 	\item \emph{Strategy}: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective, providing a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number of specific algorithms or problem solving systems.
 	\item \emph{Procedure}: The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the computation, data structures, and representations. 
 	\item \emph{Heuristics}: The heuristics section describes the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the technique's procedure and data structures for general classes of application (neither specific implementations nor specific problem instances).
-	\item \emph{Code Listing}: The code listing description provides a minimal but functional version of the technique implemented with a programming language. The code description can be typed into an computer and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing with a terse introductory summary.
-	\item \emph{References}: The references section includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites.
+	\item \emph{Code Listing}: The code listing description provides a minimal but functional version of the technique implemented with a programming language. The code description can be typed into a computer and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing with a terse introductory summary.
+	\item \emph{References}: The references section includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, and journal articles.
 \end{itemize}
 
 % sample code
-Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm that was adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is an interpreted language, meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the website.\footnote{Ruby can be downloaded for free from \url{http://www.ruby-lang.org}} Finally, Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples. All of the source code for the algorithms presented in this book is available from \url{http://www.CleverAlgorithms.com}. 
+Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm, adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is an interpreted language, meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the website.\footnote{Ruby can be downloaded for free from \url{http://www.ruby-lang.org}} Finally, Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples. All of the source code for the algorithms presented in this book is available from \url{http://www.CleverAlgorithms.com}. 
 
 % 
 % Extensions
