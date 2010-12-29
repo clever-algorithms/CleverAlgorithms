@@ -8,7 +8,7 @@ def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_solution(search_space)
+def random_vector(search_space)
   return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
@@ -44,7 +44,7 @@ end
 def search(max_iter, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
   step_size = (search_space[0][1]-search_space[0][0]) * init_factor
   current, count = {}, 0
-  current[:vector] = random_solution(search_space)
+  current[:vector] = random_vector(search_space)
   current[:cost] = cost(current[:vector])
   max_iter.times do |iter|
     bigger_step_size = large_step_size(iter, step_size, small_factor, large_factor, factor_multiple)

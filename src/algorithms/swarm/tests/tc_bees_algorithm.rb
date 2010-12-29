@@ -42,13 +42,21 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
 		}		
 	end
 	
-	# test that the random_vector function behaves as expected
-	def test_random_vector
-		assert_in_delta random_vector( Array.new(10000) {[-3,1]}).inject(0){|sum, v|
-			assert_operator v, :>=, -3
-			assert_operator v, :<=, 1
-			sum += v} / 10000, -1, 0.1 		
-	end
+  # test the generation of random vectors
+  def test_random_vector
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
+    trials.times do 
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
+      vector.each do |v|
+        assert_operator(v, :>=, bounds[0])
+        assert_operator(v, :<, bounds[1])
+        sum += v
+      end
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+    end    
+  end
 	
 	# test that objective_function behaves as expected
 	def test_objective_function

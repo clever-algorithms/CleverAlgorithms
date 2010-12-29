@@ -22,12 +22,11 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
   
   # test the generation of random vectors
   def test_random_vector
-    bounds, trials = [-3,3], 300
-    minmax = Array.new(20) {bounds}
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
     trials.times do 
-      vector = random_vector(minmax)
-      sum = 0.0
-      assert_equal(20, vector.size)
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
       vector.each do |v|
         assert_operator(v, :>=, bounds[0])
         assert_operator(v, :<, bounds[1])
@@ -235,7 +234,6 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     silence_stream(STDOUT) do
       correct = test_system(cells, domain, 0.7, 0.95)
     end
-    puts correct.inspect
     assert_equal(2, correct.size)    
     assert_in_delta(100, correct[0], 20) # This could be better
     assert_in_delta(100, correct[1], 10)

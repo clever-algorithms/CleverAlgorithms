@@ -8,7 +8,7 @@ def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum + (x ** 2.0)}
 end
 
-def random_solution(search_space)
+def random_vector(search_space)
   return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
@@ -18,7 +18,7 @@ def search(search_space, max_iter)
   best = nil
   max_iter.times do |iter|
     candidate = {}
-    candidate[:vector] = random_solution(search_space)
+    candidate[:vector] = random_vector(search_space)
     candidate[:cost] = cost(candidate[:vector])
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"

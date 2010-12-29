@@ -8,11 +8,10 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def create_random_solution(search_space)
-  vector = Array.new(search_space.size) do |i|      
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
-  return {:vector=>vector}
 end
 
 def mutate_with_influence(candidate, belief_space, search_space)
@@ -57,7 +56,7 @@ end
 
 def search(max_gens, search_space, pop_size, num_accepted)
   # initialize
-  pop = Array.new(pop_size) { create_random_solution(search_space) }
+  pop = Array.new(pop_size) { {:vector=>random_vector(search_space)} }
   belief_space = initialize_beliefspace(search_space)  
   # evaluate
   pop.each{|c| c[:fitness] = objective_function(c[:vector])}

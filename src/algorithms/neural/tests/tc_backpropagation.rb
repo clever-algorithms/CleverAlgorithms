@@ -11,18 +11,17 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test the generation of random vectors
   def test_random_vector
-    bounds = [-3,3]
-    minmax = Array.new(20) {bounds}
-    300.times do 
-      vector = random_vector(minmax)
-      sum = 0.0
-      assert_equal(20, vector.size)
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
+    trials.times do 
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
       vector.each do |v|
-        assert(v >= bounds[0], "#{v}")
-        assert(v <= bounds[1], "#{v}")
+        assert_operator(v, :>=, bounds[0])
+        assert_operator(v, :<, bounds[1])
         sum += v
       end
-      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/300.0, 0.1)
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
     end    
   end
   

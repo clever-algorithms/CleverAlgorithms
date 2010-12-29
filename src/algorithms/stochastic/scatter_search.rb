@@ -8,7 +8,7 @@ def cost(candidate_vector)
   return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_solution(search_space)
+def random_vector(search_space)
   return Array.new(search_space.size) do |i|      
     search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
   end
@@ -44,7 +44,7 @@ def construct_initial_set(search_space, div_set_size, max_no_improvements, step_
   diverse_set = []
   begin
     candidate = {}
-    candidate[:vector] = random_solution(search_space)
+    candidate[:vector] = random_vector(search_space)
     candidate[:cost] = cost(candidate[:vector])
     candidate = local_search(candidate, search_space, max_no_improvements, step_size)
     diverse_set << candidate if !diverse_set.any? {|x| x[:vector]==candidate[:vector]}

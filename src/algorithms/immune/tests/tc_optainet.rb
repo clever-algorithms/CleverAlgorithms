@@ -9,6 +9,22 @@ require File.expand_path(File.dirname(__FILE__)) + "/../optainet"
 
 class TC_Optainet < Test::Unit::TestCase 
   
+  # test the generation of random vectors
+  def test_random_vector
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
+    trials.times do 
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
+      vector.each do |v|
+        assert_operator(v, :>=, bounds[0])
+        assert_operator(v, :<, bounds[1])
+        sum += v
+      end
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+    end    
+  end
+  
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0
@@ -53,7 +69,7 @@ class TC_Optainet < Test::Unit::TestCase
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search([[-5,5],[-5,5]], 60, 50, 10, 100, 1, 0.5)
+      best = search([[-5,5],[-5,5]], 60, 50, 10, 100, 1, 0.3)
     end
     assert_not_nil(best[:cost])
     assert_in_delta(0.0, best[:cost], 0.1)

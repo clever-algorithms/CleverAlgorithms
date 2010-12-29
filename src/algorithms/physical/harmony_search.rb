@@ -13,7 +13,9 @@ def random_variable(min, max)
 end
 
 def random_vector(search_space)
-  return Array.new(search_space.size) {|i| random_variable(search_space[i][0], search_space[i][1]) }
+  return Array.new(search_space.size) do |i| 
+    random_variable(search_space[i][0], search_space[i][1]) 
+  end
 end
 
 def create_random_harmony(search_space)

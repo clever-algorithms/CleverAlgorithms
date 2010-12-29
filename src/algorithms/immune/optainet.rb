@@ -111,7 +111,7 @@ if __FILE__ == $0
   num_clones = 10
   beta = 100
   num_rand = 1
-  affinity_thresh = 0.5
+  affinity_thresh = 0.3
   # execute the algorithm
   best = search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"

@@ -9,27 +9,20 @@ require File.expand_path(File.dirname(__FILE__)) + "/../pso"
 
 class TC_PSO < Test::Unit::TestCase
 
-  # test that the random_vector function behaves as expected
+  # test the generation of random vectors
   def test_random_vector
-    do_test_random_vector(-2, 2)
-    do_test_random_vector(-7, -3)
-    do_test_random_vector(3, 7)
-    do_test_random_vector(0, 10)
-    do_test_random_vector(-10, 0)
-  end
-
-  #helper function for test_random_vector
-  def do_test_random_vector(lower_bound, upper_bound, problem_size=50, tolerance=1.0)
-    median = (lower_bound + upper_bound) / 2
-    search_space = Array.new(problem_size) {[lower_bound, upper_bound]}
-    test_vector = random_vector(search_space)
-    sum = 0
-    test_vector.each do |x|
-      assert_operator(x, :>=, lower_bound)
-      assert_operator(x, :<=, upper_bound)
-      sum = sum + x
-    end
-    assert_in_delta(median, (sum / problem_size), tolerance)
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
+    trials.times do 
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
+      vector.each do |v|
+        assert_operator(v, :>=, bounds[0])
+        assert_operator(v, :<, bounds[1])
+        sum += v
+      end
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+    end    
   end
 
   # test that objective_function behaves as expected
