@@ -25,6 +25,13 @@ class TC_Optainet < Test::Unit::TestCase
     end    
   end
   
+  # test euclidean distance
+  def test_euclidean_distance
+    assert_equal(0, euclidean_distance([0,0],[0,0]))
+    assert_equal(0, euclidean_distance([1,5],[1,5]))
+    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
+  end
+  
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0

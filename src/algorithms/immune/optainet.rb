@@ -56,9 +56,7 @@ end
 
 def euclidean_distance(c1, c2)
   sum = 0.0
-  c1[:vector].each_with_index do |v, i|
-    sum += (v - c2[:vector][i])**2.0
-  end
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
   return Math.sqrt(sum)
 end
 
@@ -66,7 +64,7 @@ def get_neighborhood(cell, pop, affinity_thresh)
   neighbors = []
   pop.each do |p|
     next if p.equal?(cell)
-    neighbors << p if euclidean_distance(p, cell) < affinity_thresh
+    neighbors << p if euclidean_distance(p[:vector], cell[:vector]) < affinity_thresh
   end
   return neighbors
 end

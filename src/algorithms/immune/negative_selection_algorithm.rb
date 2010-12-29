@@ -17,11 +17,9 @@ def contains?(vector, space)
   return true
 end
 
-def euclidean_distance(v1, v2)
+def euclidean_distance(c1, c2)
   sum = 0.0
-  v1.each_with_index do |v, i|
-    sum += (v1[i]-v2[i])**2.0
-  end
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
   return Math.sqrt(sum)
 end
 
