@@ -207,8 +207,7 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
     cells = nil
     silence_stream(STDOUT) do
       cells = execute(domain, 100, 50, 0.7, 0.95, [5,15], 10)  
-    end  
-    # assert_in_delta(50, cells.size, 50)
+    end
     correct = nil
     silence_stream(STDOUT) do
       correct = test_system(cells, domain, 0.7, 0.95, 10)

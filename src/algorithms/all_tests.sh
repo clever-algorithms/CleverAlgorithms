@@ -9,6 +9,7 @@ function evolutionary {
 	ruby evolutionary/tests/tc_evolutionary_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_gene_expression_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_genetic_algorithm.rb | tee -a $LOG
+	ruby evolutionary/tests/tc_genetic_algorithm2.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_genetic_programming.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_grammatical_evolution.rb | tee -a $LOG
 	ruby evolutionary/tests/tc_learning_classifier_system.rb | tee -a $LOG

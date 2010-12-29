@@ -50,15 +50,15 @@ def reproduce(selected, pop_size, p_crossover, p_mutation)
   return children
 end
 
-def search(max_generations, num_bits, population_size, p_crossover, p_mutation)
-  population = Array.new(population_size) do |i|
+def search(max_gens, num_bits, pop_size, p_crossover, p_mutation)
+  population = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(num_bits)}
   end
   population.each{|c| c[:fitness] = onemax(c[:bitstring])}
   best = population.sort{|x,y| y[:fitness] <=> x[:fitness]}.first  
-  max_generations.times do |gen|
-    selected = Array.new(population_size){|i| binary_tournament(population)}
-    children = reproduce(selected, population_size, p_crossover, p_mutation)    
+  max_gens.times do |gen|
+    selected = Array.new(pop_size){|i| binary_tournament(population)}
+    children = reproduce(selected, pop_size, p_crossover, p_mutation)    
     children.each{|c| c[:fitness] = onemax(c[:bitstring])}
     children.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = children.first if children.first[:fitness] >= best[:fitness]
@@ -73,11 +73,11 @@ if __FILE__ == $0
   # problem configuration
   num_bits = 64
   # algorithm configuration
-  max_generations = 100
-  population_size = 100
+  max_gens = 100
+  pop_size = 100
   p_crossover = 0.98
   p_mutation = 1.0/num_bits
   # execute the algorithm
-  best = search(max_generations, num_bits, population_size, p_crossover, p_mutation)
+  best = search(max_gens, num_bits, pop_size, p_crossover, p_mutation)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end
