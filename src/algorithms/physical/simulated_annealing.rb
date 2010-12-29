@@ -30,7 +30,7 @@ def two_opt!(perm)
   return perm
 end
 
-def create_neighbour(current, cities)
+def create_neighbor(current, cities)
   candidate = {}
   candidate[:vector] = Array.new(current[:vector])
   two_opt!(candidate[:vector])
@@ -49,11 +49,13 @@ def search(cities, max_iter, max_temp, temp_change)
   current[:cost] = cost(current[:vector], cities)
   temp, best = max_temp, current
   max_iter.times do |iter|
-    candidate = create_neighbour(current, cities)
+    candidate = create_neighbor(current, cities)
     temp = temp * temp_change
     current = candidate if should_accept?(candidate, current, temp)
     best = candidate if candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, temp=#{temp}, best=#{best[:cost]}"
+    if (iter+1).modulo(10) == 0
+      puts " > iteration #{(iter+1)}, temp=#{temp}, best=#{best[:cost]}"
+    end
   end
   return best
 end
@@ -70,7 +72,7 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 5000
+  max_iterations = 2000
   max_temp = 100000.0
   temp_change = 0.98
   # execute the algorithm

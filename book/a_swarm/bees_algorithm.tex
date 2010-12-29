@@ -85,7 +85,7 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudocode listing of the Bees Alg
 	\SetKwFunction{StopCondition}{StopCondition} 
 	\SetKwFunction{GetBestSolution}{GetBestSolution} 
 	\SetKwFunction{SelectBestSites}{SelectBestSites}
-	\SetKwFunction{CreateNeighbourhoodBee}{CreateNeighbourhoodBee}
+	\SetKwFunction{CreateNeighborhoodBee}{CreateNeighborhoodBee}
 	\SetKwFunction{CreateRandomBee}{CreateRandomBee}
 	\SetKwFunction{EvaluatePopulation}{EvaluatePopulation}
   
@@ -112,7 +112,7 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudocode listing of the Bees Alg
 				}
 				\Neighborhood $\leftarrow$ $\emptyset$\;
 				\For{$j$ \KwTo \NumRecruitedBees} {
-					\Neighborhood $\leftarrow$ \CreateNeighbourhoodBee{\Site, \PatchSize}\;
+					\Neighborhood $\leftarrow$ \CreateNeighborhoodBee{\Site, \PatchSize}\;
 				}
 				\NextGeneration $\leftarrow$ \GetBestSolution{\Neighborhood}\;
 			}

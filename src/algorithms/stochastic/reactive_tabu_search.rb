@@ -117,7 +117,7 @@ def store_permutation(visited_list, permutation, iteration)
   return entry
 end
 
-def sort_neighbourhood(candidates, tabu_list, prohibition_period, iteration)
+def sort_neighborhood(candidates, tabu_list, prohibition_period, iteration)
   tabu, admissable = [], []
   candidates.each do |a|
     if is_tabu?(a[1][0], tabu_list, iteration, prohibition_period) or
@@ -155,7 +155,7 @@ def search(cities, max_no_improvements, max_candidates, max_iterations, increase
     end
     candidates = Array.new(max_candidates) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
-    tabu, admissible = sort_neighbourhood(candidates, tabu_list, prohibition_period, iter)
+    tabu, admissible = sort_neighborhood(candidates, tabu_list, prohibition_period, iter)
     if admissible.size < 2
       prohibition_period = cities.size-2
       last_change = iter
