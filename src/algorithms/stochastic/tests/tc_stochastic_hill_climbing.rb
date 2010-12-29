@@ -8,7 +8,7 @@ require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../stochastic_hill_climbing"
 
 class TC_StochasticHillClimbing < Test::Unit::TestCase
-    
+
   # TODO write tests
   
   

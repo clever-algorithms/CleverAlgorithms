@@ -8,7 +8,7 @@ require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../compact_genetic_algorithm"
 
 class TC_CompactGeneticAlgorithm < Test::Unit::TestCase
-    
+
   # TODO write tests
   
   

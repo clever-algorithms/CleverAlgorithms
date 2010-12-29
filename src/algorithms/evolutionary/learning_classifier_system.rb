@@ -20,7 +20,7 @@ def copy_classifier(parent)
   return copy
 end
 
-def generate_problem_string(size)
+def random_bitstring(size)
   return (0...size).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
 end
 
@@ -232,7 +232,7 @@ end
 def search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, p_cross, p_mut, del_thresh)
   pop, abs = [], 0
   max_gens.times do |gen|
-    input = generate_problem_string(length)
+    input = random_bitstring(length)
     match_set = generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
     prediction_array = generate_prediction(input, match_set)    
     explore, action = select_action(prediction_array, p_explore)

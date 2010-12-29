@@ -9,6 +9,21 @@ require File.expand_path(File.dirname(__FILE__)) + "/../oop"
 
 class TC_GeneticAlgorithm < Test::Unit::TestCase
 
+  # test the creation of random strings
+  def test_random_bitstring
+    o = GeneticAlgorithm.new
+    assert_equal(10, o.random_bitstring(10).size)
+    assert_equal(0, o.random_bitstring(10).delete('0').delete('1').size)
+  end
+
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    o = GeneticAlgorithm.new
+    s = o.random_bitstring(1000)
+    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  end
+
   # TODO write tests for all algorithms
       
   # helper for turning off STDOUT

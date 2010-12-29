@@ -13,6 +13,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
   def test_onemax
     assert_equal(0, onemax("0000"))
     assert_equal(4, onemax("1111"))
+    assert_equal(2, onemax("1010"))
   end
 
   # test the creation of random strings

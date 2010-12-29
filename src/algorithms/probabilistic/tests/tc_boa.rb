@@ -8,7 +8,7 @@ require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../boa"
 
 class TC_BOA < Test::Unit::TestCase
-    
+
   # TODO write tests
   
   

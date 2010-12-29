@@ -27,6 +27,19 @@ class TC_NSGAII < Test::Unit::TestCase
     assert_equal(2000000, objective1([1000,1000]))
   end
   
+  # test the creation of random strings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
+  end
+
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  end  
+  
   # TODO write tests
   
   
