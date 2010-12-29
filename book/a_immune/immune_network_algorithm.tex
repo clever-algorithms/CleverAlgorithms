@@ -144,7 +144,7 @@ Algorithm~\ref{alg:opt_ainet} provides a pseudocode listing of the Optimization 
 	\item The addition of random cells each iteration adds a random-restart like capability to the algorithms.
 	\item Suppression based on cell similarity provides a mechanism for reducing redundancy.
 	\item The population size is dynamic, and if it continues to grow it may be an indication of a problem with many local optima or that the affinity threshold may needs to be increased.
-	\item Affinity proportionate mutation is performed using $c\prime = c + \alpha \times N(1,0)$ where $\alpha = \frac{1}{\beta} \times exp(-f)$, $N$ is a Guassian random number, and $f$ is the fitness of the parent cell, $\beta$ controls the decay of the function and can be set to 100. 
+	\item Affinity proportionate mutation is performed using $c' = c + \alpha \times N(1,0)$ where $\alpha = \frac{1}{\beta} \times exp(-f)$, $N$ is a Guassian random number, and $f$ is the fitness of the parent cell, $\beta$ controls the decay of the function and can be set to 100. 
 	\item The affinity threshold is problem and representation specific, for example a $AffinityThreshold$ may be set to an arbitrary value such as 0.1 on a continuous function domain, or calculated as a percentage of the size of the problem space.
 	\item The number of random cells inserted may be 40\% of the population size. 
 	\item The number of clones created for a cell may be small, such as 10.

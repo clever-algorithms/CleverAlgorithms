@@ -56,7 +56,7 @@ This is achieved by stochastically creating candidate solutions in a step-wise m
 Algorithm~\ref{alg:harmony_search} provides a pseudocode listing of the Harmony Search algorithm for minimizing a cost function. 
 The adjustment of a pitch selected from the harmony memory is typically linear, for example for continuous function optimization: 
 \begin{equation}
-	x\prime \leftarrow x + range \times \epsilon
+	x' \leftarrow x + range \times \epsilon
 \end{equation}
 where $range$ is a the user parameter (pitch bandwidth) to control the size of the changes, and $\epsilon$ is a uniformly random number $\in [-1,1]$.
 
