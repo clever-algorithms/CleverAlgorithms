@@ -31,8 +31,8 @@ The Bees Algorithm is related to other Bee Inspired Algorithms, such as Bee Colo
 % What is the system or process that motivated the development of a technique?
 The Bees Algorithm is inspired by the foraging behavior of honey bees.
 % Which features of the motivating system are relevant to a technique?
-Honey bees collect nectar from vast areas around their hive (more than 10 kilometers). The have been observed to send bees to collect nectar from patches relative to the amount of food available at each flower patch.
-Finally, bees communicate with each other via a waggle dance that informs other bees in the hive as to the direction, distance, and quality rating of food sources.
+Honey bees collect nectar from vast areas around their hive (more than 10 kilometers). Bee Colonies have been observed to send bees to collect nectar from flower patches relative to the amount of food available at each patch.
+Bees communicate with each other at the hive via a waggle dance that informs other bees in the hive as to the direction, distance, and quality rating of food sources.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -40,7 +40,7 @@ Finally, bees communicate with each other via a waggle dance that informs other 
 \subsection{Metaphor}
 % What is the explanation of a technique in the context of the inspiring system?
 % What are the functionalities inferred for a technique from the analogous inspiring system?
-Honey bees collect nectar from flower patches as a food source for the hive. The hive sends out scout's that locate patches of flowers, then return to the hive and inform other bees as to the fitness and location of a food source via a waggle dance. The scout returns to the flower patch with follower bees. A small number of scouts continue to search for new patches, while bees returning from flower patches continue to communicate the quality of the patch.
+Honey bees collect nectar from flower patches as a food source for the hive. The hive sends out scout's that locate patches of flowers, who then return to the hive and inform other bees about the fitness and location of a food source via a waggle dance. The scout returns to the flower patch with follower bees. A small number of scouts continue to search for new patches, while bees returning from flower patches continue to communicate the quality of the patch.
 
 % Strategy: Problem solving plan
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
@@ -48,7 +48,7 @@ Honey bees collect nectar from flower patches as a food source for the hive. The
 % What is the information processing objective of a technique?
 The information processing objective of the algorithm is to locate and explore good sites within a problem search space.
 % What is a techniques plan of action?
-Scouts are sent out to randomly sample the problem space and locate good sites. The good sites are exploited via the application of a local search, where a smaller number of good sites are explored more than the others. Good sites are continually explored, although many scouts are sent out each iteration always in search of additional good sites.
+Scouts are sent out to randomly sample the problem space and locate good sites. The good sites are exploited via the application of a local search, where a small number of good sites are explored more than the others. Good sites are continually exploited, although many scouts are sent out each iteration always in search of additional good sites.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -137,7 +137,7 @@ Algorithm~\ref{alg:bees_algorithm} provides a pseudocode listing of the Bees Alg
 \begin{itemize}
 	\item The Bees Algorithm was developed to be used with continuous and combinatorial function optimization problems.
 	\item The $Patch_{size}$ variable is used as the neighborhood size. For example, in a continuous function optimization problem, each dimension of a site would be sampled as $x_i \pm (rand() \times Patch_{size})$.
-	\item The $Patch_{size}$ variable is decrease each iteration, typically by a constant amount (such as 0.95).
+	\item The $Patch_{size}$ variable is decreased each iteration, typically by a constant amount (such as 0.95).
 	\item The number of elite sites ($EliteSites_{num}$) must be $<$ the number of sites ($Sites_{num}$), and the number of elite bees ($EliteBees_{num}$) is traditionally $<$ the number of other bees ($OtherBees_{num}$).
 \end{itemize}
 

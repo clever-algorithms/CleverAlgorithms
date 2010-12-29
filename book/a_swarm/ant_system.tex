@@ -24,7 +24,7 @@
 % To what fields of study does a technique belong?
 The Ant System algorithm is an example of an Ant Colony Optimization method from the field of Swarm Intelligence, Metaheuristics and Computational Intelligence.
 % What are the closely related approaches to a technique?
-Ant System was originally the term used to refer to a range of Ant based algorithms, where the specific algorithm implementation was referred to as Ant Cycle. The so-called Ant Cycle algorithm is now canonically referred to as Ant System. The Ant System algorithm the baseline Ant Colony Optimization method for popular extensions such as Elite Ant System, Rank-based Ant System, and Ant Colony System (Section~\ref{sec:ant_colony_system}).
+Ant System was originally the term used to refer to a range of Ant based algorithms, where the specific algorithm implementation was referred to as Ant Cycle. The so-called Ant Cycle algorithm is now canonically referred to as Ant System. The Ant System algorithm is the baseline Ant Colony Optimization method for popular extensions such as Elite Ant System, Rank-based Ant System, Max-Min Ant System, and Ant Colony System (Section~\ref{sec:ant_colony_system}).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -48,7 +48,7 @@ Ants initially wander randomly around their environment. Once food is located an
 % What is the information processing objective of a technique?
 The objective of the strategy is to exploit historic and heuristic information to construct candidate solutions and fold the information learned from constructing solutions into the history.
 % What is a techniques plan of action?
-Solutions are constructed one discrete piece at a time in a probabilistic step-wise manner. The probability of selecting a component is determined by the heuristic contribution of the component to the overall cost of the solution and the quality of solutions from which the component has historically known to have been included. History is updated proportional to the quality of candidate solutions and is uniformly deceased ensuring the most recent and useful information is retained.
+Solutions are constructed one discrete piece at a time in a probabilistic step-wise manner. The probability of selecting a component is determined by the heuristic contribution of the component to the overall cost of the solution and the quality of solutions from which the component has historically known to have been included. History is updated proportional to the quality of candidate solutions and is uniformly decreased ensuring the most recent and useful information is retained.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -64,13 +64,13 @@ The pheromone update process is described by a single equation that combines the
 
 where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, $m$ is the number of ants, and  $\sum_{k=1}^m \Delta_{i,j}^k $ is the sum of $\frac{1}{S_{cost}} $ (maximizing solution cost) for those solutions that include component $i,j$. The Pseudocode listing shows this equation as an equivalent as a two step process of decay followed by update for simplicity. 
 
-The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
+The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from (given the current component $i$), their probability for selection is defined as:
 
 \begin{equation}
 P_{i,j} \leftarrow \frac{\tau_{i,j}^{\alpha} \times \eta_{i,j}^{\beta}}{\sum_{k=1}^c \tau_{i,k}^{\alpha} \times \eta_{i,k}^{\beta}}
 \end{equation}
 
-where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. 
+where $\eta_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient, $\tau_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. 
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -168,7 +168,7 @@ Some extensions to the algorithm implementation for speed improvements may consi
 % 
 \subsubsection{Primary Sources}
 % seminal
-The Ant System was described by Dorigo, Maniezzo, and Colorni in an early technical report as a class of algorithms and was applied a number of standard combinatorial optimization algorithms \cite{Dorigo1991}. A series of technical reports at this time investigated the class of algorithms called Ant System and the specific implementation called Ant Cycle. This effort contributed to Dorigo's PhD thesis published in Italian \cite{Dorigo1992}.
+The Ant System was described by Dorigo, Maniezzo, and Colorni in an early technical report as a class of algorithms and was applied to a number of standard combinatorial optimization algorithms \cite{Dorigo1991}. A series of technical reports at this time investigated the class of algorithms called Ant System and the specific implementation called Ant Cycle. This effort contributed to Dorigo's PhD thesis published in Italian \cite{Dorigo1992}.
 % early
 The seminal publication into the investigation of Ant System (with the implementation still referred to as Ant Cycle) was by Dorigo in 1996 \cite{Dorigo1996}.
 

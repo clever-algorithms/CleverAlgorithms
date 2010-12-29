@@ -46,7 +46,7 @@ Particles in the swarm fly through an environment following the fitter members o
 % What is the information processing objective of a technique?
 The goal of the algorithm is to have all the particles locate the optima in a multi-dimensional hyper-volume.
 % What is a techniques plan of action?
-This is achieved by assigning initially random positions to all particles in the space and small initial random velocities. The algorithm is executed like a simulation, advancing the position of each particle in turn based on its velocity, the best known global position in the problem space and the best known position known to a particle. The objective function is sampled after each position update. Over time, through a combination of exploration and exploitation of known good positions in the search space, the particles cluster or converge together around an optima.
+This is achieved by assigning initially random positions to all particles in the space and small initial random velocities. The algorithm is executed like a simulation, advancing the position of each particle in turn based on its velocity, the best known global position in the problem space and the best position known to a particle. The objective function is sampled after each position update. Over time, through a combination of exploration and exploitation of known good positions in the search space, the particles cluster or converge together around an optima, or several optima.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -140,7 +140,7 @@ Algorithm~\ref{alg:pso} provides a pseudocode listing of the Particle Swarm Opti
 	\item The speed a particle can move (maximum change in its position per iteration) should be bounded, such as to a percentage of the size of the domain.
 	\item The learning factors (biases towards global and personal best positions) should be between 0 and 4, typically 2.
 	\item A local bias (local neighborhood) factor can be introduced where neighbors are determined based on Euclidean distance between particle positions.
-	\item Particles may leave the boundary of the problem space and may be penalized, be reflected back into the domain or biased to return back toward a position in the problem domain. 
+	\item Particles may leave the boundary of the problem space and may be penalized, be reflected back into the domain or biased to return back toward a position in the problem domain. Alternatively, a wrapping strategy may be used at the edge of the domain creating a loop, torrid or related geometrical structures at the chosen dimensionality.
 	\item An inertia or momentum coefficient can be introduced to limit the change in velocity.
 \end{itemize}
 
@@ -169,7 +169,7 @@ The algorithm is a conservative version of Particle Swarm Optimization based on 
 % 
 \subsubsection{Primary Sources}
 % seminal
-Particle Swarm Optimization was described as a stochastic global optimization method for continuous functions in 1995 by Eberhart and Kennedy \cite{Eberhart1995, Kennedy1995}. It motivated as an optimization based on the flocking behavioral models of Reynolds \cite{Reynolds1987}.
+Particle Swarm Optimization was described as a stochastic global optimization method for continuous functions in 1995 by Eberhart and Kennedy \cite{Eberhart1995, Kennedy1995}. This work was motivated as an optimization method loosely based on the flocking behavioral models of Reynolds \cite{Reynolds1987}.
 % early
 Early works included the introduction of inertia \cite{Shi1998} and early study of social topologies in the swarm by Kennedy \cite{Kennedy1999}. 
 

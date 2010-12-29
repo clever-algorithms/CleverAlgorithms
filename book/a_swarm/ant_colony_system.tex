@@ -48,7 +48,7 @@ Ants initially wander randomly around their environment. Once food is located an
 % What is the information processing objective of a technique?
 The objective of the strategy is to exploit historic and heuristic information to construct candidate solutions and fold the information learned from constructing solutions into the history.
 % What is a techniques plan of action?
-Solutions are constructed one discrete piece at a time in a probabilistic step-wise manner. The probability of selecting a component is determined by the heuristic contribution of the component to the overall cost of the solution and the quality of solutions from which the component has historically known to have been included. History is updated proportional to the quality of candidate solutions and is uniformly deceased ensuring the most recent and useful information is retained.
+Solutions are constructed one discrete piece at a time in a probabilistic step-wise manner. The probability of selecting a component is determined by the heuristic contribution of the component to the overall cost of the solution and the quality of solutions from which the component has historically known to have been included. History is updated proportional to the quality of the best known solution and is decreased proportional to the usage if discrete solution components.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -56,13 +56,13 @@ Solutions are constructed one discrete piece at a time in a probabilistic step-w
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:acs} provides a pseudocode listing of the main Ant Colony System algorithm for minimizing a cost function. 
-The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construction a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
+The probabilistic step-wise construction of solution makes use of both history (pheromone) and problem-specific heuristic information to incrementally construct a solution piece-by-piece. Each component can only be selected if it has not already been chosen (for most combinatorial problems), and for those components that can  be selected from given the current component $i$, their probability for selection is defined as:
 
 \begin{equation}
 P_{i,j} \leftarrow \frac{\tau_{i,j}^{\alpha} \times \eta_{i,j}^{\beta}}{\sum_{k=1}^c \tau_{i,k}^{\alpha} \times \eta_{i,k}^{\beta}}
 \end{equation}
 
-where $\tau_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\alpha$ is the heuristic coefficient (commonly fixed at 1.0), $\eta_{i,j}$ is the pheromone value for the component, $\beta$ is the history coefficient, and $c$ is the set of usable components. A greediness factor ($q0$) is used to influences when to use the above probabilistic component selection and when to greedily select the best possible component. 
+where $\eta_{i,j}$ is the maximizing contribution to the overall score of selecting the component (such as $\frac{1.0}{distance_{i,j}}$ for the Traveling Salesman Problem), $\beta$ is the heuristic coefficient (commonly fixed at 1.0), $\tau_{i,j}$ is the pheromone value for the component, $\alpha$ is the history coefficient, and $c$ is the set of usable components. A greediness factor ($q0$) is used to influence when to use the above probabilistic component selection and when to greedily select the best possible component. 
 
 A local pheromone update is performed for each solution that is constructed to dissuade following solutions to use the same components in the same order, as follows:
 
@@ -75,10 +75,10 @@ where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j
 At the end of each iteration, the pheromone is updated and decayed using the best candidate solution found thus far (or the best candidate solution found for the iteration), as follows:
 
 \begin{equation}
-\tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \Delta_{i,j}^{best}
+\tau_{i,j} \leftarrow (1-\rho) \times \tau_{i,j} + \rho \times \Delta\tau{i,j}
 \end{equation}
 
-where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, and $\Delta_{i,j}^{best} $ is the maximizing solution cost for the best solution found so far. 
+where $\tau_{i,j}$ represents the pheromone for the component (graph edge) ($i,j$), $\rho$ is the decay factor, and $\Delta\tau{i,j}$ is the maximizing solution cost for the best solution found so far if the component $ij$ is used in the globally best known solution, otherwise it is 0. 
 
 \begin{algorithm}[ht]
 	\SetLine  
