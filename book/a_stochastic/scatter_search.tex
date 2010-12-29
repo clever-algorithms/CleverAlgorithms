@@ -102,13 +102,13 @@ Algorithm~\ref{alg:scatter_search} provides a pseudocode listing of the Scatter 
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Scatter search is suitable for both discrete domains such as combinatorial optimization as well as continuous domains such as non-linear programming (continuous function optimization).
-	\item Small set sizes are preferred for the \texttt{ReferenceSet}, such as 10 or 20 members.
+	\item Small set sizes are preferred for the \texttt{Reference\-Set}, such as 10 or 20 members.
 	\item Subset sizes can be 2,3,4 or more members that are all recombined to produce viable candidate solutions within the neighborhood of the members of the subset.
 	\item Each subset should comprise at least one member added to the set in the previous algorithm iteration.
 	\item The Local Search procedure should be a problem-specific improvement heuristic. 
-	\item The selection of members for the \texttt{ReferenceSet} at the end of each iteration favors solutions with higher quality and may also promote diversity.
-	\item The \texttt{ReferenceSet} may be updated at the end of an iteration, or dynamically as candidates are created (a so-called steady-state population in some evolutionary computation literature).
-	\item A lack of changes to the \texttt{ReferenceSet} may be used as a signal to stop the current search, and potentially restart the search with a newly initialized \texttt{ReferenceSet}.	
+	\item The selection of members for the \texttt{Reference\-Set} at the end of each iteration favors solutions with higher quality and may also promote diversity.
+	\item The \texttt{Reference\-Set} may be updated at the end of an iteration, or dynamically as candidates are created (a so-called steady-state population in some evolutionary computation literature).
+	\item A lack of changes to the \texttt{Reference\-Set} may be used as a signal to stop the current search, and potentially restart the search with a newly initialized \texttt{Reference\-Set}.	
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -120,7 +120,7 @@ Listing~\ref{scatter_search} provides an example of the Scatter Search algorithm
 The example problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_1,\ldots,v_{n})=0.0$.
 
 % algorithm
-The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors, as opposed to stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{ReferenceSet}. A stochastic local search algorithm is used as the embedded heuristic that uses a stochastic step size in the range of half a percent of the search space.
+The algorithm is an implementation of Scatter Search as described in an application of the technique to unconstrained non-linear optimization by Glover \cite{Glover2003b}. The seeds for initial solutions are generated as random vectors, as opposed to stratified samples. The example was further simplified by not including a restart strategy, and the exclusion of diversity maintenance in the \texttt{Reference\-Set}. A stochastic local search algorithm is used as the embedded heuristic that uses a stochastic step size in the range of half a percent of the search space.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Scatter Search in Ruby, label=scatter_search]{../src/algorithms/stochastic/scatter_search.rb}

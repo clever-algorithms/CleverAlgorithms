@@ -43,11 +43,11 @@ This is achieved by using an evolutionary process (with surrogate procedures for
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:spea} provides a pseudocode listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function. 
 % explaination
-The \texttt{CalculateRawFitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that a give solution dominate.
-The \texttt{CandidateDensity} function estimates the density of an area of the Pareto front as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive combined.
-The \texttt{PopulateWithRemainingBest} function iteratively fills the archive with the remaining candidate solutions in order of fitness.
-The \texttt{RemoveMostSimilar} function truncates the archive population removing those members with the smallest $\sigma^k$ values as calculated against the archive.
-The \texttt{SelectParents} function selects parents from a population using a Genetic Algorithm selection method such as binary tournament selection. The \texttt{CrossoverAndMutation} function performs the crossover and mutation genetic operators from the Genetic Algorithm.
+The \texttt{Calculate\-Raw\-Fitness} function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that a give solution dominate.
+The \texttt{Candidate\-Density} function estimates the density of an area of the Pareto front as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive combined.
+The \texttt{Populate\-With\-Remaining\-Best} function iteratively fills the archive with the remaining candidate solutions in order of fitness.
+The \texttt{Remove\-Most\-Similar} function truncates the archive population removing those members with the smallest $\sigma^k$ values as calculated against the archive.
+The \texttt{Select\-Parents} function selects parents from a population using a Genetic Algorithm selection method such as binary tournament selection. The \texttt{Crossover\-And\-Mutation} function performs the crossover and mutation genetic operators from the Genetic Algorithm.
 
 \begin{algorithm}[htp]
 	\SetLine  
