@@ -48,7 +48,7 @@ Algorithm~\ref{alg:nsga} provides a pseudocode listing of the Non-dominated Sort
 % explaination
 The \texttt{Sort\-By\-Rank\-And\-Distance} function orders the population into a hierarchy of non-dominated Pareto fronts. The \texttt{Crowding\-Distance\-Assignment} calculates the average distance between members of each front on the front itself. Refer to Deb et al.\ for a clear presentation of the Pseudocode and explanation of these functions \cite{Deb2002}. The \texttt{Crossover\-And\-Mutation} function performs the classical crossover and mutation genetic operators of the Genetic Algorithm. Both the \texttt{Select\-Parents\-By\-Rank\-And\-Distance} and \texttt{Sort\-By\-Rank\-And\-Distance} functions discriminate members of the population first by rank (order of dominated precedence of the front to which the solution belongs) and then distance within the front (calculated by \texttt{Crowding\-Distance\-Assignment}).
 
-\begin{algorithm}[htp]
+\begin{algorithm}[h!t]
 	\SetLine  
 
 	% data
@@ -148,7 +148,7 @@ The algorithm is an implementation of NSGA-II based on the presentation by Deb e
 The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string. 
 
 % the listing
-\lstinputlisting[firstline=7,language=ruby,caption=NSGA-II in Ruby, label=nsga]{../src/algorithms/evolutionary/nsga_ii.rb}
+\lstinputlisting[firstline=7,language=ruby,caption=NSGA-II in Ruby, label=nsga]{../src/algorithms/evolutionary/nsgaii.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.

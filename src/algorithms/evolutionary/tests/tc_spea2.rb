@@ -56,10 +56,10 @@ class TC_SPEA2 < Test::Unit::TestCase
     end    
     assert_equal(20, pop.size)
     pop.each do |p|
+      # in [0,2]
+      assert_in_delta(1.0, p[:vector][0], 1.0)
       assert_not_nil(p[:objectives])
       assert_equal(2, p[:objectives].size)
-      assert_in_delta(0.0, p[:objectives][0], 1)
-      assert_in_delta(0.0, p[:objectives][1], 1)
     end    
   end
   

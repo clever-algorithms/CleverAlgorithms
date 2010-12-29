@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require "test/unit"
-require File.expand_path(File.dirname(__FILE__)) + "/../nsga_ii"
+require File.expand_path(File.dirname(__FILE__)) + "/../nsgaii"
 
 class TC_NSGAII < Test::Unit::TestCase 
   
@@ -43,16 +43,17 @@ class TC_NSGAII < Test::Unit::TestCase
   
   # test that the algorithm can solve the problem
   def test_search    
+    pop_size = 50
     pop = nil
     silence_stream(STDOUT) do
-      pop = search([[-10, 10]], 50, 50, 0.95)
+      pop = search([[-10, 10]], 100, pop_size, 0.95)
     end    
-    assert_equal(50, pop.size)
+    assert_equal(pop_size, pop.size)
     pop.each do |p|
+      # in [0,2]
+      assert_in_delta(1.0, p[:vector][0], 1.2)
       assert_not_nil(p[:objectives])
       assert_equal(2, p[:objectives].size)
-      assert_in_delta(0.0, p[:objectives][0], 1)
-      assert_in_delta(0.0, p[:objectives][1], 1)
     end    
   end
   
