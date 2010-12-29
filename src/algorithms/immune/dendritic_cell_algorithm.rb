@@ -4,9 +4,13 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+def rand_in_bounds(min, max)
+  return  min + ((max-min) * rand()) 
+end
+
 def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+  return Array.new(search_space.size) do |i|   
+    rand_in_bounds(search_space[i][0], search_space[i][1])
   end
 end
 
@@ -21,9 +25,9 @@ def construct_pattern(class_label, domain, p_safe, p_danger)
   return pattern
 end
 
-def generate_pattern(domain, p_anomaly, p_normal)
+def generate_pattern(domain, p_anomaly, p_normal, prob_create_anom=0.5)
   pattern = nil  
-  if rand() < 0.5
+  if rand() < prob_create_anom
     pattern = construct_pattern("Anomaly", domain, 1.0-p_normal, p_anomaly)
     puts ">Generated Anomoly [#{pattern[:input]}]"
   else
@@ -36,7 +40,7 @@ def initialize_cell(thresh, cell={})
   cell[:lifespan] = 100.0
   cell[:k] = 0.0
   cell[:cms] = 0.0
-  cell[:migration_threshold] = thresh[0] + ((thresh[1]-thresh[0]) * rand()) 
+  cell[:migration_threshold] = rand_in_bounds(thresh[0], thresh[1])
   cell[:antigen] = {}
   return cell
 end
@@ -54,9 +58,7 @@ def expose_cell(cell, cms, k, pattern, threshold)
   cell[:k] += k
   cell[:lifespan] -= cms 
   store_antigen(cell, pattern[:input]) 
-  if cell[:lifespan] <= 0
-    initialize_cell(threshold, cell)
-  end
+  initialize_cell(threshold, cell) if cell[:lifespan] <= 0
 end
 
 def can_cell_migrate?(cell)
