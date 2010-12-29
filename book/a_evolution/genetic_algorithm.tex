@@ -123,9 +123,6 @@ Algorithm~\ref{alg:genetic_algorithm} provides a pseudocode listing of the Genet
 \begin{itemize}
 	\item Binary strings (referred to as `bitstrings') are the classical representation as they can be decoded to almost any desired representation. Real-valued and integer variables can be decoded using the binary coded decimal method, one's or two's complement methods, or the gray code method, the latter of which is generally preferred.
 	\item Problem specific representations and customized genetic operators should be adopted, incorporating as much prior information about the problem domain as possible.
-	\item The algorithm is highly-modular and a sub-field exists to study each sub-process, specifically: selection, recombination, mutation, and representation. 
-	\item The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}.
-	\item The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
 	\item The size of the population must be large enough to provide sufficient coverage of the domain and mixing of the useful sub-components of the solution  \cite{Goldberg1992}.
 	\item The Genetic Algorithm is classically configured with a high probability of recombination (such as 95\%-99\% of the selected population) and a low probability of mutation (such as $\frac{1}{L}$ where $L$ is the number of components in a solution) \cite{Muhlenbein1992, Back1993}.
 	\item The fitness-proportionate selection of candidate solutions to contribute to the next generation should be neither too greedy (to avoid the takeover of fitter candidate solutions) nor too random.
@@ -177,6 +174,10 @@ The field of genetic algorithms is very large, resulting in large numbers of var
 Goldberg provides a classical overview of the field in a review article \cite{Goldberg1994}, as does Mitchell \cite{Mitchell1995}.
 % tutorial
 Whitley describes a classical tutorial for the Genetic Algorithm covering both practical and theoretical concerns \cite{Whitley1994}.
+
+% additional detail
+The algorithm is highly-modular and a sub-field exists to study each sub-process, specifically: selection, recombination, mutation, and representation. The Genetic Algorithm is most commonly used as an optimization technique, although it should also be considered a general adaptive strategy \cite{Jong1992}. The schema theorem is a classical explanation for the power of the Genetic Algorithm proposed by Holland  \cite{Holland1975}, and investigated by Goldberg under the name of the building block hypothesis \cite{Goldberg1989}.
+
 % good introductions to the ga
 The classical book on genetic algorithms as an optimization and machine learning technique was written by Goldberg and provides an in-depth review and practical study of the approach \cite{Goldberg1989}. Mitchell provides a contemporary reference text introducing the technique and the field \cite{Mitchell1998}. Finally, Goldberg provides a modern study of the field, the lessons learned, and reviews the broader toolset of optimization algorithms that the field has produced \cite{Goldberg2002}.
 

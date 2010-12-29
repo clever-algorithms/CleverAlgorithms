@@ -32,9 +32,9 @@ There are two versions of SPEA, the original SPEA algorithm and the extension SP
 % The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective. The strategy provides a logical separation between a computational realization (procedure) and a analogous system (metaphor). A given problem solving strategy may be realized as one of a number specific algorithms or problem solving systems. The strategy description is textual using information processing and algorithmic terminology.
 \subsection{Strategy}
 % What is the information processing objective of a technique?
-The objective of the algorithm is to locate and and maintain a front of non-dominated Pareto optimal solutions.
+The objective of the algorithm is to locate and and maintain a front of non-dominated solutions, ideally a set of Pareto optimal solutions.
 % What is a techniques plan of action?
-This is achieved by using an evolutionary process (with surrogate procedures for genetic recombination and mutation) to explore the search space, and a selection process that uses a combination of the degree to which a candidate solution is dominated (strength) and an estimation of density of the Pareto front as an assigned fitness. An archive of the Pareto front is maintained separate from the population of candidate solutions used in the evolutionary process, providing a form of elitism.
+This is achieved by using an evolutionary process (with surrogate procedures for genetic recombination and mutation) to explore the search space, and a selection process that uses a combination of the degree to which a candidate solution is dominated (strength) and an estimation of density of the Pareto front as an assigned fitness. An archive of the non-dominated set is maintained separate from the population of candidate solutions used in the evolutionary process, providing a form of elitism.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -165,7 +165,7 @@ Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm as a te
 % thesis
 The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler's PhD thesis \cite{Zitzler1999a}.
 % extension
-Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies the approach, called SPEA2 that was released as a technical report \cite{Zitzler2001} and later published \cite{Zitzler2002}. SPEA2 provided fine-grained fitness assignment, density estimation on the Pareto front, and an archive truncation operator.
+Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies of the approach, the algorithm was called SPEA2 and was released as a technical report \cite{Zitzler2001} and later published \cite{Zitzler2002}. SPEA2 provides fine-grained fitness assignment, density estimation of the Pareto front, and an archive truncation operator.
 
 % Learn More
 % 

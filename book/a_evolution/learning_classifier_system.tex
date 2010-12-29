@@ -22,7 +22,7 @@
 % To what fields of study does a technique belong?
 The Learning Classifier System algorithm is both an instance of an Evolutionary Algorithm from the field of Evolutionary Computation and an instance of a Reinforcement Learning algorithm from Machine Learning. Internally, Learning Classifier Systems make use of a Genetic Algorithm (Section~\ref{sec:genetic_algorithm}).
 % What are the closely related approaches to a technique?
-The Learning Classifier System is a theoretical system with a number of implementations. Two streams of classifier are the Pittsburgh-style that seeks to optimize whole classifier, and the Michigan-style that optimize responsive rulesets. 
+The Learning Classifier System is a theoretical system with a number of implementations. The two main approaches to implementing and investigating the system empirically are the Pittsburgh-style that seeks to optimize the whole classifier, and the Michigan-style that optimize responsive rulesets. 
 % common 
 The Michigan-style Learning Classifier is the most common and is comprised of two versions: the ZCS (zeroth-level classifier system) and the XCS (accuracy-based classifier system).
 
@@ -44,7 +44,16 @@ The actors of the system include detectors, messages, effectors, feedback, and c
 Message a fixed length bitstring. A classifier is defined as a ternary string with an alphabet $\in \{1, 0, \#\}$, where the $\#$ represents do not care (matching either 1 or 0). 
 
 % What is the computational recipe for a technique?
-The processing loop for the Learning Classifier system is as follows: i) Messages from the environment are placed on the message list. ii) The conditions of each classifier are checked to see if they are satisfied by at least one message in the message list. iii) All classifiers that are satisfied participate in a competition, those that win post their action to the message list. iv) All messages directed to the effectors are executed (causing actions in the environment). v) All messages on the message list from the previous cycle are deleted (messages persist for a single cycle).
+The processing loop for the Learning Classifier system is as follows:
+
+\begin{enumerate}
+	\item Messages from the environment are placed on the message list.
+	\item The conditions of each classifier are checked to see if they are satisfied by at least one message in the message list.
+	\item All classifiers that are satisfied participate in a competition, those that win post their action to the message list.
+	\item All messages directed to the effectors are executed (causing actions in the environment).
+	\item  All messages on the message list from the previous cycle are deleted (messages persist for a single cycle).
+\end{enumerate}
+
 % algorithm
 The algorithm may be described in terms of the main processing loop and two sub-algorithms: a reinforcement learning algorithm such as the bucket brigade algorithm or Q-learning, and a genetic algorithm for optimization of the system.
 % presentated
@@ -186,8 +195,9 @@ Booker, Goldberg, and Holland provide a classical introduction to Learning Class
 % review
 Holmes et al.\ provide a contemporary review of the field focusing both on a description of the method and application areas to which the approach has been demonstrated successfully \cite{Holmes2002}.
 % books
-Lanzi, Stolzmann, and Wilson provide a seminal book in the field as a collection of papers covering the basics, advanced topics, and demonstration applications. A particular highlight from this book is the first section that provides a concise description of Learning Classifier Systems by many leaders and major contributors to the field \cite{Holland2000}, providing rare insight. Another paper from this book by Lanzi and Riolo provides a detailed review of the development of the approach as it matured throughout the 1990s.
+Lanzi, Stolzmann, and Wilson provide a seminal book in the field as a collection of papers covering the basics, advanced topics, and demonstration applications; a particular highlight from this book is the first section that provides a concise description of Learning Classifier Systems by many leaders and major contributors to the field \cite{Holland2000}, providing rare insight. 
+Another paper from Lanzi and Riolo's book provides a detailed review of the development of the approach as it matured throughout the 1990s \cite{Lanzi2000a}.
 % other book
-Bull and Kovacs provide  a second book introductory book to the field focusing on the theory of the approach and its practical application \cite{Bull2005}.
+Bull and Kovacs provide a second book introductory book to the field focusing on the theory of the approach and its practical application \cite{Bull2005}.
 
 
