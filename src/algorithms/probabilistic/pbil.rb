@@ -19,22 +19,22 @@ end
 
 def update_vector(vector, current, lrate)
   vector.each_with_index do |p, i|
-    vector[i] = p * (1.0-lrate) + current[:bitstring][i] * lrate
+    vector[i] = p*(1.0-lrate) + current[:bitstring][i]*lrate
   end
 end
 
-def mutate_vector(vector, current, p_mutate, mutate_factor)
+def mutate_vector(vector, current, coefficient, rate)
   vector.each_with_index do |p, i|
-    if rand() < p_mutate
-      vector[i] = p * (1.0-mutate_factor) + rand() * mutate_factor
+    if rand() < rate
+      vector[i] = p*(1.0-coefficient) + rand()*coefficient
     end
   end
 end
 
-def search(num_bits, max_iterations, num_samples, p_mutate, mutate_factor, learn_rate)
-  vector = Array.new(num_bits){rand()}
+def search(num_bits, max_iter, num_samples, p_mutate, mutate_factor, learn_rate)
+  vector = Array.new(num_bits){0.5}
   best = nil
-  max_iterations.times do |iter|
+  max_iter.times do |iter|
     current = nil
     num_samples.times do 
       candidate = generate_candidate(vector)
@@ -43,8 +43,9 @@ def search(num_bits, max_iterations, num_samples, p_mutate, mutate_factor, learn
       best = candidate if best.nil? or candidate[:cost]>best[:cost]
     end
     update_vector(vector, current, learn_rate)
-    mutate_vector(vector, current, p_mutate, mutate_factor)
+    mutate_vector(vector, current, mutate_factor, p_mutate)
     puts " >iteration=#{iter}, f=#{best[:cost]}, s=#{best[:bitstring]}"
+    break if best[:cost] == num_bits
   end
   return best
 end
@@ -53,12 +54,12 @@ if __FILE__ == $0
   # problem configuration
   num_bits = 64
   # algorithm configuration
-  max_iterations = 100
+  max_iter = 100
   num_samples = 100
   p_mutate = 1.0/num_bits
   mutate_factor = 0.05
   learn_rate = 0.1
   # execute the algorithm
-  best = search(num_bits, max_iterations, num_samples, p_mutate, mutate_factor, learn_rate)
+  best = search(num_bits, max_iter, num_samples, p_mutate, mutate_factor, learn_rate)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end

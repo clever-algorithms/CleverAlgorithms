@@ -34,6 +34,25 @@ class TC_UMDA < Test::Unit::TestCase
     pop = Array.new(10) {|i| {:fitness=>i} }
     10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
+  
+  # generate a candidate solution
+  def test_generate_candidate
+    # all 0
+    s = generate_candidate(Array.new(1000){0})
+    assert_not_nil(s)
+    assert_equal(1000, s[:bitstring].length)
+    s[:bitstring].each{|x| assert_equal(0, x)}
+    # all 1
+    s = generate_candidate(Array.new(1000){1})
+    assert_not_nil(s)
+    assert_equal(1000, s[:bitstring].length)
+    s[:bitstring].each{|x| assert_equal(1, x)}
+    # all 50/50
+    s = generate_candidate(Array.new(1000){0.5})
+    assert_not_nil(s)
+    assert_equal(1000, s[:bitstring].length)
+    assert_in_delta(500, s[:bitstring].inject(0){|sum,x| sum+x}, 50)
+  end
 
   # TODO write tests
   
