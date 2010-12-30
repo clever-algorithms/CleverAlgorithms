@@ -9,6 +9,22 @@ require File.expand_path(File.dirname(__FILE__)) + "/../simulated_annealing"
 
 class TC_SimulatedAnnealing < Test::Unit::TestCase
     
+  # test the rounding in the euclidean distance
+  def test_euc_2d
+    assert_equal(0, euc_2d([0,0], [0,0]))
+    assert_equal(0, euc_2d([1.1,1.1], [1.1,1.1]))
+    assert_equal(1, euc_2d([1,1], [2,2]))
+    assert_equal(3, euc_2d([-1,-1], [1,1]))
+  end
+  
+  # test tour cost includes return to origin
+  def test_cost
+    cities = [[0,0], [1,1], [2,2], [3,3]]
+    assert_equal(1*2, cost([0,1], cities))
+    assert_equal(3+4, cost([0,1,2,3], cities))
+    assert_equal(4*2, cost([0, 3], cities))
+  end    
+    
   # TODO write tests
   
   

@@ -8,7 +8,16 @@ require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../guided_local_search"
 
 class TC_GuidedLocalSearch < Test::Unit::TestCase
-    
+
+  # test the rounding in the euclidean distance
+  def test_euc_2d
+    assert_equal(0, euc_2d([0,0], [0,0]))
+    assert_equal(0, euc_2d([1.1,1.1], [1.1,1.1]))
+    assert_equal(1, euc_2d([1,1], [2,2]))
+    assert_equal(3, euc_2d([-1,-1], [1,1]))
+  end
+  
+
   # TODO write tests
   
   
