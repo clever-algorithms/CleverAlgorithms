@@ -9,6 +9,18 @@ require File.expand_path(File.dirname(__FILE__)) + "/../pso"
 
 class TC_PSO < Test::Unit::TestCase
 
+  # test the objective function
+  def test_objective_function
+    # integer
+    assert_equal(99**2, objective_function([99]))
+    # float
+    assert_equal(0.1**2.0, objective_function([0.1]))
+    # vector
+    assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+    # optima
+    assert_equal(0, objective_function([0,0]))
+  end
+
   # test the generation of random vectors
   def test_random_vector
     bounds, trials, size = [-3,3], 300, 20
@@ -23,18 +35,6 @@ class TC_PSO < Test::Unit::TestCase
       end
       assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
     end    
-  end
-
-  # test that objective_function behaves as expected
-  def test_objective_function
-    # test with int
-    vector = [-2, -1, 0, 7]
-    expected = vector.inject(0.0) {|m,x| m + x*x }
-    assert_equal(expected, objective_function(vector))
-    #test with float
-    vector = [-20.2, 9000]
-    expected = vector.inject(0.0) {|m,x| m + x*x }
-    assert_in_delta(expected, objective_function(vector), 0.01)
   end
   
   # test that the update_velocity function behaves as expected

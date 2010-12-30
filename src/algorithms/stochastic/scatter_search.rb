@@ -4,8 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def cost(candidate_vector)
-  return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
+def objective_function(vector)
+  return vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
 def random_vector(search_space)
@@ -30,7 +30,7 @@ def local_search(best, search_space, max_no_improvements, step_size)
   begin
     candidate = {}
     candidate[:vector] = take_step(best[:vector], search_space, step_size)    
-    candidate[:cost] = cost(candidate[:vector])
+    candidate[:cost] = objective_function(candidate[:vector])
     if candidate[:cost] < best[:cost]
       count, best = 0, candidate
     else
@@ -45,7 +45,7 @@ def construct_initial_set(search_space, div_set_size, max_no_improvements, step_
   begin
     candidate = {}
     candidate[:vector] = random_vector(search_space)
-    candidate[:cost] = cost(candidate[:vector])
+    candidate[:cost] = objective_function(candidate[:vector])
     candidate = local_search(candidate, search_space, max_no_improvements, step_size)
     diverse_set << candidate if !diverse_set.any? {|x| x[:vector]==candidate[:vector]}
   end until diverse_set.size == div_set_size
@@ -95,7 +95,7 @@ def recombine(subset, search_space)
     child[:vector] = Array.new(search_space.size){|i| p[:vector][i]+step}
     child[:vector].each_with_index {|m,i| child[:vector][i]=search_space[i][0] if m<search_space[i][0]}
     child[:vector].each_with_index {|m,i| child[:vector][i]=search_space[i][1] if m>search_space[i][1]}
-    child[:cost] = cost(child[:vector])
+    child[:cost] = objective_function(child[:vector])
     children << child
   end
   return children

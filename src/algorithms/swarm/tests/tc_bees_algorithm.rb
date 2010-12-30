@@ -9,6 +9,18 @@ require File.expand_path(File.dirname(__FILE__)) + "/../bees_algorithm"
 
 class TC_BeesAlgorithm < Test::Unit::TestCase
 
+  # test the objective function
+  def test_objective_function
+    # integer
+    assert_equal(99**2, objective_function([99]))
+    # float
+    assert_equal(0.1**2.0, objective_function([0.1]))
+    # vector
+    assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+    # optima
+    assert_equal(0, objective_function([0,0]))
+  end
+
 	#test that create_random_bee returns a correctly initialised bee
 	def test_create_random_bee
 		problem_size = 3
@@ -57,12 +69,6 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
       assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
     end    
   end
-	
-	# test that objective_function behaves as expected
-	def test_objective_function
-		vector = [-2, -1.1, 0, 7.9, -5]		
-		assert_equal objective_function(vector), vector.inject(0){|sum, v| sum = sum+v*v}
-	end
 	
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

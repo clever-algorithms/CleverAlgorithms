@@ -8,7 +8,19 @@ require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../evolutionary_programming"
 
 class TC_EvolutionaryProgramming < Test::Unit::TestCase
-  
+
+  # test the objective function
+  def test_objective_function
+    # integer
+    assert_equal(99**2, objective_function([99]))
+    # float
+    assert_equal(0.1**2.0, objective_function([0.1]))
+    # vector
+    assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+    # optima
+    assert_equal(0, objective_function([0,0]))
+  end
+
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0
