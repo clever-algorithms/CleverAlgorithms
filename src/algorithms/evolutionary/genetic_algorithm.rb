@@ -27,8 +27,8 @@ def point_mutation(bitstring, rate=1.0/bitstring.size)
   return child
 end
 
-def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1 if rand()>=p_crossover
+def uniform_crossover(parent1, parent2, rate)
+  return ""+parent1 if rand()>=rate
   child = ""
   parent1.size.times do |i| 
     child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)

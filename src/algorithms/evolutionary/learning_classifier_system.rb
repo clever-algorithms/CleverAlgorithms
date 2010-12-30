@@ -189,12 +189,13 @@ def mutation(classifier, p_mut, action_set, input)
   end
 end
 
-def uniform_crossover(string1, string2)
-  rs = ""
-  string1.size.times do |i|
-    rs << ((rand()<0.5) ? string1[i] : string2[i])
-  end  
-  return rs
+def uniform_crossover(parent1, parent2, rate=1.0)
+  return ""+parent1 if rand()>=rate
+  child = ""
+  parent1.size.times do |i|
+    child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
+  end
+  return child
 end
 
 def insert_in_pop(classifier, pop)

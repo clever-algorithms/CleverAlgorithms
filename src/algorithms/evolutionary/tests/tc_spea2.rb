@@ -47,6 +47,16 @@ class TC_SPEA2 < Test::Unit::TestCase
     assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
   end
   
+  # test uniform crossover
+  def test_uniform_crossover
+    p1 = "0000000000"
+    p2 = "1111111111"        
+    assert_equal(p1, uniform_crossover(p1,p2,0))
+    assert_not_same(p1, uniform_crossover(p1,p2,0))      
+    s = uniform_crossover(p1,p2,1)        
+    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end
+  
   # TODO write tests
   
   
