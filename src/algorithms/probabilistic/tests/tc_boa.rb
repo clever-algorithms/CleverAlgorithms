@@ -16,6 +16,19 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(2, onemax([1,0,1,0]))
   end
 
+  # test basic construction of random bitstrings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(10, random_bitstring(10).select{|x| x==0 or x==1}.size)    
+  end
+  
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.select{|x| x==0}.size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.select{|x| x==1}.size/1000.0), 0.05)
+  end
+
   # test that members of the population are selected
   def test_binary_tournament
     pop = Array.new(10) {|i| {:fitness=>i} }

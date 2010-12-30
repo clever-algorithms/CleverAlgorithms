@@ -16,8 +16,39 @@ class TC_CompactGeneticAlgorithm < Test::Unit::TestCase
     assert_equal(2, onemax([1,0,1,0]))
   end
 
-  # TODO write tests
+  # generate a candidate solution
+  def test_generate_candidate
+    # all 0
+    s = generate_candidate(Array.new(1000){0})
+    assert_not_nil(s)
+    assert_not_nil(s[:cost])
+    assert_equal(0, s[:cost])
+    assert_equal(1000, s[:bitstring].length)
+    # all 1
+    s = generate_candidate(Array.new(1000){1})
+    assert_not_nil(s)
+    assert_not_nil(s[:cost])
+    assert_equal(1000, s[:cost])
+    assert_equal(1000, s[:bitstring].length)
+    # all 50/50
+    s = generate_candidate(Array.new(1000){0.5})
+    assert_not_nil(s)
+    assert_not_nil(s[:cost])
+    assert_in_delta(500, s[:cost],50)
+    assert_equal(1000, s[:bitstring].length)
+  end
   
+  # test vector updates
+  def test_update_vector
+    # update all bits
+    vector = [0.5,0.5,0.5]
+    update_vector(vector, {:bitstring=>[1,1,1]}, {:bitstring=>[0,0,0]}, 10)
+    vector.each{|i| assert_equal(0.5+(0.1), vector[i])}
+    # update no bits 
+    vector = [0.5,0.5,0.5]
+    update_vector(vector, {:bitstring=>[1,1,1]}, {:bitstring=>[1,1,1]}, 10)
+    vector.each{|i| assert_equal(0.5, vector[i])}
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
