@@ -8,10 +8,10 @@ def euc_2d(c1, c2)
   Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
 
-def cost(permutation, cities)
+def cost(perm, cities)
   distance =0
-  permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
+  perm.each_with_index do |c1, i|
+    c2 = (i==perm.size-1) ? perm[0] : perm[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -35,10 +35,10 @@ def local_search(best, cities, max_no_improv)
     candidate = {}
     candidate[:vector] = stochastic_two_opt(best[:vector])    
     candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] < best[:cost]
+    if candidate[:cost] <= best[:cost]
       count, best = 0, candidate
     else
-      count += 1      
+      count += 1
     end
   end until count >= max_no_improv
   return best
@@ -50,18 +50,22 @@ def construct_randomized_greedy_solution(cities, alpha)
   allCities = Array.new(cities.size) {|i| i}
   while candidate[:vector].size < cities.size
     candidates = allCities - candidate[:vector]
-    costs = Array.new(candidates.size){|i| euc_2d(cities[candidate[:vector].last], cities[i])}
+    costs = Array.new(candidates.size) do |i| 
+      euc_2d(cities[candidate[:vector].last], cities[i])
+    end
     rcl, max, min = [], costs.max, costs.min
-    costs.each_with_index {|c,i| rcl << candidates[i] if c <= (min + alpha*(max-min)) }  
+    costs.each_with_index do |c,i| 
+      rcl << candidates[i] if c <= (min + alpha*(max-min))
+    end
     candidate[:vector] << rcl[rand(rcl.size)]
   end
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate
 end
 
-def search(cities, max_iterations, max_no_improv, alpha)
+def search(cities, max_iter, max_no_improv, alpha)
   best = nil
-  max_iterations.times do |iter|
+  max_iter.times do |iter|
     candidate = construct_randomized_greedy_solution(cities, alpha);
     candidate = local_search(candidate, cities, max_no_improv)
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
@@ -82,10 +86,10 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 50
-  max_no_improv = 100
+  max_iter = 50
+  max_no_improv = 50
   greediness_factor = 0.3
   # execute the algorithm
-  best = search(berlin52, max_iterations, max_no_improv, greediness_factor)
+  best = search(berlin52, max_iter, max_no_improv, greediness_factor)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
