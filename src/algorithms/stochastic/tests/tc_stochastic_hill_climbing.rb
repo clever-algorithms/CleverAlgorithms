@@ -16,8 +16,30 @@ class TC_StochasticHillClimbing < Test::Unit::TestCase
     assert_equal(2, onemax(["1","0","1","0"]))
   end
 
-  # TODO write tests
+  # test basic construction of random bitstrings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(10, random_bitstring(10).select{|x| x=='0' or x=='1'}.size)    
+  end
   
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.select{|x| x=='0'}.size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.select{|x| x=='1'}.size/1000.0), 0.05)
+  end
+  
+  # test the construction of a random neighbour
+  def test_random_neighbor
+    parent = [0,0,0,0,0]
+    rs = random_neighbor(parent)
+    assert_equal(parent.size, rs.size)
+    assert_not_equal(parent, rs)
+    assert_not_same(parent, rs)
+    diffs = 0
+    parent.each_index {|i| diffs += 1 if parent[i]!=rs[i]}
+    assert(1, diffs)
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
