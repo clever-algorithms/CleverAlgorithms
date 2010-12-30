@@ -46,7 +46,7 @@ def search(num_bits, max_iter, pop_size, select_size)
     vector = calculate_bit_probabilities(selected)
     samples = Array.new(pop_size) { generate_candidate(vector) }
     samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    samples.sort{|x,y| y[:fitness] <=> x[:fitness]}
+    samples.sort!{|x,y| y[:fitness] <=> x[:fitness]}
     best = samples.first if samples.first[:fitness] > best[:fitness]
     pop = samples
     puts " >iteration=#{iter}, f=#{best[:fitness]}, s=#{best[:bitstring]}"

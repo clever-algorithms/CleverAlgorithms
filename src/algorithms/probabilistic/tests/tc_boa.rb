@@ -35,7 +35,15 @@ class TC_BOA < Test::Unit::TestCase
     10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
 
-  # TODO write tests
+  # test the construction of a network from a population
+  def test_construct_network
+    fail("Test not written")
+  end
+  
+  # test sampling from the network
+  def test_sample_from_network
+    fail("Test not written")
+  end
   
   
   # helper for turning off STDOUT
@@ -50,14 +58,13 @@ class TC_BOA < Test::Unit::TestCase
   end   
   
   # test that the algorithm can solve the problem
-  def test_search    
-    # best = nil
-    # silence_stream(STDOUT) do
-    #   best = search(30, 50, 50, 30, 5)
-    # end  
-    # assert_not_nil(best[:fitness])
-    # assert_equal(30, best[:fitness])
-    fail("BOA is not written yet")
+  def test_search
+    best = nil
+    silence_stream(STDOUT) do
+      best = search(64, 50, 50)
+    end  
+    assert_not_nil(best[:fitness])
+    assert_equal(64, best[:fitness])
   end
   
 end
