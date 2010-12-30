@@ -17,8 +17,8 @@ def binary_tournament(pop)
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def calculate_bit_probabilities(num_bits, pop)
-  vector = Array.new(num_bits, 0.0)
+def calculate_bit_probabilities(pop)
+  vector = Array.new(pop.first[:bitstring].length, 0.0)
   pop.each do |member|
     member[:bitstring].each_with_index {|v, i| vector[i] += v}
   end
@@ -43,7 +43,7 @@ def search(num_bits, max_iter, pop_size, select_size)
   best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
   max_iter.times do |iter|
     selected = Array.new(select_size) { binary_tournament(pop) }
-    vector = calculate_bit_probabilities(num_bits, selected)
+    vector = calculate_bit_probabilities(selected)
     samples = Array.new(pop_size) { generate_candidate(vector) }
     samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
     samples.sort{|x,y| y[:fitness] <=> x[:fitness]}

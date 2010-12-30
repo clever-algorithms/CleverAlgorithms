@@ -35,6 +35,25 @@ class TC_UMDA < Test::Unit::TestCase
     10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
   
+  # test the reduction of a pop to a probability vector
+  def test_calculate_bit_probabilities
+    # all zeros
+    pop = [{:bitstring=>Array.new(1000){0}}, {:bitstring=>Array.new(1000){0}}]
+    v = calculate_bit_probabilities(pop)
+    assert_equal(1000, v.size)
+    v.each{|x| assert_equal(0, x)}
+    # all ones
+    pop = [{:bitstring=>Array.new(1000){1}}, {:bitstring=>Array.new(1000){1}}]
+    v = calculate_bit_probabilities(pop)
+    assert_equal(1000, v.size)
+    v.each{|x| assert_equal(1, x)}
+    # 50/50
+    pop = [{:bitstring=>Array.new(1000){1}}, {:bitstring=>Array.new(1000){0}}]
+    v = calculate_bit_probabilities(pop)
+    assert_equal(1000, v.size)
+    v.each{|x| assert_equal(0.5, x)}
+  end
+  
   # generate a candidate solution
   def test_generate_candidate
     # all 0
@@ -53,9 +72,6 @@ class TC_UMDA < Test::Unit::TestCase
     assert_equal(1000, s[:bitstring].length)
     assert_in_delta(500, s[:bitstring].inject(0){|sum,x| sum+x}, 50)
   end
-
-  # TODO write tests
-  
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
