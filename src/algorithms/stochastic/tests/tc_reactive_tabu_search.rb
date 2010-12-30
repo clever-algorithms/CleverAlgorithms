@@ -29,7 +29,7 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
   def test_stochastic_two_opt
     perm = Array.new(10){|i| i}
     200.times do
-      other = stochastic_two_opt(perm)
+      other, edges = stochastic_two_opt(perm)
       assert_equal(perm.size, other.size)
       assert_not_equal(perm, other)
       assert_not_same(perm, other)

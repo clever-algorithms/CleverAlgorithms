@@ -37,7 +37,7 @@ class TC_StochasticHillClimbing < Test::Unit::TestCase
       best = search(100, 20)
     end  
     assert_not_nil(best[:cost])
-    assert_equal(20, best[:cost])
+    assert_in_delta(20, best[:cost],3)
   end
   
 end
