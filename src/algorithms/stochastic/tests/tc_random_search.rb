@@ -9,6 +9,16 @@ require File.expand_path(File.dirname(__FILE__)) + "/../random_search"
 
 class TC_RandomSearch < Test::Unit::TestCase
 
+  # test the objective function
+  def test_objective_function
+    # integer
+    assert_equal(99**2, objective_function([99]))
+    # float
+    assert_equal(0.1**2.0, objective_function([0.1]))
+    # vector
+    assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+  end
+
   # test the generation of random vectors
   def test_random_vector
     bounds, trials, size = [-3,3], 300, 20
@@ -24,9 +34,6 @@ class TC_RandomSearch < Test::Unit::TestCase
       assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
     end    
   end
-
-  # TODO write tests
-  
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
