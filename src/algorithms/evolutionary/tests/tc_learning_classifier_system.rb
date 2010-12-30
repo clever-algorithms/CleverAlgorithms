@@ -91,8 +91,10 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
         
   end
   
-  def test_select_parent
-    
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
   
   def test_mutation
@@ -102,10 +104,8 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # test uniform crossover
   def test_uniform_crossover
     p1 = "0000000000"
-    p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
+    p2 = "1111111111"    
+    s = uniform_crossover(p1,p2)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end  
 

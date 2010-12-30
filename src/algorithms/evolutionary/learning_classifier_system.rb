@@ -72,7 +72,7 @@ def generate_random_classifier(input, actions, gen)
   return new_classifier(condition, action, gen)
 end
 
-def does_match(input, condition)
+def does_match?(input, condition)
   i = 0
   condition.each_char do |c|
     return false if c!='#' and c!=input[i].chr
@@ -93,7 +93,7 @@ def get_actions(pop)
 end
 
 def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
-  match_set = pop.select{|c| does_match(input, c[:condition])}
+  match_set = pop.select{|c| does_match?(input, c[:condition])}
   actions = get_actions(match_set)
   while actions.size < all_actions.size do
     remaining = all_actions - actions
@@ -152,6 +152,7 @@ def update_fitness(action_set, min_error, l_rate)
 end
 
 def can_run_genetic_algorithm(action_set, gen, ga_freq)
+  return false if action_set.size <= 2
   total = action_set.inject(0.0) {|s,c| s+c[:lasttime]*c[:num]}
   sum = action_set.inject(0.0) {|s,c| s+c[:num]}
   if gen - (total/sum) > ga_freq
@@ -160,14 +161,10 @@ def can_run_genetic_algorithm(action_set, gen, ga_freq)
   return false
 end
 
-def select_parent(pop)
-  sum = pop.inject(0.0) {|s,c| s+c[:fitness]}
-  point = rand() * sum
-  sum = 0
-  pop.each do |c|
-    sum += c[:fitness]
-    return c if sum > point
-  end  
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
+  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
 def mutation(classifier, action_set, input, rate)
@@ -189,8 +186,7 @@ def mutation(classifier, action_set, input, rate)
   end
 end
 
-def uniform_crossover(parent1, parent2, rate=1.0)
-  return ""+parent1 if rand()>=rate
+def uniform_crossover(parent1, parent2)
   child = ""
   parent1.size.times do |i|
     child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
@@ -220,7 +216,7 @@ def crossover(c1, c2, p1, p2)
 end
 
 def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95, mrate=0.05)
-  p1, p2 = select_parent(action_set), select_parent(action_set)
+  p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
   [c1,c2].each do |c|
@@ -259,7 +255,7 @@ def test_model(system, num_trials=100)
   correct = 0
   num_trials.times do
     input = random_bitstring()
-    match_set = system.select{|c| does_match(input, c[:condition])}
+    match_set = system.select{|c| does_match?(input, c[:condition])}
     prediction_array = generate_prediction(input, match_set)    
     action = select_action(prediction_array)
     correct += 1 if target_function(input) == action.to_i
@@ -278,7 +274,7 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 3000, 150
+  max_gens, pop_size = 5000, 150
   l_rate, min_error = 0.2, 0.01
   p_explore = 0.10
   ga_freq, del_thresh = 50, 20

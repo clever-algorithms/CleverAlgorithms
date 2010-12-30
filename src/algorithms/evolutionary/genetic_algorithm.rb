@@ -16,6 +16,7 @@ end
 
 def binary_tournament(pop)
   i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
