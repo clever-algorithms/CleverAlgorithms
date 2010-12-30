@@ -32,13 +32,15 @@ class TC_StochasticHillClimbing < Test::Unit::TestCase
   # test the construction of a random neighbour
   def test_random_neighbor
     parent = [0,0,0,0,0]
-    rs = random_neighbor(parent)
-    assert_equal(parent.size, rs.size)
-    assert_not_equal(parent, rs)
-    assert_not_same(parent, rs)
-    diffs = 0
-    parent.each_index {|i| diffs += 1 if parent[i]!=rs[i]}
-    assert(1, diffs)
+    100.times do
+      rs = random_neighbor(parent)
+      assert_equal(parent.size, rs.size)
+      assert_not_equal(parent, rs)
+      assert_not_same(parent, rs)
+      diffs = 0
+      parent.each_index {|i| diffs += 1 if parent[i]!=rs[i]}
+      assert(1, diffs)
+    end
   end
   
   # helper for turning off STDOUT
