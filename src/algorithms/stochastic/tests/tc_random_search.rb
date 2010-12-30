@@ -17,6 +17,8 @@ class TC_RandomSearch < Test::Unit::TestCase
     assert_equal(0.1**2.0, objective_function([0.1]))
     # vector
     assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+    # optima
+    assert_equal(0, objective_function([0,0]))
   end
 
   # test the generation of random vectors
