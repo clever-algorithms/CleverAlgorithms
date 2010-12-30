@@ -57,6 +57,12 @@ class TC_SPEA2 < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
+  end
+  
   # TODO write tests
   
   

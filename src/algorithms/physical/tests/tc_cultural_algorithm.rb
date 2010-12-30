@@ -24,6 +24,12 @@ class TC_CulturalAlgorithm < Test::Unit::TestCase
       assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
     end    
   end
+  
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
+  end
     
   # TODO write tests
   
@@ -46,7 +52,7 @@ class TC_CulturalAlgorithm < Test::Unit::TestCase
       best = search(50, [[-5,5],[-5,5]], 50, 20)
     end  
     assert_not_nil(best[:fitness])
-    assert_in_delta(0.0, best[:fitness], 0.1)
+    assert_in_delta(0.0, best[:fitness], 0.001)
   end
   
 end

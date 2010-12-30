@@ -33,9 +33,9 @@ def fitness(candidate, search_space)
   candidate[:fitness] = objective_function(candidate[:vector])
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
 def point_mutation(bitstring, prob_mutation)

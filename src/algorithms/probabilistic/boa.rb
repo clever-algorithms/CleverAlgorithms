@@ -153,9 +153,9 @@ def construct_nework(num_bits, max_non_improving, samples, probs)
   return network
 end
 
-def binary_tournament(population)
-  s1, s2 = population[rand(population.size)], population[rand(population.size)]
-  return (s1[:fitness] > s2[:fitness]) ? s1 : s2
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
 def sample_from_network(network, prob)

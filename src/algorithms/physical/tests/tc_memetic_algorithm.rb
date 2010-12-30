@@ -31,6 +31,12 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
     s = uniform_crossover(p1,p2,1)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
+  
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
+  end
 
   # TODO write tests
   
@@ -53,7 +59,7 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
       best = search(100, [[-5,5],[-5,5]], 50, 0.95, 0.05, 20, 0.5)
     end
     assert_not_nil(best[:fitness])
-    assert_in_delta(0.0, best[:fitness], 0.01)
+    assert_in_delta(0.0, best[:fitness], 0.0001)
   end
   
 end

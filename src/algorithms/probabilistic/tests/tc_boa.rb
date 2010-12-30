@@ -9,6 +9,12 @@ require File.expand_path(File.dirname(__FILE__)) + "/../boa"
 
 class TC_BOA < Test::Unit::TestCase
 
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
+  end
+
   # TODO write tests
   
   

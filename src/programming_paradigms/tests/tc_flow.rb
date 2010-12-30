@@ -25,14 +25,23 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
   # test uniform crossover
   def test_uniform_crossover    
     p1 = "0000000000"
-    p2 = "1111111111"       
-    o = VariationFlowUnit.new(Queue.new,Queue.new,0.0) 
+    p2 = "1111111111"    
+    o = nil   
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0) }
     assert_equal(p1, o.uniform_crossover(p1,p2))
-    o = VariationFlowUnit.new(Queue.new,Queue.new,0.0) 
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0) }
     assert_not_same(p1, o.uniform_crossover(p1,p2))
-    o = VariationFlowUnit.new(Queue.new,Queue.new,1.0) 
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,1.0) }
     s = o.uniform_crossover(p1,p2)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end
+  
+  # test that members of the population are selected
+  def test_binary_tournament
+    o = nil
+    silence_stream(STDOUT){o = SelectFlowUnit.new(Queue.new,Queue.new) }
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(o.binary_tournament(pop)))}  
   end
 
   # TODO write tests for all algorithms
