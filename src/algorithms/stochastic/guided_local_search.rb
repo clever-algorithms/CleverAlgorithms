@@ -17,10 +17,13 @@ def random_permutation(cities)
   return perm
 end
 
-def two_opt(permutation)
+def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.size), rand(perm.size)
-  c2 = rand(perm.size) while c1 == c2
+  exclude = [c1]
+  exclude << ((c1==0) ? perm.size-1 : c1-1)
+  exclude << ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
@@ -43,7 +46,7 @@ def local_search(current, cities, penalties, max_no_improvements, lambda)
   count = 0
   begin
     perm = {}
-    perm[:vector] = two_opt(current[:vector])
+    perm[:vector] = stochastic_two_opt(current[:vector])
     perm[:cost], perm[:acost] = augmented_cost(perm[:vector], penalties, cities, lambda)
     if perm[:acost] < current[:acost]
       count, current = 0, perm

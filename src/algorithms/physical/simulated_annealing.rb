@@ -22,9 +22,12 @@ def random_permutation(cities)
   return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
 end
 
-def two_opt!(perm)
+def stochastic_two_opt!(perm)
   c1, c2 = rand(perm.size), rand(perm.size)
-  c2 = rand(perm.size) while c1 == c2
+  exclude = [c1]
+  exclude << ((c1==0) ? perm.size-1 : c1-1)
+  exclude << ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
@@ -33,8 +36,7 @@ end
 def create_neighbor(current, cities)
   candidate = {}
   candidate[:vector] = Array.new(current[:vector])
-  two_opt!(candidate[:vector])
-  two_opt!(candidate[:vector])
+  stochastic_two_opt!(candidate[:vector])
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate
 end

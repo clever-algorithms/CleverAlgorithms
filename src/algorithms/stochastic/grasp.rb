@@ -20,13 +20,16 @@ end
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.size), rand(perm.size)
-  c2 = rand(perm.size) while c1 == c2
+  exclude = [c1]
+  exclude << ((c1==0) ? perm.size-1 : c1-1)
+  exclude << ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm
 end
 
-def local_search(best, cities, max_no_improvements)
+def local_search(best, cities, max_no_improv)
   count = 0
   begin
     candidate = {}
@@ -37,7 +40,7 @@ def local_search(best, cities, max_no_improvements)
     else
       count += 1      
     end
-  end until count >= max_no_improvements
+  end until count >= max_no_improv
   return best
 end
 
@@ -56,11 +59,11 @@ def construct_randomized_greedy_solution(cities, alpha)
   return candidate
 end
 
-def search(cities, max_iterations, max_no_improvements, alpha)
+def search(cities, max_iterations, max_no_improv, alpha)
   best = nil
   max_iterations.times do |iter|
     candidate = construct_randomized_greedy_solution(cities, alpha);
-    candidate = local_search(candidate, cities, max_no_improvements)
+    candidate = local_search(candidate, cities, max_no_improv)
     best = candidate if best.nil? or candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
@@ -80,9 +83,9 @@ if __FILE__ == $0
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
   max_iterations = 50
-  max_no_improvements = 100
+  max_no_improv = 100
   greediness_factor = 0.3
   # execute the algorithm
-  best = search(berlin52, max_iterations, max_no_improvements, greediness_factor)
+  best = search(berlin52, max_iterations, max_no_improv, greediness_factor)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

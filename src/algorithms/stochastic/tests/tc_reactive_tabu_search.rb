@@ -24,6 +24,18 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
     assert_equal(3+4, cost([0,1,2,3], cities))
     assert_equal(4*2, cost([0, 3], cities))
   end
+  
+  # test the two opt procedure
+  def test_stochastic_two_opt
+    perm = Array.new(10){|i| i}
+    200.times do
+      other = stochastic_two_opt(perm)
+      assert_equal(perm.size, other.size)
+      assert_not_equal(perm, other)
+      assert_not_same(perm, other)
+      other.each {|x| assert(perm.include?(x), "#{x}") }
+    end
+  end
 
   # TODO write tests
   

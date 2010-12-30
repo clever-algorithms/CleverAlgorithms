@@ -19,6 +19,22 @@ class TC_DendriticCellAlgorithm < Test::Unit::TestCase
   ensure
     stream.reopen(old_stream)
   end
+
+  # test the uniform sampling within bounds
+  def test_rand_in_bounds
+    # positive, zero offset
+    x = rand_in_bounds(0, 20)
+    assert_operator(x, :>=, 0)
+    assert_operator(x, :<, 20)
+    # negative
+    x = rand_in_bounds(-20, -1)
+    assert_operator(x, :>=, -20)
+    assert_operator(x, :<, -1)
+    # both
+    x = rand_in_bounds(-10, 20)
+    assert_operator(x, :>=, -10)
+    assert_operator(x, :<, 20)
+  end
   
   # test the generation of random vectors
   def test_random_vector
