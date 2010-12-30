@@ -4,26 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def new_classifier(condition, action, gen)
-  other = {}
-  other[:condition], other[:action], other[:lasttime] = condition, action, gen
-  other[:prediction], other[:error], other[:fitness] =  0.00001,  0.00001,  0.00001
-  other[:experience], other[:setsize], other[:num] = 0.0, 1.0, 1.0
-  return other
-end
-
-def copy_classifier(parent)
-  copy = {}  
-  parent.keys.each {|k| copy[k] = (parent[k].kind_of? String) ? ""+parent[k] : parent[k]}  
-  copy[:num] = 1
-  copy[:experience] = 0.0
-  return copy
-end
-
-def random_bitstring(size)
-  return (0...size).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
-end
-
 def neg(bit) 
   return (bit==1) ? 0 : 1 
 end
@@ -32,6 +12,26 @@ def target_function(s)
   ints = Array.new(s.size){|i| s[i].chr.to_i}
   x0,x1,x2,x3,x4,x5 = ints
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
+end
+
+def new_classifier(condition, action, gen, init=0.00001)
+  other = {}
+  other[:condition], other[:action], other[:lasttime] = condition, action, gen
+  other[:prediction], other[:error], other[:fitness] = init, init, init
+  other[:experience], other[:setsize], other[:num] = 0.0, 1.0, 1.0
+  return other
+end
+
+def copy_classifier(parent)
+  copy = {}  
+  parent.keys.each {|k| copy[k] = (parent[k].kind_of? String) ? ""+parent[k] : parent[k]}  
+  copy[:num] = 1.0
+  copy[:experience] = 0.0
+  return copy
+end
+
+def random_bitstring(size=6)
+  return (0...size).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
 end
 
 def calculate_deletion_vote(classifier, pop, del_thresh)
@@ -120,11 +120,11 @@ def generate_prediction(input, match_set)
   return prediction
 end
 
-def select_action(prediction_array, p_explore)
+def select_action(prediction_array, p_explore=1.0)
   keys = prediction_array.keys
-  return true, keys[rand(keys.size)] if rand() < p_explore    
+  return keys[rand(keys.size)] if rand() < p_explore    
   keys.sort!{|x,y| prediction_array[y][:weight]<=>prediction_array[x][:weight]}
-  return false, keys.first
+  return keys.first
 end
 
 def update_set(action_set, payoff, l_rate)
@@ -170,9 +170,9 @@ def select_parent(pop)
   end  
 end
 
-def mutation(classifier, p_mut, action_set, input)
+def mutation(classifier, action_set, input, rate)
   classifier[:condition].size.times do |i|
-    if rand() < p_mut
+    if rand() < rate
       if classifier[:condition][i].chr == '#'
         classifier[:condition][i] = input[i]
       else
@@ -180,7 +180,7 @@ def mutation(classifier, p_mut, action_set, input)
       end
     end
   end
-  if rand() < p_mut
+  if rand() < rate
     new_action = nil
     begin
       new_action = action_set[rand(action_set.size)]
@@ -219,51 +219,69 @@ def crossover(c1, c2, p1, p2)
   c2[:fitness] = c1[:fitness]
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, p_cross, p_mut, pop_size, del_thresh)    
+def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95, mrate=0.05)
   p1, p2 = select_parent(action_set), select_parent(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
-  crossover(c1, c2, p1, p2) if rand() < p_cross
+  crossover(c1, c2, p1, p2) if rand() < crate
   [c1,c2].each do |c|
-    mutation(c, p_mut, all_actions, input)
+    mutation(c, all_actions, input, mrate)
     insert_in_pop(c, pop)
     delete_from_pop(pop, pop_size, del_thresh)
   end  
 end
 
-def search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, p_cross, p_mut, del_thresh)
-  pop, abs = [], 0
+def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
+  pop, correct = [], 0
   max_gens.times do |gen|
-    input = random_bitstring(length)
-    match_set = generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
+    input = random_bitstring()
+    match_set = generate_match_set(input, pop, actions, gen, pop_size, del_thresh)
     prediction_array = generate_prediction(input, match_set)    
-    explore, action = select_action(prediction_array, p_explore)
+    action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
     expected = target_function(input)
     payoff = ((expected-action.to_i)==0) ? 300.0 : 1.0
-    abs += (expected - action.to_i).abs.to_f
+    correct += 1 if expected == action.to_i
     update_set(action_set, payoff, l_rate)
     update_fitness(action_set, min_error, l_rate)
     if can_run_genetic_algorithm(action_set, gen, ga_freq)
       action_set.each {|c| c[:lasttime] = gen}
-      run_genetic_algorithm(all_actions, pop, action_set, input, gen, p_cross, p_mut, pop_size, del_thresh)
+      run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size, del_thresh)
     end
-    if (gen+1).modulo(50)==0
-      puts " >gen=#{gen+1} classifiers=#{pop.size}, error=#{abs.to_i}/50 (#{(abs/50*100)}%)"
-      abs = 0
+    if (gen+1).modulo(100)==0
+      puts " >gen=#{gen+1} classifiers=#{pop.size}, correct=#{correct}/100"
+      correct = 0
     end
   end  
   return pop
+end
+
+def test_model(system, num_trials=100)
+  correct = 0
+  num_trials.times do
+    input = random_bitstring()
+    match_set = system.select{|c| does_match(input, c[:condition])}
+    prediction_array = generate_prediction(input, match_set)    
+    action = select_action(prediction_array)
+    correct += 1 if target_function(input) == action.to_i
+  end
+  puts "Done! classified correctly=#{correct}/#{num_trials}"
+  return correct
+end
+
+def execute(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
+  system = train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
+  test_model(system)
+  return system
 end
 
 if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, length, pop_size = 5000, 6, 150
+  max_gens, pop_size = 3000, 150
   l_rate, min_error = 0.2, 0.01
-  p_explore, p_cross, p_mut = 0.10, 0.80,  0.04
-  ga_freq, del_thresh = 50,  20
+  p_explore = 0.10
+  ga_freq, del_thresh = 50, 20
   # execute the algorithm
-  pop = search(length, pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, p_cross, p_mut, del_thresh)
-  puts "done! Solution: classifiers=#{pop.size}"
+  execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
 end

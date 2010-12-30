@@ -161,11 +161,11 @@ The majority of the heuristics in this section are specific to the XCS Learning 
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{learning_classifier_system} provides an example of the Learning Classifier System algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It can be described as a classification problem, where each of the $2^6$ patterns of bits is associated with a boolean class $\{1,0\}$. For this problem instance, the first two bits may be decoded as an address into the remaining four bits that specify the class (for example in 100011, `10' decode to the index of `2' in the remaining 4 bits making the class `1'). In propositional logic this problem instance may be described as $F=(\neg x_0) (\neg x_1) x_2 + (\neg x_0) x_1 x_3 + x_0 (\neg x_1) x_4 + x_0 x_1 x_5$. 
+The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It can be described as a classification problem, where each of the $2^6$ patterns of bits is associated with a boolean class $\in \{1,0\}$. For this problem instance, the first two bits may be decoded as an address into the remaining four bits that specify the class (for example in 100011, `10' decode to the index of `2' in the remaining 4 bits making the class `1'). In propositional logic this problem instance may be described as $F=(\neg x_0) (\neg x_1) x_2 + (\neg x_0) x_1 x_3 + x_0 (\neg x_1) x_4 + x_0 x_1 x_5$. 
 % algorithm
 The algorithm is an instance of XCS based on the description provided by Butz and Wilson \cite{Butz2002a} with the parameters based on the application of XCS to Boolean multiplexer problems by Wilson \cite{Wilson1995, Wilson1998}.
 % specifics
-The population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. The multiplexer problem is a single step problem, so the complexities of delayed payoff are not required. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1, v=5, \delta=0.1$ and $P_{\#}=\frac{1}{3}$.
+The population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. The multiplexer problem is a single step problem, so the complexities of delayed payoff are not required. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1$, $v=5$, $\delta=0.1$ and $P_{\#}=\frac{1}{3}$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Classifier System in Ruby, label=learning_classifier_system]{../src/algorithms/evolutionary/learning_classifier_system.rb}
