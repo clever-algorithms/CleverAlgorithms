@@ -66,15 +66,28 @@ class TC_AdaptiveRandomSearch < Test::Unit::TestCase
   # test the calculation of the large step size
   def test_large_step_size
     # test use small factor
-    s = large_step_size(1, 1, 2, 3, 100)
+    s = large_step_size(0, 1, 2, 3, 100)
     assert_equal(1*2, s)
     # test use large factor
     s = large_step_size(100, 1, 2, 3, 100)
     assert_equal(1*3, s)
   end
   
+  # test the construction of steps
   def test_take_steps
-    
+    20.times do
+      step1, step2 = take_steps([[0,10]], {:vector=>[5]}, 1, 3)
+      # small
+      assert_not_nil(step1[:vector])
+      assert_not_nil(step1[:cost])
+      assert_operator(step1[:vector][0], :>=, 5-1)
+      assert_operator(step1[:vector][0], :<, 5+1)
+      # large
+      assert_not_nil(step2[:vector])
+      assert_not_nil(step2[:cost])
+      assert_operator(step2[:vector][0], :>=, 5-3)
+      assert_operator(step2[:vector][0], :<, 5+3)
+    end
   end
   
   # helper for turning off STDOUT
