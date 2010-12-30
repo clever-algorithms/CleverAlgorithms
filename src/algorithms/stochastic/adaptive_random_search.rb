@@ -4,48 +4,49 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def cost(candidate_vector)
-  return candidate_vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
+def objective_function(vector)
+  return vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def rand_in_bounds(min, max)
+  return min + ((max-min) * rand()) 
+end
+
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    rand_in_bounds(minmax[i][0], minmax[i][1])
   end
 end
 
-def take_step(search_space, current, step_size)
-  step = []
-  search_space.size.times do |i|
-    max, min = current[i]+step_size, current[i]-step_size
-    max = search_space[i][1] if max > search_space[i][1]
-    min = search_space[i][0] if min < search_space[i][0]
-    step << min + ((max - min) * rand)
+def take_step(minmax, current, step_size)
+  position = Array.new(current.size)
+  position.size.times do |i|
+    min = [minmax[i][0], current[i]-step_size].max
+    max = [minmax[i][1], current[i]+step_size].min
+    position[i] = rand_in_bounds(min, max)
   end
-  return step
+  return position
 end
 
-def large_step_size(iteration, step_size, small_factor, large_factor, factor_multiple)
-  if iteration.modulo(factor_multiple)
-    return step_size * large_factor
-  end
-  return  step_size * small_factor
+def large_step_size(iter, step_size, s_factor, l_factor, iter_multiple)
+  return step_size * l_factor if iter.modulo(iter_multiple) == 0
+  return step_size * s_factor
 end
 
 def take_steps(search_space, current, step_size, bigger_step_size)
   step, bigger_step = {}, {}
   step[:vector] = take_step(search_space, current[:vector], step_size)
-  step[:cost] = cost(step[:vector])
+  step[:cost] = objective_function(step[:vector])
   bigger_step[:vector] = take_step(search_space, current[:vector], bigger_step_size)
-  bigger_step[:cost] = cost(bigger_step[:vector])    
+  bigger_step[:cost] = objective_function(bigger_step[:vector])    
   return step, bigger_step
 end
 
-def search(max_iter, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+def search(max_iter, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_impr)
   step_size = (search_space[0][1]-search_space[0][0]) * init_factor
   current, count = {}, 0
   current[:vector] = random_vector(search_space)
-  current[:cost] = cost(current[:vector])
+  current[:cost] = objective_function(current[:vector])
   max_iter.times do |iter|
     bigger_step_size = large_step_size(iter, step_size, small_factor, large_factor, factor_multiple)
     step, bigger_step = take_steps(search_space, current, step_size, bigger_step_size)
@@ -58,7 +59,7 @@ def search(max_iter, search_space, init_factor, small_factor, large_factor, fact
       count = 0
     else
       count += 1
-      count, stepSize = 0, (step_size/small_factor) if count >= max_no_improvements
+      count, stepSize = 0, (step_size/small_factor) if count >= max_no_impr
     end
     puts " > iteration #{(iter+1)}, best=#{current[:cost]}"
   end
@@ -70,13 +71,13 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_iterations = 1000
+  max_iter = 1000
   init_factor = 0.05
   small_factor = 1.3
   large_factor = 3.0
   factor_multiple = 10
-  max_no_improvements = 30
+  max_no_impr = 30
   # execute the algorithm
-  best = search(max_iterations, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_improvements)
+  best = search(max_iter, search_space, init_factor, small_factor, large_factor, factor_multiple, max_no_impr)
   puts "Done. Best Solution: cost=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

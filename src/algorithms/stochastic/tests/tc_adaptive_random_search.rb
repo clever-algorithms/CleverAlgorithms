@@ -9,6 +9,32 @@ require File.expand_path(File.dirname(__FILE__)) + "/../adaptive_random_search"
 
 class TC_AdaptiveRandomSearch < Test::Unit::TestCase
 
+  # test the objective function
+  def test_objective_function
+    # integer
+    assert_equal(99**2, objective_function([99]))
+    # float
+    assert_equal(0.1**2.0, objective_function([0.1]))
+    # vector
+    assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
+  end
+
+  # test the uniform sampling within bounds
+  def test_rand_in_bounds
+    # positive, zero offset
+    x = rand_in_bounds(0, 20)
+    assert_operator(x, :>=, 0)
+    assert_operator(x, :<, 20)
+    # negative
+    x = rand_in_bounds(-20, -1)
+    assert_operator(x, :>=, -20)
+    assert_operator(x, :<, -1)
+    # both
+    x = rand_in_bounds(-10, 20)
+    assert_operator(x, :>=, -10)
+    assert_operator(x, :<, 20)
+  end
+
   # test the generation of random vectors
   def test_random_vector
     bounds, trials, size = [-3,3], 300, 20
@@ -25,8 +51,31 @@ class TC_AdaptiveRandomSearch < Test::Unit::TestCase
     end    
   end
 
-  # TODO write tests
+  # test the construction of a step
+  def test_take_step
+    # step within stepsize
+    p = take_step([[0, 100]], [50], 3.3)
+    assert_operator(p[0], :>=, 50-3.3)
+    assert_operator(p[0], :<=, 50+3.3)    
+    # snap to bounds
+    p = take_step([[0, 1]], [0], 3.3)
+    assert_operator(p[0], :>=, 0)
+    assert_operator(p[0], :<, 1)
+  end
   
+  # test the calculation of the large step size
+  def test_large_step_size
+    # test use small factor
+    s = large_step_size(1, 1, 2, 3, 100)
+    assert_equal(1*2, s)
+    # test use large factor
+    s = large_step_size(100, 1, 2, 3, 100)
+    assert_equal(1*3, s)
+  end
+  
+  def test_take_steps
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
