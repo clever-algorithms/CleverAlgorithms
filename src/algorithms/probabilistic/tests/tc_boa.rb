@@ -35,6 +35,11 @@ class TC_BOA < Test::Unit::TestCase
     10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
 
+  # test the calculation of gains
+  def test_recompute_gains
+    fail("Test not written")
+  end
+
   # test the construction of a network from a population
   def test_construct_network
     fail("Test not written")
