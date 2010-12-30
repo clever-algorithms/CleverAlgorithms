@@ -33,11 +33,11 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def point_mutation(bitstring, p_mutation)
+def point_mutation(bitstring, rate=1.0/bitstring.size)
   child = ""
-  bitstring.size.times do |i|
-    bit = bitstring[i]
-    child << ((rand()<p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+   bitstring.size.times do |i|
+     bit = bitstring[i].chr
+     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
@@ -112,7 +112,7 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  problem_size = 3
+  problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
   max_gens = 100

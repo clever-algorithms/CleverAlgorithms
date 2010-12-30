@@ -26,11 +26,11 @@ def decode(bitstring, search_space, bits_per_param)
   return vector
 end
 
-def point_mutation(bitstring)
+def point_mutation(bitstring, rate=1.0/bitstring.size)
   child = ""
-  bitstring.size.times do |i|
-    bit = bitstring[i]
-    child << ((rand()<1.0/bitstring.size.to_f) ? ((bit=='1') ? "0" : "1") : bit)
+   bitstring.size.times do |i|
+     bit = bitstring[i].chr
+     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end
@@ -175,5 +175,4 @@ if __FILE__ == $0
   # execute the algorithm
   pop = search(search_space, max_gens, pop_size, archive_size, p_crossover)
   puts "done!"
-  pop.each {|p| puts p[:fitness] }
 end

@@ -38,16 +38,17 @@ def binary_tournament(pop)
   return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def point_mutation(bitstring, prob_mutation)
-  string = ""
-   bitstring.each_char do |bit|
-    string << ((rand()<prob_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+def point_mutation(bitstring, rate=1.0/bitstring.size)
+  child = ""
+   bitstring.size.times do |i|
+     bit = bitstring[i].chr
+     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
-  return string
+  return child
 end
 
-def uniform_crossover(parent1, parent2, p_crossover)
-  return ""+parent1 if rand()>=p_crossover
+def uniform_crossover(parent1, parent2, rate)
+  return ""+parent1 if rand()>=rate
   child = ""
   parent1.size.times do |i| 
     child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)

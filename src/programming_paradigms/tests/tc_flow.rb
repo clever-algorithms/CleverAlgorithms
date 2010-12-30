@@ -44,6 +44,29 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     10.times {assert(pop.include?(o.binary_tournament(pop)))}  
   end
 
+  # test point mutations at the limits
+  def test_point_mutation
+    o = nil
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0,0.0) }
+    assert_equal("0000000000", o.point_mutation("0000000000"))
+    assert_equal("1111111111", o.point_mutation("1111111111"))
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0,1.0) }
+    assert_equal("1111111111", o.point_mutation("0000000000"))
+    assert_equal("0000000000", o.point_mutation("1111111111"))
+  end
+
+  # test that the observed changes approximate the intended probability
+  def test_point_mutation_ratio
+    o = nil
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0,0.5) }
+    changes = 0
+    100.times do
+      s = o.point_mutation("0000000000")
+      changes += (10 - s.delete('1').size)
+    end
+    assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
+  end
+
   # TODO write tests for all algorithms
       
   # helper for turning off STDOUT

@@ -50,6 +50,24 @@ class TC_NSGAII < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end  
   
+  # test point mutations at the limits
+  def test_point_mutation
+    assert_equal("0000000000", point_mutation("0000000000", 0))
+    assert_equal("1111111111", point_mutation("1111111111", 0))
+    assert_equal("1111111111", point_mutation("0000000000", 1))
+    assert_equal("0000000000", point_mutation("1111111111", 1))
+  end
+
+  # test that the observed changes approximate the intended probability
+  def test_point_mutation_ratio
+    changes = 0
+    100.times do
+      s = point_mutation("0000000000", 0.5)
+      changes += (10 - s.delete('1').size)
+    end
+    assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
+  end
+  
   # TODO write tests
   
   
