@@ -8,10 +8,10 @@ def euc_2d(c1, c2)
   Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
 
-def cost(permutation, cities)
+def cost(perm, cities)
   distance =0
-  permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
+  perm.each_with_index do |c1, i|
+    c2 = (i==perm.size-1) ? perm[0] : perm[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -37,7 +37,7 @@ def stochastic_two_opt!(perm)
   return perm
 end
 
-def local_search(best, cities, max_no_improvements, neighborhood)
+def local_search(best, cities, max_no_improv, neighborhood)
   count = 0
   begin
     candidate = {}
@@ -49,11 +49,11 @@ def local_search(best, cities, max_no_improvements, neighborhood)
     else
       count += 1      
     end
-  end until count >= max_no_improvements
+  end until count >= max_no_improv
   return best
 end
 
-def search(cities, neighborhoods, max_no_improvements, max_no_improvements_ls)
+def search(cities, neighborhoods, max_no_improv, max_no_improv_ls)
   best = {}
   best[:vector] = random_permutation(cities)
   best[:cost] = cost(best[:vector], cities)
@@ -64,19 +64,18 @@ def search(cities, neighborhoods, max_no_improvements, max_no_improvements_ls)
       candidate[:vector] = Array.new(best[:vector])      
       neighborhood.times{stochastic_two_opt!(candidate[:vector])}
       candidate[:cost] = cost(candidate[:vector], cities)
-      candidate = local_search(candidate, cities, max_no_improvements_ls, neighborhood)      
+      candidate = local_search(candidate, cities, max_no_improv_ls, neighborhood)      
       puts " > iteration #{(iter+1)}, neighborhood=#{neighborhood}, best=#{best[:cost]}"
       iter += 1
       if(candidate[:cost] < best[:cost])
-        best = candidate
-        count = 0
+        best, count = candidate, 0
         puts "New best, restarting neighborhood search."
         break
       else
         count += 1
       end
     end  
-  end until count >= max_no_improvements
+  end until count >= max_no_improv
   return best
 end
 
@@ -92,10 +91,10 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_no_mprovements = 50
-  local_search_no_improvements = 70
+  max_no_improv = 50
+  max_no_improv_ls = 70
   neighborhoods = 1...20
   # execute the algorithm
-  best = search(berlin52, neighborhoods, max_no_mprovements, local_search_no_improvements)
+  best = search(berlin52, neighborhoods, max_no_improv, max_no_improv_ls)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

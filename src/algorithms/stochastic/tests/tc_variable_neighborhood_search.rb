@@ -45,10 +45,27 @@ class TC_VariableNeighborhoodSearch < Test::Unit::TestCase
       other.each {|x| assert(perm.include?(x), "#{x}") }
     end
   end
-
+  
+  # test the local search
   def test_local_search
-    
-  end  
+    # improvement
+    best = {:vector=>[0,1,2,3,4]}
+    cities = [[0,0],[3,3],[1,1],[2,2],[4,4]]
+    best[:cost] = cost(best[:vector], cities)
+    rs = local_search(best, cities, 20, 3)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_not_same(best, rs)
+    assert_not_equal(best[:vector], rs[:vector])
+    assert_not_equal(best[:cost], rs[:cost])
+    # no improvement
+    best = {:vector=>[0,2,3,1,4]}
+    best[:cost] = cost(best[:vector], cities)
+    rs = local_search(best, cities, 20, 1)
+    assert_not_nil(rs)
+    assert_equal(best[:cost], rs[:cost])
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
