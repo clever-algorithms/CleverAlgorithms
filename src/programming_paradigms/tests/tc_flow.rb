@@ -66,6 +66,15 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     end
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
+  
+  # test that the objective function behaves as expected
+  def test_onemax
+    o = nil
+    silence_stream(STDOUT){o = EvalFlowUnit.new() }
+    assert_equal(0, o.onemax("0000"))
+    assert_equal(4, o.onemax("1111"))
+    assert_equal(2, o.onemax("1010"))
+  end
 
   # TODO write tests for all algorithms
       

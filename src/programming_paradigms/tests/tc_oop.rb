@@ -64,6 +64,14 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     end
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
+  
+  # test that the objective function behaves as expected
+  def test_onemax
+    o = o = OneMax.new(4)
+    assert_equal(0, o.assess({:bitstring=>"0000"}))
+    assert_equal(4, o.assess({:bitstring=>"1111"}))
+    assert_equal(2, o.assess({:bitstring=>"1010"}))
+  end
 
   # TODO write tests for all algorithms
       

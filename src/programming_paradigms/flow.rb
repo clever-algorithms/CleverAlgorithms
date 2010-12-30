@@ -31,7 +31,7 @@ end
 class EvalFlowUnit < FlowUnit
   def onemax(bitstring)
     sum = 0
-    bitstring.each_char {|x| sum+=1 if x=='1'}
+    bitstring.size.times {|i| sum+=1 if bitstring[i].chr=='1'}
     return sum
   end
 

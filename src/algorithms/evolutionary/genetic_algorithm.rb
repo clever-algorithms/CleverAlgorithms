@@ -6,7 +6,7 @@
 
 def onemax(bitstring)
   sum = 0
-  bitstring.size.times {|i| sum+=1 if bitstring[i].chr == '1'}
+  bitstring.size.times {|i| sum+=1 if bitstring[i].chr=='1'}
   return sum
 end
 
@@ -22,7 +22,8 @@ end
 def point_mutation(bitstring, rate=1.0/bitstring.size)
   child = ""
    bitstring.size.times do |i|
-    child << ((rand()<rate) ? ((bitstring[i].chr=='1') ? "0" : "1") : bitstring[i].chr)
+     bit = bitstring[i].chr
+     child << ((rand()<rate) ? ((bit=='1') ? "0" : "1") : bit)
   end
   return child
 end

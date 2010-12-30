@@ -4,8 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def cost(bitstring)
-  return bitstring.inject(0) {|sum,x| sum = sum + ((x=='1') ? 1 : 0)}
+def onemax(vector)
+  return vector.inject(0.0){|sum, v| sum + ((v=="1") ? 1 : 0)}
 end
 
 def random_bitstring(num_bits)
@@ -22,11 +22,11 @@ end
 def search(max_iterations, num_bits)
   candidate = {}
   candidate[:vector] = random_bitstring(num_bits)
-  candidate[:cost] = cost(candidate[:vector])
+  candidate[:cost] = onemax(candidate[:vector])
   max_iterations.times do |iter|
     neighbor = {}
     neighbor[:vector] = random_neighbor(candidate[:vector])
-    neighbor[:cost] = cost(neighbor[:vector])
+    neighbor[:cost] = onemax(neighbor[:vector])
     candidate = neighbor if neighbor[:cost] >= candidate[:cost]
     puts " > iteration #{(iter+1)}, best=#{candidate[:cost]}"
     break if candidate[:cost] == num_bits

@@ -9,6 +9,13 @@ require File.expand_path(File.dirname(__FILE__)) + "/../boa"
 
 class TC_BOA < Test::Unit::TestCase
 
+  # test that the objective function behaves as expected
+  def test_onemax
+    assert_equal(0, onemax([0,0,0,0]))
+    assert_equal(4, onemax([1,1,1,1]))
+    assert_equal(2, onemax([1,0,1,0]))
+  end
+
   # test that members of the population are selected
   def test_binary_tournament
     pop = Array.new(10) {|i| {:fitness=>i} }
