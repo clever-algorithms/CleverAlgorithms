@@ -78,19 +78,13 @@ def clone_and_hypermutate(pop, clone_factor, mutate_factor)
   return clones  
 end
 
-def greedy_merge(pop, clones)
-  union = pop + clones
-  union.sort!{|x,y| x[:cost]<=>y[:cost]}
-  return union[0...pop.size]
-end
-
 def random_insertion(search_space, pop, num_rand, bits_per_param)
   return pop if num_rand == 0
   rands = Array.new(num_rand) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
   evaluate(rands, search_space, bits_per_param)
-  return greedy_merge(pop, rands)
+  return (pop+rands).sort{|x,y| x[:cost]<=>y[:cost]}.first(pop.size)
 end
 
 def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand, bits_per_param=16)
@@ -102,10 +96,10 @@ def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_ra
   max_gens.times do |gen|
     clones = clone_and_hypermutate(pop, clone_factor, mutate_factor)
     evaluate(clones, search_space, bits_per_param)
-    pop = greedy_merge(pop, clones)    
+    pop = (pop+clones).sort{|x,y| x[:cost]<=>y[:cost]}.first(pop_size)
     pop = random_insertion(search_space, pop, num_rand, bits_per_param)
     best = (pop + [best]).min{|x,y| x[:cost]<=>y[:cost]}
-    puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]} s=#{best[:vector].inspect}"
+    puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]}, s=#{best[:vector].inspect}"
   end  
   return best
 end
