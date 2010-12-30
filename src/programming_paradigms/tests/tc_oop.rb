@@ -72,8 +72,6 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_equal(4, o.assess({:bitstring=>"1111"}))
     assert_equal(2, o.assess({:bitstring=>"1010"}))
   end
-
-  # TODO write tests for all algorithms
       
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
