@@ -42,13 +42,15 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
     assert_equal(4, neighbors[1][:number])
   end
   
-  # test the creation of a nn solution
-  # def test_nearest_neighbor_solution
-  #   cities = [[-2,-2], [1,1], [2,2], [4,4], [66,66]]
-  #   perm = nearest_neighbor_solution(cities)
-  #   assert_equal(5, perm.size)
-  #   # TODO test that most edges are nearest neighbors
-  # end
+  # test the construction of a random permutation
+  def test_random_permutation
+    cities = Array.new(10)
+    100.times do
+      p = random_permutation(cities)
+      assert_equal(cities.size, p.size)
+      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+    end
+  end
 
   # test getting the edges for a city
   def test_get_edges_for_city

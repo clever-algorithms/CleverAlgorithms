@@ -18,8 +18,12 @@ def cost(permutation, cities)
 end
 
 def random_permutation(cities)
-  all = Array.new(cities.size) {|i| i}
-  return Array.new(all.size) {|i| all.delete_at(rand(all.size))}
+  perm = Array.new(cities.size){|i| i}
+  perm.each_index do |i|
+    r = rand(perm.size-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
 end
 
 def stochastic_two_opt!(perm)

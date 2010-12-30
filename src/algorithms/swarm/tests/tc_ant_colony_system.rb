@@ -25,6 +25,16 @@ class TC_AntColonySystem < Test::Unit::TestCase
     assert_equal(4*2, cost([0, 3], cities))
   end
 
+  # test the construction of a random permutation
+  def test_random_permutation
+    cities = Array.new(10)
+    100.times do
+      p = random_permutation(cities)
+      assert_equal(cities.size, p.size)
+      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+    end
+  end
+
   # TODO write tests
   
   

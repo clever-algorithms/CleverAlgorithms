@@ -18,8 +18,8 @@ def cost(permutation, cities)
 end
 
 def random_permutation(cities)
-  perm = Array.new(cities.size){|i|i}
-  for i in 0...perm.size
+  perm = Array.new(cities.size){|i| i}
+  perm.each_index do |i|
     r = rand(perm.size-i) + i
     perm[r], perm[i] = perm[i], perm[r]
   end
