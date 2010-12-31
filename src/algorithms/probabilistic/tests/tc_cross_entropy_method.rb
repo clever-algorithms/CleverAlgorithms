@@ -18,35 +18,97 @@ class TC_CompactGeneticAlgorithm < Test::Unit::TestCase
     # vector
     assert_equal(1**2+2**2+3**2, objective_function([1,2,3]))
   end
+  
+  # test the creation of random vars
+  def test_random_variable
+    # positive, zero offset
+    x = random_variable([0, 20])
+    assert_operator(x, :>=, 0)
+    assert_operator(x, :<, 20)
+    # negative
+    x = random_variable([-20, -1])
+    assert_operator(x, :>=, -20)
+    assert_operator(x, :<, -1)
+    # both
+    x = random_variable([-10, 20])
+    assert_operator(x, :>=, -10)
+    assert_operator(x, :<, 20)
+  end
 
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0
-    a = []
+    all = []
     1000.times do
-      r = random_gaussian(mean, stdev)
-      assert_in_delta(mean, r, 4*stdev) # 4 stdevs
-      a << r
+      all << random_gaussian(mean, stdev)
+      assert_in_delta(mean, all.last, 6*stdev)
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
-    assert_in_delta(mean, mean, 0.1)
+    m = all.inject(0){|sum,x| sum + x} / all.size.to_f
+    assert_in_delta(mean, m, 0.1)
   end
   
   # test rand gaussian in different range
   def test_random_gaussian_non_default
     mean, stdev = 50, 10
-    a = []
+    all = []
     1000.times do
-      r = random_gaussian(mean, stdev)
-      assert_in_delta(mean, r, 4*stdev) # 4 stdevs
-      a << r
+      all << random_gaussian(mean, stdev)
+      assert_in_delta(mean, all.last, 6*stdev)
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
-    assert_in_delta(mean, mean, 0.1)
+    m = all.inject(0){|sum,x| sum + x} / all.size.to_f
+    assert_in_delta(m, mean, 1.0)
   end  
   
-  # TODO write tests
+  # test the generation of new samples in the search space
+  def test_generate_sample
+    # middle
+    s = generate_sample([[-1,1],[-1,1]], [0,0], [1,1])
+    assert_equal(2, s[:vector].size)
+    s[:vector].each do |x|
+      assert_operator(x, :>=, -1)
+      assert_operator(x, :<=, 1)
+    end
+    # side
+    s = generate_sample([[-1,1],[-1,1]], [0.9,0.9], [1,1])
+    assert_equal(2, s[:vector].size)
+    s[:vector].each do |x|
+      assert_operator(x, :>=, -1)
+      assert_operator(x, :<=, 1)
+    end
+  end
   
+  # test taking the mean of an attribute across vectors
+  def test_mean_parameter
+    samples = [{:vector=>[0,5,0,0,0]}, {:vector=>[0,10,10,0,0]}]
+    # zero
+    assert_equal(0, mean_attr(samples, 0))
+    # value
+    assert_equal(7.5, mean_attr(samples, 1))
+    assert_equal(5, mean_attr(samples, 2))
+  end
+  
+  # test the standard dev of an atttribute
+  def test_stdev_parameter
+    samples = [{:vector=>[0,0,0,0,0]}, {:vector=>[0,10,0,0,0]}]
+    # zero
+    assert_equal(0, stdev_attr(samples, 0, 0))
+    # value
+    assert_equal(5, stdev_attr(samples, 5, 1))
+  end
+  
+  # test updating the distribution
+  def test_update_distribution
+    samples = [{:vector=>[0,0,0,0,0]}, {:vector=>[0,1,-1,0.5,-0.5]}]
+    means, stdvs = [0,0], [1,1]
+    update_distribution!(samples, 1.0, means, stdvs)
+    # TODO this is weak, rewrite
+    means.each_index do |i|
+      assert_operator(means[i], :>=, -1)
+      assert_operator(means[i], :<=, 1)
+      assert_operator(stdvs[i], :>=, 0)
+      assert_operator(stdvs[i], :<=, 1)
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

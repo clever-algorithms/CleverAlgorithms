@@ -25,8 +25,8 @@ def random_gaussian(mean=0.0, stdev=1.0)
 end
 
 def generate_sample(search_space, means, stdevs)
-  vector = Array.new(means.size)
-  means.size.times do |i|
+  vector = Array.new(search_space.size)
+  search_space.size.times do |i|
     vector[i] = random_gaussian(means[i], stdevs[i])
     vector[i] = search_space[i][0] if vector[i] < search_space[i][0]
     vector[i] = search_space[i][1] if vector[i] > search_space[i][1]
@@ -34,14 +34,14 @@ def generate_sample(search_space, means, stdevs)
   return {:vector=>vector}
 end
 
-def mean_parameter(samples, i)
+def mean_attr(samples, i)
   sum = samples.inject(0.0) do |s,sample| 
     s + sample[:vector][i]
   end 
   return (sum / samples.size.to_f)
 end
 
-def stdev_parameter(samples, mean, i)
+def stdev_attr(samples, mean, i)
   sum = samples.inject(0.0) do |s,sample| 
     s + (sample[:vector][i] - mean)**2.0
   end 
@@ -50,8 +50,8 @@ end
 
 def update_distribution!(samples, alpha, means, stdevs)
   means.size.times do |i|
-    means[i] = alpha*means[i] + ((1.0-alpha)*mean_parameter(samples, i))
-    stdevs[i] = alpha*stdevs[i] + ((1.0-alpha)*stdev_parameter(samples, means[i], i))
+    means[i] = alpha*means[i] + ((1.0-alpha)*mean_attr(samples, i))
+    stdevs[i] = alpha*stdevs[i] + ((1.0-alpha)*stdev_attr(samples, means[i], i))
   end
 end
 
@@ -64,7 +64,7 @@ def search(search_space, max_iter, num_samples, num_update, learning_rate)
     samples.each {|sample| sample[:cost]=objective_function(sample[:vector])}
     samples.sort!{|x,y| x[:cost]<=>y[:cost]}
     best = samples.first if best.nil? or samples.first[:cost] < best[:cost]
-    selected = samples[0...num_update]
+    selected = samples.first(num_update)
     update_distribution!(selected, learning_rate, means, stdevs)
     puts " > iteration=#{iter}, fitness=#{best[:cost]}"
   end

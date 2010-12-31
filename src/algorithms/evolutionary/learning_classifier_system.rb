@@ -155,9 +155,7 @@ def can_run_genetic_algorithm(action_set, gen, ga_freq)
   return false if action_set.size <= 2
   total = action_set.inject(0.0) {|s,c| s+c[:lasttime]*c[:num]}
   sum = action_set.inject(0.0) {|s,c| s+c[:num]}
-  if gen - (total/sum) > ga_freq
-    return true
-  end
+  return true if gen - (total/sum) > ga_freq
   return false
 end
 
@@ -167,22 +165,15 @@ def binary_tournament(pop)
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def mutation(classifier, action_set, input, rate)
-  classifier[:condition].size.times do |i|
+def mutation(cl, action_set, input, rate=1.0/6+1)
+  cl[:condition].size.times do |i|
     if rand() < rate
-      if classifier[:condition][i].chr == '#'
-        classifier[:condition][i] = input[i]
-      else
-        classifier[:condition][i] = '#'
-      end
+      cl[:condition][i] = (cl[:condition][i].chr=='#') ? input[i] : '#'
     end
   end
   if rand() < rate
-    new_action = nil
-    begin
-      new_action = action_set[rand(action_set.size)]
-    end until new_action != classifier[:action]
-    classifier[:action] = new_action
+    subset = action_set - [cl[:action]]
+    cl[:action] = subset[rand(subset.size)]    
   end
 end
 
@@ -215,12 +206,12 @@ def crossover(c1, c2, p1, p2)
   c2[:fitness] = c1[:fitness]
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95, mrate=0.05)
+def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
   [c1,c2].each do |c|
-    mutation(c, all_actions, input, mrate)
+    mutation(c, all_actions, input)
     insert_in_pop(c, pop)
     delete_from_pop(pop, pop_size, del_thresh)
   end  
