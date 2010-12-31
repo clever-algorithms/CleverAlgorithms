@@ -30,33 +30,43 @@ def clone(parent)
   return {:vector=>v}
 end
 
-def mutate(beta, child, rank)
+def mutation_rate(beta, normalized_cost)
+  return (1.0/beta) * Math.exp(-normalized_cost)
+end
+
+def mutate(beta, child, normalized_cost)
   child[:vector].each_with_index do |v, i|
-    alpha = (1.0/beta) * Math.exp(-rank)
-    child[:vector][i] = v + alpha * random_gaussian 
+    alpha = mutation_rate(beta, normalized_cost)
+    child[:vector][i] = v + alpha * random_gaussian()
   end
 end
 
-def clone_cell(beta, num_clones, parent, rank)
-  clones = []
-  num_clones.times {clones << clone(parent)}
-  clones.each {|clone| mutate(beta, clone, rank)}
+def clone_cell(beta, num_clones, parent)
+  clones = Array.new(num_clones) {clone(parent)}
+  clones.each {|clone| mutate(beta, clone, parent[:norm_cost])}
   clones.each{|c| c[:cost] = objective_function(c[:vector])}
   clones.sort!{|x,y| x[:cost] <=> y[:cost]}
   return clones.first
 end
 
-def average_cost(population)
-  sum = 0.0
-  population.each do |p| 
-    sum += p[:cost]
+def calculate_normalized_cost(pop)
+  pop.sort!{|x,y| x[:cost]<=>y[:cost]}
+  range = pop.last[:cost] - pop.first[:cost]
+  if range == 0.0
+    pop.each {|p| p[:norm_cost] = 1.0}
+  else
+    pop.each {|p| p[:norm_cost] = 1.0-(p[:cost]/range)}
   end
-  return sum / population.size.to_f
+end
+
+def average_cost(pop)
+  sum = pop.inject(0.0){|sum,x| sum + x[:cost]}
+  return sum / pop.size.to_f
 end
 
 def euclidean_distance(c1, c2)
   sum = 0.0
-  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
   return Math.sqrt(sum)
 end
 
@@ -85,12 +95,12 @@ def search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinit
   best = nil
   max_gens.times do |gen|
     pop.each{|c| c[:cost] = objective_function(c[:vector])}
+    calculate_normalized_cost(pop)
     pop.sort!{|x,y| x[:cost] <=> y[:cost]}
     best = pop.first if best.nil? or pop.first[:cost] < best[:cost]
     avgCost, progeny = average_cost(pop), nil
     begin
-      progeny = []
-      pop.each_with_index {|cell, i| progeny << clone_cell(beta, num_clones, cell, i+1)}
+      progeny = Array.new(pop.size) {|i| clone_cell(beta, num_clones, pop[i])}
     end until average_cost(progeny) < avgCost
     pop = affinity_supress(progeny, affinity_thresh)
     num_rand.times {pop << {:vector=>random_vector(search_space)}} 
@@ -105,11 +115,11 @@ if __FILE__ == $0
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
   max_gens = 200
-  pop_size = 20
+  pop_size = 50
   num_clones = 10
   beta = 100
-  num_rand = 1
-  affinity_thresh = 0.3
+  num_rand = 2
+  affinity_thresh = (search_space[0][1]-search_space[0][0])*0.05
   # execute the algorithm
   best = search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
