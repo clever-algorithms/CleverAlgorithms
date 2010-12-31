@@ -147,11 +147,32 @@ class TC_Optainet < Test::Unit::TestCase
   
   # test getting the neighborhood of a cell
   def test_get_neighborhood
-    # n = get_neighborhood(cell, pop, affinity_thresh)
+    # all
+    pop = [{:vector=>[0,0,0,0]}, {:vector=>[1,1,1,1]}, {:vector=>[-1,-1,-1,-1]}]
+    n = get_neighborhood({:vector=>[0,0,0,0]}, pop, 3)
+    assert_equal(3, n.size)
+    # none
+    pop = [{:vector=>[0,0,0,0]}, {:vector=>[1,1,1,1]}, {:vector=>[-1,-1,-1,-1]}]
+    n = get_neighborhood({:vector=>[6,6,6,6]}, pop, 1)
+    assert_equal(0, n.size)
   end
   
+  # test affinity based supression
   def test_affinity_supress
-    
+    pop = [{:vector=>[0,0,0,0],:cost=>9}, {:vector=>[1,1,1,1],:cost=>7}, {:vector=>[6,6,6,6],:cost=>8}]    
+    # reduce one
+    suppressed = affinity_supress(pop, 3)
+    assert_equal(2, suppressed.size)
+    assert_equal(pop[1], suppressed[0])
+    assert_equal(pop[2], suppressed[1])
+    # reduce all    
+    suppressed = affinity_supress(pop, 100)
+    assert_equal(1, suppressed.size)
+    assert_equal(pop[1], suppressed.first)
+    # reduce none
+    suppressed = affinity_supress(pop, 0.1)
+    assert_equal(3, suppressed.size)
+    pop.each_index {|i| assert_equal(pop[i], suppressed[i])}
   end
   
   # helper for turning off STDOUT
@@ -166,13 +187,13 @@ class TC_Optainet < Test::Unit::TestCase
   end
   
   # test that the algorithm can solve the problem
-  # def test_search    
-  #   best = nil
-  #   silence_stream(STDOUT) do
-  #     best = search([[-5,5],[-5,5]], 100, 20, 10, 100, 1, 0.5)
-  #   end
-  #   assert_not_nil(best[:cost])
-  #   assert_in_delta(0.0, best[:cost], 0.1)
-  # end
+  def test_search    
+    best = nil
+    silence_stream(STDOUT) do
+      best = search([[-5,5],[-5,5]], 150, 20, 2, 100, 1, 0.001)
+    end
+    assert_not_nil(best[:cost])
+    assert_in_delta(0.0, best[:cost], 0.1)
+  end
   
 end

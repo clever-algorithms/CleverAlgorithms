@@ -73,7 +73,6 @@ end
 def get_neighborhood(cell, pop, affinity_thresh)
   neighbors = []
   pop.each do |p|
-    next if p.equal?(cell)
     neighbors << p if euclidean_distance(p[:vector], cell[:vector]) < affinity_thresh
   end
   return neighbors
@@ -114,8 +113,8 @@ if __FILE__ == $0
   problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_gens = 200
-  pop_size = 50
+  max_gens = 150
+  pop_size = 20
   num_clones = 10
   beta = 100
   num_rand = 2
