@@ -24,27 +24,25 @@ class TC_EvolutionaryProgramming < Test::Unit::TestCase
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0
-    a = []
+    all = []
     1000.times do
-      r = random_gaussian(mean, stdev)
-      assert_in_delta(mean, r, 4*stdev) # 4 stdevs
-      a << r
+      all << random_gaussian(mean, stdev)
+      assert_in_delta(mean, all.last, 6*stdev)
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
-    assert_in_delta(mean, mean, 0.1)
+    m = all.inject(0){|sum,x| sum + x} / all.size.to_f
+    assert_in_delta(mean, m, 0.1)
   end
   
   # test rand gaussian in different range
   def test_random_gaussian_non_default
     mean, stdev = 50, 10
-    a = []
+    all = []
     1000.times do
-      r = random_gaussian(mean, stdev)
-      assert_in_delta(mean, r, 4*stdev) # 4 stdevs
-      a << r
+      all << random_gaussian(mean, stdev)
+      assert_in_delta(mean, all.last, 6*stdev)
     end
-    mean = a.inject(0){|sum,x| sum + x} / a.size.to_f
-    assert_in_delta(mean, mean, 0.1)
+    m = all.inject(0){|sum,x| sum + x} / all.size.to_f
+    assert_in_delta(m, mean, 1.0)
   end  
   
   # test the generation of random vectors
