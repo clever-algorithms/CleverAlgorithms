@@ -4,8 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-BITS_PER_PARAM = 16
-
 def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
@@ -14,22 +12,22 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def decode(bitstring, search_space)
+def decode(bitstring, search_space, bits_per_param)
   vector = []
   search_space.each_with_index do |bounds, i|
-    off, sum, j = i*BITS_PER_PARAM, 0.0, 0    
-    bitstring[off...(off+BITS_PER_PARAM)].reverse.each_char do |c|
+    off, sum, j = i*bits_per_param, 0.0, 0    
+    bitstring[off...(off+bits_per_param)].reverse.each_char do |c|
       sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
       j += 1
     end
     min, max = bounds
-    vector << min + ((max-min)/((2.0**BITS_PER_PARAM.to_f)-1.0)) * sum
+    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
   end
   return vector
 end
 
-def fitness(candidate, search_space)
-  candidate[:vector] = decode(candidate[:bitstring], search_space)
+def fitness(candidate, search_space, bits_per_param)
+  candidate[:vector] = decode(candidate[:bitstring], search_space, bits_per_param)
   candidate[:fitness] = objective_function(candidate[:vector])
 end
 
@@ -70,30 +68,30 @@ def reproduce(selected, population_size, p_crossover, p_mutation)
   return children
 end
 
-def bitclimber(child, search_space, p_mutation, max_local_gens)
+def bitclimber(child, search_space, p_mutation, max_local_gens, bits_per_param)
   current = child
   max_local_gens.times do
     candidate = {}
     candidate[:bitstring] = point_mutation(current[:bitstring], p_mutation)
-    fitness(candidate, search_space)
+    fitness(candidate, search_space, bits_per_param)
     current = candidate if candidate[:fitness] <= current[:fitness]
   end
   return current
 end
 
-def search(max_gens, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local)
+def search(max_gens, search_space, pop_size, p_crossover, p_mutation, max_local_gens, p_local, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
-    {:bitstring=>random_bitstring(search_space.size*BITS_PER_PARAM)}
+    {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
-  pop.each{|candidate| fitness(candidate, search_space) }
+  pop.each{|candidate| fitness(candidate, search_space, bits_per_param) }
   gen, best = 0, pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_gens.times do |gen|
     selected = Array.new(pop_size){|i| binary_tournament(pop)}
     children = reproduce(selected, pop_size, p_crossover, p_mutation) 
-    children.each{|candidate| fitness(candidate, search_space) }
+    children.each{|candidate| fitness(candidate, search_space,bits_per_param) }
     pop = []    
     children.each do |child|
-      child = bitclimber(child, search_space, p_mutation, max_local_gens) if rand() < p_local
+      child = bitclimber(child, search_space, p_mutation, max_local_gens, bits_per_param) if rand() < p_local
       pop << child
     end    
     pop.sort!{|x,y| x[:fitness] <=> y[:fitness]}    
@@ -111,7 +109,7 @@ if __FILE__ == $0
   max_gens = 100
   pop_size = 100  
   p_crossover = 0.98
-  p_mutation = 1.0/(problem_size*BITS_PER_PARAM).to_f
+  p_mutation = 1.0/(problem_size*16).to_f
   max_local_gens = 20
   p_local = 0.5
   # execute the algorithm

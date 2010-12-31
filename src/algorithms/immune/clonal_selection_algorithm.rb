@@ -17,7 +17,7 @@ def decode(bitstring, search_space, bits_per_param)
       j += 1
     end
     min, max = bounds
-    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
+    vector << (min + ((max-min)/((2.0**bits_per_param.to_f)-1.0))) * sum
   end
   return vector
 end

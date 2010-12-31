@@ -20,6 +20,40 @@ class TC_ClonalSelectionAlgorithm < Test::Unit::TestCase
     # optima
     assert_equal(0, objective_function([0,0]))
   end
+  
+  # test decoding bits into floats
+  def test_decode
+    # zero
+    v = decode("0000000000000000", [[0,1]], 16)
+    assert_equal(1, v.size)
+    assert_equal(0.0, v[0])
+    # one
+    v = decode("1111111111111111", [[0,1]], 16)
+    assert_equal(1, v.size)
+    assert_equal(1.0, v[0])
+    # float #1
+    v = decode("0000000000000001", [[0,1]], 16)
+    assert_equal(1, v.size)
+    a = 1.0 / ((2**16)-1)
+    assert_equal(a*(2**0), v[0])
+    # float #2
+    v = decode("0000000000000010", [[0,1]], 16)
+    assert_equal(1, v.size)
+    assert_equal(a*(2**1), v[0])
+    # float #3
+    v = decode("0000000000000100", [[0,1]], 16)
+    assert_equal(1, v.size)
+    assert_equal(a*(2**2), v[0])
+    # multiple floats
+    v = decode("00000000000000001111111111111111", [[0,1],[0,1]], 16)
+    assert_equal(2, v.size)
+    assert_equal(0.0, v[0])
+    assert_equal(1.0, v[1])
+  end
+  
+  def test_evaluate
+    
+  end
 
   # test the creation of random strings
   def test_random_bitstring
@@ -52,8 +86,25 @@ class TC_ClonalSelectionAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end  
   
-  # TODO write tests
+  def test_affinity_proportionate_mutation
+    
+  end
   
+  def test_num_clones
+    
+  end
+  
+  def test_calculate_affinity
+    
+  end
+  
+  def test_clone_and_hypermutate
+    
+  end
+  
+  def test_random_insertion
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
@@ -67,13 +118,13 @@ class TC_ClonalSelectionAlgorithm < Test::Unit::TestCase
   end
   
   # test that the algorithm can solve the problem
-  def test_search    
-    best = nil
-    silence_stream(STDOUT) do
-      best = search([[-5,5],[-5,5]], 100, 100, 0.1, 2.5, 1)
-    end  
-    assert_not_nil(best[:cost])
-    assert_in_delta(0.0, best[:cost], 0.5)
-  end
+  # def test_search    
+  #   best = nil
+  #   silence_stream(STDOUT) do
+  #     best = search([[-5,5],[-5,5]], 100, 100, 0.1, 2.5, 1)
+  #   end  
+  #   assert_not_nil(best[:cost])
+  #   assert_in_delta(0.0, best[:cost], 0.5)
+  # end
   
 end
