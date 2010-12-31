@@ -17,7 +17,7 @@ def decode(bitstring, search_space, bits_per_param)
       j += 1
     end
     min, max = bounds
-    vector << (min + ((max-min)/((2.0**bits_per_param.to_f)-1.0))) * sum
+    vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
   end
   return vector
 end
@@ -33,7 +33,7 @@ def random_bitstring(num_bits)
   return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
-def point_mutation(bitstring, rate=1.0/bitstring.size)
+def point_mutation(bitstring, rate)
   child = ""
    bitstring.size.times do |i|
      bit = bitstring[i].chr
@@ -42,36 +42,33 @@ def point_mutation(bitstring, rate=1.0/bitstring.size)
   return child
 end
 
-def affinity_proportionate_mutation(cost, mutate_rate)
-  cost = cost * -1.0 if cost<0
-  return Math.exp(-2.5 * cost)
+def calculate_mutation_rate(antibody, mutate_factor=-2.5)
+  return Math.exp(mutate_factor * antibody[:affinity])
 end
 
 def num_clones(pop_size, clone_factor)
-  return (pop_size * clone_factor).to_i
+  return (pop_size * clone_factor).floor
 end
 
 def calculate_affinity(pop)
-  max = pop.max{|x,y| x[:cost]<=>y[:cost]} 
-  min = pop.min{|x,y| x[:cost]<=>y[:cost]}
-  range = max[:cost]-min[:cost]
-  if range == 0
+  pop.sort!{|x,y| x[:cost]<=>y[:cost]}
+  range = pop.last[:cost] - pop.first[:cost]
+  if range == 0.0
     pop.each {|p| p[:affinity] = 1.0}
   else
-    pop.each {|p| p[:affinity] = 1.0-(p[:cost]-min[:cost]/range)}
+    pop.each {|p| p[:affinity] = 1.0-(p[:cost]/range)}
   end
 end
 
-def clone_and_hypermutate(pop, clone_factor, mutate_factor)
+def clone_and_hypermutate(pop, clone_factor)
   clones = []
   num_clones = num_clones(pop.size, clone_factor)
   calculate_affinity(pop)
   pop.each do |antibody|
-    p_mutation = affinity_proportionate_mutation(antibody[:affinity], mutate_factor)
+    m_rate = calculate_mutation_rate(antibody)
     num_clones.times do 
       clone = {}
-      clone[:bitstring] = ""+antibody[:bitstring]
-      point_mutation(clone[:bitstring], p_mutation)
+      clone[:bitstring] = point_mutation(antibody[:bitstring], m_rate)
       clones << clone
     end
   end
@@ -87,14 +84,14 @@ def random_insertion(search_space, pop, num_rand, bits_per_param)
   return (pop+rands).sort{|x,y| x[:cost]<=>y[:cost]}.first(pop.size)
 end
 
-def search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand, bits_per_param=16)
+def search(search_space, max_gens, pop_size, clone_factor, num_rand, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
   evaluate(pop, search_space, bits_per_param)
   best = pop.min{|x,y| x[:cost]<=>y[:cost]}
   max_gens.times do |gen|
-    clones = clone_and_hypermutate(pop, clone_factor, mutate_factor)
+    clones = clone_and_hypermutate(pop, clone_factor)
     evaluate(clones, search_space, bits_per_param)
     pop = (pop+clones).sort{|x,y| x[:cost]<=>y[:cost]}.first(pop_size)
     pop = random_insertion(search_space, pop, num_rand, bits_per_param)
@@ -112,9 +109,8 @@ if __FILE__ == $0
   max_gens = 100
   pop_size = 100
   clone_factor = 0.1
-  mutate_factor = 2.5
   num_rand = 2
   # execute the algorithm
-  best = search(search_space, max_gens, pop_size, clone_factor, mutate_factor, num_rand)
+  best = search(search_space, max_gens, pop_size, clone_factor, num_rand)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end
