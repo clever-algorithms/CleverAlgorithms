@@ -4,10 +4,16 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def random_vector(search_space)
-  return Array.new(search_space.length) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.length) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
+end
+
+def euclidean_distance(c1, c2)
+  sum = 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
+  return Math.sqrt(sum)
 end
 
 def contains?(vector, space)
@@ -17,46 +23,23 @@ def contains?(vector, space)
   return true
 end
 
-def euclidean_distance(c1, c2)
-  sum = 0.0
-  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
-  return Math.sqrt(sum)
-end
-
-def matches?(bitstring, dataset, min_distance)
+def matches?(vector, dataset, min_distance)
   dataset.each do |pattern|
-    score = euclidean_distance(bitstring, pattern[:vector])
-    return true if score <= min_distance
+    dist = euclidean_distance(vector, pattern[:vector])
+    return true if dist <= min_distance
   end
   return false
 end
 
-def generate_detectors(max_detectors, search_space, self_dataset, min_distance)
+def generate_detectors(max_detectors, search_space, self_dataset, min_dist)
   detectors = []
   begin
-    detector = {}
-    detector[:vector] = random_vector(search_space)
-    if !matches?(detector[:vector], self_dataset, min_distance)
-      next if matches?(detector[:vector], detectors, 0.0)
-      detectors << detector 
+    detector = {:vector=>random_vector(search_space)}
+    if !matches?(detector[:vector], self_dataset, min_dist)
+      detectors << detector if !matches?(detector[:vector], detectors, 0.0)
     end
   end while detectors.size < max_detectors
   return detectors
-end
-
-def apply_detectors(detectors, search_space, self_space, min_distance, num_trials=50)
-  correct = 0
-  num_trials.times do |i|
-    input = {}
-    input[:vector] = random_vector(search_space)
-    predicted = matches?(input[:vector], detectors, min_distance) ? "non-self" : "self"
-    actual = contains?(input[:vector], self_space) ? "self" : "non-self"
-    result = (predicted==actual) ? "Correct" : "Incorrect"
-    correct += 1.0 if predicted==actual
-    puts "#{i+1}/#{num_trials}: #{result} - predicted=#{predicted}, actual=#{actual}, vector=#{input[:vector].inspect}"
-  end
-  puts "Total Correct: #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100.0}%)"
-  return correct
 end
 
 def generate_self_dataset(num_records, self_space, search_space)
@@ -72,13 +55,25 @@ def generate_self_dataset(num_records, self_space, search_space)
   return self_dataset
 end
 
+def apply_detectors(detectors, search_space, self_dataset, min_dist, num_trials=50)
+  correct = 0
+  num_trials.times do |i|
+    input = {:vector=>random_vector(search_space)}
+    actual = matches?(input[:vector], detectors, min_dist) ? "non-self" : "self"
+    expected = matches?(input[:vector], self_dataset, min_dist) ? "self" : "non-self"
+    correct += 1 if actual==expected
+    puts "#{i+1}/#{num_trials}: predicted=#{actual}, expected=#{expected}"
+  end
+  puts "Done. Result: #{correct}/#{num_trials}"
+  return correct
+end
+
 def execute(search_space, self_space, max_detectors, max_self, min_distance)
   self_dataset = generate_self_dataset(max_self, self_space, search_space)
   puts "Done: prepared #{self_dataset.size} self patterns."
   detectors = generate_detectors(max_detectors, search_space, self_dataset, min_distance)
   puts "Done: prepared #{detectors.size} detectors."
-  apply_detectors(detectors, search_space, self_space, min_distance)
-  puts "Done. completed testing."
+  apply_detectors(detectors, search_space, self_dataset, min_distance)
   return detectors
 end
 
