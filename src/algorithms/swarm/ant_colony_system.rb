@@ -17,10 +17,6 @@ def cost(permutation, cities)
   return distance
 end
 
-def initialise_pheromone_matrix(num_cities, init_pher)  
-  return Array.new(num_cities){|i| Array.new(num_cities, init_pher)}
-end
-
 def random_permutation(cities)
   perm = Array.new(cities.size){|i| i}
   perm.each_index do |i|
@@ -28,6 +24,10 @@ def random_permutation(cities)
     perm[r], perm[i] = perm[i], perm[r]
   end
   return perm
+end
+
+def initialise_pheromone_matrix(num_cities, init_pher)  
+  return Array.new(num_cities){|i| Array.new(num_cities, init_pher)}
 end
 
 def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
@@ -41,30 +41,22 @@ def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_hist
     prob[:prob] = prob[:history] * prob[:heuristic]
     choices << prob
   end
-  choices
+  return choices
 end
 
 def prob_select_next_city(choices)
   sum = choices.inject(0.0){|sum,element| sum + element[:prob]}
   return choices[rand(choices.size)][:city] if sum == 0.0
-  v, next_city = rand(), -1
+  v = rand()
   choices.each_with_index do |choice, i|
-    if i==choices.size-1
-      next_city = choice[:city] 
-    else
-      v -= (choice[:prob]/sum)
-      if v <= 0.0 
-        next_city = choice[:city] 
-        break
-      end
-    end
+    v -= (choice[:prob]/sum)
+    return choice[:city] if v <= 0.0
   end
-  return next_city
+  return choices.last[:city]
 end
 
 def greedy_select_next_city(choices)
-  best = choices.max{|a,b| a[:prob]<=>b[:prob]}
-  return best[:city]
+  return choices.max{|a,b| a[:prob]<=>b[:prob]}[:city]
 end
 
 def stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
