@@ -37,7 +37,35 @@ class TC_BFOA < Test::Unit::TestCase
     end    
   end
 
-  # TODO write tests
+  # test generating a random direction
+  def test_generate_random_direction
+    rs = generate_random_direction(1000)
+    assert_equal(1000, rs.size)
+    rs.each do |x| 
+      assert_operator(x, :>=, -1)
+      assert_operator(x, :<=, 1)
+    end
+  end
+  
+  def test_compute_cell_interaction
+    
+  end
+  
+  def test_compute_attract_repel
+    
+  end
+  
+  def test_evaluate
+    
+  end
+  
+  def test_tumble_cell
+    
+  end
+  
+  def test_chemotaxis
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
