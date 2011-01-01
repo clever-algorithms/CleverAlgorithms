@@ -25,6 +25,40 @@ class TC_AIRS < Test::Unit::TestCase
     end    
   end
   
+  # test generating a random pattern
+  def test_generate_random_pattern
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    p = generate_random_pattern(domain)
+    assert_not_nil(p[:class_label])
+    assert_not_nil(p[:vector])
+    assert_equal(true, domain.keys.include?(p[:class_label]))
+    p[:vector].each_with_index do |x, i|
+      assert_operator(x, :>=, domain[p[:class_label]][i][0])
+      assert_operator(x, :<=, domain[p[:class_label]][i][1])
+    end
+  end
+  
+  # test the creation of a cell
+  def test_create_cell
+    c = create_cell([1,2,3], "A")
+    assert_equal([1,2,3], c[:vector])
+    assert_equal("A", c[:class_label])
+  end
+  
+  # test cell initialization
+  def test_initialize_cells
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    c = initialize_cells(domain)
+    assert_equal(2, c.size)
+    c.each do |p|
+      assert_equal(true, domain.keys.include?(p[:class_label]))
+      p[:vector].each_with_index do |x, i|
+        assert_operator(x, :>=, 0)
+        assert_operator(x, :<=, 1)
+      end
+    end
+  end
+  
   # test euclidean distance
   def test_euclidean_distance
     assert_equal(0, euclidean_distance([0,0],[0,0]))
@@ -32,8 +66,45 @@ class TC_AIRS < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end
   
-  # TODO write tests
+  def test_stimulate
+    
+  end
   
+  def test_get_most_stimulated_cell
+    
+  end
+  
+  def test_mutate_cell
+    
+  end
+  
+  def test_create_arb_pool
+    
+  end
+  
+  def test_competition_for_resournces
+    
+  end
+  
+  def test_refine_arb_pool
+    
+  end
+  
+  def test_add_candidate_to_memory_pool
+    
+  end
+  
+  def test_train_system
+    
+  end
+  
+  def test_classify_pattern
+    
+  end
+  
+  def test_test_system
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
