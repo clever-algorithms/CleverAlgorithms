@@ -96,11 +96,22 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
     components = [{:number=>0}, {:number=>1}, {:number=>2}, {:number=>3}, {:number=>4}]
     sum = calculate_component_probabilities(components, 1.0)
     selection = make_selection(components, sum)
-    assert([0,1,2,3,4].include?(selection))
+    assert_equal(true, [0,1,2,3,4].include?(selection))
   end
 
+  # test probabilistic selection
   def test_probabilistic_selection
-    # TODO
+    # no exclusion
+    components = [{:number=>0}, {:number=>1}, {:number=>2}, {:number=>3}, {:number=>4}]
+    rs = probabilistic_selection(components, 1.3)
+    assert_equal(true, [0,1,2,3,4].include?(rs))
+    # exclusion
+    50.times do
+      exclude = [rand(5)]
+      rs = probabilistic_selection(components, 1.3, exclude)
+      assert_equal(true, [0,1,2,3,4].include?(rs))
+      assert_equal(false, exclude.include?(rs))
+    end
   end
 
   # test the creating a new permutation
