@@ -66,44 +66,134 @@ class TC_AIRS < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end
   
+  # test cell stimulation
   def test_stimulate
-    
+    cells = [{:vector=>[0,0]}, {:vector=>[1,1]}]
+    stimulate(cells, {:vector=>[0.5,0.5]})
+    cells.each do |c|
+      assert_not_nil(c[:affinity])      
+      assert_operator(c[:affinity], :>=, 0)
+      assert_operator(c[:affinity], :<=, 1)
+      assert_not_nil(c[:stimulation])
+      assert_operator(c[:stimulation], :>=, 0)
+      assert_operator(c[:stimulation], :<=, 1)      
+    end
   end
   
+  # test getting the most stimulated cell
   def test_get_most_stimulated_cell
-    
+    cells = [{:vector=>[0,0]}, {:vector=>[1.1,1.1]}]
+    c = get_most_stimulated_cell(cells, {:vector=>[0.5,0.5]})
+    assert_equal(cells.first, c)
+    assert_operator(cells[0][:stimulation], :>, cells[1][:stimulation])
+    assert_operator(cells[0][:affinity], :<, cells[1][:affinity])
   end
   
+  # test cell mutation
   def test_mutate_cell
-    
+    #  no range
+    c = mutate_cell({:vector=>[0.5,0.5]}, 1)
+    c[:vector].each_with_index do |x, i|
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
+    # too large
+    c = mutate_cell({:vector=>[1,1]}, 0)
+    c[:vector].each_with_index do |x, i|
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
+    # too small
+    c = mutate_cell({:vector=>[0,0]}, 0)
+    c[:vector].each_with_index do |x, i|
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
   end
   
+  # test creating the arb pool
   def test_create_arb_pool
-    
+    best = {:vector=>[0.5,0.5], :stimulation=>1.0, :class_label=>"A"}
+    p = {:vector=>[0.0,0.0]}
+    pool = create_arb_pool(p, best, 5, 2)
+    assert_equal(10 + 1, pool.size)
+    pool.each do |x|
+      assert_not_nil(x[:vector])
+      assert_not_nil(x[:class_label])
+      assert_equal("A", x[:class_label])
+    end
   end
   
+  # test competition for resources
   def test_competition_for_resournces
-    
+    # trim done
+    pool = [{:stimulation=>1}, {:stimulation=>2}, {:stimulation=>3}]
+    competition_for_resournces(pool, 1, 10)
+    assert_equal(3, pool.size)
+    # pool equals resource size, no trim
+    pool = [{:stimulation=>1}, {:stimulation=>2}, {:stimulation=>3}]
+    competition_for_resournces(pool, 1, 6)
+    assert_equal(3, pool.size)
+    # trim last
+    pool = [{:stimulation=>1}, {:stimulation=>2}, {:stimulation=>1}]
+    competition_for_resournces(pool, 1, 3)
+    assert_equal(2, pool.size)
   end
   
+  # test refine arm pool
   def test_refine_arb_pool
-    
+    # sufficient stimulation
+    pool = [{:vector=>[0.5,0.5]}, {:vector=>[0.6,0.6]}, {:vector=>[0.7,0.7]}]
+    p = {:vector=>[0.0,0.0]}
+    c = refine_arb_pool(pool, p, 0.0, 1, 10)
+    assert_same(pool.first, c)
+    assert_equal(3, pool.size)
+    # insufficient stimulation
+    pool = [{:vector=>[0.5,0.5]}, {:vector=>[0.6,0.6]}, {:vector=>[0.7,0.7]}]
+    p = {:vector=>[0.0,0.0]}
+    c = refine_arb_pool(pool, p, 0.9, 1, 10)
+    assert_same(pool.first, c)
+    assert_operator(pool.size, :>, 3)
   end
   
+  # test adding a candidate to the memory pool
   def test_add_candidate_to_memory_pool
-    
+    # added
+    memory = []
+    add_candidate_to_memory_pool({:stimulation=>1}, {:stimulation=>0}, memory)
+    assert_equal(1, memory.size)
+    # not added
+    memory = []
+    add_candidate_to_memory_pool({:stimulation=>0}, {:stimulation=>1}, memory)
+    assert_equal(0, memory.size)
   end
-  
-  def test_train_system
-    
-  end
-  
+
+  # test the classification of a pattern
   def test_classify_pattern
-    
+    pool = [{:vector=>[0.5,0.5]}, {:vector=>[0.6,0.6]}, {:vector=>[0.7,0.7]}]
+    p = {:vector=>[0.0,0.0]}
+    rs = classify_pattern(pool, p)
+    assert_equal(rs, pool.first)
+  end
+
+  # test the training of the system
+  def test_train_system
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    pool = [{:vector=>[0,0],:class_label=>"A"}, {:vector=>[1,1],:class_label=>"B"}]
+    silence_stream(STDOUT) {train_system(pool, domain, 20, 5, 2, 0.9, 20)}
+    assert_operator(pool.size, :>, 2)
   end
   
+  # test the assessment of the system
   def test_test_system
-    
+    domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
+    pool = [{:vector=>[0.25,0.25],:class_label=>"A"}, {:vector=>[0.75,0.75],:class_label=>"B"}]
+    rs = nil
+    silence_stream(STDOUT) do
+      rs = test_system(pool, domain, num_trials=50)
+    end
+    assert_not_nil(rs)
+    assert_in_delta(50, rs, 50)
   end
   
   # helper for turning off STDOUT

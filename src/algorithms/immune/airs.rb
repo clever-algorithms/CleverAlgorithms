@@ -51,8 +51,8 @@ end
 def mutate_cell(cell, best_match)
   range = 1.0 - best_match[:stimulation]
   cell[:vector].each_with_index do |v,i|
-    min = [(v-(range/2.0)), 0.0].min
-    max = [(v+(range/2.0)), 1.0].max
+    min = [(v-(range/2.0)), 0.0].max
+    max = [(v+(range/2.0)), 1.0].min
     cell[:vector][i] = min + (rand() * (max-min))
   end
   return cell
@@ -64,8 +64,7 @@ def create_arb_pool(pattern, best_match, clone_rate, mutate_rate)
   num_clones = (best_match[:stimulation] * clone_rate * mutate_rate).round
   num_clones.times do 
     cell = create_cell(best_match[:vector], best_match[:class_label])
-    mutate_cell(cell, best_match)
-    pool << cell
+    pool << mutate_cell(cell, best_match)
   end
   return pool
 end
@@ -85,7 +84,7 @@ def refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
   begin
     stimulate(pool, pattern)
     candidate = pool.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
-    mean_stim = pool.inject(0.0){|sum,cell| sum + cell[:stimulation]} / pool.size.to_f
+    mean_stim = pool.inject(0.0){|s,c| s + c[:stimulation]} / pool.size
     if mean_stim < stim_thresh
       candidate = competition_for_resournces(pool, clone_rate, max_resources)
       pool.size.times do |i|
@@ -104,6 +103,11 @@ def add_candidate_to_memory_pool(candidate, best_match, memory_cells)
   end
 end
 
+def classify_pattern(memory_cells, pattern)
+  stimulate(memory_cells, pattern)
+  return memory_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
+end
+
 def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
   num_patterns.times do |i|
     pattern = generate_random_pattern(domain)
@@ -117,11 +121,6 @@ def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, st
     end
     puts " > iter=#{i+1}, memory_cells=#{memory_cells.size}"
   end
-end
-
-def classify_pattern(memory_cells, pattern)
-  stimulate(memory_cells, pattern)
-  return memory_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
 end
 
 def test_system(memory_cells, domain, num_trials=50)
