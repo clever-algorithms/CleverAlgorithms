@@ -24,7 +24,17 @@ class TC_SimulatedAnnealing < Test::Unit::TestCase
     assert_equal(3+4, cost([0,1,2,3], cities))
     assert_equal(4*2, cost([0, 3], cities))
   end    
-  
+
+  # test the construction of a random permutation
+  def test_random_permutation
+    cities = Array.new(10)
+    100.times do
+      p = random_permutation(cities)
+      assert_equal(cities.size, p.size)
+      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+    end
+  end
+
   # test the two opt procedure
   def test_stochastic_two_opt
     perm = Array.new(10){|i| i}
@@ -35,19 +45,28 @@ class TC_SimulatedAnnealing < Test::Unit::TestCase
       other.each {|x| assert(perm.include?(x), "#{x}") }
     end
   end
-    
-  # test the construction of a random permutation
-  def test_random_permutation
-    cities = Array.new(10)
+  
+  # test the construction of a neighbour
+  def test_create_neighbor
+    cities = [[0,0],[3,3],[1,1],[2,2],[4,4]]
     100.times do
-      p = random_permutation(cities)
-      assert_equal(cities.size, p.size)
-      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+      c = {:vector=>[0,1,2,3,4]}
+      rs = create_neighbor(c, cities)
+      assert_not_nil(rs[:cost])
+      assert_not_nil(rs[:vector])
+      assert_not_same(c[:vector], rs[:vector])
+      assert_not_equal(c[:vector], rs[:vector])
     end
   end
   
-  # TODO write tests
-  
+  # test the acceptance criteria
+  def test_should_accept
+    # accept lower cost
+    assert_equal(true, should_accept?({:cost=>1}, {:cost=>2}, 0))
+    # accept same cost
+    assert_equal(true, should_accept?({:cost=>1}, {:cost=>1}, 0))
+    # TODO can we even test the temp meaningfuly? 
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
