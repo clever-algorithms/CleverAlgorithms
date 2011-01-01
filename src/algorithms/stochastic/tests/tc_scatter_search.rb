@@ -21,6 +21,22 @@ class TC_ScatterSearch < Test::Unit::TestCase
     assert_equal(0, objective_function([0,0]))
   end
 
+  # test the uniform sampling within bounds
+  def test_rand_in_bounds
+    # positive, zero offset
+    x = rand_in_bounds(0, 20)
+    assert_operator(x, :>=, 0)
+    assert_operator(x, :<, 20)
+    # negative
+    x = rand_in_bounds(-20, -1)
+    assert_operator(x, :>=, -20)
+    assert_operator(x, :<, -1)
+    # both
+    x = rand_in_bounds(-10, 20)
+    assert_operator(x, :>=, -10)
+    assert_operator(x, :<, 20)
+  end
+
   # test the generation of random vectors
   def test_random_vector
     bounds, trials, size = [-3,3], 300, 20
@@ -37,12 +53,35 @@ class TC_ScatterSearch < Test::Unit::TestCase
     end    
   end
 
+  # test the construction of a step
   def test_take_step
-    
+    # step within stepsize
+    p = take_step([[0, 100]], [50], 3.3)
+    assert_operator(p[0], :>=, 50-3.3)
+    assert_operator(p[0], :<=, 50+3.3)    
+    # snap to bounds
+    p = take_step([[0, 1]], [0], 3.3)
+    assert_operator(p[0], :>=, 0)
+    assert_operator(p[0], :<, 1)
   end
   
+  # test the local search procedure
   def test_local_search
-    
+    # improvement
+    best = {:vector=>[1,1]}
+    best[:cost] = objective_function(best[:vector])
+    rs = local_search(best, [[-1,1],[-1,1]], 30, 0.005)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_not_same(best, rs)
+    assert_not_equal(best[:vector], rs[:vector])
+    assert_not_equal(best[:cost], rs[:cost])
+    # no improvement
+    best = {:vector=>[0,0], :cost=>0.0}
+    rs = local_search(best, [[-1,1],[-1,1]], 30, 0.005)
+    assert_not_nil(rs)
+    assert_equal(best[:cost], rs[:cost])
   end
   
   def test_construct_initial_set

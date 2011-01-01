@@ -8,45 +8,44 @@ def objective_function(vector)
   return vector.inject(0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def rand_in_bounds(min, max)
+  return min + ((max-min) * rand()) 
+end
+
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    rand_in_bounds(minmax[i][0], minmax[i][1])
   end
 end
 
-def take_step(current, search_space, step_size)
-  step = []
-  current.size.times do |i|
-    max, min = current[i]+step_size, current[i]-step_size
-    max = search_space[i][1] if max > search_space[i][1]
-    min = search_space[i][0] if min < search_space[i][0]
-    step << min + ((max - min) * rand)
+def take_step(minmax, current, step_size)
+  position = Array.new(current.size)
+  position.size.times do |i|
+    min = [minmax[i][0], current[i]-step_size].max
+    max = [minmax[i][1], current[i]+step_size].min
+    position[i] = rand_in_bounds(min, max)
   end
-  return step
+  return position
 end
 
-def local_search(best, search_space, max_no_improvements, step_size)
+def local_search(best, search_space, max_no_improv, step_size)
   count = 0
   begin
-    candidate = {}
-    candidate[:vector] = take_step(best[:vector], search_space, step_size)    
+    candidate = {:vector=>take_step(search_space, best[:vector], step_size)}
     candidate[:cost] = objective_function(candidate[:vector])
-    if candidate[:cost] < best[:cost]
-      count, best = 0, candidate
-    else
-      count += 1
-    end
-  end until count >= max_no_improvements
+    count = (candidate[:cost] < best[:cost]) ? 0 : count+1
+    best = candidate if candidate[:cost] < best[:cost]    
+  end until count >= max_no_improv
   return best
 end
 
-def construct_initial_set(search_space, div_set_size, max_no_improvements, step_size)
+def construct_initial_set(search_space, div_set_size, max_no_improv, step_size)
   diverse_set = []
   begin
     candidate = {}
     candidate[:vector] = random_vector(search_space)
     candidate[:cost] = objective_function(candidate[:vector])
-    candidate = local_search(candidate, search_space, max_no_improvements, step_size)
+    candidate = local_search(candidate, search_space, max_no_improv, step_size)
     diverse_set << candidate if !diverse_set.any? {|x| x[:vector]==candidate[:vector]}
   end until diverse_set.size == div_set_size
   return diverse_set
@@ -100,8 +99,8 @@ def recombine(subset, search_space)
   return children
 end
 
-def search(search_space, max_iterations, ref_set_size, div_set_size, max_no_improvements, step_size, max_elite)
-  diverse_set = construct_initial_set(search_space, div_set_size, max_no_improvements, step_size)
+def search(search_space, max_iterations, ref_set_size, div_set_size, max_no_improv, step_size, max_elite)
+  diverse_set = construct_initial_set(search_space, div_set_size, max_no_improv, step_size)
   reference_set, best = diversify(diverse_set, max_elite, ref_set_size)
   reference_set.each{|c| c[:new] = true}
   max_iterations.times do |iter|
@@ -110,7 +109,7 @@ def search(search_space, max_iterations, ref_set_size, div_set_size, max_no_impr
     reference_set.each{|c| c[:new] = false}
     subsets.each do |subset|
       candidates = recombine(subset, search_space)
-      improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improvements, step_size)}
+      improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improv, step_size)}
       improved.each do |c|
         if !reference_set.any? {|x| x[:vector]==c[:vector]}
           c[:new] = true
@@ -138,11 +137,11 @@ if __FILE__ == $0
   # algorithm configuration
   num_iterations = 100
   step_size = (search_space[0][1]-search_space[0][0])*0.005
-  max_no_improvements = 30
+  max_no_improv = 30
   ref_set_size = 10
   diverse_set_size = 20
   no_elite = 5
   # execute the algorithm
-  best = search(search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improvements, step_size, no_elite)
+  best = search(search_space, num_iterations, ref_set_size, diverse_set_size, max_no_improv, step_size, no_elite)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
