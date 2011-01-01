@@ -39,8 +39,75 @@ class TC_GuidedLocalSearch < Test::Unit::TestCase
     end
   end
 
-  # TODO write tests
+  # test the calculation of augmented cost
+  def test_augmented_cost
+    cities = [[0,0],[1,1],[2,2],[3,3],[4,4]]
+    lambda = 10000.0/50.0
+    # no penality
+    rs = augmented_cost([0,1,2,3,4], Array.new(5){Array.new(5,0)}, cities, lambda)
+    assert_equal(2, rs.size)
+    assert_equal(10, rs[0])
+    assert_equal(rs[0], rs[1])
+    # uniform penalty
+    rs = augmented_cost([0,1,2,3,4], Array.new(5){Array.new(5,0.5)}, cities, lambda)
+    assert_equal(2, rs.size)
+    assert_equal(10, rs[0])
+    assert_equal(10 + ((0.5*lambda)*5), rs[1])
+  end
   
+  # test the calculation of cost and augmented cost
+  def test_cost
+    cities = [[0,0],[1,1],[2,2],[3,3],[4,4]]
+    candidate = {:vector=>[0,1,2,3,4]}
+    cost(candidate, Array.new(5){Array.new(5,0.5)}, cities, 1)
+    assert_not_nil(candidate[:cost])
+    assert_equal(10, candidate[:cost])
+    assert_not_nil(candidate[:aug_cost])
+    assert_equal(10 + ((0.5*1.0)*5), candidate[:aug_cost])
+  end
+  
+  # test the local search procedure
+  def test_local_search
+    # improvement - no penalties
+    best = {:vector=>[0,1,2,3,4]}
+    cities = [[0,0],[3,3],[1,1],[2,2],[4,4]]
+    cost(best, Array.new(5){Array.new(5,0.5)}, cities, 1)
+    rs = local_search(best, cities, Array.new(5){Array.new(5,0)}, 20, 0)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_not_same(best, rs)
+    assert_not_equal(best[:vector], rs[:vector])
+    assert_not_equal(best[:cost], rs[:cost])
+    # no improvement - no penalties
+    best = {:vector=>[0,2,3,1,4], :cost=>10}
+    rs = local_search(best, cities, Array.new(5){Array.new(5,0)}, 10, 0)
+    assert_not_nil(rs)
+    assert_equal(best[:cost], rs[:cost])
+    # TODO test with penalties
+  end
+  
+  # test the calculation of feature utilities
+  def test_calculate_feature_utilities
+    cities = [[0,0],[1,1],[2,2],[3,3],[4,4]]
+    # no penalty
+    utils = calculate_feature_utilities(Array.new(5){Array.new(5,0)}, cities, [0,1,2,3,4])
+    assert_equal(5, utils.size)
+    assert_equal(1.0/1.0, utils[0])
+    assert_equal(1.0/1.0, utils[1])
+    assert_equal(1.0/1.0, utils[2])
+    assert_equal(1.0/1.0, utils[3])
+    assert_equal(6.0/1.0, utils[4])
+  end
+  
+  # test updating of penalties
+  def test_update_penalties
+    cities = [[0,0],[1,1],[2,2],[3,3],[4,4]]
+    penalties = Array.new(5){Array.new(5,0)}
+    update_penalties!(penalties, cities, [0,1,2,3,4], [1,1,1,1,6])
+    assert_equal(1, penalties[0][4])
+    assert_equal(0, penalties[4][0])
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
