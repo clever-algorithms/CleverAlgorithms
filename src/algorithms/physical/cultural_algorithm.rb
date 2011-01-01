@@ -8,22 +8,24 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def rand_in_bounds(min, max)
+  return min + ((max-min) * rand()) 
+end
+
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    rand_in_bounds(minmax[i][0], minmax[i][1])
   end
 end
 
-def mutate_with_influence(candidate, belief_space, search_space)
-  vector = Array.new(candidate[:vector].size)
+def mutate_with_influence(candidate, beliefs, minmax)
+  v = Array.new(candidate[:vector].size)
   candidate[:vector].each_with_index do |c,i|
-    range = (belief_space[:normative][i][1] - belief_space[:normative][i][0])
-    v = belief_space[:normative][i][0] + rand() * range
-    v = search_space[i][0] if v < search_space[i][0]
-    v = search_space[i][1] if v > search_space[i][1]
-    vector[i] = v
+    v[i] = rand_in_bounds(beliefs[:normative][i][0], beliefs[:normative][i][1])
+    v[i] = minmax[i][0] if v[i] < minmax[i][0]
+    v[i] = minmax[i][1] if v[i] > minmax[i][1]
   end
-  return {:vector=>vector}
+  return {:vector=>v}
 end
   
 def binary_tournament(pop)
