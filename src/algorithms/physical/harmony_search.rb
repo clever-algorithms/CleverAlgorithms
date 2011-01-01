@@ -8,13 +8,13 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_variable(min, max)
-  return min + ((max - min) * rand())
+def rand_in_bounds(min, max)
+  return min + ((max-min) * rand()) 
 end
 
 def random_vector(search_space)
   return Array.new(search_space.size) do |i| 
-    random_variable(search_space[i][0], search_space[i][1]) 
+    rand_in_bounds(search_space[i][0], search_space[i][1]) 
   end
 end
 
@@ -25,11 +25,10 @@ def create_random_harmony(search_space)
   return harmony
 end
 
-def initialize_harmony_memory(search_space, memory_size)
-  memory = Array.new(memory_size * 3){ create_random_harmony(search_space) }
-  memory.sort!{|x,y| x[:fitness]<=>y[:fitness]}
-  memory = memory[0...memory_size]
-  return memory
+def initialize_harmony_memory(search_space, memory_size, factor=3)
+  memory = Array.new(memory_size * factor){ create_random_harmony(search_space) }
+  memory.sort!{|x,y| x[:fitness]<=>y[:fitness]}  
+  return memory.first(memory_size)
 end
 
 def create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
@@ -37,12 +36,12 @@ def create_harmony(search_space, memory, consideration_rate, adjust_rate, range)
   search_space.size.times do |i|
     if rand() < consideration_rate
       value = memory[rand(memory.size)][:vector][i]
-      value = value + range * random_variable(-1.0, 1.0) if rand() < adjust_rate
+      value = value + range * rand_in_bounds(-1.0, 1.0) if rand() < adjust_rate
       value = search_space[i][0] if value < search_space[i][0]
       value = search_space[i][1] if value > search_space[i][1]
       vector[i] = value
     else
-      vector[i] = random_variable(search_space[i][0], search_space[i][1])
+      vector[i] = rand_in_bounds(search_space[i][0], search_space[i][1])
     end
   end
   return {:vector=>vector}

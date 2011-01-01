@@ -21,6 +21,22 @@ class TC_HarmontySearch < Test::Unit::TestCase
     assert_equal(0, objective_function([0,0]))
   end
 
+  # test the uniform sampling within bounds
+  def test_rand_in_bounds
+    # positive, zero offset
+    x = rand_in_bounds(0, 20)
+    assert_operator(x, :>=, 0)
+    assert_operator(x, :<, 20)
+    # negative
+    x = rand_in_bounds(-20, -1)
+    assert_operator(x, :>=, -20)
+    assert_operator(x, :<, -1)
+    # both
+    x = rand_in_bounds(-10, 20)
+    assert_operator(x, :>=, -10)
+    assert_operator(x, :<, 20)
+  end
+
   # test the generation of random vectors
   def test_random_vector
     bounds, trials, size = [-3,3], 300, 20
@@ -37,8 +53,46 @@ class TC_HarmontySearch < Test::Unit::TestCase
     end    
   end
 
-  # TODO write tests
+  # test the creation of a random candidate
+  def test_create_random_harmony
+    s = create_random_harmony([[0,1],[0,1]])
+    assert_not_nil(s)
+    assert_not_nil(s[:vector])
+    assert_not_nil(s[:fitness])
+    s[:vector].each do |x| 
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
+  end
   
+  # test initializing memory
+  def test_initialize_harmony_memory
+    m = initialize_harmony_memory([[0,1],[0,1]], 10)
+    assert_equal(10, m.size)
+  end
+  
+  # test the creation of a harmony
+  def test_create_harmony
+    memory = [{:vector=>[0,0]}, {:vector=>[0,0]}, {:vector=>[0,0]}]
+    # consideration, no adjustment
+    rs = create_harmony([[0,1],[0,1]], memory, 1.0, 0.0, 0.005)
+    assert_equal(2, rs[:vector].size)
+    rs[:vector].each{|x| assert_equal(0, x)}
+    # consideration, all adjustment
+    rs = create_harmony([[0,1],[0,1]], memory, 1.0, 1.0, 0.005)
+    assert_equal(2, rs[:vector].size)
+    rs[:vector].each do |x| 
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
+    # no consideration
+    rs = create_harmony([[0,1],[0,1]], memory, 0.0, 0.0, 0.005)
+    assert_equal(2, rs[:vector].size)
+    rs[:vector].each do |x| 
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<=, 1)
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
