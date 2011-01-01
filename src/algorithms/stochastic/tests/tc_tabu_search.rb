@@ -24,18 +24,6 @@ class TC_TabuSearch < Test::Unit::TestCase
     assert_equal(3+4, cost([0,1,2,3], cities))
     assert_equal(4*2, cost([0, 3], cities))
   end
-  
-  # test the two opt procedure
-  def test_stochastic_two_opt
-    perm = Array.new(10){|i| i}
-    200.times do
-      other, edges = stochastic_two_opt(perm)
-      assert_equal(perm.size, other.size)
-      assert_not_equal(perm, other)
-      assert_not_same(perm, other)
-      other.each {|x| assert(perm.include?(x), "#{x}") }
-    end
-  end
 
   # test the construction of a random permutation
   def test_random_permutation
@@ -46,9 +34,32 @@ class TC_TabuSearch < Test::Unit::TestCase
       [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
     end
   end
-
-  # TODO write tests
   
+  # test the two opt procedure
+  def test_stochastic_two_opt
+    perm = Array.new(10){|i| i}
+    200.times do
+      other, edges = stochastic_two_opt(perm)
+      assert_equal(perm.size, other.size)
+      assert_not_equal(perm, other)
+      assert_not_same(perm, other)
+      other.each {|x| assert(perm.include?(x), "#{x}") }
+      # edges
+      assert_equal(2, edges.size)
+    end
+  end
+
+  def test_generate_initial_solution
+    
+  end
+
+  def test_is_tabu
+    
+  end
+  
+  def test_generate_candidate
+    
+  end  
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

@@ -29,7 +29,10 @@ end
 def stochastic_two_opt(permutation)
   perm = Array.new(permutation)
   c1, c2 = rand(perm.size), rand(perm.size)
-  c2 = rand(perm.size) while c1 == c2
+  exclude = [c1]
+  exclude << ((c1==0) ? perm.size-1 : c1-1)
+  exclude << ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]

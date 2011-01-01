@@ -34,6 +34,8 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
       assert_not_equal(perm, other)
       assert_not_same(perm, other)
       other.each {|x| assert(perm.include?(x), "#{x}") }
+      # edges
+      assert_equal(2, edges.size)
     end
   end
 
