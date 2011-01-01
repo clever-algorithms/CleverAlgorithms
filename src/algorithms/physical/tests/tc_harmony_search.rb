@@ -58,7 +58,7 @@ class TC_HarmontySearch < Test::Unit::TestCase
       best = search([[-5,5],[-5,5]], 100, 20, 0.95, 0.7, 0.5)
     end  
     assert_not_nil(best[:fitness])
-    assert_in_delta(0.0, best[:fitness], 0.01)
+    assert_in_delta(0.0, best[:fitness], 0.1)
   end
   
 end

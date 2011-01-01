@@ -68,7 +68,7 @@ class TC_CompactGeneticAlgorithm < Test::Unit::TestCase
       best = search(20, 200, 20)
     end  
     assert_not_nil(best[:cost])
-    assert_equal(20, best[:cost])
+    assert_in_delta(20, best[:cost],5)
   end
   
 end
