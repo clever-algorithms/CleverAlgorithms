@@ -49,17 +49,38 @@ class TC_TabuSearch < Test::Unit::TestCase
     end
   end
 
-  def test_generate_initial_solution
-    
-  end
-
+  # test tabu testing
   def test_is_tabu
-    
+    # no tabu
+    assert_equal(false, is_tabu?([0,1,2,3,4], []))
+    # one tabu
+    assert_equal(true, is_tabu?([0,1,2,3,4], [[2,3]]))
+    assert_equal(true, is_tabu?([0,1,2,3,4], [[4,0]]))
+    # two tabu
+    assert_equal(true, is_tabu?([0,1,2,3,4], [[2,3],[1,2]]))
   end
   
+  # test the generation of permutations without tabu edges
   def test_generate_candidate
-    
-  end  
+    cities = [[0,0], [1,1], [2,2], [3,3], [4,4]]
+    # empty list
+    rs, edges = generate_candidate({:vector=>[0,1,2,3,4]}, [], cities)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_equal(5, rs[:vector].size)
+    assert_equal(2, edges.size)
+    # non-empty list
+    100.times do
+      rs, edges = generate_candidate({:vector=>[0,1,2,3,4]}, [[0,1]], cities)
+      assert_not_nil(rs)
+      assert_not_nil(rs[:vector])
+      assert_not_nil(rs[:cost])
+      assert_equal(5, rs[:vector].size)
+      assert_equal(2, edges.size)
+      assert_equal(false, is_tabu?(rs[:vector], [0,1]))
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
@@ -85,11 +106,11 @@ class TC_TabuSearch < Test::Unit::TestCase
      [830,610],[605,625],[595,360],[1340,725],[1740,245]]
     best = nil
     silence_stream(STDOUT) do
-      best = search(berlin52, 15, 50, 50, 50)
+      best = search(berlin52, 15, 50, 50)
     end  
     # better than a NN solution's cost
     assert_not_nil(best[:cost])
-    assert_in_delta(7542, best[:cost], 3000)
+    assert_in_delta(7542, best[:cost], 4000)
   end
   
 end

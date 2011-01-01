@@ -38,24 +38,6 @@ def stochastic_two_opt(permutation)
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
 end
 
-def generate_initial_solution(cities, max_no_improvements)
-  best = {}
-  best[:vector] = random_permutation(cities)
-  best[:cost] = cost(best[:vector], cities)
-  count = 0
-  begin
-    candidate = {}
-    candidate[:vector] = stochastic_two_opt(best[:vector])[0]
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] <= best[:cost]
-      count, best = 0, candidate
-    else
-      count += 1      
-    end
-  end until count >= max_no_improvements
-  return best
-end
-
 def is_tabu?(permutation, tabu_list)
   permutation.each_with_index do |c1, i|
     c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
@@ -66,22 +48,22 @@ def is_tabu?(permutation, tabu_list)
   return false
 end
 
-def generate_candidate(best, tabu_list, cities)  
-  permutation, edges = nil, nil
+def generate_candidate(best, tabu_list, cities)
+  perm, edges = nil, nil
   begin
-    permutation, edges = stochastic_two_opt(best[:vector])
-  end while is_tabu?(permutation, tabu_list)
-  candidate = {}
-  candidate[:vector] = permutation
+    perm, edges = stochastic_two_opt(best[:vector])
+  end while is_tabu?(perm, tabu_list)  
+  candidate = {:vector=>perm}
   candidate[:cost] = cost(candidate[:vector], cities)
   return candidate, edges
 end
 
-def search(cities, tabu_list_size, candidate_list_size, max_iterations, max_no_improvements)
-  best = generate_initial_solution(cities, max_no_improvements)
-  current = best
+def search(cities, tabu_list_size, candidate_list_size, max_iter)
+  current = {:vector=>random_permutation(cities)}
+  current[:cost] = cost(current[:vector], cities)
+  best = current
   tabu_list = Array.new(tabu_list_size)
-  max_iterations.times do |iter|
+  max_iter.times do |iter|
     candidates = Array.new(candidate_list_size) {|i| generate_candidate(current, tabu_list, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     best_candidate = candidates.first[0]
@@ -109,11 +91,10 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 100
-  max_no_improvements = 50
+  max_iter = 100
   tabu_list_size = 15
   max_candidates = 50
   # execute the algorithm
-  best = search(berlin52, tabu_list_size, max_candidates, max_iterations, max_no_improvements)
+  best = search(berlin52, tabu_list_size, max_candidates, max_iter)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
