@@ -38,24 +38,6 @@ def stochastic_two_opt(permutation)
   return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
 end
 
-def generate_initial_solution(cities, max_no_improvements)
-  best = {}
-  best[:vector] = random_permutation(cities)
-  best[:cost] = cost(best[:vector], cities)
-  count = 0
-  begin
-    candidate = {}
-    candidate[:vector] = stochastic_two_opt(best[:vector])[0]
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] <= best[:cost]
-      count, best = 0, candidate
-    else
-      count += 1      
-    end
-  end until count >= max_no_improvements
-  return best
-end
-
 def is_tabu?(edge, tabu_list, iteration, prohibition_period)
   tabu_list.each do |entry|
     if entry[:edge] == edge
@@ -137,12 +119,13 @@ def sort_neighborhood(candidates, tabu_list, prohibition_period, iteration)
   return tabu, admissable
 end
 
-def search(cities, max_no_improvements, max_candidates, max_iterations, increase, decrease)
-  current = generate_initial_solution(cities, max_no_improvements)
+def search(cities, max_candidates, max_iter, increase, decrease)
+  current = {:vector=>random_permutation(cities)}
+  current[:cost] = cost(current[:vector], cities)
   best = current
   tabu_list, prohibition_period = [], 1
   visited_list, avg_size, last_change = [], 1, 0
-  max_iterations.times do |iter|
+  max_iter.times do |iter|
     candidate_entry = get_candidate_entry(visited_list, current[:vector])
     if !candidate_entry.nil?
       repetition_interval = iter - candidate_entry[:iteration]
@@ -173,7 +156,7 @@ def search(cities, max_no_improvements, max_candidates, max_iterations, increase
     end
     best_move_edges.each {|edge| make_tabu(tabu_list, edge, iter)}
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, tenure=#{prohibition_period.round}, best=#{best[:cost]}"
+    puts " > iter=#{(iter+1)}, tenure=#{prohibition_period.round}, best=#{best[:cost]}"
   end
   return best
 end
@@ -190,12 +173,11 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 300
-  max_no_improvements = 50
+  max_iter = 100
   max_candidates = 50
   increase = 1.3
   decrease = 0.9
   # execute the algorithm
-  best = search(berlin52, max_no_improvements, max_candidates, max_iterations, increase, decrease)
+  best = search(berlin52, max_candidates, max_iter, increase, decrease)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

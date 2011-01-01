@@ -24,7 +24,17 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
     assert_equal(3+4, cost([0,1,2,3], cities))
     assert_equal(4*2, cost([0, 3], cities))
   end
-  
+
+  # test the construction of a random permutation
+  def test_random_permutation
+    cities = Array.new(10)
+    100.times do
+      p = random_permutation(cities)
+      assert_equal(cities.size, p.size)
+      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+    end
+  end
+
   # test the two opt procedure
   def test_stochastic_two_opt
     perm = Array.new(10){|i| i}
@@ -39,18 +49,37 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
     end
   end
 
-  # test the construction of a random permutation
-  def test_random_permutation
-    cities = Array.new(10)
-    100.times do
-      p = random_permutation(cities)
-      assert_equal(cities.size, p.size)
-      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
-    end
+  def test_is_tabu
+    
   end
 
-  # TODO write tests
+  def test_make_tabu
+    
+  end
   
+  def test_to_edge_list
+    
+  end
+  
+  def test_equivalent_permutations
+    
+  end
+  
+  def test_generate_candidate
+    
+  end
+  
+  def test_get_candidate_entry
+    
+  end
+  
+  def test_store_permutation
+    
+  end
+  
+  def test_sort_neighborhood
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
@@ -76,7 +105,7 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
      [830,610],[605,625],[595,360],[1340,725],[1740,245]]
     best = nil
     silence_stream(STDOUT) do
-      best = search(berlin52, 50, 50, 200, 1.3, 0.9)
+      best = search(berlin52, 50, 200, 1.3, 0.9)
     end  
     # better than a NN solution's cost
     assert_not_nil(best[:cost])
