@@ -64,14 +64,14 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
     assert_equal(1.0, v[1])
   end
   
-  # test uniform crossover
-  def test_uniform_crossover
-    p1 = "0000000000"
-    p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
-    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  # test fitness assignment
+  def test_fitness
+    c = {:bitstring=>"0000000000000000"}
+    fitness(c, [[0,1]], 16)
+    assert_not_nil(c[:vector])
+    assert_not_nil(c[:fitness])
+    assert_equal(0, c[:vector][0])
+    assert_equal(0, c[:fitness])
   end
   
   # test that members of the population are selected
@@ -96,10 +96,69 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
       changes += (10 - s.delete('1').size)
     end
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
+  end
+  
+  # test uniform crossover
+  def test_uniform_crossover
+    p1 = "0000000000"
+    p2 = "1111111111"        
+    assert_equal(p1, uniform_crossover(p1,p2,0))
+    assert_not_same(p1, uniform_crossover(p1,p2,0))      
+    s = uniform_crossover(p1,p2,1)        
+    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end
+  
+  # test reproduce cloning case
+  def test_reproduce_clone
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 0, 0)
+    children.each_with_index do |c,i| 
+      assert_equal(pop[i][:bitstring], c[:bitstring])
+      assert_not_same(pop[i][:bitstring], c[:bitstring])  
+    end
+  end
+
+  # test reproduce mutate case
+  def test_reproduce_clone
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 0, 1)
+    children.each_with_index do |c,i| 
+      assert_not_equal(pop[i][:bitstring], c[:bitstring])
+      assert_equal("1111111111", c[:bitstring])
+      assert_not_same(pop[i][:bitstring], c[:bitstring])  
+    end
+  end
+  
+  # test odd sized population
+  def test_reproduce_mismatch
+    pop = Array.new(9) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 0, 1)
+    assert_equal(9, children.size)
   end  
 
-  # TODO write tests
+  # test reproduce size mismatch
+  def test_reproduce_mismatch
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, 9, 0, 0)
+    assert_equal(9, children.size)
+  end
   
+  # test the bit climber
+  def test_bitclimber
+    # improvement
+    c = {:bitstring=>"1010101010101010"}
+    fitness(c, [[0,1]], 16)
+    assert_in_delta(0.444, c[:fitness], 0.001)
+    rs = bitclimber(c, [[0,1]], 1.0/16.0, 50, 16)
+    assert_not_equal(rs, c)
+    assert_operator(rs[:fitness], :<, c[:fitness])
+    # no improvement
+    c = {:bitstring=>"0000000000000000"}
+    fitness(c, [[0,1]], 16)
+    assert_equal(0, c[:fitness])
+    rs = bitclimber(c, [[0,1]], 1.0/16.0, 50, 16)
+    assert_equal(rs, c)
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

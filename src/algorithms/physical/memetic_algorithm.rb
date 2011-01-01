@@ -55,15 +55,16 @@ def uniform_crossover(parent1, parent2, rate)
   return child
 end
 
-def reproduce(selected, population_size, p_crossover, p_mutation)
+def reproduce(selected, pop_size, p_crossover, p_mutation)
   children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
     child = {}
     child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
     child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
     children << child
-    break if children.size >= population_size
+    break if children.size >= pop_size
   end
   return children
 end
@@ -96,7 +97,7 @@ def search(max_gens, search_space, pop_size, p_crossover, p_mutation, max_local_
     end    
     pop.sort!{|x,y| x[:fitness] <=> y[:fitness]}    
     best = pop.first if pop.first[:fitness] <= best[:fitness]    
-    puts ">gen=#{gen}, f=#{best[:fitness]}, b=#{best[:bitstring]}, v=#{best[:vector].inspect}"
+    puts ">gen=#{gen}, f=#{best[:fitness]}, b=#{best[:bitstring]}"
   end  
   return best
 end
