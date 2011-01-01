@@ -151,7 +151,7 @@ class TC_ScatterSearch < Test::Unit::TestCase
       assert_equal(2, c[:vector].size)
     end
   end
-  
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
@@ -161,7 +161,23 @@ class TC_ScatterSearch < Test::Unit::TestCase
     yield
   ensure
     stream.reopen(old_stream)
-  end   
+  end
+
+  # test the exploration of subsets
+  def test_explore_subsets
+    # change
+    pop = [{:vector=>[-1],:new=>true},{:vector=>[1],:new=>true}]
+    pop.each {|p| p[:cost]=objective_function(p[:vector]) }
+    c = nil
+    silence_stream(STDOUT) {c = explore_subsets([[-1,1]], pop, 30, 0.005)}
+    assert_not_nil(c)
+    assert_equal(true, c)
+    # no change
+    pop = [{:vector=>[0],:cost=>0,:new=>true},{:vector=>[0],:cost=>0,:new=>true},{:vector=>[0],:cost=>0,:new=>true}]
+    silence_stream(STDOUT) {c = explore_subsets([[-1,1]], pop, 30, 0.005)}
+    assert_not_nil(c)
+    assert_equal(false, c)
+  end 
   
   # test that the algorithm can solve the problem
   def test_search    

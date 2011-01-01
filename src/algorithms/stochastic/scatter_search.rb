@@ -99,33 +99,39 @@ def recombine(subset, minmax)
   return children
 end
 
+def explore_subsets(search_space, reference_set, max_no_improv, step_size)
+  was_change = false
+  subsets = select_subsets(reference_set)
+  reference_set.each{|c| c[:new] = false}
+  subsets.each do |subset|
+    candidates = recombine(subset, search_space)
+    improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improv, step_size)}
+    improved.each do |c|
+      if !reference_set.any? {|x| x[:vector]==c[:vector]}
+        c[:new] = true
+        reference_set.sort!{|x,y| x[:cost] <=> y[:cost]}
+        if c[:cost] < reference_set.last[:cost]
+          reference_set.delete(reference_set.last)
+          reference_set << c
+          puts "  >> added, cost=#{c[:cost]}"
+          was_change = true
+        end
+      end
+    end
+  end
+  return was_change
+end
+
 def search(search_space, max_iter, ref_set_size, div_set_size, max_no_improv, step_size, max_elite)
   diverse_set = construct_initial_set(search_space, div_set_size, max_no_improv, step_size)
   reference_set, best = diversify(diverse_set, max_elite, ref_set_size)
   reference_set.each{|c| c[:new] = true}
-  max_iter.times do |iter|
-    wasChange = false
-    subsets = select_subsets(reference_set)
-    reference_set.each{|c| c[:new] = false}
-    subsets.each do |subset|
-      candidates = recombine(subset, search_space)
-      improved = Array.new(candidates.size) {|i| local_search(candidates[i], search_space, max_no_improv, step_size)}
-      improved.each do |c|
-        if !reference_set.any? {|x| x[:vector]==c[:vector]}
-          c[:new] = true
-          reference_set.sort!{|x,y| x[:cost] <=> y[:cost]}
-          if c[:cost]<reference_set.last[:cost]
-            reference_set.delete(reference_set.last)
-            reference_set << c
-            wasChange = true
-          end
-        end
-      end
-    end
+  max_iter.times do |iter|    
+    was_change = explore_subsets(search_space, reference_set, max_no_improv, step_size)
     reference_set.sort!{|x,y| x[:cost] <=> y[:cost]}
     best = reference_set.first if reference_set.first[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
-    break if !wasChange
+    puts " > iter=#{(iter+1)}, best=#{best[:cost]}"
+    break if !was_change
   end
   return best
 end
