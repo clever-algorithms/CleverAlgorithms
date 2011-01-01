@@ -116,9 +116,9 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 30
+  max_iterations = 50
   num_ants = 30
-  decay_factor = 0.5
+  decay_factor = 0.6
   c_heuristic = 2.5
   c_history = 1.0
   # execute the algorithm
