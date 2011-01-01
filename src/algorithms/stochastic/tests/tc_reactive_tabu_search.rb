@@ -44,41 +44,121 @@ class TC_ReactiveTabuSearch < Test::Unit::TestCase
       assert_not_equal(perm, other)
       assert_not_same(perm, other)
       other.each {|x| assert(perm.include?(x), "#{x}") }
-      # edges
+      # TODO test the edges
       assert_equal(2, edges.size)
     end
   end
 
+  # test whether an edge is tabu
   def test_is_tabu
-    
+    # not tabu
+    assert_equal(false, is_tabu?([0,1], [{:edge=>[],:iteration=>1}], 10, 1)) 
+    # is tabu and period has not expired
+    assert_equal(true, is_tabu?([0,1], [{:edge=>[0,1],:iteration=>9}], 10, 2)) 
+    # is tabu, but period has expired
+    assert_equal(false, is_tabu?([0,1], [{:edge=>[0,1],:iteration=>1}], 10, 1)) 
   end
 
+  # tests making an edge tabu
   def test_make_tabu
-    
+    # not on list
+    list = []
+    entry = make_tabu(list, [0,1], 10)
+    assert_not_nil(entry)
+    assert_not_nil(entry[:edge])
+    assert_not_nil(entry[:iteration])
+    assert_equal(10, entry[:iteration])
+    assert_equal(1, list.size)
+    assert_equal(true, list.include?(entry))
+    # already on list
+    list = [{:edge=>[0,1],:iteration=>1}]
+    entry = make_tabu(list, [0,1], 10)
+    assert_not_nil(entry)
+    assert_not_nil(entry[:edge])    
+    assert_not_nil(entry[:iteration])
+    assert_equal(10, entry[:iteration])
+    assert_equal(1, list.size)
+    assert_equal(true, list.include?(entry))
   end
   
+  # test converting a permutation to an edge list
   def test_to_edge_list
-    
+    list = to_edge_list([0,1,2,3,4])
+    assert_equal(5, list.size)
+    # easy edge
+    assert_equal(true, list.include?([0,1]))
+    # edge case
+    assert_equal(true, list.include?([0,4]))
   end
   
-  def test_equivalent_permutations
-    
+  # test if two permutations are the same
+  def test_equivalent
+    # different edges
+    assert_equal(false, equivalent?([[0,1],[1,2],[0,2]], [[0,1],[1,3],[0,3]]))
+    # same edges different order
+    assert_equal(true, equivalent?([[0,1],[1,2],[0,2]], [[1,2],[0,2],[0,1]]))
+    # same edges same order
+    assert_equal(true, equivalent?([[0,1],[1,2],[0,2]], [[0,1],[1,2],[0,2]]))
   end
   
+  # test the generation of permutations without tabu edges
   def test_generate_candidate
-    
+    cities = [[0,0], [1,1], [2,2], [3,3], [4,4]]
+    # empty list
+    rs, edges = generate_candidate({:vector=>[0,1,2,3,4]}, cities)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_equal(5, rs[:vector].size)
+    assert_equal(2, edges.size)
   end
   
+  # tests the retrival of a past visited candidate
   def test_get_candidate_entry
-    
+    # not visited before
+    assert_nil(get_candidate_entry([], [0,1,2,3,4]))
+    # visited before
+    list = [{:iteration=>1,:visits=>1,:edgelist=>[[0,1],[1,2],[0,2]]}]
+    e = get_candidate_entry(list, [0,1,2])
+    assert_not_nil(e)
+    assert_same(e, list.first)
   end
   
+  # tests the storing of a visited permutation
   def test_store_permutation
-    
+    list = []
+    e = store_permutation(list, [0,1,2,3,4], 99)
+    assert_not_nil(e)
+    assert_not_nil(e[:iteration])
+    assert_not_nil(e[:visits])
+    assert_not_nil(e[:edgelist])
+    assert_equal(99, e[:iteration])
+    assert_equal(1, e[:visits])
+    assert_equal(true, e[:edgelist].include?([0,4]))
   end
   
+  # tests the partitioning of solutions into tabu and admissible based
+  # on the edges changed to create them
   def test_sort_neighborhood
-    
+    # admissible candidate
+    candidates = [[{},[[0,1],[1,2]]]]
+    t, a = sort_neighborhood(candidates, [], 2, 10)
+    assert_equal(0, t.size)
+    assert_equal(1, a.size)
+    assert_same(candidates.first, a.first)
+    # tabu candidate
+    candidates = [[{},[[0,1],[1,2]]]]
+    t, a = sort_neighborhood(candidates, [{:edge=>[0,1],:iteration=>9}], 2, 10)
+    assert_equal(1, t.size)
+    assert_equal(0, a.size)
+    assert_same(candidates.first, t.first)
+    # one of each
+    candidates = [ [{},[[0,1],[1,2]]], [{},[[0,2],[1,2]]] ]
+    t, a = sort_neighborhood(candidates, [{:edge=>[0,1],:iteration=>9}], 2, 10)
+    assert_equal(1, t.size)
+    assert_equal(1, a.size)
+    assert_same(candidates[0], t.first)
+    assert_same(candidates[1], a.first)
   end
   
   # helper for turning off STDOUT

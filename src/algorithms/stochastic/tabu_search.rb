@@ -8,10 +8,10 @@ def euc_2d(c1, c2)
   Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
 end
 
-def cost(permutation, cities)
-  distance =0
-  permutation.each_with_index do |c1, i|
-    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
+def cost(perm, cities)
+  distance = 0
+  perm.each_with_index do |c1, i|
+    c2 = (i==perm.size-1) ? perm[0] : perm[i+1]
     distance += euc_2d(cities[c1], cities[c2])
   end
   return distance
@@ -26,8 +26,8 @@ def random_permutation(cities)
   return perm
 end
 
-def stochastic_two_opt(permutation)
-  perm = Array.new(permutation)
+def stochastic_two_opt(parent)
+  perm = Array.new(parent)
   c1, c2 = rand(perm.size), rand(perm.size)
   exclude = [c1]
   exclude << ((c1==0) ? perm.size-1 : c1-1)
@@ -35,7 +35,7 @@ def stochastic_two_opt(permutation)
   c2 = rand(perm.size) while exclude.include?(c2)
   c1, c2 = c2, c1 if c2 < c1
   perm[c1...c2] = perm[c1...c2].reverse
-  return perm, [[permutation[c1-1], permutation[c1]], [permutation[c2-1], permutation[c2]]]
+  return perm, [[parent[c1-1], parent[c1]], [parent[c2-1], parent[c2]]]
 end
 
 def is_tabu?(permutation, tabu_list)
