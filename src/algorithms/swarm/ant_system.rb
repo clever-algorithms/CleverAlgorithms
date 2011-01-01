@@ -17,11 +17,6 @@ def cost(permutation, cities)
   return distance
 end
 
-def initialise_pheromone_matrix(num_cities, naive_score)
-  v = num_cities.to_f / naive_score
-  return Array.new(num_cities){|i| Array.new(num_cities, v)}
-end
-
 def random_permutation(cities)
   perm = Array.new(cities.size){|i| i}
   perm.each_index do |i|
@@ -29,6 +24,11 @@ def random_permutation(cities)
     perm[r], perm[i] = perm[i], perm[r]
   end
   return perm
+end
+
+def initialise_pheromone_matrix(num_cities, naive_score)
+  v = num_cities.to_f / naive_score
+  return Array.new(num_cities){|i| Array.new(num_cities, v)}
 end
 
 def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
@@ -48,19 +48,12 @@ end
 def select_next_city(choices)
   sum = choices.inject(0.0){|sum,element| sum + element[:prob]}
   return choices[rand(choices.size)][:city] if sum == 0.0
-  v, next_city = rand(), -1
+  v = rand()
   choices.each_with_index do |choice, i|
-    if i==choices.size-1
-      next_city = choice[:city] 
-    else
-      v -= (choice[:prob]/sum)
-      if v <= 0.0 
-        next_city = choice[:city] 
-        break
-      end
-    end
+    v -= (choice[:prob]/sum)
+    return choice[:city] if v <= 0.0
   end
-  return next_city
+  return choices.last[:city]
 end
 
 def stepwise_construction(cities, pheromone, c_heuristic, c_history)
@@ -83,12 +76,11 @@ def decay_pheromone(pheromone, decay_factor)
 end
 
 def update_pheromone(pheromone, solutions)
-  solutions.each do |candidate|
-    update = 1.0 / candidate[:cost]
-    candidate[:vector].each_with_index do |x, i|
-      y = (i==candidate[:vector].size-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-      pheromone[x][y] += d
-      pheromone[y][x] += d
+  solutions.each do |other|
+    other[:vector].each_with_index do |x, i|
+      y = (i==other[:vector].size-1) ? other[:vector][0] : other[:vector][i+1]
+      pheromone[x][y] += (1.0 / other[:cost])
+      pheromone[y][x] += (1.0 / other[:cost])
     end
   end
 end
@@ -124,8 +116,8 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 50
-  num_ants = berlin52.size
+  max_iterations = 30
+  num_ants = 30
   decay_factor = 0.5
   c_heuristic = 2.5
   c_history = 1.0

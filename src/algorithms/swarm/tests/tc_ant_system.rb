@@ -35,8 +35,92 @@ class TC_AntSystem < Test::Unit::TestCase
     end
   end
 
-  # TODO write tests
+  # test pheromone initialization
+  def test_initialise_pheromone_matrix
+    rs = initialise_pheromone_matrix(100, 10000)
+    assert_equal(100, rs.size)
+    rs.each do |x|
+      assert_equal(100, x.size)
+      x.each {|o| assert_equal(100.0/10000.0, o)}
+    end
+  end
+
+  # test the calculation of choices
+  def test_calculate_choices    
+    cities = [[0,0],[1,2],[2,2],[3,3],[4,4]]
+    pher = Array.new(5){|i| Array.new(5, 1.0)}
+    # no exclusion
+    rs = calculate_choices(cities, 0, [], pher, 1.0, 1.0)
+    assert_equal(5, rs.size)
+    rs.each do |x|
+      assert_not_nil(x[:city])
+      assert_not_nil(x[:history])
+      assert_not_nil(x[:distance])
+      assert_not_nil(x[:heuristic])
+      assert_not_nil(x[:prob])
+    end
+    # exclusion
+    rs = calculate_choices(cities, 0, [0,1], pher, 1.0, 1.0)
+    assert_equal(3, rs.size)   
+    rs.each do |x|
+      assert_equal(true, [2,3,4].include?(x[:city]))
+    end 
+  end
+
+  # test probabilistic selection
+  def test_select_next_city
+    # no choice
+    choices = [{:prob=>0,:city=>1}, {:prob=>0,:city=>2}, {:prob=>0,:city=>3}]
+    city = select_next_city(choices)
+    assert_equal(city, choices.find {|x| x[:city]==city }[:city] )
+    # choice 
+    choices = [{:prob=>0.1,:city=>1}, {:prob=>0.2,:city=>2}, {:prob=>0.3,:city=>3}]
+    city = select_next_city(choices)
+    assert_equal(city, choices.find {|x| x[:city]==city }[:city] )
+    # TODO test if probabilistic better decisions are made over many samples
+  end
+
+  # test probabilistic stepwise construction
+  def test_stepwise_construction
+    cities = [[0,0],[1,2],[2,2],[3,3],[4,4]]
+    pher = Array.new(5){|i| Array.new(5, 1.0)}
+    # all greedy
+    perm = stepwise_construction(cities, pher, 1.0, 1.0)
+    assert_equal(5, perm.size)
+    perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
+    # no greedy
+    perm = stepwise_construction(cities, pher, 1.0, 0.0)
+    assert_equal(5, perm.size)
+    perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
+  end
   
+  # test decay of pheromone
+  def test_decay_pheromone
+    # change
+    pher = Array.new(5){|i| Array.new(5, 1.0)}
+    decay_pheromone(pher, 0.5)
+    pher.size.times do |x|
+      pher.size.times do |y|
+        assert_equal(0.5, pher[x][y])
+      end
+    end
+  end
+  
+  # test updating pheromone
+  def test_update_pheromone
+    pher = Array.new(5){|i| Array.new(5, 1.0)}
+    update_pheromone(pher, [ {:vector=>[0,1,2,3,4],:cost=>2.0}])
+    edges = [[0,1],[1,2],[2,3],[3,4],[0,4]]
+    pher.size.times do |x|
+      pher.size.times do |y|
+        if edges.include?([x,y]) or edges.include?([y,x])
+          assert_equal(1.5, pher[x][y]) # replaced
+        else
+          assert_equal(1.0, pher[x][y]) # no change
+        end
+      end
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
