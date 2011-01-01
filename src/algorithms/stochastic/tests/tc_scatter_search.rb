@@ -84,8 +84,15 @@ class TC_ScatterSearch < Test::Unit::TestCase
     assert_equal(best[:cost], rs[:cost])
   end
   
+  # test the construction of the initial set
   def test_construct_initial_set
-    
+    set = construct_initial_set([[-1,1],[-1,1]], 10, 20, 0.005)
+    assert_equal(10, set.size)
+    set.each do |s|
+      assert_not_nil(s[:vector])
+      assert_not_nil(s[:cost])
+      assert_equal(2, s[:vector].size)
+    end
   end
   
   # test euclidean distance
@@ -95,20 +102,54 @@ class TC_ScatterSearch < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end
   
+  # test the distance of a vector against a ref set
   def test_distance
-    
+    # no distance
+    set = [{:vector=>Array.new(10, 0)}, {:vector=>Array.new(10, 0)}]
+    assert_equal(0, distance(Array.new(10, 0), set))
+    # large distance
+    set = [{:vector=>Array.new(2){-1}}, {:vector=>Array.new(2){1}}]
+    assert_in_delta(1.4*2, distance(Array.new(2, 0), set), 0.1)
   end
   
+  # test diversification
   def test_diversify
-    
+    set = [{:vector=>[0,0], :cost=>0}, {:vector=>[2,2], :cost=>1}, {:vector=>[100,100], :cost=>10}]
+    rs = diversify(set, 1, 2)
+    assert_equal(2, rs.size)
+    assert_equal(2, rs[0].size)
+    # select by cost
+    assert_same(set.first, rs[0].first)
+    # select by diversity
+    assert_same(set[2], rs[0][1])
+    assert_same(set.first, rs[1])    
   end
-  
+
+  # test the selection of subsets
   def test_select_subsets
-    
+    # with additions
+    set = [{:new=>false,:vector=>[1]}, {:new=>true,:vector=>[2]}, {:new=>false,:vector=>[3]}]
+    rs = select_subsets(set)
+    assert_equal(2, rs.size)
+    # all additions 
+    set = [{:new=>true,:vector=>[1]}, {:new=>true,:vector=>[2]}, {:new=>true,:vector=>[3]}]
+    rs = select_subsets(set)
+    assert_equal(3, rs.size)
+    # no additions
+    set = [{:new=>false,:vector=>[1]}, {:new=>false,:vector=>[2]}, {:new=>false,:vector=>[3]}]
+    rs = select_subsets(set)
+    assert_equal(0, rs.size)
   end
   
+  # test recombination
   def test_recombine
-    
+    children = recombine([{:vector=>[1,1]}, {:vector=>[10,10]}], [[0,10],[0,10]])
+    assert_equal(2, children.size)
+    children.each do |c|
+      assert_not_nil(c[:vector])
+      assert_not_nil(c[:cost])
+      assert_equal(2, c[:vector].size)
+    end
   end
   
   # helper for turning off STDOUT
