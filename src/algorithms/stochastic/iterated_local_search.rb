@@ -38,18 +38,14 @@ def stochastic_two_opt(permutation)
   return perm
 end
 
-def local_search(best, cities, max_no_improvements)
+def local_search(best, cities, max_no_improv)
   count = 0
   begin
-    candidate = {}
-    candidate[:vector] = stochastic_two_opt(best[:vector])    
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] < best[:cost]
-      count, best = 0, candidate
-    else
-      count += 1      
-    end
-  end until count >= max_no_improvements
+    candidate = {:vector=>stochastic_two_opt(best[:vector])}
+    candidate[:cost] = cost(candidate[:vector], cities)    
+    count = (candidate[:cost] < best[:cost]) ? 0 : count+1
+    best = candidate if candidate[:cost] < best[:cost]    
+  end until count >= max_no_improv
   return best
 end
 
@@ -57,7 +53,9 @@ def double_bridge_move(perm)
   pos1 = 1 + rand(perm.size / 4)
   pos2 = pos1 + 1 + rand(perm.size / 4)
   pos3 = pos2 + 1 + rand(perm.size / 4)
-  return perm[0...pos1] + perm[pos3..perm.size] + perm[pos2...pos3] + perm[pos1...pos2]
+  p1 = perm[0...pos1] + perm[pos3..perm.size]
+  p2 = perm[pos2...pos3] + perm[pos1...pos2]
+  return p1 + p2
 end
 
 def perturbation(cities, best)
@@ -67,14 +65,14 @@ def perturbation(cities, best)
   return candidate
 end
 
-def search(cities, max_iterations, max_no_improvements)
+def search(cities, max_iterations, max_no_improv)
   best = {}
   best[:vector] = random_permutation(cities)
   best[:cost] = cost(best[:vector], cities)
-  best = local_search(best, cities, max_no_improvements)
+  best = local_search(best, cities, max_no_improv)
   max_iterations.times do |iter|
     candidate = perturbation(cities, best)
-    candidate = local_search(candidate, cities, max_no_improvements)
+    candidate = local_search(candidate, cities, max_no_improv)
     best = candidate if candidate[:cost] < best[:cost]
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
@@ -94,8 +92,8 @@ if __FILE__ == $0
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
   max_iterations = 100
-  max_no_improvements = 50
+  max_no_improv = 50
   # execute the algorithm
-  best = search(berlin52, max_iterations, max_no_improvements)
+  best = search(berlin52, max_iterations, max_no_improv)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

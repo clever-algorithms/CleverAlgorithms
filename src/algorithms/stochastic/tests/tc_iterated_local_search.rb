@@ -24,6 +24,16 @@ class TC_IteratedLocalSearch < Test::Unit::TestCase
     assert_equal(3+4, cost([0,1,2,3], cities))
     assert_equal(4*2, cost([0, 3], cities))
   end
+
+  # test the construction of a random permutation
+  def test_random_permutation
+    cities = Array.new(10)
+    100.times do
+      p = random_permutation(cities)
+      assert_equal(cities.size, p.size)
+      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
+    end
+  end
   
   # test the two opt procedure
   def test_stochastic_two_opt
@@ -37,18 +47,48 @@ class TC_IteratedLocalSearch < Test::Unit::TestCase
     end
   end
 
-  # test the construction of a random permutation
-  def test_random_permutation
-    cities = Array.new(10)
-    100.times do
-      p = random_permutation(cities)
-      assert_equal(cities.size, p.size)
-      [0,1,2,3,4,5,6,7,8,9].each {|x| assert(p.include?(x), "#{x}") }
-    end
+  # test the local search procedure
+  def test_local_search
+    # improvement
+    best = {:vector=>[0,1,2,3,4]}
+    cities = [[0,0],[3,3],[1,1],[2,2],[4,4]]
+    best[:cost] = cost(best[:vector], cities)
+    rs = local_search(best, cities, 20)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_not_same(best, rs)
+    assert_not_equal(best[:vector], rs[:vector])
+    assert_not_equal(best[:cost], rs[:cost])
+    # no improvement
+    best = {:vector=>[0,2,3,1,4]}
+    best[:cost] = cost(best[:vector], cities)
+    rs = local_search(best, cities, 10)
+    assert_not_nil(rs)
+    assert_equal(best[:cost], rs[:cost])
   end
-
-  # TODO write tests
   
+  # test a double bridge move
+  def test_double_bridge_move
+    perm = Array.new(100){|i| i}
+    100.times do
+      rs = double_bridge_move(perm)
+      assert_equal(perm.size, rs.size)
+      perm.each{|x| assert(rs.include?(x)) }
+    end
+    # TODO test the offsets used internally
+  end
+  
+  # test perturbation
+  def test_perturbation
+    cities = Array.new(100){[rand(), rand()]}
+    best = {:vector=>Array.new(100){|i| i}}
+    rs = perturbation(cities, best)
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:cost])
+    assert_equal(100, rs[:vector].length)
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

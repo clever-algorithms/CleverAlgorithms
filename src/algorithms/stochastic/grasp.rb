@@ -32,14 +32,10 @@ end
 def local_search(best, cities, max_no_improv)
   count = 0
   begin
-    candidate = {}
-    candidate[:vector] = stochastic_two_opt(best[:vector])    
-    candidate[:cost] = cost(candidate[:vector], cities)
-    if candidate[:cost] <= best[:cost]
-      count, best = 0, candidate
-    else
-      count += 1
-    end
+    candidate = {:vector=>stochastic_two_opt(best[:vector])}
+    candidate[:cost] = cost(candidate[:vector], cities)    
+    count = (candidate[:cost] < best[:cost]) ? 0 : count+1
+    best = candidate if candidate[:cost] < best[:cost]    
   end until count >= max_no_improv
   return best
 end
