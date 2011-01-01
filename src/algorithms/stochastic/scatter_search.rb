@@ -52,17 +52,16 @@ def construct_initial_set(search_space, div_set_size, max_no_improvements, step_
   return diverse_set
 end
 
-def euclidean(v1, v2)
+def euclidean_distance(c1, c2)
   sum = 0.0
-  v1.each_with_index {|v, i| sum += (v**2.0 - v2[i]**2.0) }
-  sum = sum + (0.0-sum) if sum < 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
   return Math.sqrt(sum)
 end
 
 def distance(vector1, reference_set)
   sum = 0.0
   reference_set.each do |s|
-    sum += euclidean(vector1, s[:vector])
+    sum += euclidean_distance(vector1, s[:vector])
   end
   return sum
 end
@@ -87,7 +86,7 @@ end
 
 def recombine(subset, search_space)
   a, b = subset
-  d = rand(euclidean(a[:vector], b[:vector]))/2.0
+  d = rand(euclidean_distance(a[:vector], b[:vector]))/2.0
   children = []
   subset.each do |p|
     step = (rand<0.5) ? +d : -d
@@ -134,7 +133,7 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  problem_size = 3
+  problem_size = 5
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
   num_iterations = 100

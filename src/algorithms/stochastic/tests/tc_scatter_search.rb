@@ -37,8 +37,40 @@ class TC_ScatterSearch < Test::Unit::TestCase
     end    
   end
 
-  # TODO write tests
+  def test_take_step
+    
+  end
   
+  def test_local_search
+    
+  end
+  
+  def test_construct_initial_set
+    
+  end
+  
+  # test euclidean distance
+  def test_euclidean_distance
+    assert_equal(0, euclidean_distance([0,0],[0,0]))
+    assert_equal(0, euclidean_distance([1,5],[1,5]))
+    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
+  end
+  
+  def test_distance
+    
+  end
+  
+  def test_diversify
+    
+  end
+  
+  def test_select_subsets
+    
+  end
+  
+  def test_recombine
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
