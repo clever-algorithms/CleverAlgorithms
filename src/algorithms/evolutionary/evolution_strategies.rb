@@ -51,15 +51,21 @@ def mutate(parent, search_space)
   return child
 end
 
+def init_population(minmax, pop_size)
+  strategy = Array.new(minmax.size) do |i| 
+    [0,  (minmax[i][1]-minmax[i][0]) * 0.05]
+  end
+  pop = Array.new(pop_size, {})
+  pop.each_index do |i|
+    pop[i][:vector] = random_vector(minmax)
+    pop[i][:strategy] = random_vector(strategy)
+  end
+  pop.each{|c| c[:fitness] = objective_function(c[:vector])}
+  return pop
+end
+
 def search(max_gens, search_space, pop_size, num_children)
-  strategy_space = Array.new(search_space.size) do |i| 
-    [0, (search_space[i][1]-search_space[i][0])*0.05]
-  end
-  population = Array.new(pop_size) do |i|
-    {:vector=>random_vector(search_space), 
-     :strategy=>random_vector(strategy_space)}
-  end
-  population.each{|c| c[:fitness] = objective_function(c[:vector])}
+  population = init_population(search_space, pop_size)
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_gens.times do |gen|
     children = Array.new(num_children) {|i| mutate(population[i], search_space)}

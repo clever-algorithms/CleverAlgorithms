@@ -21,6 +21,22 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
     assert_equal(0, objective_function([0,0]))
   end
 
+  # test the generation of random vectors
+  def test_random_vector
+    bounds, trials, size = [-3,3], 300, 20
+    minmax = Array.new(size) {bounds}
+    trials.times do 
+      vector, sum = random_vector(minmax), 0.0
+      assert_equal(size, vector.size)
+      vector.each do |v|
+        assert_operator(v, :>=, bounds[0])
+        assert_operator(v, :<, bounds[1])
+        sum += v
+      end
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+    end    
+  end
+
   # test default rand gaussian
   def test_random_gaussian_default
     mean, stdev = 0.0, 1.0
@@ -45,24 +61,51 @@ class TC_EvolutionStrategies < Test::Unit::TestCase
     assert_in_delta(m, mean, 1.0)
   end
   
-  # test the generation of random vectors
-  def test_random_vector
-    bounds, trials, size = [-3,3], 300, 20
-    minmax = Array.new(size) {bounds}
-    trials.times do 
-      vector, sum = random_vector(minmax), 0.0
-      assert_equal(size, vector.size)
-      vector.each do |v|
-        assert_operator(v, :>=, bounds[0])
-        assert_operator(v, :<, bounds[1])
-        sum += v
+  # test mutating the strategy vars
+  def test_mutate_problem
+    100.times do 
+      rs = mutate_problem([rand(), rand()], [1,1], [[0,1],[0,1]])
+      assert_equal(2, rs.size)
+      rs.each do |v|
+        assert_operator(v, :>=, 0)
+        assert_operator(v, :<=, 1)
       end
-      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
-    end    
+    end
   end
   
-  # TODO write tests
+  # test mutating the prob vars
+  def test_mutate_strategy
+    rs = mutate_strategy([rand(), rand()])
+    assert_equal(2, rs.size)
+    # TODO can we test this more meaningfully?
+  end
   
+  # test mutation
+  def test_mutate
+    rs = mutate({:vector=>[0,0],:strategy=>[0.5,0.5]}, [[0,1],[0,1]])
+    assert_not_nil(rs)
+    assert_not_nil(rs[:vector])
+    assert_not_nil(rs[:strategy])
+    assert_equal(2, rs[:vector].size)
+    assert_equal(2, rs[:strategy].size)
+  end
+  
+  # test initializing a new pop
+  def test_init_population
+    pop = init_population( [[0,1],[0,1]], 1000)
+    assert_equal(1000, pop.size)
+    pop.each do |p|
+      assert_not_nil(p[:vector])
+      assert_not_nil(p[:strategy])
+      assert_not_nil(p[:fitness])
+      assert_equal(2, p[:vector].size)
+      assert_equal(2, p[:strategy].size)
+      p[:vector].each do |v|
+        assert_operator(v, :>=, 0)
+        assert_operator(v, :<=, 1)
+      end
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
