@@ -54,30 +54,43 @@ class TC_SOM < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end
   
+  # test getting the BMU
   def test_get_best_matching_unit
-    
+    vectors = [{:vector=>[1,1]}, {:vector=>[0.5,0.5]}, {:vector=>[0,0]}]
+    rs = get_best_matching_unit(vectors, [0.5,0.5])
+    assert_equal(2, rs.size)
+    assert_same(vectors[1], rs[0])
+    assert_equal(0, rs[1])
   end
   
+  # test getting vectors in the ne
   def test_get_vectors_in_neighborhood
-    
+    # none
+    vectors = [{:coord=>[1,1]}, {:coord=>[0.5,0.5]}, {:coord=>[0,0]}]
+    rs = get_vectors_in_neighborhood({:coord=>[10,10]}, vectors, 1)
+    assert_equal(0, rs.size)
+    # all
+    vectors = [{:coord=>[1,1]}, {:coord=>[0.5,0.5]}, {:coord=>[0,0]}]
+    rs = get_vectors_in_neighborhood({:coord=>[0.5,0.5]}, vectors, 0.1)
+    assert_equal(1, rs.size)
+    # some
+    vectors = [{:coord=>[1,1]}, {:coord=>[0.5,0.5]}, {:coord=>[0,0]}]
+    rs = get_vectors_in_neighborhood({:coord=>[0.5,0.5]}, vectors, 1)
+    assert_equal(3, rs.size)
   end
   
+  # test updating a vector
   def test_update_codebook_vector
-    
+    # no error
+    c = {:vector=>[0.5,0.5]}
+    update_codebook_vector(c, [0.5,0.5], 0.5)
+    c[:vector].each {|x| assert_equal(0.5, x)}
+    # lots of error
+    c = {:vector=>[1,1]}
+    update_codebook_vector(c, [0.5,0.5], 0.5)
+    c[:vector].each {|x| assert_equal(0.75, x)}
   end
-  
-  def test_train_network
-    
-  end
-  
-  def test_summarize_vectors
-    
-  end
-  
-  def test_test_network
-    
-  end
-  
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
@@ -88,7 +101,60 @@ class TC_SOM < Test::Unit::TestCase
   ensure
     stream.reopen(old_stream)
   end
+
+  # test training the network
+  def test_train_network
+    vectors = [{:vector=>[0,0], :coord=>[0,0]}, {:vector=>[1,1], :coord=>[1,1]}]
+    silence_stream(STDOUT) do
+      train_network(vectors, [[0.25,0.75],[0.25,0.75]], 50, 0.5, 3)
+    end
+    # weights are changed!
+    assert_not_equal([0,0], vectors[0][:vector])
+    assert_not_equal([1,1], vectors[1][:vector])
+  end
   
+  # test vector summary
+  def test_summarize_vectors
+    # same    
+    rs = nil
+    silence_stream(STDOUT) do
+      rs = summarize_vectors([{:vector=>[0.5,0.5]}, {:vector=>[0.5,0.5]}])
+    end
+    assert_not_nil(rs)
+    rs.each do |de|
+      assert_equal(0.5, de[0])
+      assert_equal(0.5, de[1])
+    end
+    # some distribution
+    rs = nil
+    silence_stream(STDOUT) do
+      rs = summarize_vectors([{:vector=>[1,1]}, {:vector=>[0,0]}])
+    end
+    assert_not_nil(rs)
+    rs.each do |de|
+      assert_equal(0, de[0])
+      assert_equal(1, de[1])
+    end
+  end
+  
+  # test the assessment fo the network
+  def test_test_network
+    # no error
+    error =nil
+    silence_stream(STDOUT) do
+      error = test_network([{:vector=>[0.5,0.5]}, {:vector=>[0.5,0.5]}], [[0.25,0.75],[0.25,0.75]], 100)
+    end
+    assert_not_nil(error)
+    assert_in_delta(0, error, 0.2)
+    # all error
+    error = nil
+    silence_stream(STDOUT) do
+      error = test_network([{:vector=>[1,1]}, {:vector=>[0,0]}], [[0.5,0.5],[0.5,0.5]], 100)
+    end
+    assert_not_nil(error)
+    assert_in_delta(0.5, error, 0.3)
+  end
+
   # test that the algorithm can solve the problem
   def test_search    
     # problem

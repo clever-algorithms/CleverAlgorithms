@@ -80,6 +80,7 @@ def summarize_vectors(vectors)
   s = ""
   minmax.each_with_index {|bounds,i| s << "#{i}=#{bounds.inspect} "}
   puts "Vector details: #{s}"
+  return minmax
 end
 
 def test_network(codebook_vectors, shape, num_trials=100)
