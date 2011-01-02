@@ -25,6 +25,28 @@ class TC_SOM < Test::Unit::TestCase
     end    
   end
   
+  # test initializing vectors
+  def test_initialize_vectors
+    domain = [[0.0,1.0],[0.0,1.0]]
+    vectors = initialize_vectors(domain, 10, 20)
+    assert_equal(10*20, vectors.size)
+    vectors.each do |p|      
+      assert_not_nil(p[:vector])
+      assert_not_nil(p[:coord])
+      # vector
+      p[:vector].each_with_index do |x, i|
+        assert_operator(x, :>=, 0)
+        assert_operator(x, :<=, 1)
+      end
+      # coord
+      assert_equal(2, p[:coord].size)
+      assert_operator(p[:coord][0], :>=, 0)
+      assert_operator(p[:coord][0], :<, 10)
+      assert_operator(p[:coord][1], :>=, 0)
+      assert_operator(p[:coord][1], :<, 20)
+    end
+  end
+  
   # test euclidean distance
   def test_euclidean_distance
     assert_equal(0, euclidean_distance([0,0],[0,0]))
@@ -32,8 +54,29 @@ class TC_SOM < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end
   
-  # TODO write tests
+  def test_get_best_matching_unit
+    
+  end
   
+  def test_get_vectors_in_neighborhood
+    
+  end
+  
+  def test_update_codebook_vector
+    
+  end
+  
+  def test_train_network
+    
+  end
+  
+  def test_summarize_vectors
+    
+  end
+  
+  def test_test_network
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
