@@ -25,14 +25,14 @@ def transfer(activation)
   return (activation >= 0) ? 1 : -1
 end
 
-def propagate_was_change?(neurons, vector)
+def propagate_was_change?(neurons)
   i = rand(neurons.size)
   activation = 0
   neurons.each_with_index do |other, j|
-    activation += other[:weight][i]*other[:output] if i!=j
+    activation += other[:weights][i]*other[:output] if i!=j
   end
   output = transfer(activation)
-  change = (output==neurons[i][:output])
+  change = !output.equal?(neurons[i][:output])
   neurons[i][:output] = output
   return change
 end
@@ -40,7 +40,7 @@ end
 def get_output(neurons, pattern)
   vector = pattern.flatten
   neurons.each_with_index {|neuron,i| neuron[:output] = vector[i]}
-  change = propagate(neurons, vector) while change
+  change = propagate(neurons) while change
   return Array.new(neurons.size){|i| neurons[i][:output]}
 end
 
@@ -82,14 +82,10 @@ def calculate_error(expected, actual)
   return sum
 end
 
-def perturb_pattern(vector)
-  perturbed = Array.new(vector.size)
-  vector.each_with_index do |v,i|
-    if rand() < (1.0/vector.size.to_f)*0.5
-      perturbed[i] = ((vector[i]==1) ? -1 : 1)
-    else
-      perturbed[i] = vector[i]
-    end
+def perturb_pattern(vector, rate=(1.0/vector.size.to_f)*0.5)
+  perturbed = Array.new(vector)
+  perturbed.each_with_index do |v,i|
+    perturbed[i] = ((v==1) ? -1 : 1) if rand() < rate
   end
   return perturbed
 end
@@ -105,6 +101,7 @@ def test_network(neurons, patters)
   end
   error /= patters.size.to_f
   puts "Final Result: avg pattern error=#{error}"
+  return error
 end
 
 def execute(patters, num_inputs)

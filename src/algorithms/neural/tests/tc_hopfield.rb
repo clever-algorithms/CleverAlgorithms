@@ -35,24 +35,53 @@ class TC_Hopfield < Test::Unit::TestCase
     end
   end
   
+  # test creating a neuron
   def test_create_neuron
-    
+    n = create_neuron(1000)
+    assert_not_nil(n[:weights])
+    assert_equal(1000, n[:weights].size)
   end
   
   def test_transfer
-    
+    assert_equal(-1, transfer(-1))
+    assert_equal(1, transfer(0))
+    assert_equal(1, transfer(1))
   end
   
+  # test whether a propagation results in a change
   def test_propagate_was_change
-    
+    # change    
+    neurons = [{:weights=>[0,0],:output=>-1}, {:weights=>[0,0],:output=>-1}]
+    rs = propagate_was_change?(neurons)
+    assert_equal(true, rs)
+    assert_equal(true, neurons[0][:output]==1 || neurons[1][:output]==1)
+    # no change
+    neurons = [{:weights=>[0,0],:output=>1}, {:weights=>[1,1],:output=>1}]
+    rs = propagate_was_change?(neurons)
+    assert_equal(false, rs)
+    assert_equal(1.0, neurons[0][:output])
+    assert_equal(1.0, neurons[1][:output])
   end
   
+  # test get output
   def test_get_output
-    
+    # no change
+    n = [{:weights=>[1,1],:output=>1}, {:weights=>[1,1],:output=>1}]
+    rs = get_output(n, [1,1])
+    assert_equal([1,1], rs)
+    # change
+    n = [{:weights=>[1,1],:output=>1}, {:weights=>[1,1],:output=>1}]
+    rs = get_output(n, [-1,-1])
+    assert_equal([-1,-1], rs)
   end
   
+  # test training the network
   def test_train_network
-    
+    n = [{:weights=>[1,1],:output=>1}, {:weights=>[1,1],:output=>1}]
+    p = [[[-1,-1], [1,1]]]
+    train_network(n, p)
+    # weights changed
+    n.each {|x| assert_not_equal([1,1], x[:weight])}
   end
   
   # test to binary
@@ -61,22 +90,29 @@ class TC_Hopfield < Test::Unit::TestCase
     assert_equal([1], to_binary([1]))
   end
   
+  # test the printing of patterns
   def test_print_patterns
-    
+    # N/A
   end
   
+  # test calculating error
   def test_calculate_error
-    
+    # no error
+    assert_equal(0, calculate_error([-1,-1,-1], [-1,-1,-1]))
+    # some error
+    assert_equal(6, calculate_error([1,1,1], [-1,-1,-1]))
   end
   
+  # test pattern perturbations
   def test_perturb_pattern
-    
+    # none
+    assert_equal([1,1,1,1,1,1], perturb_pattern([1,1,1,1,1,1], 0))
+    assert_equal([-1,-1,-1,-1,-1,-1], perturb_pattern([-1,-1,-1,-1,-1,-1], 0))
+    # all
+    assert_equal([-1,-1,-1,-1,-1,-1], perturb_pattern([1,1,1,1,1,1], 1))
+    assert_equal([1,1,1,1,1,1], perturb_pattern([-1,-1,-1,-1,-1,-1], 1))
   end
-  
-  def test_test_network
-    
-  end
-  
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb
   def silence_stream(stream)
@@ -87,7 +123,22 @@ class TC_Hopfield < Test::Unit::TestCase
   ensure
     stream.reopen(old_stream)
   end
-  
+
+  # test the assessment of the network
+  def test_test_network
+    #  no error
+    rs = nil
+    n = [{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},
+     {:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},
+     {:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1}]
+    p = [ [[1,1,1],[1,1,1],[1,1,1]] ]
+    silence_stream(STDOUT) do
+      rs = test_network(n, p)
+    end
+    assert_not_nil(rs)
+    assert_equal(0, rs)
+  end
+
   # test that the algorithm can solve the problem
   def test_search    
     # test problem
