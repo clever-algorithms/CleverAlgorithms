@@ -15,7 +15,7 @@ def generate_random_pattern(domain)
   selected_class = rand(classes.size)
   pattern = {}
   pattern[:class_number] = selected_class
-  pattern[:class_label] = classes[selected_class]
+  pattern[:label] = classes[selected_class]
   pattern[:vector] = random_vector(domain[classes[selected_class]])
   return pattern
 end
@@ -26,7 +26,7 @@ def initialize_vectors(domain, num_vectors)
   num_vectors.times do 
     selected_class = rand(classes.size)
     codebook = {}
-    codebook[:class_label] = classes[selected_class]
+    codebook[:label] = classes[selected_class]
     codebook[:vector] = random_vector([[0,1],[0,1]])
     codebook_vectors << codebook
   end
@@ -51,7 +51,7 @@ end
 def update_codebook_vector(bmu, pattern, lrate)
   bmu[:vector].each_with_index do |v,i|
     error = pattern[:vector][i]-bmu[:vector][i]
-    if bmu[:class_label] == pattern[:class_label] 
+    if bmu[:label] == pattern[:label] 
       bmu[:vector][i] += lrate * error 
     else
       bmu[:vector][i] -= lrate * error
@@ -61,11 +61,13 @@ end
 
 def train_network(codebook_vectors, domain, iterations, learning_rate)
   iterations.times do |iter|
-    pattern = generate_random_pattern(domain)
-    bmu = get_best_matching_unit(codebook_vectors, pattern)
+    pat = generate_random_pattern(domain)
+    bmu = get_best_matching_unit(codebook_vectors, pat)
     lrate = learning_rate * (1.0-(iter.to_f/iterations.to_f))
-    puts "> train lrate=#{lrate} got=#{bmu[:class_label]}, exp=#{pattern[:class_label]}"    
-    update_codebook_vector(bmu, pattern, lrate)
+    if iter.modulo(10)==0
+      puts "> iter=#{iter}, got=#{bmu[:label]}, exp=#{pat[:label]}"
+    end
+    update_codebook_vector(bmu, pat, lrate)
   end
 end
 
@@ -74,7 +76,7 @@ def test_network(codebook_vectors, domain, num_trials=100)
   num_trials.times do 
     pattern = generate_random_pattern(domain)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
-    correct += 1 if bmu[:class_label] == pattern[:class_label]
+    correct += 1 if bmu[:label] == pattern[:label]
   end
   puts "Done. Score: #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100}%)"
   return correct

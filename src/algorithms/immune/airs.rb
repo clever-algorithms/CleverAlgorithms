@@ -12,13 +12,13 @@ end
 
 def generate_random_pattern(domain)  
   class_label = domain.keys[rand(domain.keys.size)]
-  pattern = {:class_label=>class_label}
+  pattern = {:label=>class_label}
   pattern[:vector] = random_vector(domain[class_label])
   return pattern
 end
 
 def create_cell(vector, class_label)
-  return {:class_label=>class_label, :vector=>vector}
+  return {:label=>class_label, :vector=>vector}
 end
 
 def initialize_cells(domain)
@@ -60,10 +60,10 @@ end
 
 def create_arb_pool(pattern, best_match, clone_rate, mutate_rate)
   pool = []
-  pool << create_cell(best_match[:vector], best_match[:class_label])
+  pool << create_cell(best_match[:vector], best_match[:label])
   num_clones = (best_match[:stimulation] * clone_rate * mutate_rate).round
   num_clones.times do 
-    cell = create_cell(best_match[:vector], best_match[:class_label])
+    cell = create_cell(best_match[:vector], best_match[:label])
     pool << mutate_cell(cell, best_match)
   end
   return pool
@@ -88,7 +88,7 @@ def refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
     if mean_stim < stim_thresh
       candidate = competition_for_resournces(pool, clone_rate, max_resources)
       pool.size.times do |i|
-        cell = create_cell(pool[i][:vector], pool[i][:class_label])
+        cell = create_cell(pool[i][:vector], pool[i][:label])
         mutate_cell(cell, pool[i])
         pool << cell
       end
@@ -112,8 +112,8 @@ def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, st
   num_patterns.times do |i|
     pattern = generate_random_pattern(domain)
     best_match = get_most_stimulated_cell(memory_cells, pattern)
-    if best_match[:class_label] != pattern[:class_label]
-      memory_cells << create_cell(pattern[:vector], pattern[:class_label])
+    if best_match[:label] != pattern[:label]
+      memory_cells << create_cell(pattern[:vector], pattern[:label])
     elsif best_match[:stimulation] < 1.0
       pool = create_arb_pool(pattern, best_match, clone_rate, mutate_rate)
       candidate = refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
@@ -128,7 +128,7 @@ def test_system(memory_cells, domain, num_trials=50)
   num_trials.times do 
     pattern = generate_random_pattern(domain)
     best = classify_pattern(memory_cells, pattern)
-    correct += 1 if best[:class_label] == pattern[:class_label]
+    correct += 1 if best[:label] == pattern[:label]
   end
   puts "Finished test with a score of #{correct}/#{num_trials} (#{correct}%)"
   return correct

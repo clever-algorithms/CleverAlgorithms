@@ -29,12 +29,12 @@ class TC_AIRS < Test::Unit::TestCase
   def test_generate_random_pattern
     domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
     p = generate_random_pattern(domain)
-    assert_not_nil(p[:class_label])
+    assert_not_nil(p[:label])
     assert_not_nil(p[:vector])
-    assert_equal(true, domain.keys.include?(p[:class_label]))
+    assert_equal(true, domain.keys.include?(p[:label]))
     p[:vector].each_with_index do |x, i|
-      assert_operator(x, :>=, domain[p[:class_label]][i][0])
-      assert_operator(x, :<=, domain[p[:class_label]][i][1])
+      assert_operator(x, :>=, domain[p[:label]][i][0])
+      assert_operator(x, :<=, domain[p[:label]][i][1])
     end
   end
   
@@ -42,7 +42,7 @@ class TC_AIRS < Test::Unit::TestCase
   def test_create_cell
     c = create_cell([1,2,3], "A")
     assert_equal([1,2,3], c[:vector])
-    assert_equal("A", c[:class_label])
+    assert_equal("A", c[:label])
   end
   
   # test cell initialization
@@ -51,7 +51,7 @@ class TC_AIRS < Test::Unit::TestCase
     c = initialize_cells(domain)
     assert_equal(2, c.size)
     c.each do |p|
-      assert_equal(true, domain.keys.include?(p[:class_label]))
+      assert_equal(true, domain.keys.include?(p[:label]))
       p[:vector].each_with_index do |x, i|
         assert_operator(x, :>=, 0)
         assert_operator(x, :<=, 1)
@@ -113,14 +113,14 @@ class TC_AIRS < Test::Unit::TestCase
   
   # test creating the arb pool
   def test_create_arb_pool
-    best = {:vector=>[0.5,0.5], :stimulation=>1.0, :class_label=>"A"}
+    best = {:vector=>[0.5,0.5], :stimulation=>1.0, :label=>"A"}
     p = {:vector=>[0.0,0.0]}
     pool = create_arb_pool(p, best, 5, 2)
     assert_equal(10 + 1, pool.size)
     pool.each do |x|
       assert_not_nil(x[:vector])
-      assert_not_nil(x[:class_label])
-      assert_equal("A", x[:class_label])
+      assert_not_nil(x[:label])
+      assert_equal("A", x[:label])
     end
   end
   
@@ -179,7 +179,7 @@ class TC_AIRS < Test::Unit::TestCase
   # test the training of the system
   def test_train_system
     domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-    pool = [{:vector=>[0,0],:class_label=>"A"}, {:vector=>[1,1],:class_label=>"B"}]
+    pool = [{:vector=>[0,0],:label=>"A"}, {:vector=>[1,1],:label=>"B"}]
     silence_stream(STDOUT) {train_system(pool, domain, 20, 5, 2, 0.9, 20)}
     assert_operator(pool.size, :>, 2)
   end
@@ -187,7 +187,7 @@ class TC_AIRS < Test::Unit::TestCase
   # test the assessment of the system
   def test_test_system
     domain = {"A"=>[[0,0.4999999],[0,0.4999999]],"B"=>[[0.5,1],[0.5,1]]}
-    pool = [{:vector=>[0.25,0.25],:class_label=>"A"}, {:vector=>[0.75,0.75],:class_label=>"B"}]
+    pool = [{:vector=>[0.25,0.25],:label=>"A"}, {:vector=>[0.75,0.75],:label=>"B"}]
     rs = nil
     silence_stream(STDOUT) do
       rs = test_system(pool, domain, num_trials=50)
