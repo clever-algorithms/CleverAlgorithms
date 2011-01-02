@@ -13,9 +13,7 @@ end
 def generate_random_pattern(domain)  
   classes = domain.keys
   selected_class = rand(classes.size)
-  pattern = {}
-  pattern[:class_number] = selected_class
-  pattern[:label] = classes[selected_class]
+  pattern = {:label=>classes[selected_class]}
   pattern[:vector] = random_vector(domain[classes[selected_class]])
   return pattern
 end
