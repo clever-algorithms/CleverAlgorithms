@@ -37,8 +37,77 @@ class TC_DifferentialEvolution < Test::Unit::TestCase
     end    
   end
   
-  # TODO write tests
+  # test the de procedure
+  def test_de_rand_1_bin
+    # no crossover
+    rs = de_rand_1_bin({:vector=>[0,0]}, {:vector=>[0.1,0.1]}, {:vector=>[0.2,0.2]}, {:vector=>[0.3,0.3]}, 0, 0, [[0,1], [0,1]])
+    assert_not_nil(rs[:vector])
+    assert_equal(2, rs[:vector].size)
+    rs[:vector].each do |v| 
+      assert_operator(v, :>=, 0)
+      assert_operator(v, :<, 1)
+    end
+    # all crossover
+    100.times do
+      p0, p1, p2, p3 = {:vector=>[0,0]}, {:vector=>[0.5,0.5]}, {:vector=>[0.2,0.2]}, {:vector=>[1,1]}
+      rs = de_rand_1_bin(p0, p1, p2, p3, 0.5, 1.0, [[0,1], [0,1]])
+      assert_not_nil(rs[:vector])
+      assert_equal(2, rs[:vector].size)
+      rs[:vector].each do |v| 
+        assert_operator(v, :>=, 0)
+        assert_operator(v, :<=, 1)
+      end
+    end
+  end
   
+  # test the selection of parents
+  def test_select_parents
+    100.times do
+      pop = [{:a=>"a"}, {:b=>"b"}, {:c=>"c"}, {:d=>"d"}, {:e=>"e"} ,{:f=>"f"} ,{:g=>"g"}, {:h=>"h"}]
+      current = rand(pop.size)
+      rs = select_parents(pop, current)
+      rs.each do |x|
+        assert_not_nil(x)
+        assert_not_equal(x, current)
+        assert_operator(x, :>=, 0)
+        assert_operator(x, :<, pop.size)
+        assert_equal(1, rs.select{|v| v==x}.size )
+      end
+    end
+  end
+  
+  # test creation of children
+  def test_create_children
+    pop = [{:vector=>[0,0]}, {:vector=>[0.5,0.5]}, {:vector=>[0.2,0.2]}, {:vector=>[1,1]}]
+    children = create_children(pop, [[0,1], [0,1]], 0.5, 0.5)
+    assert_equal(4, children.size)
+    children.each_with_index do |child,i|
+      assert_not_equal(child, pop[i])
+      assert_equal(2, child[:vector].size)
+      child[:vector].each do |v| 
+        assert_operator(v, :>=, 0)
+        assert_operator(v, :<=, 1)
+      end
+    end
+  end
+  
+  # test the selection of population
+  def test_select_population
+    # all parents
+    parents = [{:cost=>0.1}, {:cost=>0.2}, {:cost=>0.3}]
+    children = [{:cost=>1}, {:cost=>2}, {:cost=>3}]
+    selected = select_population(parents, children)
+    selected.each_with_index do |s,i|
+      assert_equal(s, parents[i])
+    end
+    # all children
+    parents = [{:cost=>1}, {:cost=>2}, {:cost=>3}]
+    children = [{:cost=>0.1}, {:cost=>0.2}, {:cost=>0.3}]
+    selected = select_population(parents, children)
+    selected.each_with_index do |s,i|
+      assert_equal(s, children[i])
+    end
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

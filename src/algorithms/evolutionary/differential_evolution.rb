@@ -15,25 +15,22 @@ def random_vector(search_space)
 end
 
 def de_rand_1_bin(p0, p1, p2, p3, f, cr, search_space)
-  size = p0[:vector].size
-  sample = {}
-  sample[:vector] = []
-  cut = rand(size-1) + 1
-  size.times do |i|
+  sample = {:vector=>Array.new(p0[:vector].size)}
+  cut = rand(sample[:vector].size-1) + 1
+  sample[:vector].each_index do |i|
+    sample[:vector][i] = p0[:vector][i]
     if (i==cut or rand() < cr)
       v = p3[:vector][i] + f * (p1[:vector][i] - p2[:vector][i])
       v = search_space[i][0] if v < search_space[i][0]
       v = search_space[i][1] if v > search_space[i][1]
-      sample[:vector] << v
-    else
-      sample[:vector] << p0[:vector][i]
+      sample[:vector][i] = v
     end
   end
   return sample
 end
 
 def select_parents(pop, current)
-  p1 = p2 = p3 = -1
+  p1, p2, p3 = rand(pop.size), rand(pop.size), rand(pop.size)
   p1 = rand(pop.size) until p1 != current
   p2 = rand(pop.size) until p2 != current and p2 != p1
   p3 = rand(pop.size) until p3 != current and p3 != p1 and p3 != p2
