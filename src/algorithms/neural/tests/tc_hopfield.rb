@@ -25,8 +25,57 @@ class TC_Hopfield < Test::Unit::TestCase
     end    
   end
   
-  # TODO write tests
+  # test initialize weights
+  def test_initialize_weights
+    w = initialize_weights(1000)
+    assert_equal(1000, w.size)
+    w.each do |x|
+      assert_operator(x, :>=, -5)
+      assert_operator(x, :<, 5)
+    end
+  end
   
+  def test_create_neuron
+    
+  end
+  
+  def test_transfer
+    
+  end
+  
+  def test_propagate_was_change
+    
+  end
+  
+  def test_get_output
+    
+  end
+  
+  def test_train_network
+    
+  end
+  
+  # test to binary
+  def test_to_binary
+    assert_equal([0], to_binary([-1]))
+    assert_equal([1], to_binary([1]))
+  end
+  
+  def test_print_patterns
+    
+  end
+  
+  def test_calculate_error
+    
+  end
+  
+  def test_perturb_pattern
+    
+  end
+  
+  def test_test_network
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb
