@@ -38,6 +38,45 @@ class TC_PSO < Test::Unit::TestCase
     end    
   end
   
+  # test the creation of a new particle
+  def test_create_particle
+    rs = create_particle([[-1,1],[-1,1]], [0,1])
+    assert_not_nil(rs[:position])
+    assert_not_nil(rs[:cost])
+    assert_not_nil(rs[:b_position])
+    assert_not_nil(rs[:b_cost])
+    assert_not_nil(rs[:velocity])
+    assert_equal(2, rs[:position].size)
+    assert_equal(2, rs[:velocity].size)
+    rs[:position].each do |x|
+      assert_operator(x, :>=, -1)
+      assert_operator(x, :<, 1)
+    end
+    rs[:velocity].each do |x|
+      assert_operator(x, :>=, 0)
+      assert_operator(x, :<, 1)
+    end
+    assert_not_same(rs[:position], rs[:b_position])
+  end
+  
+  # test that the get_global_best function behaves as expected
+  def test_get_global_best
+    problem_size = 2
+    search_space = Array.new(problem_size) {[-10, 10]}
+    particle = create_particle(search_space, [-1,1])
+    vel_space = [-1,1]
+    pop_size = 100
+    pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
+    # test ascending order
+    pop.each_with_index {|p,i| pop[i][:cost] = i}
+    gbest = get_global_best(pop, gbest)
+    assert_equal(0, gbest[:cost])
+    # test descending order
+    pop.each_with_index {|p,i| pop[i][:cost] = pop_size-i}
+    gbest = get_global_best(pop, gbest)
+    assert_equal(0, gbest[:cost])
+  end
+  
   # test that the update_velocity function behaves as expected
   def test_update_velocity
     problem_size = 1
@@ -90,22 +129,17 @@ class TC_PSO < Test::Unit::TestCase
     assert_equal([-10,-7], particle[:position])
   end
 
-  # test that the get_global_best function behaves as expected
-  def test_get_global_best
-    problem_size = 2
-    search_space = Array.new(problem_size) {[-10, 10]}
-    particle = create_particle(search_space, [-1,1])
-    vel_space = [-1,1]
-    pop_size = 100
-    pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
-    # test ascending order
-    pop.each_with_index {|p,i| pop[i][:cost] = i}
-    gbest = get_global_best(pop, gbest)
-    assert_equal(0, gbest[:cost])
-    # test descending order
-    pop.each_with_index {|p,i| pop[i][:cost] = pop_size-i}
-    gbest = get_global_best(pop, gbest)
-    assert_equal(0, gbest[:cost])
+  def test_update_best_position
+    # no update
+    p = {:position=>[0], :cost=>99, :b_cost=>0, :b_position=>[1]}
+    update_best_position(p)
+    assert_equal(0, p[:b_cost])
+    assert_equal([1], p[:b_position])
+    # update
+    p = {:position=>[0], :cost=>9, :b_cost=>50, :b_position=>[1]}
+    update_best_position(p)
+    assert_equal(9, p[:b_cost])
+    assert_equal([0], p[:b_position])
   end
   
   # helper for turning off STDOUT
@@ -123,9 +157,9 @@ class TC_PSO < Test::Unit::TestCase
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search(200, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 20, 20.0, 2, 2)
+      best = search(200, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 20, 5.0, 2, 2)
     end  
     assert_not_nil(best[:cost])
     assert_in_delta(0.0, best[:cost], 1.0)
-  end	  
+  end   
 end

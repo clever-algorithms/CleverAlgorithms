@@ -59,10 +59,9 @@ def update_position(particle, search_space)
 end
 
 def update_best_position(particle)
-  if particle[:cost] <= particle[:b_cost]
-    particle[:b_cost] = particle[:cost]
-    particle[:b_position] = Array.new(particle[:position])
-  end
+  return if particle[:cost] > particle[:b_cost]
+  particle[:b_cost] = particle[:cost]
+  particle[:b_position] = Array.new(particle[:position])
 end
 
 def search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
@@ -83,13 +82,13 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  problem_size = 3
+  problem_size = 2
   search_space = Array.new(problem_size) {|i| [-5, 5]}
   # algorithm configuration
   vel_space = Array.new(problem_size) {|i| [-1, 1]}
   max_gens = 200
-  pop_size = 15
-  max_vel = 20.0
+  pop_size = 20
+  max_vel = 10.0
   c1, c2 = 2.0, 2.0
   # execute the algorithm
   best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
