@@ -25,9 +25,52 @@ class TC_Perceptron < Test::Unit::TestCase
     end    
   end
   
-  # TODO write tests
+  # test weight initialization
+  def test_initialize_weights
+    w = initialize_weights(10)
+    assert_equal(11, w.size)
+    w.each do |v|
+      assert_operator(v, :>=, -1)
+      assert_operator(v, :<, 1)
+    end
+  end
   
+  # test weight updates
+  def test_update_weights
+    # no error, no change, one inputs
+    w = [0.5,0.5,0.5]
+    update_weights(2, w, [1,1], 1.0, 1.0, 0.9)
+    w.each{|x| assert_equal(0.5, x)}
+    # no error, no change, zero inputs
+    w = [0.5,0.5,0.5]
+    update_weights(2, w, [1,1], 0.0, 0.0, 0.9)
+    w.each{|x| assert_equal(0.5, x)}
+    # an update
+    w = [0.5,0.5,0.5]
+    update_weights(2, w, [1,1], 1.0, 0.0, 0.9)
+    w.each{|x| assert_equal(1.4, x)}
+  end
   
+  # test weighted sum function
+  def test_activate
+    assert_equal(5.0, activate([1.0, 1.0, 1.0, 1.0, 1.0], [1.0, 1.0, 1.0, 1.0]))
+    assert_equal(2.5, activate([0.5, 0.5, 0.5, 0.5, 0.5], [1.0, 1.0, 1.0, 1.0]))
+    assert_equal(-6.062263, activate([-6.072185,2.454509,-6.062263], [0, 0]))
+  end
+  
+  # test the transfer function
+  def test_transfer
+    assert_equal(0, transfer(-1))
+    assert_equal(1, transfer(0))
+    assert_equal(1, transfer(1))
+  end
+  
+  # test activation + transfer
+  def test_get_output
+    assert_equal(1, get_output([1,1,1], [1,1]))
+    assert_equal(0, get_output([-1,-1,-1], [1,1]))
+  end
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
@@ -37,6 +80,27 @@ class TC_Perceptron < Test::Unit::TestCase
     yield
   ensure
     stream.reopen(old_stream)
+  end
+
+  # test the training of weights
+  def test_train_weights
+    domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,1]]
+    w = [-1,-1,-1]
+    silence_stream(STDOUT) do
+      train_weights(w, domain, 2, 10, 0.5)
+    end
+    w.each {|x| assert_not_equal(-1, x) }
+  end
+
+  # test the testing of weights
+  def test_test_weights
+    rs = nil
+    domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,1]]
+    w = [0.5,0.5,-0.5]
+    silence_stream(STDOUT) do
+      rs = test_weights(w, domain, 2)
+    end
+    assert_equal(4, rs)
   end
   
   # test that the algorithm can solve the problem

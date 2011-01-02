@@ -176,7 +176,7 @@ class TC_BackPropagation < Test::Unit::TestCase
   end
   
   def test_train_network
-    # TODO
+    fail("test not written")
   end
   
   # helper for turning off STDOUT

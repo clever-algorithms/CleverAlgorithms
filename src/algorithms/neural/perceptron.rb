@@ -22,8 +22,8 @@ def update_weights(num_inputs, weights, input, out_expected, output_actual, lear
   weights[num_inputs] += learning_rate * (out_expected - output_actual) * 1.0
 end
 
-def calculate_activation(weights, vector)
-  sum = weights[vector.size] * 1.0
+def activate(weights, vector)
+  sum = weights[weights.size-1] * 1.0
   vector.each_with_index do |input, i|
     sum += weights[i] * input
   end
@@ -35,7 +35,7 @@ def transfer(activation)
 end
 
 def get_output(weights, vector)
-  activation = calculate_activation(weights, vector)
+  activation = activate(weights, vector)
   return transfer(activation)
 end
 
