@@ -26,8 +26,7 @@ def random_gaussian(mean=0.0, stdev=1.0)
 end
 
 def mutate(candidate, search_space)
-  child = {}
-  child[:vector], child[:strategy] = [], []
+  child = {:vector=>[], :strategy=>[]}
   candidate[:vector].each_with_index do |v_old, i|
     s_old = candidate[:strategy][i]
     v = v_old + s_old * random_gaussian()
@@ -47,14 +46,21 @@ def tournament(candidate, population, bout_size)
   end  
 end
 
+def init_population(minmax, pop_size)
+  strategy = Array.new(minmax.size) do |i| 
+    [0,  (minmax[i][1]-minmax[i][0]) * 0.05]
+  end
+  pop = Array.new(pop_size, {})
+  pop.each_index do |i|
+    pop[i][:vector] = random_vector(minmax)
+    pop[i][:strategy] = random_vector(strategy)
+  end
+  pop.each{|c| c[:fitness] = objective_function(c[:vector])}
+  return pop
+end
+
 def search(max_gens, search_space, pop_size, bout_size)
-  strategy_space = Array.new(search_space.size) do |i| 
-    [0, (search_space[i][1]-search_space[i][0])*0.02]
-  end
-  population = Array.new(pop_size) do |i|
-    {:vector=>random_vector(search_space), 
-     :strategy=>random_vector(strategy_space)}
-  end
+  population = init_population(search_space, pop_size)
   population.each{|c| c[:fitness] = objective_function(c[:vector])}
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_gens.times do |gen|
