@@ -11,14 +11,21 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
 
   # test that the objective function behaves as expected
   def test_onemax
-    o = o = OneMax.new(4)
+    o = OneMax.new(4)
     assert_equal(0, o.assess({:bitstring=>"0000"}))
     assert_equal(4, o.assess({:bitstring=>"1111"}))
     assert_equal(2, o.assess({:bitstring=>"1010"}))
   end
   
+  # test the is optimal function
   def test_is_optimal
-    fail("test not written")
+    o = OneMax.new(4)
+    assert_equal(true, o.is_optimal?({:fitness=>4}))
+    assert_equal(false, o.is_optimal?({:fitness=>3}))
+    assert_equal(false, o.is_optimal?({:fitness=>2}))
+    assert_equal(false, o.is_optimal?({:fitness=>1}))
+    assert_equal(false, o.is_optimal?({:fitness=>0}))
+    assert_equal(false, o.is_optimal?({:fitness=>5}))
   end
 
   # test the creation of random strings
@@ -77,10 +84,31 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
+  # test reproduce function
   def test_reproduce
-    fail("test not written")
+    # normal
+    o = GeneticAlgorithm.new(0, 10, 0.95) 
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = o.reproduce(pop)
+    assert_equal(pop.size, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
+    # odd sized pop
+    o = GeneticAlgorithm.new(0, 9, 0.95) 
+    pop = Array.new(9) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = o.reproduce(pop)
+    assert_equal(pop.size, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
+    # odd sized pop, and mismatched
+    o = GeneticAlgorithm.new(0, 9, 0.95) 
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = o.reproduce(pop)
+    assert_equal(9, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
   end
-      
+  
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)

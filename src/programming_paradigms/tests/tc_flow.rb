@@ -65,8 +65,13 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
   
+  # test the reproduction
   def test_reproduce
-    fail("test not written")
+    o = nil
+    silence_stream(STDOUT){o = VariationFlowUnit.new(Queue.new,Queue.new,0.0,0.0) }
+    c = o.reproduce({:bitstring=>"0000000000"}, {:bitstring=>"1111111111"})
+    assert_not_nil(c[:bitstring])
+    assert_equal(10, c[:bitstring].size)
   end  
 
   # test the creation of random strings
