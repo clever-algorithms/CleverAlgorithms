@@ -9,12 +9,12 @@ def rand_in_bounds(min, max)
 end
 
 def print_program(node)
-  return node if !node.kind_of? Array
-  return "(#{node[0]}, #{print_program(node[1])}, #{print_program(node[2])})"
+  return node if !node.kind_of?(Array)
+  return "(#{node[0]} #{print_program(node[1])} #{print_program(node[2])})"
 end
 
 def eval_program(node, map)
-  if !node.kind_of? Array
+  if !node.kind_of?(Array)
     return map[node].to_f if !map[node].nil?
     return node.to_f
   end
@@ -35,7 +35,7 @@ def generate_random_program(max, funcs, terms, depth=0)
 end
 
 def count_nodes(node)
-  return 1 if !node.kind_of? Array
+  return 1 if !node.kind_of?(Array) 
   a1 = count_nodes(node[1])
   a2 = count_nodes(node[2])
   return a1+a2+1
@@ -55,33 +55,30 @@ def fitness(program, num_trials=20)
   return sum_error / num_trials.to_f
 end
 
-def tournament_selection(population, num_bouts)
-  best = population[rand(population.size)]
-  (num_bouts-1).times do |i|
-    candidate = population[rand(population.size)]
-    best = candidate if candidate[:fitness] < best[:fitness]
-  end
-  return best
+def tournament_selection(pop, num_bouts)
+  selected = Array.new(num_bouts){pop[rand(pop.size)]}
+  selected.sort!{|x,y| x[:fitness]<=>y[:fitness]}
+  return selected.first
 end
 
 def replace_node(node, replacement, node_num, current_node=0)
-  return replacement,(current_node+1) if current_node == node_num
+  return [replacement,(current_node+1)] if current_node == node_num
   current_node += 1
-  return node,current_node if !node.kind_of? Array
+  return [node,current_node] if !node.kind_of?(Array)
   a1, current_node = replace_node(node[1], replacement, node_num, current_node)
   a2, current_node = replace_node(node[2], replacement, node_num, current_node)
-  return [node[0], a1, a2], current_node
+  return [[node[0], a1, a2], current_node]
 end
 
 def copy_program(node)
-  return node if !node.kind_of? Array
+  return node if !node.kind_of?(Array)
   return [node[0], copy_program(node[1]), copy_program(node[2])]
 end
 
 def get_node(node, node_num, current_node=0)
   return node,(current_node+1) if current_node == node_num
   current_node += 1
-  return nil,current_node if !node.kind_of? Array
+  return nil,current_node if !node.kind_of?(Array)
   a1, current_node = get_node(node[1], node_num, current_node)
   return a1,current_node if !a1.nil?
   a2, current_node = get_node(node[2], node_num, current_node)
@@ -90,12 +87,12 @@ def get_node(node, node_num, current_node=0)
 end
 
 def prune(node, max_depth, terms, depth=0)
-  if depth >= max_depth-1
+  if depth == max_depth-1
     t = terms[rand(terms.size)] 
     return ((t=='R') ? rand_in_bounds(-5.0, +5.0) : t)
   end
   depth += 1
-  return node if !node.kind_of? Array
+  return node if !node.kind_of?(Array)
   a1 = prune(node[1], max_depth, terms, depth)
   a2 = prune(node[2], max_depth, terms, depth)
   return [node[0], a1, a2]
@@ -109,7 +106,7 @@ def crossover(parent1, parent2, max_depth, terms)
   child1 = prune(child1, max_depth, terms)
   child2, c2 = replace_node(parent2, copy_program(tree1), pt2)
   child2 = prune(child2, max_depth, terms)
-  return child1, child2
+  return [child1, child2]
 end
 
 def mutation(parent, max_depth, functions, terms)  
