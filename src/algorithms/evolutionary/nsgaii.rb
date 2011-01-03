@@ -65,15 +65,13 @@ end
 def calculate_objectives(pop, search_space, bits_per_param)
   pop.each do |p|
     p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
-    p[:objectives] = []
-    p[:objectives] << objective1(p[:vector])
-    p[:objectives] << objective2(p[:vector])
+    p[:objectives] = [objective1(p[:vector]), objective2(p[:vector])]
   end
 end
 
 def dominates(p1, p2)
-  p1[:objectives].each_with_index do |x,i|
-    return false if x > p2[:objectives][i]
+  p1[:objectives].each_index do |i|
+    return false if p1[:objectives][i] > p2[:objectives][i]
   end
   return true
 end
@@ -116,12 +114,12 @@ def calculate_crowding_distance(pop)
   pop.each {|p| p[:distance] = 0.0}
   num_obs = pop.first[:objectives].size
   num_obs.times do |i|
-    pop.sort!{|x,y| x[:objectives][i]<=>y[:objectives][i]}
-    min, max = pop.first[:objectives][i], pop.last[:objectives][i]
-    range, inf = max-min, 1.0/0.0
-    pop.first[:distance], pop.last[:distance] = inf, inf
-    next if range == 0
-    (1...(pop.size-2)).each do |j|
+    min = pop.min{|x,y| x[:objectives][i]<=>y[:objectives][i]}
+    max = pop.max{|x,y| x[:objectives][i]<=>y[:objectives][i]}
+    range = max[:objectives][i] - min[:objectives][i]
+    pop.first[:distance], pop.last[:distance] = 1.0/0.0, 1.0/0.0
+    next if range == 0.0
+    (1...(pop.size-1)).each do |j|
       pop[j][:distance] += (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
     end  
   end
@@ -141,8 +139,7 @@ end
 
 def select_parents(fronts, pop_size)  
   fronts.each {|f| calculate_crowding_distance(f)}
-  offspring = []
-  last_front = 0
+  offspring, last_front = [], 0
   fronts.each do |front|
     break if (offspring.size+front.size) > pop_size
     front.each {|p| offspring << p}
