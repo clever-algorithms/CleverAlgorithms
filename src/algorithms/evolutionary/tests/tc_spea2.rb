@@ -91,8 +91,26 @@ class TC_SPEA2 < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
+  # test reproduce function
   def test_reproduce
-    
+    # normal
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 1)
+    assert_equal(pop.size, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
+    # odd sized pop
+    pop = Array.new(9) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, pop.size, 0)
+    assert_equal(pop.size, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
+    # odd sized pop, and mismatched
+    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
+    children = reproduce(pop, 9, 0)
+    assert_equal(9, children.size)
+    assert_not_same(pop, children)
+    children.each_index {|i| assert_not_same(pop[i][:bitstring], children[i][:bitstring])}
   end
   
   # test the creation of random strings

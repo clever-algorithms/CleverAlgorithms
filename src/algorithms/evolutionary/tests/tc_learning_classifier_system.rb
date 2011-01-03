@@ -223,13 +223,11 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   
   # test update fitness
   def test_update_fitness
-    
-    # update_fitness(action_set, min_error, l_rate)
-    
+    fail("Test not written")
   end
   
   def test_can_run_genetic_algorithm
-        
+    fail("Test not written")
   end
   
   # test that members of the population are selected
@@ -239,7 +237,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end
   
   def test_mutation
-    
+    fail("Test not written")
   end
   
   # test uniform crossover
@@ -251,11 +249,11 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end  
 
   def test_insert_in_pop
-    
+    fail("Test not written")
   end
   
   def test_crossover
-    
+    fail("Test not written")
   end
   
   def test_run_genetic_algorithm
@@ -274,21 +272,21 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end   
   
   # test that the algorithm can solve the problem
-  # def test_execute
-  #   # execute
-  #   pop = nil
-  #   silence_stream(STDOUT) do
-  #     pop = execute(150, 2000, ['0','1'], 0.1, 0.2, 0.01, 50, 20)
-  #   end    
-  #   # check system
-  #   assert_in_delta(70, pop.size, 30)
-  #   # check capability
-  #   correct = nil
-  #   silence_stream(STDOUT) do
-  #     correct = test_model(pop)
-  #   end
-  #   assert_not_nil(correct)
-  #   assert_in_delta(100, correct, 10)
-  # end
+  def test_execute
+    # execute
+    pop = nil
+    silence_stream(STDOUT) do
+      pop = execute(150, 2000, ['0','1'], 0.1, 0.2, 0.01, 50, 20)
+    end    
+    # check system
+    assert_in_delta(70, pop.size, 30)
+    # check capability
+    correct = nil
+    silence_stream(STDOUT) do
+      correct = test_model(pop)
+    end
+    assert_not_nil(correct)
+    assert_in_delta(100, correct, 10)
+  end
   
 end

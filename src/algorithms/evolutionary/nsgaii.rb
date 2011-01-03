@@ -48,14 +48,16 @@ def uniform_crossover(parent1, parent2, rate)
   return child
 end
 
-def reproduce(selected, population_size, p_crossover)
+def reproduce(selected, pop_size, p_crossover)
   children = []  
-  selected.each_with_index do |p1, i|    
-    p2 = (i.even?) ? selected[i+1] : selected[i-1]
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
     child = {}
     child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
+    break if children.size >= pop_size
   end
   return children
 end
