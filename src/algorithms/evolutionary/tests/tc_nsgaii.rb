@@ -69,17 +69,7 @@ class TC_NSGAII < Test::Unit::TestCase
     assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
     assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
   end
-  
-  # test uniform crossover
-  def test_uniform_crossover
-    p1 = "0000000000"
-    p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
-    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
-  end  
-  
+
   # test point mutations at the limits
   def test_point_mutation
     assert_equal("0000000000", point_mutation("0000000000", 0))
@@ -97,9 +87,52 @@ class TC_NSGAII < Test::Unit::TestCase
     end
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
+
+  # test uniform crossover
+  def test_uniform_crossover
+    p1 = "0000000000"
+    p2 = "1111111111"        
+    assert_equal(p1, uniform_crossover(p1,p2,0))
+    assert_not_same(p1, uniform_crossover(p1,p2,0))      
+    s = uniform_crossover(p1,p2,1)        
+    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end  
   
-  # TODO write tests
+  def test_reproduce
+    
+  end
+
+  def test_calculate_objectives
+    
+  end
+
+  def test_dominates
+    
+  end
   
+  def test_fast_nondominated_sort
+    
+  end
+  
+  def test_calculate_crowding_distance
+    
+  end
+  
+  def test_crowded_comparison_operator
+    
+  end
+  
+  def test_better
+    
+  end
+  
+  def test_select_parents
+    
+  end
+  
+  def test_weighted_sum
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

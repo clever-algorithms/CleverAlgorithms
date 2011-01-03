@@ -26,6 +26,10 @@ def decode(bitstring, search_space, bits_per_param)
   return vector
 end
 
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
+end
+
 def point_mutation(bitstring, rate=1.0/bitstring.size)
   child = ""
    bitstring.size.times do |i|
@@ -54,10 +58,6 @@ def reproduce(selected, population_size, p_crossover)
     children << child
   end
   return children
-end
-
-def random_bitstring(num_bits)
-  return (0...num_bits).inject(""){|s,i| s<<((rand<0.5) ? "1" : "0")}
 end
 
 def calculate_objectives(pop, search_space, bits_per_param)

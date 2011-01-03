@@ -57,42 +57,6 @@ class TC_SPEA2 < Test::Unit::TestCase
     assert_equal(1.0, v[1])
   end
 
-  # test euclidean distance
-  def test_euclidean_distance
-    assert_equal(0, euclidean_distance([0,0],[0,0]))
-    assert_equal(0, euclidean_distance([1,5],[1,5]))
-    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
-  end  
-  
-  # test the creation of random strings
-  def test_random_bitstring
-    assert_equal(10, random_bitstring(10).size)
-    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
-  end
-
-  # test the approximate proportion of 1's and 0's
-  def test_random_bitstring_ratio
-    s = random_bitstring(1000)
-    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
-    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
-  end
-  
-  # test uniform crossover
-  def test_uniform_crossover
-    p1 = "0000000000"
-    p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
-    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
-  end
-  
-  # test that members of the population are selected
-  def test_binary_tournament
-    pop = Array.new(10) {|i| {:fitness=>i} }
-    10.times {assert(pop.include?(binary_tournament(pop)))}  
-  end
-  
   # test point mutations at the limits
   def test_point_mutation
     assert_equal("0000000000", point_mutation("0000000000", 0))
@@ -110,9 +74,78 @@ class TC_SPEA2 < Test::Unit::TestCase
     end
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
+
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}  
+  end
   
-  # TODO write tests
+  # test uniform crossover
+  def test_uniform_crossover
+    p1 = "0000000000"
+    p2 = "1111111111"        
+    assert_equal(p1, uniform_crossover(p1,p2,0))
+    assert_not_same(p1, uniform_crossover(p1,p2,0))      
+    s = uniform_crossover(p1,p2,1)        
+    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end
   
+  def test_reproduce
+    
+  end
+  
+  # test the creation of random strings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
+  end
+
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  end
+  
+  def test_calculate_objectives
+    
+  end
+  
+  def test_dominates
+    
+  end
+  
+  def test_weighted_sum
+    
+  end
+
+  # test euclidean distance
+  def test_euclidean_distance
+    assert_equal(0, euclidean_distance([0,0],[0,0]))
+    assert_equal(0, euclidean_distance([1,5],[1,5]))
+    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
+  end  
+  
+  def test_calculate_dominated
+    
+  end
+  
+  def test_calculate_raw_fitness
+    
+  end
+  
+  def test_calculate_density
+    
+  end
+  
+  def test_calculate_fitness
+    
+  end
+  
+  def test_environmental_selection
+    
+  end
   
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39

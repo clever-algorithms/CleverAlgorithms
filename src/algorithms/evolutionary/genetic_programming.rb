@@ -4,7 +4,7 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-def random_num(min, max)
+def rand_in_bounds(min, max)
   return min + (max-min)*rand()
 end
 
@@ -26,7 +26,7 @@ end
 def generate_random_program(max, funcs, terms, depth=0)
   if depth==max-1 or (depth>1 and rand()<0.1)
     t = terms[rand(terms.size)] 
-    return ((t=='R') ? random_num(-5.0, +5.0) : t)
+    return ((t=='R') ? rand_in_bounds(-5.0, +5.0) : t)
   end  
   depth += 1 
   arg1 = generate_random_program(max, funcs, terms, depth)
@@ -48,7 +48,7 @@ end
 def fitness(program, num_trials=20)
   sum_error = 0.0
   num_trials.times do |i|
-    input = random_num(-1.0, 1.0)
+    input = rand_in_bounds(-1.0, 1.0)
     error = eval_program(program, {'X'=>input}) - target_function(input)
     sum_error += error.abs
   end
@@ -92,7 +92,7 @@ end
 def prune(node, max_depth, terms, depth=0)
   if depth >= max_depth-1
     t = terms[rand(terms.size)] 
-    return ((t=='R') ? random_num(-5.0, +5.0) : t)
+    return ((t=='R') ? rand_in_bounds(-5.0, +5.0) : t)
   end
   depth += 1
   return node if !node.kind_of? Array
