@@ -36,10 +36,11 @@ end
 
 def calculate_deletion_vote(classifier, pop, del_thresh)
   vote = classifier[:setsize] * classifier[:num]
-  avg_fit = pop.inject(0.0){|s,c| s+c[:fitness]}/pop.inject(0.0){|s,c| s+c[:num]}
+  total = pop.inject(0.0){|s,c| s+c[:num]}  
+  avg_fitness = pop.inject(0.0){|s,c| s + (c[:fitness]/total)}
   derated = classifier[:fitness] / classifier[:num]
-  if classifier[:experience] > del_thresh and derated < 0.1 * avg_fit
-    vote *= avg_fit / derated
+  if classifier[:experience] > del_thresh and derated < (0.1 * avg_fitness)
+    return vote * (avg_fitness / derated)
   end  
   return vote
 end
@@ -53,7 +54,7 @@ def delete_from_pop(pop, pop_size, del_thresh)
   vote_sum, index = 0.0, 0
   pop.each_with_index do |c,i|
     vote_sum += c[:dvote]
-    if vote_sum > point
+    if vote_sum >= point
       index = i
       break
     end
@@ -65,31 +66,26 @@ def delete_from_pop(pop, pop_size, del_thresh)
   end
 end
 
-def generate_random_classifier(input, actions, gen)
+def generate_random_classifier(input, actions, gen, rate=1.0/3.0)
   condition = ""
-  input.each_char {|s| condition << ((rand<1.0/3.0) ? '#' : s)}
+  input.each_char {|s| condition << ((rand<rate) ? '#' : s)}
   action = actions[rand(actions.size)]
   return new_classifier(condition, action, gen)
 end
 
 def does_match?(input, condition)
-  i = 0
-  condition.each_char do |c|
-    return false if c!='#' and c!=input[i].chr
-    i += 1
-  end
+  input.size.times do |i|
+    return false if condition[i].chr!='#' and input[i].chr!=condition[i].chr
+  end  
   return true
 end
 
 def get_actions(pop)
-  return [] if pop.empty?
-  set = {}
-  pop.each do |classifier|
-    key = classifier[:action]
-    set[key] = 0 if set[key].nil?
-    set[key] += 1
-  end 
-  return set.keys
+  actions = []
+  pop.each do |c|
+    actions << c[:action] if !actions.include?(c[:action])
+  end
+  return actions
 end
 
 def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
@@ -106,7 +102,7 @@ def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
   return match_set
 end
 
-def generate_prediction(input, match_set) 
+def generate_prediction(match_set)
   prediction = {}
   match_set.each do |classifier|
     key = classifier[:action]
@@ -115,15 +111,15 @@ def generate_prediction(input, match_set)
     prediction[key][:count] += classifier[:fitness]
   end
   prediction.keys.each do |key| 
-    prediction[key][:weight]=prediction[key][:sum]/prediction[key][:count]
-  end  
+    prediction[key][:weight] = prediction[key][:sum]/prediction[key][:count]
+  end
   return prediction
 end
 
-def select_action(prediction_array, p_explore=1.0)
-  keys = prediction_array.keys
+def select_action(predictions, p_explore=1.0)
+  keys = Array.new(predictions.keys)
   return keys[rand(keys.size)] if rand() < p_explore    
-  keys.sort!{|x,y| prediction_array[y][:weight]<=>prediction_array[x][:weight]}
+  keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
   return keys.first
 end
 
@@ -222,7 +218,7 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
   max_gens.times do |gen|
     input = random_bitstring()
     match_set = generate_match_set(input, pop, actions, gen, pop_size, del_thresh)
-    prediction_array = generate_prediction(input, match_set)    
+    prediction_array = generate_prediction(match_set)    
     action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
     expected = target_function(input)
@@ -247,7 +243,7 @@ def test_model(system, num_trials=100)
   num_trials.times do
     input = random_bitstring()
     match_set = system.select{|c| does_match?(input, c[:condition])}
-    prediction_array = generate_prediction(input, match_set)    
+    prediction_array = generate_prediction(match_set)    
     action = select_action(prediction_array)
     correct += 1 if target_function(input) == action.to_i
   end
