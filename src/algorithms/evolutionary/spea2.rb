@@ -77,9 +77,9 @@ def calculate_objectives(pop, search_space, bits_per_param)
   end
 end
 
-def dominates(p1, p2)
-  p1[:objectives].each_with_index do |x,i|
-    return false if x > p2[:objectives][i]
+def dominates?(p1, p2)
+  p1[:objectives].each_index do |i|
+    return false if p1[:objectives][i] > p2[:objectives][i]
   end
   return true
 end
@@ -96,13 +96,13 @@ end
 
 def calculate_dominated(pop)
   pop.each do |p1|
-    p1[:dom_set] = pop.select {|p2| dominates(p1, p2) }
+    p1[:dom_set] = pop.select {|p2| p1!=p2 and dominates?(p1, p2) }
   end  
 end
 
 def calculate_raw_fitness(p1, pop)
   return pop.inject(0.0) do |sum, p2| 
-    (dominates(p2, p1)) ? sum + p2[:dom_set].size.to_f : sum
+    (dominates?(p2, p1)) ? sum + p2[:dom_set].size.to_f : sum
   end
 end
 
@@ -117,10 +117,10 @@ def calculate_fitness(pop, archive, search_space, bits_per_param)
   calculate_objectives(pop, search_space, bits_per_param)
   union = archive + pop
   calculate_dominated(union)
-  union.each do |p1|
-    p1[:raw_fitness] = calculate_raw_fitness(p1, union)
-    p1[:density] = calculate_density(p1, union)
-    p1[:fitness] = p1[:raw_fitness] + p1[:density]
+  union.each do |p|
+    p[:raw_fitness] = calculate_raw_fitness(p, union)
+    p[:density] = calculate_density(p, union)
+    p[:fitness] = p[:raw_fitness] + p[:density]
   end
 end
 
@@ -143,7 +143,7 @@ def environmental_selection(pop, archive, archive_size)
       end
       environment.sort!{|x,y| x[:density]<=>y[:density]}
       environment.shift
-    end until environment.size >= archive_size
+    end until environment.size <= archive_size
   end  
   return environment
 end

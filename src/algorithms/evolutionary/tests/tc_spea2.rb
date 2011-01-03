@@ -126,16 +126,37 @@ class TC_SPEA2 < Test::Unit::TestCase
     assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
   end
   
-  def test_calculate_objectives
-    
+  # test calculation of objectives
+  def test_calculate_objectives  
+    pop = [{:bitstring=>"11111111"},{:bitstring=>"00001111"}]  
+    rs = calculate_objectives(pop, [[0,10]], 8)
+    pop.each do |p|
+      assert_not_nil(p[:vector])
+      assert_equal(1, p[:vector].size)
+      assert_not_nil(p[:objectives])
+      assert_equal(2, p[:objectives].size)
+    end
   end
   
+  # test dominance test (smaller = better)
+  # does p1 dominate p2?
   def test_dominates
-    
+    # smaller
+    assert_equal(false, dominates?({:objectives=>[1,1]}, {:objectives=>[0,0]}))
+    # equal
+    assert_equal(true, dominates?({:objectives=>[0,0]}, {:objectives=>[0,0]}))
+    # bigger
+    assert_equal(true, dominates?({:objectives=>[0,0]}, {:objectives=>[1,1]}))
+    # partial
+    assert_equal(false, dominates?({:objectives=>[0,1]}, {:objectives=>[1,0]}))
   end
   
+  # test the calculation of weighted sum
   def test_weighted_sum
-    
+    assert_equal(2, weighted_sum({:objectives=>[1,1]}))
+    assert_equal(1, weighted_sum({:objectives=>[0,1]}))
+    assert_equal(1, weighted_sum({:objectives=>[1,0]}))
+    assert_equal(0, weighted_sum({:objectives=>[0,0]}))
   end
 
   # test euclidean distance
@@ -145,24 +166,65 @@ class TC_SPEA2 < Test::Unit::TestCase
     assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
   end  
   
+  # test lists of dominated solutions
   def test_calculate_dominated
-    
+    pop = [{:objectives=>[1,1]}, {:objectives=>[0,0]}]
+    calculate_dominated(pop)
+    assert_equal(0, pop[0][:dom_set].size)
+    assert_equal(1, pop[1][:dom_set].size)
+    assert_equal(pop.first, pop[1][:dom_set].first)    
   end
   
+  # test the calculation of raw fitness
   def test_calculate_raw_fitness
-    
+    # no dominated
+    pop = [{:objectives=>[1,1], :dom_set=>[]}, {:objectives=>[0,0], :dom_set=>[]}]
+    assert_equal(0, calculate_raw_fitness(pop[0], pop))
+    # one dominated
+    pop = [{:objectives=>[1,1], :dom_set=>[]}, {:objectives=>[2,2], :dom_set=>[]}, {:objectives=>[0,0], :dom_set=>[]}]
+    pop[2][:dom_set] << pop[0]
+    pop[2][:dom_set] << pop[1]
+    pop[1][:dom_set] << pop[1]
+    assert_equal(3, calculate_raw_fitness(pop[1], pop))
   end
   
+  # test calculate density
   def test_calculate_density
-    
+    # same
+    pop = [{:objectives=>[1,1]}, {:objectives=>[1,1]}]
+    assert_equal(1.0/2.0, calculate_density(pop[0], pop))
+    # different
+    pop = [{:objectives=>[1,1]}, {:objectives=>[0,0]}]
+    assert_in_delta(1.0/(1.0+2.0), calculate_density(pop[0], pop), 0.1)    
   end
   
+  # test calculate fitness
   def test_calculate_fitness
-    
+    pop = [{:bitstring=>"11111111"}] 
+    archive = [{:bitstring=>"00000000", :objectives=>[0,0]}]
+    rs = calculate_fitness(pop, archive, [[0,1]], 8)
+    (pop+archive).each do |p|
+      assert_not_nil(p[:raw_fitness])
+      assert_not_nil(p[:density])
+      assert_not_nil(p[:fitness])
+      assert_equal(p[:fitness], p[:raw_fitness]+p[:density])
+    end
   end
   
+  # test environmental selection
   def test_environmental_selection
-    
+    # do nothing
+    rs = environmental_selection([{:fitness=>10}], [{:fitness=>0.5}], 1)
+    assert_equal(1, rs.size)
+    assert_equal({:fitness=>0.5}, rs.first)
+    # env < archive
+    rs = environmental_selection([{:fitness=>10}], [{:fitness=>1.1}], 1)
+    assert_equal(1, rs.size)
+    assert_equal({:fitness=>1.1}, rs.first)
+    # env > archive
+    rs = environmental_selection([{:fitness=>0.1, :objectives=>[0,0]}], [{:fitness=>0.5, :objectives=>[0,0]}], 1)
+    assert_equal(1, rs.size)
+    assert_equal(0.1, rs.first[:fitness])
   end
   
   # helper for turning off STDOUT
@@ -180,7 +242,7 @@ class TC_SPEA2 < Test::Unit::TestCase
   def test_search    
     pop = nil
     silence_stream(STDOUT) do
-      pop = search([[-10,10]], 50, 50, 20, 0.95)
+      pop = search([[-10,10]], 50, 50, 40, 0.95)
     end    
     assert_equal(20, pop.size)
     pop.each do |p|
