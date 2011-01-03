@@ -244,7 +244,7 @@ class TC_SPEA2 < Test::Unit::TestCase
     silence_stream(STDOUT) do
       pop = search([[-10,10]], 50, 50, 40, 0.95)
     end    
-    assert_equal(20, pop.size)
+    assert_equal(40, pop.size)
     pop.each do |p|
       # in [0,2]
       assert_in_delta(1.0, p[:vector][0], 1.0)
