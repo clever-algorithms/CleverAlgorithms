@@ -9,6 +9,18 @@ require File.expand_path(File.dirname(__FILE__)) + "/../oop"
 
 class TC_GeneticAlgorithm < Test::Unit::TestCase
 
+  # test that the objective function behaves as expected
+  def test_onemax
+    o = o = OneMax.new(4)
+    assert_equal(0, o.assess({:bitstring=>"0000"}))
+    assert_equal(4, o.assess({:bitstring=>"1111"}))
+    assert_equal(2, o.assess({:bitstring=>"1010"}))
+  end
+  
+  def test_is_optimal
+    fail("test not written")
+  end
+
   # test the creation of random strings
   def test_random_bitstring
     o = GeneticAlgorithm.new
@@ -23,20 +35,7 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
     assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
   end
-  
-  # test uniform crossover
-  def test_uniform_crossover    
-    p1 = "0000000000"
-    p2 = "1111111111"       
-    o = GeneticAlgorithm.new(0,0,0.0) 
-    assert_equal(p1, o.uniform_crossover(p1,p2))
-    o = GeneticAlgorithm.new(0,0,0.0) 
-    assert_not_same(p1, o.uniform_crossover(p1,p2))
-    o = GeneticAlgorithm.new(0,0,1.0) 
-    s = o.uniform_crossover(p1,p2)        
-    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
-  end
-  
+
   # test that members of the population are selected
   def test_binary_tournament
     o = GeneticAlgorithm.new(0,0,0.0) 
@@ -65,12 +64,21 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
   
-  # test that the objective function behaves as expected
-  def test_onemax
-    o = o = OneMax.new(4)
-    assert_equal(0, o.assess({:bitstring=>"0000"}))
-    assert_equal(4, o.assess({:bitstring=>"1111"}))
-    assert_equal(2, o.assess({:bitstring=>"1010"}))
+  # test uniform crossover
+  def test_uniform_crossover    
+    p1 = "0000000000"
+    p2 = "1111111111"       
+    o = GeneticAlgorithm.new(0,0,0.0) 
+    assert_equal(p1, o.uniform_crossover(p1,p2))
+    o = GeneticAlgorithm.new(0,0,0.0) 
+    assert_not_same(p1, o.uniform_crossover(p1,p2))
+    o = GeneticAlgorithm.new(0,0,1.0) 
+    s = o.uniform_crossover(p1,p2)        
+    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+  end
+  
+  def test_reproduce
+    fail("test not written")
   end
       
   # helper for turning off STDOUT

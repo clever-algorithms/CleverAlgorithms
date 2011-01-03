@@ -9,19 +9,25 @@ require File.expand_path(File.dirname(__FILE__)) + "/../flow"
 
 class TC_GeneticAlgorithm < Test::Unit::TestCase
 
-  # test the creation of random strings
-  def test_random_bitstring
-    assert_equal(10, random_bitstring(10).size)
-    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
-  end
-
-  # test the approximate proportion of 1's and 0's
-  def test_random_bitstring_ratio
-    s = random_bitstring(1000)
-    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
-    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  # test that the objective function behaves as expected
+  def test_onemax
+    o = nil
+    silence_stream(STDOUT){o = EvalFlowUnit.new() }
+    assert_equal(0, o.onemax("0000"))
+    assert_equal(4, o.onemax("1111"))
+    assert_equal(2, o.onemax("1010"))
   end
   
+  # TODO consider testing the stop condition
+
+  # test that members of the population are selected
+  def test_binary_tournament
+    o = nil
+    silence_stream(STDOUT){o = SelectFlowUnit.new(Queue.new,Queue.new) }
+    pop = Array.new(10) {|i| {:fitness=>i} }
+    10.times {assert(pop.include?(o.binary_tournament(pop)))}  
+  end
+
   # test uniform crossover
   def test_uniform_crossover    
     p1 = "0000000000"
@@ -36,14 +42,6 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
-  # test that members of the population are selected
-  def test_binary_tournament
-    o = nil
-    silence_stream(STDOUT){o = SelectFlowUnit.new(Queue.new,Queue.new) }
-    pop = Array.new(10) {|i| {:fitness=>i} }
-    10.times {assert(pop.include?(o.binary_tournament(pop)))}  
-  end
-
   # test point mutations at the limits
   def test_point_mutation
     o = nil
@@ -67,15 +65,23 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
   
-  # test that the objective function behaves as expected
-  def test_onemax
-    o = nil
-    silence_stream(STDOUT){o = EvalFlowUnit.new() }
-    assert_equal(0, o.onemax("0000"))
-    assert_equal(4, o.onemax("1111"))
-    assert_equal(2, o.onemax("1010"))
+  def test_reproduce
+    fail("test not written")
+  end  
+
+  # test the creation of random strings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
   end
-      
+
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  end
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
