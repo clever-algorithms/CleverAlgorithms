@@ -68,7 +68,7 @@ end
 
 def generate_random_classifier(input, actions, gen, rate=1.0/3.0)
   condition = ""
-  input.each_char {|s| condition << ((rand<rate) ? '#' : s)}
+  input.size.times {|i| condition << ((rand<rate) ? '#' : input[i].chr)}
   action = actions[rand(actions.size)]
   return new_classifier(condition, action, gen)
 end
@@ -143,7 +143,7 @@ def update_fitness(action_set, min_error, l_rate)
     sum += accuracy[i] * c[:num]
   end
   action_set.each_with_index do |c,i|
-    c[:fitness] += l_rate * (accuracy[i] * c[:num] / sum - c[:fitness])
+    c[:fitness] += l_rate * ((accuracy[i] * c[:num]) / (sum - c[:fitness]))
   end
 end
 
@@ -194,12 +194,11 @@ end
 def crossover(c1, c2, p1, p2)
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
-  c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
-  c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
-  c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0    
-  c2[:prediction] = c1[:prediction]
-  c2[:error] = c1[:error]
-  c2[:fitness] = c1[:fitness]
+  c1[:action] = (rand()<0.5) ? p1[:action] : p2[:action]
+  c2[:action] = (rand()<0.5) ? p1[:action] : p2[:action]
+  c2[:prediction] = c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
+  c2[:error] = c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
+  c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0    
 end
 
 def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95)
@@ -261,7 +260,7 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 5000, 150
+  max_gens, pop_size = 1000, 100
   l_rate, min_error = 0.2, 0.01
   p_explore = 0.10
   ga_freq, del_thresh = 50, 20

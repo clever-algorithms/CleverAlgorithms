@@ -11,10 +11,10 @@ end
 def decode(bitstring, search_space, bits_per_param)
   vector = []
   search_space.each_with_index do |bounds, i|
-    off, sum, j = i*bits_per_param, 0.0, 0    
-    bitstring[off...(off+bits_per_param)].reverse.each_char do |c|
-      sum += ((c=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
-      j += 1
+    off, sum = i*bits_per_param, 0.0
+    param = bitstring[off...(off+bits_per_param)].reverse
+    param.size.times do |j|
+      sum += ((param[j].chr=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
     end
     min, max = bounds
     vector << min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
