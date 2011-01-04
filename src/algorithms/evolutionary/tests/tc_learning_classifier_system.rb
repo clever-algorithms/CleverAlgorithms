@@ -391,8 +391,6 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     assert_in_delta(50, rs, 15)
   end
   
- 
-  
   # test that the algorithm can solve the problem
   def test_execute
     # execute
