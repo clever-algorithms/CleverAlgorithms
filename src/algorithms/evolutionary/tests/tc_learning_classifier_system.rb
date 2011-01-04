@@ -28,16 +28,16 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
 
   # tests the creation of a new classifier
   def test_new_classifier
-    c = new_classifier("000000", '1', 500, 99)
+    c = new_classifier("000000", '1', 500, 9, 8, 7)
     assert_equal("000000", c[:condition])
     assert_equal("1", c[:action])
     assert_equal(500, c[:lasttime])    
     assert_not_nil(c[:prediction])
     assert_not_nil(c[:error])
     assert_not_nil(c[:fitness])
-    assert_equal(99, c[:prediction])
-    assert_equal(99, c[:error])
-    assert_equal(99, c[:fitness])    
+    assert_equal(9, c[:prediction])
+    assert_equal(8, c[:error])
+    assert_equal(7, c[:fitness])    
     assert_not_nil(c[:experience])
     assert_equal(0, c[:experience])
     assert_not_nil(c[:setsize])

@@ -14,10 +14,10 @@ def target_function(s)
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
 end
 
-def new_classifier(condition, action, gen, init=0.00001)
+def new_classifier(condition, action, gen, p0=10.0, e0=0.0, f0=10.0)
   other = {}
   other[:condition], other[:action], other[:lasttime] = condition, action, gen
-  other[:prediction], other[:error], other[:fitness] = init, init, init
+  other[:prediction], other[:error], other[:fitness] = p0, e0, f0
   other[:experience], other[:setsize], other[:num] = 0.0, 1.0, 1.0
   return other
 end
@@ -34,12 +34,12 @@ def random_bitstring(size=6)
   return (0...size).inject(""){|s,i| s+((rand<0.5) ? "1" : "0")}
 end
 
-def calculate_deletion_vote(classifier, pop, del_thresh)
+def calculate_deletion_vote(classifier, pop, del_thresh, f_thresh=0.1)
   vote = classifier[:setsize] * classifier[:num]
-  total = pop.inject(0.0){|s,c| s+c[:num]}  
+  total = pop.inject(0.0){|s,c| s+c[:num]}
   avg_fitness = pop.inject(0.0){|s,c| s + (c[:fitness]/total)}
-  derated = classifier[:fitness] / classifier[:num]
-  if classifier[:experience] > del_thresh and derated < (0.1 * avg_fitness)
+  derated = classifier[:fitness] / classifier[:num].to_f
+  if classifier[:experience]>del_thresh and derated<(f_thresh*avg_fitness)
     return vote * (avg_fitness / derated)
   end  
   return vote
@@ -117,6 +117,7 @@ def generate_prediction(match_set)
 end
 
 def select_action(predictions, p_explore=1.0)
+  puts "Prediction=#{predictions.inspect}"
   keys = Array.new(predictions.keys)
   return keys[rand(keys.size)] if rand() < p_explore    
   keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
@@ -140,7 +141,7 @@ def update_fitness(action_set, min_error, l_rate)
   accuracy = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
     accuracy[i] = (c[:error]<min_error) ? 1.0 : 0.1*(c[:error]/min_error)**-5.0
-    sum += accuracy[i] * c[:num]
+    sum += accuracy[i] * c[:num].to_f
   end
   action_set.each_with_index do |c,i|
     c[:fitness] += l_rate * ((accuracy[i] * c[:num]) / (sum - c[:fitness]))
@@ -195,11 +196,11 @@ def crossover(c1, c2, p1, p2)
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
   c2[:prediction] = c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
-  c2[:error] = c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
-  c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0    
+  c2[:error] = c1[:error] = 0.25*((p1[:error]+p2[:error])/2.0)
+  c2[:fitness] = c1[:fitness] = 0.1*((p1[:fitness]+p2[:fitness])/2.0)    
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=1.0)
+def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.8)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
@@ -219,7 +220,7 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
     action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
     expected = target_function(input)
-    payoff = ((expected-action.to_i)==0) ? 300.0 : 1.0
+    payoff = ((expected-action.to_i)==0) ? 300.0 : 10.0
     correct += 1 if expected == action.to_i
     update_set(action_set, payoff, l_rate)
     update_fitness(action_set, min_error, l_rate)
@@ -258,10 +259,10 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 2000, 50
+  max_gens, pop_size = 2000, 400
   l_rate, min_error = 0.2, 0.01
   p_explore = 0.10
-  ga_freq, del_thresh = 50, 20
+  ga_freq, del_thresh = 25, 20
   # execute the algorithm
   execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
 end
