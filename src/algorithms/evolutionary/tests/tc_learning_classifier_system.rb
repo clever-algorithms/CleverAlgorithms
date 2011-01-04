@@ -189,7 +189,6 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
       assert_equal(1, rs[key][:count])
       assert_equal(1, rs[key][:weight])
     end
-    # TODO prediction is initially close to zero, can this be a problem?
   end
   
   # test select action
@@ -338,9 +337,9 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
            {:condition=>"111111", :action=>'0', :num=>1, :fitness=>0.2, 
               :prediction=>0.3, :error=>0.1, :setsize=>1, :num=>1, :experience=>1}]
     run_genetic_algorithm(['0', '1'], pop, pop, "000000", 5, 2, 0.1, 1.0)
-
-    # TODO what do we test here?
-#    fail("Test not written")
+    # popsize is reasonable
+    assert_operator(pop.size, :>, 0)
+    assert_in_delta(2, pop.inject(0){|s,x| s + x[:num]}, 1)
   end
   
   # helper for turning off STDOUT
@@ -355,9 +354,20 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end  
   
   # test the preparation of a model
-  # TODO is the payoff reasonable?
   def test_train_model
-#    fail("Test not written")
+    pop = nil
+    silence_stream(STDOUT) do
+      pop = train_model(50, 100, ['0', '1'], 0.5, 0.1, 0.01, 10, 20)
+    end
+    # got a pop
+    assert_not_nil(pop)
+    assert_operator(pop.size, :>, 0)
+    assert_in_delta(50, pop.inject(0){|s,x| s + x[:num]}, 5)
+    # pop is meaningful
+    pop.each do |p|
+      assert_equal(6, p[:condition].size)
+      assert_equal(true, ['0', '1'].include?(p[:action]))
+    end
   end
   
   # test the assessment of the model

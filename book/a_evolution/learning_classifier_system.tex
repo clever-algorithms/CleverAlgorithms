@@ -165,7 +165,7 @@ The problem is an instance of a Boolean multiplexer called the 6-multiplexer. It
 % algorithm
 The algorithm is an instance of XCS based on the description provided by Butz and Wilson \cite{Butz2002a} with the parameters based on the application of XCS to Boolean multiplexer problems by Wilson \cite{Wilson1995, Wilson1998}.
 % specifics
-The population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. The multiplexer problem is a single step problem, so the complexities of delayed payoff are not required. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1$, $v=5$, $\delta=0.1$ and $P_{\#}=\frac{1}{3}$.
+The population is grown as needed, and subsumption which would be appropriate for the Boolean multiplexer problem was not used for brevity. The multiplexer problem is a single step problem, so the complexities of delayed payoff are not required. A number of parameters were hard coded to recommended values, specifically: $\alpha=0.1$, $v=-0.5$, $\delta=0.1$ and $P_{\#}=\frac{1}{3}$.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Learning Classifier System in Ruby, label=learning_classifier_system]{../src/algorithms/evolutionary/learning_classifier_system.rb}

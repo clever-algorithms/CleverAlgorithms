@@ -195,8 +195,8 @@ def crossover(c1, c2, p1, p2)
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
   c2[:prediction] = c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
-  c2[:error] = c1[:error] = 0.25*((p1[:error]+p2[:error])/2.0)
-  c2[:fitness] = c1[:fitness] = 0.1*((p1[:fitness]+p2[:fitness])/2.0)    
+  c2[:error] = c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
+  c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0
 end
 
 def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.8)
