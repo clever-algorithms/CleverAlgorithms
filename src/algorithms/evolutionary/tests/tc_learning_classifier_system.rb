@@ -176,7 +176,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   
   # test generate a prediction
   def test_generate_prediction
-    match_set = [{:action=>'1', :fitness=>1, :prediction=>1}, {:action=>'0', :fitness=>1, :prediction=>1}]
+    match_set = [{:action=>'1', :fitness=>1.0, :prediction=>1.0}, {:action=>'0', :fitness=>1.0, :prediction=>1.0}]
     rs = generate_prediction(match_set)
     assert_equal(2, rs.size)
     rs.keys.each do |key|
@@ -225,17 +225,18 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   def test_update_fitness
     # below min error
     set = [{:error=>0.5, :num=>1, :fitness=>1.0}, {:error=>0.5, :num=>1, :fitness=>0.5}]
-    update_fitness(set, 1.0, 1.0)
-    assert_equal(1.0+(1.0*(1.0/(2.0-1.0))), set[0][:fitness])
-    assert_equal(0.5+(1.0*(1.0/(2.0-0.5))), set[1][:fitness])    
+    update_fitness(set, 1.0, 1.0, 0.1, -0.5)
+    assert_equal(1.0+1.0*(1.0*1.0/2.0-1.0), set[0][:fitness])
+    assert_equal(0.5+1.0*(1.0*1.0/2.0-0.5), set[1][:fitness])    
     # above min error
     set = [{:error=>1.0, :num=>1, :fitness=>1.0}, {:error=>1.5, :num=>1, :fitness=>0.5}]
-    update_fitness(set, 0.1, 1.0)
-    a1 = 0.1*(1.0/0.1)**-5.0
-    a2 = 0.1*(1.5/0.1)**-5.0
+    min_error, l_rate, alpha, v = 0.1, 1.0, 0.1, -0.5
+    update_fitness(set, min_error, l_rate, alpha, v)
+    a1 = (alpha*(1.0/min_error)**v)*set[0][:num].to_f
+    a2 = (alpha*(1.5/min_error)**v)*set[1][:num].to_f
     sum = a1 + a2
-    assert_equal(1.0+(a1*(1.0/(sum-1.0))), set[0][:fitness])
-    assert_equal(0.5+(a2*(1.0/(sum-0.5))), set[1][:fitness])
+    assert_equal(1.0+l_rate*(a1*set[0][:num].to_f/sum-1.0), set[0][:fitness])
+    assert_equal(0.5+l_rate*(a2*set[1][:num].to_f/sum-0.5), set[1][:fitness])
   end
   
   # test run the genetic algorithm

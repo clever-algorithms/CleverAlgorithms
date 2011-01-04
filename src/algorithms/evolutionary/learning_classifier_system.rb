@@ -117,7 +117,6 @@ def generate_prediction(match_set)
 end
 
 def select_action(predictions, p_explore=1.0)
-  puts "Prediction=#{predictions.inspect}"
   keys = Array.new(predictions.keys)
   return keys[rand(keys.size)] if rand() < p_explore    
   keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
@@ -136,15 +135,15 @@ def update_set(action_set, payoff, l_rate)
   end
 end
 
-def update_fitness(action_set, min_error, l_rate)
+def update_fitness(action_set, min_error, l_rate, alpha=0.1, v=-0.5)
   sum = 0.0
   accuracy = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
-    accuracy[i] = (c[:error]<min_error) ? 1.0 : 0.1*(c[:error]/min_error)**-5.0
+    accuracy[i] = (c[:error]<min_error) ? 1.0 : alpha*(c[:error]/min_error)**v
     sum += accuracy[i] * c[:num].to_f
   end
   action_set.each_with_index do |c,i|
-    c[:fitness] += l_rate * ((accuracy[i] * c[:num]) / (sum - c[:fitness]))
+    c[:fitness] += l_rate * (accuracy[i] * c[:num].to_f / sum - c[:fitness])
   end
 end
 
@@ -259,7 +258,7 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 2000, 400
+  max_gens, pop_size = 2000, 100
   l_rate, min_error = 0.2, 0.01
   p_explore = 0.10
   ga_freq, del_thresh = 25, 20
