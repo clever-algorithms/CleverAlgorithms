@@ -180,7 +180,18 @@ def test_function(a)
 	puts "Test: #{a}"
 end
 
-puts test_function("me") #=> Test: me
+puts test_function("me") # => Test: me
+\end{lstlisting}
+
+Function arguments can have default values, meaning that if the argument is not provided in a call to the function, that the default is used.
+
+\begin{lstlisting}
+def test_function(a="me")
+	puts "Test: #{a}"
+end
+
+puts test_function() # => Test: me
+puts test_function("you") # => Test: you
 \end{lstlisting}
 
 And a function can return a variable, called a return value.
@@ -263,7 +274,7 @@ There are a few versions of the sort function including a version that takes a b
 
 \begin{lstlisting}
 a = {:quality=>2, :quality=>3, :quality=>1}
-a = a.sort {|x,y| x[:quality]<=>y[:quality] } # => [1, 2, 3]
+a = a.sort {|x,y| x[:quality]<=>y[:quality] } # => ordered by quality
 \end{lstlisting}
 
 % methods
@@ -286,7 +297,7 @@ puts v.inspect # => [4,4]
 
 % conclusions
 \subsection{Conclusions}
-This quick-start guide has only scratched the surface of the Ruby programming language. Please refer to one of the referenced text books on the language for a more detailed introduction into this powerful and fun programming language \cite{Thomas2004, Flanagan2008}.
+This quick-start guide has only scratched the surface of the Ruby Programming Language. Please refer to one of the referenced text books on the language for a more detailed introduction into this powerful and fun programming language \cite{Thomas2004, Flanagan2008}.
 
 \renewcommand{\bibsection}{\section{\bibname}}
 \putbib
