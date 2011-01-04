@@ -337,17 +337,6 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
 #    fail("Test not written")
   end
   
-  # test the preparation of a model
-  # TODO is the payoff reasonable?
-  def test_train_model
-#    fail("Test not written")
-  end
-  
-  # test the assessment of the model
-  def test_test_model
-#    fail("Test not written")
-  end
-  
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
@@ -357,7 +346,52 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     yield
   ensure
     stream.reopen(old_stream)
-  end   
+  end  
+  
+  # test the preparation of a model
+  # TODO is the payoff reasonable?
+  def test_train_model
+#    fail("Test not written")
+  end
+  
+  # test the assessment of the model
+  def test_test_model
+    # perfect system
+    rs = nil
+    system = [
+      {:condition=>"000\#\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0}, 
+      {:condition=>"001\#\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"01\#0\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"01\#1\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"10\#\#0\#", :action=>"0", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"10\#\#1\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"11\#\#\#0", :action=>"0", :prediction=>1.0, :fitness=>1.0},
+      {:condition=>"11\#\#\#1", :action=>"1", :prediction=>1.0, :fitness=>1.0}
+             ]
+    silence_stream(STDOUT) do
+      rs = test_model(system, 100)
+    end
+    assert_not_nil(rs)
+    assert_equal(100, rs)
+    # always zero
+    rs = nil
+    system = [{:condition=>"\#\#\#\#\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0}]
+    silence_stream(STDOUT) do
+      rs = test_model(system, 100)
+    end
+    assert_not_nil(rs)
+    assert_in_delta(50, rs, 15)
+    # always one
+    rs = nil
+    system = [{:condition=>"\#\#\#\#\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0}]
+    silence_stream(STDOUT) do
+      rs = test_model(system, 100)
+    end
+    assert_not_nil(rs)
+    assert_in_delta(50, rs, 15)
+  end
+  
+ 
   
   # test that the algorithm can solve the problem
   def test_execute
