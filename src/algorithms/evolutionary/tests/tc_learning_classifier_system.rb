@@ -200,6 +200,11 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     # specific action (large weight)
     a = select_action({'1'=>{:weight=>1}, '0'=>{:weight=>100}}, 0.0)
     assert_equal('0', a)
+    # assume a specific large weight action
+    100.times do
+      a = select_action({'1'=>{:weight=>1}, '0'=>{:weight=>100}})
+      assert_equal('0', a)
+    end    
     # TODO is weight meant to be maximizing?
   end
   
@@ -396,18 +401,19 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   def test_execute
     # execute
     pop = nil
-#    silence_stream(STDOUT) do
-#      pop = execute(150, 2000, ['0','1'], 0.1, 0.2, 0.01, 50, 20)
-#    end    
+    silence_stream(STDOUT) do
+       pop = execute(100, 2000, ['0','1'], 0.1, 0.2, 0.1, 100, 20)
+    end    
     # check system
-#    assert_in_delta(70, pop.size, 30)
+    micro = pop.inject(0){|s,x| s + x[:num]}
+    assert_in_delta(100, micro, 5)
     # check capability
     correct = nil
-#    silence_stream(STDOUT) do
-#      correct = test_model(pop)
-#    end
-#    assert_not_nil(correct)
-#    assert_in_delta(100, correct, 10)
+    silence_stream(STDOUT) do
+      correct = test_model(pop)
+    end
+    assert_not_nil(correct)
+    assert_in_delta(100, correct, 20)
   end
   
 end

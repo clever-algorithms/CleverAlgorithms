@@ -14,10 +14,10 @@ def target_function(s)
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
 end
 
-def new_classifier(condition, action, gen, p0=10.0, e0=0.0, f0=10.0)
+def new_classifier(condition, action, gen, p1=10.0, e1=0.0, f1=10.0)
   other = {}
   other[:condition], other[:action], other[:lasttime] = condition, action, gen
-  other[:prediction], other[:error], other[:fitness] = p0, e0, f0
+  other[:prediction], other[:error], other[:fitness] = p1, e1, f1
   other[:experience], other[:setsize], other[:num] = 0.0, 1.0, 1.0
   return other
 end
@@ -116,9 +116,9 @@ def generate_prediction(match_set)
   return prediction
 end
 
-def select_action(predictions, p_explore=1.0)
+def select_action(predictions, p_explore=0.0)
   keys = Array.new(predictions.keys)
-  return keys[rand(keys.size)] if rand() < p_explore    
+  return keys[rand(keys.size)] if rand() < p_explore
   keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
   return keys.first
 end
@@ -161,7 +161,7 @@ def binary_tournament(pop)
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def mutation(cl, action_set, input, rate=1.0/(6.0+1.0))
+def mutation(cl, action_set, input, rate=0.04)
   cl[:condition].size.times do |i|
     if rand() < rate
       cl[:condition][i] = (cl[:condition][i].chr=='#') ? input[i] : '#'
@@ -211,7 +211,7 @@ def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, de
 end
 
 def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
-  pop, correct = [], 0
+  pop, acc = [], 0
   max_gens.times do |gen|
     input = random_bitstring()
     match_set = generate_match_set(input, pop, actions, gen, pop_size, del_thresh)
@@ -220,7 +220,7 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
     action_set = match_set.select{|c| c[:action]==action}
     expected = target_function(input)
     payoff = ((expected-action.to_i)==0) ? 300.0 : 10.0
-    correct += 1 if expected == action.to_i
+    acc += 1 if expected == action.to_i
     update_set(action_set, payoff, l_rate)
     update_fitness(action_set, min_error, l_rate)
     if can_run_genetic_algorithm(action_set, gen, ga_freq)
@@ -228,8 +228,9 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
       run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size, del_thresh)
     end
     if (gen+1).modulo(100)==0
-      puts " >gen=#{gen+1} classifiers=#{pop.size}, correct=#{correct}/100"
-      correct = 0
+      micro = pop.inject(0){|s,x| s + x[:num]}
+      puts " >gen=#{gen+1} macro=#{pop.size}, micro=#{micro}, correct=#{acc}/100"
+      acc = 0
     end
   end  
   return pop
@@ -259,9 +260,9 @@ if __FILE__ == $0
   all_actions = ['0', '1']
   # algorithm configuration
   max_gens, pop_size = 2000, 100
-  l_rate, min_error = 0.2, 0.01
+  l_rate, min_error = 0.2, 0.1
   p_explore = 0.10
-  ga_freq, del_thresh = 25, 20
+  ga_freq, del_thresh = 100, 20
   # execute the algorithm
   execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
 end
