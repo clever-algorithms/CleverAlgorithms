@@ -161,7 +161,7 @@ def binary_tournament(pop)
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def mutation(cl, action_set, input, rate=1.0/6+1)
+def mutation(cl, action_set, input, rate=1.0/(6.0+1.0))
   cl[:condition].size.times do |i|
     if rand() < rate
       cl[:condition][i] = (cl[:condition][i].chr=='#') ? input[i] : '#'
@@ -194,14 +194,12 @@ end
 def crossover(c1, c2, p1, p2)
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
-  c1[:action] = (rand()<0.5) ? p1[:action] : p2[:action]
-  c2[:action] = (rand()<0.5) ? p1[:action] : p2[:action]
   c2[:prediction] = c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
   c2[:error] = c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
   c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0    
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.95)
+def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=1.0)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
@@ -242,7 +240,7 @@ def test_model(system, num_trials=100)
   num_trials.times do
     input = random_bitstring()
     match_set = system.select{|c| does_match?(input, c[:condition])}
-    prediction_array = generate_prediction(match_set)    
+    prediction_array = generate_prediction(match_set)
     action = select_action(prediction_array)
     correct += 1 if target_function(input) == action.to_i
   end
@@ -260,7 +258,7 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 1000, 100
+  max_gens, pop_size = 2000, 50
   l_rate, min_error = 0.2, 0.01
   p_explore = 0.10
   ga_freq, del_thresh = 50, 20

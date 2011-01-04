@@ -303,6 +303,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end
   
   # test crossover
+  # actions and nums and other data are assumed
   def test_crossover
     c1, c2 = {}, {}
     p1 = {:condition=>"000000",:action=>'1',:prediction=>2,:error=>0.5,:fitness=>5}
@@ -312,7 +313,6 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     c1[:condition].size.times do |i| 
       assert( (c1[:condition][i]==p1[:condition][i]) || (c1[:condition][i]==p2[:condition][i]) )
     end
-    assert(c1[:action]==p1[:action] || c1[:action]==p2[:action])
     assert_equal((2.0+3.0)/2.0, c1[:prediction])
     assert_equal(0.25*((0.5+0.1)/2.0), c1[:error])
     assert_equal(0.1*((5.0+3.0)/2.0), c1[:fitness])
@@ -320,7 +320,6 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     c2[:condition].size.times do |i| 
       assert( (c2[:condition][i]==p1[:condition][i]) || (c2[:condition][i]==p2[:condition][i]) )
     end
-    assert(c2[:action]==p1[:action] || c2[:action]==p2[:action])
     assert_equal((2.0+3.0)/2.0, c2[:prediction])
     assert_equal(0.25*((0.5+0.1)/2.0), c2[:error])
     assert_equal(0.1*((5.0+3.0)/2.0), c2[:fitness])
@@ -328,6 +327,13 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   
   # test running the GA
   def test_run_genetic_algorithm
+    pop = [{:condition=>"000000", :action=>'1', :num=>1, :fitness=>0.1, 
+              :prediction=>0.3, :error=>0.1, :setsize=>1, :num=>1, :experience=>1}, 
+           {:condition=>"111111", :action=>'0', :num=>1, :fitness=>0.2, 
+              :prediction=>0.3, :error=>0.1, :setsize=>1, :num=>1, :experience=>1}]
+    run_genetic_algorithm(['0', '1'], pop, pop, "000000", 5, 2, 0.1, 1.0)
+
+    # TODO what do we test here?
 #    fail("Test not written")
   end
   
