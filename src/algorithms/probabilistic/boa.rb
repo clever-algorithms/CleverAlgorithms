@@ -38,28 +38,51 @@ def can_add_edge?(i, j, graph)
   return !path_exists?(j, i, graph) && !connected?(i, j, graph)
 end
 
-def get_viable_edges(node, graph)
+def get_viable_parents(node, graph)
   viable = []
   graph.size.times do |i|
-    if node!=i and can_add_edge?(node, i, graph)
+    if node!=i and can_add_edge?(i, node, graph)
       viable << i
     end
   end
   return viable
 end
 
-# K2.cc => computeLogGains
-def compute_log_gains(viable, graph, pop)
-  
-  # num parents
-  
-  # counters based on num parents?
-  
-  # lots of memory allocation?
+def compute_count_for_list(node, pop, viable)
+  counts = [Array.new(viable.size){[0,0]}, Array.new(viable.size){[0,0]}]
+  pop.each do |p|
+    i = (p[:bitstring][node].chr == '0') ? 0 : 1
+    viable.each_with_index do |v, j|
+      k = (p[:bitstring][v].chr == '0') ? 0 : 1
+      counts[i][j][k] += 1
+    end
+  end  
+  return counts
+end
 
+def fact(v)
+  return v <= 1 ? 1 : v*fact(v-1)
+end
+
+# assumes no existing in connections
+def k2equation1((node, viable, pop)
   # compute counts for list
+  counts = compute_count_for_list(node, pop, viable)
   
+end
+
+
+# K2.cc => computeLogGains
+def compute_log_gains(node, viable, pop, gain)
+  # compute counts for list
+  counts = compute_count_for_list(node, pop, viable)
   # for each element of the nodes to be updated update the gain
+  viable.each_index do |i|
+    
+    result = 0
+    
+    gain[viable[i]][node] = result
+  end
   
   # compute the resulting gain for the addition of an edge from updateIdx[l] to i
   
@@ -72,12 +95,12 @@ def recompute_gains(node, graph, gains, pop)
     gains[node].each {|i| gains[node][i] = -1}
     return 
   end  
-  # prepare a list of viable edges
-  viable = get_viable_edges(node, graph)
-  # mark all inviable edges
+  # prepare a list of viable parents for the node
+  viable = get_viable_parents(node, graph)
+  # mark all unviable edges
   gains[node].each {|i| gains[node][i] = -1 if !viable.include?(i)}
   # compute log gains for viable edges
-#  compute_log_gains(node, viable, graph)
+#  compute_log_gains(node, viable, pop, gain)
 end
 
 # bayesian.cc => constructTheNetwork
@@ -100,7 +123,7 @@ def construct_network(pop, prob_size, max_incoming_edges=5*pop.size)
 end
 
 # bayesian.cc => generateNewInstances
-def sample_from_network(pop, network)  
+def sample_from_network(pop, graph)
   return {:bitstring=>random_bitstring(pop.first[:bitstring].size)} # delete this
   
   # a count of incoming edges or something

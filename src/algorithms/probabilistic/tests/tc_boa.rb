@@ -73,17 +73,44 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(true, can_add_edge?(0, 1, [{:out=>[]}, {:out=>[]}]) )
   end
 
-  # test the collection of viable edges
-  def test_get_viable_edges
+  # test the collection of viable parents
+  def test_get_viable_parents
     # all
-    viable = get_viable_edges(0, [{:out=>[]}, {:out=>[]}, {:out=>[]}])
+    viable = get_viable_parents(0, [{:out=>[]}, {:out=>[]}, {:out=>[]}])
     assert_equal([1, 2], viable)
     # none
-    viable = get_viable_edges(0, [{:out=>[2]}, {:out=>[0]}, {:out=>[]}])
+    viable = get_viable_parents(0, [{:out=>[2]}, {:out=>[0]}, {:out=>[]}])
     assert_equal(true, viable.empty?)
   end
 
+  # test calculating the frequency of relationships
+  def test_compute_count_for_list
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    rs = compute_count_for_list(0, pop, [1,2])
+    assert_equal(2, rs.size)
+    # 0=0
+    assert_equal(4, rs[0][0][0]) #0=0, 1=0
+    assert_equal(1, rs[0][0][1]) #0=0, 1=1
+    assert_equal(3, rs[0][1][0]) #0=0, 2=0
+    assert_equal(2, rs[0][1][1]) #0=0, 2=1    
+    # 0=1
+    assert_equal(1, rs[1][0][0]) #0=1, 1=0
+    assert_equal(4, rs[1][0][1]) #0=1, 1=1
+    assert_equal(1, rs[1][1][0]) #0=1, 2=0
+    assert_equal(4, rs[1][1][1]) #0=1, 2=1
+  end
 
+  # test the factorial function
+  def test_fact
+    assert_equal(1, fact(0))
+    assert_equal(1, fact(1))
+    assert_equal(2*1, fact(2))
+    assert_equal(3*2*1, fact(3))
+  end
 
 
   # test the calculation of gains
@@ -92,8 +119,30 @@ class TC_BOA < Test::Unit::TestCase
   end
 
   # test the construction of a network from a population
+  # example from http://web.cs.wpi.edu/~cs539/s05/Projects/k2_algorithm.pdf
+  # a test of the K3 metric
   def test_construct_network
-#    fail("Test not written")
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    rs = construct_network(pop, 3)
+    assert_equal(3, rs.size)
+    # expect: x1 => x2 => x3
+    # x1
+    assert_equal(0, rs[0][:in].size)
+    assert_equal(1, rs[0][:out].size)
+    assert_equal(1, rs[0][:out][0])
+    # x2
+    assert_equal(1, rs[1][:in].size)
+    assert_equal(0, rs[1][:in][0])
+    assert_equal(1, rs[1][:out].size)
+    assert_equal(2, rs[1][:out][0])
+    # x3
+    assert_equal(1, rs[2][:in].size)
+    assert_equal(1, rs[2][:in][0])
+    assert_equal(0, rs[2][:out].size)
   end
   
   # test sampling from the network
