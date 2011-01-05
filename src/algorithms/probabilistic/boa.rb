@@ -82,6 +82,16 @@ def k2equation2(node, parent, pop)
   return p1 * p2
 end
 
+
+# compute K2 for node, assuming any existing in-connections and the candidate.
+def k2equation3(node, candidate, pop)
+  # what is the ordering of nodes? How do we combine all parents?
+  # computation looks independant
+  # counts are dependant - a func that can build the counts at whatever depth will nail this
+  
+end
+
+
 # K2.cc => computeLogGains
 def compute_log_gains(node, viable, pop, gain)
   # compute counts for list
