@@ -18,31 +18,80 @@ def binary_tournament(pop)
   return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def compute_log_gains(viable, network)
-  
-end
-
-def can_add_edge?(i, j, network)
-  return false # TODO
-end
-
-def recompute_gains(node, network)
-  # check if the node is full ?
-  
-  # prepare a list of viable edges
-  viable = []
-  10.times do |i|
-    viable << i if can_add_edge?(node, j, network)
+def path_exists?(i, j, graph)
+  visited, stack = [], [i]
+  while !stack.empty?
+    k = stack.shift
+    return true if k == j
+    next if visited.include?(k)
+    visited << k
+    graph[k][:out].each {|m| stack.unshift(m) if !visited.include?(m)}
   end
-  
-  # compute log gains for viable edges
-  compute_log_gains(viable, network)
+  return false
 end
 
-def construct_network(pop, max_edges=5*pop.size)  
+def connected?(i, j, graph)
+  return graph[i][:out].include?(j)
+end
+
+def can_add_edge?(i, j, graph)
+  return !path_exists?(j, i, graph) && !connected?(i, j, graph)
+end
+
+def get_viable_edges(node, graph)
+  viable = []
+  graph.size.times do |i|
+    if node!=i and can_add_edge?(node, i, graph)
+      viable << i
+    end
+  end
+  return viable
+end
+
+# K2.cc => computeLogGains
+def compute_log_gains(viable, graph, pop)
+  
+  # num parents
+  
+  # counters based on num parents?
+  
+  # lots of memory allocation?
+
+  # compute counts for list
+  
+  # for each element of the nodes to be updated update the gain
+  
+  # compute the resulting gain for the addition of an edge from updateIdx[l] to i
+  
+end
+
+# recomputeGains.cc => recomputeGains
+def recompute_gains(node, graph, gains, pop)
+  # check if the node is full ?  
+  if graph[node][:full]
+    gains[node].each {|i| gains[node][i] = -1}
+    return 
+  end  
+  # prepare a list of viable edges
+  viable = get_viable_edges(node, graph)
+  # mark all inviable edges
+  gains[node].each {|i| gains[node][i] = -1 if !viable.include?(i)}
+  # compute log gains for viable edges
+#  compute_log_gains(node, viable, graph)
+end
+
+# bayesian.cc => constructTheNetwork
+def construct_network(pop, prob_size, max_incoming_edges=5*pop.size)
   return [] # delete this
   
-  # compute gains
+  # create a new graph
+  graph = Array.new(prob_size) { {:full=>false, :out=>[], :in=>[]} }
+  
+  # recompute the gains for edges into all nodes and set each node as not full yet
+  gains = Array.new(prob_size) {Array.new(prob_size, 0.0)}
+  prob_size.times do |i|
+    recompute_gains(i, graph, gains, pop)
+  end
   
   # build up network with the best edge first, recomputing gains as we go
   # cycles are avoided
@@ -50,6 +99,7 @@ def construct_network(pop, max_edges=5*pop.size)
   
 end
 
+# bayesian.cc => generateNewInstances
 def sample_from_network(pop, network)  
   return {:bitstring=>random_bitstring(pop.first[:bitstring].size)} # delete this
   
@@ -69,7 +119,7 @@ def search(num_bits, max_iter, pop_size)
   best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
   max_iter.times do |iter|
     selected = Array.new(pop_size) { binary_tournament(pop) }
-    network = construct_network(selected)
+    network = construct_network(selected, num_bits)
     samples = Array.new(pop_size) { sample_from_network(pop, network) }
     samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
     pop = (samples+pop).sort{|x,y| y[:fitness]<=>x[:fitness]}.first(pop_size)
