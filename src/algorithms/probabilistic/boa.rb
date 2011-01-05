@@ -65,12 +65,22 @@ def fact(v)
 end
 
 # assumes no existing in connections
-def k2equation1((node, viable, pop)
-  # compute counts for list
-  counts = compute_count_for_list(node, pop, viable)
-  
+def k2equation1(node, pop)
+  a1 = pop.inject(0) {|s,x| s+((x[:bitstring][node].chr=='1') ? 1 : 0) }
+  a2 = pop.inject(0) {|s,x| s+((x[:bitstring][node].chr=='0') ? 0 : 1) }
+  n = a1 + a2
+  return (1.0/fact(n+1).to_f) * fact(a1).to_f * fact(a2).to_f
 end
 
+# assume node has an in connection from parent
+def k2equation2(node, parent, pop)
+  counts = compute_count_for_list(node, pop, [parent])
+  n1 = counts[0][0][0] + counts[0][0][1]
+  n2 = counts[1][0][0] + counts[1][0][1]
+  p1 = (1.0/fact(n1+1).to_f) * fact(counts[0][0][0]).to_f * fact(counts[0][0][1]).to_f
+  p2 = (1.0/fact(n2+1).to_f) * fact(counts[1][0][0]).to_f * fact(counts[1][0][1]).to_f
+  return p1 * p2
+end
 
 # K2.cc => computeLogGains
 def compute_log_gains(node, viable, pop, gain)

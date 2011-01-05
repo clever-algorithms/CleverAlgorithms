@@ -106,10 +106,40 @@ class TC_BOA < Test::Unit::TestCase
 
   # test the factorial function
   def test_fact
-    assert_equal(1, fact(0))
+    assert_equal(1, fact(0)) # is this correct?
     assert_equal(1, fact(1))
     assert_equal(2*1, fact(2))
     assert_equal(3*2*1, fact(3))
+  end
+  
+  # test k2 with no in edges
+  def test_k2equation1
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    # x1
+    assert_in_delta(1.0/2772.0, k2equation1(0, pop), 1.0e18)
+    # x2
+    assert_in_delta(1.0/2772.0, k2equation1(1, pop), 1.0e18)
+    # x3
+    assert_in_delta(1.0/2310.0, k2equation1(2, pop), 1.0e18)
+  end
+  
+  # test k2 with specific in edges for node
+  def test_k2equation2
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    # 1 with a 0 in-connection
+    assert_in_delta(1.0/900.0, k2equation2(1, 0, pop), 1.0e18)
+    # 2 with a 0 in-connection
+    assert_in_delta(1.0/1800.0, k2equation2(2, 0, pop), 1.0e18)
+    # 2 with a 1 in-connection
+    # assert_in_delta(1.0/180.0, k2equation2(2, 0, pop), 1.0e18)
   end
 
 
@@ -121,29 +151,29 @@ class TC_BOA < Test::Unit::TestCase
   # test the construction of a network from a population
   # example from http://web.cs.wpi.edu/~cs539/s05/Projects/k2_algorithm.pdf
   # a test of the K3 metric
-  def test_construct_network
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
-    rs = construct_network(pop, 3)
-    assert_equal(3, rs.size)
-    # expect: x1 => x2 => x3
-    # x1
-    assert_equal(0, rs[0][:in].size)
-    assert_equal(1, rs[0][:out].size)
-    assert_equal(1, rs[0][:out][0])
-    # x2
-    assert_equal(1, rs[1][:in].size)
-    assert_equal(0, rs[1][:in][0])
-    assert_equal(1, rs[1][:out].size)
-    assert_equal(2, rs[1][:out][0])
-    # x3
-    assert_equal(1, rs[2][:in].size)
-    assert_equal(1, rs[2][:in][0])
-    assert_equal(0, rs[2][:out].size)
-  end
+  # def test_construct_network
+  #   pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+  #          {:bitstring=>"001"},{:bitstring=>"111"},
+  #          {:bitstring=>"000"},{:bitstring=>"011"},
+  #          {:bitstring=>"111"},{:bitstring=>"000"},
+  #          {:bitstring=>"111"},{:bitstring=>"000"}]
+  #   rs = construct_network(pop, 3)
+  #   assert_equal(3, rs.size)
+  #   # expect: x1 => x2 => x3
+  #   # x1
+  #   assert_equal(0, rs[0][:in].size)
+  #   assert_equal(1, rs[0][:out].size)
+  #   assert_equal(1, rs[0][:out][0])
+  #   # x2
+  #   assert_equal(1, rs[1][:in].size)
+  #   assert_equal(0, rs[1][:in][0])
+  #   assert_equal(1, rs[1][:out].size)
+  #   assert_equal(2, rs[1][:out][0])
+  #   # x3
+  #   assert_equal(1, rs[2][:in].size)
+  #   assert_equal(1, rs[2][:in][0])
+  #   assert_equal(0, rs[2][:out].size)
+  # end
   
   # test sampling from the network
   def test_sample_from_network
