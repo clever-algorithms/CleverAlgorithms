@@ -83,64 +83,90 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(true, viable.empty?)
   end
 
-  # test calculating the frequency of relationships
-  def test_compute_count_for_list
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
-    rs = compute_count_for_list(0, pop, [1,2])
-    assert_equal(2, rs.size)
-    # 0=0
-    assert_equal(4, rs[0][0][0]) #0=0, 1=0
-    assert_equal(1, rs[0][0][1]) #0=0, 1=1
-    assert_equal(3, rs[0][1][0]) #0=0, 2=0
-    assert_equal(2, rs[0][1][1]) #0=0, 2=1    
-    # 0=1
-    assert_equal(1, rs[1][0][0]) #0=1, 1=0
-    assert_equal(4, rs[1][0][1]) #0=1, 1=1
-    assert_equal(1, rs[1][1][0]) #0=1, 2=0
-    assert_equal(4, rs[1][1][1]) #0=1, 2=1
-  end
-
   # test the factorial function
   def test_fact
-    assert_equal(1, fact(0)) # is this correct?
+    assert_equal(1, fact(0)) # this is expected!
     assert_equal(1, fact(1))
     assert_equal(2*1, fact(2))
     assert_equal(3*2*1, fact(3))
   end
   
-  # test k2 with no in edges
-  def test_k2equation1
+  # test counts of arbitary associations
+  def test_compute_count_for_edges
     pop = [{:bitstring=>"100"},{:bitstring=>"111"},
            {:bitstring=>"001"},{:bitstring=>"111"},
            {:bitstring=>"000"},{:bitstring=>"011"},
            {:bitstring=>"111"},{:bitstring=>"000"},
            {:bitstring=>"111"},{:bitstring=>"000"}]
-    # x1
-    assert_in_delta(1.0/2772.0, k2equation1(0, pop), 1.0e18)
-    # x2
-    assert_in_delta(1.0/2772.0, k2equation1(1, pop), 1.0e18)
-    # x3
-    assert_in_delta(1.0/2310.0, k2equation1(2, pop), 1.0e18)
+    # 0, 1
+    rs = compute_count_for_edges(0, pop, [1])
+    assert_equal(4, rs[0])
+    assert_equal(1, rs[1])
+    assert_equal(1, rs[2])
+    assert_equal(4, rs[3])
+    # 0, 2    
+    rs = compute_count_for_edges(0, pop, [2])
+    assert_equal(3, rs[0])
+    assert_equal(2, rs[1])
+    assert_equal(1, rs[2])
+    assert_equal(4, rs[3])
+    # 0, 1, 2
+    rs = compute_count_for_edges(0, pop, [1, 2])
+    assert_equal(3, rs[0])
+    assert_equal(1, rs[1])
+    assert_equal(0, rs[2])
+    assert_equal(1, rs[3])    
+    assert_equal(1, rs[4])
+    assert_equal(0, rs[5])
+    assert_equal(0, rs[6])
+    assert_equal(4, rs[7])
+  end  
+  
+  # test k2 with specific in edges for node with prior in-edges
+  def test_k2equation_multiple
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    # 2, with 0,1 in-connections
+    assert_in_delta(1.0/400.0, k2equation(2, [0, 1], pop), 1.0e18)
+    assert_in_delta(1.0/400.0, k2equation(2, [1, 0], pop), 1.0e18) # symmetrical
   end
   
   # test k2 with specific in edges for node
-  def test_k2equation2
+  def test_k2equation_single
     pop = [{:bitstring=>"100"},{:bitstring=>"111"},
            {:bitstring=>"001"},{:bitstring=>"111"},
            {:bitstring=>"000"},{:bitstring=>"011"},
            {:bitstring=>"111"},{:bitstring=>"000"},
            {:bitstring=>"111"},{:bitstring=>"000"}]
     # 1 with a 0 in-connection
-    assert_in_delta(1.0/900.0, k2equation2(1, 0, pop), 1.0e18)
+    assert_in_delta(1.0/900.0, k2equation(1, [0], pop), 1.0e18)
+    assert_in_delta(1.0/900.0, k2equation(0, [1], pop), 1.0e18) # symmetrical
     # 2 with a 0 in-connection
-    assert_in_delta(1.0/1800.0, k2equation2(2, 0, pop), 1.0e18)
+    assert_in_delta(1.0/1800.0, k2equation(2, [0], pop), 1.0e18) 
+    assert_in_delta(1.0/1800.0, k2equation(0, [2], pop), 1.0e18) # symmetrical
     # 2 with a 1 in-connection
-    # assert_in_delta(1.0/180.0, k2equation2(2, 0, pop), 1.0e18)
+    assert_in_delta(1.0/180.0, k2equation(2, [1], pop), 1.0e18)
+    assert_in_delta(1.0/180.0, k2equation(1, [2], pop), 1.0e18) # symmetrical
   end
+  
+  # test k2 with no in edges
+  def test_k2equation_none
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    # x1
+    assert_in_delta(1.0/2772.0, k2equation(0, [], pop), 1.0e18)
+    # x2
+    assert_in_delta(1.0/2772.0, k2equation(1, [], pop), 1.0e18)
+    # x3
+    assert_in_delta(1.0/2310.0, k2equation(2, [], pop), 1.0e18)
+  end
+  
 
 
   # test the calculation of gains

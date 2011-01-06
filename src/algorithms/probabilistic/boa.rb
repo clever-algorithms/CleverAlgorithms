@@ -48,63 +48,36 @@ def get_viable_parents(node, graph)
   return viable
 end
 
-def compute_count_for_list(node, pop, viable)
-  counts = [Array.new(viable.size){[0,0]}, Array.new(viable.size){[0,0]}]
+def compute_count_for_edges(node, pop, parents)
+  counts = Array.new(2**(1+parents.size)){0}
   pop.each do |p|
-    i = (p[:bitstring][node].chr == '0') ? 0 : 1
-    viable.each_with_index do |v, j|
-      k = (p[:bitstring][v].chr == '0') ? 0 : 1
-      counts[i][j][k] += 1
+    index = 0
+    ([node]+parents).reverse.each_with_index do |v,i|
+      index += ((p[:bitstring][v].chr=='1') ? 1 : 0) * (2**i)
     end
-  end  
-  return counts
+    counts[index] += 1
+  end
+ return counts
 end
 
 def fact(v)
   return v <= 1 ? 1 : v*fact(v-1)
 end
 
-# assumes no existing in connections
-def k2equation1(node, pop)
-  a1 = pop.inject(0) {|s,x| s+((x[:bitstring][node].chr=='1') ? 1 : 0) }
-  a2 = pop.inject(0) {|s,x| s+((x[:bitstring][node].chr=='0') ? 0 : 1) }
-  n = a1 + a2
-  return (1.0/fact(n+1).to_f) * fact(a1).to_f * fact(a2).to_f
-end
-
-# assume node has an in connection from parent
-def k2equation2(node, parent, pop)
-  counts = compute_count_for_list(node, pop, [parent])
-  n1 = counts[0][0][0] + counts[0][0][1]
-  n2 = counts[1][0][0] + counts[1][0][1]
-  p1 = (1.0/fact(n1+1).to_f) * fact(counts[0][0][0]).to_f * fact(counts[0][0][1]).to_f
-  p2 = (1.0/fact(n2+1).to_f) * fact(counts[1][0][0]).to_f * fact(counts[1][0][1]).to_f
-  return p1 * p2
-end
-
-
-# compute K2 for node, assuming any existing in-connections and the candidate.
-def k2equation3(node, candidate, pop)
-  # what is the ordering of nodes? How do we combine all parents?
-  # computation looks independant
-  # counts are dependant - a func that can build the counts at whatever depth will nail this
-  
+def k2equation(node, candidates, pop)
+  counts = compute_count_for_edges(node, pop, candidates)
+  total = nil
+  counts.each_slice(2) do |a1,a2|
+    rs = (1.0/fact((a1+a2)+1).to_f) * fact(a1).to_f * fact(a2).to_f
+    total = (total.nil? ? rs : total*rs)
+  end
+  return total
 end
 
 
 # K2.cc => computeLogGains
 def compute_log_gains(node, viable, pop, gain)
-  # compute counts for list
-  counts = compute_count_for_list(node, pop, viable)
-  # for each element of the nodes to be updated update the gain
-  viable.each_index do |i|
-    
-    result = 0
-    
-    gain[viable[i]][node] = result
-  end
   
-  # compute the resulting gain for the addition of an edge from updateIdx[l] to i
   
 end
 
