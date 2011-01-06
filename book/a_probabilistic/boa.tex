@@ -57,7 +57,7 @@ This is achieved by repeating the process of creating and sampling from a Bayesi
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:boa} provides a pseudocode listing of the Bayesian Optimization Algorithm for minimizing a cost function.
 % network construction
-The Bayesian network is constructed each iteration using a greedy algorithm. The network is assessed based on its fit of the information in the population of candidate solutions using either a Bayesian Dirichlet Metric (BD) \cite{Pelikan1999a}, or a Bayesian Information Criterion (BIC) \cite{Pelikan2005} (Chapter~3).
+The Bayesian network is constructed each iteration using a greedy algorithm. The network is assessed based on its fit of the information in the population of candidate solutions using either a Bayesian Dirichlet Metric (BD) \cite{Pelikan1999a}, or a Bayesian Information Criterion (BIC). Refer to Chapter~3 of Pelikan's book for a more detailed presentation of the pseudocode for BOA \cite{Pelikan2005}.
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -126,16 +126,15 @@ The Bayesian network is constructed each iteration using a greedy algorithm. The
 \subsection{Code Listing}
 % How is a technique implemented as an executable program?
 % How is a technique applied to a concrete problem instance?
-% Listing~\ref{boa} provides an example of the Bayesian Optimization Algorithm implemented in the Ruby Programming Language. 
-% % problem
-% The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
-% 
-% % algorithm
-% The algorithm is an implementation based on the description of the technique by Pelikan in Chapter~3 of his book \cite{Pelikan2005a}.
-% 
-% % the listing
-% \lstinputlisting[firstline=7,language=ruby,caption=Bayesian Optimization Algorithm in Ruby, label=boa]{../src/algorithms/probabilistic/boa.rb}
-A listing of the Bayesian Optimization Algorithm is currently not provided.
+ Listing~\ref{boa} provides an example of the Bayesian Optimization Algorithm implemented in the Ruby Programming Language. 
+% problem
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all `1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+ 
+% algorithm
+The Bayesian Optimization Algorithm can be tricky to implement given the use of of a Bayesian Network at the core of the technique. The implementation of BOA provided is based on the the C++ implementation provided by Pelikan, version 1.0 \cite{Pelikan1999b}. Specifically, the implementation uses the K2 metric to construct a Bayesian network from a population of candidate solutions \cite{Cooper1992}. Essentially, this metric is a greedy algorithm that starts with an empty graph and adds the arc with the most gain each iteration until a maximum number of edges have been added or no further edges can be added. The result is a directed acyclic graph.
+
+% the listing
+\lstinputlisting[firstline=7,language=ruby,caption=Bayesian Optimization Algorithm in Ruby, label=boa]{../src/algorithms/probabilistic/boa.rb}
 
 % References: Deeper understanding
 % The references element description includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, journal articles, and potentially websites. A bullet-pointed structure is suggested.

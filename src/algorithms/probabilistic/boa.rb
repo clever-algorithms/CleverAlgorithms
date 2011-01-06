@@ -120,7 +120,7 @@ def sample_from_network(pop, graph, num_samples)
   # calculate marginal frequencies of nodes
   marginal_all = Array.new(graph.size)
   marginal_all.each_index do |node|
-    marginal_all = compute_count_for_edges(node, pop, candidates)
+    #marginal_all = compute_count_for_edges(node, pop, candidates)
     
   end
   
