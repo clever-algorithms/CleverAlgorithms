@@ -90,7 +90,7 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(2*1, fact(2))
     assert_equal(3*2*1, fact(3))
   end
-  
+
   # test counts of arbitary associations
   def test_compute_count_for_edges
     pop = [{:bitstring=>"100"},{:bitstring=>"111"},
@@ -167,11 +167,22 @@ class TC_BOA < Test::Unit::TestCase
     assert_in_delta(1.0/2310.0, k2equation(2, [], pop), 1.0e18)
   end
   
-
-
   # test the calculation of gains
-  def test_recompute_gains
-#    fail("Test not written")
+  def test_compute_gains
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    # no viable
+    graph = [{:out=>[],:in=>[1,2],:num=>0}, {:out=>[0]}, {:out=>[0]}]
+    assert_equal([-1,-1,-1], compute_gains(graph[0], graph, pop))
+    #  two viable
+    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[]}, {:out=>[]}]
+    rs = compute_gains(graph[0], graph, pop)
+    assert_equal(-1, rs[0])
+    assert_not_equal(-1, rs[1])
+    assert_not_equal(-1, rs[2])
   end
 
   # test the construction of a network from a population

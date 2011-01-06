@@ -74,26 +74,15 @@ def k2equation(node, candidates, pop)
   return total
 end
 
-
-# K2.cc => computeLogGains
-def compute_log_gains(node, viable, pop, gain)
-  
-  
-end
-
-# recomputeGains.cc => recomputeGains
-def recompute_gains(node, graph, gains, pop)
-  # check if the node is full ?  
-  if graph[node][:full]
-    gains[node].each {|i| gains[node][i] = -1}
-    return 
+def compute_gains(node, graph, pop)
+  viable = get_viable_parents(node[:num], graph)
+  gains = Array.new(graph.size) {-1}
+  gains.each_index do |i|
+    if viable.include?(i)
+      gains[i] = k2equation(node[:num], node[:in]+[i], pop)
+    end
   end  
-  # prepare a list of viable parents for the node
-  viable = get_viable_parents(node, graph)
-  # mark all unviable edges
-  gains[node].each {|i| gains[node][i] = -1 if !viable.include?(i)}
-  # compute log gains for viable edges
-#  compute_log_gains(node, viable, pop, gain)
+  return gains
 end
 
 # bayesian.cc => constructTheNetwork
@@ -101,12 +90,16 @@ def construct_network(pop, prob_size, max_incoming_edges=5*pop.size)
   return [] # delete this
   
   # create a new graph
-  graph = Array.new(prob_size) { {:full=>false, :out=>[], :in=>[]} }
+  graph = Array.new(prob_size) {|i| {:out=>[], :in=>[], :num=>i} }
   
   # recompute the gains for edges into all nodes and set each node as not full yet
-  gains = Array.new(prob_size) {Array.new(prob_size, 0.0)}
-  prob_size.times do |i|
-    recompute_gains(i, graph, gains, pop)
+  gains = Array.new(prob_size)
+  graph.each_with_index do |node, i|
+    if node[:in] >= max_incoming_edges
+      gains[i] = Array.new(prob_size){-1}
+    else
+      gains[i] = compute_gains(node, graph, pop)
+    end
   end
   
   # build up network with the best edge first, recomputing gains as we go
