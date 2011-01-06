@@ -85,27 +85,23 @@ def compute_gains(node, graph, pop)
   return gains
 end
 
-# bayesian.cc => constructTheNetwork
-def construct_network(pop, prob_size, max_incoming_edges=5*pop.size)
-  return [] # delete this
-  
-  # create a new graph
+def construct_network(pop, prob_size, max_edges=5*pop.size)
   graph = Array.new(prob_size) {|i| {:out=>[], :in=>[], :num=>i} }
-  
-  # recompute the gains for edges into all nodes and set each node as not full yet
   gains = Array.new(prob_size)
-  graph.each_with_index do |node, i|
-    if node[:in] >= max_incoming_edges
-      gains[i] = Array.new(prob_size){-1}
-    else
+  max, best = 0.0, -1
+  max_edges.times do
+    graph.each_with_index do |node, i|
       gains[i] = compute_gains(node, graph, pop)
+      max,best = gains[i].max,i if gains[i].max > max
     end
+    puts "> max=#{max}"
+    break if max <= 0.0
+    # TODO check for cycle
+    j = gains[best].index(max)
+    graph[best][:out] << j
+    graph[j][:in] << best
   end
-  
-  # build up network with the best edge first, recomputing gains as we go
-  # cycles are avoided
-  # there is a maximum number of edges that can be added
-  
+  return graph
 end
 
 # bayesian.cc => generateNewInstances

@@ -187,30 +187,29 @@ class TC_BOA < Test::Unit::TestCase
 
   # test the construction of a network from a population
   # example from http://web.cs.wpi.edu/~cs539/s05/Projects/k2_algorithm.pdf
-  # a test of the K3 metric
-  # def test_construct_network
-  #   pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-  #          {:bitstring=>"001"},{:bitstring=>"111"},
-  #          {:bitstring=>"000"},{:bitstring=>"011"},
-  #          {:bitstring=>"111"},{:bitstring=>"000"},
-  #          {:bitstring=>"111"},{:bitstring=>"000"}]
-  #   rs = construct_network(pop, 3)
-  #   assert_equal(3, rs.size)
-  #   # expect: x1 => x2 => x3
-  #   # x1
-  #   assert_equal(0, rs[0][:in].size)
-  #   assert_equal(1, rs[0][:out].size)
-  #   assert_equal(1, rs[0][:out][0])
-  #   # x2
-  #   assert_equal(1, rs[1][:in].size)
-  #   assert_equal(0, rs[1][:in][0])
-  #   assert_equal(1, rs[1][:out].size)
-  #   assert_equal(2, rs[1][:out][0])
-  #   # x3
-  #   assert_equal(1, rs[2][:in].size)
-  #   assert_equal(1, rs[2][:in][0])
-  #   assert_equal(0, rs[2][:out].size)
-  # end
+  def test_construct_network
+    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
+           {:bitstring=>"001"},{:bitstring=>"111"},
+           {:bitstring=>"000"},{:bitstring=>"011"},
+           {:bitstring=>"111"},{:bitstring=>"000"},
+           {:bitstring=>"111"},{:bitstring=>"000"}]
+    rs = construct_network(pop, 3)
+    assert_equal(3, rs.size)
+    # expect: x1 => x2 => x3
+    # x1
+    assert_equal(0, rs[0][:in].size)
+    assert_equal(1, rs[0][:out].size)
+    assert_equal(1, rs[0][:out][0])
+    # x2
+    assert_equal(1, rs[1][:in].size)
+    assert_equal(0, rs[1][:in][0])
+    assert_equal(1, rs[1][:out].size)
+    assert_equal(2, rs[1][:out][0])
+    # x3
+    assert_equal(1, rs[2][:in].size)
+    assert_equal(1, rs[2][:in][0])
+    assert_equal(0, rs[2][:out].size)
+  end
   
   # test sampling from the network
   def test_sample_from_network
