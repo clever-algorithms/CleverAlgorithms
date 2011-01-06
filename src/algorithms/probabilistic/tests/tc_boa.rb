@@ -1,4 +1,4 @@
-# Unit tests for boa.rb
+:cost# Unit tests for boa.rb
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -34,7 +34,7 @@ class TC_BOA < Test::Unit::TestCase
 
   # test that members of the population are selected
   def test_binary_tournament
-    pop = Array.new(10) {|i| {:fitness=>i} }
+    pop = Array.new(10) {|i| {:cost=>i} }
     10.times {assert(pop.include?(binary_tournament(pop)))}  
   end
 
@@ -191,7 +191,6 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>"111"},{:bitstring=>"000"}]
     rs = construct_network(pop, 3)
     assert_equal(3, rs.size)
-    puts rs.inspect
     # expect: x1 => x2 => x3, also x1=>x3 
     # x1
     assert_equal(0, rs[0][:in].size)
@@ -232,8 +231,8 @@ class TC_BOA < Test::Unit::TestCase
 #    silence_stream(STDOUT) do
 #      best = search(64, 50, 50)
 #    end  
-#    assert_not_nil(best[:fitness])
-#    assert_equal(64, best[:fitness])
+#    assert_not_nil(best[:cost])
+#    assert_equal(64, best[:cost])
   end
   
 end

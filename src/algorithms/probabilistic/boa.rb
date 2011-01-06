@@ -17,18 +17,17 @@ end
 def binary_tournament(pop)
   i, j = rand(pop.size), rand(pop.size)
   j = rand(pop.size) while i==j
-  return (pop[i][:fitness] > pop[j][:fitness]) ? pop[i] : pop[j]
+  return (pop[i][:cost] > pop[j][:cost]) ? pop[i] : pop[j]
 end
 
 def path_exists?(i, j, graph)
   visited, stack = [], [i]
   while !stack.empty?
+    return true if stack.include?(j)
     k = stack.shift
-    # return true if k == j
     next if visited.include?(k)
     visited << k
-    graph[k][:out].each {|m| stack.unshift(m) if !visited.include?(m)}
-    return true if stack.include?(j)
+    graph[k][:out].each {|m| stack.unshift(m) if !visited.include?(m)}    
   end
   return false
 end
@@ -101,43 +100,61 @@ def construct_network(pop, prob_size, max_edges=5*pop.size)
 end
 
 # bayesian.cc => generateNewInstances
-def sample_from_network(pop, graph)
+def sample_from_network(pop, graph, num_samples)
   return {:bitstring=>random_bitstring(pop.first[:bitstring].size)} # delete this
   
   # a count of incoming edges or something
+  group = Array.new(graph.size)
+  group.each_index do |i|
+    
+    # group size is 1 + number of in-connections (default to 1 not 0)
+    
+    # init lots of memory
+  end
+  
   
   # a topological ordering of nodes?
+  # no idea?
+  # sorting the groups for some reason?
   
   # calculate marginal frequencies of nodes
+  marginal_all = Array.new(graph.size)
+  marginal_all.each_index do |node|
+    marginal_all = compute_count_for_edges(node, pop, candidates)
+    
+  end
   
-  # generate a bitstring
+  
+  # generate a set of bitstring
   
 end
 
-def search(num_bits, max_iter, pop_size)
+def search(num_bits, max_iter, pop_size, select_size)
   pop = Array.new(pop_size) { {:bitstring=>random_bitstring(num_bits)} }
-  pop.each{|c| c[:fitness] = onemax(c[:bitstring])}
-  best = pop.sort{|x,y| y[:fitness] <=> x[:fitness]}.first
-  max_iter.times do |iter|
-    selected = Array.new(pop_size) { binary_tournament(pop) }
+  pop.each{|c| c[:cost] = onemax(c[:bitstring])}
+  best = pop.sort{|x,y| y[:cost] <=> x[:cost]}.first
+  max_iter.times do |it|
+    selected = Array.new(select_size) { binary_tournament(pop) }
     network = construct_network(selected, num_bits)
-    samples = Array.new(pop_size) { sample_from_network(pop, network) }
-    samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
-    pop = (samples+pop).sort{|x,y| y[:fitness]<=>x[:fitness]}.first(pop_size)
-    best = pop.first if pop.first[:fitness] > best[:fitness]
-    puts " >iter=#{iter}, f=#{best[:fitness]}, s=#{best[:bitstring]}"
-    break if best[:fitness]==num_bits
+    arcs = network.inject(0){|s,x| s+x[:out].size}
+    samples = sample_from_network(selected, network, pop_size)
+    samples.each{|c| c[:cost] = onemax(c[:bitstring])}
+    pop = (samples+pop).sort{|x,y| y[:cost]<=>x[:cost]}.first(pop_size)
+    best = pop.first if pop.first[:cost] > best[:cost]
+    puts " >it=#{it}, arcs=#{arcs}, f=#{best[:cost]}, [#{best[:bitstring]}]"
+    break if best[:cost]==num_bits
   end
   return best
 end
 
 if __FILE__ == $0
   # problem configuration
-  num_bits = 30
+  num_bits = 20
   # algorithm configuration
   max_iter = 40
   pop_size = 50
+  select_size = 10
   # execute the algorithm
-  best = search(num_bits, max_iter, pop_size)
-  puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
+  best = search(num_bits, max_iter, pop_size, select_size)
+  puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end
