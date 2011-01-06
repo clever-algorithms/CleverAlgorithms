@@ -7,6 +7,9 @@
 require "test/unit"
 require File.expand_path(File.dirname(__FILE__)) + "/../boa"
 
+# some examples for K2 taken from: 
+# http://web.cs.wpi.edu/~cs539/s05/Projects/k2_algorithm.pdf
+
 class TC_BOA < Test::Unit::TestCase
 
   # test that the objective function behaves as expected
@@ -47,18 +50,9 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(true, path_exists?(0, 1, [{:out=>[1]}, {:out=>[]}]) )
     # indirect
     assert_equal(true, path_exists?(0, 1, [{:out=>[2]}, {:out=>[]}, {:out=>[1]}]) )
-  end
-
-  # test if edges are connected
-  def test_connected
-    # not connected
-    assert_equal(false, connected?(0, 0, [{:out=>[]}]))
-    assert_equal(false, connected?(0, 1, [{:out=>[]}, {:out=>[]}]))
-    assert_equal(false, connected?(0, 1, [{:out=>[2]}, {:out=>[2]}, {:out=>[0,1]}]))
-    # 1 is connected to 0, but not the other way around
-    assert_equal(false, connected?(0, 1, [{:out=>[]}, {:out=>[0]}]))
-    # connected
-    assert_equal(true, connected?(0, 1, [{:out=>[1]}, {:out=>[]}]))
+    # indirect 2
+    assert_equal(true, path_exists?(0, 2, [{:out=>[1]}, {:out=>[2]}, {:out=>[]}]) )    
+    assert_equal(false, path_exists?(2, 0, [{:out=>[1]}, {:out=>[2]}, {:out=>[]}]) ) # not symmetrical
   end
 
   # tests whether an edge can be added
@@ -71,6 +65,8 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(false, can_add_edge?(0, 1, [{:out=>[1]}, {:out=>[0]}]) )
     # no path and does not exist
     assert_equal(true, can_add_edge?(0, 1, [{:out=>[]}, {:out=>[]}]) )
+    # indirect case - a bug i found during testing
+    assert_equal(false, can_add_edge?(2, 0, [{:out=>[1]}, {:out=>[2]}, {:out=>[]}]) )
   end
 
   # test the collection of viable parents
@@ -186,7 +182,7 @@ class TC_BOA < Test::Unit::TestCase
   end
 
   # test the construction of a network from a population
-  # example from http://web.cs.wpi.edu/~cs539/s05/Projects/k2_algorithm.pdf
+  # we have an additional connection - we are doing something slightly different here.
   def test_construct_network
     pop = [{:bitstring=>"100"},{:bitstring=>"111"},
            {:bitstring=>"001"},{:bitstring=>"111"},
@@ -195,19 +191,22 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>"111"},{:bitstring=>"000"}]
     rs = construct_network(pop, 3)
     assert_equal(3, rs.size)
-    # expect: x1 => x2 => x3
+    puts rs.inspect
+    # expect: x1 => x2 => x3, also x1=>x3 
     # x1
     assert_equal(0, rs[0][:in].size)
-    assert_equal(1, rs[0][:out].size)
+    assert_equal(2, rs[0][:out].size)
     assert_equal(1, rs[0][:out][0])
+    assert_equal(2, rs[0][:out][1])
     # x2
     assert_equal(1, rs[1][:in].size)
     assert_equal(0, rs[1][:in][0])
     assert_equal(1, rs[1][:out].size)
     assert_equal(2, rs[1][:out][0])
     # x3
-    assert_equal(1, rs[2][:in].size)
+    assert_equal(2, rs[2][:in].size)
     assert_equal(1, rs[2][:in][0])
+    assert_equal(0, rs[2][:in][1])
     assert_equal(0, rs[2][:out].size)
   end
   

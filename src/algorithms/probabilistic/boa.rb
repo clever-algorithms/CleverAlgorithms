@@ -4,6 +4,8 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
+require "enumerator"
+
 def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
@@ -22,26 +24,23 @@ def path_exists?(i, j, graph)
   visited, stack = [], [i]
   while !stack.empty?
     k = stack.shift
-    return true if k == j
+    # return true if k == j
     next if visited.include?(k)
     visited << k
     graph[k][:out].each {|m| stack.unshift(m) if !visited.include?(m)}
+    return true if stack.include?(j)
   end
   return false
 end
 
-def connected?(i, j, graph)
-  return graph[i][:out].include?(j)
-end
-
 def can_add_edge?(i, j, graph)
-  return !path_exists?(j, i, graph) && !connected?(i, j, graph)
+  return !graph[i][:out].include?(j) && !path_exists?(j, i, graph)
 end
 
 def get_viable_parents(node, graph)
   viable = []
   graph.size.times do |i|
-    if node!=i and can_add_edge?(i, node, graph)
+    if node!=i and can_add_edge?(node, i, graph)
       viable << i
     end
   end
@@ -87,19 +86,16 @@ end
 
 def construct_network(pop, prob_size, max_edges=5*pop.size)
   graph = Array.new(prob_size) {|i| {:out=>[], :in=>[], :num=>i} }
-  gains = Array.new(prob_size)
-  max, best = 0.0, -1
+  gains = Array.new(prob_size)  
   max_edges.times do
+    max, from, to = -1, nil, nil
     graph.each_with_index do |node, i|
       gains[i] = compute_gains(node, graph, pop)
-      max,best = gains[i].max,i if gains[i].max > max
+      gains[i].each_with_index {|v,j| from,to,max = i,j,v if v>max}
     end
-    puts "> max=#{max}"
     break if max <= 0.0
-    # TODO check for cycle
-    j = gains[best].index(max)
-    graph[best][:out] << j
-    graph[j][:in] << best
+    graph[from][:out] << to
+    graph[to][:in] << from
   end
   return graph
 end
@@ -137,9 +133,9 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  num_bits = 64
+  num_bits = 30
   # algorithm configuration
-  max_iter = 100
+  max_iter = 40
   pop_size = 50
   # execute the algorithm
   best = search(num_bits, max_iter, pop_size)
