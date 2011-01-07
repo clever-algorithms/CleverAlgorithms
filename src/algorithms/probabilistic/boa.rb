@@ -99,7 +99,10 @@ def construct_network(pop, prob_size, max_edges=5*pop.size)
 end
 
 def topological_ordering(graph)
-  return graph
+  # lazy, make sure root nodes are first
+  # this does no not ensure that all parents will have a value 
+  return graph.sort{|x,y| x[:in].size<=>y[:in].size}  
+  # TODO
 end
 
 def marginal_bit(i, pop)
@@ -112,7 +115,8 @@ def calculate_prob(graph, pop)
     if node[:in].empty?
       node[:prob] = node[:marginal]
     else 
-      # ?
+      counts = compute_count_for_edges(node[:num], pop, parents)
+      # need to convert frequencies into probabilties
     end
   end
 end
@@ -120,7 +124,11 @@ end
 def generate_sample(graph)
   bitstring = Array.new(graph.size)
   graph.each do |node|
-    bitstring[node[:num]] = ((rand() < node[:prob]) ? 1 : 0)
+    if node[:in].empty?
+      bitstring[node[:num]] = ((rand() < node[:prob]) ? 1 : 0)
+    else
+      # need to figure out which probability to use based on parent's state
+    end
   end
   return {:bitstring=>bitstring}
 end
