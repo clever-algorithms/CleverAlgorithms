@@ -4,8 +4,6 @@
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-require "enumerator"
-
 def onemax(vector)
   return vector.inject(0){|sum, value| sum + value}
 end
@@ -51,7 +49,7 @@ def compute_count_for_edges(node, pop, parents)
   pop.each do |p|
     index = 0
     ([node]+parents).reverse.each_with_index do |v,i|
-      index += ((p[:bitstring][v].chr=='1') ? 1 : 0) * (2**i)
+      index += ((p[:bitstring][v] == 1) ? 1 : 0) * (2**i)
     end
     counts[index] += 1
   end
@@ -65,7 +63,8 @@ end
 def k2equation(node, candidates, pop)
   counts = compute_count_for_edges(node, pop, candidates)
   total = nil
-  counts.each_slice(2) do |a1,a2|
+  (counts.size/2).times do |i|
+    a1, a2 = counts[i*2], counts[(i*2)+1]
     rs = (1.0/fact((a1+a2)+1).to_f) * fact(a1).to_f * fact(a2).to_f
     total = (total.nil? ? rs : total*rs)
   end
@@ -99,34 +98,41 @@ def construct_network(pop, prob_size, max_edges=5*pop.size)
   return graph
 end
 
-# bayesian.cc => generateNewInstances
+def topological_ordering(graph)
+  return graph
+end
+
+def marginal_bit(i, pop)
+  return pop.inject(0.0){|s,x| s + x[:bitstring][i]} / pop.size.to_f
+end
+
+def calculate_prob(graph, pop)
+  graph.each do |node|
+    node[:marginal] = marginal_bit(node[:num], pop)
+    if node[:in].empty?
+      node[:prob] = node[:marginal]
+    else 
+      # ?
+    end
+  end
+end
+
+def generate_sample(graph)
+  bitstring = Array.new(graph.size)
+  graph.each do |node|
+    bitstring[node[:num]] = ((rand() < node[:prob]) ? 1 : 0)
+  end
+  return {:bitstring=>bitstring}
+end
+
 def sample_from_network(pop, graph, num_samples)
-  return {:bitstring=>random_bitstring(pop.first[:bitstring].size)} # delete this
-  
-  # a count of incoming edges or something
-  group = Array.new(graph.size)
-  group.each_index do |i|
-    
-    # group size is 1 + number of in-connections (default to 1 not 0)
-    
-    # init lots of memory
+  calculate_prob(graph, pop)
+  ordered = topological_ordering(graph)  
+  samples = []
+  num_samples.times do 
+    samples << generate_sample(ordered)
   end
-  
-  
-  # a topological ordering of nodes?
-  # no idea?
-  # sorting the groups for some reason?
-  
-  # calculate marginal frequencies of nodes
-  marginal_all = Array.new(graph.size)
-  marginal_all.each_index do |node|
-    #marginal_all = compute_count_for_edges(node, pop, candidates)
-    
-  end
-  
-  
-  # generate a set of bitstring
-  
+  return samples
 end
 
 def search(num_bits, max_iter, pop_size, select_size)

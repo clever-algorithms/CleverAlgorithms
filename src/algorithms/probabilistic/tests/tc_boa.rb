@@ -89,11 +89,11 @@ class TC_BOA < Test::Unit::TestCase
 
   # test counts of arbitary associations
   def test_compute_count_for_edges
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 0, 1
     rs = compute_count_for_edges(0, pop, [1])
     assert_equal(4, rs[0])
@@ -120,11 +120,11 @@ class TC_BOA < Test::Unit::TestCase
   
   # test k2 with specific in edges for node with prior in-edges
   def test_k2equation_multiple
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 2, with 0,1 in-connections
     assert_in_delta(1.0/400.0, k2equation(2, [0, 1], pop), 1.0e18)
     assert_in_delta(1.0/400.0, k2equation(2, [1, 0], pop), 1.0e18) # symmetrical
@@ -132,11 +132,11 @@ class TC_BOA < Test::Unit::TestCase
   
   # test k2 with specific in edges for node
   def test_k2equation_single
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 1 with a 0 in-connection
     assert_in_delta(1.0/900.0, k2equation(1, [0], pop), 1.0e18)
     assert_in_delta(1.0/900.0, k2equation(0, [1], pop), 1.0e18) # symmetrical
@@ -150,11 +150,11 @@ class TC_BOA < Test::Unit::TestCase
   
   # test k2 with no in edges
   def test_k2equation_none
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # x1
     assert_in_delta(1.0/2772.0, k2equation(0, [], pop), 1.0e18)
     # x2
@@ -165,11 +165,11 @@ class TC_BOA < Test::Unit::TestCase
   
   # test the calculation of gains
   def test_compute_gains
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # no viable
     graph = [{:out=>[],:in=>[1,2],:num=>0}, {:out=>[0]}, {:out=>[0]}]
     assert_equal([-1,-1,-1], compute_gains(graph[0], graph, pop))
@@ -184,11 +184,11 @@ class TC_BOA < Test::Unit::TestCase
   # test the construction of a network from a population
   # we have an additional connection - we are doing something slightly different here.
   def test_construct_network
-    pop = [{:bitstring=>"100"},{:bitstring=>"111"},
-           {:bitstring=>"001"},{:bitstring=>"111"},
-           {:bitstring=>"000"},{:bitstring=>"011"},
-           {:bitstring=>"111"},{:bitstring=>"000"},
-           {:bitstring=>"111"},{:bitstring=>"000"}]
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     rs = construct_network(pop, 3)
     assert_equal(3, rs.size)
     # expect: x1 => x2 => x3, also x1=>x3 
@@ -208,10 +208,72 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(0, rs[2][:in][1])
     assert_equal(0, rs[2][:out].size)
   end
+
+  # test the topological ordering of a graph
+  def test_topological_ordering
+    # TODO
+  end
   
-  # test sampling from the network
+  # test the calculation of the marginal probability of a bit
+  def test_marginal_bit
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
+    assert_equal(0.5, marginal_bit(0, pop))
+    assert_equal(0.5, marginal_bit(1, pop))
+    assert_equal(0.6, marginal_bit(2, pop))
+  end
+  
+  # test the calculation of node probabilities
+  def test_calculate_prob
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
+    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
+    calculate_prob(graph, pop)
+    graph.each do |node|
+      assert_not_nil(node[:marginal])
+      assert_not_nil(node[:prob])
+    end
+  end
+  
+  # test generating a single sample
+  def test_generate_sample
+    # all zeros
+    graph = [{:num=>0,:prob=>0.0}, {:num=>1,:prob=>0.0}, {:num=>2,:prob=>0.0}]
+    rs = generate_sample(graph)
+    assert_equal(3, rs[:bitstring].size)
+    assert_equal([0,0,0], rs[:bitstring])
+    # all ones
+    graph = [{:num=>0,:prob=>1.0}, {:num=>1,:prob=>1.0}, {:num=>2,:prob=>1.0}]
+    rs = generate_sample(graph)
+    assert_equal(3, rs[:bitstring].size)
+    assert_equal([1,1,1], rs[:bitstring])
+    # out of order alternating
+    graph = [{:num=>1,:prob=>1.0}, {:num=>2,:prob=>0.0}, {:num=>0,:prob=>0.0}]
+    rs = generate_sample(graph)
+    assert_equal(3, rs[:bitstring].size)
+    assert_equal([0,1,0], rs[:bitstring])
+  end
+
+  # test the generation of samples from the network
   def test_sample_from_network
-#    fail("Test not written")
+    pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
+           {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
+    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
+    samples = sample_from_network(pop, graph, 50)
+    assert_equal(50, samples.size)
+    samples.each do |s| 
+      assert_equal(3, s[:bitstring].size) 
+      s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
+    end
   end  
   
   # helper for turning off STDOUT
