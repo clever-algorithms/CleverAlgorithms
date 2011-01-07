@@ -95,19 +95,25 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 0, 1
-    rs = compute_count_for_edges(0, pop, [1])
+    rs = compute_count_for_edges(pop, [0,1])
     assert_equal(4, rs[0])
     assert_equal(1, rs[1])
     assert_equal(1, rs[2])
     assert_equal(4, rs[3])
+    # 1, 2
+    rs = compute_count_for_edges(pop, [1,2])
+    assert_equal(4, rs[0])
+    assert_equal(1, rs[1])
+    assert_equal(0, rs[2])
+    assert_equal(5, rs[3])
     # 0, 2    
-    rs = compute_count_for_edges(0, pop, [2])
+    rs = compute_count_for_edges(pop, [0,2])
     assert_equal(3, rs[0])
     assert_equal(2, rs[1])
     assert_equal(1, rs[2])
     assert_equal(4, rs[3])
     # 0, 1, 2
-    rs = compute_count_for_edges(0, pop, [1, 2])
+    rs = compute_count_for_edges(pop, [0, 1,2])
     assert_equal(3, rs[0])
     assert_equal(1, rs[1])
     assert_equal(0, rs[2])
@@ -212,37 +218,62 @@ class TC_BOA < Test::Unit::TestCase
   # test the topological ordering of a graph
   def test_topological_ordering
     # TODO
+    # http://www.cs.ucsb.edu/~suri/cs130a/Graphs.txt
+    # http://www.ics.uci.edu/~eppstein/161/960208.html
   end
   
   # test the calculation of the marginal probability of a bit
-  def test_marginal_bit
+  def test_marginal_probability
     pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
-    assert_equal(0.5, marginal_bit(0, pop))
-    assert_equal(0.5, marginal_bit(1, pop))
-    assert_equal(0.6, marginal_bit(2, pop))
+    assert_equal(0.5, marginal_probability(0, pop))
+    assert_equal(0.5, marginal_probability(1, pop))
+    assert_equal(0.6, marginal_probability(2, pop))
   end
   
-  # test the calculation of node probabilities
-  def test_calculate_prob
+  # test the calculation of a node's probability
+  def test_calculate_probability
     pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,0]},{:bitstring=>[0,1,1]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
+    # all marginals (independent)
     graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
-    calculate_prob(graph, pop)
-    graph.each do |node|
-      assert_not_nil(node[:marginal])
-      assert_not_nil(node[:prob])
-    end
+    assert_equal(0.5, calculate_probability(graph[0], [nil,nil,nil], graph, pop))
+    assert_equal(0.5, calculate_probability(graph[1], [nil,nil,nil], graph, pop))
+    assert_equal(0.6, calculate_probability(graph[2], [nil,nil,nil], graph, pop))
+    # single conditionals 
+    # P (A ^ B) = P(A) * P(B|A)
+    graph = [{:out=>[1],:in=>[],:num=>0}, {:out=>[2],:in=>[0],:num=>1}, {:out=>[],:in=>[1],:num=>2}]
+    # 0
+    assert_equal(0.5, calculate_probability(graph[0], [nil,nil,nil], graph, pop))    
+    # 1
+    assert_equal((5.0/10.0) * (4.0/5.0), calculate_probability(graph[1], [1,nil,nil], graph, pop))
+    assert_equal((5.0/10.0) * (1.0/5.0), calculate_probability(graph[1], [0,nil,nil], graph, pop))
+    # 2
+    assert_equal((5.0/10.0) * (5.0/5.0), calculate_probability(graph[2], [nil,1,nil], graph, pop))
+    assert_equal((5.0/10.0) * (1.0/5.0), calculate_probability(graph[2], [nil,0,nil], graph, pop))
+    # double conditional
+    # P (A ^ B ^ C) = P(A) * P(B|A) * P(C|A ^ B)
+    graph = [{:out=>[2],:in=>[],:num=>0}, {:out=>[2],:in=>[],:num=>1}, {:out=>[],:in=>[0,1],:num=>2}]
+    # 111
+    assert_equal((5.0/10.0) * (4.0/5.0) * (4.0/4.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.4
+    # 101
+    assert_equal((5.0/10.0) * (1.0/5.0) * (0.0/1.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0
+    # 011
+    assert_equal((5.0/10.0) * (1.0/5.0) * (1.0/1.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.1
+    # 001
+    assert_equal((5.0/10.0) * (4.0/5.0) * (1.0/4.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.1
   end
   
   # test generating a single sample
-  def test_generate_sample
+  # TODO TODO
+  # TODO also test that a set of generated samples match the expectations encoded into the graph/pop
+  def TODOtest_probabilistic_logic_sample
     # all zeros
     graph = [{:num=>0,:prob=>0.0}, {:num=>1,:prob=>0.0}, {:num=>2,:prob=>0.0}]
     rs = generate_sample(graph)
@@ -261,6 +292,7 @@ class TC_BOA < Test::Unit::TestCase
   end
 
   # test the generation of samples from the network
+  # TODO TODO TODO 
   def test_sample_from_network
     pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
@@ -268,12 +300,12 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
-    samples = sample_from_network(pop, graph, 50)
-    assert_equal(50, samples.size)
-    samples.each do |s| 
-      assert_equal(3, s[:bitstring].size) 
-      s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
-    end
+#    samples = sample_from_network(pop, graph, 50)
+#    assert_equal(50, samples.size)
+#    samples.each do |s| 
+#      assert_equal(3, s[:bitstring].size) 
+#      s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
+#    end
   end  
   
   # helper for turning off STDOUT

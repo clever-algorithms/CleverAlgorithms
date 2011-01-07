@@ -44,11 +44,11 @@ def get_viable_parents(node, graph)
   return viable
 end
 
-def compute_count_for_edges(node, pop, parents)
-  counts = Array.new(2**(1+parents.size)){0}
+def compute_count_for_edges(pop, indexes)
+  counts = Array.new(2**(indexes.size)){0}
   pop.each do |p|
     index = 0
-    ([node]+parents).reverse.each_with_index do |v,i|
+    indexes.reverse.each_with_index do |v,i|
       index += ((p[:bitstring][v] == 1) ? 1 : 0) * (2**i)
     end
     counts[index] += 1
@@ -61,7 +61,7 @@ def fact(v)
 end
 
 def k2equation(node, candidates, pop)
-  counts = compute_count_for_edges(node, pop, candidates)
+  counts = compute_count_for_edges(pop, [node]+candidates)
   total = nil
   (counts.size/2).times do |i|
     a1, a2 = counts[i*2], counts[(i*2)+1]
@@ -105,30 +105,35 @@ def topological_ordering(graph)
   # TODO
 end
 
-def marginal_bit(i, pop)
+def marginal_probability(i, pop)
   return pop.inject(0.0){|s,x| s + x[:bitstring][i]} / pop.size.to_f
 end
 
-def calculate_prob(graph, pop)
-  graph.each do |node|
-    node[:marginal] = marginal_bit(node[:num], pop)
-    if node[:in].empty?
-      node[:prob] = node[:marginal]
-    else 
-      counts = compute_count_for_edges(node[:num], pop, parents)
-      # need to convert frequencies into probabilties
-    end
-  end
+def calculate_probability(node, bitstring, graph, pop)
+  return marginal_probability(node[:num], pop) if node[:in].empty?
+  counts = compute_count_for_edges(pop, node[:in]+[node[:num]])
+  puts "counts=#{counts.inspect}, node=#{node[:num]}, in=#{node[:in].inspect}"
+   
+  index = 0
+  node[:in].reverse.each_with_index do |v,i|
+    index += ((bitstring[v] == 1) ? 1 : 0) * (2**i)
+  end  
+  puts "index=#{index}"
+
+  # how can we turn the final count into a probability? 
+  # the maths says that we could be combining probabilities on the way down the tree
+  # can we re-compute them after the fact? is their enough unformation?
+
+
+  return 0
+
 end
 
-def generate_sample(graph)
+def probabilistic_logic_sample(graph, pop)
   bitstring = Array.new(graph.size)
   graph.each do |node|
-    if node[:in].empty?
-      bitstring[node[:num]] = ((rand() < node[:prob]) ? 1 : 0)
-    else
-      # need to figure out which probability to use based on parent's state
-    end
+    prob = calculate_probability(node, bitstring, graph, pop)
+    bitstring[node[:num]] = ((rand() < prob) ? 1 : 0)
   end
   return {:bitstring=>bitstring}
 end
