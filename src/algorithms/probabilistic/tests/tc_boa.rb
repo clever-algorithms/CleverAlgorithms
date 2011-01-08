@@ -297,6 +297,9 @@ class TC_BOA < Test::Unit::TestCase
     trials, freq = 100, Array.new(3){0}
     trials.times do
       rs = probabilistic_logic_sample(graph, pop)
+      assert_not_nil(rs[:bitstring])
+      assert_equal(3, rs[:bitstring].size) 
+      rs[:bitstring].size.times {|i| assert_not_nil(rs[:bitstring][i])}
       rs[:bitstring].each_with_index {|v,i| freq[i]+=v}
     end
     # TODO test conditional
