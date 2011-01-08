@@ -178,13 +178,14 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # no viable
     graph = [{:out=>[],:in=>[1,2],:num=>0}, {:out=>[0]}, {:out=>[0]}]
-    assert_equal([-1,-1,-1], compute_gains(graph[0], graph, pop))
+    assert_equal([-1,-1,-1], compute_gains(graph[0], graph, pop, 99))
     #  two viable
     graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[]}, {:out=>[]}]
-    rs = compute_gains(graph[0], graph, pop)
+    rs = compute_gains(graph[0], graph, pop, 99)
     assert_equal(-1, rs[0])
     assert_not_equal(-1, rs[1])
     assert_not_equal(-1, rs[2])
+    # TODO tests the max edges
   end
 
   # test the construction of a network from a population
@@ -320,7 +321,7 @@ class TC_BOA < Test::Unit::TestCase
       s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
     end
   end  
-  
+
   # helper for turning off STDOUT
   # File activesupport/lib/active_support/core_ext/kernel/reporting.rb, line 39
   def silence_stream(stream)
@@ -330,16 +331,16 @@ class TC_BOA < Test::Unit::TestCase
     yield
   ensure
     stream.reopen(old_stream)
-  end   
+  end
   
   # test that the algorithm can solve the problem
   def test_search
     best = nil
-#    silence_stream(STDOUT) do
-#      best = search(64, 50, 50)
-#    end  
-#    assert_not_nil(best[:cost])
-#    assert_equal(64, best[:cost])
+   silence_stream(STDOUT) do
+     best = search(10, 50, 50, 10)
+   end  
+   assert_not_nil(best[:cost])
+   assert_in_delta(10, best[:cost], 2)
   end
   
 end

@@ -71,9 +71,10 @@ def k2equation(node, candidates, pop)
   return total
 end
 
-def compute_gains(node, graph, pop)
+def compute_gains(node, graph, pop, max)
   viable = get_viable_parents(node[:num], graph)
   gains = Array.new(graph.size) {-1}
+  return gains if node[:out].size >= max
   gains.each_index do |i|
     if viable.include?(i)
       gains[i] = k2equation(node[:num], node[:in]+[i], pop)
@@ -82,13 +83,13 @@ def compute_gains(node, graph, pop)
   return gains
 end
 
-def construct_network(pop, prob_size, max_edges=5*pop.size)
+def construct_network(pop, prob_size, max_edges=10*pop.size)
   graph = Array.new(prob_size) {|i| {:out=>[], :in=>[], :num=>i} }
   gains = Array.new(prob_size)  
   max_edges.times do
     max, from, to = -1, nil, nil
     graph.each_with_index do |node, i|
-      gains[i] = compute_gains(node, graph, pop)
+      gains[i] = compute_gains(node, graph, pop, max_edges.to_f/prob_size.to_f)
       gains[i].each_with_index {|v,j| from,to,max = i,j,v if v>max}
     end
     break if max <= 0.0
@@ -142,7 +143,7 @@ end
 def sample_from_network(pop, graph, num_samples)
   ordered = topological_ordering(graph)  
   samples = Array.new(num_samples) do
-    probabilistic_logic_sample(graph, pop)
+    probabilistic_logic_sample(ordered, pop)
   end
   return samples
 end
@@ -155,23 +156,25 @@ def search(num_bits, max_iter, pop_size, select_size)
     selected = Array.new(select_size) { binary_tournament(pop) }
     network = construct_network(selected, num_bits)
     arcs = network.inject(0){|s,x| s+x[:out].size}
-    samples = sample_from_network(selected, network, pop_size)
-    samples.each{|c| c[:cost] = onemax(c[:bitstring])}
-    pop = (samples+pop).sort{|x,y| y[:cost]<=>x[:cost]}.first(pop_size)
-    best = pop.first if pop.first[:cost] > best[:cost]
+    children = sample_from_network(selected, network, pop_size)
+    children.each{|c| c[:cost] = onemax(c[:bitstring])}
+    children.each {|c| puts " >>sample, f=#{c[:cost]} #{c[:bitstring]}"}
+    pop = children
+    best = pop.first if pop.first[:cost] >= best[:cost]
     puts " >it=#{it}, arcs=#{arcs}, f=#{best[:cost]}, [#{best[:bitstring]}]"
-    break if best[:cost]==num_bits
+    converged = pop.select {|x| x[:bitstring] != pop.first[:bitstring] }.empty?
+    break if converged or best[:cost]==num_bits
   end
   return best
 end
 
 if __FILE__ == $0
   # problem configuration
-  num_bits = 20
+  num_bits = 15
   # algorithm configuration
   max_iter = 40
   pop_size = 50
-  select_size = 10
+  select_size = 15
   # execute the algorithm
   best = search(num_bits, max_iter, pop_size, select_size)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
