@@ -82,7 +82,7 @@ class TC_DifferentialEvolution < Test::Unit::TestCase
     children = create_children(pop, [[0,1], [0,1]], 0.5, 0.5)
     assert_equal(4, children.size)
     children.each_with_index do |child,i|
-      assert_not_equal(child, pop[i])
+      assert_not_same(child, pop[i])
       assert_equal(2, child[:vector].size)
       child[:vector].each do |v| 
         assert_operator(v, :>=, 0)

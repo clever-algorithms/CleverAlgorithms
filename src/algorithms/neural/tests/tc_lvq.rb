@@ -21,7 +21,7 @@ class TC_LVQ < Test::Unit::TestCase
         assert_operator(v, :<, bounds[1])
         sum += v
       end
-      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.15)
     end    
   end
   
