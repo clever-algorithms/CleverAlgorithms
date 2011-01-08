@@ -132,11 +132,9 @@ def probabilistic_logic_sample(graph, pop)
 end
 
 def sample_from_network(pop, graph, num_samples)
-  calculate_prob(graph, pop)
   ordered = topological_ordering(graph)  
-  samples = []
-  num_samples.times do 
-    samples << generate_sample(ordered)
+  samples = Array.new(num_samples) do
+    probabilistic_logic_sample(graph, pop)
   end
   return samples
 end

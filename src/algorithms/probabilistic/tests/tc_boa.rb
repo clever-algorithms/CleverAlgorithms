@@ -217,11 +217,13 @@ class TC_BOA < Test::Unit::TestCase
 
   # test the topological ordering of a graph
   def test_topological_ordering
-    # root nodes come to the front
-    graph = [{:out=>[2],:in=>[0],:num=>1}, {:out=>[1],:in=>[],:num=>0}, {:out=>[],:in=>[1],:num=>2}]
+    # root nodes come to the front, dependencies are re-ordted
+    graph = [{:out=>[],:in=>[1],:num=>2}, {:out=>[1],:in=>[],:num=>0}, {:out=>[2],:in=>[0],:num=>1}]
     rs = topological_ordering(graph)
     assert_not_same(graph, rs)
-    assert_same(graph[1], rs[0])
+    assert_equal(0, rs[0][:num])
+    assert_equal(1, rs[1][:num])
+    assert_equal(2, rs[2][:num])
     # dependencies are detected and re-ordered accordingly
     g = [{:out=>[1,2],:in=>[],:num=>0}, 
          {:out=>[2,3],:in=>[0],:num=>1}, 
@@ -230,10 +232,10 @@ class TC_BOA < Test::Unit::TestCase
     graph = [g[2], g[3], g[0], g[1]]
     rs = topological_ordering(graph)
     assert_not_same(graph, rs)
-    assert_same(g[0], rs[0])
-    assert_same(g[1], rs[1])
-    assert_same(g[2], rs[2])
-    assert_same(g[3], rs[3])
+    assert_equal(0, rs[0][:num])
+    assert_equal(1, rs[1][:num])
+    assert_equal(2, rs[2][:num])
+    assert_equal(3, rs[3][:num])
   end
   
   # test the calculation of the marginal probability of a bit
@@ -286,29 +288,21 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(1.0/4.0, calculate_probability(graph[2], [0,0,nil], graph, pop)) # 0.25
   end
   
-  # test generating a single sample
-  # TODO TODO
-  # TODO also test that a set of generated samples match the expectations encoded into the graph/pop
-  def TODOtest_probabilistic_logic_sample
-    # all zeros
-    graph = [{:num=>0,:prob=>0.0}, {:num=>1,:prob=>0.0}, {:num=>2,:prob=>0.0}]
-    rs = generate_sample(graph)
-    assert_equal(3, rs[:bitstring].size)
-    assert_equal([0,0,0], rs[:bitstring])
-    # all ones
-    graph = [{:num=>0,:prob=>1.0}, {:num=>1,:prob=>1.0}, {:num=>2,:prob=>1.0}]
-    rs = generate_sample(graph)
-    assert_equal(3, rs[:bitstring].size)
-    assert_equal([1,1,1], rs[:bitstring])
-    # out of order alternating
-    graph = [{:num=>1,:prob=>1.0}, {:num=>2,:prob=>0.0}, {:num=>0,:prob=>0.0}]
-    rs = generate_sample(graph)
-    assert_equal(3, rs[:bitstring].size)
-    assert_equal([0,1,0], rs[:bitstring])
+  # test generating a single sample  
+  def test_probabilistic_logic_sample
+    # test all marginal, and all easy
+    pop = [{:bitstring=>[1,1,1]},{:bitstring=>[1,0,1]},
+           {:bitstring=>[1,1,1]},{:bitstring=>[1,0,1]}]
+    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
+    trials, freq = 100, Array.new(3){0}
+    trials.times do
+      rs = probabilistic_logic_sample(graph, pop)
+      rs[:bitstring].each_with_index {|v,i| freq[i]+=v}
+    end
+    # TODO test conditional
   end
 
   # test the generation of samples from the network
-  # TODO TODO TODO 
   def test_sample_from_network
     pop = [{:bitstring=>[1,0,0]},{:bitstring=>[1,1,1]},
            {:bitstring=>[0,0,1]},{:bitstring=>[1,1,1]},
@@ -316,12 +310,12 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[],:in=>[],:num=>1}, {:out=>[],:in=>[],:num=>2}]
-#    samples = sample_from_network(pop, graph, 50)
-#    assert_equal(50, samples.size)
-#    samples.each do |s| 
-#      assert_equal(3, s[:bitstring].size) 
-#      s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
-#    end
+    samples = sample_from_network(pop, graph, 50)
+    assert_equal(50, samples.size)
+    samples.each do |s| 
+      assert_equal(3, s[:bitstring].size) 
+      s[:bitstring].size.times {|i| assert_not_nil(s[:bitstring][i])}
+    end
   end  
   
   # helper for turning off STDOUT
