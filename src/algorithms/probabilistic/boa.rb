@@ -99,11 +99,11 @@ def construct_network(pop, prob_size, max_edges=5*pop.size)
 end
 
 def topological_ordering(graph)
-  graph.each {|n| n[:count]=n[:in].size}
+  graph.each {|n| n[:count] = n[:in].size}
   ordered,stack = [], graph.select {|n| n[:count]==0}  
   while ordered.size < graph.size
     current = stack.shift
-    current[:in].each do |edge|
+    current[:out].each do |edge|
       index = graph.index {|node| node[:num]==edge}
       graph[index][:count] -= 1
       stack << graph[index] if graph[index][:count] <= 0
