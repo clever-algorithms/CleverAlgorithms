@@ -1,4 +1,4 @@
-:cost# Unit tests for boa.rb
+# Unit tests for boa.rb
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
@@ -132,8 +132,8 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 2, with 0,1 in-connections
-    assert_in_delta(1.0/400.0, k2equation(2, [0, 1], pop), 1.0e18)
-    assert_in_delta(1.0/400.0, k2equation(2, [1, 0], pop), 1.0e18) # symmetrical
+    assert_in_delta(1.0/400.0, k2equation(2, [0, 1], pop), 1.0e-02)
+    assert_in_delta(1.0/400.0, k2equation(2, [1, 0], pop), 1.0e-02) # symmetrical
   end
   
   # test k2 with specific in edges for node
@@ -144,14 +144,14 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # 1 with a 0 in-connection
-    assert_in_delta(1.0/900.0, k2equation(1, [0], pop), 1.0e18)
-    assert_in_delta(1.0/900.0, k2equation(0, [1], pop), 1.0e18) # symmetrical
+    assert_in_delta(1.0/900.0, k2equation(1, [0], pop), 1.0e-08)
+    assert_in_delta(1.0/900.0, k2equation(0, [1], pop), 1.0e-08) # symmetrical
     # 2 with a 0 in-connection
-    assert_in_delta(1.0/1800.0, k2equation(2, [0], pop), 1.0e18) 
-    assert_in_delta(1.0/1800.0, k2equation(0, [2], pop), 1.0e18) # symmetrical
+    assert_in_delta(1.0/1800.0, k2equation(2, [0], pop), 1.0e-04) 
+    assert_in_delta(1.0/1800.0, k2equation(0, [2], pop), 1.0e-08) # symmetrical
     # 2 with a 1 in-connection
-    assert_in_delta(1.0/180.0, k2equation(2, [1], pop), 1.0e18)
-    assert_in_delta(1.0/180.0, k2equation(1, [2], pop), 1.0e18) # symmetrical
+    assert_in_delta(1.0/180.0, k2equation(2, [1], pop), 1.0e-03)
+    assert_in_delta(1.0/180.0, k2equation(1, [2], pop), 1.0e-08) # symmetrical
   end
   
   # test k2 with no in edges
@@ -162,11 +162,11 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # x1
-    assert_in_delta(1.0/2772.0, k2equation(0, [], pop), 1.0e18)
+    assert_in_delta(1.0/2772.0, k2equation(0, [], pop), 1.0e-08)
     # x2
-    assert_in_delta(1.0/2772.0, k2equation(1, [], pop), 1.0e18)
+    assert_in_delta(1.0/2772.0, k2equation(1, [], pop), 1.0e-08)
     # x3
-    assert_in_delta(1.0/2310.0, k2equation(2, [], pop), 1.0e18)
+    assert_in_delta(1.0/2310.0, k2equation(2, [], pop), 1.0e-08)
   end
   
   # test the calculation of gains
@@ -217,9 +217,23 @@ class TC_BOA < Test::Unit::TestCase
 
   # test the topological ordering of a graph
   def test_topological_ordering
-    # TODO
-    # http://www.cs.ucsb.edu/~suri/cs130a/Graphs.txt
-    # http://www.ics.uci.edu/~eppstein/161/960208.html
+    # root nodes come to the front
+    graph = [{:out=>[2],:in=>[0],:num=>1}, {:out=>[1],:in=>[],:num=>0}, {:out=>[],:in=>[1],:num=>2}]
+    rs = topological_ordering(graph)
+    assert_not_same(graph, rs)
+    assert_same(graph[1], rs[0])
+    # dependencies are detected and re-ordered accordingly
+    g = [{:out=>[1,2],:in=>[],:num=>0}, 
+         {:out=>[2,3],:in=>[0],:num=>1}, 
+         {:out=>[3],:in=>[0,1],:num=>2},
+         {:out=>[],:in=>[1,2],:num=>3}]
+    graph = [g[2], g[3], g[0], g[1]]
+    rs = topological_ordering(graph)
+    assert_not_same(graph, rs)
+    assert_same(g[0], rs[0])
+    assert_same(g[1], rs[1])
+    assert_same(g[2], rs[2])
+    assert_same(g[3], rs[3])
   end
   
   # test the calculation of the marginal probability of a bit
@@ -253,11 +267,11 @@ class TC_BOA < Test::Unit::TestCase
     # 0
     assert_equal(0.5, calculate_probability(graph[0], [nil,nil,nil], graph, pop))    
     # 1
-    assert_in_delta(((4.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [1,nil,nil], graph, pop), 0.000000001)
-    assert_in_delta(((1.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [0,nil,nil], graph, pop), 0.000000001)
+    assert_in_delta(((4.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [1,nil,nil], graph, pop), 1.0e-08)
+    assert_in_delta(((1.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [0,nil,nil], graph, pop), 1.0e-08)
     # 2
-    assert_in_delta(((5.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,1,nil], graph, pop), 0.000000001)
-    assert_in_delta(((1.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,0,nil], graph, pop), 0.000000001)    
+    assert_in_delta(((5.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,1,nil], graph, pop), 1.0e-08)
+    assert_in_delta(((1.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,0,nil], graph, pop), 1.0e-08)    
     # two conditional
     # http://stats.stackexchange.com/questions/1564/how-can-i-calculate-the-conditional-probability-of-several-events
     # too much work! (did the frequency graph on paper)
