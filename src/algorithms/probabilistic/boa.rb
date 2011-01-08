@@ -78,7 +78,7 @@ def compute_gains(node, graph, pop)
     if viable.include?(i)
       gains[i] = k2equation(node[:num], node[:in]+[i], pop)
     end
-  end  
+  end
   return gains
 end
 
@@ -99,10 +99,18 @@ def construct_network(pop, prob_size, max_edges=5*pop.size)
 end
 
 def topological_ordering(graph)
-  # lazy, make sure root nodes are first
-  # this does no not ensure that all parents will have a value 
-  return graph.sort{|x,y| x[:in].size<=>y[:in].size}  
-  # TODO
+  graph.each {|n| n[:count]=n[:in].size}
+  ordered,stack = [], graph.select {|n| n[:count]==0}  
+  while ordered.size < graph.size
+    current = stack.shift
+    current[:in].each do |edge|
+      index = graph.index {|node| node[:num]==edge}
+      graph[index][:count] -= 1
+      stack << graph[index] if graph[index][:count] <= 0
+    end
+    ordered << current
+  end
+  return ordered
 end
 
 def marginal_probability(i, pop)
