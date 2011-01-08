@@ -111,22 +111,15 @@ end
 
 def calculate_probability(node, bitstring, graph, pop)
   return marginal_probability(node[:num], pop) if node[:in].empty?
-  counts = compute_count_for_edges(pop, node[:in]+[node[:num]])
-  puts "counts=#{counts.inspect}, node=#{node[:num]}, in=#{node[:in].inspect}"
-   
+  counts = compute_count_for_edges(pop, [node[:num]]+node[:in])
   index = 0
   node[:in].reverse.each_with_index do |v,i|
     index += ((bitstring[v] == 1) ? 1 : 0) * (2**i)
   end  
-  puts "index=#{index}"
-
-  # how can we turn the final count into a probability? 
-  # the maths says that we could be combining probabilities on the way down the tree
-  # can we re-compute them after the fact? is their enough unformation?
-
-
-  return 0
-
+  i1 = index + (1*2**(node[:in].size))
+  i2 = index + (0*2**(node[:in].size)) 
+  a1, a2 = counts[i1].to_f, counts[i2].to_f
+  return a1/(a1+a2)
 end
 
 def probabilistic_logic_sample(graph, pop)

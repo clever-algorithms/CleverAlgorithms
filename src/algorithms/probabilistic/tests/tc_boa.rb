@@ -246,28 +246,30 @@ class TC_BOA < Test::Unit::TestCase
     assert_equal(0.5, calculate_probability(graph[0], [nil,nil,nil], graph, pop))
     assert_equal(0.5, calculate_probability(graph[1], [nil,nil,nil], graph, pop))
     assert_equal(0.6, calculate_probability(graph[2], [nil,nil,nil], graph, pop))
-    # single conditionals 
-    # P (A ^ B) = P(A) * P(B|A)
+    # single conditional 
+    # Conditional: P(B|A) = P(A ^ B) / P(A)
+    # Joint: P(A ^ B) = P(A|B) * P(B)
     graph = [{:out=>[1],:in=>[],:num=>0}, {:out=>[2],:in=>[0],:num=>1}, {:out=>[],:in=>[1],:num=>2}]
     # 0
     assert_equal(0.5, calculate_probability(graph[0], [nil,nil,nil], graph, pop))    
     # 1
-    assert_equal((5.0/10.0) * (4.0/5.0), calculate_probability(graph[1], [1,nil,nil], graph, pop))
-    assert_equal((5.0/10.0) * (1.0/5.0), calculate_probability(graph[1], [0,nil,nil], graph, pop))
+    assert_in_delta(((4.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [1,nil,nil], graph, pop), 0.000000001)
+    assert_in_delta(((1.0/5.0)*(5.0/10.0))/(5.0/10.0), calculate_probability(graph[1], [0,nil,nil], graph, pop), 0.000000001)
     # 2
-    assert_equal((5.0/10.0) * (5.0/5.0), calculate_probability(graph[2], [nil,1,nil], graph, pop))
-    assert_equal((5.0/10.0) * (1.0/5.0), calculate_probability(graph[2], [nil,0,nil], graph, pop))
-    # double conditional
-    # P (A ^ B ^ C) = P(A) * P(B|A) * P(C|A ^ B)
+    assert_in_delta(((5.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,1,nil], graph, pop), 0.000000001)
+    assert_in_delta(((1.0/6.0)*(6.0/10.0))/(5.0/10.0), calculate_probability(graph[2], [nil,0,nil], graph, pop), 0.000000001)    
+    # two conditional
+    # http://stats.stackexchange.com/questions/1564/how-can-i-calculate-the-conditional-probability-of-several-events
+    # too much work! (did the frequency graph on paper)
     graph = [{:out=>[2],:in=>[],:num=>0}, {:out=>[2],:in=>[],:num=>1}, {:out=>[],:in=>[0,1],:num=>2}]
     # 111
-    assert_equal((5.0/10.0) * (4.0/5.0) * (4.0/4.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.4
+    assert_equal(4.0/4.0, calculate_probability(graph[2], [1,1,nil], graph, pop)) # 1.0
     # 101
-    assert_equal((5.0/10.0) * (1.0/5.0) * (0.0/1.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0
+    assert_equal(0.0/1.0, calculate_probability(graph[2], [1,0,nil], graph, pop)) # 0.0
     # 011
-    assert_equal((5.0/10.0) * (1.0/5.0) * (1.0/1.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.1
+    assert_equal(1.0/1.0, calculate_probability(graph[2], [0,1,nil], graph, pop)) # 1.0
     # 001
-    assert_equal((5.0/10.0) * (4.0/5.0) * (1.0/4.0), calculate_probability(graph[2], [1,1,nil], graph, pop)) # 0.1
+    assert_equal(1.0/4.0, calculate_probability(graph[2], [0,0,nil], graph, pop)) # 0.25
   end
   
   # test generating a single sample
