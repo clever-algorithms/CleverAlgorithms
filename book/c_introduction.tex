@@ -279,6 +279,8 @@ Wolpert and Macready's original paper was produced at a time when grandiose gene
 \subsection{Stochastic Optimization}
 \label{subsec:stochastic}
 \index{Stochastic Optimization}
+\index{Monte Carlo}
+\index{Markov Chain}
 % Stochastic
 Stochastic optimization algorithms are those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. 
 Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
@@ -306,6 +308,7 @@ Many unconventional optimization algorithms employ a process that includes the i
 The method of acquiring information is called inductive learning or learning from example, where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Many unconventional optimization approaches maintain a single candidate solution, a population of samples, or a compression thereof that provides both an instantaneous representation of all of the information acquired by the process, and the basis for generating and making future decisions. 
 
 % k-bandit
+\index{Bandit Problems}
 This method of simultaneously acquiring and improving information from the domain and the optimization of decision making (where to direct future effort) is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making known as game theory \cite{Robbins1952, Bergemann2006}. This formalism considers the capability of a strategy to allocate available resources proportional to the future payoff the strategy is expected to receive. The classic example is the 2-armed bandit problem used by Goldberg to describe the behavior of the genetic algorithm \cite{Goldberg1989}. The example involves an agent that learns which one of the two slot machines provides more return by pulling the handle of each (sampling the domain) and biasing future handle pulls proportional to the expected utility, based on the probabilistic experience with the past distribution of the payoff. The formalism may also be used to understand the properties of inductive learning demonstrated by the adaptive behavior of most unconventional optimization algorithms.
 
 % the bad
