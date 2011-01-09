@@ -6,6 +6,7 @@
 \section{Testing Algorithms} 
 \label{advanced:sec:testing_algorithms}
 \index{Testing Algorithms}
+\index{Unit Testing}
 
 % section
 This section provides an introduction to software testing and the testing of Artificial Intelligence algorithms. Section~\ref{sec:testing} introduces software testing and focuses on a type of testing relevant to algorithms called unit testing. Section~\ref{sec:example} provides a specific example of an algorithm and a prepared suite of unit tests, and Section~\ref{sec:suggestions} provides some rules-of-thumb for testing algorithms in general.
@@ -17,7 +18,7 @@ This section provides an introduction to software testing and the testing of Art
 \subsection{Software Testing}
 \label{sec:testing}
 \index{Software Testing}
-\index{Unit Testing}
+\index{Unit Testing!Definition}
 % software
 Software testing in the field of Software Engineering is a process in the life-cycle of a software project that verifies that the product or service meets quality expectations and validates that software meets the requirements specification. Software testing is intended to locate defects in a program, although a given testing method cannot guarantee to locate all defects. As such, it is common for an application to be subjected to a range of testing methodologies throughout the software life-cycle, such as unit testing during development, integration testing once modules and systems are completed, and user acceptance testing to allow the stakeholders to determine if their needs have been met.
 
@@ -45,7 +46,7 @@ Unit testing is lightweight (requiring only the writing of automated test code) 
 %
 \subsection{Unit Testing Example}
 \label{sec:example}
-\index{Unit Testing}
+\index{Unit Testing!Example}
 This section provides an example of an algorithm and its associated unit tests as an illustration of the presented concepts.
 The implementation of the Genetic Algorithm is discussed from the perspective of algorithm testing and an example set of unit tests for the Genetic Algorithm implementation are presented as a case study.
 
@@ -81,7 +82,7 @@ Given that a unit test should `test one thing' it is common for a given function
 %
 \subsection{Rules-of-Thumb}
 \label{sec:suggestions}
-\index{Unit Testing}
+\index{Unit Testing!Heuristics}
 Unit testing is easy, although writing good unit tests is difficult given the complex relationship the tests have with the code under test. Testing Metaheuristics and Computational Intelligence algorithms is harder again given their probabilistic nature and their ability to `work in spite of you', that is, provide some kind of result even when implemented with defects.
 
 The following guidelines may help when unit testing an algorithm:
@@ -103,6 +104,7 @@ The following guidelines may help when unit testing an algorithm:
 % References
 % 
 \subsection{References}
+\index{Unit Testing!References}
 For more information on software testing, consult a good book on software engineering. Two good books dedicated to testing are ``\emph{Beautiful Testing: Leading Professionals Reveal How They Improve Software}'' that provides a compendium of best practices from professional programers and testers \cite{Goucher2009}, and ``\emph{Software testing}'' by Patton that provides a more traditional treatment \cite{Patton2005}.
 
 Unit testing is covered in good books on software engineering or software testing.

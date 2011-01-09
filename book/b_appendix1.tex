@@ -8,7 +8,7 @@
 \begin{bibunit}
 \chapter{Ruby: Quick-Start Guide}
 \label{ch:appendix1}
-\index{Ruby Programming Language}
+\index{Ruby}
 
 \section{Overview}
 % this report
@@ -17,6 +17,7 @@ This appendix provides a high-level introduction to the Ruby programming languag
 
 % basics
 \section{Language Basics}
+\index{Ruby!Language Basics}
 This section summarizes the basics of the language, including variables, flow control, data structures, and functions.
 
 \subsection{Ruby Files}
@@ -67,6 +68,7 @@ c = a==1 and b==2 # true
 
 % Flow Control
 \subsection{Flow Control}
+\index{Ruby!Flow Control}
 A script is a sequence of statements that invoke pre-defined functionality. There are structures for manipulating the flow of control within the script such as conditional statements and loops.
 
 Conditional statements can take the traditional forms of \texttt{if} \emph{condition} \emph{then} \emph{action}, with the standard variants of \emph{if-then-else} and \emph{if-then-elseif}. For example:
@@ -115,6 +117,7 @@ puts a += 1 while a<10
 
 % Arrays and Hashs
 \subsection{Arrays and Hashs}
+\index{Ruby!Arrays and Hashs}
 An array is a linear collection of variables and can be defined by creating a new \texttt{Array} object.
 
 \begin{lstlisting}
@@ -156,6 +159,7 @@ h[:d] # => nil as there is no value
 
 % Functions and Blocks
 \subsection{Functions and Blocks}
+\index{Ruby!Functions and Blocks}
 The \texttt{puts} function can be used to write a line to the console.
 
 \begin{lstlisting}
@@ -227,6 +231,7 @@ Everything is an object in ruby, even numbers, and as such everything has some b
 % ways of doing stuf
 % 
 \section{Ruby Idioms}
+\index{Ruby!Idioms}
 There are standard patterns for performing certain tasks in Ruby, such as assignment and enumerating. This section presents the common Ruby idioms used throughout the code examples in the Clever Algorithms project.
 
 % Assignment
@@ -252,6 +257,7 @@ min, max = get_min_max(v) # => 1, 5
 
 % Enumerating
 \subsection{Enumerating}
+\index{Ruby!Enumerating}
 Those collections that are enumerable, such as arrays, provide convent functions for visiting each value in the collection. A very common idiom is the use of the \texttt{.each} and \texttt{.each\_with\_index} functions on a collection which accepts a block. These functions are typically used with an in-line block \texttt{\{\}} so that they fit onto one line.
 
 \begin{lstlisting}
@@ -279,6 +285,7 @@ a = a.sort {|x,y| x[:quality]<=>y[:quality] } # => ordered by quality
 
 % methods
 \subsection{Function Names}
+\index{Ruby!Function Names}
 Given that everything is an object, executing a function on a object (a behavior) can be thought of as sending a message to that object. For some messages sent to objects, there is a convention to adjust the function name accordingly. For example, functions that ask a question of an object (return a boolean) have a question mark (?) on the end of the function name. Those functions that change the internal state of an object (its data) have an exclamation mark on the end (!). When working with an imperative script (a script without objects) this convention applies to the data provided as function arguments.
 
 \begin{lstlisting}
@@ -297,6 +304,7 @@ puts v.inspect # => [4,4]
 
 % conclusions
 \subsection{Conclusions}
+\index{Ruby!References}
 This quick-start guide has only scratched the surface of the Ruby Programming Language. Please refer to one of the referenced text books on the language for a more detailed introduction into this powerful and fun programming language \cite{Thomas2004, Flanagan2008}.
 
 \renewcommand{\bibsection}{\section{\bibname}}

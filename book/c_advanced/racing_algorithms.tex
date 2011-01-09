@@ -6,7 +6,7 @@
 \section{Benchmarking Algorithms} 
 \label{advanced:sec:racing_algorithms}
 \index{Racing Algorithms}
-\index{Benchmarking Algorithms}
+\index{Benchmarking}
 
 % this report
 When it comes to evaluating an optimization algorithm, every researcher has their own thoughts on the way it should be done. Unfortunately, many empirical evaluations of optimization algorithms are performed and reported without addressing basic experimental design considerations. This section provides a summary of the literature on experimental design and empirical algorithm comparison methodology. This summary contains rules of thumb and the seeds of best practice when attempting to configure and compare optimization algorithms, specifically in the face of the no-free-lunch theorem.
@@ -15,7 +15,7 @@ When it comes to evaluating an optimization algorithm, every researcher has thei
 % Issues of Benchmarking Methodology
 % 
 \subsection{Issues of Benchmarking Methodology}
-\index{Benchmark Issues}
+\index{Benchmarking!Issues}
 Empirically	comparing	the	performance	of algorithms on optimization problem instances is a staple for the fields of Heuristics and Biologically Inspired Computation, and the problems of effective comparison methodology have been discussed since the inception of these fields. Johnson suggests that the coding of an algorithm is the easy part of the process; the difficult work is getting meaningful and publishable results \cite{Johnson2002a}. He goes on to provide a very through list of questions to consider before racing algorithms, as well as what he describes as his ``pet peeves'' within the field of empirical algorithm research.
 
 Hooker \cite{Hooker1995} (among others) practically condemns what he refers to as competitive testing of heuristic algorithms, calling it ``\emph{fundamentally anti-intellectual}''. He goes on to strongly encourag a rigorous methodology of what he refers to as scientific testing where the aim is to investigate algorithmic behaviors. 
@@ -44,6 +44,7 @@ The theme of the classical works on algorithm testing methodology is that there 
 % 
 \subsection{Selecting Algorithm Parameters}
 \index{Selecting Algorithm Parameters}
+\index{Benchmarking!Parameters}
 Optimization algorithms are parameterized, although in the majority of cases the effect of adjusting algorithm parameters is not fully understood. This is because unknown non-linear dependencies commonly exist between the variables resulting in the algorithm being considered a complex system. Further, one must be careful when generalizing the performance of parameters across problem instances, problem classes, and domains. Finally, given that algorithm parameters are typically a mixture of real and integer numbers, exhaustively enumerating the parameter space of an algorithm is commonly intractable.
 
 There are many solutions to this problem such as self-adaptive parameters, meta-algorithms (for searching for good parameter values), and methods of performing sensitivity analysis over parameter ranges. A good introduction to the parameterization of genetic algorithms is Lobo, Lima et~al.\ \cite{Lobo2007}. The best and self-evident place to start (although often ignored \cite{Eiben2002}) is to investigate the literature and see what parameters been used historically. Although not a robust solution, it may prove to be a useful starting point for further investigation. The traditional approach is to run an algorithm on a large number of test instances and generalize the results \cite{Schaffer1989}. We, as a field, haven't really come much further than this historical methodology other than perhaps the application of more and differing statistical methods to decrease effort and better support findings.
@@ -59,6 +60,7 @@ Bartz-Beielstein \cite{Bartz-Beielstein2003} used a statistical experimental des
 % 
 \subsection{Problem Instances}
 \index{Benchmark Problems}
+\index{Benchmarking!Problem Instances}
 This section focuses on issues related to the selection of function optimization test instances, but the general theme of cautiously selecting problem instances is generally applicable.
 
 Common lists of test instances include; De~Jong \cite{Jong1975}, Fogel \cite{Fogel1995}, and Schwefel \cite{Schwefel1995}. Yao, Lui et al.\ \cite{Yao1999} list many canonical test instances as does Schaffer, Caruana et al.\ \cite{Schaffer1989}. Gallagher and Yuan \cite{Gallagher2006} review test function generators and propose a tunable mixture of Gaussians test problem generators. Finally, McNish \cite{MacNish2005} proposes using fractal-based test problem generators via a web interface.
@@ -75,6 +77,7 @@ English \cite{English1996} suggests that many functions in the field of EC are s
 \subsection{Measures and Statistical Methods}
 \index{Benchmark Measures}
 \index{Statistical Methods}
+\index{Benchmarking!Measures}
 There are many ways to measure the performance of an optimization algorithm for a problem instance, although the most common involves a quality (efficacy) measure of solution(s) found (see the following for lists and discussion of common performance measures \cite{Bartz-Beielstein2004, Birattari2005a, Hughes2006, Eiben2002, Barr1995}). Most biologically inspired optimization algorithms have a stochastic element, typically in their starting position(s) and in the probabilistic decisions made during sampling of the domain. Thus, the performance measurements must be repeated a number of times to account for the stochastic variance, which could also be a measure of comparison between algorithms.
 
 Irrespective of the measures used, sound statistical experimental design requires the specification of 1) a null hypothesis (no change), 2) alternative hypotheses (difference, directional difference), and 3) acceptance or rejection criteria for the hypothesis. The null hypothesis is commonly stated as the equality between two or more central tendencies (mean or medians) of a quality measure in a typical case	of comparing stochastic-based optimization algorithms on a problem instance.

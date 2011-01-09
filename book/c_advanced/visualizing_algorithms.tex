@@ -40,6 +40,7 @@ This section provides examples of visualizing problems from the fields of contin
 
 % Continuous Function Optimization
 \subsubsection{Continuous Function Optimization}
+\index{Gnuplot!Surface}
 A continuous function optimization problem is typically visualized in two dimensions as a line where $x=input, y=f(input)$ or three dimensions as a surface where $x,y=input, z=f(input)$. 
 
 Some functions may have many more dimensions, which if the function is linearly separable can be visualized in lower dimensions. Functions that are not linearly-separable may be able to make use of projection techniques such as Principle Component Analysis (PCA). For example, preparing a stratified sample of the search space as vectors with associated cost function value and using PCA to project the vectors onto a two-dimensional plane for visualization.
@@ -80,6 +81,7 @@ Both plots show the optimum in the center of the domain at $x=0.0$ in one-dimens
 
 % Traveling Salesman Problem
 \subsubsection{Traveling Salesman Problem}
+\index{Gnuplot!Scatter Plot}
 The Traveling Salesman Problem (TSP) description is comprised of a list of cities, each with a different coordinate (at least in the case of the symmetric TSP). This can easily be visualized as a map if the coordinates at latitudes and longitudes, or as a scatter plot.
 
 A second possible visualization is to prepare a distance matrix (distance between each point and all other points) and visualize the matrix directly, with each cell shaded relative to the distances of all other cells (largest distances darker and the shorter distances lighter). The light areas in the matrix highlight short or possible nearest-neighbor cities.
@@ -120,6 +122,7 @@ Two quite different perspectives on visualizing algorithm performance are: a sin
 
 % Single Algorithm Run
 \subsubsection{Single Algorithm Run}
+\index{Gnuplot!Line}
 The performance of an algorithm over the course of a single run can easily be visualized as a line graph, regardless of the specific measures used. The graph can be prepared after algorithm execution has completed, although, many algorithm frameworks provide dynamic line graphs.
 
 Figure~\ref{plot:ga1} provides an example line graph, showing the quality of the best candidate solution located by the Genetic Algorithm each generation for a single run applied to a 64-bit OneMax problem. Listing~\ref{ga_performance} provides the Gnuplot script used to prepare the plot, where \texttt{ga1.txt} is a text file that provides the fitness of the best solution each algorithm iteration on a new line. Listing~\ref{ga1.file} provides a snippet of the first five lines of the \texttt{ga1.txt} file.
@@ -147,6 +150,7 @@ plot "ga1.txt" with linespoints
 
 % Multiple Algorithm Runs
 \subsubsection{Multiple Algorithm Runs}
+\index{Gnuplot!Histogram}
 Multiple algorithm runs can provide insight into the tendency of an algorithm or algorithm configuration on a problem, given the stochastic processes that underlie many of these techniques. For example, a collection of the best result observed over a number of runs may be taken as a distribution indicating the capability of an algorithm for solving a given instance of a problem. This distribution may be visualized directly. 
 
 Figure~\ref{plot:ga2} provides a histogram plot showing the best solutions found and the number of times they were located by Genetic Algorithm over 100 runs on a 300-bit OneMax function. 
@@ -179,6 +183,7 @@ Listing~\ref{ga2.file} provides a snippet of the first five lines of the \texttt
 
 % Multiple Distributions of Algorithm Runs
 \subsubsection{Multiple Distributions of Algorithm Runs}
+\index{Gnuplot!Box-and-whisker}
 Algorithms can be compared against each other based on the distributions of algorithm performance over a number of runs. This comparison usually takes the form of statistical tests that can make meaningful statements about the differences between distributions. A visualization of the relative difference between the distributions can aid in an interpretation of such statistical measures. 
 
 A compact way for representing a distribution is to use a box-and-whisker plot that partitions the data into quartiles, showing the central tendency of the distribution, the middle mass of the data (the second and third quartiles), the limits of the distribution and any outliers. Algorithm run distributions may be summarized as a box-and-whisker plots and plotted together to spatially show relative performance relationships.
@@ -210,6 +215,7 @@ plot 'boxplots1.txt' using 0:2:1:5:4 with candlesticks whiskerbars 0.5
 % Candidate Solutions
 %
 \subsection{Plotting Candidate Solutions}
+\index{Gnuplot!Heat map}
 Visualizing candidate solutions can provide an insight into the complexity of the problem and the behavior of an algorithm.  This section provides examples of visualizing candidate solutions in the context of their problem domains from both continuous and combinatorial function optimization.
 
 % Continuous Function Optimization

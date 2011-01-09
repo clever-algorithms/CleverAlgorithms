@@ -41,9 +41,11 @@ Luger and Stubblefield suggest that AI is a sub-field of computer science concer
 Artificial Intelligence is therefore concerned with investigating mechanisms that underlie intelligence and intelligence behavior. The traditional approach toward designing and investigating AI (the so-called `good old fashioned' AI) has been to employ a symbolic basis for these mechanisms. A newer approach historically referred to as scruffy artificial intelligence or soft computing does not necessarily use a symbolic basis, instead patterning these mechanisms after biological or natural processes. This represents a modern paradigm shift in interest from symbolic knowledge representations, to inference strategies for adaptation and learning, and has been referred to as neat versus scruffy approaches to AI. The neat philosophy is concerned with formal symbolic models of intelligence that can explain \emph{why} they work, whereas the scruffy philosophy is concerned with intelligent strategies that explain \emph{how} they work \cite{Sloman1990}.
 
 \subsubsection{Neat AI}
+\index{Artificial Intelligence!Neat}
 The traditional stream of AI concerns a top down perspective of problem solving, generally involving symbolic representations and logic processes that most importantly can explain why the systems work. The successes of this prescriptive stream include a multitude of specialist approaches such as rule-based expert systems, automatic theorem provers, and operations research techniques that underly modern planning and scheduling software. Although traditional approaches have resulted in significant success they have their limits, most notably scalability. Increases in problem size result in an unmanageable increase in the complexity of such problems meaning that although traditional techniques can guarantee an optimal, precise, or true solution, the computational execution time or computing memory required can be intractable.
 
 \subsubsection{Scruffy AI}
+\index{Artificial Intelligence!Scruffy}
 There have been a number of thrusts in the field of AI toward less crisp techniques that are able to locate approximate, imprecise, or partially-true solutions to problems with a reasonable cost of resources. Such approaches are typically \emph{descriptive} rather than \emph{prescriptive}, describing a process for achieving a solution (how), but not explaining why they work (like the neater approaches). 
 
 Scruffy AI approaches are defined as relatively simple procedures that result in complex emergent and self-organizing behavior that can defy traditional reductionist analyses, the effects of which can be exploited for quickly locating approximate solutions to intractable problems. A common characteristic of such techniques is the incorporation of randomness in their processes resulting in robust probabilistic and stochastic decision making contrasted to the sometimes more fragile determinism of the crisp approaches. Another important common attribute is the adoption of an inductive rather than deductive approach to problem solving, generalizing solutions or decisions from sets of specific observations made by the system.
@@ -143,6 +145,7 @@ The term `\emph{clever algorithms}' is intended to unify a collection of interes
 The set of algorithms described in this book may generally be referred to as `unconventional optimization algorithms' (for example, see \cite{Corne1999}), as optimization is the main form of computation provided by the listed approaches. A technically more appropriate name for these approaches is stochastic global optimization (for example, see \cite{Weise2007} and \cite{Luke2009}).
 
 % algorithm
+\index{Clever Algorithms!Algorithm Selection}
 Algorithms were selected in order to provide a rich and interesting coverage of the fields of Biologically Inspired Computation, Metaheuristics and Computational Intelligence. Rather than a coverage of just the state-of-the-art and popular methods, the algorithms presented also include historic and newly described methods. The final selection was designed to provoke curiosity and encourage exploration and a wider view of the field.
 
 % 
@@ -176,6 +179,7 @@ Real-world optimization problems and generalizations thereof can be drawn from m
 % Problem Definition
 %
 \subsubsection{Problem Description}
+\index{Function Optimization!Definition}
 % definition
 Mathematically, optimization is defined as the search for a combination of parameters commonly referred to as decision variables ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an objective function or cost function ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x') \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space. In applied mathematics the field may be referred to as Mathematical Programming. More generally the field may be referred to as Global or Function Optimization given the focus on the objective function. For more general information on optimization refer to Horst et~al.\ \cite{Horst2000}. 
 
@@ -183,6 +187,7 @@ Mathematically, optimization is defined as the search for a combination of param
 % Sub-fields
 %
 \subsubsection{Sub-Fields of Study}
+\index{Function Optimization!Subfields}
 % general taxonomy
 The study of optimization is comprised of many specialized sub-fields, based on an overlapping taxonomy that focuses on the principle concerns in the general formalism. 
 % general fields
@@ -207,6 +212,7 @@ This section considers the Function Approximation formalism and related speciali
 % Problem Definition
 %
 \subsubsection{Problem Description}
+\index{Function Approximation!Definition}
 % definition
 Function Approximation is the problem of finding a function ($f$) that approximates a target function ($g$), where typically the approximated function is selected based on a sample of observations ($x$, also referred to as the training set) taken from the unknown target function.
 % ML
@@ -216,6 +222,7 @@ In machine learning, the function approximation formalism is used to describe ge
 % Sub-Fields of Study
 %
 \subsubsection{Sub-Fields of Study}
+\index{Function Approximation!Subfields}
 % really hard
 The function approximation formalism can be used to phrase some of the hardest problems faced by Computer Science, and Artificial Intelligence in particular, such as natural language processing and computer vision. 
 % general process
@@ -281,6 +288,7 @@ Wolpert and Macready's original paper was produced at a time when grandiose gene
 \index{Stochastic Optimization}
 \index{Monte Carlo}
 \index{Markov Chain}
+\index{Markov Chain Monte Carlo}
 % Stochastic
 Stochastic optimization algorithms are those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures. 
 Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas \cite{Spall2003}. 
@@ -329,6 +337,7 @@ The remainder of this book is organized into two parts: \emph{Algorithms} that d
 % Algorithms
 %
 \subsection{Algorithms}
+\index{Clever Algorithms!Taxonomy}
 % taxonomy
 Algorithms are presented in six groups or kingdoms distilled from the broader fields of study each in their own chapter, as follows: 
 
@@ -343,6 +352,7 @@ Algorithms are presented in six groups or kingdoms distilled from the broader fi
 \end{itemize}
 
 % requirements
+\index{Clever Algorithms!Template}
 A given algorithm is more than just a procedure or code listing, each approach is an island of research. The meta-information that define the context of a technique is just as important to understanding and application as abstract recipes and concrete implementations. A standardized algorithm description is adopted to provide a consistent presentation of algorithms with a mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.
 
 % template
@@ -360,6 +370,8 @@ The standardized algorithm description template covers the following subjects:
 \end{itemize}
 
 % sample code
+\index{Ruby!Versions}
+\index{Ruby!Download}
 Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm, adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is an interpreted language, meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the Internet.\footnote{Ruby can be downloaded for free from \url{http://www.ruby-lang.org}} Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples. 
 
 The sample code provides a working version of a given technique for demonstration purposes. Having a tinker with a technique can really bring it to life and provide valuable insight into a method. The sample code is a minimum implementation, providing plenty of opportunity to explore, extend and optimize.
@@ -409,34 +421,35 @@ This book is not an introduction to Artificial Intelligence or related sub-field
 % Artificial Intelligence
 % 
 \subsection{Artificial Intelligence}
-\index{Artificial Intelligence}
+\index{Artificial Intelligence!References}
 Artificial Intelligence is large field of study and many excellent texts have been written to introduce the subject. Russell and Novig's ``\emph{Artificial Intelligence: A Modern Approach}'' is an excellent introductory text providing a broad and deep review of what the field has to offer and is useful for students and practitioners alike \cite{Russell2009}. Luger and Stubblefield's ``\emph{Artificial Intelligence: Structures and Strategies for Complex Problem Solving}'' is also an excellent reference text, providing a more empirical approach to the field \cite{Luger1993}.
 
 % 
 % Computational Intelligence
 % 
 \subsection{Computational Intelligence}
-\index{Computational Intelligence}
+\index{Computational Intelligence!References}
 Introductory books for the field of Computational Intelligence generally focus on a handful of specific sub-fields and their techniques. Engelbrecht's ``\emph{Computational Intelligence: An Introduction}'' provides a modern and detailed introduction to the field covering classic subjects such as Evolutionary Computation and Artificial Neural Networks, as well as more recent techniques such as Swarm Intelligence and Artificial Immune Systems \cite{Engelbrecht2007}. Pedrycz's slightly more dated ``\emph{Computational Intelligence: An Introduction}'' also provides a solid coverage of the core of the field with some deeper insights into fuzzy logic and fuzzy systems \cite{Pedrycz1997}.
 
 % 
 % Biologically Inspired Computation
 % 
 \subsection{Biologically Inspired Computation}
-\index{Biologically Inspired Computation}
+\index{Biologically Inspired Computation!References}
 Computational methods inspired by natural and biologically systems represent a large portion of the algorithms described in this book. The collection of articles published in de Castro and Von Zuben's ``\emph{Recent Developments in Biologically Inspired Computing}'' provides an overview of the state of the field, and the introductory chapter on need for such methods does an excellent job to motivate the field of study \cite{Castro2005}. Forbes's ``\emph{Imitation of Life: How Biology Is Inspiring Computing}'' sets the scene for Natural Computing and the interrelated disciplines, of which Biologically Inspired Computing is but one useful example \cite{Forbes2000}. Finally, Benyus's ``\emph{Biomimicry: Innovation Inspired by Nature}'' provides a good introduction into the broader related field of a new frontier in science and technology that involves building systems inspired by an understanding of the biological world \cite{Benyus1998}.
 
 % 
 % Metaheuristics
 % 
 \subsection{Metaheuristics}
-\index{Metaheuristics}
+\index{Metaheuristics!References}
 The field of Metaheuristics was initially constrained to heuristics for applying classical optimization procedures, although has expanded to encompass a broader and diverse set of techniques. Michalewicz and Fogel's ``\emph{How to Solve It: Modern Heuristics}'' provides a practical tour of heuristic methods with a consistent set of worked examples \cite{Michalewicz2004}. Glover and Kochenberger's ``\emph{Handbook of Metaheuristics}'' provides a solid introduction into a broad collection of techniques and their capabilities \cite{Glover2003}.
 
 % 
 % The Ruby Programming Language
 % 
 \subsection{The Ruby Programming Language}
+\index{Ruby!References}
 The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. Its meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's ``\emph{Programming Ruby: The Pragmatic Programmers' Guide}'' referred to as the `pickaxe book' because of the picture of the pickaxe on the cover \cite{Thomas2004}. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's ``\emph{The Ruby Programming Language}'' also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language \cite{Flanagan2008}. For more information on the Ruby Programming Language, see the quick-start guide in Appendix~\ref{ch:appendix1}.
 
 % change title of bib to references
