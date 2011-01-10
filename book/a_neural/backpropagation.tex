@@ -168,11 +168,9 @@ Listing~\ref{backpropagation} provides an example of the Back-propagation algori
 The problem is the classical XOR boolean problem, where the inputs of the boolean truth table are provided as inputs and the result of the boolean XOR operation is the expected as output. This is a classical problem for Back-Propagation because it was the problem instance referenced by Minsky and Papert in their analysis of the Perceptron highlighting the limitations of their simplified models of neural networks \cite{Minsky1969}.
 
 % algorithm
-The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A logistic (sigmoid) transfer function is used to convert the activation into an output signal. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. 
+The algorithm was implemented using a batch learning method, meaning the weights are updated after each epoch of patterns are observed. A logistic (sigmoid) transfer function is used to convert the activation into an output signal. Weight updates occur at the end of each epoch using the accumulated delta's. A momentum term is used in conjunction with the past weight update to ensure the last update influences the current update, reducing large changes.
 
 A three layer network is demonstrated with 2 nodes in the input layer (two inputs), 2 nodes in the hidden layer and 1 node in the output layer, which is sufficient for the chosen problem. A bias weight is used on each neuron for stability with a constant input of 1.0. The learning process is separated into four steps: forward propagation, backward propagation of error, calculation of error derivatives (assigning blame to the weights) and the weight update. This separation facilities easy extensions such as adding a momentum term and/or weight decay to the update process.
-
-Extensions to this implementation should cosider changes such as batch updates (rather than online learning) and the use of a weight decay and momentium (dampen large changes) coefficients. 
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Back-propagation in Ruby, label=backpropagation]{../src/algorithms/neural/backpropagation.rb}

@@ -10,8 +10,8 @@ def random_vector(minmax)
   end
 end
 
-def initialize_weights(problem_size)
-  minmax = Array.new(problem_size + 1) {[-2,2]}
+def initialize_weights(num_weights)
+  minmax = Array.new(num_weights) {[-rand(),rand()]}
   return random_vector(minmax)
 end
 
@@ -66,20 +66,23 @@ def calculate_error_derivatives_for_weights(network, vector)
   network.each_with_index do |layer, i|
     input = (i==0) ? vector : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
     layer.each do |neuron|
-      neuron[:derivative] = Array.new(neuron[:weights].size)
+      neuron[:derivative] = Array.new(neuron[:weights].size){0.0} if neuron[:derivative].nil?
       input.each_with_index do |signal, j|
-        neuron[:derivative][j] = neuron[:delta] * signal
+        neuron[:derivative][j] += neuron[:delta] * signal
       end
-      neuron[:derivative][-1] = neuron[:delta] * 1.0
+      neuron[:derivative][-1] += neuron[:delta] * 1.0
     end
   end
 end
 
-def update_weights(network, lrate)
+def update_weights(network, lrate, momentum=0.8)
   network.each do |layer|
     layer.each do |neuron|
       neuron[:weights].each_with_index do |w, j|
-        neuron[:weights][j] += (lrate * neuron[:derivative][j])
+        delta = (lrate * neuron[:derivative][j]) + (neuron[:last_delta][j] * momentum)
+        neuron[:weights][j] += delta
+        neuron[:last_delta][j] = delta
+        neuron[:derivative][j] = 0.0
       end
     end
   end
@@ -87,18 +90,19 @@ end
 
 def train_network(network, domain, num_inputs, iterations, lrate)
   correct = 0
-  iterations.times do |it|
-    pattern = domain[rand(domain.size)]
-    vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
-    output = forward_propagate(network, vector)
-    correct += 1 if output.round == expected
-    backward_propagate_error(network, expected)
-    calculate_error_derivatives_for_weights(network, vector)
-    update_weights(network, lrate)
-    if (it+1).modulo(1000) == 0
-      puts "> iteration=#{it+1}, Correct=#{correct}/1000"
-      correct = 0
+  iterations.times do |epoch|
+    domain.each do |pattern|
+      vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
+      output = forward_propagate(network, vector)
+      correct += 1 if output.round == expected
+      backward_propagate_error(network, expected)
+      calculate_error_derivatives_for_weights(network, vector)
     end
+    update_weights(network, lrate)
+    if (epoch+1).modulo(250) == 0
+      puts "> epoch=#{epoch+1}, Correct=#{correct}/#{250*domain.size}"
+      correct = 0
+    end    
   end
 end
 
@@ -114,7 +118,8 @@ def test_network(network, domain, num_inputs)
 end
 
 def create_neuron(num_inputs)
-  return {:weights => initialize_weights(num_inputs)}
+  return {:weights=>initialize_weights(num_inputs+1), 
+          :last_delta=>Array.new(num_inputs+1){0.0}}
 end
 
 def execute(domain, num_inputs, iterations, num_nodes, lrate)  
@@ -132,7 +137,7 @@ if __FILE__ == $0
   xor = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
   inputs = 2
   # algorithm configuration
-  learning_rate = 0.5
+  learning_rate = 0.3
   num_hidden_nodes = 2
   iterations = 10000
   # execute the algorithm
