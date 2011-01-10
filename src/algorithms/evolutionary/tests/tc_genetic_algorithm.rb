@@ -53,39 +53,30 @@ class TC_GeneticAlgorithm < Test::Unit::TestCase
     assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
   end
 
-  # test recombination
-  def test_uniform_crossover
-    p1 = "0000000000"
-    p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
-    s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
-  end
-
-  # test reproduce cloning case
-  def test_reproduce_clone
-    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
-    children = reproduce(pop, pop.size, 0, 0)
-    children.each_with_index do |c,i| 
-      assert_equal(pop[i][:bitstring], c[:bitstring])
-      assert_not_same(pop[i][:bitstring], c[:bitstring])  
+  # test cloning with crossover
+  def test_crossover_clone
+    p1, p2 = "0000000000", "1111111111"
+    100.times do
+      s = crossover(p1, p2, 0)
+      assert_equal(p1, s)
+      assert_not_same(p1, s)  
     end
   end
 
-  # test reproduce mutate case
-  def test_reproduce_clone
-    pop = Array.new(10) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
-    children = reproduce(pop, pop.size, 0, 1)
-    children.each_with_index do |c,i| 
-      assert_not_equal(pop[i][:bitstring], c[:bitstring])
-      assert_equal("1111111111", c[:bitstring])
-      assert_not_same(pop[i][:bitstring], c[:bitstring])  
+  # test recombination with crossover
+  def test_crossover_recombine
+    p1, p2 = "0000000000", "1111111111"
+    100.times do
+      s = crossover(p1, p2, 1)
+      assert_equal(p1.size, s.size)
+      assert_not_equal(p1, s)
+      assert_not_equal(p2, s)
+      s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
     end
   end
   
   # test odd sized population
-  def test_reproduce_mismatch
+  def test_reproduce_odd
     pop = Array.new(9) {|i| {:fitness=>i,:bitstring=>"0000000000"} }
     children = reproduce(pop, pop.size, 0, 1)
     assert_equal(9, children.size)

@@ -34,8 +34,7 @@ def calculate_neighbor_rank(city_number, cities, ignore=[])
     neighbor[:distance] = euc_2d(cities[city_number], city)
     neighbors << neighbor
   end
-  neighbors.sort!{|x,y| x[:distance] <=> y[:distance]}
-  return neighbors
+  return neighbors.sort!{|x,y| x[:distance] <=> y[:distance]}
 end
 
 def get_edges_for_city(city_number, permutation)
@@ -69,8 +68,7 @@ def calculate_city_fitnesses(cities, permutation)
     city_fitness[:fitness] = calculate_city_fitness(permutation, i, cities)
     city_fitnesses << city_fitness
   end
-  city_fitnesses.sort!{|x,y| y[:fitness] <=> x[:fitness]}
-  return city_fitnesses
+  return city_fitnesses.sort!{|x,y| y[:fitness] <=> x[:fitness]}
 end
 
 def calculate_component_probabilities(ordered_components, tau)
@@ -121,7 +119,7 @@ end
 
 def create_new_permutation(cities, tau, permutation)
   city_fitnesses = calculate_city_fitnesses(cities, permutation)
-  selected_city = probabilistic_selection(city_fitnesses, tau)
+  selected_city = probabilistic_selection(city_fitnesses.reverse, tau)
   edges = get_edges_for_city(selected_city, permutation)
   neighbors = calculate_neighbor_rank(selected_city, cities)
   new_neighbor = probabilistic_selection(neighbors, tau, edges)
@@ -157,7 +155,7 @@ if __FILE__ == $0
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
   max_iterations = 250
-  tau = 1.3
+  tau = 1.8
   # execute the algorithm
   best = search(berlin52, max_iterations, tau)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"

@@ -30,6 +30,9 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
     # normal
     cities = [[-2,-2], [1,1], [2,2], [4,4], [66,66]]
     neighbors = calculate_neighbor_rank(2, cities)
+    # always in descending order (best=>worst)
+    assert_equal(true, neighbors.first[:distance] <= neighbors.last[:distance])
+    # specifics
     assert_equal(4, neighbors.size)
     assert_equal(1, neighbors[0][:number])
     assert_equal(3, neighbors[1][:number])
@@ -74,12 +77,15 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
     cities = [[50,50], [2,2], [30,30], [1.5,1.5], [3, 3]]
     perm = [0,1,2,3,4]
     fitnesses = calculate_city_fitnesses(cities, perm)
+    # always in descending order (best=>worst)
+    assert_equal(true, fitnesses.first[:fitness] >= fitnesses.last[:fitness])
+    # specifics
     assert_equal(perm.size, fitnesses.size)
     assert_equal(0, fitnesses[0][:number]) 
     assert_equal(3, fitnesses[1][:number]) # 3/(3+2) => 0.6
     assert_equal(4, fitnesses[2][:number])
     assert_equal(1, fitnesses[3][:number])
-    assert_equal(2, fitnesses[4][:number])
+    assert_equal(2, fitnesses[4][:number])    
   end
 
   # test the calculation of probabilities based on rank
@@ -113,6 +119,27 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
       assert_equal(false, exclude.include?(rs))
     end
   end
+  
+  # test probabilistic selection Tau biases 
+  def test_probabilistic_selection_biases
+    components = [{:number=>0}, {:number=>1}, {:number=>2}, {:number=>3}, {:number=>4}]
+    # test strong bias towards selecting the worst
+    sum = 0    
+    200.times do
+      rs = probabilistic_selection(components, 1.9)
+      assert_equal(true, [0,1,2,3,4].include?(rs))
+      sum += rs
+    end
+    assert_in_delta(0, sum.to_f/200.0, 1)
+    # test bias towards random
+    sum = 0    
+    200.times do
+      rs = probabilistic_selection(components, 0.1)
+      assert_equal(true, [0,1,2,3,4].include?(rs))
+      sum += rs
+    end
+    assert_in_delta(2, sum.to_f/200.0, 1)    
+  end  
 
   # test the creating a new permutation
   def test_vary_permutation
@@ -169,11 +196,11 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
      [595,360],[1340,725],[1740,245]]  
     best = nil
     silence_stream(STDOUT) do
-      best = search(berlin52, 250, 1.3)
+      best = search(berlin52, 250, 1.8)
     end    
     # better than an estimated NN solution
     assert_not_nil(best[:cost])
-    assert_in_delta(7542, best[:cost], 3000)
+    assert_in_delta(7542, best[:cost], 4000)
   end
 
 end

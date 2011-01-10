@@ -32,12 +32,6 @@ class TC_BOA < Test::Unit::TestCase
     assert_in_delta(0.5, (s.select{|x| x==1}.size/1000.0), 0.05)
   end
 
-  # test that members of the population are selected
-  def test_binary_tournament
-    pop = Array.new(10) {|i| {:cost=>i} }
-    10.times {assert(pop.include?(binary_tournament(pop)))}  
-  end
-
   # test if a path exists between two nodes
   def test_path_exists
     # no path
@@ -337,7 +331,7 @@ class TC_BOA < Test::Unit::TestCase
   def test_search
     best = nil
    silence_stream(STDOUT) do
-     best = search(10, 50, 50, 10)
+     best = search(10, 50, 50, 10, 10)
    end  
    assert_not_nil(best[:cost])
    assert_in_delta(10, best[:cost], 2)

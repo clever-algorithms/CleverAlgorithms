@@ -29,22 +29,19 @@ def point_mutation(bitstring, rate=1.0/bitstring.size)
   return child
 end
 
-def uniform_crossover(parent1, parent2, rate)
+def crossover(parent1, parent2, rate)
   return ""+parent1 if rand()>=rate
-  child = ""
-  parent1.size.times do |i| 
-    child << ((rand()<0.5) ? parent1[i].chr : parent2[i].chr)
-  end
-  return child
+  point = 1 + rand(parent1.size-2)
+  return parent1[0...point]+parent2[point...(parent1.size)]
 end
 
-def reproduce(selected, pop_size, p_crossover, p_mutation)
+def reproduce(selected, pop_size, p_cross, p_mutation)
   children = []  
   selected.each_with_index do |p1, i|
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
     p2 = selected[0] if i == selected.size-1
     child = {}
-    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
+    child[:bitstring] = crossover(p1[:bitstring], p2[:bitstring], p_cross)
     child[:bitstring] = point_mutation(child[:bitstring], p_mutation)
     children << child
     break if children.size >= pop_size

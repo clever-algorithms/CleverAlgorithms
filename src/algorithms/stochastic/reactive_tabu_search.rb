@@ -109,14 +109,14 @@ def sort_neighborhood(candidates, tabu_list, prohib_period, iteration)
       admissable << a
     end
   end
-  return tabu, admissable
+  return [tabu, admissable]
 end
 
-def search(cities, max_candidates, max_iter, increase, decrease)
+def search(cities, max_cand, max_iter, increase, decrease)
   current = {:vector=>random_permutation(cities)}
   current[:cost] = cost(current[:vector], cities)
   best = current
-  tabu_list, prohibition_period = [], 1
+  tabu_list, prohib_period = [], 1
   visited_list, avg_size, last_change = [], 1, 0
   max_iter.times do |iter|
     candidate_entry = get_candidate_entry(visited_list, current[:vector])
@@ -126,30 +126,33 @@ def search(cities, max_candidates, max_iter, increase, decrease)
       candidate_entry[:visits] += 1
       if repetition_interval < 2*(cities.size-1)
         avg_size = 0.1*(iter-candidate_entry[:iteration]) + 0.9*avg_size
-        prohibition_period = (prohibition_period.to_f * increase)
+        prohib_period = (prohib_period.to_f * increase)
         last_change = iter
       end
     else
       store_permutation(visited_list, current[:vector], iter)
     end
     if iter-last_change > avg_size
-      prohibition_period = [prohibition_period*decrease,1].max
+      prohib_period = [prohib_period*decrease,1].max
       last_change = iter
     end
-    candidates = Array.new(max_candidates) {|i| generate_candidate(current, cities)}
+    candidates = Array.new(max_cand) {|i| generate_candidate(current, cities)}
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
-    tabu, admissible = sort_neighborhood(candidates, tabu_list, prohibition_period, iter)
+    tabu, admissible = sort_neighborhood(candidates, tabu_list, prohib_period, iter)
     if admissible.size < 2
-      prohibition_period = cities.size-2
+      prohib_period = cities.size-2
       last_change = iter
     end
     current, best_move_edges = (admissible.empty?) ? tabu.first : admissible.first
-    if !tabu.empty? and tabu.first[0][:cost]<best[:cost] and tabu.first[0][:cost]<current[:cost]
-      current, best_move_edges = tabu.first
+    if !tabu.empty? 
+      tf = tabu.first[0]
+      if tf[:cost]<best[:cost] and tf[:cost]<current[:cost]
+        current, best_move_edges = tabu.first
+      end
     end
     best_move_edges.each {|edge| make_tabu(tabu_list, edge, iter)}
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
-    puts " > iter=#{(iter+1)}, tenure=#{prohibition_period.round}, best=#{best[:cost]}"
+    puts " > iter=#{iter}, tenure=#{prohib_period.round}, best=#{best[:cost]}"
   end
   return best
 end
