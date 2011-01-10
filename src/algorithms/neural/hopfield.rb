@@ -32,7 +32,7 @@ def propagate_was_change?(neurons)
     activation += other[:weights][i]*other[:output] if i!=j
   end
   output = transfer(activation)
-  change = !output.equal?(neurons[i][:output])
+  change = output != neurons[i][:output]
   neurons[i][:output] = output
   return change
 end
@@ -77,7 +77,7 @@ end
 def calculate_error(expected, actual)
   sum = 0
   expected.each_with_index do |v, i|
-    sum += (expected[i] - actual[i]).abs
+    sum += 1 if expected[i]!=actual[i]
   end
   return sum
 end
@@ -90,16 +90,18 @@ def perturb_pattern(vector, rate=(1.0/vector.size.to_f)*0.5)
   return perturbed
 end
 
-def test_network(neurons, patters)
+def test_network(neurons, patterns)
   error = 0.0
-  patters.each do |pattern|
+  patterns.each do |pattern|
     vector = pattern.flatten
+    puts vector.inspect
     perturbed = perturb_pattern(vector)
+    puts perturbed.inspect
     output = get_output(neurons, perturbed)
     error += calculate_error(vector, output)
     print_patterns(perturbed, vector, output)
   end
-  error /= patters.size.to_f
+  error = error / patterns.size.to_f
   puts "Final Result: avg pattern error=#{error}"
   return error
 end
@@ -114,10 +116,9 @@ end
 if __FILE__ == $0
   # problem configuration
   num_inputs = 9
-  p1 = [[1,1,1],[1,-1,-1],[1,1,1]] # C
-  p2 = [[1,-1,-1],[1,-1,-1],[1,1,1]] # L
-  p3 = [[-1,1,-1],[-1,1,-1],[-1,1,-1]] # I
-  patters = [p1, p2, p3]  
+  p1 = [[1,1,1],[-1,1,-1],[-1,1,-1]] # T
+  p2 = [[1,-1,1],[1,-1,1],[1,1,1]] # U
+  patters = [p1, p2]  
   # execute the algorithm
   execute(patters, num_inputs)
 end

@@ -41,7 +41,7 @@ end
 def is_tabu?(edge, tabu_list, iter, prohib_period)
   tabu_list.each do |entry|
     if entry[:edge] == edge
-      return true if entry[:iteration] >= iter-prohib_period
+      return true if entry[:iter] >= iter-prohib_period
       return false
     end
   end
@@ -51,11 +51,11 @@ end
 def make_tabu(tabu_list, edge, iter)
   tabu_list.each do |entry|
     if entry[:edge] == edge
-      entry[:iteration] = iter
+      entry[:iter] = iter
       return entry
     end
   end
-  entry = {:edge=>edge, :iteration=>iter}
+  entry = {:edge=>edge, :iter=>iter}
   tabu_list.push(entry)
   return entry
 end
@@ -93,7 +93,7 @@ end
 def store_permutation(visited_list, permutation, iteration)
   entry = {}
   entry[:edgelist] = to_edge_list(permutation)
-  entry[:iteration] = iteration
+  entry[:iter] = iteration
   entry[:visits] = 1
   visited_list.push(entry)
   return entry
@@ -121,11 +121,11 @@ def search(cities, max_cand, max_iter, increase, decrease)
   max_iter.times do |iter|
     candidate_entry = get_candidate_entry(visited_list, current[:vector])
     if !candidate_entry.nil?
-      repetition_interval = iter - candidate_entry[:iteration]
-      candidate_entry[:iteration] = iter
+      repetition_interval = iter - candidate_entry[:iter]
+      candidate_entry[:iter] = iter
       candidate_entry[:visits] += 1
       if repetition_interval < 2*(cities.size-1)
-        avg_size = 0.1*(iter-candidate_entry[:iteration]) + 0.9*avg_size
+        avg_size = 0.1*(iter-candidate_entry[:iter]) + 0.9*avg_size
         prohib_period = (prohib_period.to_f * increase)
         last_change = iter
       end

@@ -86,9 +86,9 @@ if __FILE__ == $0
   search_space = Array.new(problem_size) {|i| [-5, 5]}
   # algorithm configuration
   vel_space = Array.new(problem_size) {|i| [-1, 1]}
-  max_gens = 200
-  pop_size = 20
-  max_vel = 10.0
+  max_gens = 100
+  pop_size = 50
+  max_vel = 100.0
   c1, c2 = 2.0, 2.0
   # execute the algorithm
   best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)

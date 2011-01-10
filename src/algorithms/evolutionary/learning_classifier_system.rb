@@ -259,10 +259,10 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 2000, 100
+  max_gens, pop_size = 2500, 100
   l_rate, min_error = 0.2, 0.1
   p_explore = 0.10
-  ga_freq, del_thresh = 100, 20
+  ga_freq, del_thresh = 50, 20
   # execute the algorithm
   execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
 end

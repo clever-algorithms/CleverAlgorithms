@@ -171,10 +171,10 @@ class TC_BOA < Test::Unit::TestCase
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]},
            {:bitstring=>[1,1,1]},{:bitstring=>[0,0,0]}]
     # no viable
-    graph = [{:out=>[],:in=>[1,2],:num=>0}, {:out=>[0]}, {:out=>[0]}]
+    graph = [{:out=>[],:in=>[1,2],:num=>0}, {:out=>[0], :in=>[]}, {:out=>[0], :in=>[]}]
     assert_equal([-1,-1,-1], compute_gains(graph[0], graph, pop, 99))
     #  two viable
-    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[]}, {:out=>[]}]
+    graph = [{:out=>[],:in=>[],:num=>0}, {:out=>[], :in=>[]}, {:out=>[], :in=>[]}]
     rs = compute_gains(graph[0], graph, pop, 99)
     assert_equal(-1, rs[0])
     assert_not_equal(-1, rs[1])
@@ -331,10 +331,10 @@ class TC_BOA < Test::Unit::TestCase
   def test_search
     best = nil
    silence_stream(STDOUT) do
-     best = search(10, 50, 50, 10, 10)
+     best = search(10, 20, 50, 15, 25)
    end  
    assert_not_nil(best[:cost])
-   assert_in_delta(10, best[:cost], 2)
+   assert_in_delta(10, best[:cost], 1)
   end
   
 end

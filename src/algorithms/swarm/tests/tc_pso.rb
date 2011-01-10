@@ -157,9 +157,9 @@ class TC_PSO < Test::Unit::TestCase
   def test_search    
     best = nil
     silence_stream(STDOUT) do
-      best = search(200, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 20, 5.0, 2, 2)
+      best = search(200, [[-5,5],[-5,5]], [[-1,1],[-1,1]], 50, 100.0, 2, 2)
     end  
     assert_not_nil(best[:cost])
-    assert_in_delta(0.0, best[:cost], 1.0)
+    assert_in_delta(0.0, best[:cost], 0.6)
   end   
 end

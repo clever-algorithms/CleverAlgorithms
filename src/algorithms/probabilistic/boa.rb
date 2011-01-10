@@ -65,25 +65,24 @@ def k2equation(node, candidates, pop)
   return total
 end
 
-def compute_gains(node, graph, pop, max)
+def compute_gains(node, graph, pop, max=2)
   viable = get_viable_parents(node[:num], graph)
-  gains = Array.new(graph.size) {-1}
-  return gains if node[:out].size >= max
+  gains = Array.new(graph.size) {-1.0}
   gains.each_index do |i|
-    if viable.include?(i)
+    if graph[i][:in].size < max and viable.include?(i)
       gains[i] = k2equation(node[:num], node[:in]+[i], pop)
     end
   end
   return gains
 end
 
-def construct_network(pop, prob_size, max_edges=10*pop.size)
+def construct_network(pop, prob_size, max_edges=3*pop.size)
   graph = Array.new(prob_size) {|i| {:out=>[], :in=>[], :num=>i} }
   gains = Array.new(prob_size)  
   max_edges.times do
     max, from, to = -1, nil, nil
     graph.each_with_index do |node, i|
-      gains[i] = compute_gains(node, graph, pop, max_edges.to_f/prob_size.to_f)
+      gains[i] = compute_gains(node, graph, pop)
       gains[i].each_with_index {|v,j| from,to,max = i,j,v if v>max}
     end
     break if max <= 0.0
@@ -165,12 +164,12 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  num_bits = 15
+  num_bits = 20
   # algorithm configuration
-  max_iter = 40
+  max_iter = 100
   pop_size = 50
-  select_size = 7
-  num_children = 20
+  select_size = 15
+  num_children = 25
   # execute the algorithm
   best = search(num_bits, max_iter, pop_size, select_size, num_children)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"

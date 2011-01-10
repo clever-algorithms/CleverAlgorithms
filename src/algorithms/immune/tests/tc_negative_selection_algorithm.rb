@@ -64,8 +64,8 @@ class TC_NegativeSelectionAlgorithm < Test::Unit::TestCase
       d.each do |x|
         # not match self
         assert_equal(false, matches?(x[:vector], s, 1.0))
-        # do duplicates
-        d.each {|o| assert_equal(false, x[:vector].equal?(o[:vector])) if x!=o }
+        # no duplicates
+        d.each {|o| assert_equal(false, x[:vector]==o[:vector]) if x!=o }
       end
     end
   end

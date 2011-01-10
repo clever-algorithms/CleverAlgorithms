@@ -119,7 +119,7 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
       assert(x<=bounds[1], "x=#{x}")
       mean += x
     end
-    assert_in_delta(mean/total.to_f, 0.0, 0.1)
+    assert_in_delta(mean/total.to_f, 0.0, 0.2)
   end
   
   # test the computation of cost for decoded programs
