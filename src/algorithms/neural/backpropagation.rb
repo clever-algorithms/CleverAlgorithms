@@ -99,8 +99,8 @@ def train_network(network, domain, num_inputs, iterations, lrate)
       calculate_error_derivatives_for_weights(network, vector)
     end
     update_weights(network, lrate)
-    if (epoch+1).modulo(250) == 0
-      puts "> epoch=#{epoch+1}, Correct=#{correct}/#{250*domain.size}"
+    if (epoch+1).modulo(100) == 0
+      puts "> epoch=#{epoch+1}, Correct=#{correct}/#{100*domain.size}"
       correct = 0
     end    
   end
@@ -138,8 +138,8 @@ if __FILE__ == $0
   inputs = 2
   # algorithm configuration
   learning_rate = 0.3
-  num_hidden_nodes = 2
-  iterations = 10000
+  num_hidden_nodes = 4
+  iterations = 2000
   # execute the algorithm
   execute(xor, inputs, iterations, num_hidden_nodes, learning_rate)
 end

@@ -135,7 +135,7 @@ def update_set(action_set, payoff, l_rate)
   end
 end
 
-def update_fitness(action_set, min_error, l_rate, alpha=0.1, v=-0.5)
+def update_fitness(action_set, min_error, l_rate, alpha=0.1, v=-5.0)
   sum = 0.0
   accuracy = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
@@ -211,7 +211,8 @@ def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, de
 end
 
 def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
-  pop, acc = [], 0
+  pop = []
+  error, acc = 0.0, 0
   max_gens.times do |gen|
     input = random_bitstring()
     match_set = generate_match_set(input, pop, actions, gen, pop_size, del_thresh)
@@ -219,7 +220,8 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
     action = select_action(prediction_array, p_explore)
     action_set = match_set.select{|c| c[:action]==action}
     expected = target_function(input)
-    payoff = ((expected-action.to_i)==0) ? 300.0 : 10.0
+    payoff = ((expected-action.to_i)==0) ? 1000.0 : 0.0
+    error += (payoff - prediction_array[action][:weight]).abs
     acc += 1 if expected == action.to_i
     update_set(action_set, payoff, l_rate)
     update_fitness(action_set, min_error, l_rate)
@@ -227,10 +229,10 @@ def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_fr
       action_set.each {|c| c[:lasttime] = gen}
       run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size, del_thresh)
     end
-    if (gen+1).modulo(100)==0
+    if (gen+1).modulo(50)==0
       micro = pop.inject(0){|s,x| s + x[:num]}
-      puts " >gen=#{gen+1} macro=#{pop.size}, micro=#{micro}, correct=#{acc}/100"
-      acc = 0
+      puts " >gen=#{gen+1} size=#{pop.size}|#{micro}, error=#{error}, perf=#{acc}/50"
+      error, acc = 0.0, 0
     end
   end  
   return pop
@@ -259,10 +261,10 @@ if __FILE__ == $0
   # problem configuration
   all_actions = ['0', '1']
   # algorithm configuration
-  max_gens, pop_size = 2500, 100
-  l_rate, min_error = 0.2, 0.1
+  max_gens, pop_size = 5000, 200
+  l_rate, min_error = 0.2, 10.0
   p_explore = 0.10
-  ga_freq, del_thresh = 50, 20
+  ga_freq, del_thresh = 25, 20
   # execute the algorithm
   execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
 end

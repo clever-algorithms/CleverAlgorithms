@@ -21,7 +21,7 @@ class TC_Hopfield < Test::Unit::TestCase
         assert_operator(v, :<, bounds[1])
         sum += v
       end
-      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.1)
+      assert_in_delta(bounds[0]+((bounds[1]-bounds[0])/2.0), sum/trials.to_f, 0.15)
     end    
   end
   
@@ -105,12 +105,9 @@ class TC_Hopfield < Test::Unit::TestCase
   
   # test pattern perturbations
   def test_perturb_pattern
-    # none
-    assert_equal([1,1,1,1,1,1], perturb_pattern([1,1,1,1,1,1], 0))
-    assert_equal([-1,-1,-1,-1,-1,-1], perturb_pattern([-1,-1,-1,-1,-1,-1], 0))
     # all
-    assert_equal([-1,-1,-1,-1,-1,-1], perturb_pattern([1,1,1,1,1,1], 1))
-    assert_equal([1,1,1,1,1,1], perturb_pattern([-1,-1,-1,-1,-1,-1], 1))
+    assert_not_equal([-1,-1,-1,-1,-1,-1], perturb_pattern([1,1,1,1,1,1]))
+    assert_not_equal([1,1,1,1,1,1], perturb_pattern([-1,-1,-1,-1,-1,-1]))
   end
 
   # helper for turning off STDOUT
@@ -126,53 +123,41 @@ class TC_Hopfield < Test::Unit::TestCase
 
   # test the assessment of the network
   def test_test_network
-    #  no error
     rs = nil
-    n = [{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},
-     {:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},
-     {:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1},{:weights=>[1,1],:output=>1}]
-    p = [ [[1,1,1],[1,1,1],[1,1,1]] ]
+    n = [{:weights=>[1,1,1,1,1,1],:output=>1},
+         {:weights=>[1,1,1,1,1,1],:output=>1},
+         {:weights=>[1,1,1,1,1,1],:output=>1},
+         {:weights=>[1,1,1,1,1,1],:output=>1},
+         {:weights=>[1,1,1,1,1,1],:output=>1},
+         {:weights=>[1,1,1,1,1,1],:output=>1}]
+    p = [ [[1,1],[1,1],[1,1]] ]
     silence_stream(STDOUT) do
       rs = test_network(n, p)
     end
     assert_not_nil(rs)
-    assert_in_delta(0, rs, 2) # this should be zero
-    # no error with propagation required
-    rs = nil
-    n = [{:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0},
-     {:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0},
-     {:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0},{:weights=>[1,1],:output=>0}]
-    p = [ [[1,1,1],[1,1,1],[1,1,1]] ]
-    silence_stream(STDOUT) do
-      rs = test_network(n, p)
-    end
-    assert_not_nil(rs)
-    assert_in_delta(0, rs, 2)
+    assert_in_delta(0, rs, 0)   
   end
 
   # test that the algorithm can solve the problem
   def test_search    
-    # test problem
+    # problem configuration
     num_inputs = 9
-    p1 = [[1,1,1],[1,-1,-1],[1,1,1]] # C
-    p2 = [[1,-1,-1],[1,-1,-1],[1,1,1]] # L
-    p3 = [[-1,1,-1],[-1,1,-1],[-1,1,-1]] # I
-    patters = [p1, p2, p3] 
-    # get output
+    p1 = [[1,1,1],[-1,1,-1],[-1,1,-1]] # T
+    p2 = [[1,-1,1],[1,-1,1],[1,1,1]] # U
+    patters = [p1, p2]  
+    # execute the algorithm
     neurons = nil
     silence_stream(STDOUT) do
       neurons = execute(patters, num_inputs)
     end
-    # test structure
-    assert_equal(num_inputs, neurons.size)
-    # test output
-    patters.each do |pattern|
-      vector = pattern.flatten
-      output = get_output(neurons, vector)    
-      vector.each_with_index do |x,i|
-        assert_equal(x, output[i])
-      end      
+    assert_not_nil(neurons)
+    assert_equal(9, neurons.size)
+    rs = nil
+    silence_stream(STDOUT) do
+      rs = test_network(neurons, patters)
     end
+    assert_not_nil(rs)
+    assert_equal(0, rs)
   end
   
 end

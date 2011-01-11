@@ -37,10 +37,10 @@ def propagate_was_change?(neurons)
   return change
 end
 
-def get_output(neurons, pattern)
+def get_output(neurons, pattern, evals=100)
   vector = pattern.flatten
   neurons.each_with_index {|neuron,i| neuron[:output] = vector[i]}
-  change = propagate(neurons) while change
+  evals.times { propagate_was_change?(neurons) }
   return Array.new(neurons.size){|i| neurons[i][:output]}
 end
 
@@ -82,11 +82,14 @@ def calculate_error(expected, actual)
   return sum
 end
 
-def perturb_pattern(vector, rate=(1.0/vector.size.to_f)*0.5)
+def perturb_pattern(vector, num_errors=1)
   perturbed = Array.new(vector)
-  perturbed.each_with_index do |v,i|
-    perturbed[i] = ((v==1) ? -1 : 1) if rand() < rate
+  indicies = [rand(perturbed.size)]
+  while indicies.size < num_errors do
+    index = rand(perturbed.size)
+    indicies << index if !indicies.include?(index)
   end
+  indicies.each {|i| perturbed[i] = ((perturbed[i]==1) ? -1 : 1)}
   return perturbed
 end
 
@@ -94,9 +97,7 @@ def test_network(neurons, patterns)
   error = 0.0
   patterns.each do |pattern|
     vector = pattern.flatten
-    puts vector.inspect
     perturbed = perturb_pattern(vector)
-    puts perturbed.inspect
     output = get_output(neurons, perturbed)
     error += calculate_error(vector, output)
     print_patterns(perturbed, vector, output)

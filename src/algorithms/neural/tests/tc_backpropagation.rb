@@ -29,7 +29,7 @@ class TC_BackPropagation < Test::Unit::TestCase
   def test_initialize_weights
     weights = initialize_weights(100)
     # adds a bias
-    assert_equal(101, weights.size)
+    assert_equal(100, weights.size)
     # check values in [-2,2]
     weights.each do |w|
       assert(w <= 2, "#{w}")
@@ -167,9 +167,9 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test that weights are updated as expected
   def test_update_weights
-    n1 = {:weights=>[0.2,0.2,0.2], :derivative=>[0.1, -0.5, 100.0]}
+    n1 = {:weights=>[0.2,0.2,0.2], :derivative=>[0.1, -0.5, 100.0], :last_delta=>[0,0,0]}
     network = [[n1]]
-    update_weights(network, 1.0)
+    update_weights(network, 1.0, 0.0)
     assert_equal((0.2 + (0.1*1.0)), n1[:weights][0])
     assert_equal((0.2 + (-0.5*1.0)), n1[:weights][1])
     assert_equal((0.2 + (100*1.0)), n1[:weights][2])
@@ -188,9 +188,9 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test training the networ
   def test_train_network
-    n1 = {:weights=>[-1, -1, 1]}
-    n2 = {:weights=>[-1, -1, 1]}
-    n3 = {:weights=>[-1, -1, 1]}
+    n1 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
+    n2 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
+    n3 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
     network = [[n1,n2],[n3]]
     domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
     silence_stream(STDOUT) do
@@ -232,16 +232,15 @@ class TC_BackPropagation < Test::Unit::TestCase
   end
   
   # test that the system can learn xor
-  # NOTE: this test passes most (50/50 really) of the time, but not all
   def test_compute
     domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
     network = nil 
     silence_stream(STDOUT) do
-      network = execute(domain, 2, 10000, 2, 0.5)
+      network = execute(domain, 2, 2000, 4, 0.1)
     end     
     # structure    
     assert_equal(2, network.size)
-    assert_equal(2, network[0].size)
+    assert_equal(4, network[0].size)
     assert_equal(1, network[1].size)
     # output
     output = nil
