@@ -17,16 +17,17 @@ end
 def new_classifier(condition, action, gen, p1=10.0, e1=0.0, f1=10.0)
   other = {}
   other[:condition], other[:action], other[:lasttime] = condition, action, gen
-  other[:prediction], other[:error], other[:fitness] = p1, e1, f1
-  other[:experience], other[:setsize], other[:num] = 0.0, 1.0, 1.0
+  other[:pred], other[:error], other[:fitness] = p1, e1, f1
+  other[:exp], other[:setsize], other[:num] = 0.0, 1.0, 1.0
   return other
 end
 
 def copy_classifier(parent)
   copy = {}  
-  parent.keys.each {|k| copy[k] = (parent[k].kind_of? String) ? ""+parent[k] : parent[k]}  
-  copy[:num] = 1.0
-  copy[:experience] = 0.0
+  parent.keys.each do |k| 
+    copy[k] = (parent[k].kind_of? String) ? ""+parent[k] : parent[k]
+  end
+  copy[:num],copy[:exp] = 1.0, 0.0
   return copy
 end
 
@@ -39,7 +40,7 @@ def calculate_deletion_vote(classifier, pop, del_thresh, f_thresh=0.1)
   total = pop.inject(0.0){|s,c| s+c[:num]}
   avg_fitness = pop.inject(0.0){|s,c| s + (c[:fitness]/total)}
   derated = classifier[:fitness] / classifier[:num].to_f
-  if classifier[:experience]>del_thresh and derated<(f_thresh*avg_fitness)
+  if classifier[:exp]>del_thresh and derated<(f_thresh*avg_fitness)
     return vote * (avg_fitness / derated)
   end  
   return vote
@@ -107,7 +108,7 @@ def generate_prediction(match_set)
   match_set.each do |classifier|
     key = classifier[:action]
     prediction[key] = {:sum=>0.0,:count=>0.0,:weight=>0.0} if prediction[key].nil?
-    prediction[key][:sum] += classifier[:prediction]*classifier[:fitness]
+    prediction[key][:sum] += classifier[:pred]*classifier[:fitness]
     prediction[key][:count] += classifier[:fitness]
   end
   prediction.keys.each do |key| 
@@ -121,48 +122,24 @@ end
 
 def select_action(predictions, p_explore=false)
   keys = Array.new(predictions.keys)
-  if p_explore
-#    sel = keys[rand(keys.size)]
-#    sel = keys[rand(keys.size)] while predictions[sel][:weight]==0.0
-#    return sel
-    return keys[rand(keys.size)]
-  end
+  return keys[rand(keys.size)] if p_explore
   keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
   return keys.first
 end
 
-def update_prediction_error(c, reward, beta)
-  if c[:experience] < 1.0/beta
-	    c[:error] = (c[:error]*(c[:experience] - 1.0) + (reward - c[:prediction]).abs) / c[:experience]
-	else
-	    c[:error] += beta * ((reward-c[:prediction]).abs - c[:error])
-	end
-end
-
-def update_prediction(c, reward, beta)
-  if c[:experience] < 1.0/beta
-	    c[:prediction] = (c[:prediction] * (c[:experience]-1.0) + reward) / c[:experience]
-	else
-	    c[:prediction] += beta * (reward-c[:prediction])
-  end
-end
-
-def update_action_set_size(c, sum, beta)
-  if c[:experience] < 1.0/beta
-	    c[:setsize] = (c[:setsize]*(c[:experience]-1.0)+sum) / c[:experience]
-	else
-	    c[:setsize] += beta * (sum - c[:setsize])
-	end
-end
-
-def update_set(action_set, payoff, beta=0.2)  
+def update_set(action_set, reward, beta=0.2)  
   sum = action_set.inject(0.0) {|s,other| s+other[:num]}
   action_set.each do |c| 
-    c[:experience] += 1.0   
-    update_prediction_error(c, payoff, beta)
-    update_prediction(c, payoff, beta)
-    #sum = action_set.inject(0.0) {|s,other| s+other[:num]-c[:setsize]}
-    update_action_set_size(c, sum, beta)
+    c[:exp] += 1.0   
+    if c[:exp] < 1.0/beta
+	      c[:error] = (c[:error]*(c[:exp]-1.0)+(reward-c[:pred]).abs)/c[:exp]
+	      c[:pred] = (c[:pred] * (c[:exp]-1.0) + reward) / c[:exp]
+	      c[:setsize] = (c[:setsize]*(c[:exp]-1.0)+sum) / c[:exp]
+	  else
+	      c[:error] += beta * ((reward-c[:pred]).abs - c[:error])
+	      c[:pred] += beta * (reward-c[:pred])
+	      c[:setsize] += beta * (sum - c[:setsize])
+	  end    
   end
 end
 
@@ -225,7 +202,7 @@ end
 def crossover(c1, c2, p1, p2)
   c1[:condition] = uniform_crossover(p1[:condition], p2[:condition])
   c2[:condition] = uniform_crossover(p1[:condition], p2[:condition]) 
-  c2[:prediction] = c1[:prediction] = (p1[:prediction]+p2[:prediction])/2.0
+  c2[:pred] = c1[:pred] = (p1[:pred]+p2[:pred])/2.0
   c2[:error] = c1[:error] = 0.25*(p1[:error]+p2[:error])/2.0
   c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0
 end
@@ -243,11 +220,6 @@ def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, cr
   end
 end
 
-def payoff(input, action)
-  result = target_function(input)
-  return (result==action.to_i) ? 1000.0 : 0.0
-end
-
 def train_model(pop_size, max_gens, actions, ga_freq)
   pop, perf = [], []
   max_gens.times do |gen|
@@ -256,7 +228,7 @@ def train_model(pop_size, max_gens, actions, ga_freq)
     match_set = generate_match_set(input, pop, actions, gen, pop_size)
     prediction_array = generate_prediction(match_set)    
     action = select_action(prediction_array, explore)
-    reward = payoff(input, action)
+    reward = (target_function(input)==action.to_i) ? 1000.0 : 0.0
     if explore
       action_set = match_set.select{|c| c[:action]==action}
       update_set(action_set, reward)
@@ -279,7 +251,7 @@ def train_model(pop_size, max_gens, actions, ga_freq)
   return pop
 end
 
-def test_model(system, num_trials=100)
+def test_model(system, num_trials=50)
   correct = 0
   num_trials.times do
     input = random_bitstring()

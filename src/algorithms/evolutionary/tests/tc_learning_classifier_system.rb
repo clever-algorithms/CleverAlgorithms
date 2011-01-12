@@ -32,14 +32,14 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     assert_equal("000000", c[:condition])
     assert_equal("1", c[:action])
     assert_equal(500, c[:lasttime])    
-    assert_not_nil(c[:prediction])
+    assert_not_nil(c[:pred])
     assert_not_nil(c[:error])
     assert_not_nil(c[:fitness])
-    assert_equal(9, c[:prediction])
+    assert_equal(9, c[:pred])
     assert_equal(8, c[:error])
     assert_equal(7, c[:fitness])    
-    assert_not_nil(c[:experience])
-    assert_equal(0, c[:experience])
+    assert_not_nil(c[:exp])
+    assert_equal(0, c[:exp])
     assert_not_nil(c[:setsize])
     assert_equal(1, c[:setsize])
     assert_not_nil(c[:num])
@@ -49,16 +49,16 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # test copying a classifier
   def test_copy_classifier
     parent = {:action=>"0", :condition=>"111111", :lasttime=>33, 
-      :prediction=>5, :error=>2, :fitness=>7, :experience=>90, :setsize=>20, :num=>66}
+      :pred=>5, :error=>2, :fitness=>7, :exp=>90, :setsize=>20, :num=>66}
     c = copy_classifier(parent)    
     # equal
     assert_equal(parent[:action], c[:action])
     assert_equal(parent[:condition], c[:condition])
     assert_equal(parent[:lasttime], c[:lasttime])
-    assert_equal(parent[:prediction], c[:prediction])
+    assert_equal(parent[:pred], c[:pred])
     assert_equal(parent[:error], c[:error])
     assert_equal(parent[:fitness], c[:fitness])
-    assert_not_equal(parent[:experience], c[:experience])
+    assert_not_equal(parent[:exp], c[:exp])
     assert_equal(parent[:setsize], c[:setsize])
     assert_not_equal(parent[:num], c[:num])
     # same
@@ -84,17 +84,17 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   def test_calculate_deletion_vote
     # below deletion thereshold
     pop = [{:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}]
-    classifier = {:setsize=>5, :num=>5, :fitness=>10, :experience=>20}
+    classifier = {:setsize=>5, :num=>5, :fitness=>10, :exp=>20}
     rs = calculate_deletion_vote(classifier, pop, 50)
     assert_equal(25, rs)
     # above deletion threshold and more than average fitness
     pop = [{:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}]
-    classifier = {:setsize=>5, :num=>5, :fitness=>10, :experience=>50}
+    classifier = {:setsize=>5, :num=>5, :fitness=>10, :exp=>50}
     rs = calculate_deletion_vote(classifier, pop, 5)
     assert_equal(25, rs)
     # above deletion threshold and less than average fitness
     pop = [{:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}, {:fitness=>10, :num=>1}]
-    classifier = {:setsize=>5, :num=>0.01, :fitness=>0.1, :experience=>50}
+    classifier = {:setsize=>5, :num=>0.01, :fitness=>0.1, :exp=>50}
     rs = calculate_deletion_vote(classifier, pop, 5)
     v = (classifier[:setsize]*classifier[:num])
     assert_equal(v*(10.0/(classifier[:fitness] / classifier[:num])), rs)
@@ -107,15 +107,15 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     delete_from_pop(pop, 5, 10)
     assert_equal(3, pop.size)
     # delete, but not remove
-    pop = [{:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>5}, 
-      {:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>5}, 
-      {:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>5}]
+    pop = [{:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>5}, 
+      {:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>5}, 
+      {:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>5}]
     delete_from_pop(pop, 5, 10)
     assert_equal(14, pop.inject(0){|s,x| s+x[:num]})
     # delete and remove one
-    pop = [{:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>1}, 
-      {:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>1}, 
-      {:setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>1}]
+    pop = [{:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>1}, 
+      {:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>1}, 
+      {:setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>1}]
     delete_from_pop(pop, 2, 20)
     assert_equal(2, pop.size)
   end
@@ -162,21 +162,21 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   def test_generate_match_set
     # generate matchset from pop
     pop = [{:action=>'1', :condition=>"000000"}, {:action=>'0', :condition=>"000000"}]
-    rs = generate_match_set("000000", pop, ['0', '1'], 5, 2, 50)
+    rs = generate_match_set("000000", pop, ['0', '1'], 5, 2)
     assert_equal(2, rs.size)
     assert_equal(2, pop.size)
     assert_equal(pop, rs)
     # add to match set
-    pop = [{:action=>'1', :condition=>"111111", :setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>1}, 
-      {:action=>'0', :condition=>"000000", :setsize=>5, :num=>5, :fitness=>10, :experience=>50, :num=>1}]
-    rs = generate_match_set("000000", pop, ['0', '1'], 5, 5, 5)
+    pop = [{:action=>'1', :condition=>"111111", :setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>1}, 
+      {:action=>'0', :condition=>"000000", :setsize=>5, :num=>5, :fitness=>10, :exp=>50, :num=>1}]
+    rs = generate_match_set("000000", pop, ['0', '1'], 5, 5)
     assert_equal(2, rs.size)
     assert_equal(3, pop.size)    
   end
   
   # test generate a prediction
   def test_generate_prediction
-    match_set = [{:action=>'1', :fitness=>1.0, :prediction=>1.0}, {:action=>'0', :fitness=>1.0, :prediction=>1.0}]
+    match_set = [{:action=>'1', :fitness=>1.0, :pred=>1.0}, {:action=>'0', :fitness=>1.0, :pred=>1.0}]
     rs = generate_prediction(match_set)
     assert_equal(2, rs.size)
     rs.keys.each do |key|
@@ -194,10 +194,10 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # test select action
   def test_select_action
     # random action
-    a = select_action({'1'=>{}, '0'=>{}}, 1.0)
+    a = select_action({'1'=>{}, '0'=>{}}, true)
     assert_equal(true, ['0', '1'].include?(a))
     # specific action (large weight)
-    a = select_action({'1'=>{:weight=>1}, '0'=>{:weight=>100}}, 0.0)
+    a = select_action({'1'=>{:weight=>1}, '0'=>{:weight=>100}}, false)
     assert_equal('0', a)
     # assume a specific large weight action
     100.times do
@@ -210,17 +210,17 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # test update set
   def test_update_set
     # > lrate
-    set = [{:experience=>1, :prediction=>1, :error=>0, :num=>1, :setsize=>1}]
+    set = [{:exp=>1, :pred=>1, :error=>0, :num=>1, :setsize=>1}]
     update_set(set, 10, 1)
-    assert_equal(2, set[0][:experience])
-    assert_equal(1+1*(10-1), set[0][:prediction])
+    assert_equal(2, set[0][:exp])
+    assert_equal(1+1*(10-1), set[0][:pred])
     assert_equal((1*((10-1).abs-0)), set[0][:error])
     assert_equal(1+(1*0), set[0][:setsize])
     # < lrate
-    set = [{:experience=>1, :prediction=>1, :error=>0, :num=>1, :setsize=>1}]
+    set = [{:exp=>1, :pred=>1, :error=>0, :num=>1, :setsize=>1}]
     update_set(set, 10, 0.1)
-    assert_equal(2, set[0][:experience])
-    assert_equal(1+(10-1)/2.0, set[0][:prediction])
+    assert_equal(2, set[0][:exp])
+    assert_equal(1+(10-1)/2.0, set[0][:pred])
     assert_equal(((10-1).abs)/2.0, set[0][:error])
     assert_equal(1+(0.0/2.0), set[0][:setsize])
   end
@@ -311,21 +311,21 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # actions and nums and other data are assumed
   def test_crossover
     c1, c2 = {}, {}
-    p1 = {:condition=>"000000",:action=>'1',:prediction=>2,:error=>0.5,:fitness=>5}
-    p2 = {:condition=>"111111",:action=>'0',:prediction=>3,:error=>0.1,:fitness=>3}
+    p1 = {:condition=>"000000",:action=>'1',:pred=>2,:error=>0.5,:fitness=>5}
+    p2 = {:condition=>"111111",:action=>'0',:pred=>3,:error=>0.1,:fitness=>3}
     crossover(c1, c2, p1, p2)
     # c1
     c1[:condition].size.times do |i| 
       assert( (c1[:condition][i]==p1[:condition][i]) || (c1[:condition][i]==p2[:condition][i]) )
     end
-    assert_equal((2.0+3.0)/2.0, c1[:prediction])
+    assert_equal((2.0+3.0)/2.0, c1[:pred])
     assert_equal(0.25*((0.5+0.1)/2.0), c1[:error])
     assert_equal(0.1*((5.0+3.0)/2.0), c1[:fitness])
     # c2
     c2[:condition].size.times do |i| 
       assert( (c2[:condition][i]==p1[:condition][i]) || (c2[:condition][i]==p2[:condition][i]) )
     end
-    assert_equal((2.0+3.0)/2.0, c2[:prediction])
+    assert_equal((2.0+3.0)/2.0, c2[:pred])
     assert_equal(0.25*((0.5+0.1)/2.0), c2[:error])
     assert_equal(0.1*((5.0+3.0)/2.0), c2[:fitness])
   end
@@ -333,10 +333,10 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   # test running the GA
   def test_run_genetic_algorithm
     pop = [{:condition=>"000000", :action=>'1', :num=>1, :fitness=>0.1, 
-              :prediction=>0.3, :error=>0.1, :setsize=>1, :num=>1, :experience=>1}, 
+              :pred=>0.3, :error=>0.1, :setsize=>1, :num=>1, :exp=>1}, 
            {:condition=>"111111", :action=>'0', :num=>1, :fitness=>0.2, 
-              :prediction=>0.3, :error=>0.1, :setsize=>1, :num=>1, :experience=>1}]
-    run_genetic_algorithm(['0', '1'], pop, pop, "000000", 5, 2, 0.1, 1.0)
+              :pred=>0.3, :error=>0.1, :setsize=>1, :num=>1, :exp=>1}]
+    run_genetic_algorithm(['0', '1'], pop, pop, "000000", 5, 2, 1.0)
     # popsize is reasonable
     assert_operator(pop.size, :>, 0)
     assert_in_delta(2, pop.inject(0){|s,x| s + x[:num]}, 1)
@@ -357,7 +357,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   def test_train_model
     pop = nil
     silence_stream(STDOUT) do
-      pop = train_model(50, 100, ['0', '1'], 0.5, 0.1, 0.01, 10, 20)
+      pop = train_model(50, 500, ['0', '1'], 20)
     end
     # got a pop
     assert_not_nil(pop)
@@ -375,14 +375,14 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     # perfect system
     rs = nil
     system = [
-      {:condition=>"000\#\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0}, 
-      {:condition=>"001\#\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"01\#0\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"01\#1\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"10\#\#0\#", :action=>"0", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"10\#\#1\#", :action=>"1", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"11\#\#\#0", :action=>"0", :prediction=>1.0, :fitness=>1.0},
-      {:condition=>"11\#\#\#1", :action=>"1", :prediction=>1.0, :fitness=>1.0}
+      {:condition=>"000\#\#\#", :action=>"0", :pred=>1.0, :fitness=>1.0}, 
+      {:condition=>"001\#\#\#", :action=>"1", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"01\#0\#\#", :action=>"0", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"01\#1\#\#", :action=>"1", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"10\#\#0\#", :action=>"0", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"10\#\#1\#", :action=>"1", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"11\#\#\#0", :action=>"0", :pred=>1.0, :fitness=>1.0},
+      {:condition=>"11\#\#\#1", :action=>"1", :pred=>1.0, :fitness=>1.0}
              ]
     silence_stream(STDOUT) do
       rs = test_model(system, 100)
@@ -391,7 +391,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     assert_equal(100, rs)
     # always zero
     rs = nil
-    system = [{:condition=>"\#\#\#\#\#\#", :action=>"0", :prediction=>1.0, :fitness=>1.0}]
+    system = [{:condition=>"\#\#\#\#\#\#", :action=>"0", :pred=>1.0, :fitness=>1.0}]
     silence_stream(STDOUT) do
       rs = test_model(system, 100)
     end
@@ -399,7 +399,7 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     assert_in_delta(50, rs, 15)
     # always one
     rs = nil
-    system = [{:condition=>"\#\#\#\#\#\#", :action=>"1", :prediction=>1.0, :fitness=>1.0}]
+    system = [{:condition=>"\#\#\#\#\#\#", :action=>"1", :pred=>1.0, :fitness=>1.0}]
     silence_stream(STDOUT) do
       rs = test_model(system, 100)
     end
@@ -412,18 +412,18 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
     # execute
     pop = nil
     silence_stream(STDOUT) do
-       pop = execute(100, 2000, ['0','1'], 0.1, 0.2, 0.1, 100, 20)
+       pop = execute(200, 5000, ['0', '1'], 25)
     end    
     # check system
     micro = pop.inject(0){|s,x| s + x[:num]}
-    assert_in_delta(100, micro, 5)
+    assert_in_delta(200, micro, 5)
     # check capability
     correct = nil
     silence_stream(STDOUT) do
       correct = test_model(pop)
     end
     assert_not_nil(correct)
-    assert_in_delta(100, correct, 20)
+    assert_in_delta(50, correct, 5)
   end
   
 end
