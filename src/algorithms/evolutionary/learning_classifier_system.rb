@@ -9,7 +9,7 @@ def neg(bit)
 end
   
 def target_function(s)
-  ints = Array.new(s.size){|i| s[i].chr.to_i}
+  ints = Array.new(6){|i| s[i].chr.to_i}
   x0,x1,x2,x3,x4,x5 = ints
   return neg(x0)*neg(x1)*x2 + neg(x0)*x1*x3 + x0*neg(x1)*x4 + x0*x1*x5
 end
@@ -45,9 +45,9 @@ def calculate_deletion_vote(classifier, pop, del_thresh, f_thresh=0.1)
   return vote
 end
 
-def delete_from_pop(pop, pop_size, del_thresh)
+def delete_from_pop(pop, pop_size, del_thresh=20.0)
   total = pop.inject(0) {|s,c| s+c[:num]}
-  return if total < pop_size
+  return if total <= pop_size
   pop.each {|c| c[:dvote] = calculate_deletion_vote(c, pop, del_thresh)}
   vote_sum = pop.inject(0.0) {|s,c| s+c[:dvote]}
   point = rand() * vote_sum
@@ -88,7 +88,7 @@ def get_actions(pop)
   return actions
 end
 
-def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
+def generate_match_set(input, pop, all_actions, gen, pop_size)
   match_set = pop.select{|c| does_match?(input, c[:condition])}
   actions = get_actions(match_set)
   while actions.size < all_actions.size do
@@ -96,7 +96,7 @@ def generate_match_set(input, pop, all_actions, gen, pop_size, del_thresh)
     classifier = generate_random_classifier(input, remaining, gen)
     pop << classifier
     match_set << classifier
-    delete_from_pop(pop, pop_size, del_thresh)
+    delete_from_pop(pop, pop_size)
     actions << classifier[:action]
   end
   return match_set
@@ -111,31 +111,62 @@ def generate_prediction(match_set)
     prediction[key][:count] += classifier[:fitness]
   end
   prediction.keys.each do |key| 
-    prediction[key][:weight] = prediction[key][:sum]/prediction[key][:count]
+    prediction[key][:weight] = 0.0
+    if prediction[key][:count] > 0
+      prediction[key][:weight] = prediction[key][:sum]/prediction[key][:count]
+    end    
   end
   return prediction
 end
 
-def select_action(predictions, p_explore=0.0)
+def select_action(predictions, p_explore=false)
   keys = Array.new(predictions.keys)
-  return keys[rand(keys.size)] if rand() < p_explore
+  if p_explore
+#    sel = keys[rand(keys.size)]
+#    sel = keys[rand(keys.size)] while predictions[sel][:weight]==0.0
+#    return sel
+    return keys[rand(keys.size)]
+  end
   keys.sort!{|x,y| predictions[y][:weight]<=>predictions[x][:weight]}
   return keys.first
 end
 
-def update_set(action_set, payoff, l_rate)
-  action_set.each do |c| 
-    c[:experience] += 1.0    
-    pdiff = payoff - c[:prediction]
-    c[:prediction] += (c[:experience]<1.0/l_rate) ? pdiff/c[:experience] : l_rate*pdiff
-    diff = pdiff.abs - c[:error]
-    c[:error] += (c[:experience]<1.0/l_rate) ? diff/c[:experience] : l_rate*diff        
-    sum = action_set.inject(0.0) {|s,other| s+other[:num]-c[:setsize]}    
-    c[:setsize] += (c[:experience]<1.0/l_rate) ? sum/c[:experience] : l_rate*sum
+def update_prediction_error(c, reward, beta)
+  if c[:experience] < 1.0/beta
+	    c[:error] = (c[:error]*(c[:experience] - 1.0) + (reward - c[:prediction]).abs) / c[:experience]
+	else
+	    c[:error] += beta * ((reward-c[:prediction]).abs - c[:error])
+	end
+end
+
+def update_prediction(c, reward, beta)
+  if c[:experience] < 1.0/beta
+	    c[:prediction] = (c[:prediction] * (c[:experience]-1.0) + reward) / c[:experience]
+	else
+	    c[:prediction] += beta * (reward-c[:prediction])
   end
 end
 
-def update_fitness(action_set, min_error, l_rate, alpha=0.1, v=-5.0)
+def update_action_set_size(c, sum, beta)
+  if c[:experience] < 1.0/beta
+	    c[:setsize] = (c[:setsize]*(c[:experience]-1.0)+sum) / c[:experience]
+	else
+	    c[:setsize] += beta * (sum - c[:setsize])
+	end
+end
+
+def update_set(action_set, payoff, beta=0.2)  
+  sum = action_set.inject(0.0) {|s,other| s+other[:num]}
+  action_set.each do |c| 
+    c[:experience] += 1.0   
+    update_prediction_error(c, payoff, beta)
+    update_prediction(c, payoff, beta)
+    #sum = action_set.inject(0.0) {|s,other| s+other[:num]-c[:setsize]}
+    update_action_set_size(c, sum, beta)
+  end
+end
+
+def update_fitness(action_set, min_error=10, l_rate=0.2, alpha=0.1, v=-5.0)
   sum = 0.0
   accuracy = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
@@ -143,7 +174,7 @@ def update_fitness(action_set, min_error, l_rate, alpha=0.1, v=-5.0)
     sum += accuracy[i] * c[:num].to_f
   end
   action_set.each_with_index do |c,i|
-    c[:fitness] += l_rate * (accuracy[i] * c[:num].to_f / sum - c[:fitness])
+    c[:fitness] += l_rate * ((accuracy[i] * c[:num].to_f) / sum - c[:fitness])
   end
 end
 
@@ -199,40 +230,50 @@ def crossover(c1, c2, p1, p2)
   c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, del_thresh, crate=0.8)
+def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, crate=0.8)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
   [c1,c2].each do |c|
     mutation(c, all_actions, input)
-    insert_in_pop(c, pop)
-    delete_from_pop(pop, pop_size, del_thresh)
+    insert_in_pop(c, pop)    
   end  
+  while pop.inject(0) {|s,c| s+c[:num]} > pop_size
+    delete_from_pop(pop, pop_size)
+  end
 end
 
-def train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
-  pop = []
-  error, acc = 0.0, 0
+def payoff(input, action)
+  result = target_function(input)
+  return (result==action.to_i) ? 1000.0 : 0.0
+end
+
+def train_model(pop_size, max_gens, actions, ga_freq)
+  pop, perf = [], []
   max_gens.times do |gen|
+    explore = gen.modulo(2)==0
     input = random_bitstring()
-    match_set = generate_match_set(input, pop, actions, gen, pop_size, del_thresh)
+    match_set = generate_match_set(input, pop, actions, gen, pop_size)
     prediction_array = generate_prediction(match_set)    
-    action = select_action(prediction_array, p_explore)
-    action_set = match_set.select{|c| c[:action]==action}
-    expected = target_function(input)
-    payoff = ((expected-action.to_i)==0) ? 1000.0 : 0.0
-    error += (payoff - prediction_array[action][:weight]).abs
-    acc += 1 if expected == action.to_i
-    update_set(action_set, payoff, l_rate)
-    update_fitness(action_set, min_error, l_rate)
-    if can_run_genetic_algorithm(action_set, gen, ga_freq)
-      action_set.each {|c| c[:lasttime] = gen}
-      run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size, del_thresh)
-    end
-    if (gen+1).modulo(50)==0
-      micro = pop.inject(0){|s,x| s + x[:num]}
-      puts " >gen=#{gen+1} size=#{pop.size}|#{micro}, error=#{error}, perf=#{acc}/50"
-      error, acc = 0.0, 0
+    action = select_action(prediction_array, explore)
+    reward = payoff(input, action)
+    if explore
+      action_set = match_set.select{|c| c[:action]==action}
+      update_set(action_set, reward)
+      update_fitness(action_set)
+      if can_run_genetic_algorithm(action_set, gen, ga_freq)
+        action_set.each {|c| c[:lasttime] = gen}
+        run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size)
+      end
+    else 
+      e,a = (prediction_array[action][:weight]-reward).abs, ((reward==1000.0) ? 1 : 0)
+      perf << {:error=>e,:correct=>a}
+      if perf.size >= 50
+        err = (perf.inject(0){|s,x|s+x[:error]}/perf.size).round
+        acc = perf.inject(0.0){|s,x|s+x[:correct]}/perf.size
+        puts " >iter=#{gen+1} size=#{pop.size}, error=#{err}, acc=#{acc}"
+        perf = []
+      end
     end
   end  
   return pop
@@ -244,15 +285,15 @@ def test_model(system, num_trials=100)
     input = random_bitstring()
     match_set = system.select{|c| does_match?(input, c[:condition])}
     prediction_array = generate_prediction(match_set)
-    action = select_action(prediction_array)
+    action = select_action(prediction_array, false)
     correct += 1 if target_function(input) == action.to_i
   end
   puts "Done! classified correctly=#{correct}/#{num_trials}"
   return correct
 end
 
-def execute(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
-  system = train_model(pop_size, max_gens, actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
+def execute(pop_size, max_gens, actions, ga_freq)
+  system = train_model(pop_size, max_gens, actions, ga_freq)
   test_model(system)
   return system
 end
@@ -262,9 +303,7 @@ if __FILE__ == $0
   all_actions = ['0', '1']
   # algorithm configuration
   max_gens, pop_size = 5000, 200
-  l_rate, min_error = 0.2, 10.0
-  p_explore = 0.10
-  ga_freq, del_thresh = 25, 20
+  ga_freq = 25
   # execute the algorithm
-  execute(pop_size, max_gens, all_actions, p_explore, l_rate, min_error, ga_freq, del_thresh)
+  execute(pop_size, max_gens, all_actions, ga_freq)
 end
