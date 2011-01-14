@@ -51,17 +51,17 @@ end
 def update_distribution!(samples, alpha, means, stdevs)
   means.size.times do |i|
     means[i] = alpha*means[i] + ((1.0-alpha)*mean_attr(samples, i))
-    stdevs[i] = alpha*stdevs[i] + ((1.0-alpha)*stdev_attr(samples, means[i], i))
+    stdevs[i] = alpha*stdevs[i]+((1.0-alpha)*stdev_attr(samples,means[i],i))
   end
 end
 
-def search(search_space, max_iter, num_samples, num_update, learning_rate)
-  means = Array.new(search_space.size){|i| random_variable(search_space[i])}
-  stdevs = Array.new(search_space.size){|i| search_space[i][1]-search_space[i][0]}
+def search(bounds, max_iter, num_samples, num_update, learning_rate)
+  means = Array.new(bounds.size){|i| random_variable(bounds[i])}
+  stdevs = Array.new(bounds.size){|i| bounds[i][1]-bounds[i][0]}
   best = nil
   max_iter.times do |iter|
-    samples = Array.new(num_samples) {generate_sample(search_space, means, stdevs)}
-    samples.each {|sample| sample[:cost]=objective_function(sample[:vector])}
+    samples = Array.new(num_samples){generate_sample(bounds, means, stdevs)}
+    samples.each {|samp| samp[:cost] = objective_function(samp[:vector])}
     samples.sort!{|x,y| x[:cost]<=>y[:cost]}
     best = samples.first if best.nil? or samples.first[:cost] < best[:cost]
     selected = samples.first(num_update)
@@ -79,8 +79,8 @@ if __FILE__ == $0
   max_iter = 100
   num_samples = 50
   num_update = 5
-  learning_rate = 0.7
+  l_rate = 0.7
   # execute the algorithm
-  best = search(search_space, max_iter, num_samples, num_update, learning_rate)
+  best = search(search_space, max_iter, num_samples, num_update, l_rate)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

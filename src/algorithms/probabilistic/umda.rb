@@ -64,5 +64,5 @@ if __FILE__ == $0
   select_size = 30
   # execute the algorithm
   best = search(num_bits, max_iter, pop_size, select_size)
-  puts "done! Solution: f=#{best[:fitness]}/#{num_bits}, s=#{best[:bitstring]}"
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
 end

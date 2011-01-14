@@ -31,7 +31,7 @@ def mutate_vector(vector, current, coefficient, rate)
   end
 end
 
-def search(num_bits, max_iter, num_samples, p_mutate, mutate_factor, learn_rate)
+def search(num_bits, max_iter, num_samples, p_mutate, mut_factor, l_rate)
   vector = Array.new(num_bits){0.5}
   best = nil
   max_iter.times do |iter|
@@ -42,8 +42,8 @@ def search(num_bits, max_iter, num_samples, p_mutate, mutate_factor, learn_rate)
       current = candidate if current.nil? or candidate[:cost]>current[:cost]
       best = candidate if best.nil? or candidate[:cost]>best[:cost]
     end
-    update_vector(vector, current, learn_rate)
-    mutate_vector(vector, current, mutate_factor, p_mutate)
+    update_vector(vector, current, l_rate)
+    mutate_vector(vector, current, mut_factor, p_mutate)
     puts " >iteration=#{iter}, f=#{best[:cost]}, s=#{best[:bitstring]}"
     break if best[:cost] == num_bits
   end
@@ -57,9 +57,9 @@ if __FILE__ == $0
   max_iter = 100
   num_samples = 100
   p_mutate = 1.0/num_bits
-  mutate_factor = 0.05
-  learn_rate = 0.1
+  mut_factor = 0.05
+  l_rate = 0.1
   # execute the algorithm
-  best = search(num_bits, max_iter, num_samples, p_mutate, mutate_factor, learn_rate)
+  best=search(num_bits, max_iter, num_samples, p_mutate, mut_factor, l_rate)
   puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
 end
