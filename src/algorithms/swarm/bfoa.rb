@@ -31,7 +31,7 @@ def compute_cell_interaction(cell, cells, d, w)
   return sum
 end
 
-def compute_attract_repel(cell, cells, d_attr, w_attr, h_rep, w_rep)
+def attract_repel(cell, cells, d_attr, w_attr, h_rep, w_rep)
   attract = compute_cell_interaction(cell, cells, -d_attr, -w_attr)
   repel = compute_cell_interaction(cell, cells, h_rep, -w_rep)
   return attract + repel
@@ -39,8 +39,8 @@ end
 
 def evaluate(cell, cells, d_attr, w_attr, h_rep, w_rep)
   cell[:cost] = objective_function(cell[:vector])
-  cell[:interaction] = compute_attract_repel(cell, cells, d_attr, w_attr, h_rep, w_rep)
-  cell[:fitness] = cell[:cost] + cell[:interaction]
+  cell[:inter] = attract_repel(cell, cells, d_attr, w_attr, h_rep, w_rep)
+  cell[:fitness] = cell[:cost] + cell[:inter]
 end
 
 def tumble_cell(search_space, cell, step_size)

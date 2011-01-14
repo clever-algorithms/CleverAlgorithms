@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
@@ -45,15 +45,15 @@ def update_velocity(particle, gbest, max_v, c1, c2)
   end
 end
 
-def update_position(particle, search_space)
-  particle[:position].each_with_index do |v,i|
-    particle[:position][i] = v + particle[:velocity][i]
-    if particle[:position][i] > search_space[i][1] 
-      particle[:position][i] = search_space[i][1] - (particle[:position][i]-search_space[i][1]).abs
-      particle[:velocity][i] *= -1.0
-    elsif particle[:position][i] < search_space[i][0] 
-      particle[:position][i] = search_space[i][0] + (particle[:position][i]-search_space[i][0]).abs
-      particle[:velocity][i] *= -1.0
+def update_position(part, bounds)
+  part[:position].each_with_index do |v,i|
+    part[:position][i] = v + part[:velocity][i]
+    if part[:position][i] > bounds[i][1] 
+      part[:position][i]=bounds[i][1]-(part[:position][i]-bounds[i][1]).abs
+      part[:velocity][i] *= -1.0
+    elsif part[:position][i] < bounds[i][0] 
+      part[:position][i]=bounds[i][0]+(part[:position][i]-bounds[i][0]).abs
+      part[:velocity][i] *= -1.0
     end
   end
 end
@@ -91,6 +91,6 @@ if __FILE__ == $0
   max_vel = 100.0
   c1, c2 = 2.0, 2.0
   # execute the algorithm
-  best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1, c2)
+  best = search(max_gens, search_space, vel_space, pop_size, max_vel, c1,c2)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:position].inspect}"
 end

@@ -81,15 +81,15 @@ class TC_AntSystem < Test::Unit::TestCase
   end
 
   # test probabilistic stepwise construction
-  def test_stepwise_construction
+  def test_stepwise_const
     cities = [[0,0],[1,2],[2,2],[3,3],[4,4]]
     pher = Array.new(5){|i| Array.new(5, 1.0)}
     # all greedy
-    perm = stepwise_construction(cities, pher, 1.0, 1.0)
+    perm = stepwise_const(cities, pher, 1.0, 1.0)
     assert_equal(5, perm.size)
     perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
     # no greedy
-    perm = stepwise_construction(cities, pher, 1.0, 0.0)
+    perm = stepwise_const(cities, pher, 1.0, 0.0)
     assert_equal(5, perm.size)
     perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
   end

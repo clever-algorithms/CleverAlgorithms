@@ -58,12 +58,12 @@ class TC_BFOA < Test::Unit::TestCase
   end
   
   # calculate combined forces
-  def test_compute_attract_repel
+  def test_attract_repel
     # same
-    rs = compute_attract_repel({:vector=>[0,0]}, [{:vector=>[0,0]}], 1.0, 1.0, 1.0, 1.0)
+    rs = attract_repel({:vector=>[0,0]}, [{:vector=>[0,0]}], 1.0, 1.0, 1.0, 1.0)
     assert_equal(0.0, rs)
     # different
-    rs = compute_attract_repel({:vector=>[0,0]}, [{:vector=>[1,1]}], 1.0, 1.0, 1.0, 1.0)
+    rs = attract_repel({:vector=>[0,0]}, [{:vector=>[1,1]}], 1.0, 1.0, 1.0, 1.0)
     assert_equal(0.0, rs)
     # TODO test different attract repel scenarios
   end
@@ -73,9 +73,9 @@ class TC_BFOA < Test::Unit::TestCase
     cell = {:vector=>[0,0]}
     evaluate(cell, [{:vector=>[0,0]},{:vector=>[1,1]}], 1.0, 1.0, 1.0, 1.0)
     assert_not_nil(cell[:cost])
-    assert_not_nil(cell[:interaction])
+    assert_not_nil(cell[:inter])
     assert_not_nil(cell[:fitness])
-    assert_equal(cell[:cost]+cell[:interaction], cell[:fitness])
+    assert_equal(cell[:cost]+cell[:inter], cell[:fitness])
   end
   
   # test cell tumble

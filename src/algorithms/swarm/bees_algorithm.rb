@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
@@ -18,7 +18,7 @@ def create_random_bee(search_space)
   return {:vector=>random_vector(search_space)}
 end
 
-def create_neighborhood_bee(site, patch_size, search_space)
+def create_neigh_bee(site, patch_size, search_space)
   vector = []
   site.each_with_index do |v,i|
     v = (rand()<0.5) ? v+rand()*patch_size : v-rand()*patch_size
@@ -31,13 +31,13 @@ def create_neighborhood_bee(site, patch_size, search_space)
   return bee
 end
 
-def search_neighborhood(parent, neighborhood_size, patch_size, search_space)
-  neighborhood = []
-  neighborhood_size.times do 
-    neighborhood << create_neighborhood_bee(parent[:vector], patch_size, search_space)
+def search_neigh(parent, neigh_size, patch_size, search_space)
+  neigh = []
+  neigh_size.times do 
+    neigh << create_neigh_bee(parent[:vector], patch_size, search_space)
   end
-  neighborhood.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
-  return neighborhood.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
+  neigh.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
+  return neigh.sort{|x,y| x[:fitness]<=>y[:fitness]}.first
 end
 
 def create_scout_bees(search_space, num_scouts)
@@ -53,15 +53,15 @@ def search(max_gens, search_space, num_bees, num_sites, elite_sites, patch_size,
     pop.each{|bee| bee[:fitness] = objective_function(bee[:vector])}
     pop.sort!{|x,y| x[:fitness]<=>y[:fitness]}
     best = pop.first if best.nil? or pop.first[:fitness] < best[:fitness]
-    next_generation = []
+    next_gen = []
     pop[0...num_sites].each_with_index do |parent, i|
-      neighborhood_size = (i<elite_sites) ? e_bees : o_bees
-      next_generation << search_neighborhood(parent, neighborhood_size, patch_size, search_space)
+      neigh_size = (i<elite_sites) ? e_bees : o_bees
+      next_gen << search_neigh(parent, neigh_size, patch_size, search_space)
     end
     scouts = create_scout_bees(search_space, (num_bees-num_sites))
-    pop = next_generation + scouts
+    pop = next_gen + scouts
     patch_size = patch_size * 0.95
-    puts " > iteration=#{gen+1}, patch_size=#{patch_size}, fitness=#{best[:fitness]}"
+    puts " > it=#{gen+1}, patch_size=#{patch_size}, f=#{best[:fitness]}"
   end  
   return best
 end

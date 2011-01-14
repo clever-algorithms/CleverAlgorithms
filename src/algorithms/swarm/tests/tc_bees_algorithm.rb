@@ -52,7 +52,7 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
 		problem_size = 5
 		search_space = Array.new(problem_size) {|i| [-10, 10]}
 		site = Array.new(problem_size){|i| i}
-		pop = Array.new(10000) {|i| create_neighborhood_bee(site, 4.5, search_space)}
+		pop = Array.new(10000) {|i| create_neigh_bee(site, 4.5, search_space)}
 		problem_size.times{|i| assert_in_delta pop.inject(0){|sum, bee| sum += bee[:vector][i]} / pop.size, i, 0.1}
 	end
 	
@@ -62,7 +62,7 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
 		patch_size = 2
 		search_space = Array.new(problem_size) {|i| [0, 5]}
 		site = Array.new(problem_size){|i| i}
-		pop = Array.new(1000) {|i| create_neighborhood_bee(site, patch_size, search_space)}
+		pop = Array.new(1000) {|i| create_neigh_bee(site, patch_size, search_space)}
 		pop.each do |bee| 
 			bee[:vector].each_with_index do |dimension, i|
 				(i-patch_size<0) ? (assert_operator dimension, :>=, 0) : (assert_operator dimension, :>=, i-patch_size)
@@ -72,8 +72,8 @@ class TC_BeesAlgorithm < Test::Unit::TestCase
 	end
 	
   # test search neighbourhood
-	def test_search_neighborhood
-    rs = search_neighborhood({:vector=>[0.5,0.5]}, 10, 0.005, [[0,1],[0,1]])
+	def test_search_neigh
+    rs = search_neigh({:vector=>[0.5,0.5]}, 10, 0.005, [[0,1],[0,1]])
     assert_not_nil(rs)
     assert_not_nil(rs[:vector])
     assert_not_nil(rs[:fitness])

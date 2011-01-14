@@ -68,38 +68,38 @@ class TC_AntColonySystem < Test::Unit::TestCase
   end
   
   # test probabilistic selection
-  def test_prob_select_next_city
+  def test_prob_select
     # no choice
     choices = [{:prob=>0,:city=>1}, {:prob=>0,:city=>2}, {:prob=>0,:city=>3}]
-    city = prob_select_next_city(choices)
+    city = prob_select(choices)
     assert_equal(city, choices.find {|x| x[:city]==city }[:city] )
     # choice 
     choices = [{:prob=>0.1,:city=>1}, {:prob=>0.2,:city=>2}, {:prob=>0.3,:city=>3}]
-    city = prob_select_next_city(choices)
+    city = prob_select(choices)
     assert_equal(city, choices.find {|x| x[:city]==city }[:city] )
     # TODO test if probabilistic better decisions are made over many samples
   end
   
   # test selecting the best city
-  def test_greedy_select_next_city
+  def test_greedy_select
     # first
     choices = [{:prob=>0,:city=>1}, {:prob=>0,:city=>2}, {:prob=>0,:city=>3}]
-    assert_equal(choices[0][:city], greedy_select_next_city(choices))
+    assert_equal(choices[0][:city], greedy_select(choices))
     # best
     choices = [{:prob=>0,:city=>1}, {:prob=>1,:city=>2}, {:prob=>-1,:city=>3}]
-    assert_equal(choices[1][:city], greedy_select_next_city(choices))
+    assert_equal(choices[1][:city], greedy_select(choices))
   end
   
   # test probabilistic stepwise construction
-  def test_stepwise_construction
+  def test_stepwise_const
     cities = [[0,0],[1,2],[2,2],[3,3],[4,4]]
     pher = Array.new(5){|i| Array.new(5, 1.0)}
     # all greedy
-    perm = stepwise_construction(cities, pher, 1.0, 1.0)
+    perm = stepwise_const(cities, pher, 1.0, 1.0)
     assert_equal(5, perm.size)
     perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
     # no greedy
-    perm = stepwise_construction(cities, pher, 1.0, 0.0)
+    perm = stepwise_const(cities, pher, 1.0, 0.0)
     assert_equal(5, perm.size)
     perm.each{|x| assert_equal(true, [0,1,2,3,4].include?(x))}
   end

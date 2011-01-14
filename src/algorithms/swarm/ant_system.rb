@@ -31,14 +31,14 @@ def initialise_pheromone_matrix(num_cities, naive_score)
   return Array.new(num_cities){|i| Array.new(num_cities, v)}
 end
 
-def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
+def calculate_choices(cities, last_city, exclude, pheromone, c_heur, c_hist)
   choices = []
   cities.each_with_index do |coord, i|
     next if exclude.include?(i)
     prob = {:city=>i}
-    prob[:history] = pheromone[last_city][i] ** c_history
+    prob[:history] = pheromone[last_city][i] ** c_hist
     prob[:distance] = euc_2d(cities[last_city], coord)
-    prob[:heuristic] = (1.0/prob[:distance]) ** c_heuristic
+    prob[:heuristic] = (1.0/prob[:distance]) ** c_heur
     prob[:prob] = prob[:history] * prob[:heuristic]
     choices << prob
   end
@@ -56,11 +56,11 @@ def select_next_city(choices)
   return choices.last[:city]
 end
 
-def stepwise_construction(cities, pheromone, c_heuristic, c_history)
+def stepwise_const(cities, phero, c_heur, c_hist)
   perm = []
   perm << rand(cities.size)
   begin
-    choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, c_history)
+    choices = calculate_choices(cities,perm.last,perm,phero,c_heur,c_hist)
     next_city = select_next_city(choices)
     perm << next_city
   end until perm.size == cities.size
@@ -78,22 +78,22 @@ end
 def update_pheromone(pheromone, solutions)
   solutions.each do |other|
     other[:vector].each_with_index do |x, i|
-      y = (i==other[:vector].size-1) ? other[:vector][0] : other[:vector][i+1]
+      y=(i==other[:vector].size-1) ? other[:vector][0] : other[:vector][i+1]
       pheromone[x][y] += (1.0 / other[:cost])
       pheromone[y][x] += (1.0 / other[:cost])
     end
   end
 end
 
-def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_history)
+def search(cities, max_it, num_ants, decay_factor, c_heur, c_hist)
   best = {:vector=>random_permutation(cities)}
   best[:cost] = cost(best[:vector], cities)
   pheromone = initialise_pheromone_matrix(cities.size, best[:cost])
-  max_iterations.times do |iter|
+  max_it.times do |iter|
     solutions = []
     num_ants.times do
       candidate = {}
-      candidate[:vector] = stepwise_construction(cities, pheromone, c_heuristic, c_history)
+      candidate[:vector] = stepwise_const(cities, pheromone, c_heur, c_hist)
       candidate[:cost] = cost(candidate[:vector], cities)
       best = candidate if candidate[:cost] < best[:cost]
     end
@@ -116,12 +116,12 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 50
+  max_it = 50
   num_ants = 30
   decay_factor = 0.6
-  c_heuristic = 2.5
-  c_history = 1.0
+  c_heur = 2.5
+  c_hist = 1.0
   # execute the algorithm
-  best = search(berlin52, max_iterations, num_ants, decay_factor, c_heuristic, c_history)
+  best = search(berlin52, max_it, num_ants, decay_factor, c_heur, c_hist)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

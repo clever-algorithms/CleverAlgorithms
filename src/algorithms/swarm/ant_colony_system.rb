@@ -30,21 +30,21 @@ def initialise_pheromone_matrix(num_cities, init_pher)
   return Array.new(num_cities){|i| Array.new(num_cities, init_pher)}
 end
 
-def calculate_choices(cities, last_city, exclude, pheromone, c_heuristic, c_history)
+def calculate_choices(cities, last_city, exclude, pheromone, c_heur, c_hist)
   choices = []
   cities.each_with_index do |coord, i|
     next if exclude.include?(i)
     prob = {:city=>i}
-    prob[:history] = pheromone[last_city][i] ** c_history
+    prob[:history] = pheromone[last_city][i] ** c_hist
     prob[:distance] = euc_2d(cities[last_city], coord)
-    prob[:heuristic] = (1.0/prob[:distance]) ** c_heuristic
+    prob[:heuristic] = (1.0/prob[:distance]) ** c_heur
     prob[:prob] = prob[:history] * prob[:heuristic]
     choices << prob
   end
   return choices
 end
 
-def prob_select_next_city(choices)
+def prob_select(choices)
   sum = choices.inject(0.0){|sum,element| sum + element[:prob]}
   return choices[rand(choices.size)][:city] if sum == 0.0
   v = rand()
@@ -55,55 +55,55 @@ def prob_select_next_city(choices)
   return choices.last[:city]
 end
 
-def greedy_select_next_city(choices)
+def greedy_select(choices)
   return choices.max{|a,b| a[:prob]<=>b[:prob]}[:city]
 end
 
-def stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
+def stepwise_const(cities, phero, c_heur, c_greed)
   perm = []
   perm << rand(cities.size)
   begin
-    choices = calculate_choices(cities, perm.last, perm, pheromone, c_heuristic, 1.0)
-    greedy = rand() <= c_greediness
-    next_city = (greedy) ? greedy_select_next_city(choices) : prob_select_next_city(choices)
+    choices = calculate_choices(cities, perm.last, perm, phero, c_heur, 1.0)
+    greedy = rand() <= c_greed
+    next_city = (greedy) ? greedy_select(choices) : prob_select(choices)
     perm << next_city
   end until perm.size == cities.size
   return perm
 end
 
-def global_update_pheromone(pheromone, candidate, decay_factor)
-  candidate[:vector].each_with_index do |x, i|
-    y = (i==candidate[:vector].size-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-    value = ((1.0-decay_factor)*pheromone[x][y]) + (decay_factor*(1.0/candidate[:cost]))
+def global_update_pheromone(phero, cand, decay)
+  cand[:vector].each_with_index do |x, i|
+    y = (i==cand[:vector].size-1) ? cand[:vector][0] : cand[:vector][i+1]
+    value = ((1.0-decay)*phero[x][y]) + (decay*(1.0/cand[:cost]))
+    phero[x][y] = value
+    phero[y][x] = value
+  end
+end
+
+def local_update_pheromone(pheromone, cand, c_local_phero, init_phero)
+  cand[:vector].each_with_index do |x, i|
+    y = (i==cand[:vector].size-1) ? cand[:vector][0] : cand[:vector][i+1]
+    value = ((1.0-c_local_phero)*pheromone[x][y])+(c_local_phero*init_phero)
     pheromone[x][y] = value
     pheromone[y][x] = value
   end
 end
 
-def local_update_pheromone(pheromone, candidate, c_local_pheromone, init_pheromone)
-  candidate[:vector].each_with_index do |x, i|
-    y = (i==candidate[:vector].size-1) ? candidate[:vector][0] : candidate[:vector][i+1]
-    value = ((1.0-c_local_pheromone)*pheromone[x][y]) + (c_local_pheromone * init_pheromone)
-    pheromone[x][y] = value
-    pheromone[y][x] = value
-  end
-end
-
-def search(cities, max_iterations, num_ants, decay_factor, c_heuristic, c_local_pheromone, c_greediness)
+def search(cities, max_it, num_ants, decay, c_heur, c_local_phero, c_greed)
   best = {:vector=>random_permutation(cities)}
   best[:cost] = cost(best[:vector], cities)
   init_pheromone = 1.0 / (cities.size.to_f * best[:cost])
   pheromone = initialise_pheromone_matrix(cities.size, init_pheromone)
-  max_iterations.times do |iter|
+  max_it.times do |iter|
     solutions = []
     num_ants.times do
-      candidate = {}
-      candidate[:vector] = stepwise_construction(cities, pheromone, c_heuristic, c_greediness)
-      candidate[:cost] = cost(candidate[:vector], cities)
-      best = candidate if candidate[:cost] < best[:cost]
-      local_update_pheromone(pheromone, candidate, c_local_pheromone, init_pheromone)
+      cand = {}
+      cand[:vector] = stepwise_const(cities, pheromone, c_heur, c_greed)
+      cand[:cost] = cost(cand[:vector], cities)
+      best = cand if cand[:cost] < best[:cost]
+      local_update_pheromone(pheromone, cand, c_local_phero, init_pheromone)
     end
-    global_update_pheromone(pheromone, best, decay_factor)
+    global_update_pheromone(pheromone, best, decay)
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
   return best
@@ -121,13 +121,13 @@ if __FILE__ == $0
    [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
    [830,610],[605,625],[595,360],[1340,725],[1740,245]]
   # algorithm configuration
-  max_iterations = 100
+  max_it = 100
   num_ants = 10
-  decay_factor = 0.1
-  c_heuristic = 2.5
-  c_local_pheromone = 0.1
-  c_greediness = 0.9
+  decay = 0.1
+  c_heur = 2.5
+  c_local_phero = 0.1
+  c_greed = 0.9
   # execute the algorithm
-  best = search(berlin52, max_iterations, num_ants, decay_factor, c_heuristic, c_local_pheromone, c_greediness)
+  best = search(berlin52, max_it, num_ants, decay, c_heur, c_local_phero, c_greed)
   puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end
