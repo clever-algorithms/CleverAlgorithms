@@ -136,14 +136,16 @@ def search(cities, max_cand, max_iter, increase, decrease)
       prohib_period = [prohib_period*decrease,1].max
       last_change = iter
     end
-    candidates = Array.new(max_cand) {|i| generate_candidate(current, cities)}
+    candidates = Array.new(max_cand) do |i| 
+      generate_candidate(current, cities)
+    end
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}        
-    tabu, admissible = sort_neighborhood(candidates, tabu_list, prohib_period, iter)
-    if admissible.size < 2
+    tabu,admis = sort_neighborhood(candidates,tabu_list,prohib_period,iter)
+    if admis.size < 2
       prohib_period = cities.size-2
       last_change = iter
     end
-    current, best_move_edges = (admissible.empty?) ? tabu.first : admissible.first
+    current,best_move_edges = (admis.empty?) ? tabu.first : admis.first
     if !tabu.empty? 
       tf = tabu.first[0]
       if tf[:cost]<best[:cost] and tf[:cost]<current[:cost]
@@ -152,7 +154,7 @@ def search(cities, max_cand, max_iter, increase, decrease)
     end
     best_move_edges.each {|edge| make_tabu(tabu_list, edge, iter)}
     best = candidates.first[0] if candidates.first[0][:cost] < best[:cost]
-    puts " > iter=#{iter}, tenure=#{prohib_period.round}, best=#{best[:cost]}"
+    puts " > it=#{iter}, tenure=#{prohib_period.round}, best=#{best[:cost]}"
   end
   return best
 end

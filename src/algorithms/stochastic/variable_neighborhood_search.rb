@@ -59,13 +59,13 @@ def search(cities, neighborhoods, max_no_improv, max_no_improv_ls)
   best[:cost] = cost(best[:vector], cities)
   iter, count = 0, 0
   begin
-    neighborhoods.each do |neighborhood|
+    neighborhoods.each do |neigh|
       candidate = {}
       candidate[:vector] = Array.new(best[:vector])      
-      neighborhood.times{stochastic_two_opt!(candidate[:vector])}
+      neigh.times{stochastic_two_opt!(candidate[:vector])}
       candidate[:cost] = cost(candidate[:vector], cities)
-      candidate = local_search(candidate, cities, max_no_improv_ls, neighborhood)      
-      puts " > iteration #{(iter+1)}, neighborhood=#{neighborhood}, best=#{best[:cost]}"
+      candidate = local_search(candidate, cities, max_no_improv_ls, neigh)      
+      puts " > iteration #{(iter+1)}, neigh=#{neigh}, best=#{best[:cost]}"
       iter += 1
       if(candidate[:cost] < best[:cost])
         best, count = candidate, 0

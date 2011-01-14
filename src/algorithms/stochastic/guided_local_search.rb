@@ -58,12 +58,12 @@ def local_search(current, cities, penalties, max_no_improv, lambda)
   return current
 end
 
-def calculate_feature_utilities(penalties, cities, permutation)
+def calculate_feature_utilities(penal, cities, permutation)
   utilities = Array.new(permutation.size,0)
   permutation.each_with_index do |c1, i|
     c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
     c1, c2 = c2, c1 if c2 < c1
-    utilities[i] = euc_2d(cities[c1], cities[c2]) / (1.0 + penalties[c1][c2])
+    utilities[i] = euc_2d(cities[c1], cities[c2]) / (1.0 + penal[c1][c2])
   end
   return utilities
 end
@@ -83,11 +83,11 @@ def search(max_iterations, cities, max_no_improv, lambda)
   best = nil
   penalties = Array.new(cities.size){ Array.new(cities.size, 0) }
   max_iterations.times do |iter|
-    current = local_search(current, cities, penalties, max_no_improv, lambda)
-    utilities = calculate_feature_utilities(penalties, cities, current[:vector])
+    current=local_search(current, cities, penalties, max_no_improv, lambda)
+    utilities=calculate_feature_utilities(penalties,cities,current[:vector])
     update_penalties!(penalties, cities, current[:vector], utilities)
     best = current if best.nil? or current[:cost] < best[:cost]
-    puts " > iter=#{(iter+1)}, best=#{best[:cost]}, augmented=#{best[:aug_cost]}"
+    puts " > iter=#{(iter+1)}, best=#{best[:cost]}, aug=#{best[:aug_cost]}"
   end
   return best
 end

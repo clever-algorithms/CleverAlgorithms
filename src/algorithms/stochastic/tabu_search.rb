@@ -64,7 +64,9 @@ def search(cities, tabu_list_size, candidate_list_size, max_iter)
   best = current
   tabu_list = Array.new(tabu_list_size)
   max_iter.times do |iter|
-    candidates = Array.new(candidate_list_size) {|i| generate_candidate(current, tabu_list, cities)}
+    candidates = Array.new(candidate_list_size) do |i|
+      generate_candidate(current, tabu_list, cities)
+    end
     candidates.sort! {|x,y| x.first[:cost] <=> y.first[:cost]}
     best_candidate = candidates.first[0]
     best_candidate_edges = candidates.first[1]
