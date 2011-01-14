@@ -79,5 +79,5 @@ if __FILE__ == $0
   max_no_impr = 30
   # execute the algorithm
   best = search(max_iter, bounds, init_factor, s_factor, l_factor, iter_mult, max_no_impr)
-  puts "Done. Best Solution: cost=#{best[:cost]}, v=#{best[:vector].inspect}"
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

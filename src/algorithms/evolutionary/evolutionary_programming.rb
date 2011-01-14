@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
