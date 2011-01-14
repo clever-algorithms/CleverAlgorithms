@@ -31,15 +31,15 @@ def transfer_derivative(output)
   return output * (1.0 - output)
 end
 
-def forward_propagate(network, vector)
-  network.each_with_index do |layer, i|
-    input = (i==0) ? vector : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
+def forward_propagate(net, vector)
+  net.each_with_index do |layer, i|
+    input=(i==0)? vector : Array.new(net[i-1].size){|k|net[i-1][k][:output]}
     layer.each do |neuron|
       neuron[:activation] = activate(neuron[:weights], input)
       neuron[:output] = transfer(neuron[:activation])
     end
   end
-  return network.last[0][:output]
+  return net.last[0][:output]
 end
 
 def backward_propagate_error(network, expected_output)
@@ -62,27 +62,26 @@ def backward_propagate_error(network, expected_output)
   end
 end
 
-def calculate_error_derivatives_for_weights(network, vector)
-  network.each_with_index do |layer, i|
-    input = (i==0) ? vector : Array.new(network[i-1].size){|k| network[i-1][k][:output]}
+def calculate_error_derivatives_for_weights(net, vector)
+  net.each_with_index do |layer, i|
+    input=(i==0)? vector : Array.new(net[i-1].size){|k|net[i-1][k][:output]}
     layer.each do |neuron|
-      neuron[:derivative] = Array.new(neuron[:weights].size){0.0} if neuron[:derivative].nil?
       input.each_with_index do |signal, j|
-        neuron[:derivative][j] += neuron[:delta] * signal
+        neuron[:deriv][j] += neuron[:delta] * signal
       end
-      neuron[:derivative][-1] += neuron[:delta] * 1.0
+      neuron[:deriv][-1] += neuron[:delta] * 1.0
     end
   end
 end
 
-def update_weights(network, lrate, momentum=0.8)
+def update_weights(network, lrate, mom=0.8)
   network.each do |layer|
     layer.each do |neuron|
       neuron[:weights].each_with_index do |w, j|
-        delta = (lrate * neuron[:derivative][j]) + (neuron[:last_delta][j] * momentum)
+        delta = (lrate * neuron[:deriv][j]) + (neuron[:last_delta][j] * mom)
         neuron[:weights][j] += delta
         neuron[:last_delta][j] = delta
-        neuron[:derivative][j] = 0.0
+        neuron[:deriv][j] = 0.0
       end
     end
   end
@@ -92,7 +91,7 @@ def train_network(network, domain, num_inputs, iterations, lrate)
   correct = 0
   iterations.times do |epoch|
     domain.each do |pattern|
-      vector, expected = Array.new(num_inputs) {|k| pattern[k].to_f}, pattern.last
+      vector,expected=Array.new(num_inputs){|k|pattern[k].to_f},pattern.last
       output = forward_propagate(network, vector)
       correct += 1 if output.round == expected
       backward_propagate_error(network, expected)
@@ -119,14 +118,15 @@ end
 
 def create_neuron(num_inputs)
   return {:weights=>initialize_weights(num_inputs+1), 
-          :last_delta=>Array.new(num_inputs+1){0.0}}
+          :last_delta=>Array.new(num_inputs+1){0.0},
+          :deriv=>Array.new(num_inputs+1){0.0}}
 end
 
 def execute(domain, num_inputs, iterations, num_nodes, lrate)  
   network = []
   network << Array.new(num_nodes){create_neuron(num_inputs)}
   network << Array.new(1){create_neuron(network.last.size)} 
-  puts "Network Topology: in=#{num_inputs} #{network.inject(""){|m,i| m + "#{i.size} "}}"
+  puts "Topology: #{num_inputs} #{network.inject(""){|m,i|m+"#{i.size} "}}"
   train_network(network, domain, num_inputs, iterations, lrate)  
   test_network(network, domain, num_inputs)
   return network

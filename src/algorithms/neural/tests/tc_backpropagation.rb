@@ -120,54 +120,54 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test the calculation of error derivatives
   def test_calculate_error_derivatives_for_weights
-    n1 = {:weights=>[0.2,0.2,0.2], :delta=>0.5, :output=>transfer(0.02+0.02+0.2)}
-    n2 = {:weights=>[0.3,0.3,0.3], :delta=>-0.6, :output=>transfer(0.03+0.03+0.3)}
-    n3 = {:weights=>[0.4,0.4,0.4], :delta=>0.7, :output=>transfer((0.4*n1[:output])+(0.4*n2[:output])+0.4)}
+    n1 = {:weights=>[0.2,0.2,0.2], :delta=>0.5, :output=>transfer(0.02+0.02+0.2), :deriv=>[0,0,0]}
+    n2 = {:weights=>[0.3,0.3,0.3], :delta=>-0.6, :output=>transfer(0.03+0.03+0.3), :deriv=>[0,0,0]}
+    n3 = {:weights=>[0.4,0.4,0.4], :delta=>0.7, :output=>transfer((0.4*n1[:output])+(0.4*n2[:output])+0.4), :deriv=>[0,0,0]}
     network = [[n1,n2],[n3]]    
     vector = [0.1,0.1]
     calculate_error_derivatives_for_weights(network, vector)
     # n1 error
-    assert_equal(n1[:weights].size, n1[:derivative].size)
-    assert_equal(vector[0]*n1[:delta], n1[:derivative][0])
-    assert_equal(vector[1]*n1[:delta], n1[:derivative][1])
-    assert_equal(1*n1[:delta], n1[:derivative][2])
+    assert_equal(n1[:weights].size, n1[:deriv].size)
+    assert_equal(vector[0]*n1[:delta], n1[:deriv][0])
+    assert_equal(vector[1]*n1[:delta], n1[:deriv][1])
+    assert_equal(1*n1[:delta], n1[:deriv][2])
     # n2 error
-    assert_equal(n2[:weights].size, n2[:derivative].size)
-    assert_equal(vector[0]*n2[:delta], n2[:derivative][0])
-    assert_equal(vector[1]*n2[:delta], n2[:derivative][1])
-    assert_equal(1*n2[:delta], n2[:derivative][2])
+    assert_equal(n2[:weights].size, n2[:deriv].size)
+    assert_equal(vector[0]*n2[:delta], n2[:deriv][0])
+    assert_equal(vector[1]*n2[:delta], n2[:deriv][1])
+    assert_equal(1*n2[:delta], n2[:deriv][2])
     # n3 error
-    assert_equal(n3[:weights].size, n3[:derivative].size)
-    assert_equal(n1[:output]*n3[:delta], n3[:derivative][0])
-    assert_equal(n2[:output]*n3[:delta], n3[:derivative][1])
-    assert_equal(1*n3[:delta], n3[:derivative][2])
+    assert_equal(n3[:weights].size, n3[:deriv].size)
+    assert_equal(n1[:output]*n3[:delta], n3[:deriv][0])
+    assert_equal(n2[:output]*n3[:delta], n3[:deriv][1])
+    assert_equal(1*n3[:delta], n3[:deriv][2])
   end
   
   # test the calculation of error derivatives for xor
   # http://www.generation5.org/content/2001/xornet.asp
   def test_calculate_error_derivatives_for_weights_xor
-    n1 = {:weights=>[0.129952,-0.923123,0.341232], :output=>0.584490, :delta=>-0.0034190}
-    n2 = {:weights=>[0.570345,-0.328932,-0.115223], :output=>0.471226, :delta=>-0.0160263}
-    n3 = {:weights=>[0.164732,0.752621,-0.993423], :output=>0.367610, :delta=>-0.085459}
+    n1 = {:weights=>[0.129952,-0.923123,0.341232], :output=>0.584490, :delta=>-0.0034190, :deriv=>[0,0,0]}
+    n2 = {:weights=>[0.570345,-0.328932,-0.115223], :output=>0.471226, :delta=>-0.0160263, :deriv=>[0,0,0]}
+    n3 = {:weights=>[0.164732,0.752621,-0.993423], :output=>0.367610, :delta=>-0.085459, :deriv=>[0,0,0]}
     network = [[n1,n2],[n3]]
     calculate_error_derivatives_for_weights(network, [0,0])
     # n1 
-    assert_in_delta(0.0, n1[:derivative][0]*0.5, 0.000001)
-    assert_in_delta(0.0, n1[:derivative][1]*0.5, 0.000001)
-    assert_in_delta(-0.0017095, n1[:derivative][2]*0.5, 0.000001)
+    assert_in_delta(0.0, n1[:deriv][0]*0.5, 0.000001)
+    assert_in_delta(0.0, n1[:deriv][1]*0.5, 0.000001)
+    assert_in_delta(-0.0017095, n1[:deriv][2]*0.5, 0.000001)
     # n2
-    assert_in_delta(0.0, n2[:derivative][0]*0.5, 0.000001)
-    assert_in_delta(0.0, n2[:derivative][1]*0.5, 0.000001)
-    assert_in_delta(-0.0080132, n2[:derivative][2]*0.5, 0.000001)
+    assert_in_delta(0.0, n2[:deriv][0]*0.5, 0.000001)
+    assert_in_delta(0.0, n2[:deriv][1]*0.5, 0.000001)
+    assert_in_delta(-0.0080132, n2[:deriv][2]*0.5, 0.000001)
     # n3
-    assert_in_delta(-0.024975, n3[:derivative][0]*0.5, 0.000001)
-    assert_in_delta(-0.020135, n3[:derivative][1]*0.5, 0.000001)
-    assert_in_delta(-0.042730, n3[:derivative][2]*0.5, 0.000001)
+    assert_in_delta(-0.024975, n3[:deriv][0]*0.5, 0.000001)
+    assert_in_delta(-0.020135, n3[:deriv][1]*0.5, 0.000001)
+    assert_in_delta(-0.042730, n3[:deriv][2]*0.5, 0.000001)
   end
   
   # test that weights are updated as expected
   def test_update_weights
-    n1 = {:weights=>[0.2,0.2,0.2], :derivative=>[0.1, -0.5, 100.0], :last_delta=>[0,0,0]}
+    n1 = {:weights=>[0.2,0.2,0.2], :deriv=>[0.1, -0.5, 100.0], :last_delta=>[0,0,0]}
     network = [[n1]]
     update_weights(network, 1.0, 0.0)
     assert_equal((0.2 + (0.1*1.0)), n1[:weights][0])
@@ -188,9 +188,9 @@ class TC_BackPropagation < Test::Unit::TestCase
   
   # test training the networ
   def test_train_network
-    n1 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
-    n2 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
-    n3 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0]}
+    n1 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0], :deriv=>[0,0,0]}
+    n2 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0], :deriv=>[0,0,0]}
+    n3 = {:weights=>[-1, -1, 1], :last_delta=>[0,0,0], :deriv=>[0,0,0]}
     network = [[n1,n2],[n3]]
     domain = [[0,0,0], [0,1,1], [1,0,1], [1,1,0]]
     silence_stream(STDOUT) do

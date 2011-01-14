@@ -62,9 +62,9 @@ def apply_detectors(detectors, bounds, self_dataset, min_dist, trials=50)
     actual = matches?(input[:vector], detectors, min_dist) ? "N" : "S"
     expected = matches?(input[:vector], self_dataset, min_dist) ? "S" : "N"
     correct += 1 if actual==expected
-    puts "#{i+1}/#{num_trials}: predicted=#{actual}, expected=#{expected}"
+    puts "#{i+1}/#{trials}: predicted=#{actual}, expected=#{expected}"
   end
-  puts "Done. Result: #{correct}/#{num_trials}"
+  puts "Done. Result: #{correct}/#{trials}"
   return correct
 end
 

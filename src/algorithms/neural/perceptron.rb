@@ -15,11 +15,11 @@ def initialize_weights(problem_size)
   return random_vector(minmax)
 end
 
-def update_weights(num_inputs, weights, input, out_expected, output_actual, learning_rate)
+def update_weights(num_inputs, weights, input, out_exp, out_act, l_rate)
   num_inputs.times do |i|
-    weights[i] += learning_rate * (out_expected - output_actual) * input[i]
+    weights[i] += l_rate * (out_exp - out_act) * input[i]
   end
-  weights[num_inputs] += learning_rate * (out_expected - output_actual) * 1.0
+  weights[num_inputs] += l_rate * (out_exp - out_act) * 1.0
 end
 
 def activate(weights, vector)
@@ -43,11 +43,11 @@ def train_weights(weights, domain, num_inputs, iterations, lrate)
   iterations.times do |epoch|
     error = 0.0
     domain.each do |pattern|
-      input_vector = Array.new(num_inputs) {|k| pattern[k].to_f}
-      output = get_output(weights, input_vector)
+      input = Array.new(num_inputs) {|k| pattern[k].to_f}
+      output = get_output(weights, input)
       expected = pattern.last.to_f
       error += (output - expected).abs
-      update_weights(num_inputs, weights, input_vector, expected, output, lrate)
+      update_weights(num_inputs, weights, input, expected, output, lrate)
     end
     puts "> epoch=#{epoch}, error=#{error}"
   end

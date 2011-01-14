@@ -76,7 +76,7 @@ def test_network(codebook_vectors, domain, num_trials=100)
     bmu = get_best_matching_unit(codebook_vectors, pattern)
     correct += 1 if bmu[:label] == pattern[:label]
   end
-  puts "Done. Score: #{correct}/#{num_trials} (#{(correct/num_trials.to_f)*100}%)"
+  puts "Done. Score: #{correct}/#{num_trials}"
   return correct
 end
 

@@ -55,13 +55,13 @@ def update_codebook_vector(codebook, pattern, lrate)
   end
 end
 
-def train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
+def train_network(vectors, shape, iterations, l_rate, neighborhood_size)
   iterations.times do |iter|
     pattern = random_vector(shape)
-    lrate = learning_rate * (1.0-(iter.to_f/iterations.to_f))
+    lrate = l_rate * (1.0-(iter.to_f/iterations.to_f))
     neigh_size = neighborhood_size * (1.0-(iter.to_f/iterations.to_f))
-    bmu,dist = get_best_matching_unit(codebook_vectors, pattern)
-    neighbors = get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size)
+    bmu,dist = get_best_matching_unit(vectors, pattern)
+    neighbors = get_vectors_in_neighborhood(bmu, vectors, neigh_size)
     neighbors.each do |node|
       update_codebook_vector(node, pattern, lrate)
     end
@@ -95,13 +95,13 @@ def test_network(codebook_vectors, shape, num_trials=100)
   return error
 end
 
-def execute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)  
-  codebook_vectors = initialize_vectors(domain, width, height)
-  summarize_vectors(codebook_vectors)
-  train_network(codebook_vectors, shape, iterations, learning_rate, neighborhood_size)
-  test_network(codebook_vectors, shape)
-  summarize_vectors(codebook_vectors)
-  return codebook_vectors
+def execute(domain, shape, iterations, l_rate, neigh_size, width, height)  
+  vectors = initialize_vectors(domain, width, height)
+  summarize_vectors(vectors)
+  train_network(vectors, shape, iterations, l_rate, neigh_size)
+  test_network(vectors, shape)
+  summarize_vectors(vectors)
+  return vectors
 end
 
 if __FILE__ == $0
@@ -110,9 +110,9 @@ if __FILE__ == $0
   shape = [[0.3,0.6],[0.3,0.6]]
   # algorithm configuration
   iterations = 100
-  learning_rate = 0.3
-  neighborhood_size = 5
+  l_rate = 0.3
+  neigh_size = 5
   width, height = 4, 5
   # execute the algorithm
-  execute(domain, shape, iterations, learning_rate, neighborhood_size, width, height)
+  execute(domain, shape, iterations, l_rate, neigh_size, width, height)
 end
