@@ -79,15 +79,15 @@ def expose_all_cells(cells, pattern, threshold)
   return migrate
 end
 
-def train_system(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)
-  immature_cells = Array.new(num_cells){ initialize_cell(threshold) }
+def train_system(domain, max_iter, num_cells, p_anomaly, p_normal, thresh)
+  immature_cells = Array.new(num_cells){ initialize_cell(thresh) }
   migrated = []
   max_iter.times do |iter|
     pattern = generate_pattern(domain, p_anomaly, p_normal)
-    migrants = expose_all_cells(immature_cells, pattern, threshold)
+    migrants = expose_all_cells(immature_cells, pattern, thresh)
     migrants.each do |cell|
       immature_cells.delete(cell)
-      immature_cells << initialize_cell(threshold)
+      immature_cells << initialize_cell(thresh)
       migrated << cell
     end
     puts "> iter=#{iter} new=#{migrants.size}, migrated=#{migrated.size}"
@@ -108,27 +108,27 @@ def classify_pattern(migrated, pattern)
   return (mcav>0.5) ? "Anomaly" : "Normal"
 end
 
-def test_system(migrated, domain, p_anomaly, p_normal, trial_norm=100, trial_anom=100)
+def test_system(migrated, domain, p_anomaly, p_normal, num_trial=100)
   correct_norm = 0
-  trial_norm.times do
+  num_trial.times do
     pattern = construct_pattern("Normal", domain, p_normal, 1.0-p_anomaly)
     class_label = classify_pattern(migrated, pattern)
     correct_norm += 1 if class_label == "Normal"
   end
-  puts "Finished testing Normal inputs #{correct_norm}/#{trial_norm}"
+  puts "Finished testing Normal inputs #{correct_norm}/#{num_trial}"
   correct_anom = 0
-  trial_anom.times do
+  num_trial.times do
     pattern = construct_pattern("Anomaly", domain, 1.0-p_normal, p_anomaly)
     class_label = classify_pattern(migrated, pattern)
     correct_anom += 1 if class_label == "Anomaly"
   end
-  puts "Finished testing Anomaly inputs #{correct_anom}/#{trial_anom}"
+  puts "Finished testing Anomaly inputs #{correct_anom}/#{num_trial}"
   return [correct_norm, correct_anom]
 end
 
-def execute(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)  
-  migrated = train_system(domain, max_iter, num_cells, p_anomaly, p_normal, threshold)
-  test_system(migrated, domain, p_anomaly, p_normal)
+def execute(domain, max_iter, num_cells, p_anom, p_norm, thresh)  
+  migrated=train_system(domain, max_iter, num_cells, p_anom, p_norm, thresh)
+  test_system(migrated, domain, p_anom, p_norm)
   return migrated
 end
 
@@ -143,7 +143,7 @@ if __FILE__ == $0
   # algorithm configuration
   iterations = 100
   num_cells = 10
-  threshold = [5,15]
+  thresh = [5,15]
   # execute the algorithm
-  execute(domain, iterations, num_cells, p_anomaly, p_normal, threshold)
+  execute(domain, iterations, num_cells, p_anomaly, p_normal, thresh)
 end

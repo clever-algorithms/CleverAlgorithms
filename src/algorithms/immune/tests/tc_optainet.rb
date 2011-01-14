@@ -139,10 +139,10 @@ class TC_Optainet < Test::Unit::TestCase
   end
   
   # test euclidean distance
-  def test_euclidean_distance
-    assert_equal(0, euclidean_distance([0,0],[0,0]))
-    assert_equal(0, euclidean_distance([1,5],[1,5]))
-    assert_in_delta(1.4, euclidean_distance([1,1],[2,2]),0.1)    
+  def test_distance
+    assert_equal(0, distance([0,0],[0,0]))
+    assert_equal(0, distance([1,5],[1,5]))
+    assert_in_delta(1.4, distance([1,1],[2,2]),0.1)    
   end
   
   # test getting the neighborhood of a cell

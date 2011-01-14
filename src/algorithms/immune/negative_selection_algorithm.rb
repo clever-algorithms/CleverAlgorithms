@@ -23,10 +23,10 @@ def contains?(vector, space)
   return true
 end
 
-def matches?(vector, dataset, min_distance)
+def matches?(vector, dataset, min_dist)
   dataset.each do |pattern|
     dist = euclidean_distance(vector, pattern[:vector])
-    return true if dist <= min_distance
+    return true if dist <= min_dist
   end
   return false
 end
@@ -55,12 +55,12 @@ def generate_self_dataset(num_records, self_space, search_space)
   return self_dataset
 end
 
-def apply_detectors(detectors, search_space, self_dataset, min_dist, num_trials=50)
+def apply_detectors(detectors, bounds, self_dataset, min_dist, trials=50)
   correct = 0
-  num_trials.times do |i|
-    input = {:vector=>random_vector(search_space)}
-    actual = matches?(input[:vector], detectors, min_dist) ? "non-self" : "self"
-    expected = matches?(input[:vector], self_dataset, min_dist) ? "self" : "non-self"
+  trials.times do |i|
+    input = {:vector=>random_vector(bounds)}
+    actual = matches?(input[:vector], detectors, min_dist) ? "N" : "S"
+    expected = matches?(input[:vector], self_dataset, min_dist) ? "S" : "N"
     correct += 1 if actual==expected
     puts "#{i+1}/#{num_trials}: predicted=#{actual}, expected=#{expected}"
   end
@@ -68,12 +68,12 @@ def apply_detectors(detectors, search_space, self_dataset, min_dist, num_trials=
   return correct
 end
 
-def execute(search_space, self_space, max_detectors, max_self, min_distance)
-  self_dataset = generate_self_dataset(max_self, self_space, search_space)
+def execute(bounds, self_space, max_detect, max_self, min_dist)
+  self_dataset = generate_self_dataset(max_self, self_space, bounds)
   puts "Done: prepared #{self_dataset.size} self patterns."
-  detectors = generate_detectors(max_detectors, search_space, self_dataset, min_distance)
+  detectors = generate_detectors(max_detect, bounds, self_dataset, min_dist)
   puts "Done: prepared #{detectors.size} detectors."
-  apply_detectors(detectors, search_space, self_dataset, min_distance)
+  apply_detectors(detectors, bounds, self_dataset, min_dist)
   return detectors
 end
 
@@ -85,7 +85,7 @@ if __FILE__ == $0
   max_self = 150
   # algorithm configuration
   max_detectors = 300
-  min_distance = 0.05
+  min_dist = 0.05
   # execute the algorithm
-  execute(search_space, self_space, max_detectors, max_self, min_distance)
+  execute(search_space, self_space, max_detectors, max_self, min_dist)
 end

@@ -96,7 +96,7 @@ def search(search_space, max_gens, pop_size, clone_factor, num_rand, bits_per_pa
     pop = (pop+clones).sort{|x,y| x[:cost]<=>y[:cost]}.first(pop_size)
     pop = random_insertion(search_space, pop, num_rand, bits_per_param)
     best = (pop + [best]).min{|x,y| x[:cost]<=>y[:cost]}
-    puts " > gen #{gen+1}, f=#{best[:cost]}, a=#{best[:affinity]}, s=#{best[:vector].inspect}"
+    puts " > gen #{gen+1}, f=#{best[:cost]}, s=#{best[:vector].inspect}"
   end  
   return best
 end

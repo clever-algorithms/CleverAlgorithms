@@ -22,30 +22,30 @@ def create_cell(vector, class_label)
 end
 
 def initialize_cells(domain)
-  memory_cells = []
+  mem_cells = []
   domain.keys.each do |key|
-    memory_cells << create_cell(random_vector([[0,1],[0,1]]), key)
+    mem_cells << create_cell(random_vector([[0,1],[0,1]]), key)
   end
-  return memory_cells
+  return mem_cells
 end
 
-def euclidean_distance(c1, c2)
+def distance(c1, c2)
   sum = 0.0
   c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}  
   return Math.sqrt(sum)
 end
 
 def stimulate(cells, pattern)
-  max_affinity = euclidean_distance([0.0,0.0], [1.0,1.0])
+  max_dist = distance([0.0,0.0], [1.0,1.0])
   cells.each do |cell|
-    cell[:affinity] = euclidean_distance(cell[:vector], pattern[:vector]) / max_affinity
+    cell[:affinity] = distance(cell[:vector], pattern[:vector]) / max_dist
     cell[:stimulation] = 1.0 - cell[:affinity]
   end
 end
 
-def get_most_stimulated_cell(memory_cells, pattern)
-  stimulate(memory_cells, pattern)
-  return memory_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
+def get_most_stimulated_cell(mem_cells, pattern)
+  stimulate(mem_cells, pattern)
+  return mem_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
 end
 
 def mutate_cell(cell, best_match)
@@ -69,24 +69,24 @@ def create_arb_pool(pattern, best_match, clone_rate, mutate_rate)
   return pool
 end
 
-def competition_for_resournces(pool, clone_rate, max_resources)
+def competition_for_resournces(pool, clone_rate, max_res)
   pool.each {|cell| cell[:resources] = cell[:stimulation] * clone_rate}
   pool.sort!{|x,y| x[:resources] <=> y[:resources]}
   total_resources = pool.inject(0.0){|sum,cell| sum + cell[:resources]}
-  while total_resources > max_resources
+  while total_resources > max_res
     cell = pool.delete_at(pool.size-1)
     total_resources -= cell[:resources]
   end
 end
 
-def refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)  
+def refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_res)  
   mean_stim, candidate = 0.0, nil
   begin
     stimulate(pool, pattern)
     candidate = pool.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
     mean_stim = pool.inject(0.0){|s,c| s + c[:stimulation]} / pool.size
     if mean_stim < stim_thresh
-      candidate = competition_for_resournces(pool, clone_rate, max_resources)
+      candidate = competition_for_resournces(pool, clone_rate, max_res)
       pool.size.times do |i|
         cell = create_cell(pool[i][:vector], pool[i][:label])
         mutate_cell(cell, pool[i])
@@ -97,48 +97,48 @@ def refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
   return candidate
 end
 
-def add_candidate_to_memory_pool(candidate, best_match, memory_cells)
+def add_candidate_to_memory_pool(candidate, best_match, mem_cells)
   if candidate[:stimulation] > best_match[:stimulation]
-    memory_cells << candidate
+    mem_cells << candidate
   end
 end
 
-def classify_pattern(memory_cells, pattern)
-  stimulate(memory_cells, pattern)
-  return memory_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
+def classify_pattern(mem_cells, pattern)
+  stimulate(mem_cells, pattern)
+  return mem_cells.sort{|x,y| y[:stimulation] <=> x[:stimulation]}.first
 end
 
-def train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+def train_system(mem_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_res)
   num_patterns.times do |i|
     pattern = generate_random_pattern(domain)
-    best_match = get_most_stimulated_cell(memory_cells, pattern)
+    best_match = get_most_stimulated_cell(mem_cells, pattern)
     if best_match[:label] != pattern[:label]
-      memory_cells << create_cell(pattern[:vector], pattern[:label])
+      mem_cells << create_cell(pattern[:vector], pattern[:label])
     elsif best_match[:stimulation] < 1.0
       pool = create_arb_pool(pattern, best_match, clone_rate, mutate_rate)
-      candidate = refine_arb_pool(pool, pattern, stim_thresh, clone_rate, max_resources)
-      add_candidate_to_memory_pool(candidate, best_match, memory_cells)
+      cand = refine_arb_pool(pool,pattern, stim_thresh, clone_rate, max_res)
+      add_candidate_to_memory_pool(cand, best_match, mem_cells)
     end
-    puts " > iter=#{i+1}, memory_cells=#{memory_cells.size}"
+    puts " > iter=#{i+1}, mem_cells=#{mem_cells.size}"
   end
 end
 
-def test_system(memory_cells, domain, num_trials=50)
+def test_system(mem_cells, domain, num_trials=50)
   correct = 0
   num_trials.times do 
     pattern = generate_random_pattern(domain)
-    best = classify_pattern(memory_cells, pattern)
+    best = classify_pattern(mem_cells, pattern)
     correct += 1 if best[:label] == pattern[:label]
   end
-  puts "Finished test with a score of #{correct}/#{num_trials} (#{correct}%)"
+  puts "Finished test with a score of #{correct}/#{num_trials}"
   return correct
 end
 
-def execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)  
-  memory_cells = initialize_cells(domain)
-  train_system(memory_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
-  test_system(memory_cells, domain)
-  return memory_cells
+def execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_res)  
+  mem_cells = initialize_cells(domain)
+  train_system(mem_cells, domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_res)
+  test_system(mem_cells, domain)
+  return mem_cells
 end
 
 if __FILE__ == $0
@@ -149,7 +149,7 @@ if __FILE__ == $0
   clone_rate = 10
   mutate_rate = 2.0
   stim_thresh = 0.9
-  max_resources = 150
+  max_res = 150
   # execute the algorithm
-  execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_resources)
+  execute(domain, num_patterns, clone_rate, mutate_rate, stim_thresh, max_res)
 end

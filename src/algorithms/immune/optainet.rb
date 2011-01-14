@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
@@ -64,31 +64,31 @@ def average_cost(pop)
   return sum / pop.size.to_f
 end
 
-def euclidean_distance(c1, c2)
+def distance(c1, c2)
   sum = 0.0
   c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
   return Math.sqrt(sum)
 end
 
-def get_neighborhood(cell, pop, affinity_thresh)
+def get_neighborhood(cell, pop, aff_thresh)
   neighbors = []
   pop.each do |p|
-    neighbors << p if euclidean_distance(p[:vector], cell[:vector]) < affinity_thresh
+    neighbors << p if distance(p[:vector], cell[:vector]) < aff_thresh
   end
   return neighbors
 end
 
-def affinity_supress(population, affinity_thresh)
+def affinity_supress(population, aff_thresh)
   pop = []
   population.each do |cell|
-    neighbors = get_neighborhood(cell, population, affinity_thresh)
+    neighbors = get_neighborhood(cell, population, aff_thresh)
     neighbors.sort!{|x,y| x[:cost] <=> y[:cost]}
     pop << cell if neighbors.empty? or cell.equal?(neighbors.first)
   end  
   return pop
 end
 
-def search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
+def search(search_space, max_gens, pop_size, num_clones, beta, num_rand, aff_thresh)
   pop = Array.new(pop_size) {|i| {:vector=>random_vector(search_space)} }
   pop.each{|c| c[:cost] = objective_function(c[:vector])}
   best = nil
@@ -99,9 +99,9 @@ def search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinit
     best = pop.first if best.nil? or pop.first[:cost] < best[:cost]
     avgCost, progeny = average_cost(pop), nil
     begin
-      progeny = Array.new(pop.size) {|i| clone_cell(beta, num_clones, pop[i])}
+      progeny=Array.new(pop.size){|i| clone_cell(beta, num_clones, pop[i])}
     end until average_cost(progeny) < avgCost
-    pop = affinity_supress(progeny, affinity_thresh)
+    pop = affinity_supress(progeny, aff_thresh)
     num_rand.times {pop << {:vector=>random_vector(search_space)}} 
     puts " > gen #{gen+1}, popSize=#{pop.size}, fitness=#{best[:cost]}"
   end
@@ -118,8 +118,8 @@ if __FILE__ == $0
   num_clones = 10
   beta = 100
   num_rand = 2
-  affinity_thresh = (search_space[0][1]-search_space[0][0])*0.05
+  aff_thresh = (search_space[0][1]-search_space[0][0])*0.05
   # execute the algorithm
-  best = search(search_space, max_gens, pop_size, num_clones, beta, num_rand, affinity_thresh)
+  best = search(search_space, max_gens, pop_size, num_clones, beta, num_rand, aff_thresh)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end
