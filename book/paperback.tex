@@ -2,18 +2,15 @@
 % (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-% Paperback
+% paperback.tex
 
-\documentclass[twoside,openright]{book}
+\documentclass[twoside, openright]{book}
 \include{definitions}
 \include{f_title_page}
 \makeindex
 
 % paperback only
 \geometry{bindingoffset=1cm, twoside, paperwidth=6in, paperheight=9in, top=.9in, bottom=.6667in, outer=0.667in}
-
-% for testing only
-%\includeonly{f_copyright}
 
 \begin{document}
 \defaultbibliography{../workspace/bibtex}
@@ -23,9 +20,9 @@
 	\include{f_copyright}	
 	\setcounter{tocdepth}{1}
 	\tableofcontents
-	\include{f_foreword}
-	\include{f_preface}
-	\include{f_acknowledgments}	
+	\cleardoublepage\include{f_foreword}
+	\cleardoublepage\include{f_preface}
+	\cleardoublepage\include{f_acknowledgments}	
 \mainmatter 
 	\part{Background}
 		\include{c_introduction}		
@@ -39,10 +36,13 @@
 		\include{c_neural}
 	\part{Extensions}
 		\include{c_advanced}
-	  \part{Appendices}
+
 		\appendix
-		\include{b_appendix1}	   
-  \cleardoublepage\phantomsection 	
-  \addcontentsline{toc}{part}{Index}
-	{\footnotesize \printindex}
+		\include{b_appendix1}
+	
+	% correct handling of the index (new odd page)
+  \cleardoublepage
+  \phantomsection
+	\addcontentsline{toc}{chapter}{Index}
+	{\footnotesize \printindex}	
 \end{document}
