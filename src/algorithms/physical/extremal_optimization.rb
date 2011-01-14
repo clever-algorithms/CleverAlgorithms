@@ -117,14 +117,14 @@ def get_long_edge(edges, neighbor_distances)
   return (n1[:distance] > n2[:distance]) ? n1[:number] : n2[:number]
 end
 
-def create_new_permutation(cities, tau, permutation)
-  city_fitnesses = calculate_city_fitnesses(cities, permutation)
+def create_new_perm(cities, tau, perm)
+  city_fitnesses = calculate_city_fitnesses(cities, perm)
   selected_city = probabilistic_selection(city_fitnesses.reverse, tau)
-  edges = get_edges_for_city(selected_city, permutation)
+  edges = get_edges_for_city(selected_city, perm)
   neighbors = calculate_neighbor_rank(selected_city, cities)
   new_neighbor = probabilistic_selection(neighbors, tau, edges)
   long_edge = get_long_edge(edges, neighbors)
-  return vary_permutation(permutation, selected_city, new_neighbor, long_edge)
+  return vary_permutation(perm, selected_city, new_neighbor, long_edge)
 end
 
 def search(cities, max_iterations, tau)
@@ -133,11 +133,11 @@ def search(cities, max_iterations, tau)
   best = current
   max_iterations.times do |iter|
     candidate = {}
-    candidate[:vector] = create_new_permutation(cities, tau, current[:vector])
+    candidate[:vector] = create_new_perm(cities, tau, current[:vector])
     candidate[:cost] = cost(candidate[:vector], cities)
     current = candidate
     best = candidate if candidate[:cost] < best[:cost]
-    puts " > iteration #{(iter+1)}, current=#{current[:cost]}, best=#{best[:cost]}"
+    puts " > iter #{(iter+1)}, curr=#{current[:cost]}, best=#{best[:cost]}"
   end
   return best
 end

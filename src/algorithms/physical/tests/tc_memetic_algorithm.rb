@@ -99,12 +99,12 @@ class TC_MemeticAlgorithm < Test::Unit::TestCase
   end
   
   # test uniform crossover
-  def test_uniform_crossover
+  def test_crossover
     p1 = "0000000000"
     p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
+    assert_equal(p1, crossover(p1,p2,0))
+    assert_not_same(p1, crossover(p1,p2,0))      
+    s = crossover(p1,p2,1)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   

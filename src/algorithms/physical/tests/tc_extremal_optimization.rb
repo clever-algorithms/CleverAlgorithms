@@ -166,9 +166,9 @@ class TC_ExtremalOptimization < Test::Unit::TestCase
   end
   
   # test the creation of a valid new permitation 
-  def test_create_new_permutation
+  def test_create_new_perm
     cities = [[-2,-2], [1,1], [2,2], [4,4], [66,66]]
-    perm = create_new_permutation(cities, 1.3, [0, 1, 2, 3, 4])
+    perm = create_new_perm(cities, 1.3, [0, 1, 2, 3, 4])
     assert_equal(5, perm.size)
     assert_not_equal([0, 1, 2, 3, 4], perm)
   end

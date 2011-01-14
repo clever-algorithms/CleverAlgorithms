@@ -54,9 +54,9 @@ class TC_CulturalAlgorithm < Test::Unit::TestCase
   end
   
   # test the variation function
-  def test_mutate_with_influence
+  def test_mutate_with_inf
     c = {:vector=>[0,0]}
-    rs = mutate_with_influence(c, {:normative=>[[0.25, 0.75], [0.25, 0.75]]}, [[0,1],[0,1]] )
+    rs = mutate_with_inf(c, {:normative=>[[0.25, 0.75], [0.25, 0.75]]}, [[0,1],[0,1]] )
     assert_not_equal([0,0], rs[:vector])
     rs[:vector].each do |x|
       assert_operator(x, :>=, 0.25)

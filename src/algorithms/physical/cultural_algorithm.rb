@@ -18,10 +18,10 @@ def random_vector(minmax)
   end
 end
 
-def mutate_with_influence(candidate, beliefs, minmax)
+def mutate_with_inf(candidate, beliefs, minmax)
   v = Array.new(candidate[:vector].size)
   candidate[:vector].each_with_index do |c,i|
-    v[i] = rand_in_bounds(beliefs[:normative][i][0], beliefs[:normative][i][1])
+    v[i]=rand_in_bounds(beliefs[:normative][i][0],beliefs[:normative][i][1])
     v[i] = minmax[i][0] if v[i] < minmax[i][0]
     v[i] = minmax[i][1] if v[i] > minmax[i][1]
   end
@@ -50,10 +50,10 @@ def update_beliefspace_situational!(belief_space, best)
   end
 end
 
-def update_beliefspace_normative!(belief_space, acccepted)
+def update_beliefspace_normative!(belief_space, acc)
   belief_space[:normative].each_with_index do |bounds,i|
-    bounds[0] = acccepted.min{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
-    bounds[1] = acccepted.max{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
+    bounds[0] = acc.min{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
+    bounds[1] = acc.max{|x,y| x[:vector][i]<=>y[:vector][i]}[:vector][i]
   end
 end
 
@@ -68,7 +68,9 @@ def search(max_gens, search_space, pop_size, num_accepted)
   update_beliefspace_situational!(belief_space, best)
   max_gens.times do |gen|
     # create next generation
-    children = Array.new(pop_size) {|i| mutate_with_influence(pop[i], belief_space, search_space) }
+    children = Array.new(pop_size) do |i| 
+      mutate_with_inf(pop[i], belief_space, search_space) 
+    end
     # evaluate
     children.each{|c| c[:fitness] = objective_function(c[:vector])}    
     best = children.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
