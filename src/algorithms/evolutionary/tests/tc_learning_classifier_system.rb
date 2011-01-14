@@ -331,12 +331,12 @@ class TC_LearningClassifierSystem < Test::Unit::TestCase
   end
   
   # test running the GA
-  def test_run_genetic_algorithm
+  def test_run_ga
     pop = [{:condition=>"000000", :action=>'1', :num=>1, :fitness=>0.1, 
               :pred=>0.3, :error=>0.1, :setsize=>1, :num=>1, :exp=>1}, 
            {:condition=>"111111", :action=>'0', :num=>1, :fitness=>0.2, 
               :pred=>0.3, :error=>0.1, :setsize=>1, :num=>1, :exp=>1}]
-    run_genetic_algorithm(['0', '1'], pop, pop, "000000", 5, 2, 1.0)
+    run_ga(['0', '1'], pop, pop, "000000", 5, 2, 1.0)
     # popsize is reasonable
     assert_operator(pop.size, :>, 0)
     assert_in_delta(2, pop.inject(0){|s,x| s + x[:num]}, 1)

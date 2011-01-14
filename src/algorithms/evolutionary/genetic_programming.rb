@@ -55,19 +55,19 @@ def fitness(program, num_trials=20)
   return sum_error / num_trials.to_f
 end
 
-def tournament_selection(pop, num_bouts)
-  selected = Array.new(num_bouts){pop[rand(pop.size)]}
+def tournament_selection(pop, bouts)
+  selected = Array.new(bouts){pop[rand(pop.size)]}
   selected.sort!{|x,y| x[:fitness]<=>y[:fitness]}
   return selected.first
 end
 
-def replace_node(node, replacement, node_num, current_node=0)
-  return [replacement,(current_node+1)] if current_node == node_num
-  current_node += 1
-  return [node,current_node] if !node.kind_of?(Array)
-  a1, current_node = replace_node(node[1], replacement, node_num, current_node)
-  a2, current_node = replace_node(node[2], replacement, node_num, current_node)
-  return [[node[0], a1, a2], current_node]
+def replace_node(node, replacement, node_num, cur_node=0)
+  return [replacement,(cur_node+1)] if cur_node == node_num
+  cur_node += 1
+  return [node,cur_node] if !node.kind_of?(Array)
+  a1, cur_node = replace_node(node[1], replacement, node_num, cur_node)
+  a2, cur_node = replace_node(node[2], replacement, node_num, cur_node)
+  return [[node[0], a1, a2], cur_node]
 end
 
 def copy_program(node)
@@ -109,39 +109,39 @@ def crossover(parent1, parent2, max_depth, terms)
   return [child1, child2]
 end
 
-def mutation(parent, max_depth, functions, terms)  
-  random_tree = generate_random_program(max_depth/2, functions, terms)
+def mutation(parent, max_depth, functs, terms)  
+  random_tree = generate_random_program(max_depth/2, functs, terms)
   point = rand(count_nodes(parent))
   child, count = replace_node(parent, random_tree, point)
   child = prune(child, max_depth, terms)
   return child
 end
 
-def search(max_generations, pop_size, max_depth, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
+def search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs, terms)
   population = Array.new(pop_size) do |i| 
-    {:program=>generate_random_program(max_depth, functions, terminals)}
+    {:prog=>generate_random_program(max_depth, functs, terms)}
   end
-  population.each{|c| c[:fitness] = fitness(c[:program])}
+  population.each{|c| c[:fitness] = fitness(c[:prog])}
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
-  max_generations.times do |gen|
+  max_gens.times do |gen|
     children = []
     while children.size < pop_size
       operation = rand()
-      parent = tournament_selection(population, num_bouts)
-      child = {}      
-      if operation < p_reproduction
-        child[:program] = copy_program(parent[:program])
-      elsif operation < p_reproduction+p_crossover
-        p2 = tournament_selection(population, num_bouts)
+      p1 = tournament_selection(population, bouts)
+      c1 = {}      
+      if operation < p_repro
+        c1[:prog] = copy_program(p1[:prog])
+      elsif operation < p_repro+p_cross
+        p2 = tournament_selection(population, bouts)
         c2 = {}
-        child[:program], c2[:program] = crossover(parent[:program], p2[:program], max_depth, terminals)
+        c1[:prog],c2[:prog] = crossover(p1[:prog], p2[:prog], max_depth, terms)
         children << c2
-      elsif operation < p_reproduction+p_crossover+p_mutation
-        child[:program] = mutation(parent[:program], max_depth, functions, terminals)      
+      elsif operation < p_repro+p_cross+p_mut
+        c1[:prog] = mutation(p1[:prog], max_depth, functs, terms)
       end
-      children << child if children.size < pop_size  
+      children << c1 if children.size < pop_size
     end    
-    children.each{|c| c[:fitness] = fitness(c[:program])}
+    children.each{|c| c[:fitness] = fitness(c[:prog])}
     population = children
     population.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = population.first if population.first[:fitness] <= best[:fitness]
@@ -153,17 +153,17 @@ end
 
 if __FILE__ == $0
   # problem configuration
-  terminals = ['X', 'R']
-  functions = [:+, :-, :*, :/]
+  terms = ['X', 'R']
+  functs = [:+, :-, :*, :/]
   # algorithm configuration
   max_gens = 100
   max_depth = 7
   pop_size = 100
-  num_bouts = 5
-  p_reproduction = 0.08
-  p_crossover = 0.90
-  p_mutation = 0.02
+  bouts = 5
+  p_repro = 0.08
+  p_cross = 0.90
+  p_mut = 0.02
   # execute the algorithm
-  best = search(max_gens, pop_size, max_depth, num_bouts, p_reproduction, p_crossover, p_mutation, functions, terminals)
-  puts "done! Solution: f=#{best[:fitness]}, s=#{print_program(best[:program])}"
+  best = search(max_gens, pop_size, max_depth, bouts, p_repro, p_cross, p_mut, functs, terms)
+  puts "done! Solution: f=#{best[:fitness]}, #{print_program(best[:prog])}"
 end

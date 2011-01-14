@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
@@ -37,17 +37,17 @@ end
 
 def mutate_strategy(stdevs)
   tau = Math.sqrt(2.0*stdevs.size.to_f)**-1.0
-  tau_prime = Math.sqrt(2.0*Math.sqrt(stdevs.size.to_f))**-1.0
+  tau_p = Math.sqrt(2.0*Math.sqrt(stdevs.size.to_f))**-1.0
   child = Array.new(stdevs.size) do |i|
-    stdevs[i] * Math.exp(tau_prime*random_gaussian() + tau*random_gaussian())
+    stdevs[i] * Math.exp(tau_p*random_gaussian() + tau*random_gaussian())
   end
   return child
 end
 
-def mutate(parent, search_space)
+def mutate(par, minmax)
   child = {}
-  child[:vector] = mutate_problem(parent[:vector], parent[:strategy], search_space)
-  child[:strategy] = mutate_strategy(parent[:strategy])
+  child[:vector] = mutate_problem(par[:vector], par[:strategy], minmax)
+  child[:strategy] = mutate_strategy(par[:strategy])
   return child
 end
 
@@ -68,7 +68,9 @@ def search(max_gens, search_space, pop_size, num_children)
   population = init_population(search_space, pop_size)
   best = population.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
   max_gens.times do |gen|
-    children = Array.new(num_children) {|i| mutate(population[i], search_space)}
+    children = Array.new(num_children) do |i| 
+      mutate(population[i], search_space)
+    end
     children.each{|c| c[:fitness] = objective_function(c[:vector])}
     union = children+population
     union.sort!{|x,y| x[:fitness] <=> y[:fitness]}

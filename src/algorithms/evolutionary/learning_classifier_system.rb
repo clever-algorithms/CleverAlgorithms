@@ -16,7 +16,7 @@ end
 
 def new_classifier(condition, action, gen, p1=10.0, e1=0.0, f1=10.0)
   other = {}
-  other[:condition], other[:action], other[:lasttime] = condition, action, gen
+  other[:condition],other[:action],other[:lasttime] = condition, action, gen
   other[:pred], other[:error], other[:fitness] = p1, e1, f1
   other[:exp], other[:setsize], other[:num] = 0.0, 1.0, 1.0
   return other
@@ -104,20 +104,20 @@ def generate_match_set(input, pop, all_actions, gen, pop_size)
 end
 
 def generate_prediction(match_set)
-  prediction = {}
+  pred = {}
   match_set.each do |classifier|
     key = classifier[:action]
-    prediction[key] = {:sum=>0.0,:count=>0.0,:weight=>0.0} if prediction[key].nil?
-    prediction[key][:sum] += classifier[:pred]*classifier[:fitness]
-    prediction[key][:count] += classifier[:fitness]
+    pred[key] = {:sum=>0.0,:count=>0.0,:weight=>0.0} if pred[key].nil?
+    pred[key][:sum] += classifier[:pred]*classifier[:fitness]
+    pred[key][:count] += classifier[:fitness]
   end
-  prediction.keys.each do |key| 
-    prediction[key][:weight] = 0.0
-    if prediction[key][:count] > 0
-      prediction[key][:weight] = prediction[key][:sum]/prediction[key][:count]
+  pred.keys.each do |key| 
+    pred[key][:weight] = 0.0
+    if pred[key][:count] > 0
+      pred[key][:weight] = pred[key][:sum]/pred[key][:count]
     end    
   end
-  return prediction
+  return pred
 end
 
 def select_action(predictions, p_explore=false)
@@ -145,13 +145,13 @@ end
 
 def update_fitness(action_set, min_error=10, l_rate=0.2, alpha=0.1, v=-5.0)
   sum = 0.0
-  accuracy = Array.new(action_set.size)
+  acc = Array.new(action_set.size)
   action_set.each_with_index do |c,i|
-    accuracy[i] = (c[:error]<min_error) ? 1.0 : alpha*(c[:error]/min_error)**v
-    sum += accuracy[i] * c[:num].to_f
+    acc[i] = (c[:error]<min_error) ? 1.0 : alpha*(c[:error]/min_error)**v
+    sum += acc[i] * c[:num].to_f
   end
   action_set.each_with_index do |c,i|
-    c[:fitness] += l_rate * ((accuracy[i] * c[:num].to_f) / sum - c[:fitness])
+    c[:fitness] += l_rate * ((acc[i] * c[:num].to_f) / sum - c[:fitness])
   end
 end
 
@@ -189,14 +189,14 @@ def uniform_crossover(parent1, parent2)
   return child
 end
 
-def insert_in_pop(classifier, pop)
+def insert_in_pop(cla, pop)
   pop.each do |c|    
-    if classifier[:condition]==c[:condition] and classifier[:action]==c[:action]
+    if cla[:condition]==c[:condition] and cla[:action]==c[:action]
       c[:num] += 1
       return
     end
   end
-  pop << classifier
+  pop << cla
 end
 
 def crossover(c1, c2, p1, p2)
@@ -207,12 +207,12 @@ def crossover(c1, c2, p1, p2)
   c2[:fitness] = c1[:fitness] = 0.1*(p1[:fitness]+p2[:fitness])/2.0
 end
 
-def run_genetic_algorithm(all_actions, pop, action_set, input, gen, pop_size, crate=0.8)
+def run_ga(actions, pop, action_set, input, gen, pop_size, crate=0.8)
   p1, p2 = binary_tournament(action_set), binary_tournament(action_set)
   c1, c2 = copy_classifier(p1), copy_classifier(p2)
   crossover(c1, c2, p1, p2) if rand() < crate
   [c1,c2].each do |c|
-    mutation(c, all_actions, input)
+    mutation(c, actions, input)
     insert_in_pop(c, pop)    
   end  
   while pop.inject(0) {|s,c| s+c[:num]} > pop_size
@@ -226,8 +226,8 @@ def train_model(pop_size, max_gens, actions, ga_freq)
     explore = gen.modulo(2)==0
     input = random_bitstring()
     match_set = generate_match_set(input, pop, actions, gen, pop_size)
-    prediction_array = generate_prediction(match_set)    
-    action = select_action(prediction_array, explore)
+    pred_array = generate_prediction(match_set)    
+    action = select_action(pred_array, explore)
     reward = (target_function(input)==action.to_i) ? 1000.0 : 0.0
     if explore
       action_set = match_set.select{|c| c[:action]==action}
@@ -235,10 +235,10 @@ def train_model(pop_size, max_gens, actions, ga_freq)
       update_fitness(action_set)
       if can_run_genetic_algorithm(action_set, gen, ga_freq)
         action_set.each {|c| c[:lasttime] = gen}
-        run_genetic_algorithm(actions, pop, action_set, input, gen, pop_size)
+        run_ga(actions, pop, action_set, input, gen, pop_size)
       end
     else 
-      e,a = (prediction_array[action][:weight]-reward).abs, ((reward==1000.0) ? 1 : 0)
+      e,a = (pred_array[action][:weight]-reward).abs, ((reward==1000.0)?1:0)
       perf << {:error=>e,:correct=>a}
       if perf.size >= 50
         err = (perf.inject(0){|s,x|s+x[:error]}/perf.size).round
@@ -256,8 +256,8 @@ def test_model(system, num_trials=50)
   num_trials.times do
     input = random_bitstring()
     match_set = system.select{|c| does_match?(input, c[:condition])}
-    prediction_array = generate_prediction(match_set)
-    action = select_action(prediction_array, false)
+    pred_array = generate_prediction(match_set)
+    action = select_action(pred_array, false)
     correct += 1 if target_function(input) == action.to_i
   end
   puts "Done! classified correctly=#{correct}/#{num_trials}"

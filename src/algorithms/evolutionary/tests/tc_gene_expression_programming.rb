@@ -37,12 +37,12 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
   end
   
   # test recombination
-  def test_uniform_crossover
+  def test_crossover
     p1 = "0000000000"
     p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
+    assert_equal(p1, crossover(p1,p2,0))
+    assert_not_same(p1, crossover(p1,p2,0))      
+    s = crossover(p1,p2,1)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end
   
@@ -132,22 +132,22 @@ class TC_GeneExpressionProgramming < Test::Unit::TestCase
   end
   
   # test the conversio of structure to tree
-  def test_breadth_first_mapping
+  def test_mapping
     grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
     # single node
-    node = breadth_first_mapping("x", grammar)
+    node = mapping("x", grammar)
     assert_equal("x", node[:node])
     assert_nil(node[:left])
     assert_nil(node[:right])
     # left leaning tree 
-    node = breadth_first_mapping("**xxx", grammar)
+    node = mapping("**xxx", grammar)
     assert_equal("*", node[:node])
     assert_equal("*", node[:left][:node])
     assert_equal("x", node[:right][:node])
     assert_equal("x", node[:left][:left][:node])
     assert_equal("x", node[:left][:right][:node])
     # right leaning tree
-    node = breadth_first_mapping("*x*xx", grammar)
+    node = mapping("*x*xx", grammar)
     assert_equal("*", node[:node])
     assert_equal("x", node[:left][:node])
     assert_equal("*", node[:right][:node])

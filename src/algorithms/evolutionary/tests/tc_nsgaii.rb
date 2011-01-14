@@ -89,12 +89,12 @@ class TC_NSGAII < Test::Unit::TestCase
   end
 
   # test uniform crossover
-  def test_uniform_crossover
+  def test_crossover
     p1 = "0000000000"
     p2 = "1111111111"        
-    assert_equal(p1, uniform_crossover(p1,p2,0))
-    assert_not_same(p1, uniform_crossover(p1,p2,0))      
-    s = uniform_crossover(p1,p2,1)        
+    assert_equal(p1, crossover(p1,p2,0))
+    assert_not_same(p1, crossover(p1,p2,0))      
+    s = crossover(p1,p2,1)        
     s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
   end  
   
@@ -170,26 +170,26 @@ class TC_NSGAII < Test::Unit::TestCase
     # no range
     pop = [{:objectives=>[1.0,1.0]}, {:objectives=>[1.0,1.0]}, {:objectives=>[1.0,1.0]}]
     calculate_crowding_distance(pop)
-    assert_equal(1.0/0.0, pop[0][:distance])
-    assert_equal(0.0, pop[1][:distance])
-    assert_equal(1.0/0.0, pop[2][:distance])    
+    assert_equal(1.0/0.0, pop[0][:dist])
+    assert_equal(0.0, pop[1][:dist])
+    assert_equal(1.0/0.0, pop[2][:dist])    
     # some range
     pop = [{:objectives=>[3.0,3.0]}, {:objectives=>[10.0,10.0]}, {:objectives=>[6.0,6.0]}]
     calculate_crowding_distance(pop)
-    assert_equal(1.0/0.0, pop[0][:distance])
-    assert_equal(((6.0-3.0)/7.0)*2.0, pop[1][:distance])
-    assert_equal(1.0/0.0, pop[2][:distance])
+    assert_equal(1.0/0.0, pop[0][:dist])
+    assert_equal(((6.0-3.0)/7.0)*2.0, pop[1][:dist])
+    assert_equal(1.0/0.0, pop[2][:dist])
   end
   
   # test crowded comparison
   def test_crowded_comparison_operator
     # same rank (prefer larger distance)
-    assert_equal(1, crowded_comparison_operator({:distance=>1, :rank=>0}, {:distance=>2, :rank=>0}))
-    assert_equal(-1, crowded_comparison_operator({:distance=>2, :rank=>0}, {:distance=>1, :rank=>0}))
-    assert_equal(0, crowded_comparison_operator({:distance=>2, :rank=>0}, {:distance=>2, :rank=>0}))
+    assert_equal(1, crowded_comparison_operator({:dist=>1, :rank=>0}, {:dist=>2, :rank=>0}))
+    assert_equal(-1, crowded_comparison_operator({:dist=>2, :rank=>0}, {:dist=>1, :rank=>0}))
+    assert_equal(0, crowded_comparison_operator({:dist=>2, :rank=>0}, {:dist=>2, :rank=>0}))
     # different rank, perfer smaller rank
-    assert_equal(-1, crowded_comparison_operator({:distance=>1, :rank=>0}, {:distance=>2, :rank=>1}))
-    assert_equal(1, crowded_comparison_operator({:distance=>2, :rank=>1}, {:distance=>2, :rank=>0}))
+    assert_equal(-1, crowded_comparison_operator({:dist=>1, :rank=>0}, {:dist=>2, :rank=>1}))
+    assert_equal(1, crowded_comparison_operator({:dist=>2, :rank=>1}, {:dist=>2, :rank=>0}))
   end
   
   # test better function
@@ -200,32 +200,32 @@ class TC_NSGAII < Test::Unit::TestCase
     a, b = {:rank=>0}, {:rank=>1}
     assert_equal(a, better(a,b))
     # distance and same rank (max dist)
-    a, b = {:distance=>2, :rank=>0}, {:distance=>1, :rank=>0}
+    a, b = {:dist=>2, :rank=>0}, {:dist=>1, :rank=>0}
     assert_equal(a, better(a,b))
-    a, b = {:distance=>1, :rank=>0}, {:distance=>2, :rank=>0}
+    a, b = {:dist=>1, :rank=>0}, {:dist=>2, :rank=>0}
     assert_equal(b, better(a,b))
     # distance and diff rank (min rank)
-    a, b = {:distance=>2, :rank=>2}, {:distance=>1, :rank=>1}
+    a, b = {:dist=>2, :rank=>2}, {:dist=>1, :rank=>1}
     assert_equal(b, better(a,b)) 
-    a, b = {:distance=>1, :rank=>1}, {:distance=>2, :rank=>2}
+    a, b = {:dist=>1, :rank=>1}, {:dist=>2, :rank=>2}
     assert_equal(a, better(a,b))
   end
   
   # test selecting parents
   def test_select_parents
     # exact fit
-    fronts = [[{:distance=>0, :rank=>0, :objectives=>[0.0,0.0]}], [{:distance=>1, :rank=>1, :objectives=>[1.0,1.0]}]]
+    fronts = [[{:dist=>0, :rank=>0, :objectives=>[0.0,0.0]}], [{:dist=>1, :rank=>1, :objectives=>[1.0,1.0]}]]
     rs = select_parents(fronts, 2)
     assert_equal(2, rs.size)
     assert_equal(fronts[0][0], rs[0])
     assert_equal(fronts[1][0], rs[1])
     # overlap
-    fronts = [[{:distance=>0, :rank=>0, :objectives=>[0.0,0.0]}], 
-      [{:distance=>0, :rank=>1, :objectives=>[1.0,1.0]}, {:distance=>1, :rank=>1, :objectives=>[1.0,1.0]}]]
+    fronts = [[{:dist=>0, :rank=>0, :objectives=>[0.0,0.0]}], 
+      [{:dist=>0, :rank=>1, :objectives=>[1.0,1.0]}, {:dist=>1, :rank=>1, :objectives=>[1.0,1.0]}]]
     rs = select_parents(fronts, 2)
     assert_equal(2, rs.size)
-    assert_equal({:distance=>1.0/0.0, :rank=>0, :objectives=>[0.0,0.0]}, rs[0])
-    assert_equal({:distance=>1.0/0.0, :rank=>1, :objectives=>[1.0,1.0]}, rs[1])
+    assert_equal({:dist=>1.0/0.0, :rank=>0, :objectives=>[0.0,0.0]}, rs[0])
+    assert_equal({:dist=>1.0/0.0, :rank=>1, :objectives=>[1.0,1.0]}, rs[1])
   end
   
   # test the calculation of weighted sum

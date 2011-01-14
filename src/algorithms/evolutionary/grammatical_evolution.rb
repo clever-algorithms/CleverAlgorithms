@@ -19,8 +19,8 @@ def point_mutation(bitstring, rate=1.0/bitstring.size.to_f)
   return child
 end
 
-def one_point_crossover(parent1, parent2, codon_bits, p_crossover=0.30)
-  return ""+parent1[:bitstring] if rand()>=p_crossover
+def one_point_crossover(parent1, parent2, codon_bits, p_cross=0.30)
+  return ""+parent1[:bitstring] if rand()>=p_cross
   cut = rand([parent1.size, parent2.size].min/codon_bits)
   cut *= codon_bits
   p2size = parent2[:bitstring].size
@@ -40,13 +40,13 @@ def codon_deletion(bitstring, codon_bits, rate=0.5/codon_bits.to_f)
   return bitstring[0...off] + bitstring[off+codon_bits...bitstring.size]
 end
 
-def reproduce(selected, pop_size, p_crossover, codon_bits)
+def reproduce(selected, pop_size, p_cross, codon_bits)
   children = []
   selected.each_with_index do |p1, i|    
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
     p2 = selected[0] if i == selected.size-1
     child = {}
-    child[:bitstring] = one_point_crossover(p1, p2, codon_bits, p_crossover)
+    child[:bitstring] = one_point_crossover(p1, p2, codon_bits, p_cross)
     child[:bitstring] = codon_deletion(child[:bitstring], codon_bits)
     child[:bitstring] = codon_duplication(child[:bitstring], codon_bits)
     child[:bitstring] = point_mutation(child[:bitstring])
@@ -81,7 +81,7 @@ def map(grammar, integers, max_depth)
     grammar.keys.each do |key|
       symbolic_string = symbolic_string.gsub(key) do |k|
         done = false
-        set = (k=="EXP" and depth>=max_depth-1) ? grammar["VAR"] : grammar[k]
+        set = (k=="EXP" && depth>=max_depth-1) ? grammar["VAR"] : grammar[k]
         integer = integers[offset].modulo(set.size)
         offset = (offset==integers.size-1) ? 0 : offset+1
         set[integer]
@@ -119,18 +119,18 @@ def evaluate(candidate, codon_bits, grammar, max_depth, bounds)
   candidate[:fitness] = cost(candidate[:program], bounds)
 end
 
-def search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
-  pop = Array.new(pop_size) {|i| {:bitstring=>random_bitstring(initial_bits)}}
+def search(max_gens, pop_size, codon_bits, num_bits, p_cross, grammar, max_depth, bounds)
+  pop = Array.new(pop_size) {|i| {:bitstring=>random_bitstring(num_bits)}}
   pop.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
   best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first
-  generations.times do |gen|
+  max_gens.times do |gen|
     selected = Array.new(pop_size){|i| binary_tournament(pop)}
-    children = reproduce(selected, pop_size, p_crossover,codon_bits)    
+    children = reproduce(selected, pop_size, p_cross,codon_bits)    
     children.each{|c| evaluate(c, codon_bits, grammar, max_depth, bounds)}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] <= best[:fitness]
-    pop = (children + pop).sort{|x,y| x[:fitness] <=> y[:fitness]}.first(pop_size)
-    puts " > gen=#{gen}, f=#{best[:fitness]}, codons=#{best[:bitstring].size/codon_bits}, s=#{best[:bitstring]}"
+    pop=(children+pop).sort{|x,y| x[:fitness]<=>y[:fitness]}.first(pop_size)
+    puts " > gen=#{gen}, f=#{best[:fitness]}, s=#{best[:bitstring]}"
     break if best[:fitness] == 0.0
   end  
   return best
@@ -145,12 +145,12 @@ if __FILE__ == $0
   bounds = [1, 10]
   # algorithm configuration
   max_depth = 7
-  generations = 50
+  max_gens = 50
   pop_size = 100
   codon_bits = 4
-  initial_bits = 10*codon_bits
-  p_crossover = 0.30
+  num_bits = 10*codon_bits
+  p_cross = 0.30
   # execute the algorithm
-  best = search(generations, pop_size, codon_bits, initial_bits, p_crossover, grammar, max_depth, bounds)
+  best = search(max_gens, pop_size, codon_bits, num_bits, p_cross, grammar, max_depth, bounds)
   puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
 end

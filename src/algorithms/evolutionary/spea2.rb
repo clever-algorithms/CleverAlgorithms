@@ -41,7 +41,7 @@ def binary_tournament(pop)
   return (pop[i][:fitness] < pop[j][:fitness]) ? pop[i] : pop[j]
 end
 
-def uniform_crossover(parent1, parent2, rate)
+def crossover(parent1, parent2, rate)
   return ""+parent1 if rand()>=rate
   child = ""
   parent1.size.times do |i| 
@@ -50,13 +50,13 @@ def uniform_crossover(parent1, parent2, rate)
   return child
 end
 
-def reproduce(selected, pop_size, p_crossover)
+def reproduce(selected, pop_size, p_cross)
   children = []  
   selected.each_with_index do |p1, i|
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
     p2 = selected[0] if i == selected.size-1
     child = {}
-    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
+    child[:bitstring] = crossover(p1[:bitstring], p2[:bitstring], p_cross)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
     break if children.size >= pop_size
@@ -107,7 +107,9 @@ def calculate_raw_fitness(p1, pop)
 end
 
 def calculate_density(p1, pop)
-  pop.each {|p2| p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])}
+  pop.each do |p2| 
+    p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])
+  end
   list = pop.sort{|x,y| x[:dist]<=>y[:dist]}
   k = Math.sqrt(pop.size).to_i
   return 1.0 / (list[k][:dist] + 2.0)
@@ -137,7 +139,9 @@ def environmental_selection(pop, archive, archive_size)
     begin
       k = Math.sqrt(environment.size).to_i
       environment.each do |p1|
-        environment.each {|p2| p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])}
+        environment.each do |p2| 
+          p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])
+        end
         list = environment.sort{|x,y| x[:dist]<=>y[:dist]}
         p1[:density] = list[k][:dist]
       end
@@ -148,7 +152,7 @@ def environmental_selection(pop, archive, archive_size)
   return environment
 end
 
-def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per_param=16)
+def search(search_space, max_gens, pop_size, archive_size, p_cross, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
@@ -157,10 +161,10 @@ def search(search_space, max_gens, pop_size, archive_size, p_crossover, bits_per
     calculate_fitness(pop, archive, search_space, bits_per_param)    
     archive = environmental_selection(pop, archive, archive_size)    
     best = archive.sort{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first
-    puts ">gen=#{gen}, best: x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}"
+    puts ">gen=#{gen}, objs=#{best[:objectives].join(', ')}"
     break if gen >= max_gens
     selected = Array.new(pop_size){binary_tournament(archive)}
-    pop = reproduce(selected, pop_size, p_crossover)
+    pop = reproduce(selected, pop_size, p_cross)
     gen += 1
   end while true
   return archive
@@ -174,8 +178,8 @@ if __FILE__ == $0
   max_gens = 50
   pop_size = 80
   archive_size = 40
-  p_crossover = 0.90
+  p_cross = 0.90
   # execute the algorithm
-  pop = search(search_space, max_gens, pop_size, archive_size, p_crossover)
+  pop = search(search_space, max_gens, pop_size, archive_size, p_cross)
   puts "done!"
 end

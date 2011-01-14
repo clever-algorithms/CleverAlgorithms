@@ -8,9 +8,9 @@ def objective_function(vector)
   return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
 end
 
-def random_vector(search_space)
-  return Array.new(search_space.size) do |i|      
-    search_space[i][0] + ((search_space[i][1] - search_space[i][0]) * rand())
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|      
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
   end
 end
 
@@ -37,11 +37,11 @@ def select_parents(pop, current)
   return [p1,p2,p3]
 end
 
-def create_children(pop, search_space, f, cr)
+def create_children(pop, minmax, f, cr)
   children = []
   pop.each_with_index do |p0, i|
     p1, p2, p3 = select_parents(pop, i)
-    children << de_rand_1_bin(p0, pop[p1], pop[p2], pop[p3], f, cr, search_space)
+    children << de_rand_1_bin(p0, pop[p1], pop[p2], pop[p3], f, cr, minmax)
   end
   return children
 end
@@ -72,11 +72,11 @@ if __FILE__ == $0
   problem_size = 3
   search_space = Array.new(problem_size) {|i| [-5, +5]}
   # algorithm configuration
-  max_generations = 200
+  max_gens = 200
   pop_size = 10*problem_size
-  weighting_factor = 0.8
-  crossover_factor = 0.9
+  weightf = 0.8
+  crossf = 0.9
   # execute the algorithm
-  best = search(max_generations, search_space, pop_size, weighting_factor, crossover_factor)
+  best = search(max_gens, search_space, pop_size, weightf, crossf)
   puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
 end

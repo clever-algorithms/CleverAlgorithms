@@ -26,7 +26,7 @@ def point_mutation(grammar, genome, head_length, rate=1.0/genome.size.to_f)
   return child
 end
 
-def uniform_crossover(parent1, parent2, rate)
+def crossover(parent1, parent2, rate)
   return ""+parent1 if rand()>=rate
   child = ""
   parent1.size.times do |i| 
@@ -41,7 +41,7 @@ def reproduce(grammar, selected, pop_size, p_crossover, head_length)
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
     p2 = selected[0] if i == selected.size-1
     child = {}
-    child[:genome] = uniform_crossover(p1[:genome], p2[:genome], p_crossover)
+    child[:genome] = crossover(p1[:genome], p2[:genome], p_crossover)
     child[:genome] = point_mutation(grammar, child[:genome], head_length)
     children << child
   end
@@ -78,7 +78,7 @@ def cost(program, bounds, num_trials=30)
   return errors / num_trials.to_f
 end
 
-def breadth_first_mapping(genome, grammar)
+def mapping(genome, grammar)
   off, queue = 0, []
   root = {}
   root[:node] = genome[off].chr; off+=1
@@ -105,20 +105,20 @@ def tree_to_string(exp)
 end
 
 def evaluate(candidate, grammar, bounds)
-  candidate[:expression] = breadth_first_mapping(candidate[:genome], grammar)
+  candidate[:expression] = mapping(candidate[:genome], grammar)
   candidate[:program] = tree_to_string(candidate[:expression])
   candidate[:fitness] = cost(candidate[:program], bounds)
 end
 
-def search(grammar, bounds, head_length, tail_length, generations, pop_size, p_crossover)
+def search(grammar, bounds, h_length, t_length, max_gens, pop_size, p_cross)
   pop = Array.new(pop_size) do
-    {:genome=>random_genome(grammar, head_length, tail_length)}
+    {:genome=>random_genome(grammar, h_length, t_length)}
   end
   pop.each{|c| evaluate(c, grammar, bounds)}
   best = pop.sort{|x,y| x[:fitness] <=> y[:fitness]}.first  
-  generations.times do |gen|
+  max_gens.times do |gen|
     selected = Array.new(pop){|i| binary_tournament(pop)}
-    children = reproduce(grammar, selected, pop_size, p_crossover, head_length)    
+    children = reproduce(grammar, selected, pop_size, p_cross, h_length)    
     children.each{|c| evaluate(c, grammar, bounds)}
     children.sort!{|x,y| x[:fitness] <=> y[:fitness]}
     best = children.first if children.first[:fitness] <= best[:fitness]
@@ -133,12 +133,12 @@ if __FILE__ == $0
   grammar = {"FUNC"=>["+","-","*","/"], "TERM"=>["x"]}
   bounds = [1.0, 10.0]
   # algorithm configuration
-  head_length = 20
-  tail_length = head_length * (2-1) + 1
-  generations = 150
+  h_length = 20
+  t_length = h_length * (2-1) + 1
+  max_gens = 150
   pop_size = 80
-  p_crossover = 0.85
+  p_cross = 0.85
   # execute the algorithm
-  best = search(grammar, bounds, head_length, tail_length, generations, pop_size, p_crossover)
-  puts "done! Solution: f=#{best[:fitness]}, g=#{best[:genome]}, b=#{best[:program]}"
+  best = search(grammar, bounds, h_length, t_length, max_gens, pop_size, p_cross)
+  puts "done! Solution: f=#{best[:fitness]}, program=#{best[:program]}"
 end

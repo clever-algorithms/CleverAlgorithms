@@ -39,7 +39,7 @@ def point_mutation(bitstring, rate=1.0/bitstring.size)
   return child
 end
 
-def uniform_crossover(parent1, parent2, rate)
+def crossover(parent1, parent2, rate)
   return ""+parent1 if rand()>=rate
   child = ""
   parent1.size.times do |i| 
@@ -48,13 +48,13 @@ def uniform_crossover(parent1, parent2, rate)
   return child
 end
 
-def reproduce(selected, pop_size, p_crossover)
+def reproduce(selected, pop_size, p_cross)
   children = []  
   selected.each_with_index do |p1, i|
     p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
     p2 = selected[0] if i == selected.size-1
     child = {}
-    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring], p_crossover)
+    child[:bitstring] = crossover(p1[:bitstring], p2[:bitstring], p_cross)
     child[:bitstring] = point_mutation(child[:bitstring])
     children << child
     break if children.size >= pop_size
@@ -111,28 +111,28 @@ def fast_nondominated_sort(pop)
 end
 
 def calculate_crowding_distance(pop)
-  pop.each {|p| p[:distance] = 0.0}
+  pop.each {|p| p[:dist] = 0.0}
   num_obs = pop.first[:objectives].size
   num_obs.times do |i|
     min = pop.min{|x,y| x[:objectives][i]<=>y[:objectives][i]}
     max = pop.max{|x,y| x[:objectives][i]<=>y[:objectives][i]}
-    range = max[:objectives][i] - min[:objectives][i]
-    pop.first[:distance], pop.last[:distance] = 1.0/0.0, 1.0/0.0
-    next if range == 0.0
+    rge = max[:objectives][i] - min[:objectives][i]
+    pop.first[:dist], pop.last[:dist] = 1.0/0.0, 1.0/0.0
+    next if rge == 0.0
     (1...(pop.size-1)).each do |j|
-      pop[j][:distance] += (pop[j+1][:objectives][i] - pop[j-1][:objectives][i]) / range
+      pop[j][:dist]+=(pop[j+1][:objectives][i]-pop[j-1][:objectives][i])/rge
     end  
   end
 end
 
 def crowded_comparison_operator(x,y)
-  return y[:distance]<=>x[:distance] if x[:rank] == y[:rank]
+  return y[:dist]<=>x[:dist] if x[:rank] == y[:rank]
   return x[:rank]<=>y[:rank]
 end
 
 def better(x,y)
-  if !x[:distance].nil? and x[:rank] == y[:rank]
-    return (x[:distance]>y[:distance]) ? x : y
+  if !x[:dist].nil? and x[:rank] == y[:rank]
+    return (x[:dist]>y[:dist]) ? x : y
   end
   return (x[:rank]<y[:rank]) ? x : y
 end
@@ -156,22 +156,26 @@ def weighted_sum(x)
   return x[:objectives].inject(0.0) {|sum, x| sum+x}
 end
 
-def search(search_space, max_gens, pop_size, p_crossover, bits_per_param=16)
+def search(search_space, max_gens, pop_size, p_cross, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
   calculate_objectives(pop, search_space, bits_per_param)
   fast_nondominated_sort(pop)
-  selected = Array.new(pop_size){better(pop[rand(pop_size)], pop[rand(pop_size)])}
-  children = reproduce(selected, pop_size, p_crossover)  
+  selected = Array.new(pop_size) do 
+    better(pop[rand(pop_size)], pop[rand(pop_size)])
+  end
+  children = reproduce(selected, pop_size, p_cross)  
   calculate_objectives(children, search_space, bits_per_param)
   max_gens.times do |gen|  
     union = pop + children  
     fronts = fast_nondominated_sort(union)  
     parents = select_parents(fronts, pop_size)
-    selected = Array.new(pop_size){better(parents[rand(pop_size)], parents[rand(pop_size)])}
+    selected = Array.new(pop_size) do 
+      better(parents[rand(pop_size)], parents[rand(pop_size)])
+    end
     pop = children
-    children = reproduce(selected, pop_size, p_crossover)    
+    children = reproduce(selected, pop_size, p_cross)    
     calculate_objectives(children, search_space, bits_per_param)
     best = parents.sort!{|x,y| weighted_sum(x)<=>weighted_sum(y)}.first    
     best_s = "[x=#{best[:vector]}, objs=#{best[:objectives].join(', ')}]"
@@ -190,8 +194,8 @@ if __FILE__ == $0
   # algorithm configuration
   max_gens = 50
   pop_size = 100
-  p_crossover = 0.98
+  p_cross = 0.98
   # execute the algorithm
-  pop = search(search_space, max_gens, pop_size, p_crossover)
+  pop = search(search_space, max_gens, pop_size, p_cross)
   puts "done!"
 end
