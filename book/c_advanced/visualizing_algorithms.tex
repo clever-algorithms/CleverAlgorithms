@@ -96,7 +96,8 @@ Figure~\ref{plot:tsp1} provides a scatter plot of the Berlin52 TSP used through 
 \end{figure}
 
 Listing~\ref{tsp1} provides the Gnuplot script used to prepare the plot, where \texttt{berlin52\-.tsp} is a file that contains a listing of the coordinates of all cities, one city per line separated by white space. Listing~\ref{tsp1.file} provides a snippet of the first five lines of the \texttt{berlin52\-.tsp} file.
-
+\\
+\\
 \begin{lstlisting}[caption=Gnuplot script for plotting the Berlin52 TSP., label=tsp1]
 plot "berlin52.tsp"
 \end{lstlisting}
@@ -245,6 +246,8 @@ set samples 20
 set isosamples 20
 splot x*x+y*y, "pso1.txt" using 1:2:(0) with points
 \end{lstlisting}
+
+\vspace{1cm}
 
 \begin{lstlisting}[caption=Snippet of the \texttt{pso1.txt} file., label=pso.file]
 -3.9986483808224222 3.8910758979126956 31.12966051677087
