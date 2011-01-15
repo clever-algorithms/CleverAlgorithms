@@ -1,6 +1,5 @@
 # Makefile for the book
 
-EBOOK=master
 PAPERBACK=paperback
 
 # Build the PDF for the paperback
@@ -13,7 +12,18 @@ paperback : ${PAPERBACK}.tex
 	pdflatex ${PAPERBACK};true
 	pdflatex ${PAPERBACK};true
 	grep -i "undefined" ${PAPERBACK}.log;true
-#	ps2pdf13 -dPDFSETTINGS=/prepress paperback.pdf paperback1.pdf
+
+# Build the PDF for lulu
+lulu : ${PAPERBACK}.tex
+	pdflatex ${PAPERBACK};true
+	./make_bibtex.sh;true	
+	pdflatex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	makeindex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	pdflatex ${PAPERBACK};true
+	grep -i "undefined" ${PAPERBACK}.log;true
+	ps2pdf13 -dPDFSETTINGS=/prepress paperback.pdf paperback1.pdf
 
 # Delete all the guff and build matter
 clean : 
