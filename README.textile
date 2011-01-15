@@ -14,6 +14,8 @@ h3. Book
 
 * Jason Brownlee, *Clever Algorithms: Nature-Inspired Programming Recipes*, Lulu, (Coming January 2011)
 
+!http://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace/cover/front_cover_small.jpg!
+
 h3. Website
 
 It's coming together, but soon all content will be browsable on the projects homepage: "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
