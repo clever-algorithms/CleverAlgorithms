@@ -31,13 +31,14 @@
 % a replacement for fancyheadings
 % http://www.ctan.org/tex-archive/macros/latex/contrib/fancyhdr/
 \usepackage{fancyhdr}
-% \pagestyle{fancy}
+\fancyhead[LO]{\slshape\nouppercase{\leftmark}}
+\fancyhead[RE]{\slshape\nouppercase{\rightmark}}
 \fancyhead[LE,RO]{\thepage}
-\fancyhead[LO]{\slshape \leftmark}
-\fancyhead[RE]{\slshape \rightmark}
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\sectionmark}[1]{\markright{\thesection.\ #1}}
 \renewcommand{\chaptermark}[1]{\markboth{\chaptername\ \thechapter.\ #1}{}}
+
+
 
 
 % add an index
@@ -85,6 +86,7 @@
 %   stringstyle=\color{ForestGreen}, 
 %   commentstyle=\color{Gray}}
 
+% http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
 \lstset{language=ruby, 
 	basicstyle=\footnotesize\ttfamily, 
   numbers=left, 
@@ -123,7 +125,7 @@
 
 % Algorithm2e is an environment for writing algorithms in LaTeX2e
 % http://www.ctan.org/tex-archive/macros/latex/contrib/algorithm2e/
-\usepackage[noline, algoruled, linesnumbered, algosection]{styles/algorithm2e}
+\usepackage[algoruled, linesnumbered, algosection]{styles/algorithm2e}
 
 % for adding in bib for each section or chapter
 % http://merkel.zoneo.net/Latex/natbib.php

@@ -17,11 +17,10 @@
 \begin{document}
 \defaultbibliography{../workspace/bibtex}
 \frontmatter
-	\maketitle	
-	\clearpage
-	\include{f_copyright}	
-	\setcounter{tocdepth}{1}
-	\tableofcontents
+	\maketitle
+	\include{f_copyright}		
+	\cleardoublepage\include{f_toc}
+	\addtocontents{toc}{\protect\markboth{Contents}{}}
 	\cleardoublepage\include{f_foreword}
 	\cleardoublepage\include{f_preface}
 	\cleardoublepage\include{f_acknowledgments}	
@@ -38,7 +37,7 @@
 		\include{c_neural}
 	\part{Extensions}
 		\include{c_advanced}
-
+	\part{Appendix}
 		\appendix
 		\include{b_appendix1}
 	
