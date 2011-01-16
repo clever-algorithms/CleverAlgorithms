@@ -58,7 +58,7 @@ You may want to:
 
 h2. License 
 
-(c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+(c) Copyright 2011 Jason Brownlee. Some Rights Reserved. 
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
 	<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />
