@@ -1,0 +1,578 @@
+
+
+-------- Grammar --------
+
+rule 1 bibliography: 
+rule 2 bibliography: objects
+rule 3 objects: object
+rule 4 objects: objects object
+rule 5 object: AT at_object
+rule 6 object: META_COMMENT
+rule 7 object: ERROR
+rule 8 at_object: comment
+rule 9 at_object: string
+rule 10 at_object: preamble
+rule 11 at_object: entry
+rule 12 comment: COMMENT LBRACE content RBRACE
+rule 13 content: 
+rule 14 content: CONTENT
+rule 15 preamble: PREAMBLE LBRACE string_value RBRACE
+rule 16 string: STRING LBRACE string_assignment RBRACE
+rule 17 string_assignment: NAME EQ string_value
+rule 18 string_value: string_literal
+rule 19 string_value: string_value SHARP string_literal
+rule 20 string_literal: NAME
+rule 21 string_literal: STRING_LITERAL
+rule 22 entry: entry_head assignments RBRACE
+rule 23 entry: entry_head assignments COMMA RBRACE
+rule 24 entry: entry_head RBRACE
+rule 25 entry_head: NAME LBRACE key COMMA
+rule 26 key: NAME
+rule 27 key: NUMBER
+rule 28 assignments: assignment
+rule 29 assignments: assignments COMMA assignment
+rule 30 assignment: NAME EQ value
+rule 31 value: string_value
+rule 32 value: NUMBER
+rule 33 value: LBRACE content RBRACE
+
+------- Symbols -------
+
+**Nonterminals, with rules where they appear
+
+  $start (17)
+    on right: 
+    on left : 
+  bibliography (18)
+    on right: 
+    on left : 1 2
+  objects (19)
+    on right: 2 4
+    on left : 3 4
+  object (20)
+    on right: 3 4
+    on left : 5 6 7
+  at_object (21)
+    on right: 5
+    on left : 8 9 10 11
+  comment (22)
+    on right: 8
+    on left : 12
+  string (23)
+    on right: 9
+    on left : 16
+  preamble (24)
+    on right: 10
+    on left : 15
+  entry (25)
+    on right: 11
+    on left : 22 23 24
+  content (26)
+    on right: 12 33
+    on left : 13 14
+  string_value (27)
+    on right: 15 17 19 31
+    on left : 18 19
+  string_assignment (28)
+    on right: 16
+    on left : 17
+  string_literal (29)
+    on right: 18 19
+    on left : 20 21
+  entry_head (30)
+    on right: 22 23 24
+    on left : 25
+  assignments (31)
+    on right: 22 23 29
+    on left : 28 29
+  key (32)
+    on right: 25
+    on left : 26 27
+  assignment (33)
+    on right: 28 29
+    on left : 30
+  value (34)
+    on right: 30
+    on left : 31 32 33
+
+**Terminals, with rules where they appear
+
+  $end (0) 
+  error (1) 
+  AT (2) 5
+  COMMA (3) 23 25 29
+  COMMENT (4) 12
+  CONTENT (5) 14
+  ERROR (6) 7
+  EQ (7) 17 30
+  LBRACE (8) 12 15 16 25 33
+  META_COMMENT (9) 6
+  NAME (10) 17 20 25 26 30
+  NUMBER (11) 27 32
+  PREAMBLE (12) 15
+  RBRACE (13) 12 15 16 22 23 24 33
+  SHARP (14) 19
+  STRING (15) 16
+  STRING_LITERAL (16) 21
+
+--------- State ---------
+
+state 0
+
+
+  AT            shift, and go to state 1
+  ERROR         shift, and go to state 2
+  META_COMMENT  shift, and go to state 5
+  $default      reduce using rule 1 (bibliography)
+
+  bibliography  go to state 3
+  objects       go to state 4
+  object        go to state 6
+
+state 1
+
+   5) object : AT _ at_object
+
+  COMMENT       shift, and go to state 13
+  NAME          shift, and go to state 15
+  PREAMBLE      shift, and go to state 8
+  STRING        shift, and go to state 12
+
+  comment       go to state 7
+  string        go to state 9
+  preamble      go to state 10
+  entry         go to state 11
+  entry_head    go to state 14
+  at_object     go to state 16
+
+state 2
+
+   7) object : ERROR _
+
+  $default      reduce using rule 7 (object)
+
+
+state 3
+
+
+  $end          shift, and go to state 17
+
+
+state 4
+
+   2) bibliography : objects _
+   4) objects : objects _ object
+
+  AT            shift, and go to state 1
+  ERROR         shift, and go to state 2
+  META_COMMENT  shift, and go to state 5
+  $default      reduce using rule 2 (bibliography)
+
+  object        go to state 18
+
+state 5
+
+   6) object : META_COMMENT _
+
+  $default      reduce using rule 6 (object)
+
+
+state 6
+
+   3) objects : object _
+
+  $default      reduce using rule 3 (objects)
+
+
+state 7
+
+   8) at_object : comment _
+
+  $default      reduce using rule 8 (at_object)
+
+
+state 8
+
+  15) preamble : PREAMBLE _ LBRACE string_value RBRACE
+
+  LBRACE        shift, and go to state 19
+
+
+state 9
+
+   9) at_object : string _
+
+  $default      reduce using rule 9 (at_object)
+
+
+state 10
+
+  10) at_object : preamble _
+
+  $default      reduce using rule 10 (at_object)
+
+
+state 11
+
+  11) at_object : entry _
+
+  $default      reduce using rule 11 (at_object)
+
+
+state 12
+
+  16) string : STRING _ LBRACE string_assignment RBRACE
+
+  LBRACE        shift, and go to state 20
+
+
+state 13
+
+  12) comment : COMMENT _ LBRACE content RBRACE
+
+  LBRACE        shift, and go to state 21
+
+
+state 14
+
+  22) entry : entry_head _ assignments RBRACE
+  23) entry : entry_head _ assignments COMMA RBRACE
+  24) entry : entry_head _ RBRACE
+
+  NAME          shift, and go to state 25
+  RBRACE        shift, and go to state 23
+
+  assignment    go to state 22
+  assignments   go to state 24
+
+state 15
+
+  25) entry_head : NAME _ LBRACE key COMMA
+
+  LBRACE        shift, and go to state 26
+
+
+state 16
+
+   5) object : AT at_object _
+
+  $default      reduce using rule 5 (object)
+
+
+state 17
+
+
+  $end          shift, and go to state 27
+
+
+state 18
+
+   4) objects : objects object _
+
+  $default      reduce using rule 4 (objects)
+
+
+state 19
+
+  15) preamble : PREAMBLE LBRACE _ string_value RBRACE
+
+  NAME          shift, and go to state 31
+  STRING_LITERAL  shift, and go to state 28
+
+  string_value  go to state 29
+  string_literal  go to state 30
+
+state 20
+
+  16) string : STRING LBRACE _ string_assignment RBRACE
+
+  NAME          shift, and go to state 33
+
+  string_assignment  go to state 32
+
+state 21
+
+  12) comment : COMMENT LBRACE _ content RBRACE
+
+  CONTENT       shift, and go to state 35
+  $default      reduce using rule 13 (content)
+
+  content       go to state 34
+
+state 22
+
+  28) assignments : assignment _
+
+  $default      reduce using rule 28 (assignments)
+
+
+state 23
+
+  24) entry : entry_head RBRACE _
+
+  $default      reduce using rule 24 (entry)
+
+
+state 24
+
+  22) entry : entry_head assignments _ RBRACE
+  23) entry : entry_head assignments _ COMMA RBRACE
+  29) assignments : assignments _ COMMA assignment
+
+  COMMA         shift, and go to state 37
+  RBRACE        shift, and go to state 36
+
+
+state 25
+
+  30) assignment : NAME _ EQ value
+
+  EQ            shift, and go to state 38
+
+
+state 26
+
+  25) entry_head : NAME LBRACE _ key COMMA
+
+  NAME          shift, and go to state 40
+  NUMBER        shift, and go to state 39
+
+  key           go to state 41
+
+state 27
+
+
+  $default      accept
+
+
+state 28
+
+  21) string_literal : STRING_LITERAL _
+
+  $default      reduce using rule 21 (string_literal)
+
+
+state 29
+
+  15) preamble : PREAMBLE LBRACE string_value _ RBRACE
+  19) string_value : string_value _ SHARP string_literal
+
+  RBRACE        shift, and go to state 42
+  SHARP         shift, and go to state 43
+
+
+state 30
+
+  18) string_value : string_literal _
+
+  $default      reduce using rule 18 (string_value)
+
+
+state 31
+
+  20) string_literal : NAME _
+
+  $default      reduce using rule 20 (string_literal)
+
+
+state 32
+
+  16) string : STRING LBRACE string_assignment _ RBRACE
+
+  RBRACE        shift, and go to state 44
+
+
+state 33
+
+  17) string_assignment : NAME _ EQ string_value
+
+  EQ            shift, and go to state 45
+
+
+state 34
+
+  12) comment : COMMENT LBRACE content _ RBRACE
+
+  RBRACE        shift, and go to state 46
+
+
+state 35
+
+  14) content : CONTENT _
+
+  $default      reduce using rule 14 (content)
+
+
+state 36
+
+  22) entry : entry_head assignments RBRACE _
+
+  $default      reduce using rule 22 (entry)
+
+
+state 37
+
+  23) entry : entry_head assignments COMMA _ RBRACE
+  29) assignments : assignments COMMA _ assignment
+
+  NAME          shift, and go to state 25
+  RBRACE        shift, and go to state 48
+
+  assignment    go to state 47
+
+state 38
+
+  30) assignment : NAME EQ _ value
+
+  LBRACE        shift, and go to state 52
+  NAME          shift, and go to state 31
+  NUMBER        shift, and go to state 49
+  STRING_LITERAL  shift, and go to state 28
+
+  value         go to state 50
+  string_value  go to state 51
+  string_literal  go to state 30
+
+state 39
+
+  27) key : NUMBER _
+
+  $default      reduce using rule 27 (key)
+
+
+state 40
+
+  26) key : NAME _
+
+  $default      reduce using rule 26 (key)
+
+
+state 41
+
+  25) entry_head : NAME LBRACE key _ COMMA
+
+  COMMA         shift, and go to state 53
+
+
+state 42
+
+  15) preamble : PREAMBLE LBRACE string_value RBRACE _
+
+  $default      reduce using rule 15 (preamble)
+
+
+state 43
+
+  19) string_value : string_value SHARP _ string_literal
+
+  NAME          shift, and go to state 31
+  STRING_LITERAL  shift, and go to state 28
+
+  string_literal  go to state 54
+
+state 44
+
+  16) string : STRING LBRACE string_assignment RBRACE _
+
+  $default      reduce using rule 16 (string)
+
+
+state 45
+
+  17) string_assignment : NAME EQ _ string_value
+
+  NAME          shift, and go to state 31
+  STRING_LITERAL  shift, and go to state 28
+
+  string_value  go to state 55
+  string_literal  go to state 30
+
+state 46
+
+  12) comment : COMMENT LBRACE content RBRACE _
+
+  $default      reduce using rule 12 (comment)
+
+
+state 47
+
+  29) assignments : assignments COMMA assignment _
+
+  $default      reduce using rule 29 (assignments)
+
+
+state 48
+
+  23) entry : entry_head assignments COMMA RBRACE _
+
+  $default      reduce using rule 23 (entry)
+
+
+state 49
+
+  32) value : NUMBER _
+
+  $default      reduce using rule 32 (value)
+
+
+state 50
+
+  30) assignment : NAME EQ value _
+
+  $default      reduce using rule 30 (assignment)
+
+
+state 51
+
+  19) string_value : string_value _ SHARP string_literal
+  31) value : string_value _
+
+  SHARP         shift, and go to state 43
+  $default      reduce using rule 31 (value)
+
+
+state 52
+
+  33) value : LBRACE _ content RBRACE
+
+  CONTENT       shift, and go to state 35
+  $default      reduce using rule 13 (content)
+
+  content       go to state 56
+
+state 53
+
+  25) entry_head : NAME LBRACE key COMMA _
+
+  $default      reduce using rule 25 (entry_head)
+
+
+state 54
+
+  19) string_value : string_value SHARP string_literal _
+
+  $default      reduce using rule 19 (string_value)
+
+
+state 55
+
+  17) string_assignment : NAME EQ string_value _
+  19) string_value : string_value _ SHARP string_literal
+
+  SHARP         shift, and go to state 43
+  $default      reduce using rule 17 (string_assignment)
+
+
+state 56
+
+  33) value : LBRACE content _ RBRACE
+
+  RBRACE        shift, and go to state 57
+
+
+state 57
+
+  33) value : LBRACE content RBRACE _
+
+  $default      reduce using rule 33 (value)
+
