@@ -15,11 +15,9 @@ def create_directory(name)
   Dir.mkdir(name) unless File.directory?(name)
 end
 
-def starts_with?(data, string)
-  # =~ m/^He/
-  # =~ m/\AH/
-  # at the moment will match on the whole string (lame)
-  return data =~ /#{Regexp.escape(string)}/
+# http://railsforum.com/viewtopic.php?id=10057
+def starts_with?(data, prefix)
+  return data[0,prefix.length] == prefix
 end
 
 def get_all_data_lines(filename)
@@ -42,39 +40,49 @@ def get_data_in_brackets(line)
   return line[i...j]
 end
 
-# state machine for processing sections, subsections, subsubsections
+# lazy state machine for processing chapters (optional), sections, subsections, subsubsections
 def general_process_file(lines)
   data = []
-  sec, subsec, subsubsec = false, false, false
+  chap, sec, subsec, subsubsec = false, false, false, false
   lines.each do |line|
-    if starts_with?(line, "\\section")
+    if starts_with?(line, "\\chapter")
+      node = {}
+      node[:chapter] = get_data_in_brackets(line)
+      node[:content] = []
+      data << node
+      chap = true
+    elsif starts_with?(line, "\\section")
       sec, subsec, subsubsec = true, false, false
       node = {}
       node[:section] = get_data_in_brackets(line)
-      node[:content] = []
-      data << node
+      node[:content] = []      
+      ((chap) ? data.last[:content] : data) << node
     elsif starts_with?(line, "\\subsection")
       subsec, subsubsec = true, false
       node = {}
       node[:subsec] = get_data_in_brackets(line)
       node[:content] = []
-      data.last[:content] << node
+      # puts line
+      # puts data.last[:content].inspect
+      ((chap) ? data.last[:content].last[:content] : data.last[:content]) << node
     elsif starts_with?(line, "\\subsubsection")
       subsubsec = true
       node = {}
       node[:subsubsec] = get_data_in_brackets(line)
       node[:content] = []
-      data.last[:content].last[:content] << node      
+      ((chap) ? data.last[:content].last[:content].last[:content] : data.last[:content].last[:content]) << node
     else
       # we just have a line
       if subsubsec
-        data.last[:content].last[:content].last[:content] << line
+        ((chap) ? data.last[:content].last[:content].last[:content].last[:content] : data.last[:content].last[:content].last[:content]) << line
       elsif subsec
-        data.last[:content].last[:content] << line
+        ((chap) ? data.last[:content].last[:content].last[:content] : data.last[:content].last[:content]) << line
       elsif sec
+        ((chap) ? data.last[:content].last[:content] : data.last[:content]) << line
+      elsif chap
         data.last[:content] << line
       else
-        raise "got line and not in section: #{line}"
+        raise "got line and not in a known section type: #{line}"
       end
     end
   end
@@ -241,6 +249,7 @@ def process_bibtex(datum)
   return datum
 end
 
+# TODO display authors consistantly (F. Lastname when stored as Lastname, F.)
 # TODO construct google scholar url for titles
 # assume ordering in http://en.wikipedia.org/wiki/BibTeX
 def generate_bib_entry(entry)
@@ -360,6 +369,8 @@ def post_process_text(s)
 end
 
 # TODO process ad hoc itemize in content (grammatical evolution)
+# TODO process equations (PSO)
+# TODO process align equations (PSO)
 def to_text_content(data)
   s = ""
   # state machine for building paragraphs  
@@ -484,21 +495,38 @@ def process_algorithm(filename)
   return data
 end
 
-# TODO process chapter overview
+def html_for_algortihm_chapter(data, bib)
+  s = ""
+  # name
+  add_line(s, "<h1>#{data.first[:chapter]}</h1>")
+  
+  return s
+end
+
+def process_chapter_overview(name, bib)
+  lines = get_all_data_lines("../book/c_#{name}.tex")
+  processed = general_process_file(lines)
+  html = html_for_algortihm_chapter(processed, bib)
+  filename = OUTPUT_DIR + "/"+name+".html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote algorithm chapter overview '#{name}' to: #{filename}"
+end
+
 def build_algorithm_chapter(name, bib)
   dirname = OUTPUT_DIR + "/"+name
   create_directory(dirname)
-  
+  # process chapter overview
+  process_chapter_overview(name, bib)  
   # process all algorithms for algorithm chapter
-  source = "../book/a_"+name
-  Dir.entries(source).each do |file|
-    next if file == "." or file == ".."
-    next if File.extname(file) != ".tex"
-    # load and process the algorithm
-    data = process_algorithm(source + "/" + file)
-    # write the html for the algorithm
-    write_algorithm(data, bib, "#{dirname}/#{file[0...-4]}.html")
-  end
+  # source = "../book/a_"+name
+  # Dir.entries(source).each do |file|
+  #   next if file == "." or file == ".."
+  #   next if File.extname(file) != ".tex"
+  #   # load and process the algorithm
+  #   data = process_algorithm(source + "/" + file)
+  #   # write the html for the algorithm
+  #   write_algorithm(data, bib, "#{dirname}/#{file[0...-4]}.html")
+  # end
 end
 
 
@@ -511,12 +539,12 @@ if __FILE__ == $0
   bib = load_bibtex()
   
   # process algorithm chapters
-  ALGORITHM_CHAPTERS.each {|name| build_algorithm_chapter(name, bib) }
+  # ALGORITHM_CHAPTERS.each {|name| build_algorithm_chapter(name, bib) }
   
-  #build_algorithm_chapter("neural", bib)
+  build_algorithm_chapter("evolution", bib)
   
   # test for a single algorithm
-#  data = process_algorithm("../book/a_stochastic/iterated_local_search.tex")
-#  write_algorithm(data, bib, "#{OUTPUT_DIR}/test.html")
+  # data = process_algorithm("../book/a_stochastic/iterated_local_search.tex")
+  # write_algorithm(data, bib, "#{OUTPUT_DIR}/test.html")
   
 end
