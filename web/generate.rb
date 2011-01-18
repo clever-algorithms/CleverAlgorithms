@@ -20,6 +20,7 @@ def starts_with?(data, prefix)
   return data[0,prefix.length] == prefix
 end
 
+# basic processing
 def get_all_data_lines(filename)
   raw = IO.readlines(filename)  
   # strip comments
@@ -27,7 +28,12 @@ def get_all_data_lines(filename)
   raw.each do |line| 
     line = line.strip
     next if !gotdata and (line.empty? or line.nil?)
-    next if !line.empty? and line[0].chr == '%'
+    next if !line.empty? and starts_with?(line, "%")
+    next if !line.empty? and starts_with?(line, "\\label")
+    next if !line.empty? and starts_with?(line, "\\index")
+    next if !line.empty? and starts_with?(line, "\\begin{bibunit}")
+    next if !line.empty? and starts_with?(line, "\\end{bibunit}")
+    next if !line.empty? and starts_with?(line, "\\renewcommand")
     lines << line
     gotdata = true
   end
@@ -348,7 +354,7 @@ end
 
 # TODO link to known algorithms (maybe)
 def post_process_text(s)
-    # citations
+  # citations
   s = replace_citations(s)
   # listings
   s = replace_listings(s)
@@ -499,7 +505,27 @@ def html_for_algortihm_chapter(data, bib)
   s = ""
   # name
   add_line(s, "<h1>#{data.first[:chapter]}</h1>")
-  
+  # process sections
+  data.first[:content].each do |element|    
+    if element.kind_of?(Hash) # section      
+      add_line(s, "<h2>#{element[:section]}</h2>")
+      element[:content].each do |sec|   
+        if sec.kind_of?(Hash) # subsection
+          add_line(s, "<h3>#{sec[:subsec]}</h3>")
+          sec[:content].each do |subsec|
+            add_line(s, to_text_content(subsec))
+          end
+        else
+          add_line(s, to_text_content(sec))
+        end
+      end
+    else
+      add_line(s, to_text_content(element))
+    end
+  end
+  # Bibliography
+  add_line(s, "<h3>Bibliography</h3>")  
+  add_line(s, prepare_bibliography(data, bib))
   return s
 end
 
