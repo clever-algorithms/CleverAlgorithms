@@ -34,6 +34,7 @@ def get_all_data_lines(filename)
     next if !line.empty? and starts_with?(line, "\\begin{bibunit}")
     next if !line.empty? and starts_with?(line, "\\end{bibunit}")
     next if !line.empty? and starts_with?(line, "\\renewcommand")
+    next if !line.empty? and starts_with?(line, "\\putbib")
     lines << line
     gotdata = true
   end
@@ -107,7 +108,7 @@ def replace_citations(s)
     # process, because there could be multiple defined
     content.split(","). each do |citation|
        x = citation.strip
-       s << "[<a href='\##{x}'>#{x}</a>] "
+       s << " [<a href='\##{x}'>#{x}</a>]"
     end
     s
   end
@@ -129,6 +130,18 @@ end
 def replace_texttt(s)
   return s.gsub(/\\texttt\{([^}]+)\}/) do |elem|
     "<code>#{elem[8...-1]}</code>"
+  end
+end
+
+def replace_emph(s)
+  return s.gsub(/\\emph\{([^}]+)\}/) do |elem|
+    "<em>#{elem[6...-1]}</em>"
+  end
+end
+
+def replace_bf(s)
+  return s.gsub(/\\textbf\{([^}]+)\}/) do |elem|
+    "<strong>#{elem[8...-1]}</strong>"
   end
 end
 
@@ -255,6 +268,7 @@ def process_bibtex(datum)
   return datum
 end
 
+# TODO support no author, but has editors
 # TODO display authors consistantly (F. Lastname when stored as Lastname, F.)
 # TODO construct google scholar url for titles
 # assume ordering in http://en.wikipedia.org/wiki/BibTeX
@@ -314,6 +328,12 @@ def generate_bib_entry(entry)
     s << "\"#{process_bibtex entry[:title]}\", "
     s << "#{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
     s << "#{process_bibtex entry[:year]}."
+  elsif entry.type == :conference
+    # author, title, booktitle, year
+    s << "#{process_bibtex entry[:author]}, "
+    s << "\"#{process_bibtex entry[:title]}\", "
+    s << "#{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
+    s << "#{process_bibtex entry[:year]}."
   else 
     raise "Unknown bibtex type: #{entry.type}"    
   end
@@ -360,6 +380,10 @@ def post_process_text(s)
   s = replace_listings(s)
   # texttt
   s = replace_texttt(s)
+  # emph
+  s = replace_emph(s)
+  # textbf
+  s = replace_bf(s)
   # section refs
   s = remove_section_refs(s)
   # remove hypenation suggestions
@@ -374,23 +398,34 @@ def post_process_text(s)
   return s
 end
 
-# TODO process ad hoc itemize in content (grammatical evolution)
 # TODO process equations (PSO)
 # TODO process align equations (PSO)
 def to_text_content(data)
   s = ""
-  # state machine for building paragraphs  
-  out = true
+  # state machine for building paragraphs/items
+  out, in_items = true, false
   data.each do |line|
-    if line.empty?
+    if line.empty? and !in_items
       s << "</p>\n" if !out
       out = true
+    elsif starts_with?(line, "\\begin{itemize}")
+      s << "</p>\n" if !out
+      add_line(s, "<ul>")
+      out, in_items = true, true
+    elsif starts_with?(line, "\\end{itemize}")
+      out, in_items = true, false
+      add_line(s, "</ul>")
     else 
       if out
-        s << "<p>" 
-        out = false
-      end
-      s << "#{line}\n"
+        if in_items
+          add_line(s, "<li>#{post_process_text(line).gsub("\\item", "")}</li>")
+        else
+          s << "<p>#{line}\n"
+          out = false
+        end
+      else
+        s << "#{line}\n"
+      end   
     end
   end
   s << "</p>\n" if !out
@@ -501,7 +536,10 @@ def process_algorithm(filename)
   return data
 end
 
-def html_for_algortihm_chapter(data, bib)
+# TODO list algorithms before 'extensions'
+# TODO use full algorithm name
+def html_for_algortihm_chapter(name, data, bib)
+  algos = []
   s = ""
   # name
   add_line(s, "<h1>#{data.first[:chapter]}</h1>")
@@ -512,9 +550,15 @@ def html_for_algortihm_chapter(data, bib)
       element[:content].each do |sec|   
         if sec.kind_of?(Hash) # subsection
           add_line(s, "<h3>#{sec[:subsec]}</h3>")
-          sec[:content].each do |subsec|
-            add_line(s, to_text_content(subsec))
+          lines = []
+          sec[:content].each do |line|
+            if starts_with?(line, "\\newpage\\begin{bibunit}\\input{")
+              algos << line
+            else
+              lines << line
+            end
           end
+          add_line(s, to_text_content(lines))
         else
           add_line(s, to_text_content(sec))
         end
@@ -523,16 +567,29 @@ def html_for_algortihm_chapter(data, bib)
       add_line(s, to_text_content(element))
     end
   end
+  # Algorithms
+  add_line(s, "<h3>Algorithms</h3>")
+  add_line(s, "<ul>")
+  algos.each do |line|
+    filename = line.match(/\\input\{([^}]+)\}/).to_s
+    filename = filename[(filename.index("/")+1)...-1]
+    add_line(s, "<li><a href='#{name}/#{filename}.html'>#{filename}</a></li>")
+  end
+  add_line(s, "</ul>")
   # Bibliography
-  add_line(s, "<h3>Bibliography</h3>")  
-  add_line(s, prepare_bibliography(data, bib))
+  # lazy!
+  citations = collect_citations_for_page(data)
+  if !citations.empty?
+    add_line(s, "<h3>Bibliography</h3>")  
+    add_line(s, prepare_bibliography(data, bib))
+  end
   return s
 end
 
 def process_chapter_overview(name, bib)
   lines = get_all_data_lines("../book/c_#{name}.tex")
   processed = general_process_file(lines)
-  html = html_for_algortihm_chapter(processed, bib)
+  html = html_for_algortihm_chapter(name, processed, bib)
   filename = OUTPUT_DIR + "/"+name+".html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote algorithm chapter overview '#{name}' to: #{filename}"
@@ -544,15 +601,15 @@ def build_algorithm_chapter(name, bib)
   # process chapter overview
   process_chapter_overview(name, bib)  
   # process all algorithms for algorithm chapter
-  # source = "../book/a_"+name
-  # Dir.entries(source).each do |file|
-  #   next if file == "." or file == ".."
-  #   next if File.extname(file) != ".tex"
-  #   # load and process the algorithm
-  #   data = process_algorithm(source + "/" + file)
-  #   # write the html for the algorithm
-  #   write_algorithm(data, bib, "#{dirname}/#{file[0...-4]}.html")
-  # end
+  source = "../book/a_"+name
+  Dir.entries(source).each do |file|
+    next if file == "." or file == ".."
+    next if File.extname(file) != ".tex"
+    # load and process the algorithm
+    data = process_algorithm(source + "/" + file)
+    # write the html for the algorithm
+    write_algorithm(data, bib, "#{dirname}/#{file[0...-4]}.html")
+  end
 end
 
 
@@ -565,9 +622,9 @@ if __FILE__ == $0
   bib = load_bibtex()
   
   # process algorithm chapters
-  # ALGORITHM_CHAPTERS.each {|name| build_algorithm_chapter(name, bib) }
+  ALGORITHM_CHAPTERS.each {|name| build_algorithm_chapter(name, bib) }
   
-  build_algorithm_chapter("evolution", bib)
+  # build_algorithm_chapter("evolution", bib)
   
   # test for a single algorithm
   # data = process_algorithm("../book/a_stochastic/iterated_local_search.tex")
