@@ -227,6 +227,7 @@ def remove_hyph_suggestions(s)
 end
 
 # TODO add download link for source code (github? local?)
+# TODO pretty print does not like angle brackets <>
 # create the pretty print
 # http://code.google.com/p/google-code-prettify/
 # http://google-code-prettify.googlecode.com/svn/trunk/README.html
@@ -240,7 +241,7 @@ def pretty_print_code_listing(code_listing_line)
   raw = IO.readlines(filename)
   raw.each_with_index {|r,i| raw[i]=r.rstrip}
   s = ""
-  add_line(s, "<pre class='prettyprint lang-ruby'>")
+  add_line(s, "<pre class='prettyprint lang-rb'>")
   add_line(s, raw[6..-1].join("\n"))
   add_line(s, "</pre>")
   add_line(s, "<div>#{caption}</div>")
@@ -543,7 +544,7 @@ def to_text_content(data)
     elsif starts_with?(line, "\\begin{lstlisting}") # start listing
       s << "</p>\n" if !out # end paragraph
       out, in_listing = true, true
-      add_line(s, "<pre class='prettyprint lang-ruby'>")
+      add_line(s, "<pre class='prettyprint lang-rb'>")
     elsif starts_with?(line, "\\end{lstlisting}") # end listing
       out, in_listing = true, false
       add_line(s, "</pre>")
