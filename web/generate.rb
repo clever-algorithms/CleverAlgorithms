@@ -725,9 +725,9 @@ def create_toc_html(algorithms, frontmatter)
   # algorithms
   add_line(s, "<strong>Algorithms</strong><br />")
   algorithms.each do |name|
-    add_line(s, "<a href='#{name}.html'>#{name}</a><br />")
     lines = get_all_data_lines("../book/c_#{name}.tex")
-    data = general_process_file(lines)
+    data = general_process_file(lines)  
+    add_line(s, "<a href='#{name}.html'>#{data.last[:chapter]}</a><br />")
     algos = collect_subpages_for_page(data)
     add_line(s, "<ol>")
     algos.each do |filename|
@@ -739,7 +739,20 @@ def create_toc_html(algorithms, frontmatter)
   end
   # advanced
   add_line(s, "<strong>Extensions</strong><br />")
-  add_line(s, "<a href='advanced.html'>Advanced Topics</a><br />")
+  #add_line(s, "<a href='advanced.html'>Advanced Topics</a><br />")
+  begin
+    lines = get_all_data_lines("../book/c_advanced.tex")
+    data = general_process_file(lines)  
+    add_line(s, "<a href='advanced.html'>#{data.last[:chapter]}</a><br />")
+    algos = collect_subpages_for_page(data)
+    add_line(s, "<ol>")
+    algos.each do |filename|
+      # super lazy at getting algorithm names - consider a better process
+      algo_name = get_algorithm_name("../book/c_advanced/"+filename+".tex")
+      add_line(s, "<li><a href='advanced/#{filename}.html'>#{algo_name}</a></li>")
+    end
+    add_line(s, "</ol>")  
+  end
   # appendix
   add_line(s, "<a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a><br />")
   return s
