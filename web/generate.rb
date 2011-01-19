@@ -17,7 +17,7 @@ end
 
 # http://railsforum.com/viewtopic.php?id=10057
 def starts_with?(data, prefix)
-  return data[0,prefix.length] == prefix
+  return data[0...prefix.length] == prefix
 end
 
 # basic processing
@@ -35,6 +35,14 @@ def get_all_data_lines(filename)
     next if !line.empty? and starts_with?(line, "\\end{bibunit}")
     next if !line.empty? and starts_with?(line, "\\renewcommand")
     next if !line.empty? and starts_with?(line, "\\putbib")
+    next if !line.empty? and starts_with?(line, "\\vspace")    
+    next if !line.empty? and line == "\\newpage" # just the newpage
+    next if !line.empty? and starts_with?(line, "\\begin{flushleft}")
+    next if !line.empty? and starts_with?(line, "\\begin{small}")
+    next if !line.empty? and starts_with?(line, "\\end{flushleft}")
+    next if !line.empty? and starts_with?(line, "\\end{small}")
+    next if !line.empty? and starts_with?(line, "\\begin{flushright}")
+    next if !line.empty? and starts_with?(line, "\\end{flushright}")
     lines << line
     gotdata = true
   end
@@ -127,6 +135,7 @@ def replace_listings(s)
   return s
 end
 
+# TODO bug with the string \texttt{#\{\}} (appendix)
 def replace_texttt(s)
   return s.gsub(/\\texttt\{([^}]+)\}/) do |elem|
     "<code>#{elem[8...-1]}</code>"
@@ -145,6 +154,65 @@ def replace_bf(s)
   end
 end
 
+def replace_urls(s)
+  return s.gsub(/\\url\{([^}]+)\}/) do |elem|
+    content = elem[5...-1]
+    "<a href='#{content}'>#{content}</a>"
+  end
+end
+
+def replace_footnotes(s)
+  return s.gsub(/\\footnote\{([^}]+)\}/) do |elem|
+    " (#{elem[10...-1]})"
+  end
+end
+
+def replace_paragraphs(s)
+  return s.gsub(/\\paragraph\{([^}]+)\}/) do |elem|
+    "<strong>#{elem[11...-1]}</strong>"
+  end
+end
+
+def replace_markboth(s)
+  return s.gsub(/\\markboth\{([^}]+)\}\{\}/) do |elem|
+    ""
+  end
+end
+
+# used in at least the intro
+# the refs are relative - might cause problems in html in sub dirs
+def replace_chapter_refs(s)
+  # stochastic
+  s = s.gsub(/Chapter\~\\ref\{ch:stochastic\}/) do |elem|
+    "<a href='stochastic.html'>Stochastic Algorithms Chapter</a>"
+  end
+  # evolutionary
+  s = s.gsub(/Chapter\~\\ref\{ch:evolutionary\}/) do |elem|
+    "<a href='evolution.html'>Evolutionary Algorithms Chapter</a>"
+  end
+  # physical
+  s = s.gsub(/Chapter\~\\ref\{ch:physical\}/) do |elem|
+    "<a href='physical.html'>Physical Algorithms Chapter</a>"
+  end    
+  # probabilistic
+  s = s.gsub(/Chapter\~\\ref\{ch:probabilistic\}/) do |elem|
+    "<a href='probabilistic.html'>Probabilistic Algorithms Chapter</a>"
+  end
+  # swarm
+  s = s.gsub(/Chapter\~\\ref\{ch:swarm\}/) do |elem|
+    "<a href='swarm.html'>Swarm Algorithms Chapter</a>"
+  end
+  # immune
+  s = s.gsub(/Chapter\~\\ref\{ch:immune\}/) do |elem|
+    "<a href='immune.html'>Immune Algorithms Chapter</a>"
+  end
+  # neural
+  s = s.gsub(/Chapter\~\\ref\{ch:neural\}/) do |elem|
+    "<a href='neural.html'>Neural Algorithms Chapter</a>"
+  end
+  return s
+end
+
 def remove_section_refs(s)
   # remove section refs
   s = s.gsub(/Section\~\\ref\{([^}]+)\}/) {|e| ""}
@@ -158,6 +226,7 @@ def remove_hyph_suggestions(s)
   return s.gsub("\\-") {|e| ""}
 end
 
+# TODO add download link for source code (github? local?)
 # create the pretty print
 # http://code.google.com/p/google-code-prettify/
 # http://google-code-prettify.googlecode.com/svn/trunk/README.html
@@ -176,53 +245,6 @@ def pretty_print_code_listing(code_listing_line)
   add_line(s, "</pre>")
   add_line(s, "<div>#{caption}</div>")
   return s
-end
-
-def is_code_listing?(line)
-  return starts_with?(line, "\\lstinputlisting[firstline=")
-end
-
-# TODO add download link for source code (github? local?)
-# create the content and pretty print
-def prepare_code_listing(lines)
-  text = []
-  code_listing = nil
-  lines.each do |line| 
-    if is_code_listing?(line)
-      code_listing =line
-    else
-      text << line
-    end
-  end
-  raise "Could not locate code listing in lines #{lines.inspect}" if code_listing.nil?
-  s = ""
-  add_line(s, to_text_content(text)) 
-  add_line(s, to_text_content(pretty_print_code_listing(code_listing)))
-  return s
-end
-
-def no_pesudocode_msg(caption=nil)
-  cap = (caption.nil?) ? "" : caption
-  "<p><emph>#{cap} Please refer to the book for the pseudocode listing.</emph></p>\n"
-end
-
-def prepare_pseudocode(lines)
-  text = []
-  incode, caption = false, nil
-  lines.each do |line| 
-    if starts_with?(line, "\\begin{algorithm}")
-      text << no_pesudocode_msg(caption) if incode
-      incode = true
-    else 
-      if incode
-        caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
-      else
-        text << line
-      end
-    end
-  end
-  text << no_pesudocode_msg(caption) if incode
-  return add_line("", to_text_content(text))
 end
 
 def collect_citations_for_page(data)
@@ -250,6 +272,31 @@ def collect_citations_for_page(data)
     end    
   end while !stack.empty?
   return citations.sort
+end
+
+# collect all 'sub-pages' in a chapter overview
+def collect_subpages_for_page(data)
+  stack, subpages = [], []
+  stack << data
+  begin
+    element = stack.shift
+    element.each do |e| 
+      if e.kind_of?(Hash)
+        stack << e[:content]
+      elsif e.kind_of?(String)
+        next if e.nil? or e.empty?
+        #e.scan(/\\newpage\\begin{bibunit}\\input{/) do |c| 
+        e.gsub(/\\newpage\\begin\{bibunit\}\\input\{/) do |c| 
+          filename = e.match(/\\input\{([^}]+)\}/).to_s
+          subpages << filename[(filename.index("/")+1)...-1]
+          ""
+        end        
+      else 
+        raise "got something unexpected in raw structure: #{e}"
+      end
+    end    
+  end while !stack.empty?
+  return subpages
 end
 
 # crunch text in bibtex fields to be human readable
@@ -334,6 +381,11 @@ def generate_bib_entry(entry)
     s << "\"#{process_bibtex entry[:title]}\", "
     s << "#{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
     s << "#{process_bibtex entry[:year]}."
+  elsif entry.type == :unpublished
+    # author, title
+    s << "#{process_bibtex entry[:author]}, "
+    s << "\"#{process_bibtex entry[:title]}\", "
+    s << "#{process_bibtex entry[:year]}."
   else 
     raise "Unknown bibtex type: #{entry.type}"    
   end
@@ -372,7 +424,9 @@ def prepare_bibliography(data, bib)
   return s
 end
 
+# TODO section refs "Section {subsec:nfl}" (problem solving strategies)
 # TODO link to known algorithms (maybe)
+# TODO process links to appendix (intro)
 def post_process_text(s)
   # citations
   s = replace_citations(s)
@@ -384,8 +438,18 @@ def post_process_text(s)
   s = replace_emph(s)
   # textbf
   s = replace_bf(s)
+  # urls
+  s = replace_urls(s)
+  # footnotes
+  s = replace_footnotes(s)
+  # paragrams
+  s = replace_paragraphs(s)
+  # chapter refs
+  s = replace_chapter_refs(s)
   # section refs
   s = remove_section_refs(s)
+  # replace markboth with nothing
+  s = replace_markboth(s)
   # remove hypenation suggestions
   s = remove_hyph_suggestions(s)
   # replace \% with %
@@ -395,189 +459,168 @@ def post_process_text(s)
   # replace \" and \' with nothing
   s = s.gsub("\\\"", "")
   s = s.gsub("\\\'", "")
+  # replace ~ with space
+  s = s.gsub("~", " ")
+  # replace \$ with $ (testing algorithms)
+  s = s.gsub("\\$", "$")
+  # replace \_ with _ (testing algorithms)
+  s = s.gsub("\\_", "_")  
+  # replace \# with # (appendix)
+  s = s.gsub("\\#", "#")
+  # replace \{ with { (appendix)
+  s = s.gsub("\\{", "{")
+  # replace \} with } (appendix)
+  s = s.gsub("\\}", "}") 
+  # replace \\ with <br /> (appendix)
+  s = s.gsub("\\\\", "<br />") 
   return s
 end
 
+# TODO process tables (devise new algorithms)
 # TODO process equations (PSO)
 # TODO process align equations (PSO)
+# TODO display pseudocode algorithm (all algorithms)
+# TODO process displaying images (visualizing algorithms)
 def to_text_content(data)
   s = ""
-  # state machine for building paragraphs/items
-  out, in_items = true, false
+  # state machine for building paragraphs/items/algorithms
+  out, in_items, in_algorithm, in_listing, in_enum = true, false, false, false, false
+  algorithm_caption = nil
   data.each do |line|
-    if line.empty? and !in_items
+    if line.empty? and !in_items # end paragraph
       s << "</p>\n" if !out
       out = true
-    elsif starts_with?(line, "\\begin{itemize}")
-      s << "</p>\n" if !out
+    elsif starts_with?(line, "\\lstinputlisting[firstline=") # listing file
+      s << pretty_print_code_listing(line)
+    elsif starts_with?(line, "\\begin{itemize}") # start itemize
+      s << "</p>\n" if !out # end paragraph
       add_line(s, "<ul>")
       out, in_items = true, true
-    elsif starts_with?(line, "\\end{itemize}")
+    elsif starts_with?(line, "\\end{itemize}")  # end itemize
       out, in_items = true, false
       add_line(s, "</ul>")
+    elsif starts_with?(line, "\\begin{algorithm}") # start pseudocode
+      s << "</p>\n" if !out # end paragraph
+      out, in_algorithm = true, true
+    elsif starts_with?(line, "\\end{algorithm}") # end pseudocode
+      out, in_algorithm = true, false
+      raise "Could not find caption for pseudocode" if algorithm_caption.nil?
+      add_line(s, "<p>")
+      add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")
+      add_line(s, algorithm_caption)
+      add_line(s, "<p>")
+      algorithm_caption = nil
+    elsif starts_with?(line, "\\begin{lstlisting}") # start listing
+      s << "</p>\n" if !out # end paragraph
+      out, in_listing = true, true
+      add_line(s, "<pre class='prettyprint lang-ruby'>")
+    elsif starts_with?(line, "\\end{lstlisting}") # end listing
+      out, in_listing = true, false
+      add_line(s, "</pre>")
+      # TODO CAPTION
+    elsif starts_with?(line, "\\begin{enumerate}") # start enumerate
+      s << "</p>\n" if !out # end paragraph
+      add_line(s, "<ol>")
+      out, in_enum = true, true
+    elsif starts_with?(line, "\\end{enumerate}")  # end enumerate
+      out, in_enum = true, false
+      add_line(s, "</ol>")
     else 
       if out
         if in_items
           add_line(s, "<li>#{post_process_text(line).gsub("\\item", "")}</li>")
+        elsif in_enum
+          add_line(s, "<li>#{post_process_text(line).gsub("\\item", "")}</li>")
+        elsif in_algorithm
+          # ignore (for now)
+          algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
+        elsif in_listing
+          add_line(s, line)
         else
-          s << "<p>#{line}\n"
+          add_line(s, "<p>"+line)
           out = false
         end
       else
-        s << "#{line}\n"
+        add_line(s, line)
       end   
     end
   end
-  s << "</p>\n" if !out
+  add_line(s, "</p>") if !out
   s = post_process_text(s)
   return s
 end
 
-def html_for_algortihm(data, bib)
-  s = ""
-  # name
-  add_line(s, "<h1>#{data[:name]}</h1>")
-  add_line(s, "<emph>#{data[:other_names]}</emph>")
-  # taxonomy
-  add_line(s, "<h2>Taxonomy</h2>")
-  add_line(s, to_text_content(data[:taxonomy]))
-  # strategy
-  add_line(s, "<h2>Strategy</h2>")
-  add_line(s, to_text_content(data[:strategy]))
-  # metaphor
-  if !data[:metaphor].nil?
-    add_line(s, "<h2>Metaphor</h2>")
-    add_line(s, to_text_content(data[:metaphor]))  
+def get_algorithm_name(filename)
+  lines = get_all_data_lines(filename)
+  processed = general_process_file(lines)  
+  return processed.last[:section]
+end
+
+# for intro chapter (at least)
+def header_for_hash(hash, has_chapter)
+  if !has_chapter
+    return "<h1>#{post_process_text hash[:section]}</h1>" if !hash[:section].nil?
+    return "<h2>#{post_process_text hash[:subsec]}</h2>" if !hash[:subsec].nil?
+    return "<h3>#{post_process_text hash[:subsubsec]}</h3>" if !hash[:subsubsec].nil?  
   end
-  # procedure
-  add_line(s, "<h2>Procedure</h2>")
-  add_line(s, prepare_pseudocode(data[:procedure]))
-  # code
-  add_line(s, "<h2>Code Listing</h2>")
-  add_line(s, prepare_code_listing(data[:code]))
-  # heuristics
-  add_line(s, "<h2>Heuristics</h2>")
-  add_line(s, "<ul>")
-  data[:heuristics].each do |heuristic|
-    add_line(s, "<li>#{post_process_text heuristic}</li>")
+  return "<h1>#{post_process_text hash[:chapter]}</h1>" if !hash[:chapter].nil?
+  return "<h2>#{post_process_text hash[:section]}</h2>" if !hash[:section].nil?
+  return "<h3>#{post_process_text hash[:subsec]}</h3>" if !hash[:subsec].nil?
+  return "<h4>#{post_process_text hash[:subsubsec]}</h4>" if !hash[:subsubsec].nil?
+end
+
+def recursive_html_for_chapter(data, has_chapter=true)
+  s, lines = "", []
+  data.each do |element|
+    # some kind of sub-section
+    if element.kind_of?(Hash) 
+      # purge any collected lines
+      if !lines.empty?
+        add_line(s, to_text_content(lines))
+        lines = []
+      end  
+      # heading
+      add_line(s, header_for_hash(element, has_chapter))
+      # recursively process content
+      add_line(s, recursive_html_for_chapter(element[:content], has_chapter))
+    else
+      # always ignore some lines at this point
+      next if starts_with?(element, "\\newpage\\begin{bibunit}\\input{")
+      next if starts_with?(element, "\\addcontentsline{toc}")
+      # collect lines (so we can process them in batch)
+      lines << element
+    end
   end
-  add_line(s, "</ul>")
-  # references
-  add_line(s, "<h2>References</h2>")
-  add_line(s, "<h3>Primary Sources</h3>")
-  add_line(s, to_text_content(data[:refs][:primary]))  
-  add_line(s, "<h3>Learn More</h3>")
-  add_line(s, to_text_content(data[:refs][:secondary]))
-  # Bibliography
-  add_line(s, "<h2>Bibliography</h2>")  
-  add_line(s, prepare_bibliography(data[:raw], bib))
+  # check for any left over lines (this 'section' is all lines)
+  add_line(s, to_text_content(lines)) if !lines.empty?
   return s
 end
 
-def write_algorithm(data, bib, filename)
-  html = html_for_algortihm(data, bib)
-  File.open(filename, 'w') {|f| f.write(html) }
-  puts " > successfully wrote algorithm '#{data[:name]}' to: #{filename}"
+
+def html_for_algorithm(data, bib)
+  s = recursive_html_for_chapter(data, false)
+  # bib
+  add_line(s, "<h2>Bibliography</h2>")  
+  add_line(s, prepare_bibliography(data, bib))
+  return s
 end
 
-# lazy algorithm processing
-def process_algorithm(filename)  
-  data = {} 
-  lines = get_all_data_lines(filename)
-  processed = general_process_file(lines)  
-  data[:raw] = processed 
-  # basics
-  data[:name] = processed.first[:section]
-  processed.first[:content].each do |element|
-    break if !element.kind_of?(String)
-    data[:other_names] = get_data_in_brackets(element) if starts_with?(element, "\\emph")
-  end 
-  raise "could not find name" if data[:name].nil?
-  raise "could not find other names" if data[:other_names].nil?
-  # expect a series of subsections
-  text_sections = ["Taxonomy", "Inspiration", "Strategy", "Metaphor", "Procedure", "Code Listing"]
-  processed.first[:content].each do |node|
-    next if !node.kind_of?(Hash)
-    # text
-    if text_sections.include?(node[:subsec])    
-      data[:taxonomy] = node[:content] if node[:subsec] == "Taxonomy"
-      data[:inspiration] = node[:content] if node[:subsec] == "Inspiration"
-      data[:strategy] = node[:content] if node[:subsec] == "Strategy"
-      data[:metaphor] = node[:content] if node[:subsec] == "Metaphor"
-      data[:procedure] = node[:content] if node[:subsec] == "Procedure"
-      data[:code] = node[:content] if node[:subsec] == "Code Listing"
-    # heuristics
-    elsif node[:subsec] == "Heuristics"
-      heuristics = []
-      node[:content].each do |element|
-        next if element.empty?
-        next if element.include?("\\begin{itemize}")
-        next if element.include?("\\end{itemize}")
-        heuristics << element.gsub("\\item", "")
-      end
-      data[:heuristics] = heuristics 
-    # references
-    elsif node[:subsec] == "References"
-      refs = {}
-      node[:content].each do |element|
-        next if !element.kind_of?(Hash)
-        if element[:subsubsec] == "Primary Sources"
-          refs[:primary] = element[:content]
-        elsif element[:subsubsec] == "Learn More"
-          refs[:secondary] = element[:content]
-        end
-      end
-      data[:refs] = refs
-    else
-      raise "Unknown subsection #{node[:subsec]}, file=#{filename}"
-    end
-  end
-#  puts " > successfull processed: #{data[:name]}"
-  return data
-end
-
+# TODO add bread crumbs on algorithms`
 # TODO list algorithms before 'extensions'
-# TODO use full algorithm name
-def html_for_algortihm_chapter(name, data, bib)
-  algos = []
-  s = ""
-  # name
-  add_line(s, "<h1>#{data.first[:chapter]}</h1>")
-  # process sections
-  data.first[:content].each do |element|    
-    if element.kind_of?(Hash) # section      
-      add_line(s, "<h2>#{element[:section]}</h2>")
-      element[:content].each do |sec|   
-        if sec.kind_of?(Hash) # subsection
-          add_line(s, "<h3>#{sec[:subsec]}</h3>")
-          lines = []
-          sec[:content].each do |line|
-            if starts_with?(line, "\\newpage\\begin{bibunit}\\input{")
-              algos << line
-            else
-              lines << line
-            end
-          end
-          add_line(s, to_text_content(lines))
-        else
-          add_line(s, to_text_content(sec))
-        end
-      end
-    else
-      add_line(s, to_text_content(element))
-    end
-  end
+def html_for_chapter_overview(name, data, source, bib, subsecname)
+  s = recursive_html_for_chapter(data)
   # Algorithms
-  add_line(s, "<h3>Algorithms</h3>")
+  add_line(s, "<h3>#{subsecname}</h3>")
   add_line(s, "<ul>")
-  algos.each do |line|
-    filename = line.match(/\\input\{([^}]+)\}/).to_s
-    filename = filename[(filename.index("/")+1)...-1]
-    add_line(s, "<li><a href='#{name}/#{filename}.html'>#{filename}</a></li>")
+  algos = collect_subpages_for_page(data)
+  algos.each do |filename|
+    # super lazy at getting algorithm names - consider a better process
+    algo_name = get_algorithm_name(source+"/"+filename+".tex")
+    add_line(s, "<li><a href='#{name}/#{filename}.html'>#{algo_name}</a></li>")
   end
   add_line(s, "</ul>")
   # Bibliography
-  # lazy!
+  # lazy check - some chapter overviews do not have a bib!
   citations = collect_citations_for_page(data)
   if !citations.empty?
     add_line(s, "<h3>Bibliography</h3>")  
@@ -586,10 +629,10 @@ def html_for_algortihm_chapter(name, data, bib)
   return s
 end
 
-def process_chapter_overview(name, bib)
+def process_chapter_overview(name, bib, source, subsecname="Algorithms")
   lines = get_all_data_lines("../book/c_#{name}.tex")
   processed = general_process_file(lines)
-  html = html_for_algortihm_chapter(name, processed, bib)
+  html = html_for_chapter_overview(name, processed, source, bib, subsecname)
   filename = OUTPUT_DIR + "/"+name+".html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote algorithm chapter overview '#{name}' to: #{filename}"
@@ -598,36 +641,137 @@ end
 def build_algorithm_chapter(name, bib)
   dirname = OUTPUT_DIR + "/"+name
   create_directory(dirname)
-  # process chapter overview
-  process_chapter_overview(name, bib)  
-  # process all algorithms for algorithm chapter
   source = "../book/a_"+name
+  # process chapter overview
+  process_chapter_overview(name, bib, source)  
+  # process all algorithms for algorithm chapter  
   Dir.entries(source).each do |file|
     next if file == "." or file == ".."
     next if File.extname(file) != ".tex"
     # load and process the algorithm
-    data = process_algorithm(source + "/" + file)
+    lines = get_all_data_lines(source + "/" + file)
+    processed = general_process_file(lines)
     # write the html for the algorithm
-    write_algorithm(data, bib, "#{dirname}/#{file[0...-4]}.html")
+    html = html_for_algorithm(processed, bib)
+    filename = "#{dirname}/#{file[0...-4]}.html"
+    File.open(filename, 'w') {|f| f.write(html) }
+    puts " > successfully wrote algorithm '#{processed.first[:section]}' to: #{filename}"
   end
 end
 
+def html_for_chapter(data, bib)
+  # process section
+  s = recursive_html_for_chapter(data)  
+  # Bibliography
+  # lazy check - some chapter overviews do not have a bib!
+  citations = collect_citations_for_page(data)
+  if !citations.empty?
+    add_line(s, "<h2>Bibliography</h2>")  
+    add_line(s, prepare_bibliography(data, bib))
+  end
+  return s
+end
 
+def build_chapter(bib, name)
+  lines = get_all_data_lines("../book/#{name}.tex")
+  processed = general_process_file(lines)
+  html = html_for_chapter(processed, bib)
+  output = name[(name.index('_')+1)..-1]
+  filename = OUTPUT_DIR + "/"+output+".html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote chapter '#{name}' to: #{filename}"
+end
+
+def build_advanced_chapter(bib, name="advanced")
+  dirname = OUTPUT_DIR + "/"+name
+  create_directory(dirname)
+  source = "../book/c_"+name
+  # process chapter overview
+  process_chapter_overview(name, bib, source, "Advanced Topics")  
+  # process all algorithms for algorithm chapter  
+  Dir.entries(source).each do |file|
+    next if file == "." or file == ".."
+    next if File.extname(file) != ".tex"
+    # load and process the algorithm
+    lines = get_all_data_lines(source + "/" + file)
+    processed = general_process_file(lines)
+    # html for section
+    html = html_for_algorithm(processed, bib)
+    filename = "#{dirname}/#{file[0...-4]}.html"
+    File.open(filename, 'w') {|f| f.write(html) }
+    puts " > successfully wrote topic '#{processed.first[:section]}' to: #{filename}"
+  end
+end
+
+def build_appendix(bib, name="appendix1")
+  lines = get_all_data_lines("../book/b_#{name}.tex")
+  processed = general_process_file(lines)
+  html = html_for_chapter(processed, bib)
+  filename = OUTPUT_DIR + "/"+name+".html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote appendix '#{name}' to: #{filename}"
+end
+
+def create_toc_html(algorithms, frontmatter)
+  s = ""
+  # front matter
+  frontmatter.each do |name|
+    output = name[(name.index('_')+1)..-1]
+    add_line(s, "<a href='#{output}.html'>#{output}</a><br />")
+  end
+  # intro
+  add_line(s, "<strong>Background</strong><br />")
+  add_line(s, "<a href='introduction.html'>Introduction</a><br />")
+  # algorithms
+  add_line(s, "<strong>Algorithms</strong><br />")
+  algorithms.each do |name|
+    add_line(s, "<a href='#{name}.html'>#{name}</a><br />")
+    lines = get_all_data_lines("../book/c_#{name}.tex")
+    data = general_process_file(lines)
+    algos = collect_subpages_for_page(data)
+    add_line(s, "<ol>")
+    algos.each do |filename|
+      # super lazy at getting algorithm names - consider a better process
+      algo_name = get_algorithm_name("../book/a_#{name}/"+filename+".tex")
+      add_line(s, "<li><a href='#{name}/#{filename}.html'>#{algo_name}</a></li>")
+    end
+    add_line(s, "</ol>")
+  end
+  # advanced
+  add_line(s, "<strong>Extensions</strong><br />")
+  add_line(s, "<a href='advanced.html'>Advanced Topics</a><br />")
+  # appendix
+  add_line(s, "<a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a><br />")
+  return s
+end
+
+def build_toc(algorithms, frontmatter)
+  html = create_toc_html(algorithms, frontmatter)
+  filename = OUTPUT_DIR + "/clever_algorithms.html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote toc to: #{filename}"
+end
+
+# these are ordered
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
+# TODO add "f_copyright"
+FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
 
 if __FILE__ == $0
   # create dir
   create_directory(OUTPUT_DIR)
   # load the bib 
   bib = load_bibtex()
-  
+  # TOC
+  build_toc(ALGORITHM_CHAPTERS, FRONT_MATTER)
+  # front matter
+  FRONT_MATTER.each {|name| build_chapter(bib, name) }
+  # introduction chapter
+  build_chapter(bib, "c_introduction")  
   # process algorithm chapters
   ALGORITHM_CHAPTERS.each {|name| build_algorithm_chapter(name, bib) }
-  
-  # build_algorithm_chapter("evolution", bib)
-  
-  # test for a single algorithm
-  # data = process_algorithm("../book/a_stochastic/iterated_local_search.tex")
-  # write_algorithm(data, bib, "#{OUTPUT_DIR}/test.html")
-  
+  # advaced topics 
+  build_advanced_chapter(bib)  
+  # appendix
+  build_appendix(bib) 
 end
