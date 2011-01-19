@@ -424,9 +424,38 @@ def prepare_bibliography(data, bib)
   return s
 end
 
+def process_table(lines)
+  s = ""
+  add_line(s, "<table border='1'>")
+  
+  lines.each do |line| 
+    next if starts_with?(line, "\\centering")
+    next if starts_with?(line, "\\begin{tabularx}")
+    next if starts_with?(line, "\\end{tabularx}")
+    next if starts_with?(line, "\\toprule")
+    next if starts_with?(line, "\\bottomrule")
+    next if starts_with?(line, "\\midrule")
+    
+    if starts_with?(line.strip, "\\caption")
+      add_line(s, "<caption align=bottom>#{get_data_in_brackets(line)}</caption>")
+    else
+      lines = line.gsub("\\\\", "") # remove \\ on the end
+      add_line(s, "<tr>")
+      line.split("&").each do |td|
+        add_line(s, "<td>#{td.strip}</td>")
+      end
+      add_line(s, "</tr>")
+    end
+  end
+  
+  add_line(s, "</table>")
+  return s
+end
+
 # TODO section refs "Section {subsec:nfl}" (problem solving strategies)
 # TODO link to known algorithms (maybe)
 # TODO process links to appendix (intro)
+# TODO table refs replace with the following table... (devise new algorithm)
 def post_process_text(s)
   # citations
   s = replace_citations(s)
@@ -476,7 +505,6 @@ def post_process_text(s)
   return s
 end
 
-# TODO process tables (devise new algorithms)
 # TODO process equations (PSO)
 # TODO process align equations (PSO)
 # TODO display pseudocode algorithm (all algorithms)
@@ -485,7 +513,9 @@ def to_text_content(data)
   s = ""
   # state machine for building paragraphs/items/algorithms
   out, in_items, in_algorithm, in_listing, in_enum = true, false, false, false, false
+  in_table = false
   algorithm_caption = nil
+  table_collection = []
   data.each do |line|
     if line.empty? and !in_items # end paragraph
       s << "</p>\n" if !out
@@ -525,6 +555,13 @@ def to_text_content(data)
     elsif starts_with?(line, "\\end{enumerate}")  # end enumerate
       out, in_enum = true, false
       add_line(s, "</ol>")
+    elsif starts_with?(line, "\\begin{table}") # start table
+      s << "</p>\n" if !out # end paragraph
+      out, in_table = true, true
+    elsif starts_with?(line, "\\end{table}")  # end table
+      out, in_table = true, false
+      add_line(s, process_table(table_collection))
+      table_collection = []      
     else 
       if out
         if in_items
@@ -536,6 +573,8 @@ def to_text_content(data)
           algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
         elsif in_listing
           add_line(s, line)
+        elsif in_table
+          table_collection << line
         else
           add_line(s, "<p>"+line)
           out = false
