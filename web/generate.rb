@@ -25,8 +25,8 @@ def get_all_data_lines(filename)
   raw = IO.readlines(filename)  
   # strip comments
   lines, gotdata = [], false
-  raw.each do |line| 
-    line = line.strip
+  raw.each do |raw_line| 
+    line = raw_line.strip
     next if !gotdata and (line.empty? or line.nil?)
     next if !line.empty? and starts_with?(line, "%")
     next if !line.empty? and starts_with?(line, "\\label")
@@ -43,7 +43,7 @@ def get_all_data_lines(filename)
     next if !line.empty? and starts_with?(line, "\\end{small}")
     next if !line.empty? and starts_with?(line, "\\begin{flushright}")
     next if !line.empty? and starts_with?(line, "\\end{flushright}")
-    lines << line
+    lines << raw_line
     gotdata = true
   end
 #  puts " > loaded #{lines.size} lines from #{raw.size-lines.size} raw lines from #{filename}"
@@ -59,7 +59,8 @@ end
 def general_process_file(lines)
   data = []
   chap, sec, subsec, subsubsec = false, false, false, false
-  lines.each do |line|
+  lines.each do |raw_line|
+    line = raw_line.strip
     if starts_with?(line, "\\chapter")
       node = {}
       node[:chapter] = get_data_in_brackets(line)
@@ -87,15 +88,15 @@ def general_process_file(lines)
       node[:content] = []
       ((chap) ? data.last[:content].last[:content].last[:content] : data.last[:content].last[:content]) << node
     else
-      # we just have a line
+      # we just have a line (store the raw line)
       if subsubsec
-        ((chap) ? data.last[:content].last[:content].last[:content].last[:content] : data.last[:content].last[:content].last[:content]) << line
+        ((chap) ? data.last[:content].last[:content].last[:content].last[:content] : data.last[:content].last[:content].last[:content]) << raw_line
       elsif subsec
-        ((chap) ? data.last[:content].last[:content].last[:content] : data.last[:content].last[:content]) << line
+        ((chap) ? data.last[:content].last[:content].last[:content] : data.last[:content].last[:content]) << raw_line
       elsif sec
-        ((chap) ? data.last[:content].last[:content] : data.last[:content]) << line
+        ((chap) ? data.last[:content].last[:content] : data.last[:content]) << raw_line
       elsif chap
-        data.last[:content] << line
+        data.last[:content] << raw_line
       else
         raise "got line and not in a known section type: #{line}"
       end
@@ -124,14 +125,35 @@ end
 
 # TODO look for all examples in the output and make sure they read well
 def replace_listings(s)
-  # listings  
-  s = s.gsub(/Algorithm\~\\ref\{([^}]+)\}/) do |elem|
-    "The following listing"
-  end
   # algorithms
-  s = s.gsub(/Listing\~\\ref\{([^}]+)\}/) do |elem|
+  s = s.gsub(/Algorithm\~\\ref\{([^}]+)\}/) do |elem|
     "The following algorithm"
   end
+  # listings  
+  s = s.gsub(/Listing\~\\ref\{([^}]+)\}/) do |elem|
+    "The following listing"
+  end
+  # tables (NOTE: the lower case) - used only in devising new algorithms
+  s = s.gsub(/Table\~\\ref\{([^}]+)\}/) do |elem|
+    "the following table" 
+  end  
+  # figure
+  s = s.gsub(/Figure\~\\ref\{([^}]+)\}/) do |elem|
+    "The following figure"
+  end  
+  return s
+end
+
+# custom refs
+def replace_custom_refs(s)
+  # Appendix~\ref{ch:appendix1}
+  s = s.gsub("Appendix~\\ref{ch:appendix1}") do |elem|
+    "<a href='appendix1.html'>Appendix A: Ruby: Quick-Start Guide</a>"
+  end
+  # Section~{subsec:nfl} in problem solving strategies
+  s = s.gsub("Section~{subsec:nfl}") do |elem|
+    "the <a href='../introduction.html'>Introduction</a>"
+  end  
   return s
 end
 
@@ -226,11 +248,32 @@ def remove_hyph_suggestions(s)
   return s.gsub("\\-") {|e| ""}
 end
 
+def process_angle_brackets(s)
+  s = s.gsub("<", "&lt;")
+  s = s.gsub(">", "&gt;")
+  return s
+end
+
 # TODO add download link for source code (github? local?)
-# TODO pretty print does not like angle brackets <>
 # create the pretty print
 # http://code.google.com/p/google-code-prettify/
 # http://google-code-prettify.googlecode.com/svn/trunk/README.html
+def final_pretty_code_listing(lines, caption=nil)
+  # remove trailining white space
+  lines.each_with_index {|r,i| lines[i]=r.rstrip}
+  # make a string
+  raw = lines.join("\n") 
+  # pretty print does not like <> brackets
+  raw = process_angle_brackets(raw)
+  s = ""
+  add_line(s, "<pre class='prettyprint lang-rb'>")
+  add_line(s, raw)
+  add_line(s, "</pre>")
+  add_line(s, "<caption>#{caption}</caption>") if !caption.nil?
+  #add_line(s, "<a href="">Download</a>")
+  return s
+end
+
 def pretty_print_code_listing(code_listing_line)
   # get the file
   filename = get_data_in_brackets(code_listing_line)
@@ -238,13 +281,10 @@ def pretty_print_code_listing(code_listing_line)
   parts = code_listing_line.split(",")
   raise "Caption not where expected" if !starts_with?(parts[2], "caption")
   caption = parts[2][(parts[2].index("=")+1)..-1]
-  raw = IO.readlines(filename)
-  raw.each_with_index {|r,i| raw[i]=r.rstrip}
-  s = ""
-  add_line(s, "<pre class='prettyprint lang-rb'>")
-  add_line(s, raw[6..-1].join("\n"))
-  add_line(s, "</pre>")
-  add_line(s, "<div>#{caption}</div>")
+  raw = IO.readlines(filename)  
+  # trip top 7 lines
+  raw = raw[6..-1]
+  s = final_pretty_code_listing(raw, caption)
   return s
 end
 
@@ -420,7 +460,7 @@ def prepare_bibliography(data, bib)
       entry = generate_bib_entry(hash[c])
       add_line(s, " <td>#{entry}</td>")
     add_line(s, " </tr>")
-  end  
+  end
   add_line(s, "</table>")
   return s
 end
@@ -443,7 +483,7 @@ def process_table(lines)
       lines = line.gsub("\\\\", "") # remove \\ on the end
       add_line(s, "<tr>")
       line.split("&").each do |td|
-        add_line(s, "<td>#{td.strip}</td>")
+        add_line(s, "<td>#{td.strip}</td>") # do we need to process this text? - na
       end
       add_line(s, "</tr>")
     end
@@ -453,15 +493,50 @@ def process_table(lines)
   return s
 end
 
-# TODO section refs "Section {subsec:nfl}" (problem solving strategies)
+def process_align(lines)
+  s = lines.join(" ")
+  # remove &
+  s = s.gsub("&", "")
+  # remove \\
+  s = s.gsub("\\\\", "")
+  return "$#{s}$" # math!
+end
+
+def process_equation(lines)
+  s = lines.join(" ")  
+  return "$#{s}$" # math!
+end
+
+# TODO assume images in rails friendly location
+def process_figure(lines)
+  caption, filename = nil, nil
+  lines.each do |line|
+    caption = get_data_in_brackets(line) if starts_with?(line.strip, "\\caption")
+    if starts_with?(line.strip, "\\input") or starts_with?(line.strip, "\\includegraphics")
+      filename = get_data_in_brackets(line) 
+    end
+    break if !caption.nil? and !filename.nil?
+  end
+  raise "Could not locate data caption=#{caption}, filename=#{filename}" if filename.nil? or caption.nil?
+  #png = "../book/" + filename + ".png"
+  just_file = filename[(filename.index('/')+1)...-1]
+  s = ""
+  add_line(s, "<img src='#{just_file}.png' align='middle' alt='#{caption}'>")
+  add_line(s, "<br />")
+  add_line(s, "<caption>#{caption}</caption>")
+  
+  return s
+end
+
 # TODO link to known algorithms (maybe)
-# TODO process links to appendix (intro)
-# TODO table refs replace with the following table... (devise new algorithm)
+# be careful - even code goes through this!
 def post_process_text(s)
   # citations
   s = replace_citations(s)
-  # listings
+  # listings, algorithms, tables
   s = replace_listings(s)
+  # custom 
+  s = replace_custom_refs(s)
   # texttt
   s = replace_texttt(s)
   # emph
@@ -506,18 +581,36 @@ def post_process_text(s)
   return s
 end
 
-# TODO process equations (PSO)
-# TODO process align equations (PSO)
+# from visualization chapter and appendix
+def process_code_listing(lines)
+  # extract caption
+  caption = nil
+  # no caption for listings in appendix
+  if !lines.first.index(",").nil?
+    raise "error [#{lines.first.index(",")}] [#{lines.first}]" if lines.first.split(",").size != 2
+    raise "error" if lines.first.split(",").first.split("=").size != 2
+    caption = lines.first.split(",").first.split("=")[1]  
+  end
+  # remove start and end
+  lines = lines[1..-1]
+  # pretty print  
+  return final_pretty_code_listing(lines, caption)
+end
+
+# TODO <> inside math in grammatical evolution (consider making non-math and texttt)
+# TODO array equations (Hopfield)
 # TODO display pseudocode algorithm (all algorithms)
-# TODO process displaying images (visualizing algorithms)
 def to_text_content(data)
   s = ""
   # state machine for building paragraphs/items/algorithms
   out, in_items, in_algorithm, in_listing, in_enum = true, false, false, false, false
-  in_table = false
+  in_table, in_align, in_equation, in_figure = false, false, false, false
   algorithm_caption = nil
-  table_collection = []
-  data.each do |line|
+  table_collection, align_collection, equation_collection, figure_collection = [], [], [], []
+  listing_collection = []
+  data.each do |raw_line|
+    # STRIP white space
+    line = raw_line.strip
     if line.empty? and !in_items # end paragraph
       s << "</p>\n" if !out
       out = true
@@ -537,18 +630,18 @@ def to_text_content(data)
       out, in_algorithm = true, false
       raise "Could not find caption for pseudocode" if algorithm_caption.nil?
       add_line(s, "<p>")
-      add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")
+      add_line(s, "<pre prettyprint'>Please refer to the book for the pseudocode.</pre>")
       add_line(s, algorithm_caption)
       add_line(s, "<p>")
       algorithm_caption = nil
     elsif starts_with?(line, "\\begin{lstlisting}") # start listing
       s << "</p>\n" if !out # end paragraph
-      out, in_listing = true, true
-      add_line(s, "<pre class='prettyprint lang-rb'>")
+      out, in_listing = true, true    
+      listing_collection << raw_line # unstripped
     elsif starts_with?(line, "\\end{lstlisting}") # end listing
       out, in_listing = true, false
-      add_line(s, "</pre>")
-      # TODO CAPTION
+      add_line(s, process_code_listing(listing_collection))
+      listing_collection = []
     elsif starts_with?(line, "\\begin{enumerate}") # start enumerate
       s << "</p>\n" if !out # end paragraph
       add_line(s, "<ol>")
@@ -556,6 +649,27 @@ def to_text_content(data)
     elsif starts_with?(line, "\\end{enumerate}")  # end enumerate
       out, in_enum = true, false
       add_line(s, "</ol>")
+    elsif starts_with?(line, "\\begin{align") # start align
+      s << "</p>\n" if !out # end paragraph
+      out, in_align = true, true
+    elsif starts_with?(line, "\\end{align")  # end align
+      out, in_align = true, false
+      add_line(s, process_align(align_collection))
+      align_collection = []      
+    elsif starts_with?(line, "\\begin{equation") # start equation
+      s << "</p>\n" if !out # end paragraph
+      out, in_equation = true, true
+    elsif starts_with?(line, "\\end{equation")  # end equation
+      out, in_equation = true, false
+      add_line(s, process_equation(equation_collection))
+      equation_collection = []           
+    elsif starts_with?(line, "\\begin{figure}") # start figure
+      s << "</p>\n" if !out # end paragraph
+      out, in_figure = true, true
+    elsif starts_with?(line, "\\end{figure}")  # end figure
+      out, in_figure = true, false
+      add_line(s, process_figure(figure_collection))
+      figure_collection = []       
     elsif starts_with?(line, "\\begin{table}") # start table
       s << "</p>\n" if !out # end paragraph
       out, in_table = true, true
@@ -573,9 +687,15 @@ def to_text_content(data)
           # ignore (for now)
           algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
         elsif in_listing
-          add_line(s, line)
+          listing_collection << raw_line # unstripped
         elsif in_table
           table_collection << line
+        elsif in_align
+          align_collection << line
+        elsif in_equation
+          equation_collection << line
+        elsif in_figure
+          figure_collection << line
         else
           add_line(s, "<p>"+line)
           out = false
@@ -637,18 +757,34 @@ def recursive_html_for_chapter(data, has_chapter=true)
 end
 
 
-def html_for_algorithm(data, bib)
-  s = recursive_html_for_chapter(data, false)
+def breadcrumb(parent=nil)
+  s = ""  
+  add_line(s, "<div class='breadcrumb'>") 
+  if parent.nil?  
+    add_line(s, "<a href='index.html'>Contents</a>")
+  else
+    add_line(s, "<a href='../index.html'>Contents</a>")
+    add_line(s, "&gt;&gt; <a href='../#{parent[:link]}.html'>#{parent[:name]}</a>")
+  end
+  add_line(s, "</div>") 
+  return s
+end
+
+def html_for_algorithm(data, bib, parent)
+  s = ""
+  s << breadcrumb(parent)
+  s << recursive_html_for_chapter(data, false)
   # bib
   add_line(s, "<h2>Bibliography</h2>")  
   add_line(s, prepare_bibliography(data, bib))
   return s
 end
 
-# TODO add bread crumbs on algorithms`
 # TODO list algorithms before 'extensions'
 def html_for_chapter_overview(name, data, source, bib, subsecname)
-  s = recursive_html_for_chapter(data)
+  s = ""
+  s << breadcrumb()
+  s << recursive_html_for_chapter(data)
   # Algorithms
   add_line(s, "<h3>#{subsecname}</h3>")
   add_line(s, "<ul>")
@@ -676,6 +812,7 @@ def process_chapter_overview(name, bib, source, subsecname="Algorithms")
   filename = OUTPUT_DIR + "/"+name+".html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote algorithm chapter overview '#{name}' to: #{filename}"
+  return {:link=>name, :name=>processed.last[:chapter]}
 end
 
 def build_algorithm_chapter(name, bib)
@@ -683,7 +820,7 @@ def build_algorithm_chapter(name, bib)
   create_directory(dirname)
   source = "../book/a_"+name
   # process chapter overview
-  process_chapter_overview(name, bib, source)  
+  parent = process_chapter_overview(name, bib, source)  
   # process all algorithms for algorithm chapter  
   Dir.entries(source).each do |file|
     next if file == "." or file == ".."
@@ -692,7 +829,7 @@ def build_algorithm_chapter(name, bib)
     lines = get_all_data_lines(source + "/" + file)
     processed = general_process_file(lines)
     # write the html for the algorithm
-    html = html_for_algorithm(processed, bib)
+    html = html_for_algorithm(processed, bib, parent)
     filename = "#{dirname}/#{file[0...-4]}.html"
     File.open(filename, 'w') {|f| f.write(html) }
     puts " > successfully wrote algorithm '#{processed.first[:section]}' to: #{filename}"
@@ -700,8 +837,10 @@ def build_algorithm_chapter(name, bib)
 end
 
 def html_for_chapter(data, bib)
+  s = ""
+  s << breadcrumb()
   # process section
-  s = recursive_html_for_chapter(data)  
+  s << recursive_html_for_chapter(data)  
   # Bibliography
   # lazy check - some chapter overviews do not have a bib!
   citations = collect_citations_for_page(data)
@@ -727,7 +866,7 @@ def build_advanced_chapter(bib, name="advanced")
   create_directory(dirname)
   source = "../book/c_"+name
   # process chapter overview
-  process_chapter_overview(name, bib, source, "Advanced Topics")  
+  parent = process_chapter_overview(name, bib, source, "Advanced Topics")  
   # process all algorithms for algorithm chapter  
   Dir.entries(source).each do |file|
     next if file == "." or file == ".."
@@ -736,7 +875,7 @@ def build_advanced_chapter(bib, name="advanced")
     lines = get_all_data_lines(source + "/" + file)
     processed = general_process_file(lines)
     # html for section
-    html = html_for_algorithm(processed, bib)
+    html = html_for_algorithm(processed, bib, parent)
     filename = "#{dirname}/#{file[0...-4]}.html"
     File.open(filename, 'w') {|f| f.write(html) }
     puts " > successfully wrote topic '#{processed.first[:section]}' to: #{filename}"
@@ -755,19 +894,23 @@ end
 def create_toc_html(algorithms, frontmatter)
   s = ""
   # front matter
+  add_line(s, "<ol>")
   frontmatter.each do |name|
     output = name[(name.index('_')+1)..-1]
-    add_line(s, "<a href='#{output}.html'>#{output}</a><br />")
+    add_line(s, "<li><a href='#{output}.html'>#{output}</a></li>")
   end
   # intro
-  add_line(s, "<strong>Background</strong><br />")
-  add_line(s, "<a href='introduction.html'>Introduction</a><br />")
+  add_line(s, "<li><strong>Background</strong></li>")
+  add_line(s, "<ol>")
+  add_line(s, "<li><a href='introduction.html'>Introduction</a></li>")
+  add_line(s, "</ol>")
   # algorithms
-  add_line(s, "<strong>Algorithms</strong><br />")
+  add_line(s, "<li><strong>Algorithms</strong></li>")
+  add_line(s, "<ol>")
   algorithms.each do |name|
     lines = get_all_data_lines("../book/c_#{name}.tex")
     data = general_process_file(lines)  
-    add_line(s, "<a href='#{name}.html'>#{data.last[:chapter]}</a><br />")
+    add_line(s, "<li><a href='#{name}.html'>#{data.last[:chapter]}</a></li>")
     algos = collect_subpages_for_page(data)
     add_line(s, "<ol>")
     algos.each do |filename|
@@ -777,13 +920,14 @@ def create_toc_html(algorithms, frontmatter)
     end
     add_line(s, "</ol>")
   end
+  add_line(s, "</ol>")
   # advanced
-  add_line(s, "<strong>Extensions</strong><br />")
-  #add_line(s, "<a href='advanced.html'>Advanced Topics</a><br />")
+  add_line(s, "<li><strong>Extensions</strong></li>")  
   begin
+    add_line(s, "<ol>")
     lines = get_all_data_lines("../book/c_advanced.tex")
     data = general_process_file(lines)  
-    add_line(s, "<a href='advanced.html'>#{data.last[:chapter]}</a><br />")
+    add_line(s, "<li><a href='advanced.html'>#{data.last[:chapter]}</a></li>")
     algos = collect_subpages_for_page(data)
     add_line(s, "<ol>")
     algos.each do |filename|
@@ -791,16 +935,18 @@ def create_toc_html(algorithms, frontmatter)
       algo_name = get_algorithm_name("../book/c_advanced/"+filename+".tex")
       add_line(s, "<li><a href='advanced/#{filename}.html'>#{algo_name}</a></li>")
     end
-    add_line(s, "</ol>")  
+    add_line(s, "</ol>")      
+    add_line(s, "</ol>")
   end
   # appendix
-  add_line(s, "<a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a><br />")
+  add_line(s, "<li><a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a></li>")
+  add_line(s, "</ol>")
   return s
 end
 
 def build_toc(algorithms, frontmatter)
   html = create_toc_html(algorithms, frontmatter)
-  filename = OUTPUT_DIR + "/clever_algorithms.html"
+  filename = OUTPUT_DIR + "/index.html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote toc to: #{filename}"
 end
