@@ -74,8 +74,8 @@ where $n_i$ is the activation of the $i^{th}$ neuron, $w_{i,j}$ with the weight 
 	\[
 	  transfer(n_i) = \left\{ 
 	  \begin{array}{l l}
-	    1 & \quad if \geq \theta\\
-	    -1 & \quad if < \theta\\
+	    1 & \quad if \geq \theta \\
+	   -1 & \quad if < \theta \\
 	  \end{array} \right.
 	\]
 
@@ -102,7 +102,7 @@ where the threshold $\theta$ is typically fixed at 0.
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{hopfield} provides an example of the Hopfield Network algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is an instance of a recall problem where patters are described in terms of a 3$\times$3 matrix of binary values ($\in \{-1,1\}$). Once the network has learned the patterns, the system is exposed to perturbed versions of the patterns (with errors introduced) and must respond with the correct pattern. Two patterns are used in this example, specifically `T', and `U'.
+The problem is an instance of a recall problem where patters are described in terms of a $3 \times 3$ matrix of binary values ($\in \{-1,1\}$). Once the network has learned the patterns, the system is exposed to perturbed versions of the patterns (with errors introduced) and must respond with the correct pattern. Two patterns are used in this example, specifically `T', and `U'.
 
 % algorithm
 The algorithm is an implementation of the Hopfield Network with a one-short training method for the network weights, given that all patterns are already known. The information is propagated through the network using an asynchronous method, which is repeated until no more changes in the node outputs are detected. The patterns are displayed to the console during the testing of the network, with the outputs converted from $\{-1,1\}$ to $\{0,1\}$ for readability.
