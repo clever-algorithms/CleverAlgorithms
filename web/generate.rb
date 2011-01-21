@@ -1066,8 +1066,9 @@ def create_toc_html(algorithms, frontmatter)
   # head
   s << head("Table of Contents", nil, nil)
   # front matter
-  add_line(s, "<h1>Clever Algorithms: Nature-Inspired Programming Recipes</h1>")
-  add_line(s, "By Jason Brownlee<br />")
+  add_line(s, "<h1>Clever Algorithms</h1>")
+  add_line(s, "<h2>Nature-Inspired Programming Recipes</h2>")
+  add_line(s, "By Jason Brownlee<br /><br />")
   add_line(s, "<h2>Table of Contents</h2>")
   add_line(s, "<ol>")
   add_line(s, "<li><a href='copyright.html'>copyright</a></li>") # hard code copyright
