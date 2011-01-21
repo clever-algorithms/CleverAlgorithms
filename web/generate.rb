@@ -1070,6 +1070,7 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "By Jason Brownlee<br />")
   add_line(s, "<h2>Table of Contents</h2>")
   add_line(s, "<ol>")
+  add_line(s, "<li><a href='copyright.html'>copyright</a></li>") # hard code copyright
   frontmatter.each do |name|
     output = name[(name.index('_')+1)..-1]
     add_line(s, "<li><a href='#{output}.html'>#{output}</a></li>")
@@ -1126,9 +1127,35 @@ def build_toc(algorithms, frontmatter)
   puts " > successfully wrote toc to: #{filename}"
 end
 
+def html_for_copyright(output, lines)
+  s = ""
+  s << head("Copyright", nil, nil)
+  s << breadcrumb("copyright", "Copyright")
+  add_line(s, "<h1>Copyright</h1>")
+  # process section
+  lines.each do |line|
+    if starts_with?(line, "\\subsubsection")
+      add_line(s, "<h2>#{post_process_text(get_data_in_brackets(line))}</h2>")
+    else
+      add_line(s, post_process_text(line))
+    end
+  end
+  return s
+end
+
+# lazy
+def build_copyright(name="f_copyright")
+  lines = get_all_data_lines("../book/#{name}.tex")
+  output = name[(name.index('_')+1)..-1]
+  html = html_for_copyright(output, lines)
+  filename = OUTPUT_DIR + "/"+output+".html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote copyright '#{name}' to: #{filename}"
+end
+
 # these are ordered
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
-FRONT_MATTER = ["f_copyright", "f_foreword", "f_preface", "f_acknowledgments"]
+FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
 
 if __FILE__ == $0
   # create dir
@@ -1138,6 +1165,7 @@ if __FILE__ == $0
   # TOC
   build_toc(ALGORITHM_CHAPTERS, FRONT_MATTER)
   # front matter
+  build_copyright()
   FRONT_MATTER.each {|name| build_chapter(bib, name) }
   # introduction chapter
   build_chapter(bib, "c_introduction")  
