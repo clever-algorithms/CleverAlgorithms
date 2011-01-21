@@ -269,6 +269,10 @@ def character_processing(s)
 
   s = s.gsub("--", "&ndash;")
   s = s.gsub("\\&", "&amp;")
+  # replace `` and '' with quotes
+  s = s.gsub("``", "&quot;")
+  s = s.gsub("''", "&quot;")
+  
   return s
 end
 
@@ -341,6 +345,7 @@ def post_process_text(s)
   s = s.gsub("\\mybooktitle", "Clever Algorithms")
   # replace \mybooksubtitle with the book subtitle
   s = s.gsub("\\mybooksubtitle", "Nature-Inspired Programming Recipes")
+
   
   # put the math back
   if !math.empty?
