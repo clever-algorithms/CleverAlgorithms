@@ -1,5 +1,5 @@
 # Generate the static content for the webpage
-# just a big collection of hacks
+# just a big collection of hacks - never do this - use a real lexer/parser
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
 # (c) Copyright 2011 Jason Brownlee. Some Rights Reserved. 
@@ -43,10 +43,11 @@ def get_all_data_lines(filename)
     next if !line.empty? and starts_with?(line, "\\end{small}")
     next if !line.empty? and starts_with?(line, "\\begin{flushright}")
     next if !line.empty? and starts_with?(line, "\\end{flushright}")
+    next if !line.empty? and starts_with?(line, "\\start{small}")
+    next if !line.empty? and starts_with?(line, "\\end{small}")
     lines << raw_line
     gotdata = true
   end
-#  puts " > loaded #{lines.size} lines from #{raw.size-lines.size} raw lines from #{filename}"
   return lines
 end
 
@@ -109,6 +110,12 @@ def add_line(s, line)
   s << "#{line}\n"
 end
 
+def process_angle_brackets(s)
+  s = s.gsub("<", "&lt;")
+  s = s.gsub(">", "&gt;")
+  return s
+end
+
 def replace_citations(s)
   return s.gsub(/\\cite\{([^}]+)\}/) do |elem| 
     # extract the content between {}    
@@ -127,19 +134,19 @@ end
 def replace_listings(s)
   # algorithms
   s = s.gsub(/Algorithm\~\\ref\{([^}]+)\}/) do |elem|
-    "The following algorithm"
+    "Algorithm (below)"
   end
   # listings  
   s = s.gsub(/Listing\~\\ref\{([^}]+)\}/) do |elem|
-    "The following listing"
+    "Listing (below)"
   end
   # tables (NOTE: the lower case) - used only in devising new algorithms
   s = s.gsub(/Table\~\\ref\{([^}]+)\}/) do |elem|
-    "the following table" 
+    "Table (below)" 
   end  
   # figure
   s = s.gsub(/Figure\~\\ref\{([^}]+)\}/) do |elem|
-    "The following figure"
+    "Figure (below)"
   end  
   return s
 end
@@ -158,9 +165,10 @@ def replace_custom_refs(s)
 end
 
 # TODO bug with the string \texttt{#\{\}} (appendix)
+# this func does endspecial handing of << >> for grammatical evolution
 def replace_texttt(s)
   return s.gsub(/\\texttt\{([^}]+)\}/) do |elem|
-    "<code>#{elem[8...-1]}</code>"
+    "<code>#{ process_angle_brackets(elem[8...-1]) }</code>"
   end
 end
 
@@ -248,15 +256,14 @@ def remove_hyph_suggestions(s)
   return s.gsub("\\-") {|e| ""}
 end
 
-def process_angle_brackets(s)
-  s = s.gsub("<", "&lt;")
-  s = s.gsub(">", "&gt;")
-  return s
-end
-
-# TODO apply some of these (\{ \} on all but math)
 # TODO link to known algorithms (maybe)
-def post_process_text(s)
+# the math hack in here just grabs all math before processing, then adds it back after.
+# sucks i know
+def post_process_text(s)  
+  # extract math
+  math, arrays = [], []
+  s.scan(/\$([^$]+)\$/) {|m| math << m } # $$
+  s.scan(/\\\[([^$]+)\\\]/) {|m| arrays << m } #  \[ \]
   # citations
   s = replace_citations(s)
   # listings, algorithms, tables
@@ -305,7 +312,33 @@ def post_process_text(s)
   # replace \\ with <br /> (appendix)
   s = s.gsub("\\\\", "<br />") 
   # replace \Latex with LaTex
-  s = s.gsub("\\LaTeX", "LaTex") 
+  s = s.gsub("\\LaTeX", "LaTex")   
+  # replace \copyright with html copyright
+  s = s.gsub("\\copyright", "&copy;")
+  # replace \mybookdate\ with publication date 2011
+  s = s.gsub("\\mybookdate", "2011")
+  # replace \mybookauthor with the author ame
+  s = s.gsub("\\mybookauthor", "Jason Brownlee")
+  # replace \mybooktitle with the book title
+  s = s.gsub("\\mybooktitle", "Clever Algorithms")
+  # replace \mybooksubtitle with the book subtitle
+  s = s.gsub("\\mybooksubtitle", "Nature-Inspired Programming Recipes")
+  
+  # put the math back
+  if !math.empty?
+    index = 0
+    s = s.gsub(/\$([^$]+)\$/) do |m|
+      index += 1
+      "\$#{math[index - 1]}\$"
+    end
+  end  
+  if !arrays.empty?
+    index = 0
+    s = s.gsub(/\\\[([^$]+)\\\]/) do |m|
+      index += 1
+      "\\[#{arrays[index - 1]}\\]"
+    end
+  end
   return s
 end
 
@@ -322,6 +355,7 @@ def final_pretty_code_listing(lines, caption=nil)
   # pretty print does not like <> brackets
   raw = process_angle_brackets(raw)
   s = ""
+  # table is a hack to ensure lines wrap
   add_line(s, "<pre class='prettyprint lang-rb'>")
   add_line(s, raw)
   add_line(s, "</pre>")
@@ -531,7 +565,6 @@ def load_citations(citations, bib, data)
   return hash
 end
 
-# TODO better spacing between rows/cols (consider doing in css)
 def prepare_bibliography(data, bib)
   citations = collect_citations_for_page(data)
   hash = load_citations(citations, bib, data)
@@ -627,9 +660,16 @@ def process_code_listing(lines)
   return final_pretty_code_listing(lines, caption)
 end
 
-# TODO <> inside math in grammatical evolution (consider making non-math and texttt)
-# TODO array equations (Hopfield)
 # TODO display pseudocode algorithm (all algorithms)
+def process_pseudocode(lines, caption=nil)
+  s = ""
+  add_line(s, "<pre class='prettyprint'>")
+  add_line(s, "Please refer to the book for the pseudocode.")
+  add_line(s, "</pre>")
+  add_line(s, post_process_text(caption)) if !caption.nil?
+  return s
+end
+
 def to_text_content(data)
   s = ""
   # state machine for building paragraphs/items/algorithms
@@ -637,7 +677,7 @@ def to_text_content(data)
   in_table, in_align, in_equation, in_figure = false, false, false, false
   algorithm_caption = nil
   table_collection, align_collection, equation_collection, figure_collection = [], [], [], []
-  listing_collection = []
+  listing_collection, pseudocode_collection = [], []
   data.each do |raw_line|
     # STRIP white space
     line = raw_line.strip
@@ -658,12 +698,8 @@ def to_text_content(data)
       out, in_algorithm = true, true
     elsif starts_with?(line, "\\end{algorithm}") # end pseudocode
       out, in_algorithm = true, false
-      raise "Could not find caption for pseudocode" if algorithm_caption.nil?
-      add_line(s, "<p>")
-      add_line(s, "<pre prettyprint'>Please refer to the book for the pseudocode.</pre>")
-      add_line(s, algorithm_caption)
-      add_line(s, "<p>")
-      algorithm_caption = nil
+      add_line(s, process_pseudocode(pseudocode_collection, algorithm_caption))
+      algorithm_caption, pseudocode_collection = nil, []
     elsif starts_with?(line, "\\begin{lstlisting}") # start listing
       s << "</p>\n" if !out # end paragraph
       out, in_listing = true, true    
@@ -716,6 +752,7 @@ def to_text_content(data)
         elsif in_algorithm
           # ignore (for now)
           algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
+          pseudocode_collection << line
         elsif in_listing
           listing_collection << raw_line # unstripped
         elsif in_table
@@ -789,22 +826,66 @@ def recursive_html_for_chapter(data, has_chapter=true)
   return s
 end
 
+def head(name, parent, keywords)
+  s = ""
+  # title
+  if parent.nil?
+    add_line(s, "<% content_for :head_title, \"#{name} - Clever Algorithms\" %>")
+  else 
+    add_line(s, "<% content_for :head_title, \"#{name} - #{parent} - Clever Algorithms\" %>")
+  end
+  # description  
+  if parent.nil?
+    add_line(s, "<% content_for :head_description, \"#{name} - Clever Algorithms\" %>")
+  else 
+    add_line(s, "<% content_for :head_description, \"#{name} - #{parent} - Clever Algorithms\" %>")
+  end
+  # keywords
+  if keywords.nil? or keywords.empty?
+    if parent.nil?
+      add_line(s, "<% content_for :head_keywords, \"#{name}, Clever Algorithms\" %>")
+    else
+       add_line(s, "<% content_for :head_keywords, \"#{name}, #{parent}, Clever Algorithms\" %>")
+    end
+  else
+    add_line(s, "<% content_for :head_keywords, \"#{keywords}, Clever Algorithms\" %>")
+  end
+  return s
+end
 
 def breadcrumb(parent=nil)
   s = ""  
   add_line(s, "<div class='breadcrumb'>") 
   if parent.nil?  
-    add_line(s, "<a href='index.html'>Contents</a>")
+    add_line(s, "<a href='index.html'>Table of Contents</a>")
   else
-    add_line(s, "<a href='../index.html'>Contents</a>")
+    add_line(s, "<a href='../index.html'>Table of Contents</a>")
     add_line(s, "&gt;&gt; <a href='../#{parent[:link]}.html'>#{parent[:name]}</a>")
   end
   add_line(s, "</div>") 
   return s
 end
 
+def get_keywords(data)
+  keywords = nil
+  data.last[:content].each do |line|
+    next if line.nil? or line.empty?
+    next if !line.kind_of?(String)
+    line = line.strip
+    if starts_with?(line, "\\emph{")
+      keywords = line
+      break
+    end
+  end
+  return "" if keywords.nil?
+  keywords = get_data_in_brackets(keywords)
+  keywords = keywords[0...(keywords.size-1)] if keywords[keywords.size-1].chr == "."
+  return keywords
+end
+
 def html_for_algorithm(data, bib, parent)
   s = ""
+  s << head(data.last[:section], parent[:name], get_keywords(data))
   s << breadcrumb(parent)
   s << recursive_html_for_chapter(data, false)
   # bib
@@ -815,13 +896,16 @@ end
 
 # TODO list algorithms before 'extensions'
 def html_for_chapter_overview(name, data, source, bib, subsecname)
+  algos = collect_subpages_for_page(data)
+  keywords = []
+  algos.each{|a| keywords << get_algorithm_name(source+"/"+a+".tex")}
   s = ""
+  s << head(data.last[:chapter], nil, keywords.join(", "))
   s << breadcrumb()
   s << recursive_html_for_chapter(data)
   # Algorithms
   add_line(s, "<h3>#{subsecname}</h3>")
-  add_line(s, "<ul>")
-  algos = collect_subpages_for_page(data)
+  add_line(s, "<ul>")  
   algos.each do |filename|
     # super lazy at getting algorithm names - consider a better process
     algo_name = get_algorithm_name(source+"/"+filename+".tex")
@@ -871,6 +955,7 @@ end
 
 def html_for_chapter(data, bib)
   s = ""
+  s << head(post_process_text(data.last[:chapter]), nil, nil)
   s << breadcrumb()
   # process section
   s << recursive_html_for_chapter(data)  
@@ -926,6 +1011,8 @@ end
 
 def create_toc_html(algorithms, frontmatter)
   s = ""
+  # head
+  s << head("Table of Contents", nil, nil)
   # front matter
   add_line(s, "<ol>")
   frontmatter.each do |name|
@@ -968,7 +1055,7 @@ def create_toc_html(algorithms, frontmatter)
       algo_name = get_algorithm_name("../book/c_advanced/"+filename+".tex")
       add_line(s, "<li><a href='advanced/#{filename}.html'>#{algo_name}</a></li>")
     end
-    add_line(s, "</ol>")      
+    add_line(s, "</ol>")
     add_line(s, "</ol>")
   end
   # appendix
@@ -986,8 +1073,7 @@ end
 
 # these are ordered
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
-# TODO add "f_copyright"
-FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
+FRONT_MATTER = ["f_copyright", "f_foreword", "f_preface", "f_acknowledgments"]
 
 if __FILE__ == $0
   # create dir

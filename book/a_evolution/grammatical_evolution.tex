@@ -174,15 +174,15 @@ The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^
 The grammar used in this problem is: 
 \begin{itemize}
 	\item Non-terminals: $N=\{expr,op,pre\_op\}$
-	\item Terminals: $T=\{+,-,/,*,x,1.0\}$
-	\item Expression (program): $S=<expr>$
+	\item Terminals: $T=\{+, -, \div, \times, x, 1.0\}$
+	\item Expression (program): $S=$\texttt{<expr>}
 \end{itemize}
 
 The production rules for the grammar in BNF are:
 \begin{itemize}
-	\item $<expr>$ ::= $<expr><op><expr>$, $(<expr><op><expr>)$, $<pre\_op>(<expr>)$, $<var>$
-	\item $<op>$ ::= +, -, $\div$, $\times$
-	\item $<var>$ ::= x, 1.0
+	\item \texttt{<expr>} $::=$ \texttt{<expr><op><expr>} , \texttt{(<expr><op><expr>)}, \texttt{<pre\_op>(<expr>)}, \texttt{<var>}
+	\item \texttt{<op>} $::=$ $+, -, \div, \times$
+	\item \texttt{<var>} $::=$ x, 1.0
 \end{itemize}
 
 % algorithm

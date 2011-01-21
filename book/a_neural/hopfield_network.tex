@@ -71,13 +71,7 @@ The propagation of the information through the network can be asynchronous where
 
 where $n_i$ is the activation of the $i^{th}$ neuron, $w_{i,j}$ with the weight between the nodes $i$ and $j$, and $n_j$ is the output of the $j^{th}$ neuron. The activation is transferred into an output using a transfer function, typically a step function as follows:
 
-	\[
-	  transfer(n_i) = \left\{ 
-	  \begin{array}{l l}
-	    1 & \quad if \geq \theta \\
-	   -1 & \quad if < \theta \\
-	  \end{array} \right.
-	\]
+\[transfer(n_i) = \left\{ \begin{array}{l l} 1 & \quad if \geq \theta \\ -1 & \quad if < \theta \\ \end{array} \right. \]
 
 where the threshold $\theta$ is typically fixed at 0.
 
