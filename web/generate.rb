@@ -130,7 +130,6 @@ def replace_citations(s)
   end
 end
 
-# TODO look for all examples in the output and make sure they read well
 def replace_listings(s)
   # algorithms
   s = s.gsub(/Algorithm\~\\ref\{([^}]+)\}/) do |elem|
@@ -165,6 +164,7 @@ def replace_custom_refs(s)
 end
 
 # TODO bug with the string \texttt{#\{\}} (appendix)
+# maybe see: http://stackoverflow.com/questions/3594325/find-matching-bracket-with-regex
 # this func does endspecial handing of << >> for grammatical evolution
 def replace_texttt(s)
   return s.gsub(/\\texttt\{([^}]+)\}/) do |elem|
@@ -256,6 +256,22 @@ def remove_hyph_suggestions(s)
   return s.gsub("\\-") {|e| ""}
 end
 
+# http://www.w3schools.com/tags/ref_entities.asp
+def character_processing(s)
+  s = s.gsub("\\\"a", "&auml;") # a
+  s = s.gsub("\\\"o", "&ouml;") # o
+  s = s.gsub("\\\"u", "&uuml;") # u
+  
+  s = s.gsub("\\\'u", "&uacute;") # u
+  s = s.gsub("\\\'e", "&eacute;") # e
+  s = s.gsub("\\\'i", "&iacute;") # i
+####  s = s.gsub("\\\'c", "&cacute;") # c ### NOT In ISO 8859-1 Characters
+
+  s = s.gsub("--", "&ndash;")
+  s = s.gsub("\\&", "&amp;")
+  return s
+end
+
 # TODO link to known algorithms (maybe)
 # the math hack in here just grabs all math before processing, then adds it back after.
 # sucks i know
@@ -290,6 +306,8 @@ def post_process_text(s)
   s = replace_markboth(s)
   # remove hypenation suggestions
   s = remove_hyph_suggestions(s)
+  # umlats etc
+  s = character_processing(s)
   # replace \% with %
   s = s.gsub("\\%", "\%")
   # replace "\ " with a space
@@ -361,7 +379,7 @@ def final_pretty_code_listing(lines, caption=nil)
   add_line(s, "</pre>")
   if !caption.nil?
     caption = post_process_text(caption) # process text
-    add_line(s, "#{caption}") 
+    add_line(s, "<div class='caption'>#{caption}</div>") 
   end
   #add_line(s, "<a href="">Download</a>")
   return s
@@ -433,17 +451,37 @@ def collect_subpages_for_page(data)
   return subpages
 end
 
+def process_authors(s)
+  s = s.strip
+  authors = []
+  s = s.gsub("\n", " ")
+  s = s.gsub("\r", " ")
+  s.split(" and ").each do |author|
+    author = author.strip
+    if author.index(",").nil? or author.index(",")<0
+      authors << author
+    else
+      parts = author.split(",")
+      raise "error with author: #{author}" if parts.size > 2 or parts[0].nil? or parts[1].nil?
+      authors << (parts[1].strip+" "+parts[0].strip)
+    end
+  end
+  return authors.join(" and ")
+end
+
 # crunch text in bibtex fields to be human readable
 def process_bibtex(datum)
   datum = datum.to_s
-  datum = datum.gsub("--", "-")
+  # replace newlines with spaces
+  datum = datum.gsub("\n", " ")
+  # umlats etc
+  datum = character_processing(datum)  
+  # replace things  
   datum = datum.gsub(/\{([^}]+)\}/) {|c| c[1...-1] }
   datum = datum.gsub("~", " ")
-  # replace \" and \' with nothing
+  # replace \" and \' with nothing (any leftovers)
   datum = datum.gsub("\\\"", "")
   datum = datum.gsub("\\\'", "")
-  # replace \& with just &  
-  datum = datum.gsub("\\&", "&")
   # replace \- with nothing (hypenation suggestions)
   datum = datum.gsub("\\-", "")
   return datum
@@ -457,7 +495,7 @@ def to_google_scholar(title)
   return "<a href='#{link}'>#{title}</a>"
 end
 
-# TODO display authors consistantly (F. Lastname when stored as Lastname, F.)
+
 # assume ordering in http://en.wikipedia.org/wiki/BibTeX
 def generate_bib_entry(entry)
   s = ""
@@ -466,21 +504,21 @@ def generate_bib_entry(entry)
     if entry[:author].nil?
       # just eds
       raise "No author or editors" if entry[:editor].nil?
-      s << "#{process_bibtex entry[:editor]} (editors), "
+      s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
     else 
-      s << "#{process_bibtex entry[:author]}, "
+      s << "#{process_authors process_bibtex(entry[:author])}, "
       # do not include editors if same as authors
       if !entry[:editor].nil? and entry[:editor] != entry[:author]
-        s << "#{process_bibtex entry[:editor]} (editors), "
+        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
       end
     end
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:publisher]}, " if !entry[:publisher].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :article
     # author, title, journal, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:journal]}, " if !entry[:journal].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :inbook
@@ -488,61 +526,71 @@ def generate_bib_entry(entry)
     if entry[:author].nil?
       # just eds
       raise "No author or editors" if entry[:editor].nil?
-      s << "#{process_bibtex entry[:editor]} (editors), "
+      s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
     else 
-      s << "#{process_bibtex entry[:author]}, "
+      s << "#{process_authors process_bibtex(entry[:author])}, "
       # do not include editors if same as authors
       if !entry[:editor].nil? and entry[:editor] != entry[:author]
-        s << "#{process_bibtex entry[:editor]} (editors), "
+        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
       end
     end    
-    s << "\"#{to_google_scholar process_bibtex entry[:chapter]}\", " if !entry[:chapter].nil?
+    s << "\"#{to_google_scholar process_bibtex(entry[:chapter])}\", " if !entry[:chapter].nil?
     s << "in #{process_bibtex entry[:title]}, "
     s << "pages #{process_bibtex entry[:pages]}, " if !entry[:pages].nil?
     s << "#{process_bibtex entry[:publisher]}, " if !entry[:publisher].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :techreport
     # author, title, institution, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:institution]}, " if !entry[:institution].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :inproceedings
     # author, title, booktitle, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    if entry[:author].nil?
+      # just eds
+      raise "No author or editors" if entry[:editor].nil?
+      s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
+    else
+      s << "#{process_authors process_bibtex(entry[:author])}, "
+      # do not include editors if same as authors
+      if !entry[:editor].nil? and entry[:editor] != entry[:author]
+        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
+      end
+    end 
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "in #{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :phdthesis
     # author, title, school, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "[PhD Thesis] "
     s << "#{process_bibtex entry[:school]}, " if !entry[:school].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :mastersthesis
     # author, title, school, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "[Masters Thesis] "
     s << "#{process_bibtex entry[:school]}, " if !entry[:school].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :incollection
     # author, title, booktitle, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "in #{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :conference
     # author, title, booktitle, year
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "in #{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :unpublished
     # author, title
-    s << "#{process_bibtex entry[:author]}, "
-    s << "\"#{to_google_scholar process_bibtex entry[:title]}\", "
+    s << "#{process_authors process_bibtex(entry[:author])}, "
+    s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:year]}."
   else 
     raise "Unknown bibtex type: #{entry.type}"    
@@ -637,9 +685,9 @@ def process_figure(lines)
   caption = post_process_text(caption) # processing of text
   just_file = filename[(filename.index('/')+1)..-1]
   s = ""
-  add_line(s, "<img src='/images/#{just_file}.png' align='middle' alt='#{caption}'>")
+  add_line(s, "<img src='/images/#{just_file}.png' align='middle' alt='#{caption}' class='book_image'>")
   add_line(s, "<br />")
-  add_line(s, "#{caption}")
+  add_line(s, "<div class='caption'>#{caption}</div>")
   
   return s
 end
@@ -666,7 +714,7 @@ def process_pseudocode(lines, caption=nil)
   add_line(s, "<pre class='prettyprint'>")
   add_line(s, "Please refer to the book for the pseudocode.")
   add_line(s, "</pre>")
-  add_line(s, post_process_text(caption)) if !caption.nil?
+  add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
   return s
 end
 
@@ -853,15 +901,19 @@ def head(name, parent, keywords)
   return s
 end
 
-def breadcrumb(parent=nil)
+def breadcrumb(current, name, parent=nil)
   s = ""  
   add_line(s, "<div class='breadcrumb'>") 
   if parent.nil?  
     add_line(s, "<a href='index.html'>Table of Contents</a>")
+    add_line(s, "&gt;&gt;")
   else
     add_line(s, "<a href='../index.html'>Table of Contents</a>")
-    add_line(s, "&gt;&gt; <a href='../#{parent[:link]}.html'>#{parent[:name]}</a>")
+    add_line(s, "&gt;&gt;")  
+    add_line(s, "<a href='../#{parent[:link]}.html'>#{parent[:name]}</a>")
+    add_line(s, "&gt;&gt;")
   end
+  add_line(s, "<a href='#{current}.html'>#{name}</a>")
   add_line(s, "</div>") 
   return s
 end
@@ -883,10 +935,10 @@ def get_keywords(data)
   return keywords
 end
 
-def html_for_algorithm(data, bib, parent)
+def html_for_algorithm(name, data, bib, parent)
   s = ""
   s << head(data.last[:section], parent[:name], get_keywords(data))
-  s << breadcrumb(parent)
+  s << breadcrumb(name, data.last[:section], parent)
   s << recursive_html_for_chapter(data, false)
   # bib
   add_line(s, "<h2>Bibliography</h2>")  
@@ -901,7 +953,7 @@ def html_for_chapter_overview(name, data, source, bib, subsecname)
   algos.each{|a| keywords << get_algorithm_name(source+"/"+a+".tex")}
   s = ""
   s << head(data.last[:chapter], nil, keywords.join(", "))
-  s << breadcrumb()
+  s << breadcrumb(name, data.last[:chapter])
   s << recursive_html_for_chapter(data)
   # Algorithms
   add_line(s, "<h3>#{subsecname}</h3>")
@@ -946,17 +998,17 @@ def build_algorithm_chapter(name, bib)
     lines = get_all_data_lines(source + "/" + file)
     processed = general_process_file(lines)
     # write the html for the algorithm
-    html = html_for_algorithm(processed, bib, parent)
+    html = html_for_algorithm(file[0...-4], processed, bib, parent)
     filename = "#{dirname}/#{file[0...-4]}.html"
     File.open(filename, 'w') {|f| f.write(html) }
     puts " > successfully wrote algorithm '#{processed.first[:section]}' to: #{filename}"
   end
 end
 
-def html_for_chapter(data, bib)
+def html_for_chapter(name, data, bib)
   s = ""
   s << head(post_process_text(data.last[:chapter]), nil, nil)
-  s << breadcrumb()
+  s << breadcrumb(name, post_process_text(data.last[:chapter]))
   # process section
   s << recursive_html_for_chapter(data)  
   # Bibliography
@@ -972,8 +1024,8 @@ end
 def build_chapter(bib, name)
   lines = get_all_data_lines("../book/#{name}.tex")
   processed = general_process_file(lines)
-  html = html_for_chapter(processed, bib)
   output = name[(name.index('_')+1)..-1]
+  html = html_for_chapter(output, processed, bib)  
   filename = OUTPUT_DIR + "/"+output+".html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote chapter '#{name}' to: #{filename}"
@@ -993,7 +1045,7 @@ def build_advanced_chapter(bib, name="advanced")
     lines = get_all_data_lines(source + "/" + file)
     processed = general_process_file(lines)
     # html for section
-    html = html_for_algorithm(processed, bib, parent)
+    html = html_for_algorithm(file[0...-4], processed, bib, parent)
     filename = "#{dirname}/#{file[0...-4]}.html"
     File.open(filename, 'w') {|f| f.write(html) }
     puts " > successfully wrote topic '#{processed.first[:section]}' to: #{filename}"
@@ -1003,7 +1055,7 @@ end
 def build_appendix(bib, name="appendix1")
   lines = get_all_data_lines("../book/b_#{name}.tex")
   processed = general_process_file(lines)
-  html = html_for_chapter(processed, bib)
+  html = html_for_chapter(name, processed, bib)
   filename = OUTPUT_DIR + "/"+name+".html"
   File.open(filename, 'w') {|f| f.write(html) }
   puts " > successfully wrote appendix '#{name}' to: #{filename}"
@@ -1014,6 +1066,9 @@ def create_toc_html(algorithms, frontmatter)
   # head
   s << head("Table of Contents", nil, nil)
   # front matter
+  add_line(s, "<h1>Clever Algorithms: Nature-Inspired Programming Recipes</h1>")
+  add_line(s, "By Jason Brownlee<br />")
+  add_line(s, "<h2>Table of Contents</h2>")
   add_line(s, "<ol>")
   frontmatter.each do |name|
     output = name[(name.index('_')+1)..-1]
