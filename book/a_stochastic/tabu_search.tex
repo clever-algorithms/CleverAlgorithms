@@ -104,7 +104,7 @@ Algorithm~\ref{alg:tabu_search} provides a pseudocode listing of the Tabu Search
 	\item Tabu search was designed for, and has predominately been applied to discrete domains such as combinatorial optimization problems.
 	\item Candidates for neighboring moves can be generated deterministically for the entire neighborhood or the neighborhood can be stochastically sampled to a fixed size, trading off efficiency for accuracy. 
 	\item Intermediate-term memory structures can be introduced (complementing the short-term memory) to focus the search on promising areas of the search space (intensification), called aspiration criteria.
-	\item Long-term memory structures can be introduced (complementing the short-term memory) to encourage useful exploration of the broader search space, called diversification. Strategies may include generating solutions with rarely used components and biasing generation away from the most commonly used solution components.
+	\item Long-term memory structures can be introduced (complementing the short-term memory) to encourage useful exploration of the broader search space, called diversification. Strategies may include generating solutions with rarely used components and biasing the generation away from the most commonly used solution components.
 \end{itemize}
 
 % The code description provides a minimal but functional version of the technique implemented with a programming language. The code description must be able to be typed into an appropriate computer, compiled or interpreted as need be, and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing.
@@ -113,7 +113,7 @@ Algorithm~\ref{alg:tabu_search} provides a pseudocode listing of the Tabu Search
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{tabu_search} provides an example of the Tabu Search algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berli52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berli52 instance is 7542 units.
 
 % algorithm
 The algorithm is an implementation of the simple Tabu Search with a short term memory structure that executes for a fixed number of iterations. The starting point for the search is prepared using a random permutation that is refined using a stochastic 2-opt Local Search procedure. The stochastic 2-opt procedure is used as the embedded hill climbing heuristic with a fixed sized candidate list. The two edges that are deleted in each 2-opt move are stored on the tabu list. This general approach is similar to that used by Knox in his work on Tabu Search for symmetrical TSP \cite{Knox1994} and Fiechter for the Parallel Tabu Search for the TSP \cite{Fiechter1994}.
@@ -134,7 +134,7 @@ The algorithm is an implementation of the simple Tabu Search with a short term m
 % seminal
 Tabu Search was introduced by Glover applied to scheduling employees to duty rosters \cite{Glover1986a} and a more general overview in the context of the TSP \cite{Glover1986}, based on his previous work on surrogate constraints on integer programming problems \cite{Glover1977}.
 % seminal reviews
-Glover provided a seminal overview of the algorithm in a two-part journal article, the first part of which introduced the algorithm, and reviewed then-recent applications \cite{Glover1989}, and the second which focused on advanced topics and open areas of research \cite{Glover1990}. 
+Glover provided a seminal overview of the algorithm in a two-part journal article, the first part of which introduced the algorithm and reviewed then-recent applications \cite{Glover1989}, and the second which focused on advanced topics and open areas of research \cite{Glover1990}. 
 
 % 
 % Learn More

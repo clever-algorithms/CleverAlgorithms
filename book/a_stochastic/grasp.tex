@@ -75,7 +75,7 @@ Algorithm~\ref{alg:grasp} provides a pseudocode listing of the Greedy Randomized
 	\label{alg:grasp}
 \end{algorithm}
 
-Algorithm~\ref{alg:construction} provides the pseudocode the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The functions works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
+Algorithm~\ref{alg:construction} provides the pseudocode the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The function works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -142,7 +142,7 @@ Algorithm~\ref{alg:construction} provides the pseudocode the Greedy Randomized C
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{grasp} provides an example of the Greedy Randomized Adaptive Search Procedure implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
 The stochastic and greedy step-wise construction of a tour involves evaluating candidate cities by the the cost they contribute as being the next city in the tour. 

@@ -40,7 +40,7 @@ The strategy of the broader field of Reactive Search Optimization is to automate
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:reactive_tabu_search} provides a pseudocode listing of the Reactive Tabu Search algorithm for minimizing a cost function. 
 % specifics
-The Pseudocode is based on a the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{Is\-Tabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{Prohibition\-Period} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{Prohibition\-Period}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
+The Pseudocode is based on the version of the Reactive Tabu Search described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{Is\-Tabu} function from \cite{Battiti1994}. The procedure has been modified for brevity to exude the diversification procedure (escape move). Algorithm~\ref{alg:memory_based_reaction} describes the memory based reaction that manipulates the size of the \texttt{Prohibition\-Period} in response to identified cycles in the ongoing search. Algorithm~\ref{alg:best_move} describes the selection of the best move from a list of candidate moves in the neighborhood of a given solution. The function permits prohibited moves in the case where a prohibited move is better than the best know solution and the selected admissible move (called aspiration). Algorithm~\ref{alg:tabu} determines whether a given neighborhood move is tabu based on the current \texttt{Prohibition\-Period}, and is employed by sub-functions of the Algorithm~\ref{alg:best_move} function.
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -219,7 +219,7 @@ The Pseudocode is based on a the version of the Reactive Tabu Search described b
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Reactive Tabu Search is an extension of Tabu Search and as such should exploit the best practices used for the parent algorithm.
-	\item Reactive Tabu Search was designed for discrete domains such as combinatorial optimization, although has been applied to continuos function optimization.
+	\item Reactive Tabu Search was designed for discrete domains such as combinatorial optimization, although has been applied to continuous function optimization.
 	\item Reactive Tabu Search was proposed to use efficient memory data structures such as hash tables.
 	\item Reactive Tabu Search was proposed to use an long-term memory to diversify the search after a threshold of cycle repetitions has been reached.
 	\item The \texttt{increase} parameter should be greater than one (such as 1.1 or 1.3) and the \texttt{decrease} parameter should be less than one (such as 0.9 or 0.8).
@@ -231,7 +231,7 @@ The Pseudocode is based on a the version of the Reactive Tabu Search described b
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{reactive_tabu_search} provides an example of the Reactive Tabu Search algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
 The procedure is based on the code listing described by Battiti and Tecchiolli in \cite{Battiti1995a} with supplements like the \texttt{Is\-Tabu} function from \cite{Battiti1994}. The implementation does not use efficient memory data structures such as hash tables. The algorithm is initialized with a stochastic 2-opt local search, and the neighborhood is generated as a fixed candidate list of stochastic 2-opt moves. The edges selected for changing in the 2-opt move are stored as features in the tabu list. The example does not implement the escape procedure for search diversification. 
@@ -261,7 +261,7 @@ Some early application papers by Battiti and Tecchiolli include a comparison to 
 % overviews of RTS
 % none?
 % reactive local search
-Reactive Tabu Search was abstracted to a form called Reactive Local Search that considers adaptive methods that learn suitable parameters for heuristics that manage an embedded local search technique \cite{Battiti1995, Battiti2001}. Under this abstraction, the Reactive Tabu Search algorithm is single example of the Reactive Local Search principle applied to the Tabu Search. 
+Reactive Tabu Search was abstracted to a form called Reactive Local Search that considers adaptive methods that learn suitable parameters for heuristics that manage an embedded local search technique \cite{Battiti1995, Battiti2001}. Under this abstraction, the Reactive Tabu Search algorithm is a single example of the Reactive Local Search principle applied to the Tabu Search. 
 % reactive search optimization
 This framework was further extended to the use of any adaptive machine learning techniques to adapt the parameters of an algorithm by reacting to algorithm outcomes online while solving a problem, called Reactive Search \cite{Battiti1996}. The best reference for this general framework is the book on Reactive Search Optimization by Battiti, Brunato, and Mascia \cite{Battiti2008}. Additionally, the review chapter by Battiti and Brunato provides a contemporary description \cite{Battiti2009}.
 

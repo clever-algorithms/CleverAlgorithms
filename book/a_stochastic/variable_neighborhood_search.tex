@@ -32,7 +32,7 @@ It is related to the Iterative Local Search algorithm (Section~\ref{sec:iterated
 % What is the information processing objective of a technique?
 The strategy for the Variable Neighborhood Search involves iterative exploration of larger and larger neighborhoods for a given local optima until an improvement is located after which time the search across expanding neighborhoods is repeated. 
 % What is a techniques plan of action?
-The strategy is motivated by three principles: 1) a local minimum for one neighborhood structure may not be a local minimum for a different neighborhood structure, 2) a global minimum is a local minimum for all possible neighborhood structures, and 3) local minimum are relatively close to global minimum for many problem classes.
+The strategy is motivated by three principles: 1) a local minimum for one neighborhood structure may not be a local minimum for a different neighborhood structure, 2) a global minimum is a local minimum for all possible neighborhood structures, and 3) local minima are relatively close to global minima for many problem classes.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -41,7 +41,7 @@ The strategy is motivated by three principles: 1) a local minimum for one neighb
 % What are the data structures and representations used in a technique?
 Algorithm~\ref{alg:variable_neighborhood_search} provides a pseudocode listing of the Variable Neighborhood Search algorithm for minimizing a cost function.
 % explaination
-The Pseudocode shows that the systematic search of expanding neighborhoods for a local optimum is abandoned when an global improvement is achieved (shown with the \texttt{Break} jump).
+The Pseudocode shows that the systematic search of expanding neighborhoods for a local optimum is abandoned when a global improvement is achieved (shown with the \texttt{Break} jump).
 
 \begin{algorithm}[htp]
 	\SetLine
@@ -104,7 +104,7 @@ The Pseudocode shows that the systematic search of expanding neighborhoods for a
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{variable_neighborhood_search} provides an example of the Variable Neighborhood Search algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
 The Variable Neighborhood Search uses a stochastic 2-opt procedure as the embedded local search. The procedure deletes two edges and reverses the sequence in-between the deleted edges, potentially removing `twists' in the tour. The neighborhood structure used in the search is the number of times the 2-opt procedure is performed on a permutation, between 1 and 20 times. The stopping condition for the local search procedure is a maximum number of iterations without improvement. The same stop condition is employed by the higher-order Variable Neighborhood Search procedure, although with a lower boundary on the number of non-improving iterations.
