@@ -48,7 +48,7 @@ The Danger Theory was proposed by Matzinger and suggests that the roles of the a
 % What is the information processing objective of a technique?
 The information processing objective of the algorithm is to prepare a set of mature dendritic cells (prototypes) that provide context specific information about how to classify normal and anomalous input patterns.
 % What is a techniques plan of action?
-This is achieved as a system of three asynchronous processes of 1) migrating sufficiently stimulated immature cells, 2) promoting migrated cells to semi-mature (safe) or mature (danger) status depending in their accumulated response, and 3) labeling observed patterns as safe or dangerous based on the composition of the sub-population of cells that respond to each pattern.
+This is achieved as a system of three asynchronous processes of 1) migrating sufficiently stimulated immature cells, 2) promoting migrated cells to semi-mature (safe) or mature (danger) status depending on their accumulated response, and 3) labeling observed patterns as safe or dangerous based on the composition of the sub-population of cells that respond to each pattern.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
@@ -138,7 +138,7 @@ The resulting migrated cells can then be used to classify input patterns as norm
 	\item The canonical algorithm is designed to operate on a single discrete, categorical or ordinal input and two probabilistic specific signals indicating the heuristic danger or safety of the input.
 	\item The \texttt{danger} and \texttt{safe} signals are problem specific signals of the risk that the input pattern is an anomaly or is normal, both typically  $\in [0,100]$.
 	\item The \texttt{danger} and \texttt{safe} signals do not have to be reciprocal, meaning they may provide conflicting information.
-	\item The system was designed be used in real-time anomaly detection problems, not just static problem.
+	\item The system was designed to be used in real-time anomaly detection problems, not just static problem.
 	\item Each cells migration threshold is set separately, typically $\in [5,15]$
 \end{itemize}
 
@@ -178,10 +178,10 @@ This work was followed shortly by a second study into the algorithm by Greensmit
 \subsubsection{Learn More}
 % reviews
 The Dendritic Cell Algorithm was the focus of Greensmith's thesis, which provides a detailed discussion of the methods abstraction from the inspiring biological system, and a review of the technique's limitations \cite{Greensmith2007}. 
-A formal presentation of the algorithm is provided by Greenwmith et al.\ \cite{Greensmith2006a}.
-Greensmith and Aickelin proposed the Deterministic Dendritic Cell Algorithm (dDCA) that seeks to remove some of the stochastic decisions from the method, reduce the complexity and to make it more amenable to analysis \cite{Greensmith2008}.
+A formal presentation of the algorithm is provided by Greensmith et al.\ \cite{Greensmith2006a}.
+Greensmith and Aickelin proposed the Deterministic Dendritic Cell Algorithm (dDCA) that seeks to remove some of the stochastic decisions from the method, and reduce the complexity and to make it more amenable to analysis \cite{Greensmith2008}.
 Stibor et al.\ provide a theoretical analysis of the Deterministic Dendritic Cell Algorithm, considering the discrimination boundaries of single dendrite cells in the system \cite{Stibor2009}. 
 % books
-Greensmith and Aickelin provide a detailed overview of the Dendritic Cell Algorithm focusing in the information processing principles of the inspiring biological systems as a book chapter \cite{Greensmith2009}.
+Greensmith and Aickelin provide a detailed overview of the Dendritic Cell Algorithm focusing on the information processing principles of the inspiring biological systems as a book chapter \cite{Greensmith2009}.
 
 

@@ -22,7 +22,7 @@
 % To what fields of study does a technique belong?
 The Negative Selection Algorithm belongs to the field of Artificial Immune Systems.
 % What are the closely related approaches to a technique?
-The algorithm is related to other Artificial Immune System algorithms such as the Clonal Selection Algorithm (Section~\ref{sec:clonal_selection_algorithm}), and the Immune Network Algorithm (Section~\ref{sec:immune_network_algorithm}).
+The algorithm is related to other Artificial Immune Systems such as the Clonal Selection Algorithm (Section~\ref{sec:clonal_selection_algorithm}), and the Immune Network Algorithm (Section~\ref{sec:immune_network_algorithm}).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -32,8 +32,8 @@ The algorithm is related to other Artificial Immune System algorithms such as th
 The Negative Selection algorithm is inspired by the self-nonself discrimination behavior observed in the mammalian acquired immune system.
 % Which features of the motivating system are relevant to a technique?
 The clonal selection theory of acquired immunity accounts for the adaptive behavior of the immune system including the ongoing selection and proliferation of cells that select-for potentially harmful (and typically foreign) material in the body.
-An interesting aspect of this process is that it is responsible for managing a population of immune cells that do not select-for the tissues of the body , specifically it does not create self-reactive immune cells known as auto-immunity. 
-This problem is known as `self-nonself discrimination' and it involves the preparation and on going maintenance of a repertoire of immune cells such that none are auto-immune. This is achieved by a negative selection process that selects-for and removes those cells that are self-reactive during cell creation and cell proliferation. This process has been observed in the preparation of T-lymphocytes, na\"ive version of which are matured using both a positive and negative selection process in the thymus.
+An interesting aspect of this process is that it is responsible for managing a population of immune cells that do not select-for the tissues of the body, specifically it does not create self-reactive immune cells known as auto-immunity. 
+This problem is known as `self-nonself discrimination' and it involves the preparation and on going maintenance of a repertoire of immune cells such that none are auto-immune. This is achieved by a negative selection process that selects-for and removes those cells that are self-reactive during cell creation and cell proliferation. This process has been observed in the preparation of T-lymphocytes, na\"ive versions of which are matured using both a positive and negative selection process in the thymus.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -125,7 +125,7 @@ Algorithm~\ref{alg:detector_gen} provides a pseudocode listing of the detector g
 % What are the suggested configurations for a technique?
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
-	\item The Negative Selection Algorithm was designed for change detection novelty detection, intrusion detection and similar pattern recognition and two-class classification problem domains.
+	\item The Negative Selection Algorithm was designed for change detection, novelty detection, intrusion detection and similar pattern recognition and two-class classification problem domains.
 	\item Traditional negative selection algorithms used binary representations and binary matching rules such as Hamming distance, and $r$-contiguous bits.
 	\item A data representation should be selected that is most suitable for a given problem domain, and a matching rule is in turn selected or tailored to the data representation.
 	\item Detectors can be prepared with no prior knowledge of the problem domain other than the known (normal or self) dataset. 
@@ -169,5 +169,5 @@ Esponda provides some interesting work showing some compression and privacy bene
 % others
 Ji and Dasgupta provide a contemporary and detailed review of Negative Selection Algorithms covering topics such as data representations, matching rules, detector generation procedures, computational complexity, hybridization, and theoretical frameworks \cite{Ji2007}.
 % validity
-More recently, the validity of the application of negative selection algorithms in high-dimensional spaces has been questioned, specifically given the scalability of the approach in the face of the exponential increase in volume within the problem space \cite{Stibor2006}.
+Recently, the validity of the application of negative selection algorithms in high-dimensional spaces has been questioned, specifically given the scalability of the approach in the face of the exponential increase in volume within the problem space \cite{Stibor2006}.
 
