@@ -140,12 +140,12 @@ The neighborhood is typically square (called bubble) where all neighborhood node
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item The Self-Organizing Map was designed for unsupervised learning problems such as feature extraction, visualization and clustering. Some extensions of the approach can label the prepared codebook vectors which can be used for classification.
-	\item SOM is non-parametric, meaning that it does not rely on assumptions about that structure of the function that is is approximating.
+	\item SOM is non-parametric, meaning that it does not rely on assumptions about that structure of the function that it is approximating.
 	\item Real-values in input vectors should be normalized such that $x \in [0,1)$. 
 	\item Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.
 	\item There should be sufficient training iterations to expose all the training data to the model multiple times.
 	\item The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.
-	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10$\times$ more iterations).
+	\item Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10 $\times$ more iterations).
 	\item The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.
 	\item A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used. Hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated. 
 	\item The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.
@@ -161,7 +161,7 @@ Listing~\ref{som} provides an example of the Self-Organizing Map algorithm imple
 The problem is a feature detection problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape during training. The expectation is that the system will model the shape based on the observed samples.
 
 % algorithm
-The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, Euclidean distance measure is used to determine the BMU and neighbors, a Bubble neighborhood function is used. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity. 
+The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter~3 of the seminal book on the technique \cite{Kohonen1995}. The implementation is configured with a $4 \times 5$ grid of nodes, the Euclidean distance measure is used to determine the BMU and neighbors, a Bubble neighborhood function is used. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity. 
 
 An extension to this implementation would be to visualize the resulting network structure in the domain - shrinking from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
 
@@ -191,6 +191,6 @@ This work was tightly related two other papers published at close to the same ti
 Kohonen provides a detailed introduction and summary of the Self-Organizing Map in a journal article \cite{Kohonen1990a}.
 Kohonen et al.\ provide a practical presentation of the algorithm and heuristics for configuration in the technical report written to accompany the released SOM-PAK implementation of the algorithm for academic research \cite{Kohonen1996a}.
 % books
-The seminal book on the technique is ``Self-Organizing Maps'' by Kohonen, which includes chapters dedicated to the description of the basic approach, physiological interpretations of the algorithm, variations, and summarizes of application areas \cite{Kohonen1995}.
+The seminal book on the technique is ``Self-Organizing Maps'' by Kohonen, which includes chapters dedicated to the description of the basic approach, physiological interpretations of the algorithm, variations, and summaries of application areas \cite{Kohonen1995}.
 
 

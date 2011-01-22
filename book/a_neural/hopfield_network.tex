@@ -23,7 +23,7 @@
 The Hopfield Network is a Neural Network and belongs to the field of Artificial Neural Networks and Neural Computation.
 % What are the closely related approaches to a technique?
 It is a Recurrent Neural Network and is related to other recurrent networks such as the Bidirectional Associative Memory (BAM).
-It is is generally related to feedforward Artificial Neural Networks such as the Perceptron (Section~\ref{sec:perceptron}) and the Back-propagation algorithm (Section~\ref{sec:backpropagation}).
+It is generally related to feedforward Artificial Neural Networks such as the Perceptron (Section~\ref{sec:perceptron}) and the Back-propagation algorithm (Section~\ref{sec:backpropagation}).
 
 % Inspiration: Motivating system
 % The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and most important must include those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique. The inspiration is described textually with citations and may include diagrams to highlight features and relationships within the inspiring system.
@@ -46,14 +46,14 @@ Through the training process, the weights in the network may be thought to minim
 \subsection{Strategy}
 % What is the information processing objective of a technique?
 % What is a techniques plan of action?
-The information processing objective of the system is to associate the components of an input pattern with a holistic representation of the pattern called Content Addressable Memory (CAM). This means that once trained, the system will recall whole patterns, give a portion or a noisy version of the input pattern.
+The information processing objective of the system is to associate the components of an input pattern with a holistic representation of the pattern called Content Addressable Memory (CAM). This means that once trained, the system will recall whole patterns, given a portion or a noisy version of the input pattern.
 
 % Procedure: Abstract computation
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-The Hopfield Network is comprised of a graphic data structure with weighted edges and separate procedures for training and applying the structure. The network structure is fully connected (a node connects to all other nodes except itself) and the edges (weights) between the nodes are bidirectional. 
+The Hopfield Network is comprised of a graph data structure with weighted edges and separate procedures for training and applying the structure. The network structure is fully connected (a node connects to all other nodes except itself) and the edges (weights) between the nodes are bidirectional. 
 
 The weights of the network can be learned via a one-shot method (one-iteration through the patterns) if all patterns to be memorized by the network are known. Alternatively, the weights can be updated incrementally using the Hebb rule where weights are increased or decreased based on the difference between the actual and the expected output. The one-shot calculation of the network weights for a single node occurs as follows:
 
@@ -63,7 +63,7 @@ The weights of the network can be learned via a one-shot method (one-iteration t
 
 where $w_{i,j}$ is the weight between neuron $i$ and $j$, $N$ is the number of input patterns, $v$ is the input pattern and $v_k^i$ is the $i^{th}$ attribute on the $k^{th}$ input pattern.
 
-The propagation of the information through the network can be asynchronous where a random node is selected each iteration, or synchronously, where the output is calculated for each node before being applied for the whole network. Propagation of the information continues until no more changes are made or until a maximum number of iterations has completed, after which the output pattern from the network can be read. The activation for a single node is calculated as follows:
+The propagation of the information through the network can be asynchronous where a random node is selected each iteration, or synchronously, where the output is calculated for each node before being applied to the whole network. Propagation of the information continues until no more changes are made or until a maximum number of iterations has completed, after which the output pattern from the network can be read. The activation for a single node is calculated as follows:
 
 \begin{equation}
 	n_i = \sum_{j=1}^n w_{i,j} \times n_j
@@ -99,7 +99,7 @@ Listing~\ref{hopfield} provides an example of the Hopfield Network algorithm imp
 The problem is an instance of a recall problem where patters are described in terms of a $3 \times 3$ matrix of binary values ($\in \{-1,1\}$). Once the network has learned the patterns, the system is exposed to perturbed versions of the patterns (with errors introduced) and must respond with the correct pattern. Two patterns are used in this example, specifically `T', and `U'.
 
 % algorithm
-The algorithm is an implementation of the Hopfield Network with a one-short training method for the network weights, given that all patterns are already known. The information is propagated through the network using an asynchronous method, which is repeated until no more changes in the node outputs are detected. The patterns are displayed to the console during the testing of the network, with the outputs converted from $\{-1,1\}$ to $\{0,1\}$ for readability.
+The algorithm is an implementation of the Hopfield Network with a one-shot training method for the network weights, given that all patterns are already known. The information is propagated through the network using an asynchronous method, which is repeated for a fixed number of iterations. The patterns are displayed to the console during the testing of the network, with the outputs converted from $\{-1,1\}$ to $\{0,1\}$ for readability.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Hopfield Network in Ruby, label=hopfield]{../src/algorithms/neural/hopfield.rb}
@@ -117,9 +117,9 @@ The algorithm is an implementation of the Hopfield Network with a one-short trai
 % seminal
 The Hopfield Network was proposed by Hopfield in 1982 where the basic model was described and related to an abstraction of the inspiring biological system \cite{Hopfield1982}.
 % early
-This early work was extend by Hopfield to `graded' neurons capable of outputting a continuous value through use of a logistic (sigmoid) transfer function \cite{Hopfield1984}.
+This early work was extended by Hopfield to `graded' neurons capable of outputting a continuous value through use of a logistic (sigmoid) transfer function \cite{Hopfield1984}.
 % optimization
-An innovative work by Hopfield and Tank considered the use of the Hopfield network for solving combinatorial optimization problems, with a specific study into the system applied to instances of the Traveling Salesman Problem \cite{Hopfield1985}. This was achieved with a large number of neurons and a representation that decoded the position of each position in the tour as a sub-problem on which a customized network energy function had to be minimized.
+An innovative work by Hopfield and Tank considered the use of the Hopfield network for solving combinatorial optimization problems, with a specific study into the system applied to instances of the Traveling Salesman Problem \cite{Hopfield1985}. This was achieved with a large number of neurons and a representation that decoded the position of each city in the tour as a sub-problem on which a customized network energy function had to be minimized.
 
 % 
 % Learn More
@@ -129,6 +129,6 @@ An innovative work by Hopfield and Tank considered the use of the Hopfield netwo
 Popovici and Boncut provide a summary of the Hopfield Network algorithm with worked examples \cite{Popovici2005}.
 Overviews of the Hopfield Network are provided in most good books on Artificial Neural Networks, such as \cite{Rojas1996}.
 % books
-Hertz, Krogh, and Palmer present an in depth study of the the field of Artificial Neural Networks with a detailed treatment of the Hopfield network from a statistical mechanics perspective \cite{Hertz1991}.
+Hertz, Krogh, and Palmer present an in depth study of the field of Artificial Neural Networks with a detailed treatment of the Hopfield network from a statistical mechanics perspective \cite{Hertz1991}.
 
 

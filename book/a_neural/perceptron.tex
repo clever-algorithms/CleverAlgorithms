@@ -132,7 +132,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{perceptron} provides an example of the Perceptron algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is the classical OR boolean problem, where the inputs of the boolean truth table are provided as the two inputs and the result of the boolean OR operation is the expected as output.
+The problem is the classical OR boolean problem, where the inputs of the boolean truth table are provided as the two inputs and the result of the boolean OR operation is expected as output.
 
 % algorithm
 The algorithm was implemented using an online learning method, meaning the weights are updated after each input pattern is observed. A step transfer function is used to convert the activation into a binary output $\in\{0,1\}$. Random samples are taken from the domain to train the weights, and similarly, random samples are drawn from the domain to demonstrate what the network has learned. A bias weight is used for stability with a constant input of 1.0.
@@ -153,7 +153,7 @@ The algorithm was implemented using an online learning method, meaning the weigh
 % seminal
 The Perceptron algorithm was proposed by Rosenblatt in 1958 \cite{Rosenblatt1958}. Rosenblatt proposed a range of neural network structures and methods. The `Perceptron' as it is known is in fact a simplification of Rosenblatt's models by Minsky and Papert for the purposes of analysis \cite{Minsky1969}.
 % early
-An early proof of convergence was provided by Novikoff \cite{Novikoff1962}
+An early proof of convergence was provided by Novikoff \cite{Novikoff1962}.
 
 % 
 % Learn More
@@ -161,5 +161,5 @@ An early proof of convergence was provided by Novikoff \cite{Novikoff1962}
 \subsubsection{Learn More}
 % reviews
 % books
-Minsky and Papert wrote the classical text titled ``Perceptrons'' in 1969 that is known to have discredited the approach, suggesting it was limited to linear discrimination, which limited research in the area for decades afterward \cite{Minsky1969}.
+Minsky and Papert wrote the classical text titled ``Perceptrons'' in 1969 that is known to have discredited the approach, suggesting it was limited to linear discrimination, which reduced research in the area for decades afterward \cite{Minsky1969}.
 

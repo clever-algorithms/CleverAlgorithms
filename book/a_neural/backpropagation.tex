@@ -34,7 +34,7 @@ Feed-forward neural networks are inspired by the information processing of one o
 % Which features of the motivating system are relevant to a technique?
 A neuron accepts input signals via its axon, which pass the electrical signal down to the cell body. The dendrites carry the signal out to synapses, which are the connections of a cell's dendrites to other cell's axons. In a synapse, the electrical activity is converted into molecular activity (neurotransmitter molecules crossing the synaptic cleft and binding with receptors). The molecular binding develops an electrical signal which is passed onto the connected cells axon.
 % backprop 
-The Back-propagation algorithm is a training regime for multi-layer feed forward neural networks and is not directly inspired by the learning processes the biological system.
+The Back-propagation algorithm is a training regime for multi-layer feed forward neural networks and is not directly inspired by the learning processes of the biological system.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -67,7 +67,7 @@ Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing a netwo
 
 where $n$ is the number of weights and inputs, $x_{ki}$ is the $k^{th}$ attribute on the $i^{th}$ input pattern, and $w_{bias}$ is the bias weight. A logistic transfer function (sigmoid) is used to calculate the output for a neuron $\in [0,1]$ and provide nonlinearities between in the input and output signals: $\frac{1}{1+exp(-a)}$, where $a$ represents the neuron activation. 
 
-The weight updates use the delta rule, specifically a changed delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. The following describes the back-propagation of error and weight updates for a single pattern.
+The weight updates use the delta rule, specifically a modified delta rule where error is backwardly propagated through the network, starting at the output layer and weighted back through the previous layers. The following describes the back-propagation of error and weight updates for a single pattern.
 
 An error signal is calculated for each node and propagated back through the network. For the output nodes this is the sum of the error between the node outputs and the expected outputs: 
 
@@ -150,12 +150,12 @@ where $w_i(t+1)$ is the updated $i^{th}$ weight, $ed_k$ is the error derivative 
 	\item Input and output values should be normalized such that $x \in [0,1)$.
 	\item The weights can be updated in an online manner (after the exposure to each input pattern) or in batch (after a fixed number of patterns have been observed).
 	\item Batch updates are expected to be more stable than online updates for some complex problems.
-	\item A logistic function (sigmoid) transfer function is commonly used to transfer the activation to a binary output value, although other transfer functions can be used such as the hyperbolic tangent (tanh), Gaussian, and softmax.
+	\item A logistic (sigmoid) transfer function is commonly used to transfer the activation to a binary output value, although other transfer functions can be used such as the hyperbolic tangent (tanh), Gaussian, and softmax.
 	\item It is good practice to expose the system to input patterns in a different random order each enumeration through the input set.
-	\item The initial weights are typically small random values, typically $\in [0, 0.5]$.
+	\item The initial weights are typically small random values $\in [0, 0.5]$.
 	\item Typically a small number of layers are used such as 2-4 given that the increase in layers result in an increase in the complexity of the system and the time required to train the weights.
 	\item The learning rate can be varied during training, and it is common to introduce a momentum term to limit the rate of change.
-	\item The weights of a give network can be initialized with a global optimization method before being refined using the Back-propagation algorithm.
+	\item The weights of a given network can be initialized with a global optimization method before being refined using the Back-propagation algorithm.
 	\item One output node is common for regression problems, where as one output node per class is common for classification problems.
 \end{itemize}
 
@@ -165,7 +165,7 @@ where $w_i(t+1)$ is the updated $i^{th}$ weight, $ed_k$ is the error derivative 
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{backpropagation} provides an example of the Back-propagation algorithm implemented in the Ruby Programming Language. 
 % problem
-The problem is the classical XOR boolean problem, where the inputs of the boolean truth table are provided as inputs and the result of the boolean XOR operation is the expected as output. This is a classical problem for Back-Propagation because it was the problem instance referenced by Minsky and Papert in their analysis of the Perceptron highlighting the limitations of their simplified models of neural networks \cite{Minsky1969}.
+The problem is the classical XOR boolean problem, where the inputs of the boolean truth table are provided as inputs and the result of the boolean XOR operation is expected as output. This is a classical problem for Back-Propagation because it was the problem instance referenced by Minsky and Papert in their analysis of the Perceptron highlighting the limitations of their simplified models of neural networks \cite{Minsky1969}.
 
 % algorithm
 The algorithm was implemented using a batch learning method, meaning the weights are updated after each epoch of patterns are observed. A logistic (sigmoid) transfer function is used to convert the activation into an output signal. Weight updates occur at the end of each epoch using the accumulated delta's. A momentum term is used in conjunction with the past weight update to ensure the last update influences the current update, reducing large changes.
@@ -188,7 +188,7 @@ A three layer network is demonstrated with 2 nodes in the input layer (two input
 % seminal
 The backward propagation of error method is credited to Bryson and Ho in \cite{Bryson1969}. It was applied to the training of multi-layer networks and called back-propagation by Rumelhart, Hinton and Williams in 1986 \cite{Rumelhart1986b, Rumelhart1986c}. 
 % early
-This effort and the collection of studies edited by Rumelhart and McClelland that helped to define the field of Artificial Neural Networks in the late 1980's \cite{Rumelhart1986, Rumelhart1986a}.
+This effort and the collection of studies edited by Rumelhart and McClelland helped to define the field of Artificial Neural Networks in the late 1980s \cite{Rumelhart1986, Rumelhart1986a}.
 
 
 % 
