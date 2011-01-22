@@ -12,7 +12,7 @@
 
 \section{Overview}
 % this report
-All code examples in the Clever Algorithms project are provided in the Ruby programming language.
+All code examples in this book are provided in the Ruby programming language.
 This appendix provides a high-level introduction to the Ruby programming language. This guide is intended for programmers of an existing imperative or programming language (such as Python, Java, C, C++, C\#) to learn enough Ruby to be able to interpret and modify the code examples provided in the Clever Algorithms project.
 
 % basics
@@ -21,7 +21,7 @@ This appendix provides a high-level introduction to the Ruby programming languag
 This section summarizes the basics of the language, including variables, flow control, data structures, and functions.
 
 \subsection{Ruby Files}
-Ruby is an interpreted language, meaning that programs are typed as text into a \texttt{.rb} file which is parsed and executed at the time the script is run. For example, the following example shows how to invoke the Ruby interpreter on a script in the file \texttt{genetic\_algorithm.rb} from the command line: \texttt{ruby genetic\_algorithm.rb}
+Ruby is an interpreted language, meaning that programs are typed as text into a \texttt{.rb} file which is parsed and executed at the time the script is run. For example, the following snippet shows how to invoke the Ruby interpreter on a script in the file \texttt{genetic\_algorithm.rb} from the command line: \texttt{ruby genetic\_algorithm.rb}
 
 Ruby scripts are written in ASCII text and are parsed and executed in a linear manner (top to bottom). A script can define functionality (as modules, functions, and classes) and invoke functionality (such as calling a function). 
 
@@ -43,7 +43,7 @@ d = "hello, world" # d holds the string value 'hello, world'
 
 Ruby has a number of different data types (such as numbers and strings) although it does not enforce the type safety of variables. Instead it uses `duck typing', where as long as the value of a variable responds appropriately to messages it receives, the interpreter is happy.
 
-Strings can be constructed from static text as well as the values of variables. The following example defines a variable and then defines a string that contains the variable. The \texttt{\#\{\}} is a special sequence that informs the interrupter to evaluate the contents of inside the brackets, in this case to evaluate the variable n, which happens to be assigned the value 55.
+Strings can be constructed from static text as well as the values of variables. The following example defines a variable and then defines a string that contains the variable. The \#\{\} is a special sequence that informs the interrupter to evaluate the contents of inside the brackets, in this case to evaluate the variable n, which happens to be assigned the value 55.
 
 \begin{lstlisting}
 n = 55 # an integer 
@@ -140,7 +140,7 @@ a << 4 # => [1, 2, 3, 4]
 a.delete_at(0) # => returns 1, a is now [2, 3, 4]
 \end{lstlisting}
 
-A hash is an associative array, where values can be stored and accessed using a key. A key can be an object (such as a string) or a label. 
+A hash is an associative array, where values can be stored and accessed using a key. A key can be an object (such as a string) or a symbol. 
 
 \begin{lstlisting}
 h = {} # empty hash
@@ -167,7 +167,7 @@ puts("Testing 1, 2, 3") # => Testing 1, 2, 3
 puts "Testing 4, 5, 6" # note brackets are not required for the function call
 \end{lstlisting}
 
-Functions allow a program to be partitioned into discrete actions and pre-defined and reusable. The following is an example of a simple function
+Functions allow a program to be partitioned into discrete actions and pre-defined and reusable. The following is an example of a simple function.
 
 \begin{lstlisting}
 def test_function()
@@ -198,7 +198,7 @@ puts test_function() # => Test: me
 puts test_function("you") # => Test: you
 \end{lstlisting}
 
-And a function can return a variable, called a return value.
+A function can return a variable, called a return value.
 
 \begin{lstlisting}
 def square(x)
@@ -208,7 +208,7 @@ end
 puts square(3) # => 9
 \end{lstlisting}
 
-A block is a collection of statements that can be treated as a single unit. A block can be provided to a function and it can be provided with parameters. A block can be defined using curly brackets \texttt{\{\}} or the \texttt{do} and \texttt{end} keywords. Parameters to a block are signified by \texttt{|var|}.
+A block is a collection of statements that can be treated as a single unit. A block can be provided to a function and it can be provided with parameters. A block can be defined using curly brackets \{\} or the \texttt{do} and \texttt{end} keywords. Parameters to a block are signified by \texttt{|var|}.
 
 The following examples shows an array with a block passed to the constructor of the Array object that accepts a parameter of the current array index being initialized and return's the value with which to initialize the array.
 
@@ -232,17 +232,17 @@ Everything is an object in ruby, even numbers, and as such everything has some b
 % 
 \section{Ruby Idioms}
 \index{Ruby!Idioms}
-There are standard patterns for performing certain tasks in Ruby, such as assignment and enumerating. This section presents the common Ruby idioms used throughout the code examples in the Clever Algorithms project.
+There are standard patterns for performing certain tasks in Ruby, such as assignment and enumerating. This section presents the common Ruby idioms used throughout the code examples in this book.
 
 % Assignment
 \subsection{Assignment}
-Assignment is the definition of variable (setting a variable to a value). Ruby allows mass assignment, for example, multiple variables can be assigned to respective values on single line.
+Assignment is the definition of variables (setting a variable to a value). Ruby allows mass assignment, for example, multiple variables can be assigned to respective values on a single line.
 
 \begin{lstlisting}
 a,b,c = 1,2,3
 \end{lstlisting}
 
-Ruby also has special support for arrays, where variables can be mass-assigned from the values in an array. This can be useful if a function returns an array of return values which are mass assigned to a collation of variables.
+Ruby also has special support for arrays, where variables can be mass-assigned from the values in an array. This can be useful if a function returns an array of values which are mass assigned to a collection of variables.
 
 \begin{lstlisting}
 a, b, c = [1, 2, 3]
@@ -258,7 +258,7 @@ min, max = get_min_max(v) # => 1, 5
 % Enumerating
 \subsection{Enumerating}
 \index{Ruby!Enumerating}
-Those collections that are enumerable, such as arrays, provide convent functions for visiting each value in the collection. A very common idiom is the use of the \texttt{.each} and \texttt{.each\_with\_index} functions on a collection which accepts a block. These functions are typically used with an in-line block \texttt{\{\}} so that they fit onto one line.
+Those collections that are enumerable, such as arrays, provide convenient functions for visiting each value in the collection. A very common idiom is the use of the \texttt{.each} and \texttt{.each\_with\_index} functions on a collection which accepts a block. These functions are typically used with an in-line block \{\} so that they fit onto one line.
 
 \begin{lstlisting}
 [1,2,3,4,5].each {|v| puts v} # in-line block
@@ -276,7 +276,7 @@ a = [3, 2, 4, 1]
 a = a.sort # => [1, 2, 3, 4]
 \end{lstlisting}
 
-There are a few versions of the sort function including a version that takes a block. This version of the sort function can be used to sort the variables in the collection using something other than the actual direct values in the array. This is heavily used in code examples to sort arrays of hash maps by a particular key-value pair. The \texttt{$<=>$} operator is used to compare two values together, returning a -1, 0, or 1 if the first value is smaller, the same, or larger than the second. 
+There are a few versions of the sort function including a version that takes a block. This version of the sort function can be used to sort the variables in the collection using something other than the actual direct values in the array. This is heavily used in code examples to sort arrays of hash maps by a particular key-value pair. The \texttt{<=>} operator is used to compare two values together, returning a -1, 0, or 1 if the first value is smaller, the same, or larger than the second. 
 
 \begin{lstlisting}
 a = {:quality=>2, :quality=>3, :quality=>1}
