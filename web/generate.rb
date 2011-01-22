@@ -345,7 +345,8 @@ def post_process_text(s)
   s = s.gsub("\\mybooktitle", "Clever Algorithms")
   # replace \mybooksubtitle with the book subtitle
   s = s.gsub("\\mybooksubtitle", "Nature-Inspired Programming Recipes")
-
+  # finally switch ` for ' (late in the subs)
+  s = s.gsub("`", "'")
   
   # put the math back
   if !math.empty?
