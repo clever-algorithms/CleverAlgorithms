@@ -20,7 +20,7 @@
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
-Extremal Optimization is a stochastic search technique that has properties of being a local and global search method.
+Extremal Optimization is a stochastic search technique that has the properties of being a local and global search method.
 % What are the closely related approaches to a technique?
 It is generally related to hill-climbing algorithms and provides the basis for extensions such as Generalized Extremal Optimization.
 
@@ -31,7 +31,7 @@ It is generally related to hill-climbing algorithms and provides the basis for e
 % What is the system or process that motivated the development of a technique?
 Extremal Optimization is inspired by the Bak-Sneppen self-organized criticality model of co-evolution from the field of statistical physics. 
 % Which features of the motivating system are relevant to a technique?
-The self-organized criticality model suggests that some dynamical systems have a critical point as an attractor, whereby the systems exhibit periods of slow movement or accumulation followed by short periods of avalanche or instability. Examples of such systems include land formation, earthquakes, and the dynamics of sand piles. The Bak-Sneppen considers these dynamics in co-evolutionary systems and in the punctuated equilibrium model, which is described as long periods of status followed by short periods of extension and large evolutionary change.
+The self-organized criticality model suggests that some dynamical systems have a critical point as an attractor, whereby the systems exhibit periods of slow movement or accumulation followed by short periods of avalanche or instability. Examples of such systems include land formation, earthquakes, and the dynamics of sand piles. The Bak-Sneppen model considers these dynamics in co-evolutionary systems and in the punctuated equilibrium model, which is described as long periods of status followed by short periods of extinction and large evolutionary change.
 
 % Metaphor: Explanation via analogy
 % The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal scientific truth, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the ‘inspiration’ element, which represents a loose dependency for this element. The explanation is textual and uses the nomenclature of the metaphorical system.
@@ -54,7 +54,7 @@ This is achieved through the allocation of cost to the components of the solutio
 \subsection{Procedure}
 % What is the computational recipe for a technique?
 % What are the data structures and representations used in a technique?
-Algorithm~\ref{alg:eo} provides a pseudocode listing of the Extremal Optimization algorithm for minimizing a cost function. The deterministic selection of the worst component in the \\ \texttt{Select\-Weak\-Component} function and replacement in the \texttt{Select\-Replacement\-Component} function is classical EO. If these decisions are probabilistic making use of $\tau$ parameter, this is referred to as $\tau$-Extremal Optimization.
+Algorithm~\ref{alg:eo} provides a pseudocode listing of the Extremal Optimization algorithm for minimizing a cost function. The deterministic selection of the worst component in the \texttt{Select\-Weak\-Component} function and replacement in the \texttt{Select\-Replacement\-Component} function is classical EO. If these decisions are probabilistic making use of $\tau$ parameter, this is referred to as $\tau$-Extremal Optimization.
 
 \begin{algorithm}[ht]
 	\SetLine  
@@ -127,7 +127,7 @@ Algorithm~\ref{alg:eo} provides a pseudocode listing of the Extremal Optimizatio
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{extremal_optimization} provides an example of the Extremal Optimization algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
 The algorithm implementation is based on the seminal work by Boettcher and Percus \cite{Boettcher1999}. A solution is comprised of a permutation of city components. Each city can potentially form a connection to any other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected: $fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$. A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. The longest connection is broken, and the city is connected with another neighboring city that is also probabilistically selected.

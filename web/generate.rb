@@ -724,6 +724,7 @@ def process_pseudocode(lines, caption=nil)
   return s
 end
 
+# TODO number algorithm listings, tables, figures, etc
 def to_text_content(data)
   s = ""
   # state machine for building paragraphs/items/algorithms

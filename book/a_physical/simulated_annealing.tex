@@ -20,7 +20,7 @@
 % The algorithm taxonomy defines where a techniques fits into the field, both the specific subfields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relation- ships between algorithms. The taxonomy may be described in terms of a series of relationship statements or pictorially as a venn diagram or a graph with hierarchical structure.
 \subsection{Taxonomy}
 % To what fields of study does a technique belong?
-Simulated Annealing is a global optimization that belongs to the field of Stochastic Optimization and Metaheuristics.
+Simulated Annealing is a global optimization algorithm that belongs to the field of Stochastic Optimization and Metaheuristics.
 % What are the closely related approaches to a technique?
 Simulated Annealing is an adaptation of the Metropolis-Hastings Monte Carlo algorithm and is used in function optimization. Like the Genetic Algorithm (Section~\ref{sec:genetic_algorithm}), it provides a basis for a large variety of extensions and specialization's of the general method not limited to Parallel Simulated Annealing, Fast Simulated Annealing, and Adaptive Simulated Annealing.
 
@@ -112,7 +112,7 @@ Algorithm~\ref{alg:sa} provides a pseudocode listing of the main Simulated Annea
 	\item Simulated Annealing was designed for use with combinatorial optimization problems, although it has been adapted for continuous function optimization problems.
 	\item The convergence proof suggests that with a long enough cooling period, the system will always converge to the global optimum. The downside of this theoretical finding is that the number of samples taken for optimum convergence to occur on some problems may be more than a complete enumeration of the search space. 
 	\item Performance improvements can be given with the selection of a candidate move generation scheme (neighborhood) that is less likely to generate candidates of significantly higher cost.
-	\item Restarting the cooling scheduling using the best found solution so far can lead to an improved outcome on some problems.
+	\item Restarting the cooling schedule using the best found solution so far can lead to an improved outcome on some problems.
 	\item A common acceptance method is to always accept improving solutions and accept worse solutions with a probability of $P(accept) \leftarrow \exp(\frac{e-e'}{T})$, where $T$ is the current temperature, $e$ is the energy (or cost) of the current solution and $e'$ is the energy of a candidate solution being considered.
 	\item The size of the neighborhood considered in generating candidate solutions may also change over time or be influenced by the temperature, starting initially broad and narrowing with the execution of the algorithm.
 	\item A problem specific heuristic method can be used to provide the starting point for the search.
@@ -125,10 +125,10 @@ Algorithm~\ref{alg:sa} provides a pseudocode listing of the main Simulated Annea
 % How is a technique applied to a concrete problem instance?
 Listing~\ref{simulated_annealing} provides an example of the Simulated Annealing algorithm implemented in the Ruby Programming Language. 
 % problem
-The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimized the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
 
 % algorithm
-The algorithm implementation uses a two-opt procedure for the neighborhood function and the classical $P(accept) \leftarrow \exp(\frac{e-e'}{T})$ as the acceptance function. A simple linear cooling regime is used with a large initial temperature which is decreased each iteration. The initial solution is created using a nearest neighbor heuristic to provide a good starting point for the search.
+The algorithm implementation uses a two-opt procedure for the neighborhood function and the classical $P(accept) \leftarrow \exp(\frac{e-e'}{T})$ as the acceptance function. A simple linear cooling regime is used with a large initial temperature which is decreased each iteration.
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Simulated Annealing in Ruby, label=simulated_annealing]{../src/algorithms/physical/simulated_annealing.rb}
@@ -155,6 +155,6 @@ There were a number of early studies and application papers such as Kirkpatrick'
 % reviews
 There are many excellent reviews of Simulated Annealing, not limited to the review by Ingber that describes improved methods such as Adaptive Simulated Annealing, Simulated Quenching, and hybrid methods \cite{Ingber1993}.
 % books
-There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include ``Simulated Annealing: Theory and Applications'' by Laarhoven and Aarts \cite{Laarhoven1988} that provides an introduction to the technique and applications, and ``Simulated Annealing: Parallelization Techniques'' by Robert Azencott \cite{Azencott1992} that focuses of the theory and applications of parallel methods for Simulated Annealing.
+There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include ``Simulated Annealing: Theory and Applications'' by Laarhoven and Aarts \cite{Laarhoven1988} that provides an introduction to the technique and applications, and ``Simulated Annealing: Parallelization Techniques'' by Robert Azencott \cite{Azencott1992} that focuses on the theory and applications of parallel methods for Simulated Annealing.
 
 
