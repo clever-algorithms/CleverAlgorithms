@@ -329,7 +329,7 @@ def post_process_text(s)
   s = s.gsub("\\{", "{")
   # replace \} with } (appendix)
   s = s.gsub("\\}", "}") 
-  # replace \\ with <br /> (appendix)
+  # replace \\ with <br /> (appendix,  de)
   s = s.gsub("\\\\", "<br />") 
   # replace \Latex with LaTex
   s = s.gsub("\\LaTeX", "LaTex")   

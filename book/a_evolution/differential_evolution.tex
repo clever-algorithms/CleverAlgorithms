@@ -166,7 +166,8 @@ Listing~\ref{differential_evolution} provides an example of the Differential Evo
 % problem
 The demonstration problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
 % algorithm
-The algorithm is an implementation of Differential Evolution with the DE/rand/1/bin configuration proposed by Storn and Price \cite{Storn1997}. \\ % NOTE: this newline is a hack for layout niceness
+The algorithm is an implementation of Differential Evolution with the DE/rand/1/bin configuration proposed by Storn and Price \cite{Storn1997}. \\ 
+% NOTE: this newline is a hack for layout niceness
 
 % the listing
 \lstinputlisting[firstline=7,language=ruby,caption=Differential Evolution in Ruby, label=differential_evolution]{../src/algorithms/evolutionary/differential_evolution.rb}
