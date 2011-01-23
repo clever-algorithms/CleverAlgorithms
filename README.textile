@@ -14,7 +14,7 @@ h3. Book
 
 * Jason Brownlee, *Clever Algorithms: Nature-Inspired Programming Recipes*, Lulu, (Coming January 2011)
 
-!http://www.cleveralgorithms.com/images/small_cover.jpg!
+!http://www.cleveralgorithms.com/images/small_cover.png!
 
 h3. Website
 
