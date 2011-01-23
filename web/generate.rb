@@ -710,15 +710,6 @@ def process_code_listing(lines)
   return final_pretty_code_listing(lines, caption)
 end
 
-def process_pseudocode2(lines, caption=nil)
-  s = ""
-  add_line(s, "<pre class='prettyprint'>")
-  add_line(s, "Please refer to the book for the pseudocode.")
-  add_line(s, "</pre>")
-  add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
-  return s
-end
-
 def to_pseudocode_datum(map, item)
   p = item.strip
   key = p[1..-1] if p[0].chr == "\\"
@@ -728,8 +719,6 @@ def to_pseudocode_datum(map, item)
 end
 
 def process_pseudocode(lines, caption=nil)
-  # return process_pseudocode2(lines, caption=nil)
-  
   datamap, funcmap = {}, {}
   s = ""
   add_line(s, "<div class='pseudocode'>")
@@ -759,11 +748,10 @@ def process_pseudocode(lines, caption=nil)
       add_line(s, parts.join(", "))
       add_line(s, "<br />")
     else
-      
+      # TODO - this is hard!
     end
-  end
-  
-  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  
+  end  
+  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  # delete this once it works
   add_line(s, "</div>")
   add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
   return s
@@ -884,18 +872,26 @@ def get_algorithm_name(filename)
   return processed.last[:section]
 end
 
+def to_anchor(name)
+  name = post_process_text(name)
+  name = name.downcase
+  name = name.gsub(" ", "_")
+  name = name.gsub("\n", "_")  
+  return name
+end
+
 # for intro chapter (at least)
 # note headings are processed
 def header_for_hash(hash, has_chapter)
   if !has_chapter
-    return "<h1>#{post_process_text hash[:section]}</h1>" if !hash[:section].nil?
-    return "<h2>#{post_process_text hash[:subsec]}</h2>" if !hash[:subsec].nil?
-    return "<h3>#{post_process_text hash[:subsubsec]}</h3>" if !hash[:subsubsec].nil?  
+    return "<a name='#{to_anchor(hash[:section])}'><h1>#{post_process_text hash[:section]}</h1></a>" if !hash[:section].nil?
+    return "<a name='#{to_anchor(hash[:subsec])}'><h2>#{post_process_text hash[:subsec]}</h2></a>" if !hash[:subsec].nil?
+    return "<a name='#{to_anchor(hash[:subsubsec])}'><h3>#{post_process_text hash[:subsubsec]}</h3></a>" if !hash[:subsubsec].nil?  
   end
-  return "<h1>#{post_process_text hash[:chapter]}</h1>" if !hash[:chapter].nil?
-  return "<h2>#{post_process_text hash[:section]}</h2>" if !hash[:section].nil?
-  return "<h3>#{post_process_text hash[:subsec]}</h3>" if !hash[:subsec].nil?
-  return "<h4>#{post_process_text hash[:subsubsec]}</h4>" if !hash[:subsubsec].nil?
+  return "<a name='#{to_anchor(hash[:chapter])}'><h1>#{post_process_text hash[:chapter]}</h1></a>" if !hash[:chapter].nil?
+  return "<a name='#{to_anchor(hash[:section])}'><h2>#{post_process_text hash[:section]}</h2></a>" if !hash[:section].nil?
+  return "<a name='#{to_anchor(hash[:subsec])}'><h3>#{post_process_text hash[:subsec]}</h3></a>" if !hash[:subsec].nil?
+  return "<a name='#{to_anchor(hash[:subsubsec])}'><h4>#{post_process_text hash[:subsubsec]}</h4></a>" if !hash[:subsubsec].nil?
 end
 
 def recursive_html_for_chapter(data, has_chapter=true)
@@ -1130,6 +1126,15 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<li><strong>Background</strong></li>")
   add_line(s, "<ol>")
   add_line(s, "<li><a href='introduction.html'>Introduction</a></li>")
+  add_line(s, "<ol>")
+  # add intro subsections
+  lines = get_all_data_lines("../book/c_introduction.tex")
+  intro = general_process_file(lines)
+  intro.last[:content].each do |element|
+    next if !element.kind_of?(Hash)
+    add_line(s, "<li><a href='introduction.html\##{to_anchor(element[:section])}'>#{element[:section]}</a></li>")
+  end
+  add_line(s, "</ol>")
   add_line(s, "</ol>")
   # algorithms
   add_line(s, "<li><strong>Algorithms</strong></li>")
@@ -1167,6 +1172,15 @@ def create_toc_html(algorithms, frontmatter)
   end
   # appendix
   add_line(s, "<li><a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a></li>")
+  add_line(s, "<ol>")
+  # add appendix subsections
+  lines = get_all_data_lines("../book/b_appendix1.tex")
+  appendix = general_process_file(lines)
+  appendix.last[:content].each do |element|
+    next if !element.kind_of?(Hash)
+    add_line(s, "<li><a href='appendix1.html\##{to_anchor(element[:section])}'>#{element[:section]}</a></li>")
+  end
+  add_line(s, "</ol>")  
   add_line(s, "</ol>")
   return s
 end
