@@ -35,10 +35,10 @@ The Differential Evolution algorithm involves maintaining a population of candid
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as pseudo code, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What are the data structures and representations used in a technique?
-Differential Evolution has a specialized nomenclature that describes the adopted configuration. This takes the form of DE$/x/y/z$, where $x$ represents the solution to be perturbed (such a random or best). The $y$ signifies the number of difference vectors used in the perturbation of $x$, where a difference vectors is the difference between two randomly selected although distinct members of the population. Finally, $z$ signifies the recombination operator performed such as \texttt{bin} for binomial and \texttt{exp} for exponential. 
+Differential Evolution has a specialized nomenclature that describes the adopted configuration. This takes the form of DE/\emph{x}/\emph{y}/\emph{z}, where \emph{x} represents the solution to be perturbed (such a random or best). The \emph{y} signifies the number of difference vectors used in the perturbation of \emph{x}, where a difference vectors is the difference between two randomly selected although distinct members of the population. Finally, \emph{z} signifies the recombination operator performed such as \texttt{bin} for binomial and \texttt{exp} for exponential. 
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/\-rand/\-1/\-bin configuration. Algorithm~\ref{alg:new_sample} provides a pseudocode listing of the $NewSample$ function from the Differential Evolution algorithm.
+Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the Differential Evolution algorithm for minimizing a cost function, specifically a DE/\-rand/\-1/\-bin configuration. Algorithm~\ref{alg:new_sample} provides a pseudocode listing of the \texttt{NewSample} function from the Differential Evolution algorithm.
 
 \begin{algorithm}[ht]
 	\SetLine  

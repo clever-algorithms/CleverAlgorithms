@@ -710,11 +710,61 @@ def process_code_listing(lines)
   return final_pretty_code_listing(lines, caption)
 end
 
-def process_pseudocode(lines, caption=nil)
+def process_pseudocode2(lines, caption=nil)
   s = ""
   add_line(s, "<pre class='prettyprint'>")
   add_line(s, "Please refer to the book for the pseudocode.")
   add_line(s, "</pre>")
+  add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
+  return s
+end
+
+def to_pseudocode_datum(map, item)
+  p = item.strip
+  key = p[1..-1] if p[0].chr == "\\"
+  p = map[key] if !map[key].nil?
+  p = "<code>#{p}</code>" if !p.include?("\$")
+  return p
+end
+
+def process_pseudocode(lines, caption=nil)
+  # return process_pseudocode2(lines, caption=nil)
+  
+  datamap, funcmap = {}, {}
+  s = ""
+  add_line(s, "<div class='pseudocode'>")
+  lines.each do |line|
+    # skip
+    next if starts_with?(line.strip, "\\label")
+    next if starts_with?(line.strip, "\\caption")
+    next if starts_with?(line.strip, "\\SetLine")
+    # build map
+    if starts_with?(line.strip, "\\SetKwData") or starts_with?(line.strip, "\\StopCondition")
+      p1 = line[(line.index("{")+1)...line.index("}")]
+      sub = line[(line.index("}")+1)..-1]
+      i,j = (sub.index("{")+1), sub.rindex("}")
+      p2 = sub[i...j]
+      map = starts_with?(line.strip, "\\SetKwData") ? datamap : funcmap
+      map[p1] = p2
+    # IO
+    elsif starts_with?(line.strip, "\\KwIn") or starts_with?(line.strip, "\\KwOut")
+      content = get_data_in_brackets(line)
+      parts = []
+      content.split(",").each do |part|
+        parts << to_pseudocode_datum(datamap, part)
+      end      
+      next if parts.empty?
+      type = (starts_with?(line.strip, "\\KwIn")) ? "Input" : "Output"
+      add_line(s, "<strong>#{type}</strong>: ")
+      add_line(s, parts.join(", "))
+      add_line(s, "<br />")
+    else
+      
+    end
+  end
+  
+  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  
+  add_line(s, "</div>")
   add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
   return s
 end
@@ -801,7 +851,7 @@ def to_text_content(data)
         elsif in_algorithm
           # ignore (for now)
           algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
-          pseudocode_collection << line
+          pseudocode_collection << raw_line # unstripped
         elsif in_listing
           listing_collection << raw_line # unstripped
         elsif in_table
@@ -1158,11 +1208,26 @@ end
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
 FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
 
+def algo_test(bib)
+  # load and process the algorithm
+  lines = get_all_data_lines("../book/a_evolution/differential_evolution.tex")
+  processed = general_process_file(lines)
+  # write the html for the algorithm
+  html = html_for_algorithm("differential_evolution", processed, bib, {:link=>"",:name=>"Evolutionary Algorithms"})
+  filename = "#{OUTPUT_DIR}/test.html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote algorithm '#{processed.first[:section]}' to: #{filename}"
+end
+
 if __FILE__ == $0
   # create dir
   create_directory(OUTPUT_DIR)
   # load the bib 
   bib = load_bibtex()
+
+  # for testing
+  # algo_test(bib)
+
   # TOC
   build_toc(ALGORITHM_CHAPTERS, FRONT_MATTER)
   # front matter
