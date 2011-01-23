@@ -163,7 +163,6 @@ def replace_custom_refs(s)
   return s
 end
 
-# TODO bug with the string \texttt{#\{\}} (appendix)
 # maybe see: http://stackoverflow.com/questions/3594325/find-matching-bracket-with-regex
 # this func does endspecial handing of << >> for grammatical evolution
 def replace_texttt(s)
@@ -276,7 +275,6 @@ def character_processing(s)
   return s
 end
 
-# TODO link to known algorithms (maybe)
 # the math hack in here just grabs all math before processing, then adds it back after.
 # sucks i know
 def post_process_text(s)  
@@ -366,8 +364,6 @@ def post_process_text(s)
   return s
 end
 
-# TODO check all code can be copied and executed from the web
-# TODO add download link for source code (github? local?)
 # create the pretty print
 # http://code.google.com/p/google-code-prettify/
 # http://google-code-prettify.googlecode.com/svn/trunk/README.html
@@ -714,7 +710,6 @@ def process_code_listing(lines)
   return final_pretty_code_listing(lines, caption)
 end
 
-# TODO display pseudocode algorithm (all algorithms)
 def process_pseudocode(lines, caption=nil)
   s = ""
   add_line(s, "<pre class='prettyprint'>")
@@ -724,7 +719,6 @@ def process_pseudocode(lines, caption=nil)
   return s
 end
 
-# TODO number algorithm listings, tables, figures, etc
 def to_text_content(data)
   s = ""
   # state machine for building paragraphs/items/algorithms
@@ -953,7 +947,6 @@ def html_for_algorithm(name, data, bib, parent)
   return s
 end
 
-# TODO list algorithms before 'extensions'
 def html_for_chapter_overview(name, data, source, bib, subsecname)
   algos = collect_subpages_for_page(data)
   keywords = []
