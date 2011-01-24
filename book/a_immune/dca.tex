@@ -109,13 +109,12 @@ The resulting migrated cells can then be used to classify input patterns as norm
 			\StoreAntigen{\Cell, \PatternAntigen}\;
 			\uIf{\CellLifespan $\leq$ $0$} {
 				\ReInitializeCell{\Cell}\;
-			}
-			\ElseIf{\CellCSM $\geq$ \CellMigrationThreshold}{
+			}\ElseIf{\CellCSM $\geq$ \CellMigrationThreshold}{
 				\RemoveCell{\ImmatureCells, \Cell}\;
 				\ImmatureCells $\leftarrow$ \CreateNewCell{\MigrationThresholdBounds}\;				
 				\eIf{\CellK $<$ $0$} {
 					\CellType $\leftarrow$ \Mature\;
-				} {
+				}{
 					\CellType $\leftarrow$ \Semimature\;
 				}
 				\MigratedCells $\leftarrow$ \Cell\;

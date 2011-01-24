@@ -64,7 +64,7 @@ Algorithm~\ref{alg:stochastic_hill_climbing} provides a pseudocode listing of th
 	% main loop
 	\ForEach{$iter_i \in$ \NumIterations} {
 		% small step
-		$\Candidate \leftarrow$ \RandomNeighbor{\Current}\;		
+		\Candidate $\leftarrow$ \RandomNeighbor{\Current}\;		
 		\If{\Cost{\Candidate} $\geq$ \Cost{\Current}} {
 			\Current $\leftarrow$ \Candidate\;
 		}

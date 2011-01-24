@@ -121,12 +121,12 @@ The Pseudocode is based on the version of the Reactive Tabu Search described by 
 	\eIf{\HaveVisitedSolutionBefore{\Current, \VisitedSolutions}}{
 		% RepetitionInterval
 		\CurrentVisitTime $\leftarrow$ \RetrieveLastTimeVisited{\VisitedSolutions, \Current}\;
-		\RepetitionInterval $\leftarrow$ \CurrentIteration $-$ \CurrentVisitTime\;
+		\RepetitionInterval $\leftarrow$ \CurrentIteration - \CurrentVisitTime\;
 		\CurrentVisitTime $\leftarrow$ \CurrentIteration\;
 		% check for increase
-		\If{\RepetitionInterval $<$ $2 \times \ProblemSize$}{
-			\AvgRepetitionInterval $\leftarrow$ $0.1 \times \RepetitionInterval + 0.9 \times \AvgRepetitionInterval$\;
-			\ProhibitionPeriod $\leftarrow$ $\ProhibitionPeriod \times \Increase$\;
+		\If{\RepetitionInterval $<$ 2 $\times$ \ProblemSize}{
+			\AvgRepetitionInterval $\leftarrow$ 0.1 $\times$ \RepetitionInterval $+$ 0.9 $\times$ \AvgRepetitionInterval\;
+			\ProhibitionPeriod $\leftarrow$ \ProhibitionPeriod $\times$ \Increase\;
 			\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
 		}
 	}{
@@ -136,8 +136,8 @@ The Pseudocode is based on the version of the Reactive Tabu Search described by 
 	}
 	
 	% check for reduction
-	\If{\CurrentIteration-\ProhibitionPeriodTime $>$ \AvgRepetitionInterval}{
-		\ProhibitionPeriod $\leftarrow$ \Max{1, $\ProhibitionPeriod \times \Decrease$}\;
+	\If{\CurrentIteration - \ProhibitionPeriodTime $>$ \AvgRepetitionInterval}{
+		\ProhibitionPeriod $\leftarrow$ \Max{1, \ProhibitionPeriod $\times$ \Decrease}\;
 		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
 	}
 
@@ -169,10 +169,10 @@ The Pseudocode is based on the version of the Reactive Tabu Search described by 
 	\KwOut{\Current}
   	% Algorithm
 	\AdmissibleCandidateList $\leftarrow$ \GetAdmissibleMoves{\CandidateList}\;
-	\TabuCandidateList $\leftarrow$ \CandidateList $-$ \AdmissibleCandidateList\;
+	\TabuCandidateList $\leftarrow$ \CandidateList - \AdmissibleCandidateList\;
 	% modify
 	\If{\Size{\AdmissibleCandidateList} $<$ 2} {
-		\ProhibitionPeriod $\leftarrow$ \ProblemSize $-$ 2\;
+		\ProhibitionPeriod $\leftarrow$ \ProblemSize - 2\;
 		\ProhibitionPeriodTime $\leftarrow$ \CurrentIteration\;
 	}
 	% aspiration
@@ -203,7 +203,7 @@ The Pseudocode is based on the version of the Reactive Tabu Search described by 
   	% Algorithm
 	\Tabu $\leftarrow$ FALSE\;
 	\CurrentFeatureLastUsed $\leftarrow$ \RetrieveTimeFeatureLastUsed{\CurrentFeature}\;
-	\If{\CurrentFeatureLastUsed $\geq$ \CurrentIteration$-$\ProhibitionPeriod}{
+	\If{\CurrentFeatureLastUsed $\geq$ \CurrentIteration - \ProhibitionPeriod}{
 		\Tabu $\leftarrow$ TRUE\;
 	}
 	\Return{\Tabu}\;

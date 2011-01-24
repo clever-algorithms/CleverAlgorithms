@@ -104,10 +104,9 @@ The \texttt{Select\-Parents} function selects parents from a population using a 
 		}
 		% environment selection
 		\Archive $\leftarrow$ \GetNonDominated{\Union}\;
-		\If{\Size{\Archive} $<$ \ArchiveSize}{
+		\uIf{\Size{\Archive} $<$ \ArchiveSize}{
 			\PopulateWithRemainingBest{\Union, \Archive, \ArchiveSize}\;
-		}
-		\ElseIf{\Size{\Archive} $>$ \ArchiveSize}{
+		}\ElseIf{\Size{\Archive} $>$ \ArchiveSize}{
 			\RemoveMostSimilar{\Archive, \ArchiveSize}\;
 		}
 		% selection

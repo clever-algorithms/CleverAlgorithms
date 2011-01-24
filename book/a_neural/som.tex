@@ -123,7 +123,7 @@ The neighborhood is typically square (called bubble) where all neighborhood node
 		\Neighborhood $\leftarrow$ \SelectNeighbors{\Bmu, \CodebookVectors, \Nsize}\;
 		\ForEach{\Vector $\in $\Neighborhood} {
 			\ForEach{\VectorAttribute $\in$ \Vector}{
-				\VectorAttribute $\leftarrow$ \VectorAttribute $+$ \Lrate $\times$ (\PatternAttribute $-$ \VectorAttribute)
+				\VectorAttribute $\leftarrow$ \VectorAttribute $+$ \Lrate $\times$ (\PatternAttribute - \VectorAttribute)
 			}
 		}
 	}

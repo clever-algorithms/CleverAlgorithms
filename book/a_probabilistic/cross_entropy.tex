@@ -70,6 +70,7 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudocode listing of the Cr
 	\SetKwData{Variances}{Variances}
 	\SetKwData{Best}{$S_{best}$}
 	\SetKwData{Samples}{Samples}
+	\SetKwData{SamplesZero}{$Samples_0$}
 	\SetKwData{SelectedSamples}{$Samples_{selected}$}
 	\SetKwData{Meani}{$Means_i$}
 	\SetKwData{Variancei}{$Variances_i$}
@@ -100,7 +101,7 @@ Algorithm~\ref{alg:cross_entropy_method} provides a pseudocode listing of the Cr
 		}
 		\EvaluateSamples{\Samples}\;
 		\SortSamplesByQuality{\Samples}\;
-		\If{\Cost{$\Samples_0$} $\leq$ \Cost{\Best}} {
+		\If{\Cost{\SamplesZero $\leq$ \Cost{\Best}} {
 			\Best $\leftarrow \Samples_0$\;
 		}
 		\SelectedSamples $\leftarrow $\SelectBestSamples{\Samples, \NumUpdateSamples}\;

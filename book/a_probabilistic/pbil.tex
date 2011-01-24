@@ -101,9 +101,9 @@ Algorithm~\ref{alg:pbil} provides a pseudocode listing of the Population-Based I
 			}			
 		}
 		\ForEach{\Bit $\in$ \CurrentBest} {
-			\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0$-$\LearningRate) $+$ \Bit $\times$ \LearningRate\;
+			\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0 - \LearningRate) $+$ \Bit $\times$ \LearningRate\;
 			\If{\Rand{} $<$ \ProbabilityMutate} {
-				\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0$-$\MutationFactor) $+$ \Rand{} $\times$ \MutationFactor\;
+				\VectorBit $\leftarrow$ \VectorBit $\times$ (1.0 - \MutationFactor) $+$ \Rand{} $\times$ \MutationFactor\;
 			}
 		}
 	}

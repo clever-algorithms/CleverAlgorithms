@@ -73,15 +73,14 @@ Algorithm~\ref{alg:differential_evolution} provides a pseudocode listing of the 
 	% best
 	\Best $\leftarrow$ \GetBestSolution{\Population}\;
 	% loop
-	\While{$\neg$\StopCondition{}} {
+	\While{ $\neg$ \StopCondition{}} {
 		\NewPopulation $\leftarrow \emptyset$\;
 		% create new 
 		\ForEach{\Member $\in$ \Population}{
 			\Sample $\leftarrow$ \NewSample{\Member, \Population, \NumParameters, \WeightingFactor, \CrossoverRate}\;
 			\eIf{\Cost{\Sample} $\leq$ \Cost{\Member}}{
 				\NewPopulation $\leftarrow$ \Sample\;
-			}
-			{
+			}{
 				\NewPopulation $\leftarrow$ \Member\;
 			}
 		}

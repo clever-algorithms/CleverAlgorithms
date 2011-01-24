@@ -101,10 +101,10 @@ where $range$ is a the user parameter (pitch bandwidth) to control the size of t
 				\RandomHarmonyPitch $\leftarrow$ \SelectRandomHarmonyPitch{\Harmonies, \Pitch}\;
 				\eIf{\Rand{} $\leq$ \AdjustRate} {
 					\CandidateHarmonyPitch $\leftarrow$ \AdjustPitch{\RandomHarmonyPitch}\;
-				} {
+				}{
 					\CandidateHarmonyPitch $\leftarrow$ \RandomHarmonyPitch\;
 				}
-			} {
+			}{
 				\CandidateHarmonyPitch $\leftarrow$ \RandomPitch{\PitchBounds}\;
 			}		
 		}

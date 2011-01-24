@@ -84,29 +84,23 @@ The general CLONALG model involves the selection of antibodies (candidate soluti
   \KwIn{\PopSize, \Selectsize, \Length, \RandomCells, \CloneRate, \MutationRate}		
   \KwOut{\Pop}
   
-  % create cells	
-	\Pop $\leftarrow$ \CreateRandomCells{\PopSize, \Length}\;
-	
-	\While{$\neg$\StopCondition{}}
-	{
-	 \ForEach{$p_i \in$ \Pop}		%// presentation
-	 {
-	 	\Affinity{$p_i$}\;
-	 }
-	 $Population_{select} \leftarrow$ \Select{\Pop, \Selectsize}\;		%// clonal selection
-	 $Population_{clones} \leftarrow \emptyset$\;
-	 \ForEach{$p_i \in Population_{select}$}	%	// clonal expansion
-	 {
-	 	$Population_{clones} \leftarrow$ \Clone{$p_i$, \CloneRate}\;
-	 }	 
-	 \ForEach{$p_i \in Population_{clones}$}		%// affinity maturation
-	 {
-    \Hypermutate{$p_i$, \MutationRate}\;
-	  \Affinity{$p_i$}\;
-	 }	 
-	\Pop $\leftarrow$ \Select{\Pop, $Population_{clones}$, \PopSize}\;		%// greedy selection
-	$Population_{rand} \leftarrow$ \CreateRandomCells{\RandomCells}\;
-	\Replace{\Pop, $Population_{rand}$}\;	%// random replacement
+	\Pop $\leftarrow$ \CreateRandomCells{\PopSize, \Length}\;	
+	\While{$\neg$\StopCondition{}}{
+		\ForEach{$p_i \in$ \Pop}{
+			\Affinity{$p_i$}\;
+		}
+		$Population_{select} \leftarrow$ \Select{\Pop, \Selectsize}\;
+		$Population_{clones} \leftarrow \emptyset$\;
+		\ForEach{$p_i \in Population_{select}$}{
+			$Population_{clones} \leftarrow$ \Clone{$p_i$, \CloneRate}\;
+		}	 
+		\ForEach{$p_i \in Population_{clones}$}{
+			\Hypermutate{$p_i$, \MutationRate}\;
+			\Affinity{$p_i$}\;
+		}	 
+		\Pop $\leftarrow$ \Select{\Pop, $Population_{clones}$, \PopSize}\;
+		$Population_{rand} \leftarrow$ \CreateRandomCells{\RandomCells}\;
+		\Replace{\Pop, $Population_{rand}$}\;
 	}
 	\Return{\Pop}\;
 	

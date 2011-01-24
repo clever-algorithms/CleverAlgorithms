@@ -108,7 +108,7 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudocode listing of the $(
 		}
 		\EvaluatePopulation{\Children}\;
 		% best
-		\Best $\leftarrow$ \GetBest{\Children$+$\Best, 1}\;
+		\Best $\leftarrow$ \GetBest{\Children $+$ \Best, 1}\;
 		% replace
 		\Population $\leftarrow$ \SelectBest{\Population, \Children, \PopulationSize}\;
 	}

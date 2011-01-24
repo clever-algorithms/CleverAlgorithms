@@ -718,7 +718,20 @@ def to_pseudocode_datum(map, item)
   return p
 end
 
-def process_pseudocode(lines, caption=nil)
+def pseudocode_term(term)
+  return term if term.include?("\$")
+  return "<code>#{term}</code>"
+end
+
+def pseudocode_keyword(term)
+  return term if term.include?("\$")
+  return "<strong><code>#{term}</code></strong>"
+end
+
+PSEUDOCODE_KEYWORDS = {"While"=>"While", "If"=>"If", "eIf"=>"If", 
+  "Return"=>"Return", "ForEach"=>"ForEach", "For"=>"For"}
+
+def process_pseudocode(lines, caption=nil)  
   datamap, funcmap = {}, {}
   s = ""
   add_line(s, "<div class='pseudocode'>")
@@ -728,7 +741,7 @@ def process_pseudocode(lines, caption=nil)
     next if starts_with?(line.strip, "\\caption")
     next if starts_with?(line.strip, "\\SetLine")
     # build map
-    if starts_with?(line.strip, "\\SetKwData") or starts_with?(line.strip, "\\StopCondition")
+    if starts_with?(line.strip, "\\SetKwData") or starts_with?(line.strip, "\\SetKwFunction")
       p1 = line[(line.index("{")+1)...line.index("}")]
       sub = line[(line.index("}")+1)..-1]
       i,j = (sub.index("{")+1), sub.rindex("}")
@@ -744,14 +757,101 @@ def process_pseudocode(lines, caption=nil)
       end      
       next if parts.empty?
       type = (starts_with?(line.strip, "\\KwIn")) ? "Input" : "Output"
-      add_line(s, "<strong>#{type}</strong>: ")
+      add_line(s, "<strong>#{pseudocode_keyword type}</strong>: ")
       add_line(s, parts.join(", "))
       add_line(s, "<br />")
     else
-      # TODO - this is hard!
+      # attempting a low-tech solution here - just to get over the line
+      
+      # repeat...until on one line
+      if starts_with?(line.strip, "\\Repeat")
+      	depth = line[0...line.index("\\Repeat")]
+        p1 = line[(line.index("{")+1)...line.index("}")]
+        sub = line[(line.index("}")+1)..-1]
+        i, j = (sub.index("{")+1), sub.rindex("}")
+        p2 = sub[i...j]
+        line = ""
+        add_line(line, "#{depth}#{pseudocode_keyword("Repeat")}<br />")
+        add_line(line, "#{depth}\t#{pseudocode_keyword(p2)}\\;<br />")
+        add_line(line, "#{depth}#{pseudocode_keyword("Until")} #{pseudocode_keyword(p1)}\\;")
+      end   
+      # for
+      if starts_with?(line.strip, "\\For")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\For"))] + "#{pseudocode_keyword("For")} (#{content})"
+      end
+      if starts_with?(line.strip, "\\While")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\While"))] + "#{pseudocode_keyword("While")} (#{content})"
+      end
+      if starts_with?(line.strip, "\\If")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\If"))] + "#{pseudocode_keyword("If")} (#{content})"
+      end
+      if starts_with?(line.strip, "\\eIf")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\eIf"))] + "#{pseudocode_keyword("If")} (#{content})"
+      end
+      if starts_with?(line.strip, "\\uIf")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\uIf"))] + "#{pseudocode_keyword("If")} (#{content})"
+      end
+      if starts_with?(line.strip, "}\\uElseIf{")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("}\\uElseIf{"))] + "#{pseudocode_keyword("ElseIf")} (#{content})"
+      end
+      if starts_with?(line.strip, "}\\ElseIf")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("}\\ElseIf"))] + "#{pseudocode_keyword("ElseIf")} (#{content})"
+      end      
+      if starts_with?(line.strip, "\\Return")
+        content = get_data_in_brackets(line)
+        line = line[0...(line.index("\\Return"))] + "#{pseudocode_keyword("Return")} (#{content})"
+      end      
+      
+      # data based (ending in a space or comma or a semi)
+      datamap.keys.each do |key|
+        line = line.gsub("\\#{key} ", "#{pseudocode_term datamap[key]} ") # space
+        line = line.gsub("\\#{key},", "#{pseudocode_term datamap[key]},") # comma
+        line = line.gsub("\\#{key}}", "#{pseudocode_term datamap[key]}}") # }
+        line = line.gsub("\\#{key})", "#{pseudocode_term datamap[key]})") # )
+        line = line.gsub("\\#{key}\\;", "#{pseudocode_term datamap[key]}\\;") # semicolon
+      end
+      # same with func map, end in {
+      funcmap.keys.each do |key|
+        line = line.gsub("\\#{key}{", "#{pseudocode_term funcmap[key]}{") # bracket
+      end
+      # easy no param functions
+      line = line.gsub("{}", "()")
+      
+			line = line.gsub("``", "&quot;")
+			line = line.gsub("''", "&quot;")
+      
+      # keywords
+      PSEUDOCODE_KEYWORDS.keys.each do |key|
+        line = line.gsub("\\#{key}{", "#{pseudocode_keyword PSEUDOCODE_KEYWORDS[key]}{") # bracket
+      end
+      # special keywords
+      line = line.gsub("$\\KwTo$", "#{pseudocode_keyword("To")}")
+      line = line.gsub("\\KwTo", "#{pseudocode_keyword("To")}")
+      line = line.gsub("\\Break", "#{pseudocode_keyword("Break")}")
+      line = line.gsub("TRUE", "#{pseudocode_keyword("True")}")
+      line = line.gsub("FALSE", "#{pseudocode_keyword("False")}")
+      if line.strip == "}{"
+        line = line.gsub("}{", "#{pseudocode_keyword("Else")}")
+      elsif line.strip == "}"
+      	line = line.gsub("}", "#{pseudocode_keyword("End")}")
+      end
+
+      
+      # replace tabs
+      line = line.gsub("\t", "&nbsp;&nbsp;")
+      # now replace new lines
+      line = line.gsub("\\;", "")
+      add_line(s, "#{line}<br />")
     end
   end  
-  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  # delete this once it works
+#  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  # delete this once it works
   add_line(s, "</div>")
   add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
   return s
@@ -861,8 +961,6 @@ def to_text_content(data)
     end
   end
   add_line(s, "</p>") if !out
-  # NEVER DO THIS!
-  # s = post_process_text(s)
   return s
 end
 
@@ -1222,6 +1320,7 @@ end
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
 FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
 
+# for testing only - delete this
 def algo_test(bib)
   # load and process the algorithm
   lines = get_all_data_lines("../book/a_evolution/differential_evolution.tex")
@@ -1240,8 +1339,9 @@ if __FILE__ == $0
   bib = load_bibtex()
 
   # for testing
-  # algo_test(bib)
+#  algo_test(bib)
 
+if true
   # TOC
   build_toc(ALGORITHM_CHAPTERS, FRONT_MATTER)
   # front matter
@@ -1255,4 +1355,5 @@ if __FILE__ == $0
   build_advanced_chapter(bib)  
   # appendix
   build_appendix(bib) 
+end
 end

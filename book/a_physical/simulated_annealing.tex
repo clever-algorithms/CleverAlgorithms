@@ -75,6 +75,7 @@ Algorithm~\ref{alg:sa} provides a pseudocode listing of the main Simulated Annea
 	\SetKwFunction{CreateInitialSolution}{CreateInitialSolution}
 	\SetKwFunction{CreateNeighborSolution}{CreateNeighborSolution}
 	\SetKwFunction{CalculateTemperature}{CalculateTemperature}
+	\SetKwFunction{Exp}{Exp}
 	
 	% I/O
 	\KwIn{\ProblemSize, \MaxIterations, \InitialTemperature}		
@@ -92,8 +93,7 @@ Algorithm~\ref{alg:sa} provides a pseudocode listing of the main Simulated Annea
 			\If{\Cost{\Candidate} $\leq$ \Cost{\Best}} {
 				\Best $\leftarrow$ \Candidate\;
 			}
-		}
-		\ElseIf{$\exp(\frac{\Cost{\Current}-\Cost{\Candidate}}{\Temp})$ $>$ \Rand{}} {
+		}\ElseIf{\Exp{$\frac{\Cost{\Current}-\Cost{\Candidate}}{\Temp}$} $>$ \Rand{}} {
 			\Current $\leftarrow$ \Candidate\;
 		}
 	}

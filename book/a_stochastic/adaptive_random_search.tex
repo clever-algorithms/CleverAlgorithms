@@ -80,7 +80,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
 		\CandidateOne $\leftarrow$ \TakeStep{\SearchSpace, \Current, \StepSize}\;		
 		\LargeStepSize $\leftarrow$ 0\;
 		% bigger step
-		\eIf{$i \bmod{\LargeStepSizeFactorIter}$} {
+		\eIf{$i$ $\bmod{\LargeStepSizeFactorIter}$} {
 			\LargeStepSize $\leftarrow$ \StepSize $\times$ \LargeStepSizeFactor\;
 		}{
 			\LargeStepSize $\leftarrow$ \StepSize $\times$ \SmallStepSizeFactor\;
@@ -101,7 +101,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
 			% step size modification
 			\If{\NoChangeCount $>$ \MaxIterNoImprovement} {
 				\NoChangeCount $\leftarrow$ 0\;
-				\StepSize $\leftarrow \frac{\StepSize}{\SmallStepSizeFactor}$\;
+				\StepSize $\leftarrow$ $\frac{\StepSize}{\SmallStepSizeFactor}$\;
 			}
 		}
 	}

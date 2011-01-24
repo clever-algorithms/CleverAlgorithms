@@ -106,8 +106,7 @@ Algorithm~\ref{alg:opt_ainet} provides a pseudocode listing of the Optimization 
 		% state of population
 		\Progeny $\leftarrow \emptyset$\;
 		\Cost $\leftarrow$ \CalculateAveragePopulationCost{\Population}\;
-		\Repeat{\CalculateAveragePopulationCost{\Population} $\leq$ \Cost} {
-			clone
+		\While{\CalculateAveragePopulationCost{\Population} $>$ \Cost} {
 			\ForEach{\Cell $\in$ \Population}{
 				% clone
 				\Clones $\leftarrow$ \CreateClones{\Cell, \NumClones}\;
