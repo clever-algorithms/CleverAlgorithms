@@ -93,7 +93,7 @@ Algorithm~\ref{alg:sa} provides a pseudocode listing of the main Simulated Annea
 			\If{\Cost{\Candidate} $\leq$ \Cost{\Best}} {
 				\Best $\leftarrow$ \Candidate\;
 			}
-		}\ElseIf{\Exp{$\frac{\Cost{\Current}-\Cost{\Candidate}}{\Temp}$} $>$ \Rand{}} {
+		}\ElseIf{\Exp{ $\frac{\Cost{\Current} - \Cost{\Candidate}}{\Temp}$ } $>$ \Rand{}} {
 			\Current $\leftarrow$ \Candidate\;
 		}
 	}

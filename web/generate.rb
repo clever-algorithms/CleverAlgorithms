@@ -744,6 +744,7 @@ def replace_functions(map, line)
   # same with func map, end in {
   map.keys.each do |key|
     line = line.gsub("\\#{key}{", "#{pseudocode_term map[key]}{") # bracket
+    line = line.gsub("\\#{key}(", "#{pseudocode_term map[key]}(") # bracket
   end
   # easy no param functions
   line = line.gsub("{}", "()")
@@ -834,10 +835,14 @@ def process_pseudocode(lines, caption=nil)
       # take out the math
       math = []
       line.scan(/\$([^$]+)\$/) {|m| math << m.to_s } # $$
+      # brackets
+      line = line.gsub("{", "(")
+			line = line.gsub("}", ")")
+      # put the math back
       if !math.empty?
         # process the math
         math.each_index do |i|
-          puts math[i]
+          # puts math[i]
           math[i] = replace_data(datamap, math[i])
           math[i] = replace_functions(funcmap, math[i])
           # remove all sub-math
@@ -867,13 +872,13 @@ def process_pseudocode(lines, caption=nil)
       line = line.gsub("\\Break", "#{pseudocode_keyword("Break")}")
       line = line.gsub("TRUE", "#{pseudocode_keyword("True")}")
       line = line.gsub("FALSE", "#{pseudocode_keyword("False")}")
-      if line.strip == "}{"
+      if line.strip == "}{" or line.strip == ")("
         line = line.gsub("}{", "#{pseudocode_keyword("Else")}")
-      elsif line.strip == "}"
+        line = line.gsub(")(", "#{pseudocode_keyword("Else")}") # HACK
+      elsif line.strip == "}" or line.strip == ")" # hack
       	line = line.gsub("}", "#{pseudocode_keyword("End")}")
-      end
-
-      
+      	line = line.gsub(")", "#{pseudocode_keyword("End")}") # HACK
+      end      
       # replace tabs
       line = line.gsub("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
       # now replace new lines
