@@ -109,7 +109,7 @@ The \texttt{Sort\-By\-Rank\-And\-Distance} function orders the population into a
 		}
 		\If{\Size{\Parents}$<$\PopulationSize}{
 			\LastFront $\leftarrow$ \SortByRankAndDistance{\LastFront}\;
-			\For{$P_1$ \KwTo $P_{\PopulationSize-\Size{LastFront}}$}{
+			\For{$P_1$ \KwTo $P_{\PopulationSize - \Size{\LastFront}}$}{
 				\Parents $\leftarrow$ $Pi$\;
 			}
 		}		

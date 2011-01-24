@@ -857,6 +857,9 @@ def process_pseudocode(lines, caption=nil)
           math[i] = replace_functions(funcmap, math[i])
           # remove all sub-math
           math[i] = math[i].gsub("$", "")
+          # remove html 
+          math[i] = math[i].gsub("<code>", "")
+          math[i] = math[i].gsub("</code>", "")
         end        
         # put the math back
         index = 0
@@ -890,6 +893,8 @@ def process_pseudocode(lines, caption=nil)
       	line = line.gsub("}", "#{pseudocode_keyword("End")}")
       	line = line.gsub(")", "#{pseudocode_keyword("End")}") # HACK
       end      
+      # remove the first tab
+      line = line[1..-1] if line[0].chr == "\t"
       # replace tabs
       line = line.gsub("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
       # now replace new lines
