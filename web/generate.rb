@@ -351,7 +351,7 @@ def post_process_text(s)
     index = 0
     s = s.gsub(/\$([^$]+)\$/) do |m|
       index += 1
-      "\$#{math[index - 1]}\$"
+      "$#{math[index - 1]}$"
     end
   end  
   if !arrays.empty?
@@ -728,6 +728,28 @@ def pseudocode_keyword(term)
   return "<strong><code>#{term}</code></strong>"
 end
 
+def replace_data(map, line)
+  # data based (ending in a space or comma or a semi)
+  map.keys.each do |key|
+    line = line.gsub("\\#{key} ", "#{pseudocode_term map[key]} ") # space
+    line = line.gsub("\\#{key},", "#{pseudocode_term map[key]},") # comma
+    line = line.gsub("\\#{key}}", "#{pseudocode_term map[key]}}") # }
+    line = line.gsub("\\#{key})", "#{pseudocode_term map[key]})") # )
+    line = line.gsub("\\#{key}\\;", "#{pseudocode_term map[key]}\\;") # semicolon
+  end
+  return line
+end
+
+def replace_functions(map, line)
+  # same with func map, end in {
+  map.keys.each do |key|
+    line = line.gsub("\\#{key}{", "#{pseudocode_term map[key]}{") # bracket
+  end
+  # easy no param functions
+  line = line.gsub("{}", "()")
+  return line
+end
+
 PSEUDOCODE_KEYWORDS = {"While"=>"While", "If"=>"If", "eIf"=>"If", 
   "Return"=>"Return", "ForEach"=>"ForEach", "For"=>"For"}
 
@@ -736,6 +758,7 @@ def process_pseudocode(lines, caption=nil)
   s = ""
   add_line(s, "<div class='pseudocode'>")
   lines.each do |line|
+    line = line.rstrip
     # skip
     next if starts_with?(line.strip, "\\label")
     next if starts_with?(line.strip, "\\caption")
@@ -807,26 +830,33 @@ def process_pseudocode(lines, caption=nil)
       if starts_with?(line.strip, "\\Return")
         content = get_data_in_brackets(line)
         line = line[0...(line.index("\\Return"))] + "#{pseudocode_keyword("Return")} (#{content})"
-      end      
-      
-      # data based (ending in a space or comma or a semi)
-      datamap.keys.each do |key|
-        line = line.gsub("\\#{key} ", "#{pseudocode_term datamap[key]} ") # space
-        line = line.gsub("\\#{key},", "#{pseudocode_term datamap[key]},") # comma
-        line = line.gsub("\\#{key}}", "#{pseudocode_term datamap[key]}}") # }
-        line = line.gsub("\\#{key})", "#{pseudocode_term datamap[key]})") # )
-        line = line.gsub("\\#{key}\\;", "#{pseudocode_term datamap[key]}\\;") # semicolon
+      end            
+      # take out the math
+      math = []
+      line.scan(/\$([^$]+)\$/) {|m| math << m.to_s } # $$
+      if !math.empty?
+        # process the math
+        math.each_index do |i|
+          puts math[i]
+          math[i] = replace_data(datamap, math[i])
+          math[i] = replace_functions(funcmap, math[i])
+          # remove all sub-math
+          math[i] = math[i].gsub("$", "")
+        end        
+        # put the math back
+        index = 0
+        line = line.gsub(/\$([^$]+)\$/) do |m|
+          index += 1
+          "$#{math[index - 1]}$"
+        end
       end
-      # same with func map, end in {
-      funcmap.keys.each do |key|
-        line = line.gsub("\\#{key}{", "#{pseudocode_term funcmap[key]}{") # bracket
-      end
-      # easy no param functions
-      line = line.gsub("{}", "()")
-      
+      # replace data
+      line = replace_data(datamap, line)
+      # replace functions
+      line = replace_functions(funcmap, line)
+      # strings      
 			line = line.gsub("``", "&quot;")
-			line = line.gsub("''", "&quot;")
-      
+			line = line.gsub("''", "&quot;")      
       # keywords
       PSEUDOCODE_KEYWORDS.keys.each do |key|
         line = line.gsub("\\#{key}{", "#{pseudocode_keyword PSEUDOCODE_KEYWORDS[key]}{") # bracket
@@ -845,7 +875,7 @@ def process_pseudocode(lines, caption=nil)
 
       
       # replace tabs
-      line = line.gsub("\t", "&nbsp;&nbsp;")
+      line = line.gsub("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
       # now replace new lines
       line = line.gsub("\\;", "")
       add_line(s, "#{line}<br />")

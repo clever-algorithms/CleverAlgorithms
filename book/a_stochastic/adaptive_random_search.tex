@@ -88,7 +88,7 @@ Algorithm~\ref{alg:adaptive_random_search} provides a pseudocode listing of the 
 		\CandidateTwo $\leftarrow$ \TakeStep{\SearchSpace, \Current, \LargeStepSize}\;
 		
 		% step size selection
-		\eIf{\Cost{\CandidateOne}$\leq$\Cost{\Current} or \Cost{\CandidateTwo}$\leq$\Cost{\Current}} {
+		\eIf{\Cost{\CandidateOne}$\leq$\Cost{\Current} || \Cost{\CandidateTwo}$\leq$\Cost{\Current}} {
 			\eIf{\Cost{\CandidateTwo}$<$\Cost{\CandidateOne}} {
 				\Current $\leftarrow$ \CandidateTwo\; 
 				\StepSize $\leftarrow$ \LargeStepSize\;
