@@ -102,9 +102,9 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 		\Bmu $\leftarrow$ \SelectBestMatchingUnit{\Pattern, \CodebookVectors}\;
 		\ForEach{\BmuAttribute $\in$ \Bmu}{
 			\eIf{\BmuClass $\equiv$ \PatternClass} {
-				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute - \BmuAttribute)
+				\BmuAttribute $\leftarrow$ \BmuAttribute $+$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
 			}{
-				\BmuAttribute $\leftarrow$ \BmuAttribute - \LearningRate $\times$ (\PatternAttribute - \BmuAttribute)
+				\BmuAttribute $\leftarrow$ \BmuAttribute $-$ \LearningRate $\times$ (\PatternAttribute $-$ \BmuAttribute)
 			}
 		}
 	}

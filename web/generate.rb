@@ -751,6 +751,16 @@ def replace_functions(map, line)
   return line
 end
 
+def basic_math_replace(current, replacement)
+	#puts "[#{current}], [#{replacement}]"
+	# don't do math where we don't have to
+	return "&gt;" if current.strip == "$>$"
+	return "&lt;" if current.strip == "$<$"
+	return "&ndash;" if current.strip == "$-$"
+	return "+" if current.strip == "$+$"
+	return "$#{replacement}$"
+end
+
 PSEUDOCODE_KEYWORDS = {"While"=>"While", "If"=>"If", "eIf"=>"If", 
   "Return"=>"Return", "ForEach"=>"ForEach", "For"=>"For"}
 
@@ -852,7 +862,8 @@ def process_pseudocode(lines, caption=nil)
         index = 0
         line = line.gsub(/\$([^$]+)\$/) do |m|
           index += 1
-          "$#{math[index - 1]}$"
+          #"$#{math[index - 1]}$"
+          basic_math_replace(m, math[index-1])
         end
       end
       # replace data

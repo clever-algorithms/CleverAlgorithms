@@ -74,7 +74,7 @@ Algorithm~\ref{alg:detector_gen} provides a pseudocode listing of the detector g
   \KwOut{\Repertoire}
 	% algorithm
 	\Repertoire $\leftarrow \emptyset$\;
-  \While{$\neg$\StopCondition{}}{
+	\While{$\neg$\StopCondition{}}{
 		\Detectors $\leftarrow$ \GenerateRandomDetectors{}\;
 		\ForEach{\CurrentDetector $\in$ \Repertoire}{
 			\If{$\neg$\Matches{\CurrentDetector, \SelfData}}{
@@ -104,7 +104,7 @@ Algorithm~\ref{alg:detector_gen} provides a pseudocode listing of the detector g
 	% i/o
   \KwIn{\InputSamples, \Repertoire}
 	% algorithm
-  \For{\CurrentInputSample $\in$ \InputSamples}{
+	\For{\CurrentInputSample $\in$ \InputSamples}{
 		\InputSampleClassification $\leftarrow$ ``non-self''\;
 		\ForEach{\CurrentDetector $\in$ \Repertoire}{
 			\If{\Matches{\CurrentInputSample, \CurrentDetector}}{
