@@ -822,9 +822,10 @@ def process_pseudocode(lines, caption=nil)
         i, j = (sub.index("{")+1), sub.rindex("}")
         p2 = sub[i...j]
         line = ""
-        add_line(line, "#{depth}#{pseudocode_keyword("Repeat")}<br />")
-        add_line(line, "#{depth}\t#{pseudocode_keyword(p2)}\\;<br />")
-        add_line(line, "#{depth}#{pseudocode_keyword("Until")} #{pseudocode_keyword(p1)}\\;")
+        # only used in DE!
+        add_line(line, "\t#{pseudocode_keyword("Repeat")}<br />")
+        add_line(line, "\t#{pseudocode_keyword(p2)}\\;<br />")
+        add_line(line, "#{pseudocode_keyword("Until")} #{pseudocode_keyword(p1)}\\;")
       end   
       # for
       if starts_with?(line.strip, "\\For")

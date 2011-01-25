@@ -125,7 +125,7 @@ Algorithm~\ref{alg:evolution_strategies} provides a pseudocode listing of the $(
 % What are the guidelines for the application of a technique to a problem instance?
 \begin{itemize}
 	\item Evolution Strategies uses problem specific representations, such as real values for continuous function optimization.
-	\item The algorithm is commonly configured such that $1 < \mu < \lambda < \infty$.
+	\item The algorithm is commonly configured such that $1 \leq \mu \leq \lambda$.
 	\item The ratio of $\mu$ to $\lambda$ influences the amount of selection pressure (greediness) exerted by the algorithm.
 	\item A contemporary update to the algorithms notation includes a $\rho$ as $(\mu/\rho,\lambda)-ES$ that specifies the number of parents that will contribute to each new candidate solution using a recombination operator. 
 	\item A classical rule used to govern the amount of mutation (standard deviation used in mutation for continuous function optimization) was the $\frac{1}{5}$-rule, where the ratio of successful mutations should be $\frac{1}{5}$ of all mutations. If it is greater the variance is increased, otherwise if the ratio is is less, the variance is decreased.
