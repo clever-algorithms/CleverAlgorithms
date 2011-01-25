@@ -14,13 +14,13 @@ h3. Book
 
 * Jason Brownlee, *Clever Algorithms: Nature-Inspired Programming Recipes*, Lulu, January 2011
 
-"Buy Now":http://www.CleverAlgorithms.com 
+The book is available in paperback, free PDF, and a free website.
 
 !http://www.cleveralgorithms.com/images/small_cover.png!
 
 h3. Website
 
-It's coming together, but soon all content will be browsable on the projects homepage: "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+All content is browsable on the projects homepage: "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
 
 h3. Technical Reports
 
