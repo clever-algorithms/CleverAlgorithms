@@ -256,6 +256,8 @@ def remove_hyph_suggestions(s)
 end
 
 # http://www.w3schools.com/tags/ref_entities.asp
+# http://webdesign.about.com/library/bl_htmlcodes.htm
+# http://en.wikibooks.org/wiki/LaTeX/Accents
 def character_processing(s)
   s = s.gsub("\\\"a", "&auml;") # a
   s = s.gsub("\\\"o", "&ouml;") # o
@@ -264,7 +266,10 @@ def character_processing(s)
   s = s.gsub("\\\'u", "&uacute;") # u
   s = s.gsub("\\\'e", "&eacute;") # e
   s = s.gsub("\\\'i", "&iacute;") # i
-####  s = s.gsub("\\\'c", "&cacute;") # c ### NOT In ISO 8859-1 Characters
+	s = s.gsub("\\\'c", "&#263;") # c
+	
+	s = s.gsub("\\v{u}", "&#365;") # u
+	
 
   s = s.gsub("--", "&ndash;")
   s = s.gsub("\\&", "&amp;")
@@ -497,10 +502,11 @@ def to_google_scholar(title)
   title_link = title_link.gsub("\t", "+")
   title_link = title_link.gsub("\n", "+")
   link = "http://scholar.google.com.au/scholar?q=#{title_link}"
-  return "<a href='#{link}'>#{title}</a>"
+  return "<a href=\"#{link}\">#{title}</a>"
 end
 
 
+# considerig editor (where we already have an author) later in the listing
 # assume ordering in http://en.wikipedia.org/wiki/BibTeX
 def generate_bib_entry(entry)
   s = ""
@@ -513,9 +519,9 @@ def generate_bib_entry(entry)
     else 
       s << "#{process_authors process_bibtex(entry[:author])}, "
       # do not include editors if same as authors
-      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-      end
+#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
+#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
+#      end
     end
     s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:publisher]}, " if !entry[:publisher].nil?
@@ -535,9 +541,9 @@ def generate_bib_entry(entry)
     else 
       s << "#{process_authors process_bibtex(entry[:author])}, "
       # do not include editors if same as authors
-      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-      end
+#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
+#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
+#      end
     end    
     s << "\"#{to_google_scholar process_bibtex(entry[:chapter])}\", " if !entry[:chapter].nil?
     s << "in #{process_bibtex entry[:title]}, "
@@ -548,6 +554,7 @@ def generate_bib_entry(entry)
     # author, title, institution, year
     s << "#{process_authors process_bibtex(entry[:author])}, "
     s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
+    s << "Technical Report #{process_bibtex entry[:number]}, " if !entry[:number].nil?    
     s << "#{process_bibtex entry[:institution]}, " if !entry[:institution].nil?
     s << "#{process_bibtex entry[:year]}."
   elsif entry.type == :inproceedings
@@ -559,9 +566,9 @@ def generate_bib_entry(entry)
     else
       s << "#{process_authors process_bibtex(entry[:author])}, "
       # do not include editors if same as authors
-      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-      end
+#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
+#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
+#      end
     end 
     s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "in #{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
