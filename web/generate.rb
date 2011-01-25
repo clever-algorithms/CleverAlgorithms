@@ -367,7 +367,7 @@ end
 # create the pretty print
 # http://code.google.com/p/google-code-prettify/
 # http://google-code-prettify.googlecode.com/svn/trunk/README.html
-def final_pretty_code_listing(lines, caption=nil)
+def final_pretty_code_listing(lines, caption=nil, ruby_filename=nil)
   # remove trailining white space
   lines.each_with_index {|r,i| lines[i]=r.rstrip}
   # make a string
@@ -379,11 +379,13 @@ def final_pretty_code_listing(lines, caption=nil)
   add_line(s, "<pre class='prettyprint lang-rb'>")
   add_line(s, raw)
   add_line(s, "</pre>")
+  if !ruby_filename.nil?
+	  add_line(s, "<div class='download_src'><a href='#{ruby_filename}'>Download Source</a></div>")
+	end
   if !caption.nil?
     caption = post_process_text(caption) # process text
     add_line(s, "<div class='caption'>#{caption}</div>") 
   end
-  #add_line(s, "<a href="">Download</a>")
   return s
 end
 
@@ -394,10 +396,11 @@ def pretty_print_code_listing(code_listing_line)
   parts = code_listing_line.split(",")
   raise "Caption not where expected" if !starts_with?(parts[2], "caption")
   caption = parts[2][(parts[2].index("=")+1)..-1]
-  raw = IO.readlines(filename)  
-  # trip top 7 lines
+  raw = IO.readlines(filename)
+  ruby_filename = filename[(filename.rindex("/")+1)..-1]
+  # trim top 7 lines
   raw = raw[6..-1]
-  s = final_pretty_code_listing(raw, caption)
+  s = final_pretty_code_listing(raw, caption, ruby_filename)
   return s
 end
 
@@ -852,7 +855,6 @@ def process_pseudocode(lines, caption=nil)
       if !math.empty?
         # process the math
         math.each_index do |i|
-          # puts math[i]
           math[i] = replace_data(datamap, math[i])
           math[i] = replace_functions(funcmap, math[i])
           # remove all sub-math
@@ -902,7 +904,6 @@ def process_pseudocode(lines, caption=nil)
       add_line(s, "#{line}<br />")
     end
   end  
-#  add_line(s, "<pre>Please refer to the book for the pseudocode.</pre>")  # delete this once it works
   add_line(s, "</div>")
   add_line(s, "<div class='caption'>#{post_process_text(caption)}</div>") if !caption.nil?
   return s
@@ -1259,7 +1260,9 @@ end
 def create_toc_html(algorithms, frontmatter)
   s = ""
   # head
-  s << head("Table of Contents", nil, nil)
+  add_line(s, "<% content_for :head_title, \"Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
+  add_line(s, "<% content_for :head_description, \"Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
+  add_line(s, "<% content_for :head_keywords, \"clever algorithms, computational intelligence, artificial intelligence, metaheuristics, biologically inspired natural, table of contents\" %>")
   # front matter
   add_line(s, "<h1>Clever Algorithms</h1>")
   add_line(s, "<h2>Nature-Inspired Programming Recipes</h2>")
@@ -1367,32 +1370,68 @@ def build_copyright(name="f_copyright")
   puts " > successfully wrote copyright '#{name}' to: #{filename}"
 end
 
+def get_ruby_into_position(chapters)
+	# all algorithm chapters
+	chapters.each do |chapter|
+		source = "../book/a_"+chapter
+		Dir.entries(source).each do |file|
+		  next if file == "." or file == ".."
+		  next if File.extname(file) != ".tex"
+		  # load and process the algorithm
+		  lines = get_all_data_lines(source + "/" + file)
+		  # locate link to file
+		  filename = nil
+		  lines.each do |line|
+		  	if starts_with?(line.strip, "\\lstinputlisting[firstline=")    		
+		  		filename = get_data_in_brackets(line)
+		  		break
+		  	end
+		  end
+		  raise "could not locate ruby file in #{source + "/" + file}" if filename.nil?
+		  # load
+			raw = IO.readlines(filename)
+			ruby_filename = OUTPUT_DIR + "/" + chapter + "/" + filename[(filename.rindex("/")+1)..-1]
+			# write
+			File.open(ruby_filename, 'w') {|f| f.write(raw.join("")) }
+		end
+	end
+	# process advanced chapter
+	begin
+		chapter = "advanced"
+		source = "../book/c_"+chapter
+		Dir.entries(source).each do |file|
+		  next if file == "." or file == ".."
+		  next if File.extname(file) != ".tex"
+		  # load and process the algorithm
+		  lines = get_all_data_lines(source + "/" + file)
+		  # locate link to file
+		  filenames = []
+		  lines.each do |line|
+		  	if starts_with?(line.strip, "\\lstinputlisting[")    		
+		  		filenames << get_data_in_brackets(line)
+		  	end
+		  end
+		  next if filenames.empty? # some have no files
+		  # load
+		  filenames.each do |filename|
+				raw = IO.readlines(filename)
+				ruby_filename = OUTPUT_DIR + "/" + chapter + "/" + filename[(filename.rindex("/")+1)..-1]
+				# write
+				File.open(ruby_filename, 'w') {|f| f.write(raw.join("")) }		  
+		  end
+		end
+	end
+end
+
 # these are ordered
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
 FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
-
-# for testing only - delete this
-def algo_test(bib)
-  # load and process the algorithm
-  lines = get_all_data_lines("../book/a_evolution/differential_evolution.tex")
-  processed = general_process_file(lines)
-  # write the html for the algorithm
-  html = html_for_algorithm("differential_evolution", processed, bib, {:link=>"",:name=>"Evolutionary Algorithms"})
-  filename = "#{OUTPUT_DIR}/test.html"
-  File.open(filename, 'w') {|f| f.write(html) }
-  puts " > successfully wrote algorithm '#{processed.first[:section]}' to: #{filename}"
-end
 
 if __FILE__ == $0
   # create dir
   create_directory(OUTPUT_DIR)
   # load the bib 
   bib = load_bibtex()
-
-  # for testing
-#  algo_test(bib)
-
-if true
   # TOC
   build_toc(ALGORITHM_CHAPTERS, FRONT_MATTER)
   # front matter
@@ -1406,5 +1445,6 @@ if true
   build_advanced_chapter(bib)  
   # appendix
   build_appendix(bib) 
-end
+  # ruby files
+  get_ruby_into_position(ALGORITHM_CHAPTERS)
 end
