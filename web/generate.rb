@@ -268,14 +268,21 @@ def character_processing(s)
   s = s.gsub("\\\'i", "&iacute;") # i
 	s = s.gsub("\\\'c", "&#263;") # c
 	
+	# others
 	s = s.gsub("\\v{u}", "&#365;") # u
+	s = s.gsub("\\v{c}", "&#269;") # c
+	
+	s = s.gsub("\\c{c}", "&ccedil;") # c
+	s = s.gsub("\\~{n}", "&ntilde;") # n (Larranaga does not work in latex atm)
 	
 
   s = s.gsub("--", "&ndash;")
   s = s.gsub("\\&", "&amp;")
+  s = s.gsub("\\@", "@")
   # replace `` and '' with quotes
   s = s.gsub("``", "&quot;")
   s = s.gsub("''", "&quot;")
+  s = s.gsub("`", "'")
   
   return s
 end
