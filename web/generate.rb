@@ -1438,46 +1438,70 @@ def get_ruby_into_position(chapters)
 	end
 end
 
+def add_image(s, host, filename)
+	add_line(s, "\t\t<image:image>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/#{filename}</image:loc>")
+	add_line(s, "\t\t</image:image>")	
+end
+	
+def add_url_to_sitemap(s, host, dir, path, images)
+	add_line(s, "\t<url>")
+	url = host
+	url = url+"/"+dir if !dir.nil?
+	url = url+"/"+path if !path.nil?
+	add_line(s, "\t\t<loc>#{url}</loc>")
+	images.each do |image|
+		add_image(s, host, image)
+	end
+	add_line(s, "\t</url>")
+end
+
+def add_code_url_to_sitemap(s, host, dir, path)
+	add_line(s, "\t<url>")
+	url = host
+	url = url+"/"+dir if !dir.nil?
+	url = url+"/"+path if !path.nil?
+	add_line(s, "\t\t<loc>#{url}</loc>")
+	# special code stuff
+	add_line(s, "\t\t<codesearch:codesearch>")
+	add_line(s, "\t\t\t<codesearch:filetype>ruby</codesearch:filetype>")
+	add_line(s, "\t\t</codesearch:codesearch>")	
+	add_line(s, "\t</url>")
+end
+
 def create_sitemap
 	s = ""
 	add_line(s, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
-	add_line(s, "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:image=\"http://www.sitemaps.org/schemas/sitemap-image/1.1\">")
-	add_line(s, "\t<url>")
+	add_line(s, "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:image=\"http://www.sitemaps.org/schemas/sitemap-image/1.1\" xmlns:codesearch=\"http://www.google.com/codesearch/schemas/sitemap/1.0\">")	
 	# html
 	host = "http://www.cleveralgorithms.com"
 	dir = "nature-inspired"
 	# root
-	add_line(s, "\t\t<loc>#{host}</loc>")
+	add_url_to_sitemap(s, host, nil, nil, ["small_cover.png"])	
 	# all pages
+	images = ["very_small_cover.png"]
 	Dir.entries(OUTPUT_DIR).each do |file|
 		next if file == "." or file == ".."
 		if File.directory?(OUTPUT_DIR+"/"+file)
 			Dir.entries(OUTPUT_DIR+"/"+file).each do |subfile|
-				next if file == "." or file == ".."
-				next if File.extname(subfile) != ".html" 
-				add_line(s, "\t\t<loc>#{host}/#{dir}/#{file}/#{subfile}</loc>")
+				next if subfile == "." or subfile == ".."
+				if File.extname(subfile) == ".rb" 
+					add_code_url_to_sitemap(s, host, dir, "#{file}/#{subfile}")
+				elsif File.extname(subfile) == ".html" 
+					# check for the special case of the visualization chapter
+					if file=="advanced" and subfile=="visualizing_algorithms.html"
+						others = ["basin1.png", "basin2.png", "ga1.png", "ga2.png", "ga3.png", "pso1.png", "tsp1.png", "tsp2.png", "tsp3.png"]
+						add_url_to_sitemap(s, host, dir, "#{file}/#{subfile}", images+others)
+					else
+						add_url_to_sitemap(s, host, dir, "#{file}/#{subfile}", images)
+					end				
+				end
 			end
 		else
 			next if File.extname(file) != ".html" 
-			add_line(s, "\t\t<loc>#{host}/#{dir}/#{file}</loc>")
+			add_url_to_sitemap(s, host, dir, file, images)
 		end	
-	end
-	add_line(s, "\t\t<image:image>")
-	# covers
-	add_line(s, "\t\t\t<image:loc>#{host}/images/small_cover.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/very_small_cover.png</image:loc>")
-	# book images
-	add_line(s, "\t\t\t<image:loc>#{host}/images/basin1.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/basin2.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/ga1.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/ga2.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/ga3.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/pso1.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp1.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp2.png</image:loc>")
-	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp3.png</image:loc>")
-	add_line(s, "\t\t</image:image>")	
-	add_line(s, "\t</url>")
+	end	
 	add_line(s, "</urlset>")
 	filename = OUTPUT_DIR+"/sitemap.xml"
 	File.open(filename, 'w') {|f| f.write(s) }
