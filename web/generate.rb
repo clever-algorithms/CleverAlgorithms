@@ -1438,6 +1438,52 @@ def get_ruby_into_position(chapters)
 	end
 end
 
+def create_sitemap
+	s = ""
+	add_line(s, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>")
+	add_line(s, "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\" xmlns:image=\"http://www.sitemaps.org/schemas/sitemap-image/1.1\">")
+	add_line(s, "\t<url>")
+	# html
+	host = "http://www.cleveralgorithms.com"
+	dir = "nature-inspired"
+	# root
+	add_line(s, "\t\t<loc>#{host}</loc>")
+	# all pages
+	Dir.entries(OUTPUT_DIR).each do |file|
+		next if file == "." or file == ".."
+		if File.directory?(OUTPUT_DIR+"/"+file)
+			Dir.entries(OUTPUT_DIR+"/"+file).each do |subfile|
+				next if file == "." or file == ".."
+				next if File.extname(subfile) != ".html" 
+				add_line(s, "\t\t<loc>#{host}/#{dir}/#{file}/#{subfile}</loc>")
+			end
+		else
+			next if File.extname(file) != ".html" 
+			add_line(s, "\t\t<loc>#{host}/#{dir}/#{file}</loc>")
+		end	
+	end
+	add_line(s, "\t\t<image:image>")
+	# covers
+	add_line(s, "\t\t\t<image:loc>#{host}/images/small_cover.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/very_small_cover.png</image:loc>")
+	# book images
+	add_line(s, "\t\t\t<image:loc>#{host}/images/basin1.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/basin2.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/ga1.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/ga2.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/ga3.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/pso1.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp1.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp2.png</image:loc>")
+	add_line(s, "\t\t\t<image:loc>#{host}/images/tsp3.png</image:loc>")
+	add_line(s, "\t\t</image:image>")	
+	add_line(s, "\t</url>")
+	add_line(s, "</urlset>")
+	filename = OUTPUT_DIR+"/sitemap.xml"
+	File.open(filename, 'w') {|f| f.write(s) }
+	puts " > successfully wrote sitemap : #{filename}"
+end
+
 # these are ordered
 ALGORITHM_CHAPTERS = ["stochastic", "evolution", "physical", "probabilistic", "swarm", "immune", "neural"]
 FRONT_MATTER = ["f_foreword", "f_preface", "f_acknowledgments"]
@@ -1462,4 +1508,6 @@ if __FILE__ == $0
   build_appendix(bib) 
   # ruby files
   get_ruby_into_position(ALGORITHM_CHAPTERS)
+  # site map
+  create_sitemap
 end
