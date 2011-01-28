@@ -18,13 +18,13 @@ rescue LoadError
   exit
 end
 
-TEMP_DIR = "epub_temp"
+OUTPUT_DIR = "epub_temp"
 
 def render_latex_as_image(latex, filename)
   url = "http://mathcache.appspot.com/?tex=#{CGI.escape('\\png \\small \\parstyle '+latex)}"
   client = HTTPClient.new
   binary_data = client.get_content(url)
-  File.open("#{TEMP_DIR}/#{filename}", 'w') do |file| 
+  File.open("#{OUTPUT_DIR}/#{filename}", 'w') do |file| 
     file << binary_data  
   end
 end
@@ -36,7 +36,7 @@ def replace_latex_with_image_tags(html)
   html.gsub!(/\$(.+?)\$/) do |m|
     index += 1
     filename = "LaTeX#{Digest::SHA1.hexdigest(m)}.png"
-    render_latex_as_image(m, filename) unless File.exists?("#{TEMP_DIR}/#{filename}")
+    render_latex_as_image(m, filename) unless File.exists?("#{OUTPUT_DIR}/#{filename}")
     "<img class='math' src='#{filename}'/>"
   end
 end
@@ -96,7 +96,7 @@ end
 
 if __FILE__ == $0
   # create dir
-  create_directory(TEMP_DIR)
+  create_directory(OUTPUT_DIR)
   # load the bib 
   bib = load_bibtex()
   # TOC
@@ -114,7 +114,7 @@ if __FILE__ == $0
   build_appendix(bib) 
                             
   puts "Epubizing html-files"
-  Dir.glob("./#{TEMP_DIR}/**/*.html").each do |file|
+  Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |file|
     epubize_file(file)
   end
 
@@ -128,7 +128,7 @@ if __FILE__ == $0
   # Extract the order of the html-files from the nav-map
   ordered_html_files = navigation_map.map{|item| pp item; [item]+(item[:nav] || []) }.flatten.map{|i| i[:content] }
   # And remap them to the file hierarchy
-  ordered_html_files = ordered_html_files.map{|file| Dir.glob("./#{TEMP_DIR}/**/#{file}").first }
+  ordered_html_files = ordered_html_files.map{|file| Dir.glob("./#{OUTPUT_DIR}/**/#{file}").first }
   
   epub = EeePub.make do
     title       'Clever Algorithms'
@@ -138,7 +138,7 @@ if __FILE__ == $0
     identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
     uid         'http://www.cleveralgorithms.com/'
 
-    files Dir.glob("./epub/**")+ordered_html_files+Dir.glob("./#{TEMP_DIR}/LaTeX*.png")
+    files Dir.glob("./epub/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
     nav navigation_map
   end
   puts "Building epub file"
