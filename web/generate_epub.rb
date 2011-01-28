@@ -1,6 +1,9 @@
 require 'rubygems'
 require 'generate'
 require 'pp'
+require 'cgi'
+require 'digest/sha1'
+
 begin 
   require 'eeepub'
 rescue LoadError
@@ -8,16 +11,47 @@ rescue LoadError
   exit
 end
 
+begin 
+  require 'httpclient'
+rescue LoadError
+  puts "Sorry! You need to 'gem install httpclient' first!"
+  exit
+end
+
 OUTPUT_DIR = "epub_temp"
 
+def render_latex_as_image(latex, filename)
+  url = "http://mathcache.appspot.com/?tex=#{CGI.escape('\\png \\small \\parstyle '+latex)}"
+  client = HTTPClient.new
+  binary_data = client.get_content(url)
+  File.open("#{OUTPUT_DIR}/#{filename}", 'w') do |file| 
+    file << binary_data  
+  end
+end
+
+# yeah, a global variable. Nice!
+def replace_latex_with_image_tags(html)
+  math = []
+  html.scan(/\$(.+?)\$/) {|m| math << m } # $$
+  index = 0
+  html.gsub!(/\$(.+?)\$/) do |m|
+    index += 1
+    filename = "LaTeX#{Digest::SHA1.hexdigest(m)}.png"
+    render_latex_as_image(m, filename) unless File.exists?("#{OUTPUT_DIR}/#{filename}")
+    "<img class='math' src='#{filename}'/>"
+  end
+end
+
 def epubize_file(filename)
+  puts "Epubizing #{filename}"
   text = File.read(filename)  
   # Strip template code
   text.gsub!(/\<\%[^%]*\%\>\s*/, '')       
   # Strip breadcrumbs
-  text.gsub!(/\<div class\=\'breadcrumb\'\>.*?\<\/div\>/m,'')
+  text.gsub!(/\<div class\=\'breadcrumb\'\>.*?\<\/div\>/m,'')  
   # Change name attributes to id attributes, cause epub wants it that way
   text.gsub!(/\<a\s+name\=/, "<a id=")
+  replace_latex_with_image_tags(text)
   # Wrap in suitable XHTML skeleton  
   text = <<-END
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -35,6 +69,7 @@ def epubize_file(filename)
 END
   File.open(filename, 'w') << text
 end
+
 
 def build_navigation_map
   result = []
@@ -76,13 +111,14 @@ if __FILE__ == $0
   build_advanced_chapter(bib)  
   # appendix
   build_appendix(bib) 
-  # ruby files
-  get_ruby_into_position(ALGORITHM_CHAPTERS)
                             
   puts "Epubizing html-files"
   Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |file|
     epubize_file(file)
   end
+
+  # ruby files
+  get_ruby_into_position(ALGORITHM_CHAPTERS)
   
   puts "Build navigation map"
   navigation_map = build_navigation_map
@@ -98,10 +134,10 @@ if __FILE__ == $0
     creator     'Jason Brownlee'
     publisher   'cleveralgoritms.com'
     date        Time.now.strftime("%Y-%m-%d")    
-    identifier  'urn:uuid:978-1-4467-8506-5', :scheme => 'ISBN'
+    identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
     uid         'http://www.cleveralgorithms.com/'
 
-    files Dir.glob("./epub/**")+ordered_html_files
+    files Dir.glob("./epub/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
     nav navigation_map
   end
   puts "Building epub file"
