@@ -11,3 +11,7 @@ https://github.com/inukshuk/bibtex-ruby
 Licensed under GNU GPL
 
 
+Also contains a script for generating an epub file, stated by Simen.
+  > ruby generate_epub.rb
+  
+Output is put into /epub_temp
