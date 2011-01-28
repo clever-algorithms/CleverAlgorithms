@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='evolution_strategies'><h1>Evolution Strategies</h1></a>
+<p>
+<em>Evolution Strategies, Evolution Strategy, Evolutionary Strategies, ES.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Evolution Strategies is a global optimization algorithm and is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
+Evolution Strategies is a sibling technique to other Evolutionary Algorithms such as Genetic Algorithms, Genetic Programming, Learning Classifier Systems, and Evolutionary Programming. A popular descendant of the Evolution Strategies algorithm is the Covariance Matrix Adaptation Evolution Strategies (CMA-ES).
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Evolution Strategies is inspired by the theory of evolution by means of natural selection.
+Specifically, the technique is inspired by macro-level or the species-level process of evolution (phenotype, hereditary, variation) and is not concerned with the genetic mechanisms of evolution (genome, chromosomes, genes, alleles).
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the Evolution Strategies algorithm is to maximize the suitability of collection of candidate solutions in the context of an objective function from a domain.
+The objective was classically achieved through the adoption of dynamic variation, a surrogate for descent with modification, where the amount of variation was adapted dynamically with performance-based heuristics. Contemporary approaches co-adapt parameters that control the amount and bias of variation with the candidate solutions.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Instances of Evolution Strategies algorithms may be concisely described with a custom terminology in the form $(\mu,\lambda)-ES$, where $\mu$ is number of candidate solutions in the parent generation, and $\lambda$ is the number of candidate solutions generated from the parent generation. In this configuration, the best $\mu$ are kept if $\lambda > \mu$, where $\lambda$ must be great or equal to $\mu$. In addition to the so-called comma-selection Evolution Strategies algorithm, a plus-selection variation may be defined $(\mu + \lambda)-ES$, where the best members of the union of the $\mu$ and $\lambda$ generations compete based on objective fitness for a position in the next generation. The simplest configuration is the $(1+1)-ES$, which is a type of greedy hill climbing algorithm.
+Algorithm (below) provides a pseudocode listing of the $(\mu,\lambda)-ES$ algorithm for minimizing a cost function. The algorithm shows the adaptation of candidate solutions that co-adapt their own strategy parameters that influence the amount of mutation applied to a candidate solutions descendants.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$\mu$, $\lambda$, <code>ProblemSize</code>
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($\mu$, <code>ProblemSize</code>)<br />
+<code>EvaluatePopulation</code>(<code>Population</code>)<br />
+$S_{best}$ $\leftarrow$ <code>GetBest</code>(<code>Population</code>, 1)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($i=0$ <strong><code>To</code></strong> $\lambda$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Parent_{i}$ $\leftarrow$ <code>GetParent</code>(<code>Population</code>, $i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{i}$ $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{problem}$ $\leftarrow$ <code>Mutate</code>($Pi_{problem}$, $Pi_{strategy}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{strategy}$ $\leftarrow$ <code>Mutate</code>($Pi_{strategy}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>EvaluatePopulation</code>(<code>Children</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBest</code>(<code>Children</code> + $S_{best}$, 1)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>SelectBest</code>(<code>Population</code>, <code>Children</code>, $\mu$)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for $(\mu,\lambda)$ Evolution Strategies.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Evolution Strategies uses problem specific representations, such as real values for continuous function optimization.</li>
+<li> The algorithm is commonly configured such that $1 \leq \mu \leq \lambda$.</li>
+<li> The ratio of $\mu$ to $\lambda$ influences the amount of selection pressure (greediness) exerted by the algorithm.</li>
+<li> A contemporary update to the algorithms notation includes a $\rho$ as $(\mu/\rho,\lambda)-ES$ that specifies the number of parents that will contribute to each new candidate solution using a recombination operator.</li>
+<li> A classical rule used to govern the amount of mutation (standard deviation used in mutation for continuous function optimization) was the $\frac{1}{5}$-rule, where the ratio of successful mutations should be $\frac{1}{5}$ of all mutations. If it is greater the variance is increased, otherwise if the ratio is is less, the variance is decreased.</li>
+<li> The comma-selection variation of the algorithm can be good for dynamic problem instances given its capability for continued exploration of the search space, whereas the plus-selection variation can be good for refinement and convergence.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Evolution Strategies algorithm implemented in the Ruby Programming Language.
+The demonstration problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=2$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The algorithm is a implementation of Evolution Strategies based on simple version described by B&auml;ck and Schwefel  [<a href='#Back1993b'>Back1993b</a>], which was also used as the basis of a detailed empirical study  [<a href='#Yao1997'>Yao1997</a>].
+The algorithm is an $(30+20)-ES$ that adapts both the problem and strategy (standard deviations) variables.
+More contemporary implementations may modify the strategy variables differently, and include an additional set of adapted strategy parameters to influence the direction of mutation (see  [<a href='#Rudolph2000'>Rudolph2000</a>] for a concise description).
+</p>
+<pre class='prettyprint lang-rb'>
+def objective_function(vector)
+  return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
+end
+
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
+  end
+end
+
+def random_gaussian(mean=0.0, stdev=1.0)
+  u1 = u2 = w = 0
+  begin
+    u1 = 2 * rand() - 1
+    u2 = 2 * rand() - 1
+    w = u1 * u1 + u2 * u2
+  end while w &gt;= 1
+  w = Math.sqrt((-2.0 * Math.log(w)) / w)
+  return mean + (u2 * w) * stdev
+end
+
+def mutate_problem(vector, stdevs, search_space)
+  child = Array(vector.size)
+  vector.each_with_index do |v, i|
+    child[i] = v + stdevs[i] * random_gaussian()
+    child[i] = search_space[i][0] if child[i] &lt; search_space[i][0]
+    child[i] = search_space[i][1] if child[i] &gt; search_space[i][1]
+  end
+  return child
+end
+
+def mutate_strategy(stdevs)
+  tau = Math.sqrt(2.0*stdevs.size.to_f)**-1.0
+  tau_p = Math.sqrt(2.0*Math.sqrt(stdevs.size.to_f))**-1.0
+  child = Array.new(stdevs.size) do |i|
+    stdevs[i] * Math.exp(tau_p*random_gaussian() + tau*random_gaussian())
+  end
+  return child
+end
+
+def mutate(par, minmax)
+  child = {}
+  child[:vector] = mutate_problem(par[:vector], par[:strategy], minmax)
+  child[:strategy] = mutate_strategy(par[:strategy])
+  return child
+end
+
+def init_population(minmax, pop_size)
+  strategy = Array.new(minmax.size) do |i|
+    [0,  (minmax[i][1]-minmax[i][0]) * 0.05]
+  end
+  pop = Array.new(pop_size, {})
+  pop.each_index do |i|
+    pop[i][:vector] = random_vector(minmax)
+    pop[i][:strategy] = random_vector(strategy)
+  end
+  pop.each{|c| c[:fitness] = objective_function(c[:vector])}
+  return pop
+end
+
+def search(max_gens, search_space, pop_size, num_children)
+  population = init_population(search_space, pop_size)
+  best = population.sort{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}.first
+  max_gens.times do |gen|
+    children = Array.new(num_children) do |i|
+      mutate(population[i], search_space)
+    end
+    children.each{|c| c[:fitness] = objective_function(c[:vector])}
+    union = children+population
+    union.sort!{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}
+    best = union.first if union.first[:fitness] &lt; best[:fitness]
+    population = union.first(pop_size)
+    puts " &gt; gen #{gen}, fitness=#{best[:fitness]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_gens = 100
+  pop_size = 30
+  num_children = 20
+  # execute the algorithm
+  best = search(max_gens, search_space, pop_size, num_children)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='evolution_strategies.rb'>Download Source</a></div>
+<div class='caption'>Evolution Strategies in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Evolution Strategies was developed by three students (Bienert, Rechenberg, Schwefel) at the Technical University in Berlin in 1964 in an effort to robotically optimize an aerodynamics design problem.
+The seminal work in Evolution Strategies was Rechenberg's PhD thesis  [<a href='#Rechenberg1971'>Rechenberg1971</a>] that was later published as a book  [<a href='#Rechenberg1973'>Rechenberg1973</a>], both in German.
+Many technical reports and papers were published by Schwefel and Rechenberg, although the seminal paper published in English was by Klockgether and Schwefel on the two&ndash;phase nozzle design problem  [<a href='#Klockgether1970'>Klockgether1970</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Schwefel published his PhD dissertation  [<a href='#Schwefel1975'>Schwefel1975</a>] not long after Rechenberg, which was also published as a book  [<a href='#Schwefel1977'>Schwefel1977</a>], both in German. Schwefel's book was later translated into English and represents a classical reference for the technique  [<a href='#Schwefel1981'>Schwefel1981</a>].
+B&auml;ck et al. provide a classical introduction to the technique, covering the history, development of the algorithm, and the steps that lead it to where it was in 1991  [<a href='#Back1991'>Back1991</a>].
+Beyer and Schwefel provide a contemporary introduction to the field that includes a detailed history of the approach, the developments and improvements since its inception, and an overview of the theoretical findings that have been made  [<a href='#Beyer2002'>Beyer2002</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Back1991'>[Back1991]</a></td>
+ <td>T. B&auml;ck and F. Hoffmeister and H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=A+survey+of+evolution+strategies">A survey of evolution strategies</a>", in Proceedings of the Fourth International Conference on Genetic Algorithms, 1991.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Back1993b'>[Back1993b]</a></td>
+ <td>T. B&auml;ck and H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=An+Overview+of+Evolutionary+Algorithms+for+Parameter+Optimization">An Overview of Evolutionary Algorithms for Parameter Optimization</a>", Evolutionary Computation, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Beyer2002'>[Beyer2002]</a></td>
+ <td>H&ndash;G. Beyer and H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Evolution+strategies:+A+comprehensive+introduction">Evolution strategies: A comprehensive introduction</a>", Natural Computing: an international journal, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Klockgether1970'>[Klockgether1970]</a></td>
+ <td>J. Klockgether and H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Two&ndash;phase+nozzle+and+hollow+core+jet+experiments">Two&ndash;phase nozzle and hollow core jet experiments</a>", in Proceedings of the Eleventh Symp. Engineering Aspects of Magnetohydrodynamics, 1970.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rechenberg1971'>[Rechenberg1971]</a></td>
+ <td>I. Rechenberg, "<a href="http://scholar.google.com.au/scholar?q=Evolutionsstrategie:+Optimierung+technischer+Systeme+nach+Prinzipien++der+biologischen+Evolution">Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipien 	der biologischen Evolution</a>", [PhD Thesis] Technical University of Berlin, Department of Process Engineering, 1971.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rechenberg1973'>[Rechenberg1973]</a></td>
+ <td>I. Rechenberg, "<a href="http://scholar.google.com.au/scholar?q=Evolutionsstrategie:+Optimierung+technischer+Systeme+nach+Prinzipien++der+biologischen+Evolution">Evolutionsstrategie: Optimierung technischer Systeme nach Prinzipien 	der biologischen Evolution</a>", Frommann-Holzboog Verlag, 1973.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rudolph2000'>[Rudolph2000]</a></td>
+ <td>G. Rudolph, "<a href="http://scholar.google.com.au/scholar?q=9:+Evolution+Strategies">9: Evolution Strategies</a>", in Evolutionary Computation 1: Basic Algorithms and Operations, pages 81&ndash;88, IoP Press, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schwefel1975'>[Schwefel1975]</a></td>
+ <td>H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Evolutionsstrategie+und+numerische+Optimierung">Evolutionsstrategie und numerische Optimierung</a>", [PhD Thesis] Technical University of Berlin, Department of Process Engineering, 1975.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schwefel1977'>[Schwefel1977]</a></td>
+ <td>H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Numerische+Optimierung+von+Computer+&ndash;+Modellen+mittels+der+Evolutionsstrategie">Numerische Optimierung von Computer &ndash; Modellen mittels der Evolutionsstrategie</a>", Birkhaeuser, 1977.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schwefel1981'>[Schwefel1981]</a></td>
+ <td>H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Numerical+Optimization+of+Computer+Models">Numerical Optimization of Computer Models</a>", John Wiley &amp; Sons, 1981.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Yao1997'>[Yao1997]</a></td>
+ <td>X. Yao and Y. Liu, "<a href="http://scholar.google.com.au/scholar?q=Fast+Evolution+Strategies">Fast Evolution Strategies</a>", in Proceedings of the 6th International Conference on Evolutionary Programming 	VI, 1997.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

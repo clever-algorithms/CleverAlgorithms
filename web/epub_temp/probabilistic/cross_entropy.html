@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='cross-entropy_method'><h1>Cross-Entropy Method</h1></a>
+<p>
+<em>Cross-Entropy Method, Cross Entropy Method, CEM.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Cross-Entropy Method is a probabilistic optimization belonging to the field of Stochastic Optimization.
+It is similar to other Stochastic Optimization and algorithms such as Simulated Annealing, and to Estimation of Distribution Algorithms such as the Probabilistic Incremental Learning Algorithm.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Cross-Entropy Method does not have an inspiration. It was developed as an efficient estimation technique for rare-event probabilities in discrete event simulation systems and was adapted for use in optimization.
+The name of the technique comes from the Kullback-Leibler cross-entropy method for measuring the amount of information (bits) needed to identify an event from a set of probabilities.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing strategy of the algorithm is to sample the problem space and approximate the distribution of good solutions.
+This is achieved by assuming a distribution of the problem space (such as Gaussian), sampling the problem domain by generating candidate solutions using the distribution, and updating the distribution based on the better candidate solutions discovered. Samples are constructed step-wise (one component at a time) based on the summarized distribution of good solutions. As the algorithm progresses, the distribution becomes more refined until it focuses on the area or scope of optimal solutions in the domain.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Cross-Entropy Method algorithm for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$Problem_{size}$, $Samples_{num}$, $UpdateSamples_{num}$, $Learn_{rate}$, $Variance_{min}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Means</code> $\leftarrow$ <code>InitializeMeans</code>()<br />
+<code>Variances</code> $\leftarrow$ <code>InitializeVariances</code>()<br />
+$S_{best}$ $\leftarrow$ $\emptyset$<br />
+<strong><code>While</code></strong> (<code>Max</code>(<code>Variances</code>) $\leq$ $Variance_{min}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Samples</code> $\leftarrow$ $0$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($i=0$ <strong><code>To</code></strong> $Samples_{num}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Samples</code> $\leftarrow$ <code>GenerateSample</code>(<code>Means</code>, <code>Variances</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>EvaluateSamples</code>(<code>Samples</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>SortSamplesByQuality</code>(<code>Samples</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($Samples_{0}$) $\leq$ <code>Cost</code>($S_{best}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ $Samples_{0}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Samples_{selected}$ $\leftarrow $<code>SelectBestSamples</code>(<code>Samples</code>, $UpdateSamples_{num}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($i=0$ <strong><code>To</code></strong> $Problem_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Means_i$ $\leftarrow$ $Means_i$ + $Learn_{rate}$ $\times$ <code>Mean</code>($Samples_{selected}$, $i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Variances_i$ $\leftarrow$ $Variances_i$ + $Learn_{rate}$ $\times$ <code>Variance</code>($Samples_{selected}$, $i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for the Cross-Entropy Method.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The Cross-Entropy Method was adapted for combinatorial optimization problems, although has been applied to continuous function optimization as well as noisy simulation problems.</li>
+<li> A alpha ($\alpha$) parameter or learning rate $\in [0.1]$ is typically set high, such as 0.7.</li>
+<li> A smoothing function can be used to further control the updates the summaries of the distribution(s) of samples from the problem space. For example, in continuous function optimization a $\beta$ parameter may replace $\alpha$ for updating the standard deviation, calculated at time $t$ as $\beta_{t} = \beta - \beta \times (1-\frac{1}{t})^q$, where $\beta$ is initially set high $\in [0.8, 0.99]$ and $q$ is a small integer $\in [5, 10]$.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Cross-Entropy Method algorithm implemented in the Ruby Programming Language.
+The demonstration problem is an instance of a continuous function optimization problem that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+</p>
+<p>
+The algorithm was implemented based on a description of the Cross-Entropy Method algorithm for continuous function optimization by Rubinstein and Kroese in Chapter 5 and Appendix A of their book on the method  [<a href='#Rubinstein2004'>Rubinstein2004</a>]. The algorithm maintains means and standard deviations of the distribution of samples for convenience. The means and standard deviations are initialized based on random positions in the problem space and the bounds of the whole problem space respectively. A smoothing parameter is not used on the standard deviations.
+</p>
+<pre class='prettyprint lang-rb'>
+def objective_function(vector)
+  return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
+end
+
+def random_variable(minmax)
+  min, max = minmax
+  return min + ((max - min) * rand())
+end
+
+def random_gaussian(mean=0.0, stdev=1.0)
+  u1 = u2 = w = 0
+  begin
+    u1 = 2 * rand() - 1
+    u2 = 2 * rand() - 1
+    w = u1 * u1 + u2 * u2
+  end while w &gt;= 1
+  w = Math.sqrt((-2.0 * Math.log(w)) / w)
+  return mean + (u2 * w) * stdev
+end
+
+def generate_sample(search_space, means, stdevs)
+  vector = Array.new(search_space.size)
+  search_space.size.times do |i|
+    vector[i] = random_gaussian(means[i], stdevs[i])
+    vector[i] = search_space[i][0] if vector[i] &lt; search_space[i][0]
+    vector[i] = search_space[i][1] if vector[i] &gt; search_space[i][1]
+  end
+  return {:vector=&gt;vector}
+end
+
+def mean_attr(samples, i)
+  sum = samples.inject(0.0) do |s,sample|
+    s + sample[:vector][i]
+  end
+  return (sum / samples.size.to_f)
+end
+
+def stdev_attr(samples, mean, i)
+  sum = samples.inject(0.0) do |s,sample|
+    s + (sample[:vector][i] - mean)**2.0
+  end
+  return Math.sqrt(sum / samples.size.to_f)
+end
+
+def update_distribution!(samples, alpha, means, stdevs)
+  means.size.times do |i|
+    means[i] = alpha*means[i] + ((1.0-alpha)*mean_attr(samples, i))
+    stdevs[i] = alpha*stdevs[i]+((1.0-alpha)*stdev_attr(samples,means[i],i))
+  end
+end
+
+def search(bounds, max_iter, num_samples, num_update, learning_rate)
+  means = Array.new(bounds.size){|i| random_variable(bounds[i])}
+  stdevs = Array.new(bounds.size){|i| bounds[i][1]-bounds[i][0]}
+  best = nil
+  max_iter.times do |iter|
+    samples = Array.new(num_samples){generate_sample(bounds, means, stdevs)}
+    samples.each {|samp| samp[:cost] = objective_function(samp[:vector])}
+    samples.sort!{|x,y| x[:cost]&lt;=&gt;y[:cost]}
+    best = samples.first if best.nil? or samples.first[:cost] &lt; best[:cost]
+    selected = samples.first(num_update)
+    update_distribution!(selected, learning_rate, means, stdevs)
+    puts " &gt; iteration=#{iter}, fitness=#{best[:cost]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  search_space = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
+  max_iter = 100
+  num_samples = 50
+  num_update = 5
+  l_rate = 0.7
+  # execute the algorithm
+  best = search(search_space, max_iter, num_samples, num_update, l_rate)
+  puts "done! Solution: f=#{best[:cost]}, s=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='cross_entropy_method.rb'>Download Source</a></div>
+<div class='caption'>Cross-Entropy Method in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Cross-Entropy method was proposed by Rubinstein in 1997  [<a href='#Rubinstein1997'>Rubinstein1997</a>] for use in optimizing discrete event simulation systems. It was later generalized by Rubinstein and proposed as an optimization method for combinatorial function optimization in 1999  [<a href='#Rubinstein1999'>Rubinstein1999</a>].
+This work was further elaborated by Rubinstein providing a detailed treatment on the use of the Cross-Entropy method for combinatorial optimization  [<a href='#Rubinstein2001'>Rubinstein2001</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+De Boer et al. provide a detailed presentation of Cross-Entropy method including its application in rare event simulation, its adaptation to combinatorial optimization, and example applications to the max-cut, traveling salesman problem, and a clustering numeric optimization example  [<a href='#DeBoer2005'>DeBoer2005</a>].
+Rubinstein and Kroese provide a thorough presentation of the approach in their book, summarizing the relevant theory and the state of the art  [<a href='#Rubinstein2004'>Rubinstein2004</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='DeBoer2005'>[DeBoer2005]</a></td>
+ <td>P. T. De Boer and D. P. Kroese and S. Mannor and R. 	Y. Rubinstein, "<a href="http://scholar.google.com.au/scholar?q=A+Tutorial+on+the+Cross-Entropy+Method">A Tutorial on the Cross-Entropy Method</a>", Annals of Operations Research, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rubinstein1997'>[Rubinstein1997]</a></td>
+ <td>R. Y. Rubinstein, "<a href="http://scholar.google.com.au/scholar?q=Optimization+of+Computer+simulation+Models+with+Rare+Events">Optimization of Computer simulation Models with Rare Events</a>", European Journal of Operations Research, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rubinstein1999'>[Rubinstein1999]</a></td>
+ <td>R. Y. Rubinstein, "<a href="http://scholar.google.com.au/scholar?q=The+simulated+entropy+method+for+combinatorial+and+continuous+optimization">The simulated entropy method for combinatorial and continuous optimization</a>", Methodology and Computing in Applied Probability, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rubinstein2001'>[Rubinstein2001]</a></td>
+ <td>R. Y. Rubinstein, "<a href="http://scholar.google.com.au/scholar?q=Combinatorial+optimization,+cross-entropy,+ants+and+rare+events">Combinatorial optimization, cross-entropy, ants and rare events</a>", in Stochastic optimization: algorithms and applications, pages 303&ndash;364, Springer, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rubinstein2004'>[Rubinstein2004]</a></td>
+ <td>R. Y. Rubinstein and D. P. Kroese, "<a href="http://scholar.google.com.au/scholar?q=The+Cross-Entropy+Method:+A+Unified+Approach+to+Combinatorial+Optimization">The Cross-Entropy Method: A Unified Approach to Combinatorial Optimization</a>", Springer, 2004.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

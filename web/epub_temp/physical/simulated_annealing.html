@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='simulated_annealing'><h1>Simulated Annealing</h1></a>
+<p>
+<em>Simulated Annealing, SA.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Simulated Annealing is a global optimization algorithm that belongs to the field of Stochastic Optimization and Metaheuristics.
+Simulated Annealing is an adaptation of the Metropolis-Hastings Monte Carlo algorithm and is used in function optimization. Like the Genetic Algorithm, it provides a basis for a large variety of extensions and specialization's of the general method not limited to Parallel Simulated Annealing, Fast Simulated Annealing, and Adaptive Simulated Annealing.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Simulated Annealing is inspired by the process of annealing in metallurgy. In this natural process a material is heated and slowly cooled under controlled conditions to increase the size of the crystals in the material and reduce their defects. This has the effect of improving the strength and durability of the material. The heat increases the energy of the atoms allowing them to move freely, and the slow cooling schedule allows a new low-energy configuration to be discovered and exploited.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+Each configuration of a solution in the search space represents a different internal energy of the system. Heating the system results in a relaxation of the acceptance criteria of the samples taken from the search space. As the system is cooled, the acceptance criteria of samples is narrowed to focus on improving movements. Once the system has cooled, the configuration will represent a sample at or close to a global optimum.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the technique is to locate the minimum cost configuration in the search space.
+The algorithms plan of action is to probabilistically re-sample the problem space where the acceptance of new samples into the currently held sample is managed by a probabilistic function that becomes more discerning of the cost of samples it accepts over the execution time of the algorithm. This probabilistic decision is based on the Metropolis-Hastings algorithm for simulating samples from a thermodynamic system.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the main Simulated Annealing algorithm for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>ProblemSize</code>, $iterations_{max}$, $temp_{max}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+$S_{current}$ $\leftarrow$ <code>CreateInitialSolution</code>(<code>ProblemSize</code>)<br />
+$S_{best}$ $\leftarrow$ $S_{current}$<br />
+<strong><code>For</code></strong> ($i=1$ <strong><code>To</code></strong> $iterations_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{i}$ $\leftarrow$ <code>CreateNeighborSolution</code>($S_{current}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$temp_{curr}$ $\leftarrow$ <code>CalculateTemperature</code>($i$, $temp_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($S_{i}$) $\leq$ <code>Cost</code>($S_{current}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{current}$ $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($S_{i}$) $\leq$ <code>Cost</code>($S_{best}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>ElseIf</code></strong> (<code>Exp</code>( $\frac{Cost{S_{current}} - Cost{S_{i}}}{temp_{curr}}$ ) &gt; <code>Rand</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{current}$ $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for Simulated Annealing.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Simulated Annealing was designed for use with combinatorial optimization problems, although it has been adapted for continuous function optimization problems.</li>
+<li> The convergence proof suggests that with a long enough cooling period, the system will always converge to the global optimum. The downside of this theoretical finding is that the number of samples taken for optimum convergence to occur on some problems may be more than a complete enumeration of the search space.</li>
+<li> Performance improvements can be given with the selection of a candidate move generation scheme (neighborhood) that is less likely to generate candidates of significantly higher cost.</li>
+<li> Restarting the cooling schedule using the best found solution so far can lead to an improved outcome on some problems.</li>
+<li> A common acceptance method is to always accept improving solutions and accept worse solutions with a probability of $P(accept) \leftarrow \exp(\frac{e-e'}{T})$, where $T$ is the current temperature, $e$ is the energy (or cost) of the current solution and $e'$ is the energy of a candidate solution being considered.</li>
+<li> The size of the neighborhood considered in generating candidate solutions may also change over time or be influenced by the temperature, starting initially broad and narrowing with the execution of the algorithm.</li>
+<li> A problem specific heuristic method can be used to provide the starting point for the search.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Simulated Annealing algorithm implemented in the Ruby Programming Language.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+</p>
+<p>
+The algorithm implementation uses a two-opt procedure for the neighborhood function and the classical $P(accept) \leftarrow \exp(\frac{e-e'}{T})$ as the acceptance function. A simple linear cooling regime is used with a large initial temperature which is decreased each iteration.
+</p>
+<pre class='prettyprint lang-rb'>
+def euc_2d(c1, c2)
+  Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
+end
+
+def cost(permutation, cities)
+  distance =0
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
+    distance += euc_2d(cities[c1], cities[c2])
+  end
+  return distance
+end
+
+def random_permutation(cities)
+  perm = Array.new(cities.size){|i| i}
+  perm.each_index do |i|
+    r = rand(perm.size-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
+end
+
+def stochastic_two_opt!(perm)
+  c1, c2 = rand(perm.size), rand(perm.size)
+  exclude = [c1]
+  exclude &lt;&lt; ((c1==0) ? perm.size-1 : c1-1)
+  exclude &lt;&lt; ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
+  c1, c2 = c2, c1 if c2 &lt; c1
+  perm[c1...c2] = perm[c1...c2].reverse
+  return perm
+end
+
+def create_neighbor(current, cities)
+  candidate = {}
+  candidate[:vector] = Array.new(current[:vector])
+  stochastic_two_opt!(candidate[:vector])
+  candidate[:cost] = cost(candidate[:vector], cities)
+  return candidate
+end
+
+def should_accept?(candidate, current, temp)
+  return true if candidate[:cost] &lt;= current[:cost]
+  return Math.exp((current[:cost] - candidate[:cost]) / temp) &gt; rand()
+end
+
+def search(cities, max_iter, max_temp, temp_change)
+  current = {:vector=&gt;random_permutation(cities)}
+  current[:cost] = cost(current[:vector], cities)
+  temp, best = max_temp, current
+  max_iter.times do |iter|
+    candidate = create_neighbor(current, cities)
+    temp = temp * temp_change
+    current = candidate if should_accept?(candidate, current, temp)
+    best = candidate if candidate[:cost] &lt; best[:cost]
+    if (iter+1).modulo(10) == 0
+      puts " &gt; iteration #{(iter+1)}, temp=#{temp}, best=#{best[:cost]}"
+    end
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  berlin52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
+   [880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
+   [1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
+   [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
+   [835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
+   [410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+   [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
+   [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
+   [830,610],[605,625],[595,360],[1340,725],[1740,245]]
+  # algorithm configuration
+  max_iterations = 2000
+  max_temp = 100000.0
+  temp_change = 0.98
+  # execute the algorithm
+  best = search(berlin52, max_iterations, max_temp, temp_change)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='simulated_annealing.rb'>Download Source</a></div>
+<div class='caption'>Simulated Annealing in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Simulated Annealing is credited to Kirkpatrick, Gelatt, and Vecchi in 1983  [<a href='#Kirkpatrick1983'>Kirkpatrick1983</a>]. Granville, Krivanek, and Rasson provided the proof for convergence for Simulated Annealing in 1994  [<a href='#Granville1994'>Granville1994</a>].
+There were a number of early studies and application papers such as Kirkpatrick's investigation into the TSP and minimum cut problems  [<a href='#Kirkpatrick1983a'>Kirkpatrick1983a</a>], and a study by Vecchi and Kirkpatrick on Simulated Annealing applied to the global wiring problem  [<a href='#Vecchi1983'>Vecchi1983</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+There are many excellent reviews of Simulated Annealing, not limited to the review by Ingber that describes improved methods such as Adaptive Simulated Annealing, Simulated Quenching, and hybrid methods  [<a href='#Ingber1993'>Ingber1993</a>].
+There are books dedicated to Simulated Annealing, applications and variations. Two examples of good texts include &quot;Simulated Annealing: Theory and Applications&quot; by Laarhoven and Aarts  [<a href='#Laarhoven1988'>Laarhoven1988</a>] that provides an introduction to the technique and applications, and &quot;Simulated Annealing: Parallelization Techniques&quot; by Robert Azencott  [<a href='#Azencott1992'>Azencott1992</a>] that focuses on the theory and applications of parallel methods for Simulated Annealing.
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Azencott1992'>[Azencott1992]</a></td>
+ <td>R. Azencott, "<a href="http://scholar.google.com.au/scholar?q=Simulated+annealing:+parallelization+techniques">Simulated annealing: parallelization techniques</a>", Wiley, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Granville1994'>[Granville1994]</a></td>
+ <td>V. Granville and M. Krivanek and J&ndash;P. Rasson, "<a href="http://scholar.google.com.au/scholar?q=Simulated+annealing:+A+proof+of+convergence">Simulated annealing: A proof of convergence</a>", IEEE Transactions on Pattern Analysis and Machine Intelligence, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ingber1993'>[Ingber1993]</a></td>
+ <td>L. Ingber, "<a href="http://scholar.google.com.au/scholar?q=Simulated+Annealing:+Practice+versus+theory">Simulated Annealing: Practice versus theory</a>", Math. Comput. Modelling, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kirkpatrick1983'>[Kirkpatrick1983]</a></td>
+ <td>S. Kirkpatrick and C. D. Gelatt and M. P. Vecchi, "<a href="http://scholar.google.com.au/scholar?q=Optimization+by+Simulated+Annealing">Optimization by Simulated Annealing</a>", Science, 1983.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kirkpatrick1983a'>[Kirkpatrick1983a]</a></td>
+ <td>S. Kirkpatrick, "<a href="http://scholar.google.com.au/scholar?q=Optimization+by+simulated+annealing:+Quantitative+studies">Optimization by simulated annealing: Quantitative studies</a>", Journal of Statistical Physics, 1983.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Laarhoven1988'>[Laarhoven1988]</a></td>
+ <td>P. J. M. van Laarhoven and E. H. L. Aarts, "<a href="http://scholar.google.com.au/scholar?q=Simulated+Annealing:+Theory+and+Applications">Simulated Annealing: Theory and Applications</a>", Springer, 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Vecchi1983'>[Vecchi1983]</a></td>
+ <td>M. P. Vecchi and S. Kirkpatrick, "<a href="http://scholar.google.com.au/scholar?q=Global+wiring+by+simulated+annealing">Global wiring by simulated annealing</a>", IEEE Transactions on Computer-Aided Design of Integrated Circuits 	and Systems, 1983.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

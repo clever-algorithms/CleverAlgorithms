@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='extremal_optimization'><h1>Extremal Optimization</h1></a>
+<p>
+<em>Extremal Optimization, EO.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Extremal Optimization is a stochastic search technique that has the properties of being a local and global search method.
+It is generally related to hill-climbing algorithms and provides the basis for extensions such as Generalized Extremal Optimization.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Extremal Optimization is inspired by the Bak-Sneppen self-organized criticality model of co-evolution from the field of statistical physics.
+The self-organized criticality model suggests that some dynamical systems have a critical point as an attractor, whereby the systems exhibit periods of slow movement or accumulation followed by short periods of avalanche or instability. Examples of such systems include land formation, earthquakes, and the dynamics of sand piles. The Bak-Sneppen model considers these dynamics in co-evolutionary systems and in the punctuated equilibrium model, which is described as long periods of status followed by short periods of extinction and large evolutionary change.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+The dynamics of the system result in the steady improvement of a candidate solution with sudden and large crashes in the quality of the candidate solution. These dynamics allow two main phases of activity in the system: 1) to exploit higher quality solutions in a local search like manner, and 2) escape possible local optima with a population crash and explore the search space for a new area of high quality solutions.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the information processing strategy is to iteratively identify the worst performing components of a given solution and replace or swap them with other components.
+This is achieved through the allocation of cost to the components of the solution based on their contribution to the overall cost of the solution in the problem domain. Once components are assessed they can be ranked and the weaker components replaced or switched with a randomly selected component.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Extremal Optimization algorithm for minimizing a cost function. The deterministic selection of the worst component in the <code>SelectWeakComponent</code> function and replacement in the <code>SelectReplacementComponent</code> function is classical EO. If these decisions are probabilistic making use of $\tau$ parameter, this is referred to as $\tau$-Extremal Optimization.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>ProblemSize</code>, $iterations_{max}$, $\tau$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+$S_{current}$ $\leftarrow$ <code>CreateInitialSolution</code>(<code>ProblemSize</code>)<br />
+$S_{best}$ $\leftarrow$ $S_{current}$<br />
+<strong><code>For</code></strong> ($i=1$ <strong><code>To</code></strong> $iterations_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Component_{i}$ $\in$ $S_{current}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Component_{i}^{cost}$ $\leftarrow$ <code>Cost</code>($Component_{i}$, $S_{current}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>RankedComponents</code> $\leftarrow$ <code>Rank</code>($Si_{components}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Component_{i}$ $\leftarrow$ <code>SelectWeakComponent</code>(<code>RankedComponents</code>, $Component_{i}$, $\tau$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Component_{j}$ $\leftarrow$ <code>SelectReplacementComponent</code>(<code>RankedComponents</code>, $\tau$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>Replace</code>($S_{current}$, $Component_{i}$, $Component_{j}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($S_{candidate}$) $\leq$ <code>Cost</code>($S_{best}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ $S_{candidate}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for Extremal Optimization.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Extremal Optimization was designed for combinatorial optimization problems, although variations have been applied to continuous function optimization.</li>
+<li> The selection of the worst component and the replacement component each iteration can be deterministic or probabilistic, the latter of which is referred to as $\tau$-Extremal Optimization given the use of a $\tau$ parameter.</li>
+<li> The selection of an appropriate scoring function of the components of a solution is the most difficult part in the application of the technique.</li>
+<li> For $\tau$-Extremal Optimization, low $\tau$ values are used (such as $\tau \in [1.2,1.6]$) have been found to be effective for the TSP.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Extremal Optimization algorithm implemented in the Ruby Programming Language.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+</p>
+<p>
+The algorithm implementation is based on the seminal work by Boettcher and Percus  [<a href='#Boettcher1999'>Boettcher1999</a>]. A solution is comprised of a permutation of city components. Each city can potentially form a connection to any other city, and the connections to other cities ordered by distance may be considered its neighborhood. For a given candidate solution, the city components of a solution are scored based on the neighborhood rank of the cities to which they are connected: $fitness_k \leftarrow \frac{3}{r_i + r_j}$, where $r_i$ and $r_j$ are the neighborhood ranks of cities $i$ and $j$ against city $k$. A city is selected for modification probabilistically where the probability of selecting a given city is proportional to $n_i^{-\tau}$, where $n$ is the rank of city $i$. The longest connection is broken, and the city is connected with another neighboring city that is also probabilistically selected.
+</p>
+<pre class='prettyprint lang-rb'>
+def euc_2d(c1, c2)
+  Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
+end
+
+def cost(permutation, cities)
+  distance =0
+  permutation.each_with_index do |c1, i|
+    c2 = (i==permutation.size-1) ? permutation[0] : permutation[i+1]
+    distance += euc_2d(cities[c1], cities[c2])
+  end
+  return distance
+end
+
+def random_permutation(cities)
+  perm = Array.new(cities.size){|i| i}
+  perm.each_index do |i|
+    r = rand(perm.size-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
+end
+
+def calculate_neighbor_rank(city_number, cities, ignore=[])
+  neighbors = []
+  cities.each_with_index do |city, i|
+    next if i==city_number or ignore.include?(i)
+    neighbor = {:number=&gt;i}
+    neighbor[:distance] = euc_2d(cities[city_number], city)
+    neighbors &lt;&lt; neighbor
+  end
+  return neighbors.sort!{|x,y| x[:distance] &lt;=&gt; y[:distance]}
+end
+
+def get_edges_for_city(city_number, permutation)
+  c1, c2 = nil, nil
+  permutation.each_with_index do |c, i|
+    if c == city_number
+      c1 = (i==0) ? permutation.last : permutation[i-1]
+      c2 = (i==permutation.size-1) ? permutation.first : permutation[i+1]
+      break
+    end
+  end
+  return [c1, c2]
+end
+
+def calculate_city_fitness(permutation, city_number, cities)
+  c1, c2 = get_edges_for_city(city_number, permutation)
+  neighbors = calculate_neighbor_rank(city_number, cities)
+  n1, n2 = -1, -1
+  neighbors.each_with_index do |neighbor,i|
+    n1 = i+1 if neighbor[:number] == c1
+    n2 = i+1 if neighbor[:number] == c2
+    break if n1!=-1 and n2!=-1
+  end
+  return 3.0 / (n1.to_f + n2.to_f)
+end
+
+def calculate_city_fitnesses(cities, permutation)
+  city_fitnesses = []
+  cities.each_with_index do |city, i|
+    city_fitness = {:number=&gt;i}
+    city_fitness[:fitness] = calculate_city_fitness(permutation, i, cities)
+    city_fitnesses &lt;&lt; city_fitness
+  end
+  return city_fitnesses.sort!{|x,y| y[:fitness] &lt;=&gt; x[:fitness]}
+end
+
+def calculate_component_probabilities(ordered_components, tau)
+  sum = 0.0
+  ordered_components.each_with_index do |component, i|
+    component[:prob] = (i+1.0)**(-tau)
+    sum += component[:prob]
+  end
+  return sum
+end
+
+def make_selection(components, sum_probability)
+  selection = rand()
+  components.each_with_index do |component, i|
+    selection -= (component[:prob] / sum_probability)
+    return component[:number] if selection &lt;= 0.0
+  end
+  return components.last[:number]
+end
+
+def probabilistic_selection(ordered_components, tau, exclude=[])
+  sum = calculate_component_probabilities(ordered_components, tau)
+  selected_city = nil
+  begin
+    selected_city = make_selection(ordered_components, sum)
+  end while exclude.include?(selected_city)
+  return selected_city
+end
+
+def vary_permutation(permutation, selected, new, long_edge)
+  perm = Array.new(permutation)
+  c1, c2 = perm.rindex(selected), perm.rindex(new)
+  p1,p2 = (c1&lt;c2) ? [c1,c2] : [c2,c1]
+  right = (c1==perm.size-1) ? 0 : c1+1
+  if perm[right] == long_edge
+    perm[p1+1..p2] = perm[p1+1..p2].reverse
+  else
+    perm[p1...p2] = perm[p1...p2].reverse
+  end
+  return perm
+end
+
+def get_long_edge(edges, neighbor_distances)
+  n1 = neighbor_distances.find {|x| x[:number]==edges[0]}
+  n2 = neighbor_distances.find {|x| x[:number]==edges[1]}
+  return (n1[:distance] &gt; n2[:distance]) ? n1[:number] : n2[:number]
+end
+
+def create_new_perm(cities, tau, perm)
+  city_fitnesses = calculate_city_fitnesses(cities, perm)
+  selected_city = probabilistic_selection(city_fitnesses.reverse, tau)
+  edges = get_edges_for_city(selected_city, perm)
+  neighbors = calculate_neighbor_rank(selected_city, cities)
+  new_neighbor = probabilistic_selection(neighbors, tau, edges)
+  long_edge = get_long_edge(edges, neighbors)
+  return vary_permutation(perm, selected_city, new_neighbor, long_edge)
+end
+
+def search(cities, max_iterations, tau)
+  current = {:vector=&gt;random_permutation(cities)}
+  current[:cost] = cost(current[:vector], cities)
+  best = current
+  max_iterations.times do |iter|
+    candidate = {}
+    candidate[:vector] = create_new_perm(cities, tau, current[:vector])
+    candidate[:cost] = cost(candidate[:vector], cities)
+    current = candidate
+    best = candidate if candidate[:cost] &lt; best[:cost]
+    puts " &gt; iter #{(iter+1)}, curr=#{current[:cost]}, best=#{best[:cost]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  berlin52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
+   [880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
+   [1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
+   [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
+   [835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
+   [410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+   [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
+   [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
+   [830,610],[605,625],[595,360],[1340,725],[1740,245]]
+  # algorithm configuration
+  max_iterations = 250
+  tau = 1.8
+  # execute the algorithm
+  best = search(berlin52, max_iterations, tau)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='extremal_optimization.rb'>Download Source</a></div>
+<div class='caption'>Extremal Optimization in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Extremal Optimization was proposed as an optimization heuristic by Boettcher and Percus applied to graph partitioning and the Traveling Salesman Problem  [<a href='#Boettcher1999'>Boettcher1999</a>]. The approach was inspired by the Bak-Sneppen self-organized criticality model of co-evolution  [<a href='#Bak1987'>Bak1987</a>] [<a href='#Bak1993'>Bak1993</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+A number of detailed reviews of Extremal Optimization have been presented, including a review and studies by Boettcher and Percus  [<a href='#Boettcher2000'>Boettcher2000</a>], an accessible review by Boettcher  [<a href='#Boettcher2000a'>Boettcher2000a</a>], and a focused study on the Spin Glass problem by Boettcher and Percus  [<a href='#Boettcher2001'>Boettcher2001</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Bak1987'>[Bak1987]</a></td>
+ <td>P. Bak and C. Tang and K. Wiesenfeld, "<a href="http://scholar.google.com.au/scholar?q=Self-organized+criticality:+An+explanation+of+the+1/f+noise">Self-organized criticality: An explanation of the 1/f noise</a>", Physical Review Letters, 1987.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Bak1993'>[Bak1993]</a></td>
+ <td>P. Bak and K. Sneppen, "<a href="http://scholar.google.com.au/scholar?q=Punctuated+equilibrium+and+criticality+in+a+simple+model+of+evolution">Punctuated equilibrium and criticality in a simple model of evolution</a>", Physical Review Letters, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Boettcher1999'>[Boettcher1999]</a></td>
+ <td>S. Boettcher and A. G. Percus, "<a href="http://scholar.google.com.au/scholar?q=Extremal+Optimization:+Methods+derived+from+Co-Evolution">Extremal Optimization: Methods derived from Co-Evolution</a>", in Proceedings of the Genetic and Evolutionary Computation Conference, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Boettcher2000'>[Boettcher2000]</a></td>
+ <td>S. Boettcher and A. Percus, "<a href="http://scholar.google.com.au/scholar?q=Nature’s+Way+of+Optimizing">Nature’s Way of Optimizing</a>", Artificial Intelligence, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Boettcher2000a'>[Boettcher2000a]</a></td>
+ <td>S. Boettcher, "<a href="http://scholar.google.com.au/scholar?q=Extremal+optimization:+heuristics+via+coevolutionary+avalanches">Extremal optimization: heuristics via coevolutionary avalanches</a>", Computing in Science &amp; Engineering, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Boettcher2001'>[Boettcher2001]</a></td>
+ <td>S. Boettcher and A. G. Percus, "<a href="http://scholar.google.com.au/scholar?q=Optimization+with+extremal+dynamics">Optimization with extremal dynamics</a>", Phys. Rev. Lett., 2001.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

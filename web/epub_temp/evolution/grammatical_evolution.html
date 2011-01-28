@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='grammatical_evolution'><h1>Grammatical Evolution</h1></a>
+<p>
+<em>Grammatical Evolution, GE.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Grammatical Evolution is a Global Optimization technique and an instance of an Evolutionary Algorithm from the field of Evolutionary Computation. It may also be considered an algorithm for Automatic Programming.
+Grammatical Evolution is related to other Evolutionary Algorithms for evolving programs such as Genetic Programming and Gene Expression Programming, as well as the classical Genetic Algorithm that uses binary strings.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Grammatical Evolution algorithm is inspired by the biological process used for generating a protein from genetic material as well as the broader genetic evolutionary process.
+The genome is comprised of DNA as a string of building blocks that are transcribed to RNA. RNA codons are in turn translated into sequences of amino acids and used in the protein. The resulting protein in its environment is the phenotype.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+The phenotype is a computer program that is created from a binary string-based genome. The genome is decoded into a sequence of integers that are in turn mapped onto pre-defined rules that makeup the program.
+The mapping from genotype to the phenotype is a one-to-many process that uses a wrapping feature. This is like the biological process observed in many bacteria, viruses, and mitochondria, where the same genetic material is used in the expression of different genes.
+The mapping adds robustness to the process both in the ability to adopt structure-agnostic genetic operators used during the evolutionary process on the sub-symbolic representation and the transcription of well-formed executable programs from the representation.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of Grammatical Evolution is to adapt an executable program to a problem specific objective function.
+This is achieved through an iterative process with surrogates of evolutionary mechanisms such as descent with variation, genetic mutation and recombination, and genetic transcription and gene expression. A population of programs are evolved in a sub-symbolic form as variable length binary strings and mapped to a symbolic and well-structured form as a context free grammar for execution.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+A grammar is defined in Backus Normal Form (BNF), which is a context free grammar expressed as a series of production rules comprised of terminals and non-terminals.
+A variable-length binary string representation is used for the optimization process. Bits are read from the a candidate solutions genome in blocks of 8 called a codon, and decoded to an integer (in the range between 0 and $2^{8}-1$). If the end of the binary string is reached when reading integers, the reading process loops back to the start of the string, effectively creating a circular genome. The integers are mapped to expressions from the BNF until a complete syntactically correct expression is formed. This may not use a solutions entire genome, or use the decoded genome more than once given it's circular nature.
+Algorithm (below) provides a pseudocode listing of the Grammatical Evolution algorithm for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>Grammar</code>, $Codon_{numbits}$, $Population_{size}$, $P_{crossover}$, $P_{mutation}$, $P_{delete}$, $P_{duplicate}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($Population_{size}$, $Codon_{numbits}$)<br />
+<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Si_{integers}$ $\leftarrow$ <code>Decode</code>($Si_{bitstring}$, $Codon_{numbits}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Si_{program}$ $\leftarrow$ <code>Map</code>($Si_{integers}$, <code>Grammar</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Si_{cost}$ $\leftarrow$ <code>Execute</code>($Si_{program}$)<br />
+<strong><code>End</code></strong><br />
+$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Population</code>)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Parents</code> $\leftarrow$ <code>SelectParents</code>(<code>Population</code>, $Population_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Parent_{i}$, $Parent_{j}$ $\in$ <code>Parents</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{i}$ $\leftarrow$ <code>Crossover</code>($Parent_{i}$, $Parent_{j}$, $P_{crossover}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{bitstring}$ $\leftarrow$ <code>CodonDeletion</code>($Si_{bitstring}$, $P_{delete}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{bitstring}$ $\leftarrow$ <code>CodonDuplication</code>($Si_{bitstring}$, $P_{duplicate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{bitstring}$ $\leftarrow$ <code>Mutate</code>($Si_{bitstring}$, $P_{mutation}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>Children</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{integers}$ $\leftarrow$ <code>Decode</code>($Si_{bitstring}$, $Codon_{numbits}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{program}$ $\leftarrow$ <code>Map</code>($Si_{integers}$, <code>Grammar</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{cost}$ $\leftarrow$ <code>Execute</code>($Si_{program}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Children</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>Replace</code>(<code>Population</code>, <code>Children</code>)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for Grammatical Evolution.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Grammatical Evolution was designed to optimize programs (such as mathematical equations) to specific cost functions.</li>
+<li> Classical genetic operators used by the Genetic Algorithm may be used in the Grammatical Evolution algorithm, such as point mutations and one-point crossover.</li>
+<li> Codons (groups of bits mapped to an integer) are commonly fixed at 8 bits, proving a range of integers $\in [0,2^{8}-1]$ that is scaled to the range of rules using a modulo function.</li>
+<li> Additional genetic operators may be used with variable-length representations such as codon segments, duplication (add to the end), number of codons selected at random, and deletion.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Grammatical Evolution algorithm implemented in the Ruby Programming Language based on the version described by O'Neill and Ryan  [<a href='#ONeill2001'>ONeill2001</a>].
+The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[1,10]$.
+The grammar used in this problem is:
+</p>
+<ul>
+<li> Non-terminals: $N=\{expr,op,pre\_op\}$</li>
+<li> Terminals: $T=\{+, -, \div, \times, x, 1.0\}$</li>
+<li> Expression (program): $S=$<code>&lt;expr&gt;</code></li>
+</ul>
+<p>
+The production rules for the grammar in BNF are:
+</p>
+<ul>
+<li> <code>&lt;expr&gt;</code> $::=$ <code>&lt;expr&gt;&lt;op&gt;&lt;expr&gt;</code> , <code>(&lt;expr&gt;&lt;op&gt;&lt;expr&gt;)</code>, <code>&lt;pre_op&gt;(&lt;expr&gt;)</code>, <code>&lt;var&gt;</code></li>
+<li> <code>&lt;op&gt;</code> $::=$ $+, -, \div, \times$</li>
+<li> <code>&lt;var&gt;</code> $::=$ x, 1.0</li>
+</ul>
+<p>
+The algorithm uses point mutation and a codon-respecting one-point crossover operator. Binary tournament selection is used to determine the parent population's contribution to the subsequent generation.
+Binary strings are decoded to integers using an unsigned binary. Candidate solutions are then mapped directly into executable Ruby code and executed. A given candidate solution is evaluated by comparing its output against the target function and taking the sum of the absolute errors over a number of trials. The probabilities of point mutation, codon deletion, and codon duplication are hard coded as relative probabilities to each solution, although should be parameters of the algorithm. In this case they are heuristically defined as $\frac{1.0}{L}$, $\frac{0.5}{NC}$ and $\frac{1.0}{NC}$ respectively, where $L$ is the total number of bits, and $NC$ is the number of codons in a given candidate solution.
+</p>
+<p>
+Solutions are evaluated by generating a number of random samples from the domain and calculating the mean error of the program to the expected outcome. Programs that contain a single term or those that return an invalid (NaN) or infinite result are penalized with an enormous error value.
+The implementation uses a maximum depth in the expression tree, whereas traditionally such deep expression trees are marked as invalid. Programs that resolve to a single expression that returns the output are penalized.
+</p>
+<pre class='prettyprint lang-rb'>
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
+  return (pop[i][:fitness] &lt; pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
+def point_mutation(bitstring, rate=1.0/bitstring.size.to_f)
+  child = ""
+  bitstring.size.times do |i|
+    bit = bitstring[i].chr
+    child &lt;&lt; ((rand()&lt;rate) ? ((bit=='1') ? "0" : "1") : bit)
+  end
+  return child
+end
+
+def one_point_crossover(parent1, parent2, codon_bits, p_cross=0.30)
+  return ""+parent1[:bitstring] if rand()&gt;=p_cross
+  cut = rand([parent1.size, parent2.size].min/codon_bits)
+  cut *= codon_bits
+  p2size = parent2[:bitstring].size
+  return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2size]
+end
+
+def codon_duplication(bitstring, codon_bits, rate=1.0/codon_bits.to_f)
+  return bitstring if rand() &gt;= rate
+  codons = bitstring.size/codon_bits
+  return bitstring + bitstring[rand(codons)*codon_bits, codon_bits]
+end
+
+def codon_deletion(bitstring, codon_bits, rate=0.5/codon_bits.to_f)
+  return bitstring if rand() &gt;= rate
+  codons = bitstring.size/codon_bits
+  off = rand(codons)*codon_bits
+  return bitstring[0...off] + bitstring[off+codon_bits...bitstring.size]
+end
+
+def reproduce(selected, pop_size, p_cross, codon_bits)
+  children = []
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
+    child = {}
+    child[:bitstring] = one_point_crossover(p1, p2, codon_bits, p_cross)
+    child[:bitstring] = codon_deletion(child[:bitstring], codon_bits)
+    child[:bitstring] = codon_duplication(child[:bitstring], codon_bits)
+    child[:bitstring] = point_mutation(child[:bitstring])
+    children &lt;&lt; child
+    break if children.size == pop_size
+  end
+  return children
+end
+
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s&lt;&lt;((rand&lt;0.5) ? "1" : "0")}
+end
+
+def decode_integers(bitstring, codon_bits)
+  ints = []
+  (bitstring.size/codon_bits).times do |off|
+    codon = bitstring[off*codon_bits, codon_bits]
+    sum = 0
+    codon.size.times do |i|
+      sum += ((codon[i].chr=='1') ? 1 : 0) * (2 ** i);
+    end
+    ints &lt;&lt; sum
+  end
+  return ints
+end
+
+def map(grammar, integers, max_depth)
+  done, offset, depth = false, 0, 0
+  symbolic_string = grammar["S"]
+  begin
+    done = true
+    grammar.keys.each do |key|
+      symbolic_string = symbolic_string.gsub(key) do |k|
+        done = false
+        set = (k=="EXP" && depth&gt;=max_depth-1) ? grammar["VAR"] : grammar[k]
+        integer = integers[offset].modulo(set.size)
+        offset = (offset==integers.size-1) ? 0 : offset+1
+        set[integer]
+      end
+    end
+    depth += 1
+  end until done
+  return symbolic_string
+end
+
+def target_function(x)
+  return x**4.0 + x**3.0 + x**2.0 + x
+end
+
+def sample_from_bounds(bounds)
+  return bounds[0] + ((bounds[1] - bounds[0]) * rand())
+end
+
+def cost(program, bounds, num_trials=30)
+  return 9999999 if program.strip == "INPUT"
+  sum_error = 0.0
+  num_trials.times do
+    x = sample_from_bounds(bounds)
+    expression = program.gsub("INPUT", x.to_s)
+    begin score = eval(expression) rescue score = 0.0/0.0 end
+    return 9999999 if score.nan? or score.infinite?
+    sum_error += (score - target_function(x)).abs
+  end
+  return sum_error / num_trials.to_f
+end
+
+def evaluate(candidate, codon_bits, grammar, max_depth, bounds)
+  candidate[:integers] = decode_integers(candidate[:bitstring], codon_bits)
+  candidate[:program] = map(grammar, candidate[:integers], max_depth)
+  candidate[:fitness] = cost(candidate[:program], bounds)
+end
+
+def search(max_gens, pop_size, codon_bits, num_bits, p_cross, grammar, max_depth, bounds)
+  pop = Array.new(pop_size) {|i| {:bitstring=&gt;random_bitstring(num_bits)}}
+  pop.each{|c| evaluate(c,codon_bits, grammar, max_depth, bounds)}
+  best = pop.sort{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}.first
+  max_gens.times do |gen|
+    selected = Array.new(pop_size){|i| binary_tournament(pop)}
+    children = reproduce(selected, pop_size, p_cross,codon_bits)
+    children.each{|c| evaluate(c, codon_bits, grammar, max_depth, bounds)}
+    children.sort!{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}
+    best = children.first if children.first[:fitness] &lt;= best[:fitness]
+    pop=(children+pop).sort{|x,y| x[:fitness]&lt;=&gt;y[:fitness]}.first(pop_size)
+    puts " &gt; gen=#{gen}, f=#{best[:fitness]}, s=#{best[:bitstring]}"
+    break if best[:fitness] == 0.0
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  grammar = {"S"=&gt;"EXP",
+    "EXP"=&gt;[" EXP BINARY EXP ", " (EXP BINARY EXP) ", " VAR "],
+    "BINARY"=&gt;["+", "-", "/", "*" ],
+    "VAR"=&gt;["INPUT", "1.0"]}
+  bounds = [1, 10]
+  # algorithm configuration
+  max_depth = 7
+  max_gens = 50
+  pop_size = 100
+  codon_bits = 4
+  num_bits = 10*codon_bits
+  p_cross = 0.30
+  # execute the algorithm
+  best = search(max_gens, pop_size, codon_bits, num_bits, p_cross, grammar, max_depth, bounds)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:program]}"
+end
+</pre>
+<div class='download_src'><a href='grammatical_evolution.rb'>Download Source</a></div>
+<div class='caption'>Grammatical Evolution in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Grammatical Evolution was proposed by Ryan, Collins and O'Neill in a seminal conference paper that applied the approach to a symbolic regression problem  [<a href='#Ryan1998a'>Ryan1998a</a>].
+The approach was born out of the desire for syntax preservation while evolving programs using the Genetic Programming algorithm.
+This seminal work was followed by application papers for a symbolic integration problem  [<a href='#ONeill1998'>ONeill1998</a>] [<a href='#ONeill1998a'>ONeill1998a</a>] and solving trigonometric identities  [<a href='#Ryan1998'>Ryan1998</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+O'Neill and Ryan provide a high-level introduction to Grammatical Evolution and early demonstration applications  [<a href='#ONeill1999'>ONeill1999</a>]. The same authors provide a thorough introduction to the technique and overview of the state of the field  [<a href='#ONeill2001'>ONeill2001</a>].
+O'Neill and Ryan present a seminal reference for Grammatical Evolution in their book  [<a href='#ONeill2003'>ONeill2003</a>]. A second more recent book considers extensions to the approach improving its capability on dynamic problems  [<a href='#Dempsey2009'>Dempsey2009</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Dempsey2009'>[Dempsey2009]</a></td>
+ <td>I. Dempsey and M. O'Neill and A. Brabazon, "<a href="http://scholar.google.com.au/scholar?q=Foundations+in+Grammatical+Evolution+for+Dynamic+Environments">Foundations in Grammatical Evolution for Dynamic Environments</a>", Springer, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='ONeill1998'>[ONeill1998]</a></td>
+ <td>M. O'Neill and C. Ryan, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution:+A+Steady+State+approach">Grammatical Evolution: A Steady State approach</a>", in Proceedings of the Second International Workshop on Frontiers in 	Evolutionary Algorithms, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='ONeill1998a'>[ONeill1998a]</a></td>
+ <td>M. O'Neill and C. Ryan, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution:+A+Steady+State+approach">Grammatical Evolution: A Steady State approach</a>", in Late Breaking Papers at the Genetic Programming 1998 Conference, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='ONeill1999'>[ONeill1999]</a></td>
+ <td>M. O'Neill and C. Ryan, "<a href="http://scholar.google.com.au/scholar?q=Under+the+Hood+of+Grammatical+Evolution">Under the Hood of Grammatical Evolution</a>", in Proceedings of the Genetic and Evolutionary Computation Conference, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='ONeill2001'>[ONeill2001]</a></td>
+ <td>M. O'Neill and C. Ryan, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution">Grammatical Evolution</a>", IEEE Transactions on Evolutionary Computation, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='ONeill2003'>[ONeill2003]</a></td>
+ <td>M. O'Neill and C. Ryan, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution:+Evolutionary+Automatic+Programming+in+an+Arbitrary++Language">Grammatical Evolution: Evolutionary Automatic Programming in an Arbitrary 	Language</a>", Springer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ryan1998'>[Ryan1998]</a></td>
+ <td>C. Ryan and J. J. Collins and M. O'Neill, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution:+Solving+Trigonometric+Identities">Grammatical Evolution: Solving Trigonometric Identities</a>", in Proceedings of Mendel 1998: 4th International Mendel Conference on 	Genetic Algorithms, Optimisation Problems, Fuzzy Logic, Neural Networks, 	Rough Sets., 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ryan1998a'>[Ryan1998a]</a></td>
+ <td>C. Ryan and J. J. Collins and M. O'Neill, "<a href="http://scholar.google.com.au/scholar?q=Grammatical+Evolution:+Evolving+Programs+for+an+Arbitrary+Language">Grammatical Evolution: Evolving Programs for an Arbitrary Language</a>", in Lecture Notes in Computer Science 1391. First European Workshop on 	Genetic Programming, 1998.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='variable_neighborhood_search'><h1>Variable Neighborhood Search</h1></a>
+<p>
+<em>Variable Neighborhood Search, VNS.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Variable Neighborhood Search is a Metaheuristic and a Global Optimization technique that manages a Local Search technique.
+It is related to the Iterative Local Search algorithm.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The strategy for the Variable Neighborhood Search involves iterative exploration of larger and larger neighborhoods for a given local optima until an improvement is located after which time the search across expanding neighborhoods is repeated.
+The strategy is motivated by three principles: 1) a local minimum for one neighborhood structure may not be a local minimum for a different neighborhood structure, 2) a global minimum is a local minimum for all possible neighborhood structures, and 3) local minima are relatively close to global minima for many problem classes.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Variable Neighborhood Search algorithm for minimizing a cost function.
+The Pseudocode shows that the systematic search of expanding neighborhoods for a local optimum is abandoned when a global improvement is achieved (shown with the <code>Break</code> jump).
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>Neighborhoods</code>
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+$S_{best}$ $\leftarrow$ <code>RandomSolution</code>()<br />
+<strong><code>While</code></strong> ($\neg$ <code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Neighborhood_{i}$ $\in$ <code>Neighborhoods</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Neighborhood_{curr}$ $\leftarrow$ <code>CalculateNeighborhood</code>($S_{best}$, $Neighborhood_{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>RandomSolutionInNeighborhood</code>($Neighborhood_{curr}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>LocalSearch</code>($S_{candidate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($S_{candidate}$) &lt; <code>Cost</code>($S_{best}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ $S_{candidate}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Break</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for VNS.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Approximation methods (such as stochastic hill climbing) are suggested for use as the Local Search procedure for large problem instances in order to reduce the running time.</li>
+<li> Variable Neighborhood Search has been applied to a very wide array of combinatorial optimization problems as well as clustering and continuous function optimization problems.</li>
+<li> The embedded Local Search technique should be specialized to the problem type and instance to which the technique is being applied.</li>
+<li> The Variable Neighborhood Descent (VND) can be embedded in the Variable Neighborhood Search as a the Local Search procedure and has been shown to be most effective.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Variable Neighborhood Search algorithm implemented in the Ruby Programming Language.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+</p>
+<p>
+The Variable Neighborhood Search uses a stochastic 2-opt procedure as the embedded local search. The procedure deletes two edges and reverses the sequence in-between the deleted edges, potentially removing 'twists' in the tour. The neighborhood structure used in the search is the number of times the 2-opt procedure is performed on a permutation, between 1 and 20 times. The stopping condition for the local search procedure is a maximum number of iterations without improvement. The same stop condition is employed by the higher-order Variable Neighborhood Search procedure, although with a lower boundary on the number of non-improving iterations.
+</p>
+<pre class='prettyprint lang-rb'>
+def euc_2d(c1, c2)
+  Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
+end
+
+def cost(perm, cities)
+  distance =0
+  perm.each_with_index do |c1, i|
+    c2 = (i==perm.size-1) ? perm[0] : perm[i+1]
+    distance += euc_2d(cities[c1], cities[c2])
+  end
+  return distance
+end
+
+def random_permutation(cities)
+  perm = Array.new(cities.size){|i| i}
+  perm.each_index do |i|
+    r = rand(perm.size-i) + i
+    perm[r], perm[i] = perm[i], perm[r]
+  end
+  return perm
+end
+
+def stochastic_two_opt!(perm)
+  c1, c2 = rand(perm.size), rand(perm.size)
+  exclude = [c1]
+  exclude &lt;&lt; ((c1==0) ? perm.size-1 : c1-1)
+  exclude &lt;&lt; ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
+  c1, c2 = c2, c1 if c2 &lt; c1
+  perm[c1...c2] = perm[c1...c2].reverse
+  return perm
+end
+
+def local_search(best, cities, max_no_improv, neighborhood)
+  count = 0
+  begin
+    candidate = {}
+    candidate[:vector] = Array.new(best[:vector])
+    neighborhood.times{stochastic_two_opt!(candidate[:vector])}
+    candidate[:cost] = cost(candidate[:vector], cities)
+    if candidate[:cost] &lt; best[:cost]
+      count, best = 0, candidate
+    else
+      count += 1
+    end
+  end until count &gt;= max_no_improv
+  return best
+end
+
+def search(cities, neighborhoods, max_no_improv, max_no_improv_ls)
+  best = {}
+  best[:vector] = random_permutation(cities)
+  best[:cost] = cost(best[:vector], cities)
+  iter, count = 0, 0
+  begin
+    neighborhoods.each do |neigh|
+      candidate = {}
+      candidate[:vector] = Array.new(best[:vector])
+      neigh.times{stochastic_two_opt!(candidate[:vector])}
+      candidate[:cost] = cost(candidate[:vector], cities)
+      candidate = local_search(candidate, cities, max_no_improv_ls, neigh)
+      puts " &gt; iteration #{(iter+1)}, neigh=#{neigh}, best=#{best[:cost]}"
+      iter += 1
+      if(candidate[:cost] &lt; best[:cost])
+        best, count = candidate, 0
+        puts "New best, restarting neighborhood search."
+        break
+      else
+        count += 1
+      end
+    end
+  end until count &gt;= max_no_improv
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  berlin52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
+   [880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
+   [1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
+   [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
+   [835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
+   [410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+   [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
+   [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
+   [830,610],[605,625],[595,360],[1340,725],[1740,245]]
+  # algorithm configuration
+  max_no_improv = 50
+  max_no_improv_ls = 70
+  neighborhoods = 1...20
+  # execute the algorithm
+  best = search(berlin52, neighborhoods, max_no_improv, max_no_improv_ls)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='variable_neighborhood_search.rb'>Download Source</a></div>
+<div class='caption'>Variable Neighborhood Search in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The seminal paper for describing Variable Neighborhood Search was by Mladenovic and Hansen in 1997  [<a href='#Mladenovic1997'>Mladenovic1997</a>], although an early abstract by Mladenovic is sometimes cited  [<a href='#Mladenovic1995'>Mladenovic1995</a>].
+The approach is explained in terms of three different variations on the general theme. Variable Neighborhood Descent (VND) refers to the use of a Local Search procedure and the deterministic (as opposed to stochastic or probabilistic) change of neighborhood size. Reduced Variable Neighborhood Search (RVNS) involves performing a stochastic random search within a neighborhood and no refinement via a local search technique. Basic Variable Neighborhood Search is the canonical approach described by Mladenovic and Hansen in the seminal paper.
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+There are a large number of papers published on Variable Neighborhood Search, its applications and variations.
+Hansen and Mladenovic provide an overview of the approach that includes its recent history, extensions and a detailed review of the numerous areas of application  [<a href='#Hansen2003'>Hansen2003</a>].
+For some additional useful overviews of the technique, its principles, and applications, see  [<a href='#Hansen1998'>Hansen1998</a>] [<a href='#Hansen2001a'>Hansen2001a</a>] [<a href='#Hansen2002'>Hansen2002</a>].
+</p>
+<p>
+There are many extensions to Variable Neighborhood Search. Some popular examples include: Variable Neighborhood Decomposition Search (VNDS) that involves embedding a second heuristic or metaheuristic approach in VNS to replace the Local Search procedure  [<a href='#Hansen2001'>Hansen2001</a>], Skewed Variable Neighborhood Search (SVNS) that encourages exploration of neighborhoods far away from discovered local optima, and Parallel Variable Neighborhood Search (PVNS) that either parallelizes the local search of a neighborhood or parallelizes the searching of the neighborhoods themselves.
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Hansen1998'>[Hansen1998]</a></td>
+ <td>P. Hansen and N. Mladenovi&#263;, "<a href="http://scholar.google.com.au/scholar?q=An+introduction+to+Variable+neighborhood+search">An introduction to Variable neighborhood search</a>", in Meta-heuristics, Advances and trends in local search paradigms for 	optimization, pages 433&ndash;458, Kluwer Academic Publishers, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hansen2001'>[Hansen2001]</a></td>
+ <td>P. Hansen and N. Mladenovi&#263; and D. Perez&ndash;Britos, "<a href="http://scholar.google.com.au/scholar?q=Variable+Neighborhood+Decomposition+Search">Variable Neighborhood Decomposition Search</a>", Journal of Heuristics, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hansen2001a'>[Hansen2001a]</a></td>
+ <td>P. Hansen and N. Mladenovi&#263;, "<a href="http://scholar.google.com.au/scholar?q=Variable+neighborhood+search:+Principles+and+applications">Variable neighborhood search: Principles and applications</a>", European Journal of Operational Research, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hansen2002'>[Hansen2002]</a></td>
+ <td>P. Hansen and N. Mladenovi&#263;, "<a href="http://scholar.google.com.au/scholar?q=Variable+neighbourhood+search">Variable neighbourhood search</a>", in Handbook of Applied Optimization, pages 221&ndash;234, Oxford University Press, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hansen2003'>[Hansen2003]</a></td>
+ <td>P. Hansen and N. Mladenovi&#263;, "<a href="http://scholar.google.com.au/scholar?q=6:+Variable+Neighborhood+Search">6: Variable Neighborhood Search</a>", in Handbook of Metaheuristics, pages 145&ndash;184, Springer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Mladenovic1995'>[Mladenovic1995]</a></td>
+ <td>N. Mladenovi&#263;, "<a href="http://scholar.google.com.au/scholar?q=A+variable+neighborhood+algorithm+-+A+new+metaheuristic+for+combinatorial++optimization">A variable neighborhood algorithm - A new metaheuristic for combinatorial 	optimization</a>", in Abstracts of papers presented at Optimization Days, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Mladenovic1997'>[Mladenovic1997]</a></td>
+ <td>N. Mladenovi&#263; and P. Hansen, "<a href="http://scholar.google.com.au/scholar?q=Variable+neighborhood+search">Variable neighborhood search</a>", Computers &amp; Operations Research, 1997.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

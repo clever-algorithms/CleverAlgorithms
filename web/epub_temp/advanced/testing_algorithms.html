@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='testing_algorithms'><h1>Testing Algorithms</h1></a>
+<p>
+This section provides an introduction to software testing and the testing of Artificial Intelligence algorithms.  introduces software testing and focuses on a type of testing relevant to algorithms called unit testing.  provides a specific example of an algorithm and a prepared suite of unit tests, and  provides some rules-of-thumb for testing algorithms in general.
+</p>
+
+<a id='software_testing'><h2>Software Testing</h2></a>
+<p>
+Software testing in the field of Software Engineering is a process in the life-cycle of a software project that verifies that the product or service meets quality expectations and validates that software meets the requirements specification. Software testing is intended to locate defects in a program, although a given testing method cannot guarantee to locate all defects. As such, it is common for an application to be subjected to a range of testing methodologies throughout the software life-cycle, such as unit testing during development, integration testing once modules and systems are completed, and user acceptance testing to allow the stakeholders to determine if their needs have been met.
+</p>
+<p>
+Unit testing is a type of software testing that involves the preparation of well-defined procedural tests of discrete functionality of a program that provide confidence that a module or function behaves as intended. Unit tests are referred to as 'white-box' tests (contrasted to 'black-box' tests) because they are written with full knowledge of the internal structure of the functions and modules under tests. Unit tests are typically prepared by the developer that wrote the code under test and are commonly automated, themselves written as small programmers that are executed by a unit testing framework (such as JUnit for Java or the Test framework in Ruby). The objective is not to test each path of execution within a unit (called complete-test or complete-code coverage), but instead to focus tests on areas of risk, uncertainty, or criticality. Each test focuses on one aspect of the code (test one thing) and are commonly organized into test suites of commonality.
+</p>
+<p>
+Some of the benefits of unit testing include:
+</p>
+<ul>
+<li> <em>Documentation</em>: The preparation of a suite of tests for a given system provide a type of programming documentation highlighting the expected behavior of functions and modules and providing examples of how to interact with key components.</li>
+<li> <em>Readability</em>: Unit testing encourages a programming style of small modules, clear input and output and fewer inter-component dependencies. Code written for easy of testing (testability) may be easier to read and follow.</li>
+<li> <em>Regression</em>: Together, the suite of tests can be executed as a regression-test of the system. The automation of the tests means that any defects caused by changes to the code can easily be identified. When a defect is found that slipped through, a new test can be written to ensure it will be identified in the future.</li>
+</ul>
+<p>
+Unit tests were traditionally written after the program was completed. A popular alternative is to prepare the tests before the functionality of the application is prepared, called Test-First or Test-Driven Development (TDD). In this method, the tests are written and executed, failing until the application functionality is written to make the test pass. The early preparation of tests allow the programmer to consider the behavior required from the program and the interfaces and functions the program needs to expose before they are written.
+</p>
+<p>
+The concerns of software testing are very relevant to the development, investigation, and application of Metaheuristic and Computational Intelligence algorithms. In particular, the strong culture of empirical investigation and prototype-based development demands a baseline level of trust in the systems that are presented in articles and papers. Trust can be instilled in an algorithm by assessing the quality of the algorithm implementation itself.
+Unit testing is lightweight (requiring only the writing of automated test code) and meets the needs of promoting quality and trust in the code while prototyping and developing algorithms. It is strongly suggested as a step in the process of empirical algorithm research in the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation.
+</p>
+
+
+<a id='unit_testing_example'><h2>Unit Testing Example</h2></a>
+<p>
+This section provides an example of an algorithm and its associated unit tests as an illustration of the presented concepts.
+The implementation of the Genetic Algorithm is discussed from the perspective of algorithm testing and an example set of unit tests for the Genetic Algorithm implementation are presented as a case study.
+</p>
+
+<a id='algorithm'><h3>Algorithm</h3></a>
+<p>
+Listing (below) in  provides the source code for the Genetic Algorithm in the Ruby Programming Language. Important considerations when in using the Ruby test framework, is ensuring that the functions of the algorithm are exposed for testing and that the algorithm demonstration itself does not execute. This is achieved through the use of the (<code>if __FILE__ == $0</code>) condition, which ensures the example only executes when the file is called directly, allowing the functions to be imported and executed independently by a unit test script.
+The algorithm is very modular with its behavior partitioned into small functions, most of which are independently testable.
+</p>
+<p>
+The <code>reproduce</code> function has some dependencies although its orchestration of sub-functions is still testable. The <code>search</code> function is the only monolithic function, which both depends on all other functions in the implementation (directly or indirectly) and hence is difficult to unit test. At best, the <code>search</code> function may be a case for system testing addressing functional requirements, such as &quot;<em>does the algorithm deliver optimized solutions</em>&quot;.
+</p>
+
+
+<a id='unit_tests'><h3>Unit Tests</h3></a>
+<p>
+Listing (below) provides the <code>TC_GeneticAlgorithm</code> class that makes use of the built-in Ruby unit testing framework by extending the <code>TestCase</code> class.
+The listing provides an example of ten unit tests for six of the functions in the Genetic Algorithm implementation. Two types of unit tests are provided:
+</p>
+<ul>
+<li> <em>Deterministic</em>: Directly test the function in question, addressing questions such as: does <code>onemax</code> add correctly? and does <code>point_mutation</code> behave correctly?</li>
+<li> <em>Probabilistic</em>: Test the probabilistic properties of the function in question, addressing questions such as: does <code>random_bitstring</code> provide an expected 50/50 mixture of 1s and 0s over a large number of cases? and does <code>point_mutation</code> make an expected number of changes over a large number of cases?</li>
+</ul>
+<p>
+The tests for probabilistic expectations is a weaker form of unit testing that can be used to either provide additional confidence to deterministically tested functions, or to be used as a last resort when direct methods cannot be used.
+</p>
+<p>
+Given that a unit test should 'test one thing' it is common for a given function to have more than one unit tests. The <code>reproduce</code> function is a good example of this with three tests in the suite. This is because it is a larger function with behavior called in dependent functions which is varied based on parameters.
+</p>
+<pre class='prettyprint lang-rb'>
+require "test/unit"
+require File.expand_path(File.dirname(__FILE__)) + "/../genetic_algorithm"
+
+class TC_GeneticAlgorithm &lt; Test::Unit::TestCase
+
+  # test that the objective function behaves as expected
+  def test_onemax
+    assert_equal(0, onemax("0000"))
+    assert_equal(4, onemax("1111"))
+    assert_equal(2, onemax("1010"))
+  end
+
+  # test the creation of random strings
+  def test_random_bitstring
+    assert_equal(10, random_bitstring(10).size)
+    assert_equal(0, random_bitstring(10).delete('0').delete('1').size)
+  end
+
+  # test the approximate proportion of 1's and 0's
+  def test_random_bitstring_ratio
+    s = random_bitstring(1000)
+    assert_in_delta(0.5, (s.delete('1').size/1000.0), 0.05)
+    assert_in_delta(0.5, (s.delete('0').size/1000.0), 0.05)
+  end
+
+  # test that members of the population are selected
+  def test_binary_tournament
+    pop = Array.new(10) {|i| {:fitness=&gt;i} }
+    10.times {assert(pop.include?(binary_tournament(pop)))}
+  end
+
+  # test point mutations at the limits
+  def test_point_mutation
+    assert_equal("0000000000", point_mutation("0000000000", 0))
+    assert_equal("1111111111", point_mutation("1111111111", 0))
+    assert_equal("1111111111", point_mutation("0000000000", 1))
+    assert_equal("0000000000", point_mutation("1111111111", 1))
+  end
+
+  # test that the observed changes approximate the intended probability
+  def test_point_mutation_ratio
+    changes = 0
+    100.times do
+      s = point_mutation("0000000000", 0.5)
+      changes += (10 - s.delete('1').size)
+    end
+    assert_in_delta(0.5, changes.to_f/(100*10), 0.05)
+  end
+
+  # test cloning with crossover
+  def test_crossover_clone
+    p1, p2 = "0000000000", "1111111111"
+    100.times do
+      s = crossover(p1, p2, 0)
+      assert_equal(p1, s)
+      assert_not_same(p1, s)
+    end
+  end
+
+  # test recombination with crossover
+  def test_crossover_recombine
+    p1, p2 = "0000000000", "1111111111"
+    100.times do
+      s = crossover(p1, p2, 1)
+      assert_equal(p1.size, s.size)
+      assert_not_equal(p1, s)
+      assert_not_equal(p2, s)
+      s.size.times {|i| assert( (p1[i]==s[i]) || (p2[i]==s[i]) ) }
+    end
+  end
+
+  # test odd sized population
+  def test_reproduce_odd
+    pop = Array.new(9) {|i| {:fitness=&gt;i,:bitstring=&gt;"0000000000"} }
+    children = reproduce(pop, pop.size, 0, 1)
+    assert_equal(9, children.size)
+  end
+
+  # test reproduce size mismatch
+  def test_reproduce_mismatch
+    pop = Array.new(10) {|i| {:fitness=&gt;i,:bitstring=&gt;"0000000000"} }
+    children = reproduce(pop, 9, 0, 0)
+    assert_equal(9, children.size)
+  end
+end
+</pre>
+<div class='download_src'><a href='tc_genetic_algorithm.rb'>Download Source</a></div>
+<div class='caption'>Unit Tests for the Genetic Algorithm in Ruby</div>
+
+
+
+<a id='rules-of-thumb'><h2>Rules-of-Thumb</h2></a>
+<p>
+Unit testing is easy, although writing good unit tests is difficult given the complex relationship the tests have with the code under test. Testing Metaheuristics and Computational Intelligence algorithms is harder again given their probabilistic nature and their ability to 'work in spite of you', that is, provide some kind of result even when implemented with defects.
+</p>
+<p>
+The following guidelines may help when unit testing an algorithm:
+</p>
+<ul>
+<li> <em>Start Small</em>: Some unit tests are better than no unit test and each additional test can improve the trust and the quality of the code. For an existing algorithm implementation, start by writing a test for a small and simple behavior and slowly build up a test suite.</li>
+<li> <em>Test one thing</em>: Each test should focus on verifying the behavior of one aspect of one unit of code. Writing concise and behavior-focused unit tests are the objective of the methodology.</li>
+<li> <em>Test once</em>: A behavior or expectation only needs to be tested once, do not repeat a test each time a given unit is tested.</li>
+<li> <em>Don't forget the I/O</em>: Remember to test the inputs and outputs of a unit of code, specifically the pre-conditions and post-conditions. It can be easy to focus on the decision points within a unit and forget its primary purpose.</li>
+<li> <em>Write code for testability</em>: The tests should help to shape the code they test. Write small functions or modules, think about testing while writing code (or write tests first), and refactor code (update code after the fact) to make it easier to test.</li>
+<li> <em>Function independence</em>: Attempt to limit the direct dependence between functions, modules, objects and other constructs. This is related to testability and writing small functions although suggests limits on how much interaction there is between units of code in the algorithm. Less dependence means less side-effects of a given unit of code and ultimately less complicated tests.</li>
+<li> <em>Test Independence</em>: Test should be independent from each other. Frameworks provide hooks to set-up and tear-down state prior to the execution of each test, there should be no needed to have one test prepare data or state for other tests. Tests should be able to execute independently and in any order.</li>
+<li> <em>Test your own code</em>: Avoid writing tests that verify the behavior of framework or library code, such as the randomness of a random number generator or whether a math or string function behaves as expected. Focus on writing test for the manipulation of data performed by the code you have written.</li>
+<li> <em>Probabilistic testing</em>: Metaheuristics and Computational Intelligence algorithms generally make use of stochastic or probabilistic decisions. This means that some behaviors are not deterministic and are more difficult to test. As with the example, write probabilistic tests to verify that such processes behave as intended. Given that probabilistic tests are weaker than deterministic tests, consider writing deterministic tests first. A probabilistic behavior can be made deterministic by replacing the random number generator with a proxy that returns deterministic values, called a mock. This level of testing may require further impact to the original code to allow for dependent modules and objects to be mocked.</li>
+<li> <em>Consider test-first</em>: Writing the tests first can help to crystallize expectations when implementing an algorithm from the literature, and help to solidify thoughts when developing or prototyping a new idea.</li>
+</ul>
+
+
+<a id='references'><h2>References</h2></a>
+<p>
+For more information on software testing, consult a good book on software engineering. Two good books dedicated to testing are &quot;<em>Beautiful Testing: Leading Professionals Reveal How They Improve Software</em>&quot; that provides a compendium of best practices from professional programers and testers  [<a href='#Goucher2009'>Goucher2009</a>], and &quot;<em>Software testing</em>&quot; by Patton that provides a more traditional treatment  [<a href='#Patton2005'>Patton2005</a>].
+</p>
+<p>
+Unit testing is covered in good books on software engineering or software testing.
+Two good books that focus on unit testing include &quot;<em>Test Driven Development: By Example</em>&quot; on the TDD methodology by Beck, a pioneer of Extreme Programming and Test Drive Development  [<a href='#Beck2002'>Beck2002</a>] and &quot;<em>Pragmatic unit testing in Java with JUnit</em>&quot; by Hunt and Thomas  [<a href='#Hunt2003'>Hunt2003</a>].
+</p>
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Beck2002'>[Beck2002]</a></td>
+ <td>K. Beck, "<a href="http://scholar.google.com.au/scholar?q=Test+Driven+Development:+By+Example">Test Driven Development: By Example</a>", Addison-Wesley Professional, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goucher2009'>[Goucher2009]</a></td>
+ <td>A. Goucher and T. Riley (editors), "<a href="http://scholar.google.com.au/scholar?q=Beautiful+Testing:+Leading+Professionals+Reveal+How+They+Improve++Software">Beautiful Testing: Leading Professionals Reveal How They Improve 	Software</a>", O'Reilly Media, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hunt2003'>[Hunt2003]</a></td>
+ <td>A. Hunt and D. Thomas, "<a href="http://scholar.google.com.au/scholar?q=Pragmatic+unit+testing+in+Java+with+JUnit">Pragmatic unit testing in Java with JUnit</a>", Pragmatic Bookshelf, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Patton2005'>[Patton2005]</a></td>
+ <td>R. Patton, "<a href="http://scholar.google.com.au/scholar?q=Software+testing">Software testing</a>", Sams, 2005.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

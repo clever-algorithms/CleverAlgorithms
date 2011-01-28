@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='self-organizing_map'><h1>Self-Organizing Map</h1></a>
+<p>
+<em>Self-Organizing Map, SOM, Self-Organizing Feature Map, SOFM, Kohonen Map, Kohonen Network.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Self-Organizing Map algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly it belongs to the field of Computational Intelligence.
+The Self-Organizing Map is an unsupervised neural network that uses a competitive (winner-take-all) learning strategy.
+It is related to other unsupervised neural networks such as the Adaptive Resonance Theory (ART) method.
+It is related to other competitive learning neural networks such as the the Neural Gas Algorithm, and the Learning Vector Quantization algorithm, which is a similar algorithm for classification without connections between the neurons.
+Additionally, SOM is a baseline technique that has inspired many variations and extensions, not limited to the Adaptive-Subspace Self-Organizing Map (ASSOM).
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Self-Organizing Map is inspired by postulated feature maps of neurons in the brain comprised of feature-sensitive cells that provide ordered projections between neuronal layers, such as those that may exist in the retina and cochlea. For example, there are acoustic feature maps that respond to sounds to which an animal is most frequently exposed, and tonotopic maps that may be responsible for the order preservation of acoustic resonances.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the algorithm is to optimally place a topology (grid or lattice) of codebook or prototype vectors in the domain of the observed input data samples.
+An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where the most similar vector to a given input pattern is selected, then the selected vector and neighbors of the selected vector are updated to closer resemble the input pattern. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset. The result is the mapping of the topology of codebook vectors to the underlying structure in the input samples which may be summarized or visualized to reveal topologically preserved features from the input space in a low-dimensional projection.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+The Self-Organizing map is comprised of a collection of codebook vectors connected together in a topological arrangement, typically a one dimensional line or a two dimensional grid. The codebook vectors themselves represent prototypes (points) within the domain, whereas the topological structure imposes an ordering between the vectors during the training process. The result is a low dimensional projection or approximation of the problem domain which may be visualized, or from which clusters may be extracted.
+</p>
+<p>
+Algorithm (below) provides a high-level pseudocode for preparing codebook vectors using the Self-Organizing Map method.
+Codebook vectors are initialized to small floating point values, or sampled from the domain. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
+</p>
+$dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2$
+<p>
+where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given codebook vector.
+</p>
+<p>
+The neighbors of the BMU in the topological structure of the network are selected using a neighborhood size that is linearly decreased during the training of the network. The BMU and all selected neighbors are then adjusted toward the input vector using a learning rate that too is decreased linearly with the training cycles:
+</p>
+$c_i(t+1) = learn_{rate}(t) \times (c_i(t) - x_i)$
+<p>
+where $c_i(t)$ is the $i^{th}$ attribute of a codebook vector at time $t$, $learn_{rate}$ is the current learning rate, an $x_i$ is the $i^{th}$ attribute of a input vector.
+</p>
+<p>
+The neighborhood is typically square (called bubble) where all neighborhood nodes are updated using the same learning rate for the iteration, or Gaussian where the learning rate is proportional to the neighborhood distance using a Gaussian distribution (neighbors further away from the BMU are updated less).
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>InputPatterns</code>, $iterations_{max}$, $learn_{rate}^{init}$, $neighborhood_{size}^{init}$, $Grid_{width}$, $Grid_{height}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+<code>CodebookVectors</code>
+<br />
+<code>CodebookVectors</code> $\leftarrow$ <code>InitializeCodebookVectors</code>($Grid_{width}$, $Grid_{height}$, <code>InputPatterns</code>)<br />
+<strong><code>For</code></strong> ($i=1$ <strong><code>To</code></strong> $iterations_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$learn_{rate}^{i}$ $\leftarrow$ <code>CalculateLearningRate</code>($i$, $learn_{rate}^{init}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$neighborhood_{size}^{i}$ $\leftarrow$ <code>CalculateNeighborhoodSize</code>($i$, $neighborhood_{size}^{init}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Pattern_i$ $\leftarrow$ <code>SelectInputPattern</code>(<code>InputPatterns</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Bmu_i$ $\leftarrow$ <code>SelectBestMatchingUnit</code>($Pattern_i$, <code>CodebookVectors</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Neighborhood</code> $\leftarrow$ $Bmu_i$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Neighborhood</code> $\leftarrow$ <code>SelectNeighbors</code>($Bmu_i$, <code>CodebookVectors</code>, $neighborhood_{size}^{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Vector_i$ $\in $<code>Neighborhood</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Vector_{i}^{attribute}$ $\in$ $Vector_i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Vector_{i}^{attribute}$ $\leftarrow$ $Vector_{i}^{attribute}$ + $learn_{rate}^{i}$ $\times$ ($Pattern_{i}^{attribute}$ &ndash; $Vector_{i}^{attribute}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> (<code>CodebookVectors</code>)<br />
+</div>
+<div class='caption'>Pseudocode for the SOM.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The Self-Organizing Map was designed for unsupervised learning problems such as feature extraction, visualization and clustering. Some extensions of the approach can label the prepared codebook vectors which can be used for classification.</li>
+<li> SOM is non-parametric, meaning that it does not rely on assumptions about that structure of the function that it is approximating.</li>
+<li> Real-values in input vectors should be normalized such that $x \in [0,1)$.</li>
+<li> Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.</li>
+<li> There should be sufficient training iterations to expose all the training data to the model multiple times.</li>
+<li> The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.</li>
+<li> Multiple passes of the SOM training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10-times more iterations).</li>
+<li> The SOM can be visualized by calculating a Unified Distance Matrix (U-Matrix) shows highlights the relationships between the nodes in the chosen topology. A Principle Component Analysis (PCA) or Sammon's Mapping can be used to visualize just the nodes of the network without their inter-relationships.</li>
+<li> A rectangular 2D grid topology is typically used for a SOM, although toroidal and sphere topologies can be used. Hexagonal grids have demonstrated better results on some problems and grids with higher dimensions have been investigated.</li>
+<li> The neuron positions can be updated incrementally or in a batch model (each epoch of being exposed to all training samples). Batch-mode training is generally expected to result in a more stable network.</li>
+<li> The learning rate and neighborhood size parameters typically decrease linearly with the training iterations, although non-linear functions may be used.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Self-Organizing Map algorithm implemented in the Ruby Programming Language.
+The problem is a feature detection problem, where the network is expected to learn a predefined shape based on being exposed to samples in the domain. The domain is two-dimensional $x,y \in [0,1]$, where a shape is pre-defined as a square in the middle of the domain $x,y \in [0.3,0.6]$. The system is initialized to vectors within the domain although is only exposed to samples within the pre-defined shape during training. The expectation is that the system will model the shape based on the observed samples.
+</p>
+<p>
+The algorithm is an implementation of the basic Self-Organizing Map algorithm based on the description in Chapter 3 of the seminal book on the technique  [<a href='#Kohonen1995'>Kohonen1995</a>]. The implementation is configured with a $4 \times 5$ grid of nodes, the Euclidean distance measure is used to determine the BMU and neighbors, a Bubble neighborhood function is used. Error rates are presented to the console, and the codebook vectors themselves are described before and after training. The learning process is incremental rather than batch, for simplicity.
+</p>
+<p>
+An extension to this implementation would be to visualize the resulting network structure in the domain - shrinking from a mesh that covers the whole domain, down to a mesh that only covers the pre-defined shape within the domain.
+</p>
+<pre class='prettyprint lang-rb'>
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
+  end
+end
+
+def initialize_vectors(domain, width, height)
+  codebook_vectors = []
+  width.times do |x|
+    height.times do |y|
+      codebook = {}
+      codebook[:vector] = random_vector(domain)
+      codebook[:coord] = [x,y]
+      codebook_vectors &lt;&lt; codebook
+    end
+  end
+  return codebook_vectors
+end
+
+def euclidean_distance(c1, c2)
+  sum = 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
+  return Math.sqrt(sum)
+end
+
+def get_best_matching_unit(codebook_vectors, pattern)
+  best, b_dist = nil, nil
+  codebook_vectors.each do |codebook|
+    dist = euclidean_distance(codebook[:vector], pattern)
+    best,b_dist = codebook,dist if b_dist.nil? or dist&lt;b_dist
+  end
+  return [best, b_dist]
+end
+
+def get_vectors_in_neighborhood(bmu, codebook_vectors, neigh_size)
+  neighborhood = []
+  codebook_vectors.each do |other|
+    if euclidean_distance(bmu[:coord], other[:coord]) &lt;= neigh_size
+      neighborhood &lt;&lt; other
+    end
+  end
+  return neighborhood
+end
+
+def update_codebook_vector(codebook, pattern, lrate)
+  codebook[:vector].each_with_index do |v,i|
+    error = pattern[i]-codebook[:vector][i]
+    codebook[:vector][i] += lrate * error
+  end
+end
+
+def train_network(vectors, shape, iterations, l_rate, neighborhood_size)
+  iterations.times do |iter|
+    pattern = random_vector(shape)
+    lrate = l_rate * (1.0-(iter.to_f/iterations.to_f))
+    neigh_size = neighborhood_size * (1.0-(iter.to_f/iterations.to_f))
+    bmu,dist = get_best_matching_unit(vectors, pattern)
+    neighbors = get_vectors_in_neighborhood(bmu, vectors, neigh_size)
+    neighbors.each do |node|
+      update_codebook_vector(node, pattern, lrate)
+    end
+    puts "&gt;training: neighbors=#{neighbors.size}, bmu_dist=#{dist}"
+  end
+end
+
+def summarize_vectors(vectors)
+  minmax = Array.new(vectors.first[:vector].size){[1,0]}
+  vectors.each do |c|
+    c[:vector].each_with_index do |v,i|
+      minmax[i][0] = v if v&lt;minmax[i][0]
+      minmax[i][1] = v if v&gt;minmax[i][1]
+    end
+  end
+  s = ""
+  minmax.each_with_index {|bounds,i| s &lt;&lt; "#{i}=#{bounds.inspect} "}
+  puts "Vector details: #{s}"
+  return minmax
+end
+
+def test_network(codebook_vectors, shape, num_trials=100)
+  error = 0.0
+  num_trials.times do
+    pattern = random_vector(shape)
+    bmu,dist = get_best_matching_unit(codebook_vectors, pattern)
+    error += dist
+  end
+  error /= num_trials.to_f
+  puts "Finished, average error=#{error}"
+  return error
+end
+
+def execute(domain, shape, iterations, l_rate, neigh_size, width, height)
+  vectors = initialize_vectors(domain, width, height)
+  summarize_vectors(vectors)
+  train_network(vectors, shape, iterations, l_rate, neigh_size)
+  test_network(vectors, shape)
+  summarize_vectors(vectors)
+  return vectors
+end
+
+if __FILE__ == $0
+  # problem configuration
+  domain = [[0.0,1.0],[0.0,1.0]]
+  shape = [[0.3,0.6],[0.3,0.6]]
+  # algorithm configuration
+  iterations = 100
+  l_rate = 0.3
+  neigh_size = 5
+  width, height = 4, 5
+  # execute the algorithm
+  execute(domain, shape, iterations, l_rate, neigh_size, width, height)
+end
+</pre>
+<div class='download_src'><a href='som.rb'>Download Source</a></div>
+<div class='caption'>Self-Organizing Map in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Self-Organizing Map was proposed by Kohonen in 1982 in a study that included the mathematical basis for the approach, summary of related physiology, and simulation on demonstration problem domains using one and two dimensional topological structures  [<a href='#Kohonen1982'>Kohonen1982</a>].
+This work was tightly related two other papers published at close to the same time on topological maps and self-organization  [<a href='#Kohonen1981'>Kohonen1981</a>] [<a href='#Kohonen1982b'>Kohonen1982b</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Kohonen provides a detailed introduction and summary of the Self-Organizing Map in a journal article  [<a href='#Kohonen1990a'>Kohonen1990a</a>].
+Kohonen et al. provide a practical presentation of the algorithm and heuristics for configuration in the technical report written to accompany the released SOM-PAK implementation of the algorithm for academic research  [<a href='#Kohonen1996a'>Kohonen1996a</a>].
+The seminal book on the technique is &quot;Self-Organizing Maps&quot; by Kohonen, which includes chapters dedicated to the description of the basic approach, physiological interpretations of the algorithm, variations, and summaries of application areas  [<a href='#Kohonen1995'>Kohonen1995</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Kohonen1981'>[Kohonen1981]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Automatic+formation+of+topological+maps+of+patterns+in+a+self-organizing++system">Automatic formation of topological maps of patterns in a self-organizing 	system</a>", in Proceedings of 2nd Scandinavian Conf. on Image Analysis, 1981.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1982'>[Kohonen1982]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Self-organized+formation+of+topologically+correct+feature+maps">Self-organized formation of topologically correct feature maps</a>", Biological Cybernetics, 1982.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1982b'>[Kohonen1982b]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Clustering,+Taxonomy,+and+Topological+Maps+of+Patterns">Clustering, Taxonomy, and Topological Maps of Patterns</a>", in International Conference on Pattern Recognition, 1982.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1990a'>[Kohonen1990a]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=The+self-organizing+map">The self-organizing map</a>", Proceedings of the IEEE, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1995'>[Kohonen1995]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Self-Organizing+Maps">Self-Organizing Maps</a>", Springer, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1996a'>[Kohonen1996a]</a></td>
+ <td>T. Kohonen and J. Hynninen and J. Kangas and J. Laaksonen, "<a href="http://scholar.google.com.au/scholar?q=SOM&ndash;PAK:+The+Self-Organizing+Map+Program+Package">SOM&ndash;PAK: The Self-Organizing Map Program Package</a>", Technical Report A31, Helsinki University of Technology, Laboratory of Computer and Information 	Science, 1996.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

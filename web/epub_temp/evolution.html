@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='evolutionary_algorithms'><h1>Evolutionary Algorithms</h1></a>
+
+<a id='overview'><h2>Overview</h2></a>
+<p>
+This chapter describes Evolutionary Algorithms.
+</p>
+
+<a id='evolution'><h3>Evolution</h3></a>
+<p>
+Evolutionary Algorithms belong to the Evolutionary Computation field of study concerned with computational methods inspired by the process and mechanisms of biological evolution.
+The process of evolution by means of natural selection (descent with modification) was proposed by Darwin to account for the variety of life and its suitability (adaptive fit) for its environment. The mechanisms of evolution describe how evolution actually takes place through the modification and propagation of genetic material (proteins).
+Evolutionary Algorithms are concerned with investigating computational systems that resemble simplified versions of the processes and mechanisms of evolution toward achieving the effects of these processes and mechanisms, namely the development of adaptive systems.
+Additional subject areas that fall within the realm of Evolutionary Computation are algorithms that seek to exploit the properties from the related fields of Population Genetics, Population Ecology, Coevolutionary Biology, and Developmental Biology.
+</p>
+
+
+<a id='references'><h3>References</h3></a>
+<p>
+Evolutionary Algorithms share properties of adaptation through an iterative process that accumulates and amplifies beneficial variation through trial and error. Candidate solutions represent members of a virtual population striving to survive in an environment defined by a problem specific objective function. In each case, the evolutionary process refines the adaptive fit of the population of candidate solutions in the environment, typically using surrogates for the mechanisms of evolution such as genetic recombination and mutation.
+</p>
+<p>
+There are many excellent texts on the theory of evolution, although Darwin's original source can be an interesting and surprisingly enjoyable read  [<a href='#Darwin1859'>Darwin1859</a>]. Huxley's book defined the modern synthesis in evolutionary biology that combined Darwin's natural selection with Mendel's genetic mechanisms  [<a href='#Huxley1942'>Huxley1942</a>], although any good textbook on evolution will suffice (such as Futuyma's &quot;<em>Evolution</em>&quot;  [<a href='#Futuyma2009'>Futuyma2009</a>]). Popular science books on evolution are an easy place to start, such as Dawkins' &quot;<em>The Selfish Gene</em>&quot; that presents a gene-centric perspective on evolution  [<a href='#Dawkins1976'>Dawkins1976</a>], and Dennett's &quot;<em>Darwin's Dangerous Idea</em>&quot; that considers the algorithmic properties of the process  [<a href='#Dennett1995'>Dennett1995</a>].
+</p>
+<p>
+Goldberg's classic text is still a valuable resource for the Genetic Algorithm  [<a href='#Goldberg1989'>Goldberg1989</a>], and Holland's text is interesting for those looking to learn about the research into adaptive systems that became the Genetic Algorithm  [<a href='#Holland1975'>Holland1975</a>]. Additionally, the seminal work by Koza should be considered for those interested in Genetic Programming  [<a href='#Koza1992'>Koza1992</a>], and Schwefel's seminal work should be considered for those with an interest in Evolution Strategies  [<a href='#Schwefel1981'>Schwefel1981</a>]. For an in-depth review of the history of research into the use of simulated evolutionary processed for problem solving, see Fogel  [<a href='#Fogel1998'>Fogel1998</a>]
+For a rounded and modern review of the field of Evolutionary Computation, B&auml;ck, Fogel, and Michalewicz's two volumes of &quot;<em>Evolutionary Computation</em>&quot; are an excellent resource covering the major techniques, theory, and application specific concerns  [<a href='#Baeck2000'>Baeck2000</a>] [<a href='#Baeck2000a'>Baeck2000a</a>].
+For some additional modern books on the unified field of Evolutionary Computation and Evolutionary Algorithms, see De Jong  [<a href='#Jong2006'>Jong2006</a>], a recent edition of Fogel  [<a href='#Fogel1995'>Fogel1995</a>], and Eiben and Smith  [<a href='#Eiben2003'>Eiben2003</a>].
+</p>
+
+
+<a id='extensions'><h3>Extensions</h3></a>
+<p>
+There are many other algorithms and classes of algorithm that were not described from the field of Evolutionary Computation, not limited to:
+</p>
+<ul>
+<li> <strong>Distributed Evolutionary Computation</strong>: that are designed to partition a population across computer networks or computational units such as the Distributed or 'Island Population' Genetic Algorithm  [<a href='#Tanese1989'>Tanese1989</a>] [<a href='#Cantu-Paz2000'>Cantu-Paz2000</a>] and Diffusion Genetic Algorithms (also known as Cellular Genetic Algorithms)  [<a href='#Alba2008'>Alba2008</a>].</li>
+<li> <strong>Niching Genetic Algorithms</strong>: that form groups or sub-populations automatically within a population such as the Deterministic Crowding Genetic Algorithm  [<a href='#Mahfoud1992'>Mahfoud1992</a>] [<a href='#Mahfoud1995'>Mahfoud1995</a>], Restricted Tournament Selection  [<a href='#Harik1994'>Harik1994</a>] [<a href='#Harik1995'>Harik1995</a>], and Fitness Sharing Genetic Algorithm  [<a href='#Goldberg1987'>Goldberg1987</a>] [<a href='#Deb1989'>Deb1989</a>].</li>
+<li> <strong>Evolutionary Multiple Objective Optimization Algorithms</strong>: such as Vector-Evaluated Genetic Algorithm (VEGA)  [<a href='#Schaffer1984'>Schaffer1984</a>], Pareto Archived Evolution Strategy (PAES)  [<a href='#Knowles1999'>Knowles1999</a>] [<a href='#Knowles1999a'>Knowles1999a</a>], and the Niched Pareto Genetic Algorithm (NPGA)  [<a href='#Horn1994'>Horn1994</a>].</li>
+<li> <strong>Classical Techniques</strong>: such as GENITOR  [<a href='#Whitley1989'>Whitley1989</a>], and the CHC Genetic Algorithm  [<a href='#Eshelman1991'>Eshelman1991</a>].</li>
+<li> <strong>Competent Genetic Algorithms</strong>: (so-called  [<a href='#Goldberg2002'>Goldberg2002</a>]) such as the Messy Genetic Algorithm  [<a href='#Goldberg1989a'>Goldberg1989a</a>] [<a href='#Goldberg1990'>Goldberg1990</a>], Fast Messy Genetic Algorithm  [<a href='#Goldberg1993'>Goldberg1993</a>], Gene Expression Messy Genetic Algorithm  [<a href='#Kargupta1996'>Kargupta1996</a>], and the Linkage-Learning Genetic Algorithm  [<a href='#Harik1996'>Harik1996</a>].</li>
+</ul>
+
+
+
+
+<h3>Algorithms</h3>
+<ul>
+<li><a href='evolution/genetic_algorithm.html'>Genetic Algorithm</a></li>
+<li><a href='evolution/genetic_programming.html'>Genetic Programming</a></li>
+<li><a href='evolution/evolution_strategies.html'>Evolution Strategies</a></li>
+<li><a href='evolution/differential_evolution.html'>Differential Evolution</a></li>
+<li><a href='evolution/evolutionary_programming.html'>Evolutionary Programming</a></li>
+<li><a href='evolution/grammatical_evolution.html'>Grammatical Evolution</a></li>
+<li><a href='evolution/gene_expression_programming.html'>Gene Expression Programming</a></li>
+<li><a href='evolution/learning_classifier_system.html'>Learning Classifier System</a></li>
+<li><a href='evolution/nsga.html'>Non-dominated Sorting Genetic Algorithm</a></li>
+<li><a href='evolution/spea.html'>Strength Pareto Evolutionary Algorithm</a></li>
+</ul>
+<h3>Bibliography</h3>
+<table>
+ <tr valign="top">
+ <td><a id='Alba2008'>[Alba2008]</a></td>
+ <td>E. Alba and B. Dorronsoro, "<a href="http://scholar.google.com.au/scholar?q=Cellular+Genetic+Algorithms">Cellular Genetic Algorithms</a>", Springer, 2008.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Baeck2000'>[Baeck2000]</a></td>
+ <td>T. B&auml;ck and D. B. Fogel and Z. Michalewicz (editors), "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Computation+1:+Basic+Algorithms+and+Operators">Evolutionary Computation 1: Basic Algorithms and Operators</a>", IoP, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Baeck2000a'>[Baeck2000a]</a></td>
+ <td>T. B&auml;ck and D. B. Fogel and Z. Michalewicz (editors), "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Computation+2:+Advanced+Algorithms+and+Operations">Evolutionary Computation 2: Advanced Algorithms and Operations</a>", IoP, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cantu-Paz2000'>[Cantu-Paz2000]</a></td>
+ <td>E. Cant&uacute;&ndash;Paz, "<a href="http://scholar.google.com.au/scholar?q=Efficient+and+Accurate+Parallel+Genetic+Algorithms">Efficient and Accurate Parallel Genetic Algorithms</a>", Kluwer Academic Publishers (Springer), 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Darwin1859'>[Darwin1859]</a></td>
+ <td>C. Darwin, "<a href="http://scholar.google.com.au/scholar?q=On+the+Origin+of+Species+by+Means+of+Natural+Selection,+or+the+Preservation++of+Favoured+Races+in+the+Struggle+for+Life">On the Origin of Species by Means of Natural Selection, or the Preservation 	of Favoured Races in the Struggle for Life</a>", John Murray, 1859.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Dawkins1976'>[Dawkins1976]</a></td>
+ <td>R. Dawkins, "<a href="http://scholar.google.com.au/scholar?q=The+selfish+gene">The selfish gene</a>", Oxford University Press, 1976.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Deb1989'>[Deb1989]</a></td>
+ <td>K. Deb and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=An+investigation+of+niche+and+species+formation+in+genetic+function++optimization">An investigation of niche and species formation in genetic function 	optimization</a>", in Proceedings of the Second International Conference on Genetic Algorithms, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Dennett1995'>[Dennett1995]</a></td>
+ <td>D. C. Dennett, "<a href="http://scholar.google.com.au/scholar?q=Darwin's+Dangerous+Idea">Darwin's Dangerous Idea</a>", Simon &amp; Schuster, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Eiben2003'>[Eiben2003]</a></td>
+ <td>A. E. Eiben and J. E. Smith, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+evolutionary+computing">Introduction to evolutionary computing</a>", Springer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Eshelman1991'>[Eshelman1991]</a></td>
+ <td>L. J. Eshelman, "<a href="http://scholar.google.com.au/scholar?q=The+CHC+adaptive+search+algorithm:+How+to+do+safe+search+when+engaging++in+nontraditional+genetic+recombination">The CHC adaptive search algorithm: How to do safe search when engaging 	in nontraditional genetic recombination</a>", in Proceedings Foundations of Genetic Algorithms Conf., 1991.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Fogel1995'>[Fogel1995]</a></td>
+ <td>D. B. Fogel, "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+computation:+Toward+a+new+philosophy+of+machine+intelligence">Evolutionary computation: Toward a new philosophy of machine intelligence</a>", IEEE Press, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Fogel1998'>[Fogel1998]</a></td>
+ <td>D. B. Fogel, "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Computation:+The+Fossil+Record">Evolutionary Computation: The Fossil Record</a>", Wiley-IEEE Press, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Futuyma2009'>[Futuyma2009]</a></td>
+ <td>D. Futuyma, "<a href="http://scholar.google.com.au/scholar?q=Evolution">Evolution</a>", Sinauer Associates Inc., 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1987'>[Goldberg1987]</a></td>
+ <td>D. E. Goldberg and J. Richardson, "<a href="http://scholar.google.com.au/scholar?q=Genetic+algorithms+with+sharing+for+multimodal+function+optimization">Genetic algorithms with sharing for multimodal function optimization</a>", in Proceedings of the 2nd Internaltional Conference on Genetic Algorithms, 1987.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1989'>[Goldberg1989]</a></td>
+ <td>D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Genetic+Algorithms+in+Search,+Optimization,+and+Machine+Learning">Genetic Algorithms in Search, Optimization, and Machine Learning</a>", Addison-Wesley, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1989a'>[Goldberg1989a]</a></td>
+ <td>D. E. Goldberg and B. Korb and K. Deb, "<a href="http://scholar.google.com.au/scholar?q=Messy+genetic+algorithms:+Motivation,+analysis,+and+first+results">Messy genetic algorithms: Motivation, analysis, and first results</a>", Complex Systems, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1990'>[Goldberg1990]</a></td>
+ <td>D. E. Goldberg and K. Deb and B. Korb, "<a href="http://scholar.google.com.au/scholar?q=Messy+genetic+algorithms+revisited:+studies+in+mixed+size+and+scale">Messy genetic algorithms revisited: studies in mixed size and scale</a>", Complex Systems, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1993'>[Goldberg1993]</a></td>
+ <td>D. E. Goldberg and K. Deb and H. Kargupta and G. Harik, "<a href="http://scholar.google.com.au/scholar?q=Rapid,+Accurate+Optimization+of+Difficult+Problems+Using+Fast+Messy++Genetic+Algorithms">Rapid, Accurate Optimization of Difficult Problems Using Fast Messy 	Genetic Algorithms</a>", in Proceedings of the Fifth International Conference on Genetic Algorithms, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg2002'>[Goldberg2002]</a></td>
+ <td>D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=The+design+of+innovation:+Lessons+from+and+for+competent+genetic++algorithms">The design of innovation: Lessons from and for competent genetic 	algorithms</a>", Springer, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Harik1994'>[Harik1994]</a></td>
+ <td>G. Harik, "<a href="http://scholar.google.com.au/scholar?q=Finding+Multiple+Solutions+in+Problems+of+Bounded+Difficulty">Finding Multiple Solutions in Problems of Bounded Difficulty</a>", Technical Report IlliGAL Report No. 94002, University of Illinois at Urbana&ndash;Champaign, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Harik1995'>[Harik1995]</a></td>
+ <td>G. Harik, "<a href="http://scholar.google.com.au/scholar?q=Finding+Multimodal+Solutions+Using+Restricted+Tournament+Selection">Finding Multimodal Solutions Using Restricted Tournament Selection</a>", in Proceedings of the Sixth International Conference on Genetic Algorithms, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Harik1996'>[Harik1996]</a></td>
+ <td>G. R. Harik and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Learning+linkage">Learning linkage</a>", in Foundations of Genetic Algorithms 4, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Holland1975'>[Holland1975]</a></td>
+ <td>J. H. Holland, "<a href="http://scholar.google.com.au/scholar?q=Adaptation+in+natural+and+artificial+systems:+An+introductory+analysis++with+applications+to+biology,+control,+and+artificial+intelligence">Adaptation in natural and artificial systems: An introductory analysis 	with applications to biology, control, and artificial intelligence</a>", University of Michigan Press, 1975.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Horn1994'>[Horn1994]</a></td>
+ <td>J. Horn and N. Nafpliotis and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=A+niched+Pareto+genetic+algorithm+for+multiobjective+optimization">A niched Pareto genetic algorithm for multiobjective optimization</a>", in Proceedings of the First IEEE Conference on Evolutionary Computation, 	IEEE World Congress on Computational Intelligence, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Huxley1942'>[Huxley1942]</a></td>
+ <td>J. Huxley, "<a href="http://scholar.google.com.au/scholar?q=Evolution:+The+Modern+Synthesis">Evolution: The Modern Synthesis</a>", Allen &amp; Unwin, 1942.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Jong2006'>[Jong2006]</a></td>
+ <td>K. A. De Jong, "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+computation:+A+unified+approach">Evolutionary computation: A unified approach</a>", MIT Press, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kargupta1996'>[Kargupta1996]</a></td>
+ <td>H. Kargupta, "<a href="http://scholar.google.com.au/scholar?q=The+gene+expression+messy+genetic+algorithm">The gene expression messy genetic algorithm</a>", in Proceedings of the IEEE International Conference on Evolutionary 	Computation, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Knowles1999'>[Knowles1999]</a></td>
+ <td>J. D. Knowles and D. W. Corne, "<a href="http://scholar.google.com.au/scholar?q=Local+Search,+Multiobjective+Optimization+and+the+Pareto+Archived++Evolution+Strategy">Local Search, Multiobjective Optimization and the Pareto Archived 	Evolution Strategy</a>", in Proceedings of the Third Australia&ndash;Japan Joint Workshop on Intelligent 	and Evolutionary Systems, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Knowles1999a'>[Knowles1999a]</a></td>
+ <td>J. D. Knowles and D. W. Corne, "<a href="http://scholar.google.com.au/scholar?q=The+Pareto+Archived+Evolution+Strategy+:+A+New+Baseline+Algorithm++for+Pareto+Multiobjective+Optimisation">The Pareto Archived Evolution Strategy : A New Baseline Algorithm 	for Pareto Multiobjective Optimisation</a>", in Proceedings of the 1999 Congress on Evolutionary Computation, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Koza1992'>[Koza1992]</a></td>
+ <td>J. R. Koza, "<a href="http://scholar.google.com.au/scholar?q=Genetic+programming:+On+the+programming+of+computers+by+means+of++natural+selection">Genetic programming: On the programming of computers by means of 	natural selection</a>", MIT Press, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Mahfoud1992'>[Mahfoud1992]</a></td>
+ <td>S. W. Mahfoud, "<a href="http://scholar.google.com.au/scholar?q=Crowding+and+Preselection+Revised">Crowding and Preselection Revised</a>", in Parallel Problem Solving from Nature 2, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Mahfoud1995'>[Mahfoud1995]</a></td>
+ <td>S. W. Mahfoud, "<a href="http://scholar.google.com.au/scholar?q=Niching+Methods+for+Genetic+Algorithms">Niching Methods for Genetic Algorithms</a>", [PhD Thesis] University of Illinois at Urbana&ndash;Champaign, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schaffer1984'>[Schaffer1984]</a></td>
+ <td>D. J. Schaffer, "<a href="http://scholar.google.com.au/scholar?q=Some+experiments+in+machine+learning+using+vector+evaluated+genetic++algorithms">Some experiments in machine learning using vector evaluated genetic 	algorithms</a>", [PhD Thesis] Vanderbilt University, Tennessee, 1984.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schwefel1981'>[Schwefel1981]</a></td>
+ <td>H&ndash;P. Schwefel, "<a href="http://scholar.google.com.au/scholar?q=Numerical+Optimization+of+Computer+Models">Numerical Optimization of Computer Models</a>", John Wiley &amp; Sons, 1981.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Tanese1989'>[Tanese1989]</a></td>
+ <td>R. Tanese, "<a href="http://scholar.google.com.au/scholar?q=Distributed+genetic+algorithms">Distributed genetic algorithms</a>", in Proceedings of the third international conference on Genetic algorithms, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Whitley1989'>[Whitley1989]</a></td>
+ <td>D. Whitley, "<a href="http://scholar.google.com.au/scholar?q=The+GENITOR+Algorithm+and+Selective+Pressure:+Why+Rank-Based+Allocation++of+Reproductive+Trials+is+Best">The GENITOR Algorithm and Selective Pressure: Why Rank-Based Allocation 	of Reproductive Trials is Best</a>", in Proceedings of the 3rd International Conference on Genetic Algorithms, 1989.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

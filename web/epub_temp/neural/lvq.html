@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='learning_vector_quantization'><h1>Learning Vector Quantization</h1></a>
+<p>
+<em>Learning Vector Quantization, LVQ.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Learning Vector Quantization algorithm belongs to the field of Artificial Neural Networks and Neural Computation. More broadly to the field of Computational Intelligence.
+The Learning Vector Quantization algorithm is an supervised neural network that uses a competitive (winner-take-all) learning strategy.
+It is related to other supervised neural networks such as the Perceptron and the Back-propagation algorithm.
+It is related to other competitive learning neural networks such as the the Self-Organizing Map algorithm that is a similar algorithm for unsupervised learning with the addition of connections between the neurons.
+Additionally, LVQ is a baseline technique that was defined with a few variants LVQ1, LVQ2, LVQ2.1, LVQ3, OLVQ1, and OLVQ3 as well as many third-party extensions and refinements too numerous to list.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Learning Vector Quantization algorithm is related to the Self-Organizing Map which is in turn inspired by the self-organizing capabilities of neurons in the visual cortex.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the algorithm is to prepare a set of codebook (or prototype) vectors in the domain of the observed input data samples and to use these vectors to classify unseen examples.
+An initially random pool of vectors is prepared which are then exposed to training samples. A winner-take-all strategy is employed where one or more of the most similar vectors to a given input pattern are selected and adjusted to be closer to the input vector, and in some cases, further away from the winner for runners up. The repetition of this process results in the distribution of codebook vectors in the input space which approximate the underlying distribution of samples from the test dataset.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Vector Quantization is a technique from signal processing where density functions are approximated with prototype vectors for applications such as compression. Learning Vector Quantization is similar in principle, although the prototype vectors are learned through a supervised winner-take-all method.
+</p>
+<p>
+Algorithm (below) provides a high-level pseudocode for preparing codebook vectors using the Learning Vector Quantization method.
+Codebook vectors are initialized to small floating point values, or sampled from an available dataset. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
+</p>
+$dist(x,c) = \sum_{i=1}^{n} (x_i - c_i)^2$
+<p>
+where $n$ is the number of attributes, $x$ is the input vector and $c$ is a given codebook vector.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>ProblemSize</code>, <code>InputPatterns</code>, $iterations_{max}$, $CodebookVectors_{num}$, $learn_{rate}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+<code>CodebookVectors</code>
+<br />
+<code>CodebookVectors</code> $\leftarrow$ <code>InitializeCodebookVectors</code>($CodebookVectors_{num}$, <code>ProblemSize</code>)<br />
+<strong><code>For</code></strong> ($i=1$ <strong><code>To</code></strong> $iterations_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Pattern_i$ $\leftarrow$ <code>SelectInputPattern</code>(<code>InputPatterns</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Bmu_i$ $\leftarrow$ <code>SelectBestMatchingUnit</code>($Pattern_i$, <code>CodebookVectors</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Bmu_{i}^{attribute}$ $\in$ $Bmu_i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> ($Bmu_{i}^{class}$ $\equiv$ $Pattern_{i}^{class}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Bmu_{i}^{attribute}$ $\leftarrow$ $Bmu_{i}^{attribute}$ + $learn_{rate}$ $\times$ ($Pattern_{i}^{attribute}$ &ndash; $Bmu_{i}^{attribute}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Else</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Bmu_{i}^{attribute}$ $\leftarrow$ $Bmu_{i}^{attribute}$ &ndash; $learn_{rate}$ $\times$ ($Pattern_{i}^{attribute}$ &ndash; $Bmu_{i}^{attribute}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> (<code>CodebookVectors</code>)<br />
+</div>
+<div class='caption'>Pseudocode for LVQ1.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Learning Vector Quantization was designed for classification problems that have existing data sets that can be used to supervise the learning by the system. The algorithm does not support regression problems.</li>
+<li> LVQ is non-parametric, meaning that it does not rely on assumptions about that structure of the function that it is approximating.</li>
+<li> Real-values in input vectors should be normalized such that $x \in [0,1)$.</li>
+<li> Euclidean distance is commonly used to measure the distance between real-valued vectors, although other distance measures may be used (such as dot product), and data specific distance measures may be required for non-scalar attributes.</li>
+<li> There should be sufficient training iterations to expose all the training data to the model multiple times.</li>
+<li> The learning rate is typically linearly decayed over the training period from an initial value to close to zero.</li>
+<li> The more complex the class distribution, the more codebook vectors that will be required, some problems may need thousands.</li>
+<li> Multiple passes of the LVQ training algorithm are suggested for more robust usage, where the first pass has a large learning rate to prepare the codebook vectors and the second pass has a low learning rate and runs for a long time (perhaps 10-times more iterations).</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Learning Vector Quantization algorithm implemented in the Ruby Programming Language.
+The problem is a contrived classification problem in a 2-dimensional domain $x\in[0,1], y\in[0,1]$ with two classes: 'A' ($x\in[0,0.4999999], y\in[0,0.4999999]$) and 'B' ($x\in[0.5,1], y\in[0.5,1]$).
+</p>
+<p>
+The algorithm was implemented using the LVQ1 variant where the best matching codebook vector is located and moved toward the input vector if it is the same class, or away if the classes differ. A linear decay was used for the learning rate that was updated after each pattern was exposed to the model. The implementation can easily be extended to the other variants of the method.
+</p>
+<pre class='prettyprint lang-rb'>
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
+  end
+end
+
+def generate_random_pattern(domain)
+  classes = domain.keys
+  selected_class = rand(classes.size)
+  pattern = {:label=&gt;classes[selected_class]}
+  pattern[:vector] = random_vector(domain[classes[selected_class]])
+  return pattern
+end
+
+def initialize_vectors(domain, num_vectors)
+  classes = domain.keys
+  codebook_vectors = []
+  num_vectors.times do
+    selected_class = rand(classes.size)
+    codebook = {}
+    codebook[:label] = classes[selected_class]
+    codebook[:vector] = random_vector([[0,1],[0,1]])
+    codebook_vectors &lt;&lt; codebook
+  end
+  return codebook_vectors
+end
+
+def euclidean_distance(c1, c2)
+  sum = 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
+  return Math.sqrt(sum)
+end
+
+def get_best_matching_unit(codebook_vectors, pattern)
+  best, b_dist = nil, nil
+  codebook_vectors.each do |codebook|
+    dist = euclidean_distance(codebook[:vector], pattern[:vector])
+    best,b_dist = codebook,dist if b_dist.nil? or dist&lt;b_dist
+  end
+  return best
+end
+
+def update_codebook_vector(bmu, pattern, lrate)
+  bmu[:vector].each_with_index do |v,i|
+    error = pattern[:vector][i]-bmu[:vector][i]
+    if bmu[:label] == pattern[:label]
+      bmu[:vector][i] += lrate * error
+    else
+      bmu[:vector][i] -= lrate * error
+    end
+  end
+end
+
+def train_network(codebook_vectors, domain, iterations, learning_rate)
+  iterations.times do |iter|
+    pat = generate_random_pattern(domain)
+    bmu = get_best_matching_unit(codebook_vectors, pat)
+    lrate = learning_rate * (1.0-(iter.to_f/iterations.to_f))
+    if iter.modulo(10)==0
+      puts "&gt; iter=#{iter}, got=#{bmu[:label]}, exp=#{pat[:label]}"
+    end
+    update_codebook_vector(bmu, pat, lrate)
+  end
+end
+
+def test_network(codebook_vectors, domain, num_trials=100)
+  correct = 0
+  num_trials.times do
+    pattern = generate_random_pattern(domain)
+    bmu = get_best_matching_unit(codebook_vectors, pattern)
+    correct += 1 if bmu[:label] == pattern[:label]
+  end
+  puts "Done. Score: #{correct}/#{num_trials}"
+  return correct
+end
+
+def execute(domain, iterations, num_vectors, learning_rate)
+  codebook_vectors = initialize_vectors(domain, num_vectors)
+  train_network(codebook_vectors, domain, iterations, learning_rate)
+  test_network(codebook_vectors, domain)
+  return codebook_vectors
+end
+
+if __FILE__ == $0
+  # problem configuration
+  domain = {"A"=&gt;[[0,0.4999999],[0,0.4999999]],"B"=&gt;[[0.5,1],[0.5,1]]}
+  # algorithm configuration
+  learning_rate = 0.3
+  iterations = 1000
+  num_vectors = 20
+  # execute the algorithm
+  execute(domain, iterations, num_vectors, learning_rate)
+end
+</pre>
+<div class='download_src'><a href='lvq.rb'>Download Source</a></div>
+<div class='caption'>Learning Vector Quantization in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Learning Vector Quantization algorithm was described by Kohonen in 1988  [<a href='#Kohonen1988'>Kohonen1988</a>], and was further described in the same year by Kohonen  [<a href='#Kohonen1988a'>Kohonen1988a</a>] and benchmarked by Kohonen, Barna, and Chrisley  [<a href='#Kohonen1988b'>Kohonen1988b</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Kohonen provides a detailed overview of the state of LVQ algorithms and variants (LVQ1, LVQ2, and LVQ2.1)  [<a href='#Kohonen1990'>Kohonen1990</a>]. The technical report that comes with the LVQ_PAK software (written by Kohonen and his students) provides both an excellent summary of the technique and its main variants, as well as summarizing the important considerations when applying the approach  [<a href='#Kohonen1996'>Kohonen1996</a>].
+The seminal book on Learning Vector Quantization and the Self-Organizing Map is &quot;Self-Organizing Maps&quot; by Kohonen, which includes a chapter (Chapter 6) dedicated to LVQ and its variants  [<a href='#Kohonen1995'>Kohonen1995</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Kohonen1988'>[Kohonen1988]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Learning+Vector+Quantization">Learning Vector Quantization</a>", Neural Networks, 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1988a'>[Kohonen1988a]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=An+introduction+to+neural+computing">An introduction to neural computing</a>", Neural Networks, 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1988b'>[Kohonen1988b]</a></td>
+ <td>T. Kohonen and G. Barna and R. Chrisley, "<a href="http://scholar.google.com.au/scholar?q=Statistical+pattern+recognition+with+neural+networks:+benchmarking++studies">Statistical pattern recognition with neural networks: benchmarking 	studies</a>", in IEEE International Conference on Neural Networks, 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1990'>[Kohonen1990]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Improved+versions+of+learning+vector+quantization">Improved versions of learning vector quantization</a>", in IJCNN International Joint Conference on Neural Networks, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1995'>[Kohonen1995]</a></td>
+ <td>T. Kohonen, "<a href="http://scholar.google.com.au/scholar?q=Self-Organizing+Maps">Self-Organizing Maps</a>", Springer, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kohonen1996'>[Kohonen1996]</a></td>
+ <td>T. Kohonen and J. Hynninen and J. Kangas and J. Laaksonen and K. Torkkola, "<a href="http://scholar.google.com.au/scholar?q=LVQ&ndash;PAK:+The+Learning+Vector+Quantization+Program+Package">LVQ&ndash;PAK: The Learning Vector Quantization Program Package</a>", Technical Report A30, Helsinki University of Technology, Laboratory of Computer and Information 	Science, Rakentajanaukio, 1996.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

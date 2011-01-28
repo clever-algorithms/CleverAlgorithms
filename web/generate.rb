@@ -638,7 +638,7 @@ def prepare_bibliography(data, bib)
   s = ""
   add_line(s, "<table>")
   citations.each do |c|
-    add_line(s, " <tr valign=top>")
+    add_line(s, " <tr valign=\"top\">")
       add_line(s, " <td><a name='#{c}'>[#{c}]</a></td>")
       entry = generate_bib_entry(hash[c])
       add_line(s, " <td>#{entry}</td>")
@@ -661,7 +661,7 @@ def process_table(lines)
     next if starts_with?(line, "\\midrule")
     
     if starts_with?(line.strip, "\\caption")
-      add_line(s, "<caption align=bottom>#{get_data_in_brackets(line)}</caption>")
+      add_line(s, "<caption align=\"bottom\">#{get_data_in_brackets(line)}</caption>")
     else
       lines = line.gsub("\\\\", "") # remove \\ on the end
       add_line(s, "<tr>")

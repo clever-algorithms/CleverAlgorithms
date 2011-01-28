@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='immune_algorithms'><h1>Immune Algorithms</h1></a>
+
+<a id='overview'><h2>Overview</h2></a>
+<p>
+This chapter describes Immune Algorithms.
+</p>
+
+<a id='immune_system'><h3>Immune System</h3></a>
+<p>
+Immune Algorithms belong to the Artificial Immune Systems field of study concerned with computational methods inspired by the process and mechanisms of the biological immune system.
+</p>
+<p>
+A simplified description of the immune system is an organ system intended to protect the host organism from the threats posed to it from pathogens and toxic substances. Pathogens encompass a range of micro-organisms such as bacteria, viruses, parasites and pollen. The traditional perspective regarding the role of the immune system is divided into two primary tasks: the <em>detection</em> and <em>elimination</em> of pathogen. This behavior is typically referred to as the differentiation of self (molecules and cells that belong to the host organisms) from potentially harmful non-self. More recent perspectives on the role of the system include a maintenance system  [<a href='#Cohen2001a'>Cohen2001a</a>], and a cognitive system  [<a href='#Varela1994'>Varela1994</a>].
+</p>
+<p>
+The architecture of the immune system is such that a series of defensive layers protect the host. Once a pathogen makes it inside the host, it must contend with the <em>innate</em> and <em>acquired</em> immune system. These interrelated immunological sub-systems are comprised of many types of cells  and molecules produced by specialized organs and processes to address the self-nonself problem at the lowest level using chemical bonding, where the surfaces of cells and molecules interact with the surfaces of pathogen.
+</p>
+<p>
+The adaptive immune system, also referred to as the acquired immune system, is named such because it is responsible for specializing a defense for the host organism based on the <em>specific</em> pathogen to which it is exposed. Unlike the innate immune system, the acquired immune system is present only in vertebrates (animals with a spinal column). The system retains a <em>memory</em> of exposures which it has encountered. This memory is <em>recalled</em> on reinfection exhibiting a <em>learned</em> pathogen identification. This learning process may be divided into two types of response. The first or <em>primary response</em> occurs when the system encounters a novel pathogen. The system is slow to respond, potentially taking a number of weeks to clear the infection. On re-encountering the same pathogen again, the system exhibits a <em>secondary response</em>, applying what was learned in the primary response and clearing up the infection rapidly. The <em>memory</em> the system acquires in the primary response is typically long lasting, providing pathogenic immunity for the lifetime of the host, two common examples of which are the chickenpox and measles. White blood cells called lymphocytes (or leukocytes) are the most important cell in the acquired immune system. Lymphocytes are involved in both the identification and elimination of pathogen, and recirculate within the host organisms body in the blood and lymph (the fluid that permeates tissue).
+</p>
+
+
+<a id='artificial_immune_systems'><h3>Artificial Immune Systems</h3></a>
+<p>
+Artificial Immune Systems (AIS) is a sub-field of Computational Intelligence motivated by immunology (primarily mammalian immunology) that emerged in the early 1990s (for example  [<a href='#Bersini1990'>Bersini1990</a>] [<a href='#Ishida1990'>Ishida1990</a>]), based on the proposal in the late 1980s to apply theoretical immunological models to machine learning and automated problem solving (such as  [<a href='#Hoffmann1986'>Hoffmann1986</a>] [<a href='#Farmer1986'>Farmer1986</a>]). The early works in the field were inspired by exotic theoretical models (immune network theory) and were applied to machine learning, control and optimization problems. The approaches were reminiscent of paradigms such as Artificial Neural Networks, Genetic Algorithms, Reinforcement Learning, and Learning Classifier Systems. The most formative works in giving the field an identity were those that proposed the immune system as an analogy for information protection systems in the field of computer security. The classical examples include Forrest et al.'s Computer Immunity  [<a href='#Forrest1994'>Forrest1994</a>] [<a href='#Forrest1997a'>Forrest1997a</a>] and Kephart's Immune Anti-Virus  [<a href='#Kephart1994'>Kephart1994</a>] [<a href='#Kephart1995'>Kephart1995</a>]. These works were formative for the field because they provided an intuitive application domain that captivated a broader audience and assisted in differentiating the work as an independent sub-field.
+</p>
+<p>
+Modern Artificial Immune systems are inspired by one of three sub-fields: clonal selection, negative selection and immune network algorithms. The techniques are commonly used for clustering, pattern recognition, classification, optimization, and other similar machine learning problem domains.
+</p>
+<p>
+The seminal reference for those interested in the field is the text book by de Castro and Timmis &quot;<em>Artificial Immune Systems: A New Computational Intelligence Approach</em>&quot;  [<a href='#Castro2002'>Castro2002</a>]. This reference text provides an introduction to immunology with a level of detail appropriate for a computer scientist, followed by a summary of the state of the art, algorithms, application areas, and case studies.
+</p>
+
+
+<a id='extensions'><h3>Extensions</h3></a>
+<p>
+There are many other algorithms and classes of algorithm that were not described from the field of Artificial Immune Systems, not limited to:
+</p>
+<ul>
+<li> <strong>Clonal Selection Algorithms</strong>: such as the B-Cell Algorithm  [<a href='#Kelsey2003'>Kelsey2003</a>], the Multi-objective Immune System Algorithm (MSIRA)  [<a href='#Coello2002'>Coello2002</a>] [<a href='#Cortes2003'>Cortes2003</a>] and the the Optimization Immune Algorithm (opt-IA, opt-IMMALG)  [<a href='#Cutello2002a'>Cutello2002a</a>] [<a href='#Cutello2002'>Cutello2002</a>] and the Simple Immunological Algorithm  [<a href='#Cutello2005b'>Cutello2005b</a>].</li>
+<li> <strong>Immune Network Algorithms</strong>: such as the approach by Timmis used for clustering called the Artificial Immune Network (AIN)  [<a href='#Timmis2000'>Timmis2000</a>]  (later extended and renamed the Resource Limited Artificial Immune System  [<a href='#Timmis2001'>Timmis2001</a>] [<a href='#Timmis2000a'>Timmis2000a</a>].</li>
+<li> <strong>Negative Selection Algorithms</strong>: such as an adaptive framework called the <em>ARTificial Immune System</em> (ARTIS), with the application to intrusion detection renamed the <em>Lightweight Intrusion Detection System</em> (LISYS)  [<a href='#Hofmeyr1999'>Hofmeyr1999</a>] [<a href='#Hofmeyr2000'>Hofmeyr2000</a>].</li>
+</ul>
+
+
+
+
+<h3>Algorithms</h3>
+<ul>
+<li><a href='immune/clonal_selection_algorithm.html'>Clonal Selection Algorithm</a></li>
+<li><a href='immune/negative_selection_algorithm.html'>Negative Selection Algorithm</a></li>
+<li><a href='immune/airs.html'>Artificial Immune Recognition System</a></li>
+<li><a href='immune/immune_network_algorithm.html'>Immune Network Algorithm</a></li>
+<li><a href='immune/dca.html'>Dendritic Cell Algorithm</a></li>
+</ul>
+<h3>Bibliography</h3>
+<table>
+ <tr valign="top">
+ <td><a id='Bersini1990'>[Bersini1990]</a></td>
+ <td>H. Bersini and F. Varela, "<a href="http://scholar.google.com.au/scholar?q=Hints+for+Adaptive+Problem+Solving+Gleaned+from+Immune+Networks">Hints for Adaptive Problem Solving Gleaned from Immune Networks</a>", in Lecture Notes In Computer Science, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Castro2002'>[Castro2002]</a></td>
+ <td>L. N. de Castro and J. Timmis, "<a href="http://scholar.google.com.au/scholar?q=Artificial+Immune+Systems:+A+New+Computational+Intelligence+Approach">Artificial Immune Systems: A New Computational Intelligence Approach</a>", Springer, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Coello2002'>[Coello2002]</a></td>
+ <td>C. A. Coello Coello and N. C. Cort&eacute;s, "<a href="http://scholar.google.com.au/scholar?q=An+Approach+to+Solve+Multiobjective+Optimization+Problems+Based+on++an+Artificial+Immune+System">An Approach to Solve Multiobjective Optimization Problems Based on 	an Artificial Immune System</a>", in First International Conference on Artificial Immune Systems, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cohen2001a'>[Cohen2001a]</a></td>
+ <td>I. R. Cohen, "<a href="http://scholar.google.com.au/scholar?q=Tending+Adam's+Garden:+Evolving+the+Cognitive+Immune+Self">Tending Adam's Garden: Evolving the Cognitive Immune Self</a>", Academic Press, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cortes2003'>[Cortes2003]</a></td>
+ <td>N. C. Cort&eacute;s and C. A. Coello Coello, "<a href="http://scholar.google.com.au/scholar?q=Multiobjective+Optimization+Using+Ideas+from+the+Clonal+Selection++Principle">Multiobjective Optimization Using Ideas from the Clonal Selection 	Principle</a>", in Lecture Notes in Computer Science, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cutello2002'>[Cutello2002]</a></td>
+ <td>V. Cutello and G. Nicosia, "<a href="http://scholar.google.com.au/scholar?q=Multiple+learning+using+immune+algorithms">Multiple learning using immune algorithms</a>", in Proceedings of 4th International Conference on Recent Advances in 	Soft Computing, RASC 2002, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cutello2002a'>[Cutello2002a]</a></td>
+ <td>V. Cutello and G. Nicosia, "<a href="http://scholar.google.com.au/scholar?q=An+Immunological+Approach+to+Combinatorial+Optimization+Problems">An Immunological Approach to Combinatorial Optimization Problems</a>", in Lecture Notes In Computer Science, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cutello2005b'>[Cutello2005b]</a></td>
+ <td>V. Cutello and G. Nicosia, "<a href="http://scholar.google.com.au/scholar?q=Chapter+VI.+The+Clonal+Selection+Principle+for+In+Silico+and+In+Vivo++Computing">Chapter VI. The Clonal Selection Principle for In Silico and In Vivo 	Computing</a>", in Recent Developments in Biologically Inspired Computing, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Farmer1986'>[Farmer1986]</a></td>
+ <td>J. D. Farmer and N. H. Packard and Alan S. Perelson, "<a href="http://scholar.google.com.au/scholar?q=The+immune+system,+adaptation,+and+machine+learning">The immune system, adaptation, and machine learning</a>", Physica D, 1986.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forrest1994'>[Forrest1994]</a></td>
+ <td>S. Forrest and A. S. Perelson and L. Allen and R. Cherukuri, "<a href="http://scholar.google.com.au/scholar?q=Self-Nonself+Discrimination+in+a+Computer">Self-Nonself Discrimination in a Computer</a>", in Proceedings of the 1992 IEEE Symposium on Security and Privacy, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forrest1997a'>[Forrest1997a]</a></td>
+ <td>S. Forrest and S. A. Hofmeyr and A. Somayaji, "<a href="http://scholar.google.com.au/scholar?q=Computer+immunology">Computer immunology</a>", Communications of the ACM, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hoffmann1986'>[Hoffmann1986]</a></td>
+ <td>G. W. Hoffmann, "<a href="http://scholar.google.com.au/scholar?q=A+Neural+Network+Model+Based+on+the+Analogy+with+the+Immune+System">A Neural Network Model Based on the Analogy with the Immune System</a>", Journal of Theorectical Immunology, 1986.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hofmeyr1999'>[Hofmeyr1999]</a></td>
+ <td>S. Hofmeyr and S. Forrest, "<a href="http://scholar.google.com.au/scholar?q=Immunity+by+Design:+An+Artificial+Immune+System">Immunity by Design: An Artificial Immune System</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	 	(GECCO), 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hofmeyr2000'>[Hofmeyr2000]</a></td>
+ <td>S. A. Hofmeyr and S. Forrest, "<a href="http://scholar.google.com.au/scholar?q=Architecture+for+an+Artificial+Immune+System">Architecture for an Artificial Immune System</a>", Evolutionary Computation, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ishida1990'>[Ishida1990]</a></td>
+ <td>Y. Ishida, "<a href="http://scholar.google.com.au/scholar?q=Fully+distributed+diagnosis+by+PDP+learning+algorithm:+towards++immune+network+PDP+models">Fully distributed diagnosis by PDP learning algorithm: towards 	immune network PDP models</a>", in IJCNN International Joint Conference on Neural Networks, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kelsey2003'>[Kelsey2003]</a></td>
+ <td>J. Kelsey and J. Timmis, "<a href="http://scholar.google.com.au/scholar?q=Immune+Inspired+Somatic+Contiguous+Hypermutation+for+Function+Optimisation">Immune Inspired Somatic Contiguous Hypermutation for Function Optimisation</a>", in Lecture Notes in Computer Science, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kephart1994'>[Kephart1994]</a></td>
+ <td>J. O. Kephart, "<a href="http://scholar.google.com.au/scholar?q=A+Biologically+Inspired+Immune+System+for+Computers">A Biologically Inspired Immune System for Computers</a>", in Artificial Life IV, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kephart1995'>[Kephart1995]</a></td>
+ <td>J. O. Kephart and G. B. Sorkin and W. C. Arnold and D. 	M. Chess and G. J. Tesauro and S. R. White, "<a href="http://scholar.google.com.au/scholar?q=Biologically+inspired+defences+against+computer+viruses">Biologically inspired defences against computer viruses</a>", in Proceedings of the 14th International Joint Conference on Artificial 	Intelligence, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Timmis2000'>[Timmis2000]</a></td>
+ <td>J. Timmis and M. Neal and J. Hunt, "<a href="http://scholar.google.com.au/scholar?q=An+Artificial+Immune+System+for+Data+Analysis">An Artificial Immune System for Data Analysis</a>", Biosystems, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Timmis2000a'>[Timmis2000a]</a></td>
+ <td>J. Timmis and M. Neal, "<a href="http://scholar.google.com.au/scholar?q=Investigating+the+evolution+and+stability+of+a+resource+limited+artificial++immune+system">Investigating the evolution and stability of a resource limited artificial 	immune system</a>", in Workshop Program, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Timmis2001'>[Timmis2001]</a></td>
+ <td>J. Timmis and M. J. Neal, "<a href="http://scholar.google.com.au/scholar?q=A+resource+limited+artificial+immune+system+for+data+analysis">A resource limited artificial immune system for data analysis</a>", Knowledge Based Systems Journal: Special Issue, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Varela1994'>[Varela1994]</a></td>
+ <td>F. J. Varela, "<a href="http://scholar.google.com.au/scholar?q=A+cognitive+view+of+the+immune+system">A cognitive view of the immune system</a>", World Futures, 1994.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

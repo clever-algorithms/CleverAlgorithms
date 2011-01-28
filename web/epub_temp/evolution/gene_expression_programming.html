@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='gene_expression_programming'><h1>Gene Expression Programming</h1></a>
+<p>
+<em>Gene Expression Programming, GEP.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Gene Expression Programming is a Global Optimization algorithm and an Automatic Programming technique, and it is an instance of an Evolutionary Algorithm from the field of Evolutionary Computation.
+It is a sibling of other Evolutionary Algorithms such as a the Genetic Algorithm as well as other Evolutionary Automatic Programming techniques such as Genetic Programming and Grammatical Evolution.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Gene Expression Programming is inspired by the replication and expression of the DNA molecule, specifically at the gene level.
+The expression of a gene involves the transcription of its DNA to RNA which in turn forms amino acids that make up proteins in the phenotype of an organism.
+The DNA building blocks are subjected to mechanisms of variation (mutations such as coping errors) as well as recombination during sexual reproduction.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+Gene Expression Programming uses a linear genome as the basis for genetic operators such as mutation, recombination, inversion, and transposition. The genome is comprised of chromosomes and each chromosome is comprised of genes that are translated into an expression tree to solve a given problem. The robust gene definition means that genetic operators can be applied to the sub-symbolic representation without concern for the structure of the resultant gene expression, providing separation of genotype and phenotype.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the Gene Expression Programming algorithm is to improve the adaptive fit of an expressed program in the context of a problem specific cost function.
+This is achieved through the use of an evolutionary process that operates on a sub-symbolic representation of candidate solutions using surrogates for the processes (descent with modification) and mechanisms (genetic recombination, mutation, inversion, transposition, and gene expression) of evolution.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+A candidate solution is represented as a linear string of symbols called Karva notation or a K-expression, where each symbol maps to a function or terminal node. The linear representation is mapped to an expression tree in a breadth-first manner.
+A K-expression has fixed length and is comprised of one or more sub-expressions (genes), which are also defined with a fixed length. A gene is comprised of two sections, a head which may contain any function or terminal symbols, and a tail section that may only contain terminal symbols. Each gene will always translate to a syntactically correct expression tree, where the tail portion of the gene provides a genetic buffer which ensures closure of the expression.
+</p>
+<p>
+Algorithm (below) provides a pseudocode listing of the Gene Expression Programming algorithm for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>Grammar</code>, $Population_{size}$, $Head_{length}$, $Tail_{length}$, $P_{crossover}$, $P_{mutation}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($Population_{size}$, <code>Grammar</code>, $Head_{length}$, $Tail_{length}$)<br />
+<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Si_{program}$ $\leftarrow$ <code>DecodeBreadthFirst</code>($Si_{genome}$, <code>Grammar</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Si_{cost}$ $\leftarrow$ <code>Execute</code>($Si_{program}$)<br />
+<strong><code>End</code></strong><br />
+$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Population</code>)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Parents</code> $\leftarrow$ <code>SelectParents</code>(<code>Population</code>, $Population_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Parent_{1}$, $Parent_{2}$ $\in$ <code>Parents</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{genome}$ $\leftarrow$ <code>Crossover</code>($Parent_{1}$, $Parent_{2}$, $P_{crossover}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{genome}$ $\leftarrow$ <code>Mutate</code>($Si_{genome}$, $P_{mutation}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Children</code> $\leftarrow$ $S_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>Children</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{program}$ $\leftarrow$ <code>DecodeBreadthFirst</code>($Si_{genome}$, <code>Grammar</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{cost}$ $\leftarrow$ <code>Execute</code>($Si_{program}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>Replace</code>(<code>Population</code>, <code>Children</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Children</code>)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for GEP.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The length of a chromosome is defined by the number of genes, where a gene length is defined by $h + t$. The $h$ is a user defined parameter (such as 10), and $t$ is defined as $t = h (n-1) + 1$, where the $n$ represents the maximum arity of functional nodes in the expression (such as 2 if the arithmetic functions $\times, \div, -, +$ are used).</li>
+<li> The mutation operator substitutes expressions along the genome, although must respect the gene rules such that function and terminal nodes are mutated in the head of genes, whereas only terminal nodes are substituted in the tail of genes.</li>
+<li> Crossover occurs between two selected parents from the population and can occur based on a one-point cross, two point cross, or a gene-based approach where genes are selected from the parents with uniform probability.</li>
+<li> An inversion operator may be used with a low probability that reverses a small sequence of symbols (1-3) within a section of a gene (tail or head).</li>
+<li> A transposition operator may be used that has a number of different modes, including: duplicate a small sequences (1-3) from somewhere on a gene to the head, small sequences on a gene to the root of the gene, and moving of entire genes in the chromosome. In the case of intra-gene transpositions, the sequence in the head of the gene is moved down to accommodate the copied sequence and the length of the head is truncated to maintain consistent gene sizes.</li>
+<li> A '?' may be included in the terminal set that represents a numeric constant from an array that is evolved on the end of the genome. The constants are read from the end of the genome and are substituted for '?' as the expression tree is created (in breadth first order). Finally the numeric constants are used as array indices in yet another chromosome of numerical values which are substituted into the expression tree.</li>
+<li> Mutation is low (such as $\frac{1}{L}$), selection can be any of the classical approaches (such as roulette wheel or tournament), and crossover rates are typically high (0.7 of offspring)</li>
+<li> Use multiple sub-expressions linked together on hard problems when one gene is not sufficient to address the problem. The sub-expressions are linked using link expressions which are function nodes that are either statically defined (such as a conjunction) or evolved on the genome with the genes.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Gene Expression Programming algorithm implemented in the Ruby Programming Language based on the seminal version proposed by Ferreira  [<a href='#Ferreira2001'>Ferreira2001</a>].
+The demonstration problem is an instance of symbolic regression $f(x)=x^4+x^3+x^2+x$, where $x\in[1,10]$. The grammar used in this problem is: Functions: $F=\{+,-,\div,\times,\}$ and Terminals: $T=\{x\}$.
+</p>
+<p>
+The algorithm uses binary tournament selection, uniform crossover and point mutations. The K-expression is decoded to an expression tree in a breadth-first manner, which is then parsed depth first as a Ruby expression string for display and direct evaluation.
+Solutions are evaluated by generating a number of random samples from the domain and calculating the mean error of the program to the expected outcome. Programs that contain a single term or those that return an invalid (NaN) or infinite result are penalized with an enormous error value.
+</p>
+<pre class='prettyprint lang-rb'>
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  return (pop[i][:fitness] &lt; pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
+def point_mutation(grammar, genome, head_length, rate=1.0/genome.size.to_f)
+  child =""
+  genome.size.times do |i|
+    bit = genome[i].chr
+    if rand() &lt; rate
+      if i &lt; head_length
+        selection = (rand() &lt; 0.5) ? grammar["FUNC"]: grammar["TERM"]
+        bit = selection[rand(selection.size)]
+      else
+        bit = grammar["TERM"][rand(grammar["TERM"].size)]
+      end
+    end
+    child &lt;&lt; bit
+  end
+  return child
+end
+
+def crossover(parent1, parent2, rate)
+  return ""+parent1 if rand()&gt;=rate
+  child = ""
+  parent1.size.times do |i|
+    child &lt;&lt; ((rand()&lt;0.5) ? parent1[i] : parent2[i])
+  end
+  return child
+end
+
+def reproduce(grammar, selected, pop_size, p_crossover, head_length)
+  children = []
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
+    child = {}
+    child[:genome] = crossover(p1[:genome], p2[:genome], p_crossover)
+    child[:genome] = point_mutation(grammar, child[:genome], head_length)
+    children &lt;&lt; child
+  end
+  return children
+end
+
+def random_genome(grammar, head_length, tail_length)
+  s = ""
+  head_length.times do
+    selection = (rand() &lt; 0.5) ? grammar["FUNC"]: grammar["TERM"]
+    s &lt;&lt; selection[rand(selection.size)]
+  end
+  tail_length.times { s &lt;&lt; grammar["TERM"][rand(grammar["TERM"].size)]}
+  return s
+end
+
+def target_function(x)
+  return x**4.0 + x**3.0 + x**2.0 + x
+end
+
+def sample_from_bounds(bounds)
+  return bounds[0] + ((bounds[1] - bounds[0]) * rand())
+end
+
+def cost(program, bounds, num_trials=30)
+  errors = 0.0
+  num_trials.times do
+    x = sample_from_bounds(bounds)
+    expression, score = program.gsub("x", x.to_s), 0.0
+    begin score = eval(expression) rescue score = 0.0/0.0 end
+    return 9999999 if score.nan? or score.infinite?
+    errors += (score - target_function(x)).abs
+  end
+  return errors / num_trials.to_f
+end
+
+def mapping(genome, grammar)
+  off, queue = 0, []
+  root = {}
+  root[:node] = genome[off].chr; off+=1
+  queue.push(root)
+  while !queue.empty? do
+    current = queue.shift
+    if grammar["FUNC"].include?(current[:node])
+      current[:left] = {}
+      current[:left][:node] = genome[off].chr; off+=1
+      queue.push(current[:left])
+      current[:right] = {}
+      current[:right][:node] = genome[off].chr; off+=1
+      queue.push(current[:right])
+    end
+  end
+  return root
+end
+
+def tree_to_string(exp)
+  return exp[:node] if (exp[:left].nil? or exp[:right].nil?)
+  left = tree_to_string(exp[:left])
+  right = tree_to_string(exp[:right])
+  return "(#{left} #{exp[:node]} #{right})"
+end
+
+def evaluate(candidate, grammar, bounds)
+  candidate[:expression] = mapping(candidate[:genome], grammar)
+  candidate[:program] = tree_to_string(candidate[:expression])
+  candidate[:fitness] = cost(candidate[:program], bounds)
+end
+
+def search(grammar, bounds, h_length, t_length, max_gens, pop_size, p_cross)
+  pop = Array.new(pop_size) do
+    {:genome=&gt;random_genome(grammar, h_length, t_length)}
+  end
+  pop.each{|c| evaluate(c, grammar, bounds)}
+  best = pop.sort{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}.first
+  max_gens.times do |gen|
+    selected = Array.new(pop){|i| binary_tournament(pop)}
+    children = reproduce(grammar, selected, pop_size, p_cross, h_length)
+    children.each{|c| evaluate(c, grammar, bounds)}
+    children.sort!{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}
+    best = children.first if children.first[:fitness] &lt;= best[:fitness]
+    pop = (children+pop).first(pop_size)
+    puts " &gt; gen=#{gen}, f=#{best[:fitness]}, g=#{best[:genome]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  grammar = {"FUNC"=&gt;["+","-","*","/"], "TERM"=&gt;["x"]}
+  bounds = [1.0, 10.0]
+  # algorithm configuration
+  h_length = 20
+  t_length = h_length * (2-1) + 1
+  max_gens = 150
+  pop_size = 80
+  p_cross = 0.85
+  # execute the algorithm
+  best = search(grammar, bounds, h_length, t_length, max_gens, pop_size, p_cross)
+  puts "done! Solution: f=#{best[:fitness]}, program=#{best[:program]}"
+end
+</pre>
+<div class='download_src'><a href='gene_expression_programming.rb'>Download Source</a></div>
+<div class='caption'>Gene Expression Programming in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Gene Expression Programming algorithm was proposed by Ferreira in a paper that detailed the approach, provided a careful walkthrough of the process and operators, and demonstrated the the algorithm on a number of benchmark problem instances including symbolic regression  [<a href='#Ferreira2001'>Ferreira2001</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Ferreira provided an early and detailed introduction and overview of the approach as book chapter, providing a step-by-step walkthrough of the procedure and sample applications  [<a href='#Ferreira2002'>Ferreira2002</a>]. A more contemporary and detailed introduction is provided in a later book chapter  [<a href='#Ferreira2005'>Ferreira2005</a>].
+Ferreira published a book on the approach in 2002 covering background, the algorithm, and demonstration applications which is now in its second edition  [<a href='#Ferreira2006'>Ferreira2006</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Ferreira2001'>[Ferreira2001]</a></td>
+ <td>C. Ferreira, "<a href="http://scholar.google.com.au/scholar?q=Gene+Expression+Programming:+A+New+Adaptive+Algorithm+for+Solving++Problems">Gene Expression Programming: A New Adaptive Algorithm for Solving 	Problems</a>", Complex Systems, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ferreira2002'>[Ferreira2002]</a></td>
+ <td>C. Ferreira, "<a href="http://scholar.google.com.au/scholar?q=Gene+Expression+Programming+in+Problem+Solving">Gene Expression Programming in Problem Solving</a>", in Soft Computing and Industry: Recent Applications, pages 635&ndash;654, Springer-Verlag, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ferreira2005'>[Ferreira2005]</a></td>
+ <td>C. Ferreira, "<a href="http://scholar.google.com.au/scholar?q=Gene+Expression+Programming+and+the+Evolution+of+computer+programs">Gene Expression Programming and the Evolution of computer programs</a>", in Recent Developments in Biologically Inspired Computing, pages 82&ndash;103, Idea Group Publishing, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ferreira2006'>[Ferreira2006]</a></td>
+ <td>C. Ferreira, "<a href="http://scholar.google.com.au/scholar?q=Gene+expression+programming:+Mathematical+modeling+by+an+artificial++intelligence">Gene expression programming: Mathematical modeling by an artificial 	intelligence</a>", Springer-Verlag, 2006.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

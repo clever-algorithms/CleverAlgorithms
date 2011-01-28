@@ -1,0 +1,600 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='introduction'><h1>Introduction</h1></a>
+<p>
+<em>Welcome to Clever Algorithms!</em> This is a handbook of recipes for computational problem solving techniques from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics.
+Clever Algorithms are interesting, practical, and fun to learn about and implement.
+Research scientists may be interested in browsing algorithm inspirations in search of an interesting system or process analogs to investigate. Developers and software engineers may compare various problem solving algorithms and technique-specific guidelines. Practitioners, students, and interested amateurs may implement state-of-the-art algorithms to address business or scientific needs, or simply play with the fascinating systems they represent.
+</p>
+<p>
+This introductory chapter provides relevant background information on Artificial Intelligence and Algorithms. The core of the book provides a large corpus of algorithms presented in a complete and consistent manner. The final chapter covers some advanced topics to consider once a number of algorithms have been mastered. This book has been designed as a reference text, where specific techniques are looked up, or where the algorithms across whole fields of study can be browsed, rather than being read cover-to-cover. This book is an algorithm handbook and a technique guidebook, and I hope you find something useful.
+</p>
+
+<a id='what_is_ai'><h2>What is AI</h2></a>
+<a id='artificial_intelligence'><h3>Artificial Intelligence</h3></a>
+<p>
+The field of classical <em>Artificial Intelligence</em> (AI) coalesced in the 1950s drawing on an understanding of the brain from neuroscience, the new mathematics of information theory, control theory referred to as cybernetics, and the dawn of the digital computer. AI is a cross-disciplinary field of research that is generally concerned with developing and investigating systems that operate or act intelligently. It is considered a discipline in the field of computer science given the strong focus on computation.
+</p>
+<p>
+Russell and Norvig provide a perspective that defines Artificial Intelligence in four categories: 1) systems that think like humans, 2) systems that act like humans, 3) systems that think rationally, 4) systems that act rationally  [<a href='#Russell2009'>Russell2009</a>]. In their definition, acting like a human suggests that a system can do some specific things humans can do, this includes fields such as the Turing test, natural language processing, automated reasoning, knowledge representation, machine learning, computer vision, and robotics. Thinking like a human suggests systems that model the cognitive information processing properties of humans, for example a general problem solver and systems that build internal models of their world. Thinking rationally suggests laws of rationalism and structured thought, such as syllogisms and formal logic. Finally, acting rationally suggests systems that do rational things such as expected utility maximization and rational agents.
+</p>
+<p>
+Luger and Stubblefield suggest that AI is a sub-field of computer science concerned with the automation of intelligence, and like other sub-fields of computer science has both theoretical concerns (<em>how and why do the systems work?</em>) and application concerns (<em>where and when can the systems be used?</em>)  [<a href='#Luger1993'>Luger1993</a>]. They suggest a strong empirical focus to research, because although there may be a strong desire for mathematical analysis, the systems themselves defy analysis given their complexity. The machines and software investigated in AI are not black boxes, rather analysis proceeds by observing the systems interactions with their environments, followed by an internal assessment of the system to relate its structure back to its behavior.
+</p>
+<p>
+Artificial Intelligence is therefore concerned with investigating mechanisms that underlie intelligence and intelligence behavior. The traditional approach toward designing and investigating AI (the so-called 'good old fashioned' AI) has been to employ a symbolic basis for these mechanisms. A newer approach historically referred to as scruffy artificial intelligence or soft computing does not necessarily use a symbolic basis, instead patterning these mechanisms after biological or natural processes. This represents a modern paradigm shift in interest from symbolic knowledge representations, to inference strategies for adaptation and learning, and has been referred to as neat versus scruffy approaches to AI. The neat philosophy is concerned with formal symbolic models of intelligence that can explain <em>why</em> they work, whereas the scruffy philosophy is concerned with intelligent strategies that explain <em>how</em> they work  [<a href='#Sloman1990'>Sloman1990</a>].
+</p>
+
+<a id='neat_ai'><h4>Neat AI</h4></a>
+<p>
+The traditional stream of AI concerns a top down perspective of problem solving, generally involving symbolic representations and logic processes that most importantly can explain why the systems work. The successes of this prescriptive stream include a multitude of specialist approaches such as rule-based expert systems, automatic theorem provers, and operations research techniques that underly modern planning and scheduling software. Although traditional approaches have resulted in significant success they have their limits, most notably scalability. Increases in problem size result in an unmanageable increase in the complexity of such problems meaning that although traditional techniques can guarantee an optimal, precise, or true solution, the computational execution time or computing memory required can be intractable.
+</p>
+
+
+<a id='scruffy_ai'><h4>Scruffy AI</h4></a>
+<p>
+There have been a number of thrusts in the field of AI toward less crisp techniques that are able to locate approximate, imprecise, or partially-true solutions to problems with a reasonable cost of resources. Such approaches are typically <em>descriptive</em> rather than <em>prescriptive</em>, describing a process for achieving a solution (how), but not explaining why they work (like the neater approaches).
+</p>
+<p>
+Scruffy AI approaches are defined as relatively simple procedures that result in complex emergent and self-organizing behavior that can defy traditional reductionist analyses, the effects of which can be exploited for quickly locating approximate solutions to intractable problems. A common characteristic of such techniques is the incorporation of randomness in their processes resulting in robust probabilistic and stochastic decision making contrasted to the sometimes more fragile determinism of the crisp approaches. Another important common attribute is the adoption of an inductive rather than deductive approach to problem solving, generalizing solutions or decisions from sets of specific observations made by the system.
+</p>
+
+
+
+<a id='natural_computation'><h3>Natural Computation</h3></a>
+<p>
+An important perspective on scruffy Artificial Intelligence is the motivation and inspiration for the core information processing strategy of a given technique. Computers can only do what they are instructed, therefore a consideration is to distill information processing from other fields of study, such as the physical world and biology. The study of biologically motivated computation is called Biologically Inspired Computing  [<a href='#Castro2005a'>Castro2005a</a>], and is one of three related fields of Natural Computing  [<a href='#Forbes2000'>Forbes2000</a>] [<a href='#Forbes2005'>Forbes2005</a>] [<a href='#Paton1994'>Paton1994</a>].
+Natural Computing is an interdisciplinary field concerned with the relationship of computation and biology, which in addition to Biologically Inspired Computing is also comprised of Computationally Motivated Biology and Computing with Biology  [<a href='#Paun2005'>Paun2005</a>] [<a href='#Marrow2000'>Marrow2000</a>].
+</p>
+
+<a id='biologically_inspired_computation'><h4>Biologically Inspired Computation</h4></a>
+<p>
+Biologically Inspired Computation is computation inspired by biological metaphor, also referred to as <em>Biomimicry</em>, and <em>Biomemetics</em> in other engineering disciplines  [<a href='#Castro2005'>Castro2005</a>] [<a href='#Benyus1998'>Benyus1998</a>]. The intent of this field is to devise mathematical and engineering tools to generate solutions to computation problems. The field involves using procedures for finding solutions abstracted from the natural world for addressing computationally phrased problems.
+</p>
+
+
+<a id='computationally_motivated_biology'><h4>Computationally Motivated Biology</h4></a>
+<p>
+Computationally Motivated Biology involves investigating biology using computers. The intent of this area is to use information sciences and simulation to model biological systems in digital computers with the aim to replicate and better understand behaviors in biological systems. The field facilitates the ability to better understand life-as-it-is and investigate life-as-it-could-be. Typically, work in this sub-field is not concerned with the construction of mathematical and engineering tools, rather it is focused on simulating natural phenomena. Common examples include Artificial Life, Fractal Geometry (L-systems, Iterative Function Systems, Particle Systems, Brownian motion), and Cellular Automata. A related field is that of Computational Biology generally concerned with modeling biological systems and the application of statistical methods such as in the sub-field of Bioinformatics.
+</p>
+
+
+<a id='computation_with_biology'><h4>Computation with Biology</h4></a>
+<p>
+Computation with Biology is the investigation of substrates other than silicon in which to implement computation  [<a href='#Aaronson2005'>Aaronson2005</a>]. Common examples include molecular or DNA Computing and Quantum Computing.
+</p>
+
+
+
+<a id='computational_intelligence'><h3>Computational Intelligence</h3></a>
+<p>
+Computational Intelligence is a modern name for the sub-field of AI concerned with sub-symbolic (also called messy, scruffy, and soft) techniques. Computational Intelligence describes techniques that focus on <em>strategy</em> and <em>outcome</em>.
+The field broadly covers sub-disciplines that focus on adaptive and intelligence systems, not limited to: Evolutionary Computation, Swarm Intelligence (Particle Swarm and Ant Colony Optimization), Fuzzy Systems, Artificial Immune Systems, and Artificial Neural Networks  [<a href='#Engelbrecht2007'>Engelbrecht2007</a>] [<a href='#Pedrycz1997'>Pedrycz1997</a>]. This section provides a brief summary of the each of the five primary areas of study.
+</p>
+
+<a id='evolutionary_computation'><h4>Evolutionary Computation</h4></a>
+<p>
+A paradigm that is concerned with the investigation of systems inspired by the neo-Darwinian theory of evolution by means of natural selection (natural selection theory and an understanding of genetics). Popular evolutionary algorithms include the Genetic Algorithm, Evolution Strategy, Genetic and Evolutionary Programming, and Differential Evolution  [<a href='#Baeck2000'>Baeck2000</a>] [<a href='#Baeck2000a'>Baeck2000a</a>]. The evolutionary process is considered an adaptive strategy and is typically applied to search and optimization domains  [<a href='#Goldberg1989'>Goldberg1989</a>] [<a href='#Holland1975'>Holland1975</a>].
+</p>
+
+
+<a id='swarm_intelligence'><h4>Swarm Intelligence</h4></a>
+<p>
+A paradigm that considers collective intelligence as a behavior that emerges through the interaction and cooperation of large numbers of lesser intelligent agents. The paradigm consists of two dominant sub-fields 1) Ant Colony Optimization that investigates probabilistic algorithms inspired by the foraging behavior of ants  [<a href='#Bonabeau1999'>Bonabeau1999</a>] [<a href='#Dorigo2004'>Dorigo2004</a>], and 2) Particle Swarm Optimization that investigates probabilistic algorithms inspired by the flocking and foraging behavior of birds and fish  [<a href='#Kennedy2001'>Kennedy2001</a>]. Like evolutionary computation, swarm intelligence-based techniques are considered adaptive strategies and are typically applied to search and optimization domains.
+</p>
+
+
+<a id='artificial_neural_networks'><h4>Artificial Neural Networks</h4></a>
+<p>
+Neural Networks are a paradigm that is concerned with the investigation of architectures and learning strategies inspired by the modeling of neurons in the brain  [<a href='#Bishop1995'>Bishop1995</a>]. Learning strategies are typically divided into supervised and unsupervised which manage environmental feedback in different ways. Neural network learning processes are considered adaptive learning and are typically applied to function approximation and pattern recognition domains.
+</p>
+
+
+<a id='fuzzy_intelligence'><h4>Fuzzy Intelligence</h4></a>
+<p>
+Fuzzy Intelligence is a paradigm that is concerned with the investigation of fuzzy logic, which is a form of logic that is not constrained to true and false determinations like propositional logic, but rather functions which define approximate truth, or degree’s of truth  [<a href='#Zadeh1996'>Zadeh1996</a>]. Fuzzy logic and fuzzy systems are a logic system used as a reasoning strategy and are typically applied to expert system and control system domains.
+</p>
+
+
+<a id='artificial_immune_systems'><h4>Artificial Immune Systems</h4></a>
+<p>
+A collection of approaches inspired by the structure and function of the acquired immune system of vertebrates. Popular approaches include clonal selection, negative selection, the dendritic cell algorithm, and immune network algorithms. The immune-inspired adaptive processes vary in strategy and show similarities to the fields of Evolutionary Computation and Artificial Neural Networks, and are typically used for optimization and pattern recognition domains  [<a href='#Castro2002'>Castro2002</a>].
+</p>
+
+
+
+<a id='metaheuristics'><h3>Metaheuristics</h3></a>
+<p>
+Another popular name for the strategy-outcome perspective of scruffy AI is <em>metaheuristics</em>.
+In this context, heuristic is an algorithm that locates 'good enough' solutions to a problem without concern for whether the solution can be proven to be correct or optimal  [<a href='#Michalewicz2004'>Michalewicz2004</a>]. Heuristic methods trade-off concerns such as precision, quality, and accuracy in favor of computational effort (space and time efficiency). The greedy search procedure that only takes cost-improving steps is an example of heuristic method.
+</p>
+<p>
+Like heuristics, metaheuristics may be considered a general algorithmic framework that can be applied to different optimization problems with relative few modifications to adapt them to a specific problem  [<a href='#Glover2003'>Glover2003</a>] [<a href='#Talbi2009'>Talbi2009</a>]. The difference is that metaheuristics are intended to extend the capabilities of heuristics by combining one or more heuristic methods (referred to as procedures) using a higher-level strategy (hence 'meta'). A procedure in a metaheuristic is considered black-box in that little (if any) prior knowledge is known about it by the metaheuristic, and as such it may be replaced with a different procedure. Procedures may be as simple as the manipulation of a representation, or as complex as another complete metaheuristic. Some examples of metaheuristics include iterated local search, tabu search, the genetic algorithm, ant colony optimization, and simulated annealing.
+</p>
+<p>
+Blum and Roli outline nine properties of metaheuristics  [<a href='#Blum2003'>Blum2003</a>], as follows:
+</p>
+<ul>
+<li> Metaheuristics are strategies that &quot;guide&quot; the search process.</li>
+<li> The goal is to efficiently explore the search space in order to find (near-)optimal solutions.</li>
+<li> Techniques which constitute metaheuristic algorithms range from simple local search procedures to complex learning processes.</li>
+<li> Metaheuristic algorithms are approximate and usually non-deterministic.</li>
+<li> They may incorporate mechanisms to avoid getting trapped in confined areas of the search space.</li>
+<li> The basic concepts of metaheuristics permit an abstract level description.</li>
+<li> Metaheuristics are not problem-specific.</li>
+<li> Metaheuristics may make use of domain-specific knowledge in the form of heuristics that are controlled by the upper level strategy.</li>
+<li> Todays more advanced metaheuristics use search experience (embodied in some form of memory) to guide the search.</li>
+</ul>
+<p>
+Hyperheuristics are yet another extension that focuses on heuristics that modify their parameters (online or offline) to improve the efficacy of solution, or the efficiency of the computation. Hyperheuristics provide high-level strategies that may employ machine learning and adapt their search behavior by modifying the application of the sub-procedures or even which procedures are used (operating on the space of heuristics which in turn operate within the problem domain)  [<a href='#Burke2003a'>Burke2003a</a>] [<a href='#Burke2003'>Burke2003</a>].
+</p>
+
+
+<a id='clever_algorithms'><h3>Clever Algorithms</h3></a>
+<p>
+This book is concerned with 'clever algorithms', which are algorithms drawn from many sub-fields of artificial intelligence not limited to the scruffy fields of biologically inspired computation, computational intelligence and metaheuristics.
+The term '<em>clever algorithms</em>' is intended to unify a collection of interesting and useful computational tools under a consistent and accessible banner. An alternative name (<em>Inspired Algorithms</em>) was considered, although ultimately rejected given that not all of the algorithms to be described in the project have an inspiration (specifically a biological or physical inspiration) for their computational strategy.
+The set of algorithms described in this book may generally be referred to as 'unconventional optimization algorithms' (for example, see  [<a href='#Corne1999'>Corne1999</a>]), as optimization is the main form of computation provided by the listed approaches. A technically more appropriate name for these approaches is stochastic global optimization (for example, see  [<a href='#Weise2007'>Weise2007</a>] and  [<a href='#Luke2009'>Luke2009</a>]).
+</p>
+<p>
+Algorithms were selected in order to provide a rich and interesting coverage of the fields of Biologically Inspired Computation, Metaheuristics and Computational Intelligence. Rather than a coverage of just the state-of-the-art and popular methods, the algorithms presented also include historic and newly described methods. The final selection was designed to provoke curiosity and encourage exploration and a wider view of the field.
+</p>
+
+
+
+<a id='problem_domains'><h2>Problem Domains</h2></a>
+<p>
+Algorithms from the fields of Computational Intelligence, Biologically Inspired Computing, and Metaheuristics are applied to difficult problems, to which more traditional approaches may not be suited.
+Michalewicz and Fogel propose five reasons why problems may be difficult  [<a href='#Michalewicz2004'>Michalewicz2004</a>] (page 11):
+</p>
+<ul>
+<li> The number of possible solutions in the search space is so large as to forbid an exhaustive search for the best answer.</li>
+<li> The problem is so complicated, that just to facilitate any answer at all, we have to use such simplified models of the problem that any result is essentially useless.</li>
+<li> The evaluation function that describes the quality of any proposed solution is noisy or varies with time, thereby requiring not just a single solution but an entire series of solutions.</li>
+<li> The possible solutions are so heavily constrained that constructing even one feasible answer is difficult, let alone searching for an optimal solution.</li>
+<li> The person solving the problem is inadequately prepared or imagines some psychological barrier that prevents them from discovering a solution.</li>
+</ul>
+<p>
+This section introduces two problem formalisms that embody many of the most difficult problems faced by Artificial and Computational Intelligence. They are: Function Optimization and Function Approximation. Each class of problem is described in terms of its general properties, a formalism, and a set of specialized sub-problems. These problem classes provide a tangible framing of the algorithmic techniques described throughout the work.
+</p>
+
+<a id='function_optimization'><h3>Function Optimization</h3></a>
+<p>
+Real-world optimization problems and generalizations thereof can be drawn from most fields of science, engineering, and information technology (for a sample  [<a href='#Ali1997'>Ali1997</a>] [<a href='#Toern1999'>Toern1999</a>]). Importantly, function optimization problems have had a long tradition in the fields of Artificial Intelligence in motivating basic research into new problem solving techniques, and for investigating and verifying systemic behavior against benchmark problem instances.
+</p>
+
+<a id='problem_description'><h4>Problem Description</h4></a>
+<p>
+Mathematically, optimization is defined as the search for a combination of parameters commonly referred to as decision variables ($x = \left\{x_1, x_2, x_3, \ldots x_n\right\}$) which minimize or maximize some ordinal quantity ($c$) (typically a scalar  called a score or cost) assigned by an objective function or cost function ($f$), under a set of constraints ($g = \left\{g_1, g_2, g_3, \ldots g_n\right\}$). For example, a general minimization case would be as follows: $f(x') \leq f(x), \forall x_i \in x$. Constraints may provide boundaries on decision variables (for example in a real-value hypercube $\Re^n$), or may generally define regions of feasibility and in-feasibility in the decision variable space. In applied mathematics the field may be referred to as Mathematical Programming. More generally the field may be referred to as Global or Function Optimization given the focus on the objective function. For more general information on optimization refer to Horst et al.  [<a href='#Horst2000'>Horst2000</a>].
+</p>
+
+
+<a id='sub-fields_of_study'><h4>Sub-Fields of Study</h4></a>
+<p>
+The study of optimization is comprised of many specialized sub-fields, based on an overlapping taxonomy that focuses on the principle concerns in the general formalism.
+For example, with regard to the decision variables, one may consider univariate and multivariate optimization problems. The type of decision variables promotes specialities for continuous, discrete, and permutations of variables. Dependencies between decision variables under a cost function define the fields of Linear Programming, Quadratic Programming, and Nonlinear Programming. A large class of optimization problems can be reduced to discrete sets and are considered in the field of Combinatorial Optimization, to which many theoretical properties are known, most importantly that many interesting and relevant problems cannot be solved by an approach with polynomial time complexity (so-called NP, for example see Papadimitriou and Steiglitz  [<a href='#Papadimitriou1998'>Papadimitriou1998</a>]).
+</p>
+<p>
+THe evaluation of variables against a cost function, collectively may be considered a response surface. The shape of such a response surface may be convex, which is a class of functions to which many important theoretical findings have been made, not limited to the fact that location of the local optimal configuration also means the global optimal configuration of decision variables has been located  [<a href='#Boyd2004'>Boyd2004</a>]. Many interesting and real-world optimization problems produce cost surfaces that are non-convex or so called multi-modal (Taken from statistics referring to the centers of mass in distributions, although in optimization it refers to 'regions of interest' in the search space, in particular valleys in minimization, and peaks in maximization cost surfaces.) (rather than unimodal) suggesting that there are multiple peaks and valleys. Further, many real-world optimization problems with continuous decision variables cannot be differentiated given their complexity or limited information availability, meaning that derivative-based gradient decent methods (that are well understood) are not applicable, necessitating the use of so-called 'direct search' (sample or pattern-based) methods  [<a href='#Lewis2000'>Lewis2000</a>]. Real-world objective function evaluation may be noisy, discontinuous, and/or dynamic, and the constraints of real-world problem solving may require an approximate solution in limited time or using resources, motivating the need for heuristic approaches.
+</p>
+
+
+
+<a id='function_approximation'><h3>Function Approximation</h3></a>
+<p>
+Real-world Function Approximation problems are among the most computationally difficult considered in the broader field of Artificial Intelligence for reasons including: incomplete information, high-dimensionality, noise in the sample observations, and non-linearities in the target function.
+This section considers the Function Approximation formalism and related specialization's as a general motivating problem to contrast and compare with Function Optimization.
+</p>
+
+<a id='problem_description'><h4>Problem Description</h4></a>
+<p>
+Function Approximation is the problem of finding a function ($f$) that approximates a target function ($g$), where typically the approximated function is selected based on a sample of observations ($x$, also referred to as the training set) taken from the unknown target function.
+In machine learning, the function approximation formalism is used to describe general problem types commonly referred to as pattern recognition, such as classification, clustering, and curve fitting (called a decision or discrimination function). Such general problem types are described in terms of approximating an unknown Probability Density Function (PDF), which underlies the relationships in the problem space, and is represented in the sample data. This perspective of such problems is commonly referred to as statistical machine learning and/or density estimation  [<a href='#Fukunaga1990'>Fukunaga1990</a>] [<a href='#Bishop1995'>Bishop1995</a>].
+</p>
+
+
+<a id='sub-fields_of_study'><h4>Sub-Fields of Study</h4></a>
+<p>
+The function approximation formalism can be used to phrase some of the hardest problems faced by Computer Science, and Artificial Intelligence in particular, such as natural language processing and computer vision.
+The general process focuses on 1) the collection and preparation of the observations from the target function, 2) the selection and/or preparation of a model of the target function, and 3) the application and ongoing refinement of the prepared model.
+Some important problem-based sub-fields include:
+</p>
+<ul>
+<li> <em>Feature Selection</em> where a feature is considered an aggregation of one-or-more attributes, where only those features that have meaning in the context of the target function are necessary to the modeling function  [<a href='#Kudo2000'>Kudo2000</a>] [<a href='#Guyon2003'>Guyon2003</a>].</li>
+<li> <em>Classification</em> where observations are inherently organized into labelled groups (classes) and a supervised process models an underlying discrimination function to classify unobserved samples.</li>
+<li> <em>Clustering</em> where observations may be organized into groups based on underlying common features, although the groups are unlabeled requiring a process to model an underlying discrimination function without corrective feedback.</li>
+<li> <em>Curve or Surface Fitting</em> where a model is prepared that provides a 'best-fit' (called a regression) for a set of observations that may be used for interpolation over known observations and extrapolation for observations outside what has been modeled.</li>
+</ul>
+<p>
+The field of Function Optimization is related to Function Approximation, as many-sub-problems of Function Approximation may be defined as optimization problems. Many of the technique paradigms used for function approximation are differentiated based on the representation and the optimization process used to minimize error or maximize effectiveness on a given approximation problem.
+The difficulty of Function Approximation problems centre around 1) the nature of the unknown relationships between attributes and features, 2) the number (dimensionality) of attributes and features, and 3) general concerns of noise in such relationships and the dynamic availability of samples from the target function.
+Additional difficulties include the incorporation of prior knowledge (such as imbalance in samples, incomplete information and the variable reliability of data), and problems of invariant features (such as transformation, translation, rotation, scaling, and skewing of features).
+</p>
+
+
+
+
+<a id='unconventional_optimization'><h2>Unconventional Optimization</h2></a>
+<p>
+Not all algorithms described in this book are for optimization, although those that are may be referred to as 'unconventional' to differentiate them from the more traditional approaches. Examples of traditional approaches include (but are not not limited) mathematical optimization algorithms (such as Newton's method and Gradient Descent that use derivatives to locate a local minimum) and direct search methods (such as the Simplex method and the Nelder-Mead method that use a search pattern to locate optima).
+Unconventional optimization algorithms are designed for the more difficult problem instances, the attributes of which were introduced in . This section introduces some common attributes of this class of algorithm.
+</p>
+
+<a id='black_box_algorithms'><h3>Black Box Algorithms</h3></a>
+<p>
+Black Box optimization algorithms are those that exploit little, if any, information from a problem domain in order to devise a solution. They are generalized problem solving procedures that may be applied to a range of problems with very little modification  [<a href='#Droste2006'>Droste2006</a>].
+Domain specific knowledge refers to known relationships between solution representations and the objective cost function. Generally speaking, the less domain specific information incorporated into a technique, the more flexible the technique, although the less efficient it will be for a given problem. For example, 'random search' is the most general black box approach and is also the most flexible requiring only the generation of random solutions for a given problem. Random search allows resampling of the domain which gives it a worst case behavior that is worse than enumerating the entire search domain. In practice, the more prior knowledge available about a problem, the more information that can be exploited by a technique in order to efficiently locate a solution for the problem, heuristically or otherwise. Therefore, black box methods are those methods suitable for those problems where little information from the problem domain is available to be used by a problem solving approach.
+</p>
+
+
+<a id='no-free-lunch'><h3>No-Free-Lunch</h3></a>
+<p>
+The <em>No-Free-Lunch Theorem</em> of search and optimization by Wolpert and Macready proposes that all black box optimization algorithms are the same for searching for the extremum of a cost function when averaged over all possible functions  [<a href='#Wolpert1997'>Wolpert1997</a>] [<a href='#Wolpert1995'>Wolpert1995</a>]. The theorem has caused a lot of pessimism and misunderstanding, particularly in relation to the evaluation and comparison of Metaheuristic and Computational Intelligence algorithms.
+</p>
+<p>
+The implication of the theorem is that searching for the 'best' general-purpose black box optimization algorithm is irresponsible as no such procedure is theoretically possible. No-Free-Lunch applies to stochastic and deterministic optimization algorithms as well as to algorithms that learn and adjust their search strategy over time. It is independent of the performance measure used and the representation selected.
+Wolpert and Macready's original paper was produced at a time when grandiose generalizations were being made as to algorithm, representation, or configuration superiority. The practical impact of the theory is to encourage practitioners to bound claims of applicability for search and optimization algorithms. Wolpert and Macready encouraged effort be put into devising practical problem classes and into the matching of suitable algorithms to problem classes. Further, they compelled practitioners to exploit domain knowledge in optimization algorithm application, which is now an axiom in the field.
+</p>
+
+
+<a id='stochastic_optimization'><h3>Stochastic Optimization</h3></a>
+<p>
+Stochastic optimization algorithms are those that use randomness to elicit non-deterministic behaviors, contrasted to purely deterministic procedures.
+Most algorithms from the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics may be considered to belong the field of Stochastic Optimization. Algorithms that exploit randomness are not random in behavior, rather they sample a problem space in a biased manner, focusing on areas of interest and neglecting less interesting areas  [<a href='#Spall2003'>Spall2003</a>].
+A class of techniques that focus on the stochastic sampling of a domain, called Markov Chain Monte Carlo (MCMC) algorithms, provide good average performance, and generally offer a low chance of the worst case performance. Such approaches are suited to problems with many coupled degrees of freedom, for example large, high-dimensional spaces. MCMC approaches involve stochastically sampling from a target distribution function similar to Monte Carlo simulation methods using a process that resembles a biased Markov chain.
+</p>
+<ul>
+<li> <em>Monte Carlo</em> methods are used for selecting a statistical sample to approximate a given target probability density function and are traditionally used in statistical physics. Samples are drawn sequentially and the process may include criteria for rejecting samples and biasing the sampling locations within high-dimensional spaces.</li>
+<li> <em>Markov Chain</em> processes provide a probabilistic model for state transitions or moves within a discrete domain called a walk or a chain of steps. A Markov system is only dependent on the current position in the domain in order to probabilistically determine the next step in the walk.</li>
+</ul>
+<p>
+MCMC techniques combine these two approaches to solve integration and optimization problems in large dimensional spaces by generating samples while exploring the space using a Markov chain process, rather than sequentially or independently  [<a href='#Andrieu2003'>Andrieu2003</a>]. The step generation is configured to bias sampling in more important regions of the domain. Three examples of MCMC techniques include the Metropolis-Hastings algorithm, Simulated Annealing for global optimization, and the Gibbs sampler which are commonly employed in the fields of physics, chemistry, statistics, and economics.
+</p>
+
+
+<a id='inductive_learning'><h3>Inductive Learning</h3></a>
+<p>
+Many unconventional optimization algorithms employ a process that includes the iterative improvement of candidate solutions against an objective cost function. This process of adaptation is generally a method by which the process obtains characteristics that improve the system's (candidate solution) relative performance in an environment (cost function). This adaptive behavior is commonly achieved through a 'selectionist process' of repetition of the steps: generation, test, and selection. The use of non-deterministic processes mean that the sampling of the domain (the generation step) is typically non-parametric, although guided by past experience.
+</p>
+<p>
+The method of acquiring information is called inductive learning or learning from example, where the approach uses the implicit assumption that specific examples are representative of the broader information content of the environment, specifically with regard to anticipated need. Many unconventional optimization approaches maintain a single candidate solution, a population of samples, or a compression thereof that provides both an instantaneous representation of all of the information acquired by the process, and the basis for generating and making future decisions.
+</p>
+<p>
+This method of simultaneously acquiring and improving information from the domain and the optimization of decision making (where to direct future effort) is called the $k$-armed bandit (two-armed and multi-armed bandit) problem from the field of statistical decision making known as game theory  [<a href='#Robbins1952'>Robbins1952</a>] [<a href='#Bergemann2006'>Bergemann2006</a>]. This formalism considers the capability of a strategy to allocate available resources proportional to the future payoff the strategy is expected to receive. The classic example is the 2-armed bandit problem used by Goldberg to describe the behavior of the genetic algorithm  [<a href='#Goldberg1989'>Goldberg1989</a>]. The example involves an agent that learns which one of the two slot machines provides more return by pulling the handle of each (sampling the domain) and biasing future handle pulls proportional to the expected utility, based on the probabilistic experience with the past distribution of the payoff. The formalism may also be used to understand the properties of inductive learning demonstrated by the adaptive behavior of most unconventional optimization algorithms.
+</p>
+<p>
+The stochastic iterative process of generate and test can be computationally wasteful, potentially re-searching areas of the problem space already searched, and requiring many trials or samples in order to achieve a 'good enough' solution.
+The limited use of prior knowledge from the domain (black box) coupled with the stochastic sampling process mean that the adapted solutions are created without top-down insight or instruction can sometimes be interesting, innovative, and even competitive with decades of human expertise  [<a href='#Koza2003'>Koza2003</a>].
+</p>
+
+
+
+<a id='book_organization'><h2>Book Organization</h2></a>
+<p>
+The remainder of this book is organized into two parts: <em>Algorithms</em> that describes a large number of techniques in a complete and a consistent manner presented in a rough algorithm groups, and <em>Extensions</em> that reviews more advanced topics suitable for when a number of algorithms have been mastered.
+</p>
+
+<a id='algorithms'><h3>Algorithms</h3></a>
+<p>
+Algorithms are presented in six groups or kingdoms distilled from the broader fields of study each in their own chapter, as follows:
+</p>
+<ul>
+<li> <em>Stochastic Algorithms</em> that focuses on the introduction of randomness into heuristic methods (<a href='stochastic.html'>Stochastic Algorithms Chapter</a>).</li>
+<li> <em>Evolutionary Algorithms</em> inspired by evolution by means of natural selection (<a href='evolution.html'>Evolutionary Algorithms Chapter</a>).</li>
+<li> <em>Physical Algorithms</em> inspired by physical and social systems  (<a href='physical.html'>Physical Algorithms Chapter</a>).</li>
+<li> <em>Probabilistic Algorithms</em> that focuses on methods that build models and estimate distributions in search domains (<a href='probabilistic.html'>Probabilistic Algorithms Chapter</a>).</li>
+<li> <em>Swarm Algorithms</em> that focuses on methods that exploit the properties of collective intelligence (<a href='swarm.html'>Swarm Algorithms Chapter</a>).</li>
+<li> <em>Immune Algorithms</em> inspired by the adaptive immune system of vertebrates (<a href='immune.html'>Immune Algorithms Chapter</a>).</li>
+<li> <em>Neural Algorithms</em> inspired by the plasticity and learning qualities of the human nervous system (<a href='neural.html'>Neural Algorithms Chapter</a>).</li>
+</ul>
+<p>
+A given algorithm is more than just a procedure or code listing, each approach is an island of research. The meta-information that define the context of a technique is just as important to understanding and application as abstract recipes and concrete implementations. A standardized algorithm description is adopted to provide a consistent presentation of algorithms with a mixture of softer narrative descriptions, programmatic descriptions both abstract and concrete, and most importantly useful sources for finding out more information about the technique.
+</p>
+<p>
+The standardized algorithm description template covers the following subjects:
+</p>
+<ul>
+<li> <em>Name</em>: The algorithm name defines the canonical name used to refer to the technique, in addition to common aliases, abbreviations, and acronyms. The name is used as the heading of an algorithm description.</li>
+<li> <em>Taxonomy</em>: The algorithm taxonomy defines where a technique fits into the field, both the specific sub-fields of Computational Intelligence and Biologically Inspired Computation as well as the broader field of Artificial Intelligence. The taxonomy also provides a context for determining the relationships between algorithms.</li>
+<li> <em>Inspiration</em>: (where appropriate) The inspiration describes the specific system or process that provoked the inception of the algorithm. The inspiring system may non-exclusively be natural, biological, physical, or social. The description of the inspiring system may include relevant domain specific theory, observation, nomenclature, and those salient attributes of the system that are somehow abstractly or conceptually manifest in the technique.</li>
+<li> <em>Metaphor</em>: (where appropriate) The metaphor is a description of the technique in the context of the inspiring system or a different suitable system. The features of the technique are made apparent through an analogous description of the features of the inspiring system. The explanation through analogy is not expected to be literal, rather the method is used as an allegorical communication tool. The inspiring system is not explicitly described, this is the role of the 'inspiration' topic, which represents a loose dependency for this topic.</li>
+<li> <em>Strategy</em>: The strategy is an abstract description of the computational model. The strategy describes the information processing actions a technique shall take in order to achieve an objective, providing a logical separation between a computational realization (procedure) and an analogous system (metaphor). A given problem solving strategy may be realized as one of a number of specific algorithms or problem solving systems.</li>
+<li> <em>Procedure</em>: The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the computation, data structures, and representations.</li>
+<li> <em>Heuristics</em>: The heuristics section describes the commonsense, best practice, and demonstrated rules for applying and configuring a parameterized algorithm. The heuristics relate to the technical details of the technique's procedure and data structures for general classes of application (neither specific implementations nor specific problem instances).</li>
+<li> <em>Code Listing</em>: The code listing description provides a minimal but functional version of the technique implemented with a programming language. The code description can be typed into a computer and provide a working execution of the technique. The technique implementation also includes a minimal problem instance to which it is applied, and both the problem and algorithm implementations are complete enough to demonstrate the techniques procedure. The description is presented as a programming source code listing with a terse introductory summary.</li>
+<li> <em>References</em>: The references section includes a listing of both primary sources of information about the technique as well as useful introductory sources for novices to gain a deeper understanding of the theory and application of the technique. The description consists of hand-selected reference material including books, peer reviewed conference papers, and journal articles.</li>
+</ul>
+<p>
+Source code examples are included in the algorithm descriptions, and the Ruby Programming Language was selected for use throughout the book. Ruby was selected because it supports the procedural programming paradigm, adopted to ensure that examples can be easily ported to object-oriented and other paradigms. Additionally, Ruby is an interpreted language, meaning the code can be directly executed without an introduced compilation step, and it is free to download and use from the Internet. (Ruby can be downloaded for free from <a href='http://www.ruby-lang.org'>http://www.ruby-lang.org</a>) Ruby is concise, expressive, and supports meta-programming features that improve the readability of code examples.
+</p>
+<p>
+The sample code provides a working version of a given technique for demonstration purposes. Having a tinker with a technique can really bring it to life and provide valuable insight into a method. The sample code is a minimum implementation, providing plenty of opportunity to explore, extend and optimize.
+All of the source code for the algorithms presented in this book is available from the companion website, online at <a href='http://www.CleverAlgorithms.com'>http://www.CleverAlgorithms.com</a>. All algorithm implementations were tested with Ruby 1.8.6, 1.8.7 and 1.9.
+</p>
+
+
+<a id='extensions'><h3>Extensions</h3></a>
+<p>
+There are some some advanced topics that cannot be meaningfully considered until one has a firm grasp of a number of algorithms, and these are discussed at the back of the book.
+The Advanced Topics chapter addresses topics such as: the use of alternative programming paradigms when implementing clever algorithms, methodologies used when devising entirely new approaches, strategies to consider when testing clever algorithms, visualizing the behavior and results of algorithms, and comparing algorithms based on the results they produce using statistical methods.
+Like the background information provided in this chapter, the extensions provide a gentle introduction and starting point into some advanced topics, and references for seeking a deeper understanding.
+</p>
+
+
+
+<a id='how_to_read_this_book'><h2>How to Read this Book</h2></a>
+<p>
+This book is a reference text that provides a large compendium of algorithm descriptions.
+It is a trusted handbook of practical computational recipes to be consulted when one is confronted with difficult function optimization and approximation problems. It is also an encompassing guidebook of modern heuristic methods that may be browsed for inspiration, exploration, and general interest.
+</p>
+<p>
+The audience for this work may be interested in the fields of Computational Intelligence, Biologically Inspired Computation, and Metaheuristics and may count themselves as belonging to one of the following broader groups:
+</p>
+<ul>
+<li> <em>Scientists</em>: Research scientists concerned with theoretically or empirically investigating algorithms, addressing questions such as: <em>What is the motivating system and strategy for a given technique? What are some algorithms that may be used in a comparison within a given subfield or across subfields?</em></li>
+<li> <em>Engineers</em>: Programmers and developers concerned with implementing, applying, or maintaining algorithms, addressing questions such as: <em>What is the procedure for a given technique? What are the best practice heuristics for employing a given technique?</em></li>
+<li> <em>Students</em>: Undergraduate and graduate students interested in learning about techniques, addressing questions such as: <em>What are some interesting algorithms to study? How to implement a given approach?</em></li>
+<li> <em>Amateurs</em>: Practitioners interested in knowing more about algorithms, addressing questions such as: <em>What classes of techniques exist and what algorithms do they provide? How to conceptualize the computation of a technique?</em></li>
+</ul>
+
+
+<a id='further_reading'><h2>Further Reading</h2></a>
+<p>
+This book is not an introduction to Artificial Intelligence or related sub-fields, nor is it a field guide for a specific class of algorithms. This section provides some pointers to selected books and articles for those readers seeking a deeper understanding of the fields of study to which the Clever Algorithms described in this book belong.
+</p>
+
+<a id='artificial_intelligence'><h3>Artificial Intelligence</h3></a>
+<p>
+Artificial Intelligence is large field of study and many excellent texts have been written to introduce the subject. Russell and Novig's &quot;<em>Artificial Intelligence: A Modern Approach</em>&quot; is an excellent introductory text providing a broad and deep review of what the field has to offer and is useful for students and practitioners alike  [<a href='#Russell2009'>Russell2009</a>]. Luger and Stubblefield's &quot;<em>Artificial Intelligence: Structures and Strategies for Complex Problem Solving</em>&quot; is also an excellent reference text, providing a more empirical approach to the field  [<a href='#Luger1993'>Luger1993</a>].
+</p>
+
+
+<a id='computational_intelligence'><h3>Computational Intelligence</h3></a>
+<p>
+Introductory books for the field of Computational Intelligence generally focus on a handful of specific sub-fields and their techniques. Engelbrecht's &quot;<em>Computational Intelligence: An Introduction</em>&quot; provides a modern and detailed introduction to the field covering classic subjects such as Evolutionary Computation and Artificial Neural Networks, as well as more recent techniques such as Swarm Intelligence and Artificial Immune Systems  [<a href='#Engelbrecht2007'>Engelbrecht2007</a>]. Pedrycz's slightly more dated &quot;<em>Computational Intelligence: An Introduction</em>&quot; also provides a solid coverage of the core of the field with some deeper insights into fuzzy logic and fuzzy systems  [<a href='#Pedrycz1997'>Pedrycz1997</a>].
+</p>
+
+
+<a id='biologically_inspired_computation'><h3>Biologically Inspired Computation</h3></a>
+<p>
+Computational methods inspired by natural and biologically systems represent a large portion of the algorithms described in this book. The collection of articles published in de Castro and Von Zuben's &quot;<em>Recent Developments in Biologically Inspired Computing</em>&quot; provides an overview of the state of the field, and the introductory chapter on need for such methods does an excellent job to motivate the field of study  [<a href='#Castro2005'>Castro2005</a>]. Forbes's &quot;<em>Imitation of Life: How Biology Is Inspiring Computing</em>&quot; sets the scene for Natural Computing and the interrelated disciplines, of which Biologically Inspired Computing is but one useful example  [<a href='#Forbes2000'>Forbes2000</a>]. Finally, Benyus's &quot;<em>Biomimicry: Innovation Inspired by Nature</em>&quot; provides a good introduction into the broader related field of a new frontier in science and technology that involves building systems inspired by an understanding of the biological world  [<a href='#Benyus1998'>Benyus1998</a>].
+</p>
+
+
+<a id='metaheuristics'><h3>Metaheuristics</h3></a>
+<p>
+The field of Metaheuristics was initially constrained to heuristics for applying classical optimization procedures, although has expanded to encompass a broader and diverse set of techniques. Michalewicz and Fogel's &quot;<em>How to Solve It: Modern Heuristics</em>&quot; provides a practical tour of heuristic methods with a consistent set of worked examples  [<a href='#Michalewicz2004'>Michalewicz2004</a>]. Glover and Kochenberger's &quot;<em>Handbook of Metaheuristics</em>&quot; provides a solid introduction into a broad collection of techniques and their capabilities  [<a href='#Glover2003'>Glover2003</a>].
+</p>
+
+
+<a id='the_ruby_programming_language'><h3>The Ruby Programming Language</h3></a>
+<p>
+The Ruby Programming Language is a multi-paradigm dynamic language that appeared in approximately 1995. Its meta-programming capabilities coupled with concise and readable syntax have made it a popular language of choice for web development, scripting, and application development. The classic reference text for the language is Thomas, Fowler, and Hunt's &quot;<em>Programming Ruby: The Pragmatic Programmers' Guide</em>&quot; referred to as the 'pickaxe book' because of the picture of the pickaxe on the cover  [<a href='#Thomas2004'>Thomas2004</a>]. An updated edition is available that covers version 1.9 (compared to 1.8 in the cited version) that will work just as well for use as a reference for the examples in this book. Flanagan and Matsumoto's &quot;<em>The Ruby Programming Language</em>&quot; also provides a seminal reference text with contributions from Yukihiro Matsumoto, the author of the language  [<a href='#Flanagan2008'>Flanagan2008</a>]. For more information on the Ruby Programming Language, see the quick-start guide in <a href='appendix1.html'>Appendix A: Ruby: Quick-Start Guide</a>.
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Aaronson2005'>[Aaronson2005]</a></td>
+ <td>S. Aaronson, "<a href="http://scholar.google.com.au/scholar?q=NP-complete+problems+and+physical+reality">NP-complete problems and physical reality</a>", ACM SIGACT News (COLUMN: Complexity theory), 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ali1997'>[Ali1997]</a></td>
+ <td>M. M. Ali and C. Storey and A T&ouml;rn, "<a href="http://scholar.google.com.au/scholar?q=Application+of+Stochastic+Global+Optimization+Algorithms+to+Practical++Problems">Application of Stochastic Global Optimization Algorithms to Practical 	Problems</a>", Journal of Optimization Theory and Applications, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Andrieu2003'>[Andrieu2003]</a></td>
+ <td>C. Andrieu and N. de Freitas and A. Doucet and M. I. Jordan, "<a href="http://scholar.google.com.au/scholar?q=An+Introduction+to+MCMC+for+Machine+Learning">An Introduction to MCMC for Machine Learning</a>", Machine Learning, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Baeck2000'>[Baeck2000]</a></td>
+ <td>T. B&auml;ck and D. B. Fogel and Z. Michalewicz (editors), "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Computation+1:+Basic+Algorithms+and+Operators">Evolutionary Computation 1: Basic Algorithms and Operators</a>", IoP, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Baeck2000a'>[Baeck2000a]</a></td>
+ <td>T. B&auml;ck and D. B. Fogel and Z. Michalewicz (editors), "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Computation+2:+Advanced+Algorithms+and+Operations">Evolutionary Computation 2: Advanced Algorithms and Operations</a>", IoP, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Benyus1998'>[Benyus1998]</a></td>
+ <td>J. M. Benyus, "<a href="http://scholar.google.com.au/scholar?q=Biomimicry:+Innovation+Inspired+by+Nature">Biomimicry: Innovation Inspired by Nature</a>", Quill, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Bergemann2006'>[Bergemann2006]</a></td>
+ <td>D. Bergemann and J. Valimaki, "<a href="http://scholar.google.com.au/scholar?q=Bandit+Problems">Bandit Problems</a>", Technical Report 1551, Cowles Foundation, Yale University, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Bishop1995'>[Bishop1995]</a></td>
+ <td>C. M. Bishop, "<a href="http://scholar.google.com.au/scholar?q=Neural+Networks+for+Pattern+Recognition">Neural Networks for Pattern Recognition</a>", Oxford University Press, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Blum2003'>[Blum2003]</a></td>
+ <td>C. Blum and A. Roli, "<a href="http://scholar.google.com.au/scholar?q=Metaheuristics+in+combinatorial+optimization:+Overview+and+conceptual++comparison">Metaheuristics in combinatorial optimization: Overview and conceptual 	comparison</a>", ACM Computing Surveys (CSUR), 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Bonabeau1999'>[Bonabeau1999]</a></td>
+ <td>E. Bonabeau and M. Dorigo and G. Theraulaz, "<a href="http://scholar.google.com.au/scholar?q=Swarm+Intelligence:+From+Natural+to+Artificial+Systems">Swarm Intelligence: From Natural to Artificial Systems</a>", Oxford University Press US, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Boyd2004'>[Boyd2004]</a></td>
+ <td>S. Boyd and L. Vandenberghe, "<a href="http://scholar.google.com.au/scholar?q=Convex+Optimization">Convex Optimization</a>", Cambridge University Press, 2004.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Burke2003'>[Burke2003]</a></td>
+ <td>E. K. Burke and G. Kendall and E. Soubeiga, "<a href="http://scholar.google.com.au/scholar?q=A+Tabu-Search+Hyper-Heuristic+for+Timetabling+and+Rostering">A Tabu-Search Hyper-Heuristic for Timetabling and Rostering</a>", Journal of Heuristics, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Burke2003a'>[Burke2003a]</a></td>
+ <td>E. K. Burke and E. Hart and G. Kendall and J. Newall and P. Ross 	and S. Schulenburg, "<a href="http://scholar.google.com.au/scholar?q=Hyper-heuristics:+An+emerging+direction+in+modern+search+technology">Hyper-heuristics: An emerging direction in modern search technology</a>", in Handbook of Metaheuristics, pages 457&ndash;474, Kluwer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Castro2002'>[Castro2002]</a></td>
+ <td>L. N. de Castro and J. Timmis, "<a href="http://scholar.google.com.au/scholar?q=Artificial+Immune+Systems:+A+New+Computational+Intelligence+Approach">Artificial Immune Systems: A New Computational Intelligence Approach</a>", Springer, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Castro2005'>[Castro2005]</a></td>
+ <td>L. N. de Castro and F. J. Von Zuben, "<a href="http://scholar.google.com.au/scholar?q=Recent+developments+in+biologically+inspired+computing">Recent developments in biologically inspired computing</a>", Idea Group Inc, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Castro2005a'>[Castro2005a]</a></td>
+ <td>L. N. de Castro and F. J. Von Zuben, "<a href="http://scholar.google.com.au/scholar?q=From+biologically+inspired+computing+to+natural+computing">From biologically inspired computing to natural computing</a>", in Recent developments in biologically inspired computing, Idea Group, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Corne1999'>[Corne1999]</a></td>
+ <td>D. Corne and M. Dorigo and F. Glover, "<a href="http://scholar.google.com.au/scholar?q=New+Ideas+in+Optimization">New Ideas in Optimization</a>", McGraw-Hill, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Dorigo2004'>[Dorigo2004]</a></td>
+ <td>M. Dorigo and T. St&uuml;tzle, "<a href="http://scholar.google.com.au/scholar?q=Ant+Colony+Optimization">Ant Colony Optimization</a>", MIT Press, 2004.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Droste2006'>[Droste2006]</a></td>
+ <td>S. Droste and T. Jansen and I. Wegener, "<a href="http://scholar.google.com.au/scholar?q=Upper+and+Lower+Bounds+for+Randomized+Search+Heuristics+in+Black-Box++Optimization">Upper and Lower Bounds for Randomized Search Heuristics in Black-Box 	Optimization</a>", Theory of Computing Systems, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Engelbrecht2007'>[Engelbrecht2007]</a></td>
+ <td>A. P. Engelbrecht, "<a href="http://scholar.google.com.au/scholar?q=Computational+Intelligence:+An+Introduction">Computational Intelligence: An Introduction</a>", John Wiley and Sons, 2007.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Flanagan2008'>[Flanagan2008]</a></td>
+ <td>D. Flanagan and Y. Matsumoto, "<a href="http://scholar.google.com.au/scholar?q=The+Ruby+Programming+Language">The Ruby Programming Language</a>", O'Reilly Media, 2008.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forbes2000'>[Forbes2000]</a></td>
+ <td>N. Forbes, "<a href="http://scholar.google.com.au/scholar?q=Biologically+inspired+computing">Biologically inspired computing</a>", Computing in Science and Engineering, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forbes2005'>[Forbes2005]</a></td>
+ <td>N. Forbes, "<a href="http://scholar.google.com.au/scholar?q=Imitation+of+Life:+How+Biology+Is+Inspiring+Computing">Imitation of Life: How Biology Is Inspiring Computing</a>", The MIT Press, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Fukunaga1990'>[Fukunaga1990]</a></td>
+ <td>K. Fukunaga, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+Statistical+Pattern+Recognition">Introduction to Statistical Pattern Recognition</a>", Academic Press, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Glover2003'>[Glover2003]</a></td>
+ <td>F. Glover and G. A. Kochenberger, "<a href="http://scholar.google.com.au/scholar?q=Handbook+of+Metaheuristics">Handbook of Metaheuristics</a>", Springer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Goldberg1989'>[Goldberg1989]</a></td>
+ <td>D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Genetic+Algorithms+in+Search,+Optimization,+and+Machine+Learning">Genetic Algorithms in Search, Optimization, and Machine Learning</a>", Addison-Wesley, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Guyon2003'>[Guyon2003]</a></td>
+ <td>I. Guyon and A. Elisseeff, "<a href="http://scholar.google.com.au/scholar?q=An+Introduction+to+Variable+and+Feature+Selection">An Introduction to Variable and Feature Selection</a>", Journal of Machine Learning Research, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Holland1975'>[Holland1975]</a></td>
+ <td>J. H. Holland, "<a href="http://scholar.google.com.au/scholar?q=Adaptation+in+natural+and+artificial+systems:+An+introductory+analysis++with+applications+to+biology,+control,+and+artificial+intelligence">Adaptation in natural and artificial systems: An introductory analysis 	with applications to biology, control, and artificial intelligence</a>", University of Michigan Press, 1975.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Horst2000'>[Horst2000]</a></td>
+ <td>R. Horst and P. M. Pardalos and N. V. Thoai, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+Global+Optimization">Introduction to Global Optimization</a>", Kluwer Academic Publishers, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kennedy2001'>[Kennedy2001]</a></td>
+ <td>J. Kennedy and R. C. Eberhart and Y. Shi, "<a href="http://scholar.google.com.au/scholar?q=Swarm+Intelligence">Swarm Intelligence</a>", Morgan Kaufmann, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Koza2003'>[Koza2003]</a></td>
+ <td>J. R. Koza and M. A. Keane and M. J. Streeter and W. Mydlowec and J. Yu and G. Lanza, "<a href="http://scholar.google.com.au/scholar?q=Genetic+Programming+IV:+Routine+Human-Competitive+Machine+Intelligence">Genetic Programming IV: Routine Human-Competitive Machine Intelligence</a>", Springer, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kudo2000'>[Kudo2000]</a></td>
+ <td>M. Kudo and J. Sklansky, "<a href="http://scholar.google.com.au/scholar?q=Comparison+of+algorithms+that+select+features+for+pattern+classifiers">Comparison of algorithms that select features for pattern classifiers</a>", Pattern Recognition, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Lewis2000'>[Lewis2000]</a></td>
+ <td>R. M. Lewis and V. T. and M. W. Trosset, "<a href="http://scholar.google.com.au/scholar?q=Direct+search+methods:+then+and+now">Direct search methods: then and now</a>", Journal of Computational and Applied Mathematics, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Luger1993'>[Luger1993]</a></td>
+ <td>G. F. Luger and W. A. Stubblefield, "<a href="http://scholar.google.com.au/scholar?q=Artificial+Intelligence:+Structures+and+Strategies+for+Complex+Problem++Solving">Artificial Intelligence: Structures and Strategies for Complex Problem 	Solving</a>", Benjamin/Cummings Pub. Co., 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Luke2009'>[Luke2009]</a></td>
+ <td>S. Luke, "<a href="http://scholar.google.com.au/scholar?q=Essentials+of+Metaheuristics">Essentials of Metaheuristics</a>", Lulu, 2010.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Marrow2000'>[Marrow2000]</a></td>
+ <td>P. Marrow, "<a href="http://scholar.google.com.au/scholar?q=Nature-inspired+computing+technology+and+applications">Nature-inspired computing technology and applications</a>", BT Technology Journal, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Michalewicz2004'>[Michalewicz2004]</a></td>
+ <td>Z. Michalewicz and D. B. Fogel, "<a href="http://scholar.google.com.au/scholar?q=How+to+Solve+It:+Modern+Heuristics">How to Solve It: Modern Heuristics</a>", Springer, 2004.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Papadimitriou1998'>[Papadimitriou1998]</a></td>
+ <td>C. H. Papadimitriou and K. Steiglitz, "<a href="http://scholar.google.com.au/scholar?q=Combinatorial+Optimization:+Algorithms+and+Complexity">Combinatorial Optimization: Algorithms and Complexity</a>", Courier Dover Publications, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Paton1994'>[Paton1994]</a></td>
+ <td>R. Paton, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+computing+with+biological+metaphors">Introduction to computing with biological metaphors</a>", in Computing With Biological Metaphors, pages 1&ndash;8, Chapman &amp; Hall, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Paun2005'>[Paun2005]</a></td>
+ <td>G. Pa&#365;n, "<a href="http://scholar.google.com.au/scholar?q=Bio-inspired+computing+paradigms+(natural+computing)">Bio-inspired computing paradigms (natural computing)</a>", Unconventional Programming Paradigms, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pedrycz1997'>[Pedrycz1997]</a></td>
+ <td>W. Pedrycz, "<a href="http://scholar.google.com.au/scholar?q=Computational+Intelligence:+An+Introduction">Computational Intelligence: An Introduction</a>", CRC Press, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Robbins1952'>[Robbins1952]</a></td>
+ <td>H. Robbins, "<a href="http://scholar.google.com.au/scholar?q=Some+aspects+of+the+sequential+design+of+experiments">Some aspects of the sequential design of experiments</a>", Bull. Amer. Math. Soc., 1952.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Russell2009'>[Russell2009]</a></td>
+ <td>S. Russell and P. Norvig, "<a href="http://scholar.google.com.au/scholar?q=Artificial+Intelligence:+A+Modern+Approach">Artificial Intelligence: A Modern Approach</a>", Prentice Hall, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Sloman1990'>[Sloman1990]</a></td>
+ <td>A. Sloman, "<a href="http://scholar.google.com.au/scholar?q=Must+intelligent+systems+be+scruffy?">Must intelligent systems be scruffy?</a>", in Evolving Knowledge in Natural Science and Artificial Intelligence, Pitman, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Spall2003'>[Spall2003]</a></td>
+ <td>J. C. Spall, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+stochastic+search+and+optimization:+estimation,+simulation,++and+control">Introduction to stochastic search and optimization: estimation, simulation, 	and control</a>", John Wiley and Sons, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Talbi2009'>[Talbi2009]</a></td>
+ <td>E. G. Talbi, "<a href="http://scholar.google.com.au/scholar?q=Metaheuristics:+From+Design+to+Implementation">Metaheuristics: From Design to Implementation</a>", John Wiley and Sons, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Thomas2004'>[Thomas2004]</a></td>
+ <td>D. Thomas and C. Fowler and A. Hunt, "<a href="http://scholar.google.com.au/scholar?q=Programming+Ruby:+The+Pragmatic+Programmers'+Guide">Programming Ruby: The Pragmatic Programmers' Guide</a>", Pragmatic Bookshelf, 2004.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Toern1999'>[Toern1999]</a></td>
+ <td>A. T&ouml;rn and M. M. Ali and S. Viitanen, "<a href="http://scholar.google.com.au/scholar?q=Stochastic+Global+Optimization:+Problem+Classes+and+Solution+Techniques">Stochastic Global Optimization: Problem Classes and Solution Techniques</a>", Journal of Global Optimization, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Weise2007'>[Weise2007]</a></td>
+ <td>T. Weise, "<a href="http://scholar.google.com.au/scholar?q=Global+Optimization+Algorithms+-+Theory+and+Application">Global Optimization Algorithms - Theory and Application</a>", (Self Published), 2007.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Wolpert1995'>[Wolpert1995]</a></td>
+ <td>D. H. Wolpert and W. G. Macready, "<a href="http://scholar.google.com.au/scholar?q=No+Free+Lunch+Theorems+for+Search">No Free Lunch Theorems for Search</a>", Santa Fe Institute, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Wolpert1997'>[Wolpert1997]</a></td>
+ <td>D. H. Wolpert and W. G. Macready, "<a href="http://scholar.google.com.au/scholar?q=No+Free+Lunch+Theorems+for+Optimization">No Free Lunch Theorems for Optimization</a>", IEEE Transactions on Evolutionary Computation, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zadeh1996'>[Zadeh1996]</a></td>
+ <td>L. A. Zadeh and G. J. Klir and B. Yuan, "<a href="http://scholar.google.com.au/scholar?q=Fuzzy+sets,+fuzzy+logic,+and+fuzzy+systems:+selected+papers">Fuzzy sets, fuzzy logic, and fuzzy systems: selected papers</a>", World Scientific, 1996.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

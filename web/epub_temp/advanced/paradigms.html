@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='programming_paradigms'><h1>Programming Paradigms</h1></a>
+<p>
+This section discusses three standard programming paradigms that may be used to implement the algorithms described throughput the book:
+</p>
+<ul>
+<li> Procedural Programming</li>
+<li> Object-Oriented Programming</li>
+<li> Flow Programming</li>
+</ul>
+<p>
+Each paradigm is described and an example implementation is provided using the Genetic Algorithm (described in ) as a context.
+</p>
+
+<a id='procedural_programming'><h2>Procedural Programming</h2></a>
+<p>
+This section considers the implementation of algorithms from the Clever Algorithms project in the Procedural Programming Paradigm.
+</p>
+
+<a id='description'><h3>Description</h3></a>
+<p>
+The procedural programming paradigm (also called imperative programming) is concerned with defining a linear procedure or sequence of programming statements. A key feature of the paradigm is the partitioning of functionality into small discrete re-usable modules called procedures (subroutines or functions) that act like small programs themselves with their own scope, inputs and outputs. A procedural code example is executed from a single point of control or entry point which calls out into declared procedures, which in turn may call other procedures.
+</p>
+<p>
+Procedural programming was an early so-called 'high-level programming paradigm' (compared to lower-level machine code) and is the most common and well understood form of programming. Newer paradigms (such as Object-Oriented programming) and modern businesses programming languages (such as C++, Java and C#) are built on the principles of procedural programming.
+</p>
+<p>
+All algorithms in this book were implemented using a procedural programming paradigm in the Ruby Programming Language. A procedural representation was chosen to provide the most transferrable instantiation of the algorithm implementations. Many languages support the procedural paradigm and procedural code examples are expected to be easily ported to popular paradigms such as object-oriented and functional.
+</p>
+
+
+<a id='example'><h3>Example</h3></a>
+<p>
+Listing (below) in  provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the procedural programming paradigm.
+</p>
+
+
+
+<a id='object-oriented_programming'><h2>Object-Oriented Programming</h2></a>
+<p>
+This section considers the implementation of algorithms from the Clever Algorithms project in the Object-Oriented Programming Paradigm.
+</p>
+
+<a id='description'><h3>Description</h3></a>
+<p>
+The Object-Oriented Programming (OOP) paradigm is concerned with modeling problems in terms of entities called objects that have attributes and behaviors (data and methods) and interact with other entities using message passing (calling methods on other entities). An object developer defines a class or template for the entity, which is instantiated or constructed and then may be used in the program.
+</p>
+<p>
+Objects can extend other objects, inheriting some or all of the attributes and behaviors from the parent providing specific modular reuse. Objects can be treated as a parent type (an object in its inheritance tree) allowing the use or application of the objects in the program without the caller knowing the specifics of the behavior or data inside the object. This general property is called polymorphism, which exploits the encapsulation of attributes and behavior within objects and their capability of being treated (viewed or interacted with) as a parent type.
+</p>
+<p>
+Organizing functionality into objects allows for additional constructs such as abstract types where functionality is only partially defined and must be completed by descendant objects, overriding where descending objects re-define behavior defined in a parent object, and static classes and behaviors where behavior is executed on the object template rather than the object instance.
+For more information on Object-Oriented programming and software design refer to a good textbook on the subject, such as Booch  [<a href='#Booch1997'>Booch1997</a>] or Meyer  [<a href='#Meyer1997'>Meyer1997</a>].
+</p>
+<p>
+There are common ways of solving discrete problems using object-oriented programs called patterns. They are organizations of behavior and data that have been abstracted and presented as a solution or idiom for a class of problem. The Strategy Pattern is an object-oriented pattern that is suited to implementing an algorithm. This pattern is intended to encapsulate the behavior of an algorithm as a strategy object where different strategies can be used interchangeably on a given context or problem domain. This strategy can be useful in situations where the performance or capability of a range of different techniques needs to be assessed on a given problem (such as algorithm racing or bake-offs). Additionally, the problem or context can also be modeled as an interchangeable object, allowing both algorithms and problems to be used interchangeably. This method is used in object-oriented algorithm frameworks.
+For more information on the strategy pattern or object-oriented design patterns in general, refer to Gamma et al.  [<a href='#Gamma1995'>Gamma1995</a>].
+</p>
+
+
+<a id='example'><h3>Example</h3></a>
+<p>
+Listing (below) provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Object-Oriented Programming Paradigm.
+</p>
+<p>
+The implementation provides general problem and strategy classes that define their behavioral expectations. A <code>OneMax</code> problem class and a <code>GeneticAlgorithm</code> strategy class are specified. The algorithm makes few assumptions of the problem other than it can assess candidate solutions and determine whether a given solution is optimal. The problem makes very few assumptions about candidate solutions other than they are map data structures that contain a binary string and fitness key-value pairs. The use of the Strategy Pattern allows a new algorithm to easily be defined to work with the existing problem, and that new problems could be defined for the Genetic Algorithm to execute.
+</p>
+<p>
+Note that Ruby does not support abstract classes, so this construct is simulated by defining methods that raise an exception if they are not overridden by descendant classes.
+</p>
+<pre class='prettyprint lang-rb'>
+# A problem template
+class Problem
+  def assess(candidate_solution)
+    raise "A problem has not been defined"
+  end
+
+  def is_optimal?(candidate_solution)
+    raise "A problem has not been defined"
+  end
+end
+
+# An strategy template
+class Strategy
+  def execute(problem)
+    raise "A strategy has not been defined!"
+  end
+end
+
+# An implementation of the OneMax problem using the problem template
+class OneMax &lt; Problem
+
+  attr_reader :num_bits
+
+  def initialize(num_bits=64)
+    @num_bits = num_bits
+  end
+
+  def assess(candidate_solution)
+    if candidate_solution[:bitstring].length != @num_bits
+      raise "Expected #{@num_bits} in candidate solution."
+    end
+    sum = 0
+    candidate_solution[:bitstring].size.times do |i|
+      sum += 1 if candidate_solution[:bitstring][i].chr =='1'
+    end
+    return sum
+  end
+
+  def is_optimal?(candidate_solution)
+    return candidate_solution[:fitness] == @num_bits
+  end
+end
+
+# An implementation of the Genetic algorithm using the strategy template
+class GeneticAlgorithm &lt; Strategy
+
+  attr_reader :max_generations, :population_size, :p_crossover, :p_mutation
+
+  def initialize(max_gens=100, pop_size=100, crossover=0.98, mutation=1.0/64.0)
+    @max_generations = max_gens
+    @population_size = pop_size
+    @p_crossover = crossover
+    @p_mutation = mutation
+  end
+
+  def random_bitstring(num_bits)
+    return (0...num_bits).inject(""){|s,i| s&lt;&lt;((rand&lt;0.5) ? "1" : "0")}
+  end
+
+  def binary_tournament(pop)
+    i, j = rand(pop.size), rand(pop.size)
+    j = rand(pop.size) while j==i
+    return (pop[i][:fitness] &gt; pop[j][:fitness]) ? pop[i] : pop[j]
+  end
+
+  def point_mutation(bitstring)
+    child = ""
+     bitstring.size.times do |i|
+      bit = bitstring[i].chr
+      child &lt;&lt; ((rand()&lt;@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+    end
+    return child
+  end
+
+  def uniform_crossover(parent1, parent2)
+    return ""+parent1 if rand()&gt;=@p_crossover
+    child = ""
+    parent1.length.times do |i|
+      child &lt;&lt; ((rand()&lt;0.5) ? parent1[i].chr : parent2[i].chr)
+    end
+    return child
+  end
+
+  def reproduce(selected)
+    children = []
+    selected.each_with_index do |p1, i|
+      p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+      p2 = selected[0] if i == selected.size-1
+      child = {}
+      child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring])
+      child[:bitstring] = point_mutation(child[:bitstring])
+      children &lt;&lt; child
+      break if children.size &gt;= @population_size
+    end
+    return children
+  end
+
+  def execute(problem)
+    population = Array.new(@population_size) do |i|
+      {:bitstring=&gt;random_bitstring(problem.num_bits)}
+    end
+    population.each{|c| c[:fitness] = problem.assess(c)}
+    best = population.sort{|x,y| y[:fitness] &lt;=&gt; x[:fitness]}.first
+    @max_generations.times do |gen|
+      selected = Array.new(population_size){|i| binary_tournament(population)}
+      children = reproduce(selected)
+      children.each{|c| c[:fitness] = problem.assess(c)}
+      children.sort!{|x,y| y[:fitness] &lt;=&gt; x[:fitness]}
+      best = children.first if children.first[:fitness] &gt;= best[:fitness]
+      population = children
+      puts " &gt; gen #{gen}, best: #{best[:fitness]}, #{best[:bitstring]}"
+      break if problem.is_optimal?(best)
+    end
+    return best
+  end
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem = OneMax.new
+  # algorithm configuration
+  strategy = GeneticAlgorithm.new
+  # execute the algorithm
+  best = strategy.execute(problem)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+end
+</pre>
+<div class='download_src'><a href='oop.rb'>Download Source</a></div>
+<div class='caption'>Genetic Algorithm in Ruby using OOP</div>
+
+
+
+<a id='flow_programming'><h2>Flow Programming</h2></a>
+<p>
+This section considers the implementation of algorithms from the Clever Algorithms project in the Flow Programming paradigm.
+</p>
+
+<a id='description'><h3>Description</h3></a>
+<p>
+Flow, data-flow, or pipeline programming involves chaining a sequence of smaller processes together and allowing a flow of information through the sequence in order to perform the desired computation. Units in the flow are considered black-boxes that communicate with each other using message passing. The information that is passed between the units is considered a stream and a given application may have one or more streams of potentially varying direction. Discrete information in a stream is partitioned into information packets which are passed from unit-to-unit via message buffers, queues or similar data structures.
+</p>
+<p>
+A flow organization allows computing units to be interchanged readily. It also allows for variations of the pipeline to be considered with minor reconfiguration. A flow or pipelining structure is commonly used by software frameworks for the organization within a given algorithm implementation, allowing the specification of operators that manipulate candidate solutions to be varied and interchanged.
+</p>
+<p>
+For more information on Flow Programming see a good textbook on the subject, such as Morrison  [<a href='#Morrison2010'>Morrison2010</a>].
+</p>
+
+
+<a id='example'><h3>Example</h3></a>
+<p>
+Listing (below) provides an example of the Genetic Algorithm implemented in the Ruby Programming Language using the Flow Programming paradigm.
+Each unit is implemented as an object that executes its logic within a standalone thread that reads input from the input queue and writes data to its output queue. The implementation shows four flow units organized into a cyclic graph where the output queue of one unit is used as the input of the next unit in the cycle (<code>EvalFlowUnit</code> to <code>StopConditionUnit</code> to <code>SelectFlowUnit</code> to <code>VariationFlowUnit</code>).
+</p>
+<p>
+Candidate solutions are the unit of data that is passed around in the flow between units.
+When the system is started it does not have any information to process until a set of random solutions are injected into the evaluation unit's input queue. The solution are evaluated and sent to the stop condition unit where the constraints of the algorithm execution are tested (optima found or maximum number of evaluations) and the candidates are passed on to the selection flow unit. The selection unit collects a predefined number of candidate solutions then passes the better solutions onto the variation unit. The variation unit performs crossover and mutation on each pair of candidate solutions and sends the results to the evaluation unit, completing the cycle.
+</p>
+<pre class='prettyprint lang-rb'>
+require 'thread'
+
+# Generic flow unit
+class FlowUnit
+  attr_reader :queue_in, :queue_out, :thread
+
+  def initialize(q_in=Queue.new, q_out=Queue.new)
+    @queue_in, @queue_out = q_in, q_out
+    start()
+  end
+
+  def execute
+    raise "FlowUnit not defined!"
+  end
+
+  def start
+    puts "Starting flow unit: #{self.class.name}!"
+    @thread = Thread.new do
+      execute() while true
+    end
+  end
+end
+
+# Evaluation of solutions flow unit
+class EvalFlowUnit &lt; FlowUnit
+  def onemax(bitstring)
+    sum = 0
+    bitstring.size.times {|i| sum+=1 if bitstring[i].chr=='1'}
+    return sum
+  end
+
+  def execute
+    data = @queue_in.pop
+    data[:fitness] = onemax(data[:bitstring])
+    @queue_out.push(data)
+  end
+end
+
+# Stop condition flow unit
+class StopConditionUnit &lt; FlowUnit
+  attr_reader :best, :num_bits, :max_evaluations, :evals
+
+  def initialize(q_in=Queue.new, q_out=Queue.new, max_evaluations=10000, num_bits=64)
+    @best, @evals = nil, 0
+    @num_bits = num_bits
+    @max_evaluations = max_evaluations
+    super(q_in, q_out)
+  end
+
+  def execute
+    data = @queue_in.pop
+    if @best.nil? or data[:fitness] &gt; @best[:fitness]
+      @best = data
+      puts " &gt;new best: #{@best[:fitness]}, #{@best[:bitstring]}"
+    end
+    @evals += 1
+    if @best[:fitness]==@num_bits or @evals&gt;=@max_evaluations
+      puts "done! Solution: f=#{@best[:fitness]}, s=#{@best[:bitstring]}"
+      @thread.exit()
+    end
+    @queue_out.push(data)
+  end
+end
+
+# Fitness-based selection flow unit
+class SelectFlowUnit &lt; FlowUnit
+  def initialize(q_in=Queue.new, q_out=Queue.new, pop_size=100)
+    @pop_size = pop_size
+    super(q_in, q_out)
+  end
+
+  def binary_tournament(pop)
+    i, j = rand(pop.size), rand(pop.size)
+    j = rand(pop.size) while j==i
+    return (pop[i][:fitness] &gt; pop[j][:fitness]) ? pop[i] : pop[j]
+  end
+
+  def execute
+    population = Array.new
+    population &lt;&lt; @queue_in.pop while population.size &lt; @pop_size
+    @pop_size.times do |i|
+      @queue_out.push(binary_tournament(population))
+    end
+  end
+end
+
+# Variation flow unit
+class VariationFlowUnit &lt; FlowUnit
+  def initialize(q_in=Queue.new, q_out=Queue.new, crossover=0.98, mutation=1.0/64.0)
+    @p_crossover = crossover
+    @p_mutation = mutation
+    super(q_in, q_out)
+  end
+
+  def uniform_crossover(parent1, parent2)
+    return ""+parent1 if rand()&gt;=@p_crossover
+    child = ""
+    parent1.length.times do |i|
+      child &lt;&lt; ((rand()&lt;0.5) ? parent1[i].chr : parent2[i].chr)
+    end
+    return child
+  end
+
+  def point_mutation(bitstring)
+    child = ""
+    bitstring.size.times do |i|
+      bit = bitstring[i].chr
+      child &lt;&lt; ((rand()&lt;@p_mutation) ? ((bit=='1') ? "0" : "1") : bit)
+    end
+    return child
+  end
+
+  def reproduce(p1, p2)
+    child = {}
+    child[:bitstring] = uniform_crossover(p1[:bitstring], p2[:bitstring])
+    child[:bitstring] = point_mutation(child[:bitstring])
+    return child
+  end
+
+  def execute
+    parent1 = @queue_in.pop
+    parent2 = @queue_in.pop
+    @queue_out.push(reproduce(parent1, parent2))
+    @queue_out.push(reproduce(parent2, parent1))
+  end
+end
+
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s&lt;&lt;((rand&lt;0.5) ? "1" : "0")}
+end
+
+def search(population_size=100, num_bits=64)
+  # create the pipeline
+  eval = EvalFlowUnit.new
+  stopcondition = StopConditionUnit.new(eval.queue_out)
+  selection = SelectFlowUnit.new(stopcondition.queue_out)
+  variation = VariationFlowUnit.new(selection.queue_out, eval.queue_in)
+  # push random solutions into the pipeline
+  population_size.times do
+    solution = {:bitstring=&gt;random_bitstring(num_bits)}
+    eval.queue_in.push(solution)
+  end
+  stopcondition.thread.join
+  return stopcondition.best
+end
+
+if __FILE__ == $0
+  best = search()
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+end
+</pre>
+<div class='download_src'><a href='flow.rb'>Download Source</a></div>
+<div class='caption'>Genetic Algorithm in Ruby using the Flow Programming</div>
+
+
+
+<a id='other_paradigms'><h2>Other Paradigms</h2></a>
+<p>
+A number of popular and common programming paradigms have been considered in this section, although many more have not been described.
+</p>
+<p>
+Many programming paradigms are not appropriate for implementing algorithms as-is, but may be useful with the algorithm as a component in a broader system, such as Agent-Oriented Programming where the algorithm may be a procedure available to the agent. Meta-programming a case where the capabilities of the paradigm may be used for parts of an algorithm implementation, such as the manipulation of candidate programs in Genetic Programming. Aspect-Oriented Programming could be layered over an object oriented algorithm implementation and used to separate the concerns of termination conditions and best solution logging.
+</p>
+<p>
+Other programming paradigms provide variations on what has already been described, such as Functional Programming which would be similar to the procedural example, and Event-Driven Programming that would not be too dissimilar in principle to the Flow-Based Programming. Another example is the popular idiom of Map-Reduce which is an application of functional programming principles organized into a data flow model.
+</p>
+<p>
+Finally, there are programming paradigms that are not relevant or feasible to consider implementing algorithms, such as Logic Programming.
+</p>
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Booch1997'>[Booch1997]</a></td>
+ <td>G. Booch and R. Maksimchuk and M. Engle and B. Young and J. Conallen and K. Houston, "<a href="http://scholar.google.com.au/scholar?q=Object-Oriented+Analysis+and+Design+with+Applications">Object-Oriented Analysis and Design with Applications</a>", Addison-Wesley, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Gamma1995'>[Gamma1995]</a></td>
+ <td>E. Gamma and R. Helm and R. Johnson and J. Vlissides, "<a href="http://scholar.google.com.au/scholar?q=Design+Patterns:+Elements+of+Reusable+Object+Oriented+Software">Design Patterns: Elements of Reusable Object Oriented Software</a>", Addison-Wesley, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Meyer1997'>[Meyer1997]</a></td>
+ <td>B. Meyer, "<a href="http://scholar.google.com.au/scholar?q=Object-Oriented+Software+Construction">Object-Oriented Software Construction</a>", Prentice Hall, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Morrison2010'>[Morrison2010]</a></td>
+ <td>J&ndash;P. Morrison, "<a href="http://scholar.google.com.au/scholar?q=Flow-Based+Programming:+A+New+Approach+to+Application+Developments">Flow-Based Programming: A New Approach to Application Developments</a>", CreateSpace, 2010.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

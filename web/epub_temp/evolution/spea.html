@@ -1,0 +1,329 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='strength_pareto_evolutionary_algorithm'><h1>Strength Pareto Evolutionary Algorithm</h1></a>
+<p>
+<em>Strength Pareto Evolutionary Algorithm, SPEA, SPEA2.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Strength Pareto Evolutionary Algorithm is a Multiple Objective Optimization (MOO) algorithm and an Evolutionary Algorithm from the field of Evolutionary Computation. It belongs to the field of Evolutionary Multiple Objective (EMO) algorithms. Refer to  for more information and references on Multiple Objective Optimization.
+Strength Pareto Evolutionary Algorithm is an extension of the Genetic Algorithm for multiple objective optimization problems.
+It is related to sibling Evolutionary Algorithms such as Non-dominated Sorting Genetic Algorithm (NSGA), Vector-Evaluated Genetic Algorithm (VEGA), and Pareto Archived Evolution Strategy (PAES).
+There are two versions of SPEA, the original SPEA algorithm and the extension SPEA2. Additional extensions include SPEA+ and iSPEA.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the algorithm is to locate and and maintain a front of non-dominated solutions, ideally a set of Pareto optimal solutions.
+This is achieved by using an evolutionary process (with surrogate procedures for genetic recombination and mutation) to explore the search space, and a selection process that uses a combination of the degree to which a candidate solution is dominated (strength) and an estimation of density of the Pareto front as an assigned fitness. An archive of the non-dominated set is maintained separate from the population of candidate solutions used in the evolutionary process, providing a form of elitism.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) for minimizing a cost function.
+The <code>CalculateRawFitness</code> function calculates the raw fitness as the sum of the strength values of the solutions that dominate a given candidate, where strength is the number of solutions that a give solution dominate.
+The <code>CandidateDensity</code> function estimates the density of an area of the Pareto front as $\frac{1.0}{\sigma^k + 2}$ where $\sigma^k$ is the Euclidean distance of the objective values between a given solution the $k$th nearest neighbor of the solution, and $k$ is the square root of the size of the population and archive combined.
+The <code>PopulateWithRemainingBest</code> function iteratively fills the archive with the remaining candidate solutions in order of fitness.
+The <code>RemoveMostSimilar</code> function truncates the archive population removing those members with the smallest $\sigma^k$ values as calculated against the archive.
+The <code>SelectParents</code> function selects parents from a population using a Genetic Algorithm selection method such as binary tournament selection. The <code>CrossoverAndMutation</code> function performs the crossover and mutation genetic operators from the Genetic Algorithm.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$Population_{size}$, $Archive_{size}$, <code>ProblemSize</code>, $P_{crossover}$, $P_{mutation}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+<code>Archive</code>
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($Population_{size}$, <code>ProblemSize</code>)<br />
+<code>Archive</code> $\leftarrow \emptyset$<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_i$ $\in$ <code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{objectives}$ $\leftarrow$ <code>CalculateObjectives</code>($S_i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Union</code> $\leftarrow$ <code>Population</code> + <code>Archive</code><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_i$ $\in$ <code>Union</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{raw}$ $\leftarrow$ <code>CalculateRawFitness</code>($S_i$, <code>Union</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{density}$ $\leftarrow$ <code>CalculateSolutionDensity</code>($S_i$, <code>Union</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{fitness}$ $\leftarrow$ $Si_{raw}$ + $Si_{density}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Archive</code> $\leftarrow$ <code>GetNonDominated</code>(<code>Union</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Size</code>(<code>Archive</code>) &lt; $Archive_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>PopulateWithRemainingBest</code>(<code>Union</code>, <code>Archive</code>, $Archive_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>ElseIf</code></strong> (<code>Size</code>(<code>Archive</code>) &gt; $Archive_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>RemoveMostSimilar</code>(<code>Archive</code>, $Archive_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Selected</code> $\leftarrow$ <code>SelectParents</code>(<code>Archive</code>, $Population_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>CrossoverAndMutation</code>(<code>Selected</code>, $P_{crossover}$, $P_{mutation}$)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> (GetNonDominated(<code>Archive</code>))<br />
+</div>
+<div class='caption'>Pseudocode for SPEA2.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> SPEA was designed for and is suited to combinatorial and continuous function multiple objective optimization problem instances.</li>
+<li> A binary representation can be used for continuous function optimization problems in conjunction with classical genetic operators such as one-point crossover and point mutation.</li>
+<li> A $k$ value of 1 may be used for efficiency whilst still providing useful results.</li>
+<li> The size of the archive is commonly smaller than the size of the population.</li>
+<li> There is a lot of room for implementation optimization in density and Pareto dominance calculations.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Strength Pareto Evolutionary Algorithm 2 (SPEA2) implemented in the Ruby Programming Language.
+The demonstration problem is an instance of continuous multiple objective function optimization called SCH (problem one in  [<a href='#Deb2002'>Deb2002</a>]). The problem seeks the minimum of two functions: $f1=\sum_{i=1}^n x_{i}^2$ and $f2=\sum_{i=1}^n (x_{i}-2)^2$, $-10\leq x_i \leq 10$ and $n=1$. The optimal solutions for this function are $x \in [0,2]$.
+The algorithm is an implementation of SPEA2 based on the presentation by Zitzler, Laumanns, and Thiele  [<a href='#Zitzler2002'>Zitzler2002</a>].
+The algorithm uses a binary string representation (16 bits per objective function parameter) that is decoded and rescaled to the function domain. The implementation uses a uniform crossover operator and point mutations with a fixed mutation rate of $\frac{1}{L}$, where $L$ is the number of bits in a solution's binary string.
+</p>
+<pre class='prettyprint lang-rb'>
+def objective1(vector)
+  return vector.inject(0.0) {|sum, x| sum + (x**2.0)}
+end
+
+def objective2(vector)
+  return vector.inject(0.0) {|sum, x| sum + ((x-2.0)**2.0)}
+end
+
+def decode(bitstring, search_space, bits_per_param)
+  vector = []
+  search_space.each_with_index do |bounds, i|
+    off, sum = i*bits_per_param, 0.0
+    param = bitstring[off...(off+bits_per_param)].reverse
+    param.size.times do |j|
+      sum += ((param[j].chr=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
+    end
+    min, max = bounds
+    vector &lt;&lt; min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
+  end
+  return vector
+end
+
+def point_mutation(bitstring, rate=1.0/bitstring.size)
+  child = ""
+   bitstring.size.times do |i|
+     bit = bitstring[i].chr
+     child &lt;&lt; ((rand()&lt;rate) ? ((bit=='1') ? "0" : "1") : bit)
+  end
+  return child
+end
+
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
+  return (pop[i][:fitness] &lt; pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
+def crossover(parent1, parent2, rate)
+  return ""+parent1 if rand()&gt;=rate
+  child = ""
+  parent1.size.times do |i|
+    child &lt;&lt; ((rand()&lt;0.5) ? parent1[i].chr : parent2[i].chr)
+  end
+  return child
+end
+
+def reproduce(selected, pop_size, p_cross)
+  children = []
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
+    child = {}
+    child[:bitstring] = crossover(p1[:bitstring], p2[:bitstring], p_cross)
+    child[:bitstring] = point_mutation(child[:bitstring])
+    children &lt;&lt; child
+    break if children.size &gt;= pop_size
+  end
+  return children
+end
+
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s&lt;&lt;((rand&lt;0.5) ? "1" : "0")}
+end
+
+def calculate_objectives(pop, search_space, bits_per_param)
+  pop.each do |p|
+    p[:vector] = decode(p[:bitstring], search_space, bits_per_param)
+    p[:objectives] = []
+    p[:objectives] &lt;&lt; objective1(p[:vector])
+    p[:objectives] &lt;&lt; objective2(p[:vector])
+  end
+end
+
+def dominates?(p1, p2)
+  p1[:objectives].each_index do |i|
+    return false if p1[:objectives][i] &gt; p2[:objectives][i]
+  end
+  return true
+end
+
+def weighted_sum(x)
+  return x[:objectives].inject(0.0) {|sum, x| sum+x}
+end
+
+def euclidean_distance(c1, c2)
+  sum = 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
+  return Math.sqrt(sum)
+end
+
+def calculate_dominated(pop)
+  pop.each do |p1|
+    p1[:dom_set] = pop.select {|p2| p1!=p2 and dominates?(p1, p2) }
+  end
+end
+
+def calculate_raw_fitness(p1, pop)
+  return pop.inject(0.0) do |sum, p2|
+    (dominates?(p2, p1)) ? sum + p2[:dom_set].size.to_f : sum
+  end
+end
+
+def calculate_density(p1, pop)
+  pop.each do |p2|
+    p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])
+  end
+  list = pop.sort{|x,y| x[:dist]&lt;=&gt;y[:dist]}
+  k = Math.sqrt(pop.size).to_i
+  return 1.0 / (list[k][:dist] + 2.0)
+end
+
+def calculate_fitness(pop, archive, search_space, bits_per_param)
+  calculate_objectives(pop, search_space, bits_per_param)
+  union = archive + pop
+  calculate_dominated(union)
+  union.each do |p|
+    p[:raw_fitness] = calculate_raw_fitness(p, union)
+    p[:density] = calculate_density(p, union)
+    p[:fitness] = p[:raw_fitness] + p[:density]
+  end
+end
+
+def environmental_selection(pop, archive, archive_size)
+  union = archive + pop
+  environment = union.select {|p| p[:fitness]&lt;1.0}
+  if environment.size &lt; archive_size
+    union.sort!{|x,y| x[:fitness]&lt;=&gt;y[:fitness]}
+    union.each do |p|
+      environment &lt;&lt; p if p[:fitness] &gt;= 1.0
+      break if environment.size &gt;= archive_size
+    end
+  elsif environment.size &gt; archive_size
+    begin
+      k = Math.sqrt(environment.size).to_i
+      environment.each do |p1|
+        environment.each do |p2|
+          p2[:dist] = euclidean_distance(p1[:objectives], p2[:objectives])
+        end
+        list = environment.sort{|x,y| x[:dist]&lt;=&gt;y[:dist]}
+        p1[:density] = list[k][:dist]
+      end
+      environment.sort!{|x,y| x[:density]&lt;=&gt;y[:density]}
+      environment.shift
+    end until environment.size &lt;= archive_size
+  end
+  return environment
+end
+
+def search(search_space, max_gens, pop_size, archive_size, p_cross, bits_per_param=16)
+  pop = Array.new(pop_size) do |i|
+    {:bitstring=&gt;random_bitstring(search_space.size*bits_per_param)}
+  end
+  gen, archive = 0, []
+  begin
+    calculate_fitness(pop, archive, search_space, bits_per_param)
+    archive = environmental_selection(pop, archive, archive_size)
+    best = archive.sort{|x,y| weighted_sum(x)&lt;=&gt;weighted_sum(y)}.first
+    puts "&gt;gen=#{gen}, objs=#{best[:objectives].join(', ')}"
+    break if gen &gt;= max_gens
+    selected = Array.new(pop_size){binary_tournament(archive)}
+    pop = reproduce(selected, pop_size, p_cross)
+    gen += 1
+  end while true
+  return archive
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 1
+  search_space = Array.new(problem_size) {|i| [-10, 10]}
+  # algorithm configuration
+  max_gens = 50
+  pop_size = 80
+  archive_size = 40
+  p_cross = 0.90
+  # execute the algorithm
+  pop = search(search_space, max_gens, pop_size, archive_size, p_cross)
+  puts "done!"
+end
+</pre>
+<div class='download_src'><a href='spea2.rb'>Download Source</a></div>
+<div class='caption'>SPEA2 in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Zitzler and Thiele introduced the Strength Pareto Evolutionary Algorithm as a technical report on a multiple objective optimization algorithm with elitism and clustering along the Pareto front  [<a href='#Zitzler1998'>Zitzler1998</a>]. The technical report was later published  [<a href='#Zitzler1999'>Zitzler1999</a>].
+The Strength Pareto Evolutionary Algorithm was developed as a part of Zitzler's PhD thesis  [<a href='#Zitzler1999a'>Zitzler1999a</a>].
+Zitzler, Laumanns, and Thiele later extended SPEA to address some inefficiencies of the approach, the algorithm was called SPEA2 and was released as a technical report  [<a href='#Zitzler2001'>Zitzler2001</a>] and later published  [<a href='#Zitzler2002'>Zitzler2002</a>]. SPEA2 provides fine-grained fitness assignment, density estimation of the Pareto front, and an archive truncation operator.
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Zitzler, Laumanns, and Bleuler provide a tutorial on SPEA2 as a book chapter that considers the basics of multiple objective optimization, and the differences from SPEA and the other related Multiple Objective Evolutionary Algorithms  [<a href='#Zitzler2004'>Zitzler2004</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Deb2002'>[Deb2002]</a></td>
+ <td>K. Deb and A. Pratap and S. Agarwal and T. Meyarivan, "<a href="http://scholar.google.com.au/scholar?q=A+Fast+and+Elitist+Multiobjective+Genetic+Algorithm:+NSGA&ndash;II">A Fast and Elitist Multiobjective Genetic Algorithm: NSGA&ndash;II</a>", IEEE Transactions on Evolutionary Computation, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler1998'>[Zitzler1998]</a></td>
+ <td>E. Zitzler and L. Thiele, "<a href="http://scholar.google.com.au/scholar?q=An+evolutionary+algorithm+for+multiobjective+optimization:+The+strength++pareto+approach">An evolutionary algorithm for multiobjective optimization: The strength 	pareto approach</a>", Technical Report 43, Computer Engineering and Networks Laboratory (TIK), Swiss Federal 	Institute of Technology (ETH) Zurich, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler1999'>[Zitzler1999]</a></td>
+ <td>E. Zitzler and L. Thiele, "<a href="http://scholar.google.com.au/scholar?q=Multiobjective+evolutionary+algorithms:+A+comparative+case+study++and+the+strength+pareto+approach">Multiobjective evolutionary algorithms: A comparative case study 	and the strength pareto approach</a>", IEEE Transactions on Evolutionary Computation, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler1999a'>[Zitzler1999a]</a></td>
+ <td>E. Zitzler, "<a href="http://scholar.google.com.au/scholar?q=Evolutionary+Algorithms+for+Multiobjective+Optimization:+Methods++and+Applications">Evolutionary Algorithms for Multiobjective Optimization: Methods 	and Applications</a>", [PhD Thesis] Shaker Verlag, Aachen, Germany, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler2001'>[Zitzler2001]</a></td>
+ <td>E. Zitzler and M. Laumanns and L. Thiele, "<a href="http://scholar.google.com.au/scholar?q=SPEA2:+Improving+the+strength+Pareto+evolutionary+algorithm">SPEA2: Improving the strength Pareto evolutionary algorithm</a>", Technical Report 103, Computer Engineering and Networks Laboratory (TIK), Swiss Federal 	Institute of Technology (ETH) Zurich, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler2002'>[Zitzler2002]</a></td>
+ <td>E. Zitzler and M. Laumanns and L. Thiele, "<a href="http://scholar.google.com.au/scholar?q=SPEA2:+Improving+the+strength+pareto+evolutionary+algorithm+for++multiobjective+optimization">SPEA2: Improving the strength pareto evolutionary algorithm for 	multiobjective optimization</a>", in Evolutionary Methods for Design, Optimisation and Control with Application 	to Industrial Problems (EUROGEN 2001), 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zitzler2004'>[Zitzler2004]</a></td>
+ <td>E. Zitzler and M. Laumanns and S. Bleuler, "<a href="http://scholar.google.com.au/scholar?q=A+Tutorial+on+Evolutionary+Multiobjective+Optimization">A Tutorial on Evolutionary Multiobjective Optimization</a>", in Metaheuristics for Multiobjective Optimisation, pages 3&ndash;37, Springer, 2004.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='negative_selection_algorithm'><h1>Negative Selection Algorithm</h1></a>
+<p>
+<em>Negative Selection Algorithm, NSA.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Negative Selection Algorithm belongs to the field of Artificial Immune Systems.
+The algorithm is related to other Artificial Immune Systems such as the Clonal Selection Algorithm, and the Immune Network Algorithm.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Negative Selection algorithm is inspired by the self-nonself discrimination behavior observed in the mammalian acquired immune system.
+The clonal selection theory of acquired immunity accounts for the adaptive behavior of the immune system including the ongoing selection and proliferation of cells that select-for potentially harmful (and typically foreign) material in the body.
+An interesting aspect of this process is that it is responsible for managing a population of immune cells that do not select-for the tissues of the body, specifically it does not create self-reactive immune cells known as auto-immunity.
+This problem is known as 'self-nonself discrimination' and it involves the preparation and on going maintenance of a repertoire of immune cells such that none are auto-immune. This is achieved by a negative selection process that selects-for and removes those cells that are self-reactive during cell creation and cell proliferation. This process has been observed in the preparation of T-lymphocytes, naive versions of which are matured using both a positive and negative selection process in the thymus.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+The self-nonself discrimination principle suggests that the anticipatory guesses made in clonal selection are filtered by regions of infeasibility (protein conformations that bind to self-tissues). Further, the self-nonself immunological paradigm proposes the modeling of the unknown domain (encountered pathogen) by modeling the complement of what is known. This is unintuitive as the natural inclination is to categorize unknown information by what is different from that which is known, rather than guessing at the unknown information and filtering those guesses by what is known.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing principles of the self-nonself discrimination process via negative selection are that of a anomaly and change detection systems that model the anticipation of variation from what is known.
+The principle is achieved by building a model of changes, anomalies, or unknown (non-normal or non-self) data by generating patterns that do not match an existing corpus of available (self or normal) patterns. The prepared non-normal model is then used to either monitor the existing normal data or streams of new data by seeking matches to the non-normal patterns.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the detector generation procedure for the Negative Selection Algorithm. Algorithm (below) provides a pseudocode listing of the detector application procedure for the Negative Selection Algorithm.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>SelfData</code>
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+<code>Repertoire</code>
+<br />
+<code>Repertoire</code> $\leftarrow \emptyset$<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Detectors</code> $\leftarrow$ <code>GenerateRandomDetectors</code>()<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Detector_{i}$ $\in$ <code>Repertoire</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> ($\neg$<code>Matches</code>($Detector_{i}$, <code>SelfData</code>))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Repertoire</code> $\leftarrow$ $Detector_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> (<code>Repertoire</code>)<br />
+</div>
+<div class='caption'>Pseudocode for detector generation.</div>
+
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>InputSamples</code>, <code>Repertoire</code>
+<br />
+<strong><code>For</code></strong> ($Input_{i}$ $\in$ <code>InputSamples</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Inputi_{class}$ $\leftarrow$ &quot;non-self&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Detector_{i}$ $\in$ <code>Repertoire</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Matches</code>($Input_{i}$, $Detector_{i}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Inputi_{class}$ $\leftarrow$ &quot;self&quot;<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Break</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+</div>
+<div class='caption'>Pseudocode for detector application.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The Negative Selection Algorithm was designed for change detection, novelty detection, intrusion detection and similar pattern recognition and two-class classification problem domains.</li>
+<li> Traditional negative selection algorithms used binary representations and binary matching rules such as Hamming distance, and $r$-contiguous bits.</li>
+<li> A data representation should be selected that is most suitable for a given problem domain, and a matching rule is in turn selected or tailored to the data representation.</li>
+<li> Detectors can be prepared with no prior knowledge of the problem domain other than the known (normal or self) dataset.</li>
+<li> The algorithm can be configured to balance between detector convergence (quality of the matches) and the space complexity (number of detectors).</li>
+<li> The lack of dependence between detectors means that detector preparation and application is inherently parallel and suited for a distributed and parallel implementation, respectively.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Negative Selection Algorithm implemented in the Ruby Programming Language.
+The demonstration problem is a two-class classification problem where samples are drawn from a two-dimensional domain, where $x_i \in [0,1]$. Those samples in $1.0>x_i>0.5$ are classified as self and the rest of the space belongs to the non-self class. Samples are drawn from the self class and presented to the algorithm for the preparation of pattern detectors for classifying unobserved samples from the non-self class.
+The algorithm creates a set of detectors that do not match the self data, and are then applied to a set of randomly generated samples from the domain. The algorithm uses a real-valued representation. The Euclidean distance function is used during matching and a minimum distance value is specified as a user parameter for approximate matches between patterns. The algorithm includes the additional computationally expensive check for duplicates in the preparation of the self dataset and the detector set.
+</p>
+<pre class='prettyprint lang-rb'>
+def random_vector(minmax)
+  return Array.new(minmax.length) do |i|
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
+  end
+end
+
+def euclidean_distance(c1, c2)
+  sum = 0.0
+  c1.each_index {|i| sum += (c1[i]-c2[i])**2.0}
+  return Math.sqrt(sum)
+end
+
+def contains?(vector, space)
+  vector.each_with_index do |v,i|
+    return false if v&lt;space[i][0] or v&gt;space[i][1]
+  end
+  return true
+end
+
+def matches?(vector, dataset, min_dist)
+  dataset.each do |pattern|
+    dist = euclidean_distance(vector, pattern[:vector])
+    return true if dist &lt;= min_dist
+  end
+  return false
+end
+
+def generate_detectors(max_detectors, search_space, self_dataset, min_dist)
+  detectors = []
+  begin
+    detector = {:vector=&gt;random_vector(search_space)}
+    if !matches?(detector[:vector], self_dataset, min_dist)
+      detectors &lt;&lt; detector if !matches?(detector[:vector], detectors, 0.0)
+    end
+  end while detectors.size &lt; max_detectors
+  return detectors
+end
+
+def generate_self_dataset(num_records, self_space, search_space)
+  self_dataset = []
+  begin
+    pattern = {}
+    pattern[:vector] = random_vector(search_space)
+    next if matches?(pattern[:vector], self_dataset, 0.0)
+    if contains?(pattern[:vector], self_space)
+      self_dataset &lt;&lt; pattern
+    end
+  end while self_dataset.length &lt; num_records
+  return self_dataset
+end
+
+def apply_detectors(detectors, bounds, self_dataset, min_dist, trials=50)
+  correct = 0
+  trials.times do |i|
+    input = {:vector=&gt;random_vector(bounds)}
+    actual = matches?(input[:vector], detectors, min_dist) ? "N" : "S"
+    expected = matches?(input[:vector], self_dataset, min_dist) ? "S" : "N"
+    correct += 1 if actual==expected
+    puts "#{i+1}/#{trials}: predicted=#{actual}, expected=#{expected}"
+  end
+  puts "Done. Result: #{correct}/#{trials}"
+  return correct
+end
+
+def execute(bounds, self_space, max_detect, max_self, min_dist)
+  self_dataset = generate_self_dataset(max_self, self_space, bounds)
+  puts "Done: prepared #{self_dataset.size} self patterns."
+  detectors = generate_detectors(max_detect, bounds, self_dataset, min_dist)
+  puts "Done: prepared #{detectors.size} detectors."
+  apply_detectors(detectors, bounds, self_dataset, min_dist)
+  return detectors
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 2
+  search_space = Array.new(problem_size) {[0.0, 1.0]}
+  self_space = Array.new(problem_size) {[0.5, 1.0]}
+  max_self = 150
+  # algorithm configuration
+  max_detectors = 300
+  min_dist = 0.05
+  # execute the algorithm
+  execute(search_space, self_space, max_detectors, max_self, min_dist)
+end
+</pre>
+<div class='download_src'><a href='negative_selection_algorithm.rb'>Download Source</a></div>
+<div class='caption'>Negative Selection Algorithm in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The seminal negative selection algorithm was proposed by Forrest, et al.  [<a href='#Forrest1994'>Forrest1994</a>] in which a population of detectors are prepared in the presence of known information, where those randomly generated detectors that match against known data are discarded. The population of pattern guesses in the unknown space then monitors the corpus of known information for changes. The algorithm was applied to the monitoring of files for changes (corruptions and infections by computer viruses), and later formalized as a change detection algorithm  [<a href='#Dhaeseleer1996a'>Dhaeseleer1996a</a>] [<a href='#Dhaeseleer1996'>Dhaeseleer1996</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+The Negative Selection algorithm has been applied to the monitoring of changes in the execution behavior of Unix processes  [<a href='#Forrest1996'>Forrest1996</a>] [<a href='#Hofmeyr1998'>Hofmeyr1998</a>], and to monitor changes in remote connections of a network computer (intrusion detection)  [<a href='#Hofmeyr1999'>Hofmeyr1999</a>] [<a href='#Hofmeyr1999a'>Hofmeyr1999a</a>]. The application of the algorithm has been predominantly to virus host intrusion detection and their abstracted problems of classification (two-class) and anomaly detection.
+Esponda provides some interesting work showing some compression and privacy benefits provided by maintaining a negative model (non-self)  [<a href='#Darlington2005'>Darlington2005</a>]
+Ji and Dasgupta provide a contemporary and detailed review of Negative Selection Algorithms covering topics such as data representations, matching rules, detector generation procedures, computational complexity, hybridization, and theoretical frameworks  [<a href='#Ji2007'>Ji2007</a>].
+Recently, the validity of the application of negative selection algorithms in high-dimensional spaces has been questioned, specifically given the scalability of the approach in the face of the exponential increase in volume within the problem space  [<a href='#Stibor2006'>Stibor2006</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Darlington2005'>[Darlington2005]</a></td>
+ <td>C. F. Esponda Darlington, "<a href="http://scholar.google.com.au/scholar?q=Negative+Representations+of+Information">Negative Representations of Information</a>", [PhD Thesis] The University of New Mexico, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Dhaeseleer1996'>[Dhaeseleer1996]</a></td>
+ <td>P. D'haeseleer, "<a href="http://scholar.google.com.au/scholar?q=An+immunological+approach+to+change+detection:+theoretical+results">An immunological approach to change detection: theoretical results</a>", in Proceedings of the 9th IEEE Computer Security Foundations Workshop, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Dhaeseleer1996a'>[Dhaeseleer1996a]</a></td>
+ <td>P. D'haeseleer and S. Forrest and P. Helman, "<a href="http://scholar.google.com.au/scholar?q=An+immunological+approach+to+change+detection:+algorithms,+analysis++and+implications">An immunological approach to change detection: algorithms, analysis 	and implications</a>", in Proceedings of the IEEE Symposium on Security and Privacy, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forrest1994'>[Forrest1994]</a></td>
+ <td>S. Forrest and A. S. Perelson and L. Allen and R. Cherukuri, "<a href="http://scholar.google.com.au/scholar?q=Self-Nonself+Discrimination+in+a+Computer">Self-Nonself Discrimination in a Computer</a>", in Proceedings of the 1992 IEEE Symposium on Security and Privacy, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Forrest1996'>[Forrest1996]</a></td>
+ <td>S. Forrest and S. A. Hofmeyr and A. Somayaji and T. 	A. Longstaff, "<a href="http://scholar.google.com.au/scholar?q=A+Sense+of+Self+for+Unix+Processes">A Sense of Self for Unix Processes</a>", in Proceedings of the 1996 IEEE Symposium on Security and Privacy, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hofmeyr1998'>[Hofmeyr1998]</a></td>
+ <td>S. A. Hofmeyr and S. Forrest and A. Somayaji, "<a href="http://scholar.google.com.au/scholar?q=Intrusion+Detection+using+Sequences+of+System+Calls">Intrusion Detection using Sequences of System Calls</a>", Journal of Computer Security, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hofmeyr1999'>[Hofmeyr1999]</a></td>
+ <td>S. Hofmeyr and S. Forrest, "<a href="http://scholar.google.com.au/scholar?q=Immunity+by+Design:+An+Artificial+Immune+System">Immunity by Design: An Artificial Immune System</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	 	(GECCO), 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hofmeyr1999a'>[Hofmeyr1999a]</a></td>
+ <td>S. A. Hofmeyr, "<a href="http://scholar.google.com.au/scholar?q=An+Immunological+Model+of+Distributed+Detection+and+its+Application++to+Computer+Security">An Immunological Model of Distributed Detection and its Application 	to Computer Security</a>", [PhD Thesis] Department of Computer Sciences, University of New Mexico, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ji2007'>[Ji2007]</a></td>
+ <td>Z. Ji and D. Dasgupta, "<a href="http://scholar.google.com.au/scholar?q=Revisiting+Negative+Selection+Algorithms">Revisiting Negative Selection Algorithms</a>", Evolutionary Computation, 2007.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Stibor2006'>[Stibor2006]</a></td>
+ <td>T. Stibor, "<a href="http://scholar.google.com.au/scholar?q=On+the+Appropriateness+of+Negative+Selection+for+Anomaly+Detection++and+Network+Intrusion+Detection">On the Appropriateness of Negative Selection for Anomaly Detection 	and Network Intrusion Detection</a>", [PhD Thesis] Darmstadt University of Technology, 2006.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

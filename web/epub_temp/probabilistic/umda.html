@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='univariate_marginal_distribution_algorithm'><h1>Univariate Marginal Distribution Algorithm</h1></a>
+<p>
+<em>Univariate Marginal Distribution Algorithm, UMDA, Univariate Marginal Distribution, UMD.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Univariate Marginal Distribution Algorithm belongs to the field of Estimation of Distribution Algorithms (EDA), also referred to as Population Model-Building Genetic Algorithms (PMBGA), an extension to the field of Evolutionary Computation.
+UMDA is closely related to the Factorized Distribution Algorithm (FDA) and an extension called the Bivariate Marginal Distribution Algorithm (BMDA).
+UMDA is related to other EDAs such as the Compact Genetic Algorithm, the Population-Based Incremental Learning algorithm, and the Bayesian Optimization Algorithm.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Univariate Marginal Distribution Algorithm is a population technique-based without an inspiration. It is related to the Genetic Algorithm and other Evolutionary Algorithms that are inspired by the biological theory of evolution by means of natural selection.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing strategy of the algorithm is to use the frequency of the components in a population of candidate solutions in the construction of new candidate solutions.
+This is achieved by first measuring the frequency of each component in the population (the univariate marginal probability) and using the probabilities to influence the probabilistic selection of components in the component-wise construction of new candidate solutions.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Univariate Marginal Distribution Algorithm for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$Bits_{num}$, $Population_{size}$, $Selection_{size}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($Bits_{num}$, $Population_{size}$)<br />
+<code>EvaluatePopulation</code>(<code>Population</code>)<br />
+$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Population</code>)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Selected</code> $\leftarrow$ <code>SelectFitSolutions</code>(<code>Population</code>, $Selection_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$V$ $\leftarrow$ <code>CalculateFrequencyOfComponents</code>(<code>Selected</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Offspring</code> $\leftarrow$ $\emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($i$ <strong><code>To</code></strong> $Population_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Offspring</code> $\leftarrow$ <code>ProbabilisticallyConstructSolution</code>($V$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>EvaluatePopulation</code>(<code>Offspring</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Offspring</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>Offspring</code><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for the UMDA.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> UMDA was designed for problems where the components of a solution are independent (linearly separable).</li>
+<li> A selection method is needed to identify the subset of good solutions from which to calculate the univariate marginal probabilities. Many selection methods from the field of Evolutionary Computation may be used.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Univariate Marginal Distribution Algorithm implemented in the Ruby Programming Language.
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all '1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+</p>
+<p>
+The algorithm is an implementation of UMDA that uses the integers 1 and 0 to represent bits in a binary string representation. A binary tournament selection strategy is used and the whole population is replaced each iteration. The mechanisms from Evolutionary Computation such as elitism and more elaborate selection methods may be implemented as an extension.
+</p>
+<pre class='prettyprint lang-rb'>
+def onemax(vector)
+  return vector.inject(0){|sum, value| sum + value}
+end
+
+def random_bitstring(size)
+  return Array.new(size){ ((rand()&lt;0.5) ? 1 : 0) }
+end
+
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
+  return (pop[i][:fitness] &gt; pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
+def calculate_bit_probabilities(pop)
+  vector = Array.new(pop.first[:bitstring].length, 0.0)
+  pop.each do |member|
+    member[:bitstring].each_with_index {|v, i| vector[i] += v}
+  end
+  vector.each_with_index {|f, i| vector[i] = (f.to_f/pop.size.to_f)}
+  return vector
+end
+
+def generate_candidate(vector)
+  candidate = {}
+  candidate[:bitstring] = Array.new(vector.size)
+  vector.each_with_index do |p, i|
+    candidate[:bitstring][i] = (rand()&lt;p) ? 1 : 0
+  end
+  return candidate
+end
+
+def search(num_bits, max_iter, pop_size, select_size)
+  pop = Array.new(pop_size) do
+    {:bitstring=&gt;random_bitstring(num_bits)}
+  end
+  pop.each{|c| c[:fitness] = onemax(c[:bitstring])}
+  best = pop.sort{|x,y| y[:fitness] &lt;=&gt; x[:fitness]}.first
+  max_iter.times do |iter|
+    selected = Array.new(select_size) { binary_tournament(pop) }
+    vector = calculate_bit_probabilities(selected)
+    samples = Array.new(pop_size) { generate_candidate(vector) }
+    samples.each{|c| c[:fitness] = onemax(c[:bitstring])}
+    samples.sort!{|x,y| y[:fitness] &lt;=&gt; x[:fitness]}
+    best = samples.first if samples.first[:fitness] &gt; best[:fitness]
+    pop = samples
+    puts " &gt;iteration=#{iter}, f=#{best[:fitness]}, s=#{best[:bitstring]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  num_bits = 64
+  # algorithm configuration
+  max_iter = 100
+  pop_size = 50
+  select_size = 30
+  # execute the algorithm
+  best = search(num_bits, max_iter, pop_size, select_size)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:bitstring]}"
+end
+</pre>
+<div class='download_src'><a href='umda.rb'>Download Source</a></div>
+<div class='caption'>Univariate Marginal Distribution Algorithm in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Univariate Marginal Distribution Algorithm was described by M&uuml;hlenbein in 1997 in which a theoretical foundation is provided (for the field of investigation in general and the algorithm specifically)  [<a href='#Muhlenbein1997'>Muhlenbein1997</a>]. M&uuml;hlenbein also describes an incremental version of UMDA (IUMDA) that is described as being equivalent to Baluja's Population-Based Incremental Learning (PBIL) algorithm  [<a href='#Baluja1994'>Baluja1994</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Pelikan and M&uuml;hlenbein extended the approach to cover problems that have dependencies between the components (specifically pair-dependencies), referring to the technique as the Bivariate Marginal Distribution Algorithm (BMDA)  [<a href='#Pelikan1998'>Pelikan1998</a>] [<a href='#Pelikan1999'>Pelikan1999</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Baluja1994'>[Baluja1994]</a></td>
+ <td>S. Baluja, "<a href="http://scholar.google.com.au/scholar?q=Population-Based+Incremental+Learning:+A+Method+for+Integrating+Genetic++Search+Based+Function+Optimization+and+Competitive+Learning">Population-Based Incremental Learning: A Method for Integrating Genetic 	Search Based Function Optimization and Competitive Learning</a>", Technical Report CMU-CS-94-163, School of Computer Science, Carnegie Mellon University, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Muhlenbein1997'>[Muhlenbein1997]</a></td>
+ <td>H. M&uuml;hlenbein, "<a href="http://scholar.google.com.au/scholar?q=The+equation+for+response+to+selection+and+its+use+for+prediction">The equation for response to selection and its use for prediction</a>", Evolutionary Computation, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1998'>[Pelikan1998]</a></td>
+ <td>M. Pelikan and H. M&uuml;hlenbein, "<a href="http://scholar.google.com.au/scholar?q=Marginal+distributions+in+evolutionary+algorithms">Marginal distributions in evolutionary algorithms</a>", in Proceedings of the International Conference on Genetic Algorithms 	Mendel, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1999'>[Pelikan1999]</a></td>
+ <td>M. Pelikan and H. M&uuml;hlenbein, "<a href="http://scholar.google.com.au/scholar?q=The+Bivariate+Marginal+Distribution+Algorithm">The Bivariate Marginal Distribution Algorithm</a>", in Advances in Soft Computing: Engineering Design and Manufacturing, pages 521&ndash;535, Springer, 1999.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

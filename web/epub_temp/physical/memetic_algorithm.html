@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='memetic_algorithm'><h1>Memetic Algorithm</h1></a>
+<p>
+<em>Memetic Algorithm, MA.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Memetic Algorithms have elements of Metaheuristics and Computational Intelligence. Although they have principles of Evolutionary Algorithms, they may not strictly be considered an Evolutionary Technique.
+Memetic Algorithms have functional similarities to Baldwinian Evolutionary Algorithms, Lamarckian Evolutionary Algorithms, Hybrid Evolutionary Algorithms, and Cultural Algorithms. Using ideas of memes and Memetic Algorithms in optimization may be referred to as Memetic Computing.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Memetic Algorithms are inspired by the interplay of genetic evolution and memetic evolution. Universal Darwinism is the generalization of genes beyond biological-based systems to any system where discrete units of information can be inherited and be subjected to evolutionary forces of selection and variation. The term 'meme' is used to refer to a piece of discrete cultural information, suggesting at the interplay of genetic and cultural evolution.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+The genotype is evolved based on the interaction the phenotype has with the environment. This interaction is metered by cultural phenomena that influence the selection mechanisms, and even the pairing and recombination mechanisms. Cultural information is shared between individuals, spreading through the population as memes relative to their fitness or fitness the memes impart to the individuals. Collectively, the interplay of the geneotype and the memeotype strengthen the fitness of population in the environment.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the information processing strategy is to exploit a population based global search technique to broadly locate good areas of the search space, combined with the repeated usage of a local search heuristic by individual solutions to locate local optimum.
+Ideally, memetic algorithms embrace the duality of genetic and cultural evolution, allowing the transmission, selection, inheritance, and variation of memes as well as genes.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Memetic Algorithm for minimizing a cost function. The procedure describes a simple or first order Memetic Algorithm that shows the improvement of individual solutions separate from a global search, although does not show the independent evolution of memes.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+<code>ProblemSize</code>, $Pop_{size}$, $MemePop_{size}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>(<code>ProblemSize</code>, $Pop_{size}$)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Si_{cost}$ $\leftarrow$ <code>Cost</code>($S_{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>StochasticGlobalSearch</code>(<code>Population</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>MemeticPopulation</code> $\leftarrow$ <code>SelectMemeticPopulation</code>(<code>Population</code>, $MemePop_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($S_{i}$ $\in$ <code>MemeticPopulation</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{i}$ $\leftarrow$ <code>LocalSearch</code>($S_{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for the Memetic Algorithm.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The global search provides the broad exploration mechanism, whereas the individual solution improvement via local search provides an exploitation mechanism.</li>
+<li> Balance is needed between the local and global mechanisms to ensure the system does not prematurely converge to a local optimum and does not consume unnecessary computational resources.</li>
+<li> The local search should be problem and representation specific, where as the global search may be generic and non-specific (black-box).</li>
+<li> Memetic Algorithms have been applied to a range of constraint, combinatorial, and continuous function optimization problem domains.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Memetic Algorithm implemented in the Ruby Programming Language.
+The demonstration problem is an instance of a continuous function optimization that seeks $\min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The Memetic Algorithm uses a canonical Genetic Algorithm as the global search technique that operates on binary strings, uses tournament selection, point mutations, uniform crossover and a binary coded decimal decoding of bits to real values. A bit climber local search is used that performs probabilistic bit flips (point mutations) and only accepts solutions with the same or improving fitness.
+</p>
+<pre class='prettyprint lang-rb'>
+def objective_function(vector)
+  return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
+end
+
+def random_bitstring(num_bits)
+  return (0...num_bits).inject(""){|s,i| s&lt;&lt;((rand&lt;0.5) ? "1" : "0")}
+end
+
+def decode(bitstring, search_space, bits_per_param)
+  vector = []
+  search_space.each_with_index do |bounds, i|
+    off, sum = i*bits_per_param, 0.0
+    param = bitstring[off...(off+bits_per_param)].reverse
+    param.size.times do |j|
+      sum += ((param[j].chr=='1') ? 1.0 : 0.0) * (2.0 ** j.to_f)
+    end
+    min, max = bounds
+    vector &lt;&lt; min + ((max-min)/((2.0**bits_per_param.to_f)-1.0)) * sum
+  end
+  return vector
+end
+
+def fitness(candidate, search_space, param_bits)
+  candidate[:vector]=decode(candidate[:bitstring], search_space, param_bits)
+  candidate[:fitness] = objective_function(candidate[:vector])
+end
+
+def binary_tournament(pop)
+  i, j = rand(pop.size), rand(pop.size)
+  j = rand(pop.size) while j==i
+  return (pop[i][:fitness] &lt; pop[j][:fitness]) ? pop[i] : pop[j]
+end
+
+def point_mutation(bitstring, rate=1.0/bitstring.size)
+  child = ""
+   bitstring.size.times do |i|
+     bit = bitstring[i].chr
+     child &lt;&lt; ((rand()&lt;rate) ? ((bit=='1') ? "0" : "1") : bit)
+  end
+  return child
+end
+
+def crossover(parent1, parent2, rate)
+  return ""+parent1 if rand()&gt;=rate
+  child = ""
+  parent1.size.times do |i|
+    child &lt;&lt; ((rand()&lt;0.5) ? parent1[i].chr : parent2[i].chr)
+  end
+  return child
+end
+
+def reproduce(selected, pop_size, p_cross, p_mut)
+  children = []
+  selected.each_with_index do |p1, i|
+    p2 = (i.modulo(2)==0) ? selected[i+1] : selected[i-1]
+    p2 = selected[0] if i == selected.size-1
+    child = {}
+    child[:bitstring] = crossover(p1[:bitstring], p2[:bitstring], p_cross)
+    child[:bitstring] = point_mutation(child[:bitstring], p_mut)
+    children &lt;&lt; child
+    break if children.size &gt;= pop_size
+  end
+  return children
+end
+
+def bitclimber(child, search_space, p_mut, max_local_gens, bits_per_param)
+  current = child
+  max_local_gens.times do
+    candidate = {}
+    candidate[:bitstring] = point_mutation(current[:bitstring], p_mut)
+    fitness(candidate, search_space, bits_per_param)
+    current = candidate if candidate[:fitness] &lt;= current[:fitness]
+  end
+  return current
+end
+
+def search(max_gens, search_space, pop_size, p_cross, p_mut, max_local_gens, p_local, bits_per_param=16)
+  pop = Array.new(pop_size) do |i|
+    {:bitstring=&gt;random_bitstring(search_space.size*bits_per_param)}
+  end
+  pop.each{|candidate| fitness(candidate, search_space, bits_per_param) }
+  gen, best = 0, pop.sort{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}.first
+  max_gens.times do |gen|
+    selected = Array.new(pop_size){|i| binary_tournament(pop)}
+    children = reproduce(selected, pop_size, p_cross, p_mut)
+    children.each{|cand| fitness(cand, search_space, bits_per_param)}
+    pop = []
+    children.each do |child|
+      if rand() &lt; p_local
+        child = bitclimber(child, search_space, p_mut, max_local_gens, bits_per_param)
+      end
+      pop &lt;&lt; child
+    end
+    pop.sort!{|x,y| x[:fitness] &lt;=&gt; y[:fitness]}
+    best = pop.first if pop.first[:fitness] &lt;= best[:fitness]
+    puts "&gt;gen=#{gen}, f=#{best[:fitness]}, b=#{best[:bitstring]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  search_space = Array.new(problem_size) {|i| [-5, +5]}
+  # algorithm configuration
+  max_gens = 100
+  pop_size = 100
+  p_cross = 0.98
+  p_mut = 1.0/(problem_size*16).to_f
+  max_local_gens = 20
+  p_local = 0.5
+  # execute the algorithm
+  best = search(max_gens, search_space, pop_size, p_cross, p_mut, max_local_gens, p_local)
+  puts "done! Solution: f=#{best[:fitness]}, b=#{best[:bitstring]}, v=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='memetic_algorithm.rb'>Download Source</a></div>
+<div class='caption'>Memetic Algorithm in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The concept of a Memetic Algorithm is credited to Moscato  [<a href='#Moscato1989'>Moscato1989</a>], who was inspired by the description of meme's in Dawkins' &quot;The Selfish Gene&quot;  [<a href='#Dawkins1976'>Dawkins1976</a>]. Moscato proposed Memetic Algorithms as the marriage between population based global search and heuristic local search made by each individual without the constraints of a genetic representation and investigated variations on the Traveling Salesman Problem.
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Moscato and Cotta provide a gentle introduction to the field of Memetic Algorithms as a book chapter that covers formal descriptions of the approach, a summary of the fields of application, and the state of the art  [<a href='#Moscato2003'>Moscato2003</a>].
+An overview and classification of the types of Memetic Algorithms is presented by Ong et al. who describe a class of adaptive Memetic Algorithms  [<a href='#Ong2006'>Ong2006</a>]. Krasnogor and Smith also provide a taxonomy of Memetic Algorithms, focusing on the properties needed to design 'competent' implementations of the approach with examples on a number of combinatorial optimization problems  [<a href='#Krasnogor2005'>Krasnogor2005</a>]. Work by Krasnogor and Gustafson investigate what they refer to as 'self-generating' Memetic Algorithms that use the memetic principle to co-evolve the local search applied by individual solutions  [<a href='#Krasnogor2004'>Krasnogor2004</a>].
+For a broader overview of the field, see the 2005 book &quot;Recent Advances in Memetic Algorithms&quot; that provides an overview and a number of studies  [<a href='#Hart2005'>Hart2005</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Dawkins1976'>[Dawkins1976]</a></td>
+ <td>R. Dawkins, "<a href="http://scholar.google.com.au/scholar?q=The+selfish+gene">The selfish gene</a>", Oxford University Press, 1976.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hart2005'>[Hart2005]</a></td>
+ <td>W. E. Hart and N. Krasnogor and J. E. Smith, "<a href="http://scholar.google.com.au/scholar?q=Recent+Advances+in+Memetic+Algorithms">Recent Advances in Memetic Algorithms</a>", Springer, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Krasnogor2004'>[Krasnogor2004]</a></td>
+ <td>N. Krasnogor and S. Gustafson, "<a href="http://scholar.google.com.au/scholar?q=A+study+on+the+use+of+&quot;self-generation&quot;+in+memetic+algorithms">A study on the use of &quot;self-generation&quot; in memetic algorithms</a>", Natural Computing, 2004.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Krasnogor2005'>[Krasnogor2005]</a></td>
+ <td>N. Krasnogor and J. Smith, "<a href="http://scholar.google.com.au/scholar?q=A+Tutorial+for+Competent+Memetic+Algorithms:+Model,+Taxonomy+and++Design+Issues">A Tutorial for Competent Memetic Algorithms: Model, Taxonomy and 	Design Issues</a>", IEEE Transactions on Evolutionary Computation, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Moscato1989'>[Moscato1989]</a></td>
+ <td>P. Moscato, "<a href="http://scholar.google.com.au/scholar?q=On+Evolution,+Search,+Optimization,+Genetic+Algorithms+and+Martial++Arts:+Towards+Memetic+Algorithms">On Evolution, Search, Optimization, Genetic Algorithms and Martial 	Arts: Towards Memetic Algorithms</a>", California Institute of Technology, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Moscato2003'>[Moscato2003]</a></td>
+ <td>P. Moscato and C. Cotta, "<a href="http://scholar.google.com.au/scholar?q=A+gentle+introduction+to+memetic+algorithms">A gentle introduction to memetic algorithms</a>", in Handbook of Metaheuristics, pages 105&ndash;144, Kluwer Academic Publishers, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ong2006'>[Ong2006]</a></td>
+ <td>Y&ndash;S. Ong and M&ndash;H. Lim and N. Zhu and K&ndash;W. Wong, "<a href="http://scholar.google.com.au/scholar?q=Classification+of+Adaptive+Memetic+Algorithms:+A+Comparative+Study">Classification of Adaptive Memetic Algorithms: A Comparative Study</a>", IEEE Transactions on Systems, Man, and Cybernetics-Part B: Cybernetics, 2006.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

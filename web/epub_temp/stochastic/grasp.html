@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='greedy_randomized_adaptive_search'><h1>Greedy Randomized Adaptive Search</h1></a>
+<p>
+<em>Greedy Randomized Adaptive Search Procedure, GRASP.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Greedy Randomized Adaptive Search Procedure is a Metaheuristic and Global Optimization algorithm, originally proposed for the Operations Research practitioners.
+The iterative application of an embedded Local Search technique relate the approach to Iterative Local Search and Multi-Start techniques.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The objective of the Greedy Randomized Adaptive Search Procedure is to repeatedly sample stochastically greedy solutions, and then use a local search procedure to refine them to a local optima.
+The strategy of the procedure is centered on the stochastic and greedy step-wise construction mechanism that constrains the selection and order-of-inclusion of the components of a solution based on the value they are expected to provide.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Greedy Randomized Adaptive Search Procedure for minimizing a cost function.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$\alpha$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+$S_{best}$ $\leftarrow$ <code>ConstructRandomSolution</code>()<br />
+<strong><code>While</code></strong> ($\neg$ <code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>GreedyRandomizedConstruction</code>($\alpha$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>LocalSearch</code>($S_{candidate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($S_{candidate}$) &lt; <code>Cost</code>($S_{best}$))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ $S_{candidate}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for the GRASP.</div>
+
+<p>
+Algorithm (below) provides the pseudocode the Greedy Randomized Construction function. The function involves the step-wise construction of a candidate solution using a stochastically greedy construction process. The function works by building a Restricted Candidate List (RCL) that constraints the components of a solution (features) that may be selected from each cycle. The RCL may be constrained by an explicit size, or by using a threshold ($\alpha \in [0,1]$) on the cost of adding each feature to the current candidate solution.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$\alpha$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{candidate}$
+<br />
+$S_{candidate}$ $\leftarrow \emptyset$<br />
+<strong><code>While</code></strong> ($S_{candidate}$ $\neq$ <code>ProblemSize</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Feature_{costs}$ $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Feature_{i}$ $\notin$ $S_{candidate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Feature_{costs}$ $\leftarrow$ <code>CostOfAddingFeatureToSolution</code>($S_{candidate}$, $Feature_{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>RCL</code> $\leftarrow \emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Fcost_{min}$ $\leftarrow$ <code>MinCost</code>($Feature_{costs}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Fcost_{max}$ $\leftarrow$ <code>MaxCost</code>($Feature_{costs}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($F_{i}cost$ $\in$ $Feature_{costs}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> ($F_{i}cost$ $\leq$ $Fcost_{min} + \alpha \cdot (Fcost_{max} - Fcost_{min})$ )<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>RCL</code> $\leftarrow$ $Feature_{i}$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{candidate}$ $\leftarrow$ <code>SelectRandomFeature</code>(<code>RCL</code>)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{candidate}$)<br />
+</div>
+<div class='caption'>Pseudocode the <code>GreedyRandomizedConstruction</code> function.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The $\alpha$ threshold defines the amount of greediness of the construction mechanism, where values close to 0 may be too greedy, and values close to 1 may be too generalized.</li>
+<li> As an alternative to using the $\alpha$ threshold, the RCL can be constrained to the top $n\%$ of candidate features that may be selected from each construction cycle.</li>
+<li> The technique was designed for discrete problem classes such as combinatorial optimization problems.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Greedy Randomized Adaptive Search Procedure implemented in the Ruby Programming Language.
+The algorithm is applied to the Berlin52 instance of the Traveling Salesman Problem (TSP), taken from the TSPLIB. The problem seeks a permutation of the order to visit cities (called a tour) that minimizes the total distance traveled. The optimal tour distance for Berlin52 instance is 7542 units.
+</p>
+<p>
+The stochastic and greedy step-wise construction of a tour involves evaluating candidate cities by the the cost they contribute as being the next city in the tour.
+The algorithm uses a stochastic 2-opt procedure for the Local Search with a fixed number of non-improving iterations as the stopping condition.
+</p>
+<pre class='prettyprint lang-rb'>
+def euc_2d(c1, c2)
+  Math.sqrt((c1[0] - c2[0])**2.0 + (c1[1] - c2[1])**2.0).round
+end
+
+def cost(perm, cities)
+  distance =0
+  perm.each_with_index do |c1, i|
+    c2 = (i==perm.size-1) ? perm[0] : perm[i+1]
+    distance += euc_2d(cities[c1], cities[c2])
+  end
+  return distance
+end
+
+def stochastic_two_opt(permutation)
+  perm = Array.new(permutation)
+  c1, c2 = rand(perm.size), rand(perm.size)
+  exclude = [c1]
+  exclude &lt;&lt; ((c1==0) ? perm.size-1 : c1-1)
+  exclude &lt;&lt; ((c1==perm.size-1) ? 0 : c1+1)
+  c2 = rand(perm.size) while exclude.include?(c2)
+  c1, c2 = c2, c1 if c2 &lt; c1
+  perm[c1...c2] = perm[c1...c2].reverse
+  return perm
+end
+
+def local_search(best, cities, max_no_improv)
+  count = 0
+  begin
+    candidate = {:vector=&gt;stochastic_two_opt(best[:vector])}
+    candidate[:cost] = cost(candidate[:vector], cities)
+    count = (candidate[:cost] &lt; best[:cost]) ? 0 : count+1
+    best = candidate if candidate[:cost] &lt; best[:cost]
+  end until count &gt;= max_no_improv
+  return best
+end
+
+def construct_randomized_greedy_solution(cities, alpha)
+  candidate = {}
+  candidate[:vector] = [rand(cities.size)]
+  allCities = Array.new(cities.size) {|i| i}
+  while candidate[:vector].size &lt; cities.size
+    candidates = allCities - candidate[:vector]
+    costs = Array.new(candidates.size) do |i|
+      euc_2d(cities[candidate[:vector].last], cities[i])
+    end
+    rcl, max, min = [], costs.max, costs.min
+    costs.each_with_index do |c,i|
+      rcl &lt;&lt; candidates[i] if c &lt;= (min + alpha*(max-min))
+    end
+    candidate[:vector] &lt;&lt; rcl[rand(rcl.size)]
+  end
+  candidate[:cost] = cost(candidate[:vector], cities)
+  return candidate
+end
+
+def search(cities, max_iter, max_no_improv, alpha)
+  best = nil
+  max_iter.times do |iter|
+    candidate = construct_randomized_greedy_solution(cities, alpha);
+    candidate = local_search(candidate, cities, max_no_improv)
+    best = candidate if best.nil? or candidate[:cost] &lt; best[:cost]
+    puts " &gt; iteration #{(iter+1)}, best=#{best[:cost]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  berlin52 = [[565,575],[25,185],[345,750],[945,685],[845,655],
+   [880,660],[25,230],[525,1000],[580,1175],[650,1130],[1605,620],
+   [1220,580],[1465,200],[1530,5],[845,680],[725,370],[145,665],
+   [415,635],[510,875],[560,365],[300,465],[520,585],[480,415],
+   [835,625],[975,580],[1215,245],[1320,315],[1250,400],[660,180],
+   [410,250],[420,555],[575,665],[1150,1160],[700,580],[685,595],
+   [685,610],[770,610],[795,645],[720,635],[760,650],[475,960],
+   [95,260],[875,920],[700,500],[555,815],[830,485],[1170,65],
+   [830,610],[605,625],[595,360],[1340,725],[1740,245]]
+  # algorithm configuration
+  max_iter = 50
+  max_no_improv = 50
+  greediness_factor = 0.3
+  # execute the algorithm
+  best = search(berlin52, max_iter, max_no_improv, greediness_factor)
+  puts "Done. Best Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='grasp.rb'>Download Source</a></div>
+<div class='caption'>Greedy Randomized Adaptive Search Procedure in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The seminal paper that introduces the general approach of stochastic and greedy step-wise construction of candidate solutions is by Feo and Resende  [<a href='#Feo1989'>Feo1989</a>]. The general approach was inspired by greedy heuristics by Hart and Shogan  [<a href='#Hart1987'>Hart1987</a>]. The seminal review paper that is cited with the preliminary paper is by Feo and Resende  [<a href='#Feo1995'>Feo1995</a>], and provides a coherent description of the GRASP technique, an example, and review of early applications.
+An early application was by Feo, Venkatraman and Bard for a machine scheduling problem  [<a href='#Feo1991'>Feo1991</a>]. Other early applications to scheduling problems include technical reports  [<a href='#Feo1993'>Feo1993</a>] (later published as  [<a href='#Bard1996'>Bard1996</a>]) and  [<a href='#Feo1994'>Feo1994</a>] (also later published as  [<a href='#Feo1996'>Feo1996</a>]).
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+There are a vast number of review, application, and extension papers for GRASP.
+Pitsoulis and Resende provide an extensive contemporary overview of the field as a review chapter  [<a href='#Pitsoulis2002'>Pitsoulis2002</a>], as does Resende and Ribeiro that includes a clear presentation of the use of the $\alpha$ threshold parameter instead of a fixed size for the RCL  [<a href='#Resende2003'>Resende2003</a>]. Festa and Resende provide an annotated bibliography as a review chapter that provides some needed insight into large amount of study that has gone into the approach  [<a href='#Festa2002'>Festa2002</a>].
+There are numerous extensions to GRASP, not limited to the popular Reactive GRASP for adapting $\alpha$  [<a href='#Prais2000'>Prais2000</a>], the use of long term memory to allow the technique to learn from candidate solutions discovered in previous iterations, and parallel implementations of the procedure such as 'Parallel GRASP'  [<a href='#Pardalos1995'>Pardalos1995</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Bard1996'>[Bard1996]</a></td>
+ <td>J. F. Bard and T. A. Feo and S. Holland, "<a href="http://scholar.google.com.au/scholar?q=A+GRASP+for+scheduling+printed+wiring+board+assembly">A GRASP for scheduling printed wiring board assembly</a>", I.I.E. Trans., 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1989'>[Feo1989]</a></td>
+ <td>T. A. Feo and M. G. C. Resende, "<a href="http://scholar.google.com.au/scholar?q=A+probabilistic+heuristic+for+a+computationally+difficult+set+covering++problem">A probabilistic heuristic for a computationally difficult set covering 	problem</a>", Operations Research Letters, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1991'>[Feo1991]</a></td>
+ <td>T. A. Feo and K. Venkatraman and J. F. Bard, "<a href="http://scholar.google.com.au/scholar?q=A+GRASP+for+a+difficult+single+machine+scheduling+problem">A GRASP for a difficult single machine scheduling problem</a>", Computers &amp; Operations Research, 1991.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1993'>[Feo1993]</a></td>
+ <td>T. A. Feo and J. Bard and S. Holland, "<a href="http://scholar.google.com.au/scholar?q=A+GRASP+for+scheduling+printed+wiring+board+assembly">A GRASP for scheduling printed wiring board assembly</a>", Technical Report TX 78712-1063, Operations Research Group, Department of Mechanical Engineering, 	The University of Texas at Austin, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1994'>[Feo1994]</a></td>
+ <td>T. A. Feo and K. Sarathy and J. McGahan, "<a href="http://scholar.google.com.au/scholar?q=A+GRASP+for+single+machine+scheduling+with+sequence+dependent+setup++costs+and+linear+delay+penalties">A GRASP for single machine scheduling with sequence dependent setup 	costs and linear delay penalties</a>", Technical Report TX 78712-1063, Operations Research Group, Department of Mechanical Engineering, 	The University of Texas at Austin, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1995'>[Feo1995]</a></td>
+ <td>T. A. Feo and M. G. C. Resende, "<a href="http://scholar.google.com.au/scholar?q=Greedy+randomized+adaptive+search+procedures">Greedy randomized adaptive search procedures</a>", Journal of Global Optimization, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Feo1996'>[Feo1996]</a></td>
+ <td>T. A. Feo and K. Sarathy and J. McGahan, "<a href="http://scholar.google.com.au/scholar?q=A+grasp+for+single+machine+scheduling+with+sequence+dependent+setup++costs+and+linear+delay+penalties">A grasp for single machine scheduling with sequence dependent setup 	costs and linear delay penalties</a>", Computers &amp; Operations Research, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Festa2002'>[Festa2002]</a></td>
+ <td>P. Festa and M. G. C. Resende, "<a href="http://scholar.google.com.au/scholar?q=GRASP:+An+annotated+bibliography">GRASP: An annotated bibliography</a>", in Essays and Surveys on Metaheuristics, pages 325&ndash;367, Kluwer Academic Publishers, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hart1987'>[Hart1987]</a></td>
+ <td>J. P. Hart and A. W. Shogan, "<a href="http://scholar.google.com.au/scholar?q=Semi&ndash;greedy+heuristics:+An+empirical+study">Semi&ndash;greedy heuristics: An empirical study</a>", Operations Research Letters, 1987.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pardalos1995'>[Pardalos1995]</a></td>
+ <td>P. M. Pardalos and L. S. Pitsoulis and M. G. C. Resende, "<a href="http://scholar.google.com.au/scholar?q=A+parallel+GRASP+implementation+for+the+quadratic+assignment+problems">A parallel GRASP implementation for the quadratic assignment problems</a>", in Parallel Algorithms for Irregularly Structured Problems (Irregular’94), 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pitsoulis2002'>[Pitsoulis2002]</a></td>
+ <td>L. Pitsoulis and M. G. C. Resende, "<a href="http://scholar.google.com.au/scholar?q=Greedy+randomized+adaptive+search+procedures">Greedy randomized adaptive search procedures</a>", in Handbook of Applied Optimization, pages 168&ndash;181, Oxford University Press, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Prais2000'>[Prais2000]</a></td>
+ <td>M. Prais and C. C. Ribeiro, "<a href="http://scholar.google.com.au/scholar?q=Reactive+GRASP:+An+application+to+a+matrix+decomposition+problem++in+TDMA+traffic+assignment">Reactive GRASP: An application to a matrix decomposition problem 	in TDMA traffic assignment</a>", INFORMS Journal on Computing, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Resende2003'>[Resende2003]</a></td>
+ <td>M. G. C. Resende and C. C. Ribeiro, "<a href="http://scholar.google.com.au/scholar?q=Greedy+randomized+adaptive+search+procedures">Greedy randomized adaptive search procedures</a>", in Handbook of Metaheuristics, pages 219&ndash;249, Kluwer Academic Publishers, 2003.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

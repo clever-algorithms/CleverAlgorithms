@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='bayesian_optimization_algorithm'><h1>Bayesian Optimization Algorithm</h1></a>
+<p>
+<em>Bayesian Optimization Algorithm, BOA.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Bayesian Optimization Algorithm belongs to the field of Estimation of Distribution Algorithms, also referred to as Population Model-Building Genetic Algorithms (PMBGA) an extension to the field of Evolutionary Computation. More broadly, BOA belongs to the field of Computational Intelligence.
+The Bayesian Optimization Algorithm is related to other Estimation of Distribution Algorithms such as the Population Incremental Learning Algorithm, and the Univariate Marginal Distribution Algorithm.
+It is also the basis for extensions such as the Hierarchal Bayesian Optimization Algorithm (hBOA) and the Incremental Bayesian Optimization Algorithm (iBOA).
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Bayesian Optimization Algorithm is a technique without an inspiration. It is related to the Genetic Algorithm and other Evolutionary Algorithms that are inspired by the biological theory of evolution by means of natural selection.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the technique is to construct a probabilistic model that describes the relationships between the components of fit solutions in the problem space.
+This is achieved by repeating the process of creating and sampling from a Bayesian network that contains the conditional dependancies, independencies, and conditional probabilities between the components of a solution. The network is constructed from the relative frequencies of the components within a population of high fitness candidate solutions. Once the network is constructed, the candidate solutions are discarded and a new population of candidate solutions are generated from the model. The process is repeated until the model converges on a fit prototype solution.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Bayesian Optimization Algorithm for minimizing a cost function.
+The Bayesian network is constructed each iteration using a greedy algorithm. The network is assessed based on its fit of the information in the population of candidate solutions using either a Bayesian Dirichlet Metric (BD)  [<a href='#Pelikan1999a'>Pelikan1999a</a>], or a Bayesian Information Criterion (BIC). Refer to Chapter 3 of Pelikan's book for a more detailed presentation of the pseudocode for BOA  [<a href='#Pelikan2005'>Pelikan2005</a>].
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$Bits_{num}$, $Population_{size}$, $Selection_{size}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$S_{best}$
+<br />
+<code>Population</code> $\leftarrow$ <code>InitializePopulation</code>($Bits_{num}$, $Population_{size}$)<br />
+<code>EvaluatePopulation</code>(<code>Population</code>)<br />
+$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Population</code>)<br />
+<strong><code>While</code></strong> ($\neg$<code>StopCondition</code>())<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Selected</code> $\leftarrow$ <code>SelectFitSolutions</code>(<code>Population</code>, $Selection_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Model</code> $\leftarrow$ <code>ConstructBayesianNetwork</code>(<code>Selected</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Offspring</code> $\leftarrow$ $\emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($i$ <strong><code>To</code></strong> $Population_{size}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Offspring</code> $\leftarrow$ <code>ProbabilisticallyConstructSolution</code>(<code>Model</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>EvaluatePopulation</code>(<code>Offspring</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$S_{best}$ $\leftarrow$ <code>GetBestSolution</code>(<code>Offspring</code>)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>Population</code> $\leftarrow$ <code>Combine</code>(<code>Population</code>, <code>Offspring</code>)<br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($S_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for BOA.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The Bayesian Optimization Algorithm was designed and investigated on binary string-base problems, most commonly representing binary function optimization problems.</li>
+<li> Bayesian networks are typically constructed (grown) from scratch each iteration using an iterative process of adding, removing, and reversing links. Additionally, past networks may be used as the basis for the subsequent generation.</li>
+<li> A greedy hill-climbing algorithm is used each algorithm iteration to optimize a Bayesian network to represent a population of candidate solutions.</li>
+<li> The fitness of constructed Bayesian networks may be assessed using the Bayesian Dirichlet Metric (BD) or a Minimum Description length method called the Bayesian Information Criterion (BIC).</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Bayesian Optimization Algorithm implemented in the Ruby Programming Language.
+The demonstration problem is a maximizing binary optimization problem called OneMax that seeks a binary string of unity (all '1' bits). The objective function provides only an indication of the number of correct bits in a candidate string, not the positions of the correct bits.
+</p>
+<p>
+The Bayesian Optimization Algorithm can be tricky to implement given the use of of a Bayesian Network at the core of the technique. The implementation of BOA provided is based on the the C++ implementation provided by Pelikan, version 1.0  [<a href='#Pelikan1999b'>Pelikan1999b</a>]. Specifically, the implementation uses the K2 metric to construct a Bayesian network from a population of candidate solutions  [<a href='#Cooper1992'>Cooper1992</a>]. Essentially, this metric is a greedy algorithm that starts with an empty graph and adds the arc with the most gain each iteration until a maximum number of edges have been added or no further edges can be added. The result is a directed acyclic graph. The process that constructs the graph imposes limits, such as the maximum number of edges and the maximum number of in-bound connections per node.
+</p>
+<p>
+New solutions are sampled from the graph by first topologically ordering the graph (so that bits can be generated based on their dependencies), then probabilistically sampling the bits based on the conditional probabilities encoded in the graph. The algorithm used for sampling the conditional probabilities from the network is Probabilistic Logic Sampling  [<a href='#Henrion1988'>Henrion1988</a>]. The stopping condition is either the best solution for the problem is found or the system converges to a single bit pattern.
+</p>
+<p>
+Given that the implementation was written for clarity, it is slow to execute and provides an great opportunity for improvements and efficiencies.
+</p>
+<pre class='prettyprint lang-rb'>
+def onemax(vector)
+  return vector.inject(0){|sum, value| sum + value}
+end
+
+def random_bitstring(size)
+  return Array.new(size){ ((rand()&lt;0.5) ? 1 : 0) }
+end
+
+def path_exists?(i, j, graph)
+  visited, stack = [], [i]
+  while !stack.empty?
+    return true if stack.include?(j)
+    k = stack.shift
+    next if visited.include?(k)
+    visited &lt;&lt; k
+    graph[k][:out].each {|m| stack.unshift(m) if !visited.include?(m)}
+  end
+  return false
+end
+
+def can_add_edge?(i, j, graph)
+  return !graph[i][:out].include?(j) && !path_exists?(j, i, graph)
+end
+
+def get_viable_parents(node, graph)
+  viable = []
+  graph.size.times do |i|
+    if node!=i and can_add_edge?(node, i, graph)
+      viable &lt;&lt; i
+    end
+  end
+  return viable
+end
+
+def compute_count_for_edges(pop, indexes)
+  counts = Array.new(2**(indexes.size)){0}
+  pop.each do |p|
+    index = 0
+    indexes.reverse.each_with_index do |v,i|
+      index += ((p[:bitstring][v] == 1) ? 1 : 0) * (2**i)
+    end
+    counts[index] += 1
+  end
+ return counts
+end
+
+def fact(v)
+  return v &lt;= 1 ? 1 : v*fact(v-1)
+end
+
+def k2equation(node, candidates, pop)
+  counts = compute_count_for_edges(pop, [node]+candidates)
+  total = nil
+  (counts.size/2).times do |i|
+    a1, a2 = counts[i*2], counts[(i*2)+1]
+    rs = (1.0/fact((a1+a2)+1).to_f) * fact(a1).to_f * fact(a2).to_f
+    total = (total.nil? ? rs : total*rs)
+  end
+  return total
+end
+
+def compute_gains(node, graph, pop, max=2)
+  viable = get_viable_parents(node[:num], graph)
+  gains = Array.new(graph.size) {-1.0}
+  gains.each_index do |i|
+    if graph[i][:in].size &lt; max and viable.include?(i)
+      gains[i] = k2equation(node[:num], node[:in]+[i], pop)
+    end
+  end
+  return gains
+end
+
+def construct_network(pop, prob_size, max_edges=3*pop.size)
+  graph = Array.new(prob_size) {|i| {:out=&gt;[], :in=&gt;[], :num=&gt;i} }
+  gains = Array.new(prob_size)
+  max_edges.times do
+    max, from, to = -1, nil, nil
+    graph.each_with_index do |node, i|
+      gains[i] = compute_gains(node, graph, pop)
+      gains[i].each_with_index {|v,j| from,to,max = i,j,v if v&gt;max}
+    end
+    break if max &lt;= 0.0
+    graph[from][:out] &lt;&lt; to
+    graph[to][:in] &lt;&lt; from
+  end
+  return graph
+end
+
+def topological_ordering(graph)
+  graph.each {|n| n[:count] = n[:in].size}
+  ordered,stack = [], graph.select {|n| n[:count]==0}
+  while ordered.size &lt; graph.size
+    current = stack.shift
+    current[:out].each do |edge|
+      node = graph.find {|n| n[:num]==edge}
+      node[:count] -= 1
+      stack &lt;&lt; node if node[:count] &lt;= 0
+    end
+    ordered &lt;&lt; current
+  end
+  return ordered
+end
+
+def marginal_probability(i, pop)
+  return pop.inject(0.0){|s,x| s + x[:bitstring][i]} / pop.size.to_f
+end
+
+def calculate_probability(node, bitstring, graph, pop)
+  return marginal_probability(node[:num], pop) if node[:in].empty?
+  counts = compute_count_for_edges(pop, [node[:num]]+node[:in])
+  index = 0
+  node[:in].reverse.each_with_index do |v,i|
+    index += ((bitstring[v] == 1) ? 1 : 0) * (2**i)
+  end
+  i1 = index + (1*2**(node[:in].size))
+  i2 = index + (0*2**(node[:in].size))
+  a1, a2 = counts[i1].to_f, counts[i2].to_f
+  return a1/(a1+a2)
+end
+
+def probabilistic_logic_sample(graph, pop)
+  bitstring = Array.new(graph.size)
+  graph.each do |node|
+    prob = calculate_probability(node, bitstring, graph, pop)
+    bitstring[node[:num]] = ((rand() &lt; prob) ? 1 : 0)
+  end
+  return {:bitstring=&gt;bitstring}
+end
+
+def sample_from_network(pop, graph, num_samples)
+  ordered = topological_ordering(graph)
+  samples = Array.new(num_samples) do
+    probabilistic_logic_sample(ordered, pop)
+  end
+  return samples
+end
+
+def search(num_bits, max_iter, pop_size, select_size, num_children)
+  pop = Array.new(pop_size) { {:bitstring=&gt;random_bitstring(num_bits)} }
+  pop.each{|c| c[:cost] = onemax(c[:bitstring])}
+  best = pop.sort!{|x,y| y[:cost] &lt;=&gt; x[:cost]}.first
+  max_iter.times do |it|
+    selected = pop.first(select_size)
+    network = construct_network(selected, num_bits)
+    arcs = network.inject(0){|s,x| s+x[:out].size}
+    children = sample_from_network(selected, network, num_children)
+    children.each{|c| c[:cost] = onemax(c[:bitstring])}
+    children.each {|c| puts " &gt;&gt;sample, f=#{c[:cost]} #{c[:bitstring]}"}
+    pop = pop[0...(pop_size-select_size)] + children
+    pop.sort! {|x,y| y[:cost] &lt;=&gt; x[:cost]}
+    best = pop.first if pop.first[:cost] &gt;= best[:cost]
+    puts " &gt;it=#{it}, arcs=#{arcs}, f=#{best[:cost]}, [#{best[:bitstring]}]"
+    converged = pop.select {|x| x[:bitstring]!=pop.first[:bitstring]}.empty?
+    break if converged or best[:cost]==num_bits
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  num_bits = 20
+  # algorithm configuration
+  max_iter = 100
+  pop_size = 50
+  select_size = 15
+  num_children = 25
+  # execute the algorithm
+  best = search(num_bits, max_iter, pop_size, select_size, num_children)
+  puts "done! Solution: f=#{best[:cost]}/#{num_bits}, s=#{best[:bitstring]}"
+end
+</pre>
+<div class='download_src'><a href='boa.rb'>Download Source</a></div>
+<div class='caption'>Bayesian Optimization Algorithm in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Bayesian Optimization Algorithm was proposed by Pelikan, Goldberg, and Cant&uacute;-Paz in the technical report  [<a href='#Pelikan1998a'>Pelikan1998a</a>], that was later published  [<a href='#Pelikan2002'>Pelikan2002</a>]. The technique was proposed as an extension to the state of Estimation of Distribution algorithms (such as the Univariate Marginal Distribution Algorithm and the Bivariate Marginal Distribution Algorithm) that used a Bayesian Network to model the relationships and conditional probabilities for the components expressed in a population of fit candidate solutions.
+Pelikan, Goldberg, and Cant&uacute;-Paz also described the approach applied to deceptive binary optimization problems (trap functions) in a paper that was published before the seminal journal article  [<a href='#Pelikan1999a'>Pelikan1999a</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Pelikan and Goldberg described an extension to the approach called the Hierarchical Bayesian Optimization Algorithm (hBOA)  [<a href='#Pelikan2000'>Pelikan2000</a>] [<a href='#Pelikan2001b'>Pelikan2001b</a>]. The differences in the hBOA algorithm are that it replaces the decision tables (used to store the probabilities) with decision graphs and used a niching method called Restricted Tournament Replacement to maintain diversity in the selected set of candidate solutions used to construct the network models.
+Pelikan's work on BOA culminated in his PhD thesis that provides a detailed treatment of the approach, its configuration and application  [<a href='#Pelikan2002a'>Pelikan2002a</a>].
+Pelikan, Sastry, and Goldberg proposed the Incremental Bayesian Optimization Algorithm (iBOA) extension of the approach that removes the population and adds incremental updates to the Bayesian network  [<a href='#Pelikan2008'>Pelikan2008</a>].
+</p>
+<p>
+Pelikan published a book that focused on the technique, walking through the development of probabilistic algorithms inspired by evolutionary computation, a detailed look at the Bayesian Optimization Algorithm (Chapter 3), the hierarchic extension to Hierarchical Bayesian Optimization Algorithm and demonstration studies of the approach on test problems  [<a href='#Pelikan2005'>Pelikan2005</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Cooper1992'>[Cooper1992]</a></td>
+ <td>G. F. Cooper and E. Herskovits, "<a href="http://scholar.google.com.au/scholar?q=A+Bayesian+Method+for+the+Induction+of+Probabilistic+Networks+from++Data">A Bayesian Method for the Induction of Probabilistic Networks from 	Data</a>", Machine Learning, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Henrion1988'>[Henrion1988]</a></td>
+ <td>M. Henrion, "<a href="http://scholar.google.com.au/scholar?q=Propagation+of+Uncertainty+by+Probabilistic+Logic+Sampling+in+Bayes++Networks">Propagation of Uncertainty by Probabilistic Logic Sampling in Bayes 	Networks</a>", in Uncertainty in Artificial Intelligence 2, pages 149&ndash;163, Elsevier Science Publishing Company, Inc., 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1998a'>[Pelikan1998a]</a></td>
+ <td>M. Pelikan and D. E. Goldberg and E. Cant&uacute;&ndash;Paz, "<a href="http://scholar.google.com.au/scholar?q=Linkage+Problem,+Distribution+Estimation,+and+Bayesian+Networks">Linkage Problem, Distribution Estimation, and Bayesian Networks</a>", Technical Report IlliGAL Report No. 98013, llinois Genetic Algorithms Laboratory, University of Illinois at 	Urbana-Champaign, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1999a'>[Pelikan1999a]</a></td>
+ <td>M. Pelikan and D. E. Goldberg and E. Cant&uacute;&ndash;Paz, "<a href="http://scholar.google.com.au/scholar?q=BOA:+The+Bayesian+optimization+algorithm.">BOA: The Bayesian optimization algorithm.</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	(GECCO-99), 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1999b'>[Pelikan1999b]</a></td>
+ <td>M. Pelikan, "<a href="http://scholar.google.com.au/scholar?q=A+Simple+Implementation+of+the+Bayesian+Optimization+Algorithm+(BOA)++in+C+++(version+1.0)">A Simple Implementation of the Bayesian Optimization Algorithm (BOA) 	in C++ (version 1.0)</a>", Technical Report IlliGAL Report No. 99011, University of Illinois at Urbana-Champaign, Illinois Genetic Algorithms 	Laboratory, Urbana, IL, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2000'>[Pelikan2000]</a></td>
+ <td>M. Pelikan and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Hierarchical+Problem+Solving+and+the+Bayesian+Optimization+Algorithms">Hierarchical Problem Solving and the Bayesian Optimization Algorithms</a>", in Genetic and Evolutionary Computation Conference 2000 (GECCO-2000), 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2001b'>[Pelikan2001b]</a></td>
+ <td>M. Pelikan and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Escaping+hierarchical+traps+with+competent+genetic+algorithms">Escaping hierarchical traps with competent genetic algorithms</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	(GECCO-2001), 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2002'>[Pelikan2002]</a></td>
+ <td>M. Pelikan and D. E. Goldberg and E. Cant&uacute;&ndash;Paz, "<a href="http://scholar.google.com.au/scholar?q=Linkage+Problem,+Distribution+Estimation,+and+Bayesian+Networks">Linkage Problem, Distribution Estimation, and Bayesian Networks</a>", Evolutionary Computation, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2002a'>[Pelikan2002a]</a></td>
+ <td>M. Pelikan, "<a href="http://scholar.google.com.au/scholar?q=Bayesian+optimization+algorithm:+From+single+level+to+hierarchy">Bayesian optimization algorithm: From single level to hierarchy</a>", [PhD Thesis] University of Illinois at Urbana-Champaign, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2005'>[Pelikan2005]</a></td>
+ <td>M. Pelikan, "<a href="http://scholar.google.com.au/scholar?q=Hierarchical+Bayesian+Optimization+Algorithm:+Toward+a+New+Generation++of+Evolutionary+Algorithms">Hierarchical Bayesian Optimization Algorithm: Toward a New Generation 	of Evolutionary Algorithms</a>", Springer, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2008'>[Pelikan2008]</a></td>
+ <td>M. Pelikan and K. Sastry and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=iBOA:+The+Incremental+Bayesian+Optimization+Algorithms">iBOA: The Incremental Bayesian Optimization Algorithms</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	(GECCO-2008), 2008.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

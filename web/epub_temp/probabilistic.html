@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='probabilistic_algorithms'><h1>Probabilistic Algorithms</h1></a>
+
+<a id='overview'><h2>Overview</h2></a>
+<p>
+This chapter describes Probabilistic Algorithms
+</p>
+
+<a id='probabilistic_models'><h3>Probabilistic Models</h3></a>
+<p>
+Probabilistic Algorithms are those algorithms that model a problem or search a problem space using an probabilistic model of candidate solutions. Many Metaheuristics and Computational Intelligence algorithms may be considered probabilistic, although the difference with algorithms is the explicit (rather than implicit) use of the tools of probability in problem solving. The majority of the algorithms described in this Chapter are referred to as Estimation of Distribution Algorithms.
+</p>
+
+
+<a id='estimation_of_distribution_algorithms'><h3>Estimation of Distribution Algorithms</h3></a>
+<p>
+Estimation of Distribution Algorithms (EDA) also called Probabilistic Model-Building Genetic Algorithms (PMBGA) are an extension of the field of Evolutionary Computation that model a population of candidate solutions as a probabilistic model. They generally involve iterations that alternate between creating candidate solutions in the problem space from a probabilistic model, and reducing a collection of generated candidate solutions into a probabilistic model.
+</p>
+<p>
+The model at the heart of an EDA typically provides the probabilistic expectation of a component or component configuration comprising part of an optimal solution. This estimation is typically based on the observed frequency of use of the component in better than average candidate solutions. The probabilistic model is used to generate candidate solutions in the problem space, typically in a component-wise or step-wise manner using a domain specific construction method to ensure validity.
+</p>
+<p>
+Pelikan et al. provide a comprehensive summary of the field of probabilistic optimization algorithms, summarizing the core approaches and their differences  [<a href='#Pelikan2002b'>Pelikan2002b</a>].
+The edited volume by Pelikan, Sastry, and Cantu-Paz provides a collection of studies on the popular Estimation of Distribution algorithms as well as methodology for designing algorithms and application demonstration studies  [<a href='#Pelikan2006'>Pelikan2006</a>].
+An edited volume on studies of EDAs by Larranaga and Lozano  [<a href='#Larranaga2002'>Larranaga2002</a>] and the follow-up volume by Lozano et al.  [<a href='#Lozano2006'>Lozano2006</a>] provide an applied foundation for the field.
+</p>
+
+
+<a id='extensions'><h3>Extensions</h3></a>
+<p>
+There are many other algorithms and classes of algorithm that were not described from the field of Estimation of Distribution Algorithm, not limited to:
+</p>
+<ul>
+<li> <strong>Extensions to UMDA</strong>: Extensions to the Univariate Marginal Distribution Algorithm such as the Bivariate Marginal Distribution Algorithm (BMDA)  [<a href='#Pelikan1998'>Pelikan1998</a>] [<a href='#Pelikan1999'>Pelikan1999</a>] and the Factorized Distribution Algorithm (FDA)  [<a href='#Muhlenbein1999'>Muhlenbein1999</a>].</li>
+<li> <strong>Extensions to cGA</strong>: Extensions to the Compact Genetic Algorithm such as the Extended Compact Genetic Algorithm (ECGA)  [<a href='#Harik1999a'>Harik1999a</a>] [<a href='#Harik2006'>Harik2006</a>].</li>
+<li> <strong>Extensions to BOA</strong>: Extensions to the Bayesian Optimization Algorithm such as the Hierarchal Bayesian Optimization Algorithm (hBOA)  [<a href='#Pelikan2000'>Pelikan2000</a>] [<a href='#Pelikan2001b'>Pelikan2001b</a>] and the Incremental Bayesian Optimization Algorithm (iBOA)  [<a href='#Pelikan2008'>Pelikan2008</a>].</li>
+<li> <strong>Bayesian Network Algorithms</strong>: Other Bayesian network algorithms such as The Estimation of Bayesian Network Algorithm  [<a href='#Etxeberria1999'>Etxeberria1999</a>], and the Learning Factorized Distribution Algorithm (LFDA)  [<a href='#Muehlenbein1999'>Muehlenbein1999</a>].</li>
+<li> <strong>PIPE</strong>: The Probabilistic Incremental Program Evolution that uses EDA methods for constructing programs  [<a href='#Salustowicz1997'>Salustowicz1997</a>].</li>
+<li> <strong>SHCLVND</strong>: The Stochastic Hill-Climbing with Learning by Vectors of Normal Distributions algorithm  [<a href='#Rudlof1996'>Rudlof1996</a>].</li>
+</ul>
+
+
+
+
+<h3>Algorithms</h3>
+<ul>
+<li><a href='probabilistic/pbil.html'>Population-Based Incremental Learning</a></li>
+<li><a href='probabilistic/umda.html'>Univariate Marginal Distribution Algorithm</a></li>
+<li><a href='probabilistic/compact_genetic_algorithm.html'>Compact Genetic Algorithm</a></li>
+<li><a href='probabilistic/boa.html'>Bayesian Optimization Algorithm</a></li>
+<li><a href='probabilistic/cross_entropy.html'>Cross-Entropy Method</a></li>
+</ul>
+<h3>Bibliography</h3>
+<table>
+ <tr valign="top">
+ <td><a id='Etxeberria1999'>[Etxeberria1999]</a></td>
+ <td>R. Etxeberria and P. Larranaga, "<a href="http://scholar.google.com.au/scholar?q=Global+optimization+using+Bayesian+networks">Global optimization using Bayesian networks</a>", in Proceedings of the Second Symposium on Artificial Intelligence (CIMAF-99), 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Harik1999a'>[Harik1999a]</a></td>
+ <td>G. R. Harik, "<a href="http://scholar.google.com.au/scholar?q=Linkage+Learning+via+Probabilistic+Modeling+in+the+Extended+Compact++Genetic+Algorithm+(ECGA)">Linkage Learning via Probabilistic Modeling in the Extended Compact 	Genetic Algorithm (ECGA)</a>", Technical Report 99010, Illinois Genetic Algorithms Laboratory, Department of General Engineering, 	University of Illinois, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Harik2006'>[Harik2006]</a></td>
+ <td>G. R. Harik and F. G. Lobo and K. Sastry, "<a href="http://scholar.google.com.au/scholar?q=Linkage+Learning+via+Probabilistic+Modeling+in+the+Extended+Compact++Genetic+Algorithm+(ECGA)">Linkage Learning via Probabilistic Modeling in the Extended Compact 	Genetic Algorithm (ECGA)</a>", in Scalable Optimization via Probabilistic Modeling, pages 39&ndash;61, Springer, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Larranaga2002'>[Larranaga2002]</a></td>
+ <td>P. Larranaga and J. A. Lozano, "<a href="http://scholar.google.com.au/scholar?q=Estimation+of+distribution+algorithms:+A+new+tool+for+evolutionary++computation">Estimation of distribution algorithms: A new tool for evolutionary 	computation</a>", Springer, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Lozano2006'>[Lozano2006]</a></td>
+ <td>J. A. Lozano and P. Larranaga and I. Inza and E. Bengoetxea, "<a href="http://scholar.google.com.au/scholar?q=Towards+a+new+evolutionary+computation.+Advances+in+estimation+of++distribution+algorithms">Towards a new evolutionary computation. Advances in estimation of 	distribution algorithms</a>", Springer, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Muehlenbein1999'>[Muehlenbein1999]</a></td>
+ <td>H. M&uuml;hlenbein and T. Mahnig, "<a href="http://scholar.google.com.au/scholar?q=FDA&ndash;A+Scalable+Evolutionary+Algorithm+for+the+Optimization+of++Additively+Decomposed+Discrete+Functions">FDA&ndash;A Scalable Evolutionary Algorithm for the Optimization of 	Additively Decomposed Discrete Functions</a>", Evolutionary Compilation, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Muhlenbein1999'>[Muhlenbein1999]</a></td>
+ <td>H. M&uuml;hlenbein and T. Mahnig and A. O. Rodriguez, "<a href="http://scholar.google.com.au/scholar?q=Schemata,+Distributions+and+Graphical+Models+in+Evolutionary+Optimization">Schemata, Distributions and Graphical Models in Evolutionary Optimization</a>", Journal of Heuristics, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1998'>[Pelikan1998]</a></td>
+ <td>M. Pelikan and H. M&uuml;hlenbein, "<a href="http://scholar.google.com.au/scholar?q=Marginal+distributions+in+evolutionary+algorithms">Marginal distributions in evolutionary algorithms</a>", in Proceedings of the International Conference on Genetic Algorithms 	Mendel, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan1999'>[Pelikan1999]</a></td>
+ <td>M. Pelikan and H. M&uuml;hlenbein, "<a href="http://scholar.google.com.au/scholar?q=The+Bivariate+Marginal+Distribution+Algorithm">The Bivariate Marginal Distribution Algorithm</a>", in Advances in Soft Computing: Engineering Design and Manufacturing, pages 521&ndash;535, Springer, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2000'>[Pelikan2000]</a></td>
+ <td>M. Pelikan and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Hierarchical+Problem+Solving+and+the+Bayesian+Optimization+Algorithms">Hierarchical Problem Solving and the Bayesian Optimization Algorithms</a>", in Genetic and Evolutionary Computation Conference 2000 (GECCO-2000), 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2001b'>[Pelikan2001b]</a></td>
+ <td>M. Pelikan and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=Escaping+hierarchical+traps+with+competent+genetic+algorithms">Escaping hierarchical traps with competent genetic algorithms</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	(GECCO-2001), 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2002b'>[Pelikan2002b]</a></td>
+ <td>M. Pelikan and D. E. Goldberg and F. G. Lobo, "<a href="http://scholar.google.com.au/scholar?q=A+Survey+of+Optimization+by+Building+and+Using+Probabilistic+Models">A Survey of Optimization by Building and Using Probabilistic Models</a>", Computational Optimization and Applications, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2006'>[Pelikan2006]</a></td>
+ <td>M. Pelikan and K. Sastry and E. Cant&uacute;&ndash;Paz (editors), "<a href="http://scholar.google.com.au/scholar?q=Scalable+Optimization+via+Probabilistic+Modeling:+From+Algorithms++to+Applications">Scalable Optimization via Probabilistic Modeling: From Algorithms 	to Applications</a>", Springer, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Pelikan2008'>[Pelikan2008]</a></td>
+ <td>M. Pelikan and K. Sastry and D. E. Goldberg, "<a href="http://scholar.google.com.au/scholar?q=iBOA:+The+Incremental+Bayesian+Optimization+Algorithms">iBOA: The Incremental Bayesian Optimization Algorithms</a>", in Proceedings of the Genetic and Evolutionary Computation Conference 	(GECCO-2008), 2008.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rudlof1996'>[Rudlof1996]</a></td>
+ <td>S. Rudlof and M. Koppen, "<a href="http://scholar.google.com.au/scholar?q=Stochastic+hill+climbing+with+learning+by+vectors+of+normal+distributions">Stochastic hill climbing with learning by vectors of normal distributions</a>", in First On-line Workshop on Soft Computing, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Salustowicz1997'>[Salustowicz1997]</a></td>
+ <td>R. Salustowicz and J. Schmidhuber, "<a href="http://scholar.google.com.au/scholar?q=Probabilistic+Incremental+Program+Evolution:+Stochastic+search+through++program+space">Probabilistic Incremental Program Evolution: Stochastic search through 	program space</a>", in Proceedings of the 9th European Conference on Machine Learning Prague, 1997.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

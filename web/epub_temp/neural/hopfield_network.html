@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='hopfield_network'><h1>Hopfield Network</h1></a>
+<p>
+<em>Hopfield Network, HN, Hopfield Model.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+The Hopfield Network is a Neural Network and belongs to the field of Artificial Neural Networks and Neural Computation.
+It is a Recurrent Neural Network and is related to other recurrent networks such as the Bidirectional Associative Memory (BAM).
+It is generally related to feedforward Artificial Neural Networks such as the Perceptron and the Back-propagation algorithm.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+The Hopfield Network algorithm is inspired by the associated memory properties of the human brain.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+Through the training process, the weights in the network may be thought to minimize an energy function and slide down an energy surface. In a trained network, each pattern presented to the network provides an attractor, where progress is made towards the point of attraction by propagating information around the network.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the system is to associate the components of an input pattern with a holistic representation of the pattern called Content Addressable Memory (CAM). This means that once trained, the system will recall whole patterns, given a portion or a noisy version of the input pattern.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+The Hopfield Network is comprised of a graph data structure with weighted edges and separate procedures for training and applying the structure. The network structure is fully connected (a node connects to all other nodes except itself) and the edges (weights) between the nodes are bidirectional.
+</p>
+<p>
+The weights of the network can be learned via a one-shot method (one-iteration through the patterns) if all patterns to be memorized by the network are known. Alternatively, the weights can be updated incrementally using the Hebb rule where weights are increased or decreased based on the difference between the actual and the expected output. The one-shot calculation of the network weights for a single node occurs as follows:
+</p>
+$w_{i,j} = \sum_{k=1}^{N} v_k^i \times v_k^j$
+<p>
+where $w_{i,j}$ is the weight between neuron $i$ and $j$, $N$ is the number of input patterns, $v$ is the input pattern and $v_k^i$ is the $i^{th}$ attribute on the $k^{th}$ input pattern.
+</p>
+<p>
+The propagation of the information through the network can be asynchronous where a random node is selected each iteration, or synchronously, where the output is calculated for each node before being applied to the whole network. Propagation of the information continues until no more changes are made or until a maximum number of iterations has completed, after which the output pattern from the network can be read. The activation for a single node is calculated as follows:
+</p>
+$n_i = \sum_{j=1}^n w_{i,j} \times n_j$
+<p>
+where $n_i$ is the activation of the $i^{th}$ neuron, $w_{i,j}$ with the weight between the nodes $i$ and $j$, and $n_j$ is the output of the $j^{th}$ neuron. The activation is transferred into an output using a transfer function, typically a step function as follows:
+</p>
+<p>
+\[transfer(n_i) = \left\{ \begin{array}{l l} 1 & \quad if \geq \theta \\ -1 & \quad if < \theta \\ \end{array} \right. \]
+</p>
+<p>
+where the threshold $\theta$ is typically fixed at 0.
+</p>
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> The Hopfield network may be used to solve the recall problem of matching cues for an input pattern to an associated pre-learned pattern.</li>
+<li> The transfer function for turning the activation of a neuron into an output is typically a step function $f(a) \in \{-1,1\}$ (preferred), or more traditionally $f(a) \in \{0,1\}$.</li>
+<li> The input vectors are typically normalized to boolean values $x \in [-1,1]$.</li>
+<li> The network can be propagated asynchronously (where a random node is selected and output generated), or synchronously (where the output for all nodes are calculated before being applied).</li>
+<li> Weights can be learned in a one-shot or incremental method based on how much information is known about the patterns to be learned.</li>
+<li> All neurons in the network are typically both input and output neurons, although other network topologies have been investigated (such as the designation of input and output neurons).</li>
+<li> A Hopfield network has limits on the patterns it can store and retrieve accurately from memory, described by $N<0.15\times n$ where $N$ is the number of patterns that can be stored and retrieved and $n$ is the number of nodes in the network.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Hopfield Network algorithm implemented in the Ruby Programming Language.
+The problem is an instance of a recall problem where patters are described in terms of a $3 \times 3$ matrix of binary values ($\in \{-1,1\}$). Once the network has learned the patterns, the system is exposed to perturbed versions of the patterns (with errors introduced) and must respond with the correct pattern. Two patterns are used in this example, specifically 'T', and 'U'.
+</p>
+<p>
+The algorithm is an implementation of the Hopfield Network with a one-shot training method for the network weights, given that all patterns are already known. The information is propagated through the network using an asynchronous method, which is repeated for a fixed number of iterations. The patterns are displayed to the console during the testing of the network, with the outputs converted from $\{-1,1\}$ to $\{0,1\}$ for readability.
+</p>
+<pre class='prettyprint lang-rb'>
+def random_vector(minmax)
+  return Array.new(minmax.size) do |i|
+    minmax[i][0] + ((minmax[i][1] - minmax[i][0]) * rand())
+  end
+end
+
+def initialize_weights(problem_size)
+  minmax = Array.new(problem_size) {[-0.5,0.5]}
+  return random_vector(minmax)
+end
+
+def create_neuron(num_inputs)
+  neuron = {}
+  neuron[:weights] = initialize_weights(num_inputs)
+  return neuron
+end
+
+def transfer(activation)
+  return (activation &gt;= 0) ? 1 : -1
+end
+
+def propagate_was_change?(neurons)
+  i = rand(neurons.size)
+  activation = 0
+  neurons.each_with_index do |other, j|
+    activation += other[:weights][i]*other[:output] if i!=j
+  end
+  output = transfer(activation)
+  change = output != neurons[i][:output]
+  neurons[i][:output] = output
+  return change
+end
+
+def get_output(neurons, pattern, evals=100)
+  vector = pattern.flatten
+  neurons.each_with_index {|neuron,i| neuron[:output] = vector[i]}
+  evals.times { propagate_was_change?(neurons) }
+  return Array.new(neurons.size){|i| neurons[i][:output]}
+end
+
+def train_network(neurons, patters)
+  neurons.each_with_index do |neuron, i|
+    for j in ((i+1)...neurons.size) do
+      next if i==j
+      wij = 0.0
+      patters.each do |pattern|
+        vector = pattern.flatten
+        wij += vector[i]*vector[j]
+      end
+      neurons[i][:weights][j] = wij
+      neurons[j][:weights][i] = wij
+    end
+  end
+end
+
+def to_binary(vector)
+  return Array.new(vector.size){|i| ((vector[i]==-1) ? 0 : 1)}
+end
+
+def print_patterns(provided, expected, actual)
+  p, e, a = to_binary(provided), to_binary(expected), to_binary(actual)
+  p1, p2, p3 = p[0..2].join(', '), p[3..5].join(', '), p[6..8].join(', ')
+  e1, e2, e3 = e[0..2].join(', '), e[3..5].join(', '), e[6..8].join(', ')
+  a1, a2, a3 = a[0..2].join(', '), a[3..5].join(', '), a[6..8].join(', ')
+  puts "Provided   Expected     Got"
+  puts "#{p1}     #{e1}      #{a1}"
+  puts "#{p2}     #{e2}      #{a2}"
+  puts "#{p3}     #{e3}      #{a3}"
+end
+
+def calculate_error(expected, actual)
+  sum = 0
+  expected.each_with_index do |v, i|
+    sum += 1 if expected[i]!=actual[i]
+  end
+  return sum
+end
+
+def perturb_pattern(vector, num_errors=1)
+  perturbed = Array.new(vector)
+  indicies = [rand(perturbed.size)]
+  while indicies.size &lt; num_errors do
+    index = rand(perturbed.size)
+    indicies &lt;&lt; index if !indicies.include?(index)
+  end
+  indicies.each {|i| perturbed[i] = ((perturbed[i]==1) ? -1 : 1)}
+  return perturbed
+end
+
+def test_network(neurons, patterns)
+  error = 0.0
+  patterns.each do |pattern|
+    vector = pattern.flatten
+    perturbed = perturb_pattern(vector)
+    output = get_output(neurons, perturbed)
+    error += calculate_error(vector, output)
+    print_patterns(perturbed, vector, output)
+  end
+  error = error / patterns.size.to_f
+  puts "Final Result: avg pattern error=#{error}"
+  return error
+end
+
+def execute(patters, num_inputs)
+  neurons = Array.new(num_inputs) { create_neuron(num_inputs) }
+  train_network(neurons, patters)
+  test_network(neurons, patters)
+  return neurons
+end
+
+if __FILE__ == $0
+  # problem configuration
+  num_inputs = 9
+  p1 = [[1,1,1],[-1,1,-1],[-1,1,-1]] # T
+  p2 = [[1,-1,1],[1,-1,1],[1,1,1]] # U
+  patters = [p1, p2]
+  # execute the algorithm
+  execute(patters, num_inputs)
+end
+</pre>
+<div class='download_src'><a href='hopfield.rb'>Download Source</a></div>
+<div class='caption'>Hopfield Network in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+The Hopfield Network was proposed by Hopfield in 1982 where the basic model was described and related to an abstraction of the inspiring biological system  [<a href='#Hopfield1982'>Hopfield1982</a>].
+This early work was extended by Hopfield to 'graded' neurons capable of outputting a continuous value through use of a logistic (sigmoid) transfer function  [<a href='#Hopfield1984'>Hopfield1984</a>].
+An innovative work by Hopfield and Tank considered the use of the Hopfield network for solving combinatorial optimization problems, with a specific study into the system applied to instances of the Traveling Salesman Problem  [<a href='#Hopfield1985'>Hopfield1985</a>]. This was achieved with a large number of neurons and a representation that decoded the position of each city in the tour as a sub-problem on which a customized network energy function had to be minimized.
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+Popovici and Boncut provide a summary of the Hopfield Network algorithm with worked examples  [<a href='#Popovici2005'>Popovici2005</a>].
+Overviews of the Hopfield Network are provided in most good books on Artificial Neural Networks, such as  [<a href='#Rojas1996'>Rojas1996</a>].
+Hertz, Krogh, and Palmer present an in depth study of the field of Artificial Neural Networks with a detailed treatment of the Hopfield network from a statistical mechanics perspective  [<a href='#Hertz1991'>Hertz1991</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Hertz1991'>[Hertz1991]</a></td>
+ <td>J. Hertz and Krogh A. and R. G. Palmer, "<a href="http://scholar.google.com.au/scholar?q=Introduction+to+the+theory+of+neural+computation">Introduction to the theory of neural computation</a>", Westview Press, 1991.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hopfield1982'>[Hopfield1982]</a></td>
+ <td>J. J. Hopfield, "<a href="http://scholar.google.com.au/scholar?q=Neural+networks+and+physical+systems+with+emergent+collective+computational++abilities">Neural networks and physical systems with emergent collective computational 	abilities</a>", in Proceedings of the National Academy of Sciences of the USA, 1982.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hopfield1984'>[Hopfield1984]</a></td>
+ <td>J. J. Hopfield, "<a href="http://scholar.google.com.au/scholar?q=Neurons+with+graded+response+have+collective+computational+properties++like+those+of+two-state+neurons">Neurons with graded response have collective computational properties 	like those of two-state neurons</a>", in Proceedings of the National Academy of Sciences, 1984.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hopfield1985'>[Hopfield1985]</a></td>
+ <td>J. J. Hopfield and D. W. Tank, "<a href="http://scholar.google.com.au/scholar?q=&quot;Neural&quot;+computation+of+decisions+in+optimization+problems">&quot;Neural&quot; computation of decisions in optimization problems</a>", Biological Cybernetics, 1985.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Popovici2005'>[Popovici2005]</a></td>
+ <td>N. Popovici and M. Boncut, "<a href="http://scholar.google.com.au/scholar?q=On+the+Hopfield+algorithm.+Foundations+and+examples">On the Hopfield algorithm. Foundations and examples</a>", General Mathematics, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Rojas1996'>[Rojas1996]</a></td>
+ <td>R. Rojas, "<a href="http://scholar.google.com.au/scholar?q=13.+The+Hopfield+Model">13. The Hopfield Model</a>", in Neural Networks &ndash; A Systematic Introduction, Springer, 1996.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

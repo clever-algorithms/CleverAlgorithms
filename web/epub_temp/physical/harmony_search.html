@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='harmony_search'><h1>Harmony Search</h1></a>
+<p>
+<em>Harmony Search, HS.</em>
+</p>
+
+<a id='taxonomy'><h2>Taxonomy</h2></a>
+<p>
+Harmony Search belongs to the fields of Computational Intelligence and Metaheuristics.
+</p>
+
+
+<a id='inspiration'><h2>Inspiration</h2></a>
+<p>
+Harmony Search was inspired by the improvisation of Jazz musicians. Specifically, the process by which the musicians (who may have never played together before) rapidly refine their individual improvisation through variation resulting in an aesthetic harmony.
+</p>
+
+
+<a id='metaphor'><h2>Metaphor</h2></a>
+<p>
+Each musician corresponds to an attribute in a candidate solution from a problem domain, and each instrument's pitch and range corresponds to the bounds and constraints on the decision variable. The harmony between the musicians is taken as a complete candidate solution at a given time, and the audiences aesthetic appreciation of the harmony represent the problem specific cost function. The musicians seek harmony over time through small variations and improvisations, which results in an improvement against the cost function.
+</p>
+
+
+<a id='strategy'><h2>Strategy</h2></a>
+<p>
+The information processing objective of the technique is to use good candidate solutions already discovered to influence the creation of new candidate solutions toward locating the problems optima.
+This is achieved by stochastically creating candidate solutions in a step-wise manner, where each component is either drawn randomly from a memory of high-quality solutions, adjusted from the memory of high-quality solutions, or assigned randomly within the bounds of the problem. The memory of candidate solutions is initially random, and a greedy acceptance criteria is used to admit new candidate solutions only if they have an improved objective value, replacing an existing member.
+</p>
+
+
+<a id='procedure'><h2>Procedure</h2></a>
+<p>
+Algorithm (below) provides a pseudocode listing of the Harmony Search algorithm for minimizing a cost function.
+The adjustment of a pitch selected from the harmony memory is typically linear, for example for continuous function optimization:
+</p>
+$x' \leftarrow x + range \times \epsilon$
+<p>
+where $range$ is a the user parameter (pitch bandwidth) to control the size of the changes, and $\epsilon$ is a uniformly random number $\in [-1,1]$.
+</p>
+<div class='pseudocode'>
+<strong><strong><code>Input</code></strong></strong>: 
+$Pitch_{num}$, $Pitch_{bounds}$, $Memory_{size}$, $Consolidation_{rate}$, $PitchAdjust_{rate}$, $Improvisation_{max}$
+<br />
+<strong><strong><code>Output</code></strong></strong>: 
+$Harmony_{best}$
+<br />
+<code>Harmonies</code> $\leftarrow$ <code>InitializeHarmonyMemory</code>($Pitch_{num}$, $Pitch_{bounds}$, $Memory_{size}$)<br />
+<code>EvaluateHarmonies</code>(<code>Harmonies</code>)<br />
+<strong><code>For</code></strong> ($i$ <strong><code>To</code></strong> $Improvisation_{max}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;$Harmony$ $\leftarrow$ $\emptyset$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>For</code></strong> ($Pitch_{i}$ $\in$ $Pitch_{num}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Rand</code>() $\leq$ $Consolidation_{rate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$RandomHarmony_{pitch}^i$ $\leftarrow$ <code>SelectRandomHarmonyPitch</code>(<code>Harmonies</code>, $Pitch_{i}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Rand</code>() $\leq$ $PitchAdjust_{rate}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Harmony_{pitch}^i$ $\leftarrow$ <code>AdjustPitch</code>($RandomHarmony_{pitch}^i$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Else</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Harmony_{pitch}^i$ $\leftarrow$ $RandomHarmony_{pitch}^i$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>Else</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$Harmony_{pitch}^i$ $\leftarrow$ <code>RandomPitch</code>($Pitch_{bounds}$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<code>EvaluateHarmonies</code>($Harmony$)<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>If</code></strong> (<code>Cost</code>($Harmony$) $\leq$ <code>Cost</code>(<code>Worst</code>(<code>Harmonies</code>)))<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>Worst</code>(<code>Harmonies</code>) $\leftarrow$ $Harmony$<br />
+&nbsp;&nbsp;&nbsp;&nbsp;<strong><code>End</code></strong><br />
+<strong><code>End</code></strong><br />
+<strong><code>Return</code></strong> ($Harmony_{best}$)<br />
+</div>
+<div class='caption'>Pseudocode for Harmony Search.</div>
+
+
+
+<a id='heuristics'><h2>Heuristics</h2></a>
+<ul>
+<li> Harmony Search was designed as a generalized optimization method for continuous, discrete, and constrained optimization and has been applied to numerous types of optimization problems.</li>
+<li> The harmony memory considering rate (HMCR) $\in [0,1]$ controls the use of information from the harmony memory or the generation of a random pitch. As such, it controls the rate of convergence of the algorithm and is typically configured $\in [0.7,0.95]$.</li>
+<li> The pitch adjustment rate (PAR) $\in [0,1]$ controls the frequency of adjustment of pitches selected from harmony memory, typically configured $\in [0.1,0.5]$. High values can result in the premature convergence of the search.</li>
+<li> The pitch adjustment rate and the adjustment method (amount of adjustment or fret width) are typically fixed, having a linear effect through time. Non-linear methods have been considered, for example refer to Geem  [<a href='#Geem2010a'>Geem2010a</a>].</li>
+<li> When creating a new harmony, aggregations of pitches can be taken from across musicians in the harmony memory.</li>
+<li> The harmony memory update is typically a greedy process, although other considerations such as diversity may be used where the most similar harmony is replaced.</li>
+</ul>
+
+
+<a id='code_listing'><h2>Code Listing</h2></a>
+<p>
+Listing (below) provides an example of the Harmony Search algorithm implemented in the Ruby Programming Language.
+The demonstration problem is an instance of a continuous function optimization that seeks $min f(x)$ where $f=\sum_{i=1}^n x_{i}^2$, $-5.0\leq x_i \leq 5.0$ and $n=3$. The optimal solution for this basin function is $(v_0,\ldots,v_{n-1})=0.0$.
+The algorithm implementation and parameterization are based on the description by Yang  [<a href='#Yang2009'>Yang2009</a>], with refinement from Geem  [<a href='#Geem2010a'>Geem2010a</a>].
+</p>
+<pre class='prettyprint lang-rb'>
+def objective_function(vector)
+  return vector.inject(0.0) {|sum, x| sum +  (x ** 2.0)}
+end
+
+def rand_in_bounds(min, max)
+  return min + ((max-min) * rand())
+end
+
+def random_vector(search_space)
+  return Array.new(search_space.size) do |i|
+    rand_in_bounds(search_space[i][0], search_space[i][1])
+  end
+end
+
+def create_random_harmony(search_space)
+  harmony = {}
+  harmony[:vector] = random_vector(search_space)
+  harmony[:fitness] = objective_function(harmony[:vector])
+  return harmony
+end
+
+def initialize_harmony_memory(search_space, mem_size, factor=3)
+  memory = Array.new(mem_size*factor){create_random_harmony(search_space)}
+  memory.sort!{|x,y| x[:fitness]&lt;=&gt;y[:fitness]}
+  return memory.first(mem_size)
+end
+
+def create_harmony(search_space, memory, consid_rate, adjust_rate, range)
+  vector = Array.new(search_space.size)
+  search_space.size.times do |i|
+    if rand() &lt; consid_rate
+      value = memory[rand(memory.size)][:vector][i]
+      value = value + range*rand_in_bounds(-1.0, 1.0) if rand()&lt;adjust_rate
+      value = search_space[i][0] if value &lt; search_space[i][0]
+      value = search_space[i][1] if value &gt; search_space[i][1]
+      vector[i] = value
+    else
+      vector[i] = rand_in_bounds(search_space[i][0], search_space[i][1])
+    end
+  end
+  return {:vector=&gt;vector}
+end
+
+def search(bounds, max_iter, mem_size, consid_rate, adjust_rate, range)
+  memory = initialize_harmony_memory(bounds, mem_size)
+  best = memory.first
+  max_iter.times do |iter|
+    harm = create_harmony(bounds, memory, consid_rate, adjust_rate, range)
+    harm[:fitness] = objective_function(harm[:vector])
+    best = harm if harm[:fitness] &lt; best[:fitness]
+    memory &lt;&lt; harm
+    memory.sort!{|x,y| x[:fitness]&lt;=&gt;y[:fitness]}
+    memory.delete_at(memory.size-1)
+    puts " &gt; iteration=#{iter}, fitness=#{best[:fitness]}"
+  end
+  return best
+end
+
+if __FILE__ == $0
+  # problem configuration
+  problem_size = 3
+  bounds = Array.new(problem_size) {|i| [-5, 5]}
+  # algorithm configuration
+  mem_size = 20
+  consid_rate = 0.95
+  adjust_rate = 0.7
+  range = 0.05
+  max_iter = 500
+  # execute the algorithm
+  best = search(bounds, max_iter, mem_size, consid_rate, adjust_rate, range)
+  puts "done! Solution: f=#{best[:fitness]}, s=#{best[:vector].inspect}"
+end
+</pre>
+<div class='download_src'><a href='harmony_search.rb'>Download Source</a></div>
+<div class='caption'>Harmony Search in Ruby</div>
+
+
+<a id='references'><h2>References</h2></a>
+
+<a id='primary_sources'><h3>Primary Sources</h3></a>
+<p>
+Geem et al. proposed the Harmony Search algorithm in 2001, which was applied to a range of optimization problems including a constraint optimization, the Traveling Salesman problem, and the design of a water supply network  [<a href='#Geem2001'>Geem2001</a>].
+</p>
+
+
+<a id='learn_more'><h3>Learn More</h3></a>
+<p>
+A book on Harmony Search, edited by Geem provides a collection of papers on the technique and its applications  [<a href='#Geem2009'>Geem2009</a>], chapter 1 provides a useful summary of the method heuristics for its configuration  [<a href='#Yang2009'>Yang2009</a>]. Similarly a second edited volume by Geem focuses on studies that provide more advanced applications of the approach  [<a href='#Geem2010'>Geem2010</a>], and chapter 1 provides a detailed walkthrough of the technique itself  [<a href='#Geem2010a'>Geem2010a</a>]. Geem also provides a treatment of Harmony Search applied to the optimal design of water distribution networks  [<a href='#Geem2009a'>Geem2009a</a>] and edits yet a third volume on papers related to the application of the technique to structural design optimization problems  [<a href='#Geem2009b'>Geem2009b</a>].
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Geem2001'>[Geem2001]</a></td>
+ <td>Z. W. Geem and J. H. Kim and G. V. Loganathan, "<a href="http://scholar.google.com.au/scholar?q=A+New+Heuristic+Optimization+Algorithm:+Harmony+Search">A New Heuristic Optimization Algorithm: Harmony Search</a>", Simulation, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Geem2009'>[Geem2009]</a></td>
+ <td>Z. W. Geem (editors), "<a href="http://scholar.google.com.au/scholar?q=Music-Inspired+Harmony+Search+Algorithm:+Theory+and+Applications">Music-Inspired Harmony Search Algorithm: Theory and Applications</a>", Springer, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Geem2009a'>[Geem2009a]</a></td>
+ <td>Z. W. Geem, "<a href="http://scholar.google.com.au/scholar?q=Optimal+Design+of+Water+Distribution+Networks+Using+Harmony+Search">Optimal Design of Water Distribution Networks Using Harmony Search</a>", Lap Lambert Academic Publishing, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Geem2009b'>[Geem2009b]</a></td>
+ <td>Z. W. Geem (editors), "<a href="http://scholar.google.com.au/scholar?q=Harmony+Search+Algorithms+for+Structural+Design+Optimization">Harmony Search Algorithms for Structural Design Optimization</a>", Springer, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Geem2010'>[Geem2010]</a></td>
+ <td>Z. W. Geem (editors), "<a href="http://scholar.google.com.au/scholar?q=Recent+Advances+in+Harmony+Search+Algorithms">Recent Advances in Harmony Search Algorithms</a>", Springer, 2010.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Geem2010a'>[Geem2010a]</a></td>
+ <td>Z. W. Geem, "<a href="http://scholar.google.com.au/scholar?q=State-of-the-Art+in+the+Structure+of+Harmony+Search+Algorithm">State-of-the-Art in the Structure of Harmony Search Algorithm</a>", in Recent Advances In Harmony Search Algorithms, pages 1&ndash;10, Springer, 2010.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Yang2009'>[Yang2009]</a></td>
+ <td>X&ndash;S. Yang, "<a href="http://scholar.google.com.au/scholar?q=Harmony+Search+as+a+Metaheuristic">Harmony Search as a Metaheuristic</a>", in Music-Inspired Harmony Search Algorithm: Theory and Applications, pages 1&ndash;14, Springer, 2009.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  

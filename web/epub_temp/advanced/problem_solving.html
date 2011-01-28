@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+    <title>Clever Algorithms</title>
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    
+<a id='problem_solving_strategies'><h1>Problem Solving Strategies</h1></a>
+<p>
+The field of Data Mining has clear methodologies that guide a practitioner to solve problems, such as Knowledge Discovery in Databases (KDD)  [<a href='#Fayyad1996'>Fayyad1996</a>]. Metaheuristics and Computational Intelligence algorithms have no such methodology. (Some methods can be used for classification and regression and as such may fit into methodologies such as KDD.)
+</p>
+<p>
+This section describes some of the considerations when applying algorithms from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation to practical problem domains. This discussion includes:
+</p>
+<ul>
+<li> The suitability of application of a given technique to a given problem and the transferability of algorithm and problem features</li>
+<li> The distinction between strong and weak methods which use more or less problem specific information respectively, and the continuum between these extremes.</li>
+<li> A summary of problem solving strategies that suggest different ways of applying a given technique to the function optimization and approximation fields.</li>
+</ul>
+
+<a id='suitability_of_application'><h2>Suitability of Application</h2></a>
+<p>
+From a problem-solving perspective, the tools that emerge from the field of Computational Intelligence are generally assessed with regard to their utility as <em>efficiently</em> or <em>effectively</em> solving problems.
+An important lesson from the No-Free-Lunch Theorem was to <em>bound claims of applicability</em> (see the <a href='../introduction.html'>Introduction</a>), that is to consider the suitability of a given strategy with regard to the feature overlap with the attributes of a given problem domain. From a Computational Intelligence perspective, one may consider the architecture, processes, and constraints of a given strategy as the features of an approach.
+</p>
+<p>
+The suitability of the application of a particular approach to a problem takes into considerations concerns such as the <em>appropriateness</em> (can the approach address the problem), the <em>feasibility</em> (available resources and related efficiency concerns), and the <em>flexibility</em> (ability to address unexpected or unintended effects).
+This section summarizes a general methodology toward addressing the problem of suitability in the context of Computational Intelligence tools. This methodology involves 1) the systematic elicitation of system and problem features, and 2) the consideration of the overlap of problem-problem, algorithm-algorithm, and problem-algorithm overlap of feature sets.
+</p>
+
+<a id='systematic_feature_elicitation'><h3>Systematic Feature Elicitation</h3></a>
+<p>
+A <em>feature</em> of a system (tool, strategy, model) or a problem is a distinctive element or property that may be used to differentiate it from similar and/or related cases. Examples may include functional concerns such as: processes, data structures, architectures, and constraints, as well as emergent concerns that may have a more subjective quality such as general behaviors, organizations, and higher-order structures. The process of the elicitation of features may be taken from a system or problem perspective:
+</p>
+<ul>
+<li> <em>System Perspective</em>: This requires a strong focus on the lower level functional elements and investigations that work toward correlating specific controlled procedures towards predictable emergent behaviors.</li>
+<li> <em>Problem Perspective</em>: May require both a generalization of the specific case to the general problem case, as well as a functional or logical decomposition into constituent parts.</li>
+</ul>
+<p>
+Problem <em>generalization</em> and <em>functional decomposition</em> are important and commonly used patterns for problem solving in the broader fields of Artificial Intelligence and Machine Learning. The promotion of simplification and modularity can reduce the cost and complexity of achieving solutions  [<a href='#Russell2009'>Russell2009</a>] [<a href='#Brooks1986'>Brooks1986</a>].
+</p>
+
+
+<a id='feature_overlap'><h3>Feature Overlap</h3></a>
+<p>
+Overlap in elicited features may be considered from three important perspectives: <em>between systems</em>, <em>between problems</em>, and <em>between a system and a problem</em>. Further, such overlap may be considered at different levels of detail with regard to generalized problem solving strategies and problem definitions.
+These overlap cases are considered as follows:
+</p>
+<ul>
+<li> <em>System Overlap</em> defines the suitability of comparing one system to another, referred to as <em>comparability</em>. For example, systems may be considered for the same general problems and compared in terms of theoretical or empirical capability, the results of which may only be meaningful if the systems are significantly similar to each other as assessed in terms of feature overlap.</li>
+<li> <em>Problem Overlap</em> defines the suitability of comparing one problem to another, referred to as <em>transferability</em>. From a systems focus, transferability refers to the capability of a technique on a given problem to be successfully applied to another problem, the result of which is only meaningful if there is a strong overlap between the problems under consideration.</li>
+<li> <em>System-Problem Overlap</em> defines the suitability of a system on a given problem, referred to as <em>applicability</em>. For example, a system is considered suitable for a given problem if it has a significant overlap in capabilities with the requirements of the problem definition.</li>
+</ul>
+<p>
+Such mappings are imprecise given the subjective assessment and complexity required in both the elicitation and consideration overlap of the of features, the hardest of which is expected to be the mapping between systems and problems.
+The mapping of salient features of algorithms and problems was proposed as an important reconciliation of the No-Free-Lunch Theorem by Wolpert and Macready  [<a href='#Wolpert1997'>Wolpert1997</a>], although the important difference of this approach is that the system and algorithm are given prior to the assessment. In their first work on the theorem, Wolpert and Macready specifically propose the elicitation of the features from a problem-first perspective, for which specialized algorithms can be defined  [<a href='#Wolpert1995'>Wolpert1995</a>]. Therefore, this methodology of suitability may be considered a generalization of this reconciliation suitable for the altered Computational Intelligence (strategy first) perspective on Artificial Intelligence.
+</p>
+
+
+
+<a id='strong_and_weak_methods'><h2>Strong and Weak Methods</h2></a>
+<p>
+Generally, the methods from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation may be considered weak methods. They are general purpose and are typically considered black-box solvers for a range of problem domains. The stronger the method, the more that must be known about the problem domain.
+Rather than discriminating techniques into weak and strong it is more useful to consider a continuum of methods from pure block box techniques that have few assumptions about the problem domain, to strong methods that exploit most or all of the problem specific information available.
+</p>
+<p>
+For example, the Traveling Salesman Problem is an example of a combinatorial optimization problem. A naive (such a Random Search) black box method may simply explore permutations of the cities. Slightly stronger methods may initialize the search with a heuristic-generated technique (such as nearest neighbor) and explore the search space using a variation method that also exploits heuristic information about the domain (such as a 2-opt variation). Continuing along this theme, a stochastic method may explore the search space using a combination of probabilistic and heuristic information (such as Ant Colony Optimization algorithms). At the other end of the scale the stochastic elements are decreased or removed until one is left with pure heuristic methods such as  the Lin-Kernighan heuristic  [<a href='#Lin1973'>Lin1973</a>] and exact algorithms from linear and dynamic programming that focus on the structure and nature of the problem  [<a href='#Woeginger2003'>Woeginger2003</a>].
+</p>
+<p>
+Approaching a problem is not as simple as selecting the strongest method available and solving it. The following describes two potential strategies:
+</p>
+<ul>
+<li> <em>Start Strong</em>: Select the strongest technique available and apply it to the problem. Difficult problems can be resistant to traditional methods for many intrinsic and extrinsic reasons. Use products from a strong technique (best solution found, heuristics) to seed the next weaker method in line.</li>
+<li> <em>Start Weak</em>: Strong methods do not exist for all problems, and if they do exist, the computation, skill, and/or time resources may not be available to exploit them. Start with a weak technique and use it to learn about the problem domain. Use this information to make better decisions about subsequent techniques to try that can exploit what has been learned.</li>
+</ul>
+<p>
+In a real-world engineering or business scenario, the objective is to solve a problem or achieve the best possible solution to the problem within the operating constraints.
+Concerns of algorithm and technique purity become less important than they may be in their respective fields of research.
+Both of the above strategies suggest an iterative methodology, where the product or knowledge gained from one technique may be used to prime a subsequent stronger or weaker technique.
+</p>
+
+
+<a id='domain-specific_strategies'><h2>Domain-Specific Strategies</h2></a>
+<p>
+An algorithm may be considered a strategy for problem solving. There are a wide range of ways in which a given algorithm can be used to solve a problem.
+Function Optimization and Function Approximation were presented as two general classes of problems to which the algorithms from the fields of Metaheuristics, Computational Intelligence, and Biologically Inspired Computation are applied.
+This section reviews general problem problem solving strategies that may be adopted for a given technique in each of these general problem domains.
+</p>
+
+<a id='function_optimization'><h3>Function Optimization</h3></a>
+<p>
+This section reviews a select set of strategies for addressing optimization problems from the field of Metaheuristics and Computational Intelligence to provide general insight into the state of the interaction between stochastic algorithms and the field of optimization. This section draws heavily from the field of Evolutionary Computation, Swarm Intelligence, and related Computational Intelligence sub-fields.
+</p>
+<p>
+<strong>Global and Local Optimization</strong>
+Global Optimization refers to seeking a globally optimal structure or approximation thereof in a given problem domain. Global is differentiated from Local Optimization in that the latter focuses on locating an optimal structure within a constrained region of the decision variable search space, such as a single peak or valley (basin of attraction). In the literature, global optimization problems refers to the class of optimization problems that generally cannot be addressed through more conventional approaches such as gradient descent methods (that require mathematical derivatives) and pattern search (that can get 'stuck' in local optima and never converge)  [<a href='#Price1977'>Price1977</a>] [<a href='#Toern1999'>Toern1999</a>].
+</p>
+<p>
+A global search strategy provides the benefit of making few if any assumptions about where promising areas of the search space may be, potentially highlighting unintuitive combinations of parameters. A local search strategy provides the benefit of focus and refinement of an existing candidate solution. It is common to apply a local search method to the solutions located by a global search procedure as a refinement strategy (such as using a Hill Climber after a Genetic Algorithm), and some methods have both techniques built in (such as GRASP in ).
+</p>
+<p>
+<strong>Parallel Optimization</strong>
+A natural step toward addressing difficult (large and rugged cost landscapes) is to exploit parallel and distributed hardware, to get an improved result in the same amount of time, the same result in less time, or both  [<a href='#Crainic2005'>Crainic2005</a>]. Towards unifying the myriad of approaches and hardware configurations, a general consensus and taxonomy has been defined by the Parallel Evolutionary Algorithms (PEA) and Parallel Metaheuristics fields that considers the ratio of <em>communication</em> to <em>computation</em> called <em>granularity</em>  [<a href='#Cantu-Paz2000'>Cantu-Paz2000</a>] [<a href='#Alba2005a'>Alba2005a</a>].
+</p>
+<p>
+This taxonomy is presented concisely by Alba and Tomassini as a plot or trade-off of three concerns: 1) the number of sub-populations (models or parallel strategies working on the problem), 2) the coupling between the sub-populations (frequency and amplitude of communication), and 3) the size of the sub-populations (size or extent of the sub-models)  [<a href='#Alba2002'>Alba2002</a>].
+</p>
+<p>
+Two important and relevant findings from the narrower field of Parallel Evolutionary Algorithms include 1) that tight coupling (frequent inter-system migration of candidate solutions) between coarse-grained models typically results in worse performance than a non-distributed approach  [<a href='#Alba2000'>Alba2000</a>], and 2) that loose coupling (infrequent migration) between coarse-grained models has been consistently shown to provide a super-linear increase in performance  [<a href='#Alba2002a'>Alba2002a</a>] [<a href='#Belding1995'>Belding1995</a>] [<a href='#Cantu-Paz2000'>Cantu-Paz2000</a>].
+</p>
+<p>
+<strong>Cooperative Search</strong>
+This is a more general approach that considers the use of multiple models that work together to address a difficult optimization problems. Durfee et al. consider so-called Cooperative Distributed Problem Solving (CDPS) in which a network of loosely coupled solvers are employed to address complex distributed problems. In such systems, it is desirable to match the processing capabilities of the solver to the attributes of the problem. For example, a given problem may have spatially distributed, functionally distributed, or temporally distributed sub-problems to which a centralized and monolithic system may not be suitable.
+</p>
+<p>
+Lesser  [<a href='#Lesser1990'>Lesser1990</a>] considers CDPS and proposes such models perform <em>distributed search</em> on dependent or independent and potentially overlapping sub-problems as a motivating perspective for conducting research into Distributed Artificial Intelligence (DAI) (This perspective provided the basis for what became the field of Multi-Agent Systems (MAS).). Lesser points out that in real world applications, it is hard to get a optimal mapping between the allocated resources and the needs or availability of information for a given problem, suggesting that such problems may be caused by a mismatch in processing times and/or number of sub-problems, interdependencies between sub-problems, and local experts whose expertise cannot be effectively communicated. For a more detail on the relationships between parallel and cooperative search, El-Abd and Kamel provide a rigorous taxonomy  [<a href='#El-Abd2005'>El-Abd2005</a>].
+</p>
+<p>
+<strong>Hybrid Search</strong>
+Hybrid Search is a perspective on optimization that focuses on the use of multiple and likely different approaches either sequentially (as in the canonical global and local search case), or in parallel (such as in Cooperative Search). For example in this latter case, it is common in the field of PEA to encourage different levels of exploration and exploitation across island populations by varying the operators or operator configurations used  [<a href='#Tanese1989'>Tanese1989</a>] [<a href='#Adamidis1996'>Adamidis1996</a>].
+</p>
+<p>
+Talbi proposed a detailed 4-level taxonomy of Hybrid Metaheuristics that concerns parallel and cooperating approaches  [<a href='#Talbi2001'>Talbi2001</a>]. The taxonomy encompasses parallel and cooperative considerations for optimization and focuses on the discriminating features in the lowest level such as heterogeneity, and specialization of approaches.
+</p>
+<p>
+<strong>Functional Decomposition</strong>
+Three examples of a functional decomposition of optimization include 1) multiple objectives, 2) multiple constraints, and 3) partitions of the decision variable search space.
+</p>
+<p>
+Multi-Objective Optimization (MOO) is a sub-field that is concerned with the optimization of two or more objective functions. A solution to a MOO conventionally involves locating and returning a set of candidate solutions called the non-dominated set  [<a href='#Deb2001'>Deb2001</a>]. The Pareto optimal set, is the set of optimal non-dominated solutions. For a given problem no feasible solution exists that dominates a Pareto optimal solution. All solutions that are Pareto optimal belong to the Pareto set, and the points that these solutions map to in the objective space is called the Pareto front. The complexity with MOO problems is in the typically unknown dependencies between decision variables across objectives, that in the case of conflicts, must be traded off (Purshouse and Fleming provide a taxonomy of such complexity  [<a href='#Purshouse2003'>Purshouse2003</a>]).
+</p>
+<p>
+Constraint Satisfaction Problem's (CSP) involve the optimization of decision variables under a set of constraints. The principle complexity in such problems is in locating structures that are feasible or violate the least number of constraints, optimizing such feasibility  [<a href='#Tsang1993'>Tsang1993</a>] [<a href='#Kumar1992'>Kumar1992</a>].
+</p>
+<p>
+Search Space Partitioning involves partitioning of the decision variable search space (for example see Multispace Search by Gu et al.  [<a href='#Du1997'>Du1997</a>] [<a href='#Gu1997'>Gu1997</a>] [<a href='#Gu1994'>Gu1994</a>]). This is a critical consideration given that for equal-sized dimensional bounds on parameters, an increase in decision variables results in an exponential increase in the volume of the space to search.
+</p>
+<p>
+<strong>Availability Decomposition</strong>
+Optimization problems may be partitioned by the concerns of temporal and spatial distribution of 1) information availability, and 2) computation availability. An interesting area of research regarding variable information availability for optimization problems is called Interactive Evolutionary Computation, in which one or a collection of human operators dynamically interact with an optimization process  [<a href='#Takagi2001'>Takagi2001</a>]. Example problem domains include but are not limited to computer graphics, industrial design, image processing, and drug design.
+</p>
+<p>
+There is an increasing demand to exploit clusters of heterogeneous workstations to complete large-scale distributed computation tasks like optimization, typically in an opportunistic manner such as when individual machines are underutilized. The effect is that optimization strategies such as random partitioning of the search space (independent non-interacting processing) are required to take advantage of such environments for optimization problems  [<a href='#Schnekenburger1993'>Schnekenburger1993</a>] [<a href='#Liu2000'>Liu2000</a>].
+</p>
+<p>
+<strong>Meta Optimization</strong>
+One may optimize at a level above that considered in previous sections. Specifically, 1) the iterative generation of an inductive model called multiple restart optimization, and 2) the optimization of the parameters of the process that generates an inductive model of an optimization problem. Multiple or iterative restarts involves multiple independent algorithm executions from different (random) starting conditions. It is generally considered as a method for achieving an improved result in difficult optimization problems where a given strategy is deceived by local or false optima  [<a href='#Muselli1997'>Muselli1997</a>] [<a href='#Hu1994'>Hu1994</a>], typically requiring a restart schedule  [<a href='#Fukunaga1998'>Fukunaga1998</a>].
+</p>
+<p>
+A second and well studied form of meta optimization involves the optimization of the search process itself. Classical examples include the self-adaptation of mutation parameters (step sizes) in the Evolutionary Strategies (ES) and Evolutionary Programming (EP) approaches. Smith and Fogarty provided a review of genetic algorithms with adaptive strategies including a taxonomy in which the meta-adaptations are applied at one of three levels: 1) the population (adapting the overall sampling strategy), 2) the individual (adapting the creation of new samples in the decision variable space), and 3) components (modifying component contributions and/or individual step sizes as in ES and EP)  [<a href='#Smith1997b'>Smith1997b</a>].
+</p>
+
+
+<a id='function_approximation'><h3>Function Approximation</h3></a>
+<p>
+This section reviews a select set of strategies for addressing Function Approximation problems from the fields of Artificial Intelligence and Computational Intelligence to to provide general insight into the state of the interaction between stochastic algorithms and the field. The review draws heavily from the fields of Artificial Neural Networks, specifically Competitive Learning, as well as related inductive Machine Learning fields such as Instance Based Learning.
+</p>
+<p>
+<strong>Vector Quantization</strong>
+Vector Quantization (VQ) refers to a method of approximating a target function using a set of exemplar (prototype or codebook) vectors. The exemplars represent a discrete subset of the problem, generally restricted to the features of interest using the natural representation of the observations in the problem space, typically an an unconstrained $n$-dimensional real valued space. The VQ method provides the advantage of a non-parametric model of a target function (like instance-based and lazy learning such as the $k$-Nearest-Neighbor method (<em>k</em>NN)) using a symbolic representation that is meaningful in the domain (like tree-based approaches).
+</p>
+<p>
+The promotion of compression addresses the storage and retrieval concerns of <em>k</em>NN, although the selection of codebook vectors (the so-called quantization problem) is a hard problem that is known to be NP-complete  [<a href='#Garey1982'>Garey1982</a>]. More recently Kuncheva and Bezdek have worked towards unifying quantization methods in the application to classification problems, referring to the approaches as Nearest Prototype Classifiers (NPC) and proposing a generalized nearest prototype classifier  [<a href='#Kuncheva1998'>Kuncheva1998</a>] [<a href='#Kuncheva1998a'>Kuncheva1998a</a>].
+</p>
+<p>
+<strong>Parallelization</strong>
+Instance-based approaches are inherently parallel given the generally discrete independent nature in which they are used, specifically in a case or per-query manner. As such, parallel hardware can be exploited in the preparation of the corpus of prototypes (parallel preparation), and more so in the application of the corpus given its read-only usage  [<a href='#Aamodt1994'>Aamodt1994</a>] [<a href='#Nagendra1996'>Nagendra1996</a>] [<a href='#Plaza1997'>Plaza1997</a>]. With regard to vector quantization specifically, there is an industry centered around the design and development of VQ and WTA algorithms and circuits given their usage to compress digital audio and video data  [<a href='#Nakada1999'>Nakada1999</a>] [<a href='#Parhi1994'>Parhi1994</a>].
+</p>
+<p>
+<strong>Cooperative Methods</strong>
+Classical cooperative methods in the broader field of statistical machine learning are referred to as <em>Ensemble Methods</em>  [<a href='#Opitz1999'>Opitz1999</a>] [<a href='#Polikar2006'>Polikar2006</a>] or more recently <em>Multiclassifier Systems</em>  [<a href='#Ghosh2002'>Ghosh2002</a>].
+</p>
+<p>
+<em>Boosting</em> is based on the principle of combining a set of quasi-independent weak learners that collectively are as effective as a single strong learner  [<a href='#Kearns1988'>Kearns1988</a>] [<a href='#Schapire1992'>Schapire1992</a>]. The seminal approach is called Adaptive Boosting (AdaBoost) that involves the preparation of a series of classifiers, where subsequent classifiers are prepared for the observations that are misclassified by the proceeding classifier models (creation of specialists)  [<a href='#Schapire2003'>Schapire2003</a>].
+</p>
+<p>
+<em>Bootstrap Aggregation</em> (bagging) involves partitioning the observations into $N$ randomly chosen subsets (with re-selection), and training a different model on each  [<a href='#Breiman1996'>Breiman1996</a>]. Although robust to noisy datasets, the approach requires careful consideration as to the consensus mechanism between the independent models for decision making.
+</p>
+<p>
+<em>Stacked Generalization</em> (stacking) involves creating a sequence of models of generally different types arranged into a stack, where subsequently added models generalize the behavior (success or failure) of the model before it with the intent of correcting erroneous decision making  [<a href='#Wolpert1992'>Wolpert1992</a>] [<a href='#Ting1999'>Ting1999</a>].
+</p>
+<p>
+<strong>Functional Decomposition</strong>
+As demonstrated, it is common in ensemble methods to partition the dataset either explicitly or implicitly to improve the approximation of the underlying target function. A first important decomposition involves partitioning the problem space into sub-spaces based on the attributes, regular groups of attributes called features, and decision attributes such as class labels. A popular method for attribute-based partitioning is called the Random Subspace Method, involving the random partitioning of attributes to which specialized model is prepared for each (commonly used on tree-based approaches)  [<a href='#Ho1998'>Ho1998</a>].
+</p>
+<p>
+A related approach involves a hierarchical partitioning of attributes space into sub-vectors (sub-spaces) used to improve VQ-based compression  [<a href='#Gersho1984'>Gersho1984</a>]. Another important functional decomposition methods involve the partitioning of the set of observations. The are many ways in which observations may be divided, although common approaches include pre-processing using clustering techniques to divide the set into natural groups, additional statistical approaches that partition based on central tendency and outliers, and re-sampling methods that are required to reduce the volume of observations.
+</p>
+<p>
+<strong>Availability Decomposition</strong>
+The availability observations required to address function approximation in real-world problem domains motivate the current state of the art in Distributed Data Mining (DDM, or sometimes Collective Data Mining), Parallel Data Mining (PDM), and Distributed Knowledge Discovery in Database (DKDD)  [<a href='#Kargupta2000'>Kargupta2000</a>]. The general information availability concerns include 1) the <em>intractable volume of observations</em>, and 2) the <em>spatial (geographical) and temporal distribution of information</em>  [<a href='#Zaki1999'>Zaki1999</a>]. In many real-world problems it is infeasible to centralize relevant observations for modeling, requiring scalable, load balancing, and incremental acquisition of information  [<a href='#Skillicorn1999'>Skillicorn1999</a>].
+</p>
+<p>
+<strong>Meta-Approximation</strong>
+The so-called ensemble or multiple-classifier methods may be considered meta approximation approaches as they are not specific to a given modeling technique. As with function optimization, meta-approaches may be divided into restart methods and meta-learning algorithms. The use of restart methods is a standard practice for connectionist approaches, and more generally in approaches that use random starting conditions and a gradient or local search method of refinement.
+</p>
+<p>
+The method provides an opportunity for over-coming local optima in the error-response surface, when there is an unknown time remaining until convergence  [<a href='#Magdon-ismail2000'>Magdon-ismail2000</a>], and can exploit parallel hardware to provide a speed advantage  [<a href='#Blas2005'>Blas2005</a>]. Ensemble methods and variants are examples of meta approximation approaches, as well as the use of consensus classifiers (gate networks in mixtures of experts) to integrate and weight the decision making properties from ensembles.
+</p>
+
+
+
+
+<h2>Bibliography</h2>
+<table>
+ <tr valign="top">
+ <td><a id='Aamodt1994'>[Aamodt1994]</a></td>
+ <td>A. Aamodt and E. Plaza, "<a href="http://scholar.google.com.au/scholar?q=Case-Based+Reasoning:+Foundational+Issues,+Methodological+Variations,++and+System+Approaches">Case-Based Reasoning: Foundational Issues, Methodological Variations, 	and System Approaches</a>", Artificial Intelligence Communications, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Adamidis1996'>[Adamidis1996]</a></td>
+ <td>P. Adamidis and P. Adamidis and V. Petridis, "<a href="http://scholar.google.com.au/scholar?q=Co&ndash;operating+Populations+with+Different+Evolution+Behaviours">Co&ndash;operating Populations with Different Evolution Behaviours</a>", in Proceedings IEEE International Conference on Evolutionary Computation, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Alba2000'>[Alba2000]</a></td>
+ <td>E. Alba and J. M. Troya, "<a href="http://scholar.google.com.au/scholar?q=Influence+of+the+Migration+Policy+in+Parallel+Distributed+GAs+with++Structured+and+Panmictic+Populations">Influence of the Migration Policy in Parallel Distributed GAs with 	Structured and Panmictic Populations</a>", Applied Intelligence, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Alba2002'>[Alba2002]</a></td>
+ <td>E. Alba and M. Tomassini, "<a href="http://scholar.google.com.au/scholar?q=Parallelism+and+evolutionary+algorithms">Parallelism and evolutionary algorithms</a>", IEEE Transactions on Evolutionary Computation, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Alba2002a'>[Alba2002a]</a></td>
+ <td>E. Alba, "<a href="http://scholar.google.com.au/scholar?q=Parallel+evolutionary+algorithms+can+achieve+super-linear+performance">Parallel evolutionary algorithms can achieve super-linear performance</a>", Information Processing Letters, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Alba2005a'>[Alba2005a]</a></td>
+ <td>E. Alba, "<a href="http://scholar.google.com.au/scholar?q=Parallel+Metaheuristics:+A+New+Class+of+Algorithms">Parallel Metaheuristics: A New Class of Algorithms</a>", John Wiley, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Belding1995'>[Belding1995]</a></td>
+ <td>T. C. Belding, "<a href="http://scholar.google.com.au/scholar?q=The+Distributed+Genetic+Algorithm+Revisited">The Distributed Genetic Algorithm Revisited</a>", in Proceedings of the 6th International Conference on Genetic Algorithms, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Blas2005'>[Blas2005]</a></td>
+ <td>A. Di Blas and A. Jagota and R. Hughey, "<a href="http://scholar.google.com.au/scholar?q=Optimizing+neural+networks+on+SIMD+parallel+computers">Optimizing neural networks on SIMD parallel computers</a>", Parallel Computing, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Breiman1996'>[Breiman1996]</a></td>
+ <td>L. Breiman, "<a href="http://scholar.google.com.au/scholar?q=Bagging+predictors">Bagging predictors</a>", Machine Learning, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Brooks1986'>[Brooks1986]</a></td>
+ <td>R. Brooks, "<a href="http://scholar.google.com.au/scholar?q=A+robust+layered+control+system+for+a+mobile+robot">A robust layered control system for a mobile robot</a>", IEEE Journal Of Robotics And Automation, 1986.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Cantu-Paz2000'>[Cantu-Paz2000]</a></td>
+ <td>E. Cant&uacute;&ndash;Paz, "<a href="http://scholar.google.com.au/scholar?q=Efficient+and+Accurate+Parallel+Genetic+Algorithms">Efficient and Accurate Parallel Genetic Algorithms</a>", Kluwer Academic Publishers (Springer), 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Crainic2005'>[Crainic2005]</a></td>
+ <td>T. G. Crainic and N. Hail, "<a href="http://scholar.google.com.au/scholar?q=Parallel+Metaheuristics+Applications">Parallel Metaheuristics Applications</a>", in Parallel Metaheuristics, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Deb2001'>[Deb2001]</a></td>
+ <td>K. Deb, "<a href="http://scholar.google.com.au/scholar?q=Multi-Objective+Optimization+Using+Evolutionary+Algorithms">Multi-Objective Optimization Using Evolutionary Algorithms</a>", John Wiley and Sons, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Du1997'>[Du1997]</a></td>
+ <td>B. Du and J. Gu and W. Wang and D. H. K. Tsang, "<a href="http://scholar.google.com.au/scholar?q=Multispace+search+for+minimizing+the+maximum+nodal+degree">Multispace search for minimizing the maximum nodal degree</a>", in Proceedings Sixth International Conference on Computer Communications and 	Networks, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='El-Abd2005'>[El-Abd2005]</a></td>
+ <td>M. El&ndash;Abd and M. Kamel, "<a href="http://scholar.google.com.au/scholar?q=A+Taxonomy+of+Cooperative+Search+Algorithms">A Taxonomy of Cooperative Search Algorithms</a>", in Hybrid Metaheuristics, 2005.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Fayyad1996'>[Fayyad1996]</a></td>
+ <td>U. Fayyad and G. Piatetsky-Shapiro and P. Smyth, "<a href="http://scholar.google.com.au/scholar?q=The+KDD+process+for+extracting+useful+knowledge+from+volumes+of++data">The KDD process for extracting useful knowledge from volumes of 	data</a>", Communications of the ACM, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Fukunaga1998'>[Fukunaga1998]</a></td>
+ <td>A. S. Fukunaga, "<a href="http://scholar.google.com.au/scholar?q=Restart+Scheduling+for+genetic+algorithms">Restart Scheduling for genetic algorithms</a>", in Parallel Problem Solving from Nature - PPSN V, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Garey1982'>[Garey1982]</a></td>
+ <td>M. Garey and D. Johnson and H. Witsenhausen, "<a href="http://scholar.google.com.au/scholar?q=The+complexity+of+the+generalized+Lloyd&ndash;Max+problem+(Corresp.)">The complexity of the generalized Lloyd&ndash;Max problem (Corresp.)</a>", IEEE Transactions on Information Theory, 1982.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Gersho1984'>[Gersho1984]</a></td>
+ <td>A. Gersho and A. Gersho and Y. Shoham, "<a href="http://scholar.google.com.au/scholar?q=Hierarchical+vector+quantization+of+speech+with+dynamic+codebook++allocation">Hierarchical vector quantization of speech with dynamic codebook 	allocation</a>", in Proceedings of the IEEE International Conference on ICASSP '84. 	Acoustics, Speech, and Signal Processing, 1984.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ghosh2002'>[Ghosh2002]</a></td>
+ <td>J. Ghosh, "<a href="http://scholar.google.com.au/scholar?q=Multiclassifier+Systems:+Back+to+the+Future">Multiclassifier Systems: Back to the Future</a>", in Proceedings of the Third International Workshop on Multiple Classifier 	Systems, 2002.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Gu1994'>[Gu1994]</a></td>
+ <td>J. Gu, "<a href="http://scholar.google.com.au/scholar?q=Multispace+search:+A+new+optimization+approach">Multispace search: A new optimization approach</a>", in Algorithms and Computation, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Gu1997'>[Gu1997]</a></td>
+ <td>J. Gu, "<a href="http://scholar.google.com.au/scholar?q=Multispace+Search+for+Satisfiability+and+NP&ndash;Hard+Problems">Multispace Search for Satisfiability and NP&ndash;Hard Problems</a>", in Satisfiability Problem: Theory and Applications : DIMACS Workshop, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ho1998'>[Ho1998]</a></td>
+ <td>T. K. Ho, "<a href="http://scholar.google.com.au/scholar?q=The+random+subspace+method+for+constructing+decision+forests">The random subspace method for constructing decision forests</a>", IEEE Transactions on Pattern Analysis and Machine Intelligence, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Hu1994'>[Hu1994]</a></td>
+ <td>X. Hu and R. Shonkwiler and M. Spruill, "<a href="http://scholar.google.com.au/scholar?q=Random+restarts+in+global+optimization">Random restarts in global optimization</a>", Technical Report 110592-015, School of Mathematics, Georgia Institute of Technology, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kargupta2000'>[Kargupta2000]</a></td>
+ <td>H. Kargupta and P. Chan, "<a href="http://scholar.google.com.au/scholar?q=Advances+in+Distributed+and+Parallel+Knowledge+Discovery">Advances in Distributed and Parallel Knowledge Discovery</a>", AAAI Press/MIT Press, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kearns1988'>[Kearns1988]</a></td>
+ <td>M. Kearns, "<a href="http://scholar.google.com.au/scholar?q=Thoughts+on+hypothesis+boosting">Thoughts on hypothesis boosting</a>", 1988.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kumar1992'>[Kumar1992]</a></td>
+ <td>V. Kumar, "<a href="http://scholar.google.com.au/scholar?q=Algorithms+for+constraint&ndash;satisfaction+problems+:+a+survey">Algorithms for constraint&ndash;satisfaction problems : a survey</a>", The AI magazine (AI mag.), 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kuncheva1998'>[Kuncheva1998]</a></td>
+ <td>L. Kuncheva and J. Bezdek, "<a href="http://scholar.google.com.au/scholar?q=An+integrated+framework+for+generalized+nearest+prototype+classifier++design">An integrated framework for generalized nearest prototype classifier 	design</a>", Int. Journal of Uncertaintly, Fuzziness and Knowledge-Based Systems, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Kuncheva1998a'>[Kuncheva1998a]</a></td>
+ <td>L. I. Kuncheva and J. C. Bezdek, "<a href="http://scholar.google.com.au/scholar?q=Nearest+prototype+classification:+clustering,+genetic+algorithms,++or+random+search?">Nearest prototype classification: clustering, genetic algorithms, 	or random search?</a>", IEEE Transactions on Systems, Man and Cybernetics, Part C, 1998.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Lesser1990'>[Lesser1990]</a></td>
+ <td>V. R. Lesser, "<a href="http://scholar.google.com.au/scholar?q=An+Overview+of+DAI:+Viewing+Distributed+AI+as+Distributed+Search">An Overview of DAI: Viewing Distributed AI as Distributed Search</a>", Journal of Japanese Society for Artificial Intelligence-Special Issue 	on Distributed Artificial Intelligence, 1990.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Lin1973'>[Lin1973]</a></td>
+ <td>S. Lin and B. W Kernighan, "<a href="http://scholar.google.com.au/scholar?q=An+Effective+Heuristic+Algorithm+for+the+Traveling-Salesman+Problems">An Effective Heuristic Algorithm for the Traveling-Salesman Problems</a>", Operations Research, 1973.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Liu2000'>[Liu2000]</a></td>
+ <td>P. Liu and D. W. Wang, "<a href="http://scholar.google.com.au/scholar?q=Reduction+optimization+in+heterogeneous+cluster+environments">Reduction optimization in heterogeneous cluster environments</a>", in Proceedings 14th International Parallel and Distributed Processing Symposium 	IPDPS 2000, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Magdon-ismail2000'>[Magdon-ismail2000]</a></td>
+ <td>M. Magdon&ndash;Ismail and A. F. Atiya, "<a href="http://scholar.google.com.au/scholar?q=The+Early+Restart+Algorithm">The Early Restart Algorithm</a>", Neural Computation, 2000.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Muselli1997'>[Muselli1997]</a></td>
+ <td>M. Muselli, "<a href="http://scholar.google.com.au/scholar?q=A+Theoretical+Approach+to+Restart+in+Global+Optimization">A Theoretical Approach to Restart in Global Optimization</a>", Journal of Global Optimization, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Nagendra1996'>[Nagendra1996]</a></td>
+ <td>M. V. Nagendra Prasad and V. R. Lesser and S. E. Lander, "<a href="http://scholar.google.com.au/scholar?q=Retrieval+and+reasoning+in+distributed+case+bases">Retrieval and reasoning in distributed case bases</a>", Journal of Visual Communication and Image Representation, Special 	Issue on Digital Libraries, 1996.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Nakada1999'>[Nakada1999]</a></td>
+ <td>A. Nakada and T. Shibata and M. Konda and T. Morimoto and T. Ohmi, "<a href="http://scholar.google.com.au/scholar?q=A+fully+parallel+vector-quantization+processor+for+real-time+motion-picture++compression">A fully parallel vector-quantization processor for real-time motion-picture 	compression</a>", IEEE Journal of Solid-State Circuits, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Opitz1999'>[Opitz1999]</a></td>
+ <td>D. Opitz and R. Maclin, "<a href="http://scholar.google.com.au/scholar?q=Popular+Ensemble+Methods:+An+Empirical+Study">Popular Ensemble Methods: An Empirical Study</a>", Journal of Artificial Intelligence Research, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Parhi1994'>[Parhi1994]</a></td>
+ <td>K. K. Parhi and F. H. Wu and K. Genesan, "<a href="http://scholar.google.com.au/scholar?q=Sequential+and+parallel+neural+network+vector+quantizers">Sequential and parallel neural network vector quantizers</a>", IEEE Transactions on Computers, 1994.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Plaza1997'>[Plaza1997]</a></td>
+ <td>E. Plaza and J. Lluis and A. F. Martin, "<a href="http://scholar.google.com.au/scholar?q=Cooperative+Case-based+Reasoning">Cooperative Case-based Reasoning</a>", in Distributed Artificial Intelligence Meets Machine Learning Learning 	in Multi-Agent Environments, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Polikar2006'>[Polikar2006]</a></td>
+ <td>R. Polikar, "<a href="http://scholar.google.com.au/scholar?q=Ensemble+Based+Systems+in+Decision+Making">Ensemble Based Systems in Decision Making</a>", IEEE Circuits and Systems Magazine, 2006.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Price1977'>[Price1977]</a></td>
+ <td>W. L. Price, "<a href="http://scholar.google.com.au/scholar?q=A+controlled+random+search+procedure+for+global+optimisation">A controlled random search procedure for global optimisation</a>", The Computer Journal, 1977.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Purshouse2003'>[Purshouse2003]</a></td>
+ <td>R. C. Purshouse and P. J. Fleming, "<a href="http://scholar.google.com.au/scholar?q=Conflict,+Harmony,+and+Independence:+Relationships+in+Evolutionary++Multi-criterion+Optimisation">Conflict, Harmony, and Independence: Relationships in Evolutionary 	Multi-criterion Optimisation</a>", in Proceedings of the Second International Conference on Evolutionary 	Multi-Criterion Optimization (EMO), 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Russell2009'>[Russell2009]</a></td>
+ <td>S. Russell and P. Norvig, "<a href="http://scholar.google.com.au/scholar?q=Artificial+Intelligence:+A+Modern+Approach">Artificial Intelligence: A Modern Approach</a>", Prentice Hall, 2009.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schapire1992'>[Schapire1992]</a></td>
+ <td>R. E. Schapire, "<a href="http://scholar.google.com.au/scholar?q=The+strength+of+weak+learnability">The strength of weak learnability</a>", Machine Learning, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schapire2003'>[Schapire2003]</a></td>
+ <td>R. E. Schapire, "<a href="http://scholar.google.com.au/scholar?q=The+boosting+approach+to+machine+learning:+An+overview">The boosting approach to machine learning: An overview</a>", in Nonlinear Estimation and Classification, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Schnekenburger1993'>[Schnekenburger1993]</a></td>
+ <td>T. Schnekenburger, "<a href="http://scholar.google.com.au/scholar?q=Parallel+Randomized+Algorithms+in+Heterogeneous+Environments">Parallel Randomized Algorithms in Heterogeneous Environments</a>", in Int. Conference on Systems Engineering, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Skillicorn1999'>[Skillicorn1999]</a></td>
+ <td>D. Skillicorn, "<a href="http://scholar.google.com.au/scholar?q=Strategies+for+parallel+data+mining">Strategies for parallel data mining</a>", IEEE Concurrency, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Smith1997b'>[Smith1997b]</a></td>
+ <td>J. E. Smith and T. C. Fogarty, "<a href="http://scholar.google.com.au/scholar?q=Operator+and+parameter+adaptation+in+genetic+algorithms">Operator and parameter adaptation in genetic algorithms</a>", Soft Computing - A Fusion of Foundations, Methodologies and Applications, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Takagi2001'>[Takagi2001]</a></td>
+ <td>H. Takagi, "<a href="http://scholar.google.com.au/scholar?q=Interactive+evolutionary+computation:+Fusion+of+the+capabilities++of+EC+optimization+and+human+evaluations">Interactive evolutionary computation: Fusion of the capabilities 	of EC optimization and human evaluations</a>", Proceedings of the IEEE, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Talbi2001'>[Talbi2001]</a></td>
+ <td>E. Talbi, "<a href="http://scholar.google.com.au/scholar?q=A+taxonomy+of+hybrid+metaheuristics">A taxonomy of hybrid metaheuristics</a>", Journal of Heuristics, 2001.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Tanese1989'>[Tanese1989]</a></td>
+ <td>R. Tanese, "<a href="http://scholar.google.com.au/scholar?q=Distributed+genetic+algorithms">Distributed genetic algorithms</a>", in Proceedings of the third international conference on Genetic algorithms, 1989.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Ting1999'>[Ting1999]</a></td>
+ <td>K. M. Ting and I. H. Witten, "<a href="http://scholar.google.com.au/scholar?q=Issues+in+Stacked+Generalization">Issues in Stacked Generalization</a>", Journal of Artificial Intelligence Research, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Toern1999'>[Toern1999]</a></td>
+ <td>A. T&ouml;rn and M. M. Ali and S. Viitanen, "<a href="http://scholar.google.com.au/scholar?q=Stochastic+Global+Optimization:+Problem+Classes+and+Solution+Techniques">Stochastic Global Optimization: Problem Classes and Solution Techniques</a>", Journal of Global Optimization, 1999.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Tsang1993'>[Tsang1993]</a></td>
+ <td>E. Tsang, "<a href="http://scholar.google.com.au/scholar?q=Foundations+of+Constraint+Satisfaction">Foundations of Constraint Satisfaction</a>", Academic Press, 1993.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Woeginger2003'>[Woeginger2003]</a></td>
+ <td>G. J. Woeginger, "<a href="http://scholar.google.com.au/scholar?q=Exact+Algorithms+for+NP&ndash;Hard+Problems:+A+Surveys">Exact Algorithms for NP&ndash;Hard Problems: A Surveys</a>", Combinatorial Optimization &ndash; Eureka, You Shrink!, 2003.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Wolpert1992'>[Wolpert1992]</a></td>
+ <td>D. H. Wolpert, "<a href="http://scholar.google.com.au/scholar?q=Stacked+Generalization">Stacked Generalization</a>", Neural Networks, 1992.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Wolpert1995'>[Wolpert1995]</a></td>
+ <td>D. H. Wolpert and W. G. Macready, "<a href="http://scholar.google.com.au/scholar?q=No+Free+Lunch+Theorems+for+Search">No Free Lunch Theorems for Search</a>", Santa Fe Institute, 1995.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Wolpert1997'>[Wolpert1997]</a></td>
+ <td>D. H. Wolpert and W. G. Macready, "<a href="http://scholar.google.com.au/scholar?q=No+Free+Lunch+Theorems+for+Optimization">No Free Lunch Theorems for Optimization</a>", IEEE Transactions on Evolutionary Computation, 1997.</td>
+ </tr>
+ <tr valign="top">
+ <td><a id='Zaki1999'>[Zaki1999]</a></td>
+ <td>M. J. Zaki, "<a href="http://scholar.google.com.au/scholar?q=Parallel+and+Distributed+Data+Mining:+An+Introduction">Parallel and Distributed Data Mining: An Introduction</a>", in Revised Papers from Large-Scale Parallel Data Mining, Workshop on 	Large-Scale Parallel KDD Systems, SIGKDD, 1999.</td>
+ </tr>
+</table>
+
+
+  </body>
+</html>  
