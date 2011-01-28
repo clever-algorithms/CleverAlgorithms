@@ -27,3 +27,5 @@ deprecated/**/*.log
 !workspace/release/*.pdf
 src/algorithms/*.log
 web/docs
+web/epub_temp
+web/*.epub
