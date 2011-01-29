@@ -11,7 +11,9 @@ https://github.com/inukshuk/bibtex-ruby
 Licensed under GNU GPL
 
 
-Also contains a script for generating an epub file, stated by Simen.
+Also contains a script for generating an epub file, stated by Simen (https://github.com/simen/CleverAlgorithms/tree/master/web)
   > ruby generate_epub.rb
   
-Output is put into /epub_temp
+The final output is CleverAlgorithms.epub
+
+Drag the file "CleverAlgorithms.epub" into "books" inside itunes and sync to get it on your apple device.
