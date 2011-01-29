@@ -110,7 +110,8 @@ def add_line(s, line)
   s << "#{line}\n"
 end
 
-def process_angle_brackets(s)
+def process_angle_brackets_and_ampersands(s)
+  s = s.gsub("&", "&amp;")
   s = s.gsub("<", "&lt;")
   s = s.gsub(">", "&gt;")
   return s
@@ -167,7 +168,7 @@ end
 # this func does endspecial handing of << >> for grammatical evolution
 def replace_texttt(s)
   return s.gsub(/\\texttt\{([^}]+)\}/) do |elem|
-    "<code>#{ process_angle_brackets(elem[8...-1]) }</code>"
+    "<code>#{ process_angle_brackets_and_ampersands(elem[8...-1]) }</code>"
   end
 end
 
@@ -385,7 +386,7 @@ def final_pretty_code_listing(lines, caption=nil, ruby_filename=nil)
   # make a string
   raw = lines.join("\n") 
   # pretty print does not like <> brackets
-  raw = process_angle_brackets(raw)
+  raw = process_angle_brackets_and_ampersands(raw)
   s = ""
   # table is a hack to ensure lines wrap
   add_line(s, "<pre class='prettyprint lang-rb'>")
