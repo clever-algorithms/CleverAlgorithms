@@ -26,6 +26,14 @@ end
 
 OUTPUT_DIR = "epub_temp"
 
+# Returns the svg for the latex expression
+def render_svg(latex)
+  client = HTTPClient.new
+  wrapped_svg=client.get_content("http://mathcache.appspot.com/?tex=#{CGI.escape(latex)}&svgcb=x")
+  wrapped_svg =~ (/".+":\s"(.*)\"\}\)/)
+  return $1.gsub('\"','"')
+end
+
 # Renders the provided latex markup into a file with the given name
 def render_latex_as_image(latex, filename)
   url = "http://mathcache.appspot.com/?tex=#{CGI.escape('\\png \\small \\parstyle '+latex)}"
@@ -33,6 +41,9 @@ def render_latex_as_image(latex, filename)
   binary_data = client.get_content(url)
   File.open("#{OUTPUT_DIR}/#{filename}", 'w') do |file| 
     file << binary_data  
+  end
+  File.open("#{OUTPUT_DIR}/#{filename.gsub('.png', '.svg')}", 'w') do |file| 
+    file << render_svg(latex)
   end
 end
 
@@ -120,6 +131,20 @@ def build_navigation_map
   result
 end
 
+# Replace LaTeX-png links with svg-links
+def replace_png_links_with_svg_links_in_all_html_files
+  Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |filename|
+    puts "Rewriting image links in #{filename} from png to svg"
+    text = File.read(filename)
+    text.gsub!(/src='LaTeX([0-9a-f]+).png'/) do |digest|
+      "src='LaTeX#{$1}.svg'"
+    end
+    File.open(filename, 'w') do |f|
+      f << text
+    end
+  end
+end
+
 if __FILE__ == $0
   # create dir
   create_directory(OUTPUT_DIR)
@@ -167,7 +192,23 @@ if __FILE__ == $0
     files Dir.glob("./epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
     nav navigation_map
   end
-  puts "Building epub file"
-  epub.save('CleverAlgorithms.epub')
+  puts "Building epub file with LaTeX in pngs"
+  epub.save('CleverAlgorithms_png.epub')
+
+  replace_png_links_with_svg_links_in_all_html_files  
+
+  epub = EeePub.make do
+    title       'Clever Algorithms'
+    creator     'Jason Brownlee'
+    publisher   'cleveralgoritms.com'
+    date        Time.now.strftime("%Y-%m-%d")    
+    identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
+    uid         'http://www.cleveralgorithms.com/'
+
+    files Dir.glob("./epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.svg")
+    nav navigation_map
+  end
+  puts "Building epub file with LaTeX in svgs"
+  epub.save('CleverAlgorithms_svg.epub')
 end
 
