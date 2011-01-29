@@ -383,7 +383,7 @@ def final_pretty_code_listing(lines, caption=nil, ruby_filename=nil)
   # remove trailining white space
   lines.each_with_index {|r,i| lines[i]=r.rstrip}
   # make a string
-  raw = lines.join("\n") 
+  raw = lines.join("\r\n") # windows friendly?
   # pretty print does not like <> brackets
   raw = process_angle_brackets(raw)
   s = ""
