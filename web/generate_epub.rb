@@ -1,3 +1,9 @@
+# Script for converting the web-site to an epub-book   
+# builds upon and extends the 'big collection of hacks' that is generate.rb in the same rogue spirit.
+
+# Contributed by Simen Svale Skogsrud january 2011
+# This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
+
 require 'rubygems'
 require 'generate'
 require 'pp'
@@ -20,6 +26,7 @@ end
 
 OUTPUT_DIR = "epub_temp"
 
+# Renders the provided latex markup into a file with the given name
 def render_latex_as_image(latex, filename)
   url = "http://mathcache.appspot.com/?tex=#{CGI.escape('\\png \\small \\parstyle '+latex)}"
   client = HTTPClient.new
@@ -29,18 +36,16 @@ def render_latex_as_image(latex, filename)
   end
 end
 
+# Replaces all latex in the html with img-tags to rendered images
 def replace_latex_with_image_tags(html)
-  math = []
-  html.scan(/\$(.+?)\$/) {|m| math << m } # $$
-  index = 0
   html.gsub!(/\$(.+?)\$/) do |m|
-    index += 1
     filename = "LaTeX#{Digest::SHA1.hexdigest(m)}.png"
     render_latex_as_image(m, filename) unless File.exists?("#{OUTPUT_DIR}/#{filename}")
     "<img class='math' src='#{filename}'/>"
   end
 end
 
+# Convert a file headed for the web into an epub-compliant thing
 def epubize_file(filename)
   puts "Epubizing #{filename}"
   text = File.read(filename)  
@@ -71,26 +76,47 @@ END
   File.open(filename, 'w') << text
 end
 
+# Buld the list of sub-pages to a topic for an epub 'nav' array
+def nav_for_topic(topic, label, folder_prefix_letter)
+  item = {:label => label,
+   :content => "#{topic}.html"}     
+  lines = get_all_data_lines("../book/c_#{topic}.tex")
+  data = general_process_file(lines)
+  subpages = collect_subpages_for_page(data)
+  item[:nav] = subpages.map do |page|
+    {:label => get_algorithm_name("../book/#{folder_prefix_letter}_#{topic}/#{page}.tex"),
+     :content => "#{page}.html"}
+  end
+  item
+end
 
+# Build the table of contents
 def build_navigation_map
+  # AFAIK there is no way to extract the structure and titles of the different
+  # sections of the book automatically, so this method is not entirely dependent
+  # on generate.rb or the LaTeX-files. When the books structure changes beyond
+  # adding algorithms or algorithm-chapters, this method must be updated.
   result = []
-  result += FRONT_MATTER.map do |topic|
+  # Front matter
+  result += (['f_copyright']+FRONT_MATTER).map do |topic|
     stripped = topic[2..-1]
     {:label => stripped.capitalize,
      :content => "#{stripped}.html"}
   end
-  result += ALGORITHM_CHAPTERS.map do |topic|
-    item = {:label => "#{topic.capitalize} Algorithms",
-     :content => "#{topic}.html"}     
-    lines = get_all_data_lines("../book/c_#{topic}.tex")
-    data = general_process_file(lines)
-    algos = collect_subpages_for_page(data)
-    item[:nav] = algos.map do |algo|
-      {:label => get_algorithm_name("../book/a_#{topic}/"+algo+".tex"),
-       :content => "#{algo}.html"}
-    end
-    item
+  # The Introduction
+  result << {
+    :label => "Introduction",
+    :content => 'introduction.html'
+  }
+  # Algorithms
+  result += (ALGORITHM_CHAPTERS).map do |topic|
+    nav_for_topic(topic, "#{topic.capitalize} Algorithms", 'a')
   end  
+  # Extensions
+  result += [nav_for_topic('advanced', 'Advanced Topics', 'c')]
+  # Appendix
+  result << {:label => "Appendix A - Ruby: Quick Start Guide",
+    :content => 'appendix1.html'}
   result
 end
 
@@ -138,7 +164,7 @@ if __FILE__ == $0
     identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
     uid         'http://www.cleveralgorithms.com/'
 
-    files Dir.glob("./epub/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
+    files Dir.glob("./epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
     nav navigation_map
   end
   puts "Building epub file"
