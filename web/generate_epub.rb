@@ -52,7 +52,7 @@ def epubize_file(filename)
   text.gsub!(/\<a\s+name\=/, "<a id=")
   # Remove path from internal links
   text.gsub!(/href='\w+\//, "href='")
-  #replace_latex_with_image_tags(text)
+  replace_latex_with_image_tags(text)
   # Wrap in suitable XHTML skeleton  
   text = <<-END
 <?xml version="1.0" encoding="UTF-8" ?>
