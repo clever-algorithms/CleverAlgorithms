@@ -80,7 +80,9 @@ def epubize_file(filename)
     <link rel="stylesheet" href="main.css" type="text/css" />
   </head>
   <body>
-    #{text}
+    <div id='chapter'>
+      #{text}
+    </div>
   </body>
 </html>  
 END
@@ -134,7 +136,6 @@ end
 # Replace LaTeX-png links with svg-links
 def replace_png_links_with_svg_links_in_all_html_files
   Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |filename|
-    puts "Rewriting image links in #{filename} from png to svg"
     text = File.read(filename)
     text.gsub!(/src='LaTeX([0-9a-f]+).png'/) do |digest|
       "src='LaTeX#{$1}.svg'"
