@@ -1050,14 +1050,14 @@ end
 # note headings are processed
 def header_for_hash(hash, has_chapter)
   if !has_chapter
-    return "<a name='#{to_anchor(hash[:section])}'><h1>#{post_process_text hash[:section]}</h1></a>" if !hash[:section].nil?
-    return "<a name='#{to_anchor(hash[:subsec])}'><h2>#{post_process_text hash[:subsec]}</h2></a>" if !hash[:subsec].nil?
-    return "<a name='#{to_anchor(hash[:subsubsec])}'><h3>#{post_process_text hash[:subsubsec]}</h3></a>" if !hash[:subsubsec].nil?  
+    return "<h1><a name='#{to_anchor(hash[:section])}'>#{post_process_text hash[:section]}</a></h1>" if !hash[:section].nil?
+    return "<h2><a name='#{to_anchor(hash[:subsec])}'>#{post_process_text hash[:subsec]}</a></h2>" if !hash[:subsec].nil?
+    return "<h3><a name='#{to_anchor(hash[:subsubsec])}'>#{post_process_text hash[:subsubsec]}</a></h3>" if !hash[:subsubsec].nil?  
   end
-  return "<a name='#{to_anchor(hash[:chapter])}'><h1>#{post_process_text hash[:chapter]}</h1></a>" if !hash[:chapter].nil?
-  return "<a name='#{to_anchor(hash[:section])}'><h2>#{post_process_text hash[:section]}</h2></a>" if !hash[:section].nil?
-  return "<a name='#{to_anchor(hash[:subsec])}'><h3>#{post_process_text hash[:subsec]}</h3></a>" if !hash[:subsec].nil?
-  return "<a name='#{to_anchor(hash[:subsubsec])}'><h4>#{post_process_text hash[:subsubsec]}</h4></a>" if !hash[:subsubsec].nil?
+  return "<h1><a name='#{to_anchor(hash[:chapter])}'>#{post_process_text hash[:chapter]}</a></h1>" if !hash[:chapter].nil?
+  return "<h2><a name='#{to_anchor(hash[:section])}'>#{post_process_text hash[:section]}</a></h2>" if !hash[:section].nil?
+  return "<h3><a name='#{to_anchor(hash[:subsec])}'>#{post_process_text hash[:subsec]}</a></h3>" if !hash[:subsec].nil?
+  return "<h4><a name='#{to_anchor(hash[:subsubsec])}'>#{post_process_text hash[:subsubsec]}</a></h4>" if !hash[:subsubsec].nil?
 end
 
 def recursive_html_for_chapter(data, has_chapter=true)
