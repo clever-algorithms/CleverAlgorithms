@@ -68,6 +68,8 @@ def epubize_file(filename)
   text.gsub!(/\<a\s+name\=/, "<a id=")
   # Remove path from internal links
   text.gsub!(/href='\w+\//, "href='")
+  # Remove download links
+  text.gsub!(/<div class='download_src'>.*?Download Source<\/a><\/div>/, '')
   replace_latex_with_image_tags(text)
   # Wrap in suitable XHTML skeleton  
   text = <<-END
