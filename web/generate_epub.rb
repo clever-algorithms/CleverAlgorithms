@@ -145,6 +145,21 @@ def replace_png_links_with_svg_links_in_all_html_files
   end
 end
 
+# Inline the svg (not used, it seems support is very immature)
+def replace_png_links_with_inline_svg
+  Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |filename|
+    text = File.read(filename)
+    text.gsub!(/<img class='math' src='LaTeX([0-9a-f]+)\.png'\/>/) do |digest|      
+      svg = File.read("./#{OUTPUT_DIR}/LaTeX#{$1}.svg")
+      svg.gsub!(/\<\?xml.*?dtd'\>/, '')
+      svg
+    end
+    File.open(filename, 'w') do |f|
+      f << text
+    end
+  end
+end
+
 if __FILE__ == $0
   # create dir
   create_directory(OUTPUT_DIR)
@@ -195,7 +210,7 @@ if __FILE__ == $0
   puts "Building epub file with LaTeX in pngs"
   epub.save('CleverAlgorithms_png.epub')
 
-  replace_png_links_with_svg_links_in_all_html_files  
+  replace_png_links_with_svg_links_in_all_html_files
 
   epub = EeePub.make do
     title       'Clever Algorithms'
