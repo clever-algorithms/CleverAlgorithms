@@ -68,6 +68,8 @@ def epubize_file(filename)
   text.gsub!(/\<a\s+name\=/, "<a id=")
   # Remove path from internal links
   text.gsub!(/href='\w+\//, "href='")
+  # Remove download links
+  text.gsub!(/<div class='download_src'>.*?Download Source<\/a><\/div>/, '')
   replace_latex_with_image_tags(text)
   # Wrap in suitable XHTML skeleton  
   text = <<-END
@@ -80,7 +82,9 @@ def epubize_file(filename)
     <link rel="stylesheet" href="main.css" type="text/css" />
   </head>
   <body>
-    #{text}
+    <div id='chapter'>
+      #{text}
+    </div>
   </body>
 </html>  
 END
@@ -134,10 +138,24 @@ end
 # Replace LaTeX-png links with svg-links
 def replace_png_links_with_svg_links_in_all_html_files
   Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |filename|
-    puts "Rewriting image links in #{filename} from png to svg"
     text = File.read(filename)
     text.gsub!(/src='LaTeX([0-9a-f]+).png'/) do |digest|
       "src='LaTeX#{$1}.svg'"
+    end
+    File.open(filename, 'w') do |f|
+      f << text
+    end
+  end
+end
+
+# Inline the svg (not used, it seems support is very immature)
+def replace_png_links_with_inline_svg
+  Dir.glob("./#{OUTPUT_DIR}/**/*.html").each do |filename|
+    text = File.read(filename)
+    text.gsub!(/<img class='math' src='LaTeX([0-9a-f]+)\.png'\/>/) do |digest|      
+      svg = File.read("./#{OUTPUT_DIR}/LaTeX#{$1}.svg")
+      svg.gsub!(/\<\?xml.*?dtd'\>/, '')
+      svg
     end
     File.open(filename, 'w') do |f|
       f << text
@@ -195,7 +213,7 @@ if __FILE__ == $0
   puts "Building epub file with LaTeX in pngs"
   epub.save('CleverAlgorithms_png.epub')
 
-  replace_png_links_with_svg_links_in_all_html_files  
+  replace_png_links_with_svg_links_in_all_html_files
 
   epub = EeePub.make do
     title       'Clever Algorithms'
