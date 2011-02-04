@@ -44,6 +44,7 @@ This project is partitioned into five efforts:
 * "deprecated/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/deprecated/ : A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
 * "src/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/ : Complete source code for the examples provided in the book as well as programs prepared during the development of the content for the book. Algorithm examples are provided in the Ruby programming language.
 * "workspace/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace/ : A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
+* "web":http://github.com/jbrownlee/CleverAlgorithms/tree/master/web/ : Scripts for generating HTML and eBook (ePub) versios of the book's content. 
 
 h2. Contribute
 
