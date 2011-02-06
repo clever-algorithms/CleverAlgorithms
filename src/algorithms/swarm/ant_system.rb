@@ -96,7 +96,7 @@ def search(cities, max_it, num_ants, decay_factor, c_heur, c_hist)
       candidate[:vector] = stepwise_const(cities, pheromone, c_heur, c_hist)
       candidate[:cost] = cost(candidate[:vector], cities)
       best = candidate if candidate[:cost] < best[:cost]
-      solutions.push candidate
+      solutions << candidate
     end
     decay_pheromone(pheromone, decay_factor)
     update_pheromone(pheromone, solutions)
