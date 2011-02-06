@@ -1,7 +1,7 @@
 # Ant System in the Ruby Programming Language
 
 # The Clever Algorithms Project: http://www.CleverAlgorithms.com
-# (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+# (c) Copyright 2010 Jason Brownlee. Some Rights Reserved.
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 def euc_2d(c1, c2)
@@ -96,6 +96,7 @@ def search(cities, max_it, num_ants, decay_factor, c_heur, c_hist)
       candidate[:vector] = stepwise_const(cities, pheromone, c_heur, c_hist)
       candidate[:cost] = cost(candidate[:vector], cities)
       best = candidate if candidate[:cost] < best[:cost]
+      solutions.push candidate
     end
     decay_pheromone(pheromone, decay_factor)
     update_pheromone(pheromone, solutions)
