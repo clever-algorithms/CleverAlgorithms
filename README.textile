@@ -1,4 +1,4 @@
-h1. Clever Algorithms 
+h1. Clever Algorithms: Nature-Inspired Programming Recipes
 
 h2. Overview
 
@@ -6,7 +6,16 @@ The Clever Algorithms project is an effort to describe a large number of algorit
 
 The Clever Algorithms project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
 
-This is a repository for the Clever Algorithms project for hosting, versioning, and collaboration, used during the development of the content for deliverables (website and book), as well as for the ongoing maintenance of the outcomes from the project.
+This is a repository for the *Clever Algorithms: Nature-Inspired Programming Recipes* project for hosting, versioning, and collaboration, used during the development of the content for deliverables (website and book), as well as for the ongoing maintenance of the outcomes from the project.
+
+h2. Support Clever Algorithms
+
+Like Clever Algorithms and want to support the project and more books in the series?
+
+* Spread the word (blog, facebook, twitter, etc). 
+* "Buy the paperback":http://www.lulu.com/product/paperback/clever-algorithms-nature-inspired-programming-recipes/14696556, the author will receive a few dollars.
+* Gift a book to the author from his "Amazon Wish List":http://amzn.com/w/13F7P2FRNH0X7 (thanks guys, my wish list is shrinking fast!)
+* Contribute corrections, translations, ports, etc (see details below)
 
 h2. Outcomes
 
