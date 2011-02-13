@@ -69,11 +69,11 @@ class TC_PSO < Test::Unit::TestCase
     pop = Array.new(pop_size) {create_particle(search_space, vel_space)}
     # test ascending order
     pop.each_with_index {|p,i| pop[i][:cost] = i}
-    gbest = get_global_best(pop, gbest)
+    gbest = get_global_best(pop, nil)
     assert_equal(0, gbest[:cost])
     # test descending order
-    pop.each_with_index {|p,i| pop[i][:cost] = pop_size-i}
-    gbest = get_global_best(pop, gbest)
+    pop.each_with_index {|p,i| pop[i][:cost] = pop_size-i-1}
+    gbest = get_global_best(pop, nil)
     assert_equal(0, gbest[:cost])
   end
   

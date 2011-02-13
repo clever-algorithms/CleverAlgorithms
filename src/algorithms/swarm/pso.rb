@@ -25,7 +25,7 @@ def create_particle(search_space, vel_space)
 end
 
 def get_global_best(population, current_best=nil)
-  population.sort{|x,y| x[:cost] <=> y[:cost]}
+  population.sort!{|x,y| x[:cost] <=> y[:cost]}
   best = population.first
   if current_best.nil? or best[:cost] <= current_best[:cost]
     current_best = {}
