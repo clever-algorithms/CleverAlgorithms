@@ -427,7 +427,6 @@ def collect_citations_for_page(data)
         stack << e[:content]
       elsif e.kind_of?(String)
         next if e.nil? or e.empty?
-        #e.scan(/\\cite\{([^}]+)\}/) do |c| 
         e.gsub(/\\cite\{([^}]+)\}/) do |c| 
           content = get_data_in_brackets(c)
           content.split(",").each do |cit|
@@ -455,7 +454,6 @@ def collect_subpages_for_page(data)
         stack << e[:content]
       elsif e.kind_of?(String)
         next if e.nil? or e.empty?
-        #e.scan(/\\newpage\\begin{bibunit}\\input{/) do |c| 
         e.gsub(/\\newpage\\begin\{bibunit\}\\input\{/) do |c| 
           filename = e.match(/\\input\{([^}]+)\}/).to_s
           subpages << filename[(filename.index("/")+1)...-1]
@@ -526,10 +524,6 @@ def generate_bib_entry(entry)
       s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
     else 
       s << "#{process_authors process_bibtex(entry[:author])}, "
-      # do not include editors if same as authors
-#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-#      end
     end
     s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "#{process_bibtex entry[:publisher]}, " if !entry[:publisher].nil?
@@ -548,10 +542,6 @@ def generate_bib_entry(entry)
       s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
     else 
       s << "#{process_authors process_bibtex(entry[:author])}, "
-      # do not include editors if same as authors
-#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-#      end
     end    
     s << "\"#{to_google_scholar process_bibtex(entry[:chapter])}\", " if !entry[:chapter].nil?
     s << "in #{process_bibtex entry[:title]}, "
@@ -573,10 +563,6 @@ def generate_bib_entry(entry)
       s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
     else
       s << "#{process_authors process_bibtex(entry[:author])}, "
-      # do not include editors if same as authors
-#      if !entry[:editor].nil? and entry[:editor] != entry[:author]
-#        s << "#{process_authors process_bibtex(entry[:editor])} (editors), "
-#      end
     end 
     s << "\"#{to_google_scholar process_bibtex(entry[:title])}\", "
     s << "in #{process_bibtex entry[:booktitle]}, " if !entry[:booktitle].nil?
@@ -930,6 +916,7 @@ def to_text_content(data)
   # state machine for building paragraphs/items/algorithms
   out, in_items, in_algorithm, in_listing, in_enum = true, false, false, false, false
   in_table, in_align, in_equation, in_figure = false, false, false, false
+  in_desc = false
   algorithm_caption = nil
   table_collection, align_collection, equation_collection, figure_collection = [], [], [], []
   listing_collection, pseudocode_collection = [], []
@@ -969,7 +956,14 @@ def to_text_content(data)
       out, in_enum = true, true
     elsif starts_with?(line, "\\end{enumerate}")  # end enumerate
       out, in_enum = true, false
-      add_line(s, "</ol>")
+      add_line(s, "</ol>")          
+    elsif starts_with?(line, "\\begin{description}") # start description
+      s << "</p>\n" if !out # end paragraph
+      add_line(s, "<ol>")
+      out, in_desc = true, true
+    elsif starts_with?(line, "\\end{description}")  # end description
+      out, in_desc = true, false
+      add_line(s, "</ol>")            
     elsif starts_with?(line, "\\begin{align") # start align
       s << "</p>\n" if !out # end paragraph
       out, in_align = true, true
@@ -1004,6 +998,10 @@ def to_text_content(data)
           add_line(s, "<li>#{post_process_text(line).gsub("\\item", "")}</li>")
         elsif in_enum
           add_line(s, "<li>#{post_process_text(line).gsub("\\item", "")}</li>")
+        elsif in_desc
+          l1 = post_process_text(line).gsub("\\item", "") # remove \item
+          l2 = l1.match(/\[([^}]+)\]/).to_s # bold bracketed part
+          add_line(s, "<li><strong>#{l2[1...-1]}</strong>#{l1[l2.size..-1]}</li>")
         elsif in_algorithm
           # ignore (for now)
           algorithm_caption = get_data_in_brackets(line) if starts_with?(line, "\\caption{")
@@ -1273,6 +1271,15 @@ def build_appendix(bib, name="appendix1")
   puts " > successfully wrote appendix '#{name}' to: #{filename}"
 end
 
+def build_errata(bib, name="errata")
+  lines = get_all_data_lines("../book/b_#{name}.tex")
+  processed = general_process_file(lines)
+  html = html_for_chapter(name, processed, bib)
+  filename = OUTPUT_DIR + "/"+name+".html"
+  File.open(filename, 'w') {|f| f.write(html) }
+  puts " > successfully wrote errata '#{name}' to: #{filename}"
+end
+
 def create_toc_html(algorithms, frontmatter)
   s = ""
   # head
@@ -1349,6 +1356,8 @@ def create_toc_html(algorithms, frontmatter)
     add_line(s, "<li><a href='appendix1.html\##{to_anchor(element[:section])}'>#{element[:section]}</a></li>")
   end
   add_line(s, "</ol>")  
+  # errata
+  add_line(s, "<li><a href='errata.html'>Errata</a></li>")
   add_line(s, "</ol>")
   return s
 end
@@ -1531,6 +1540,8 @@ if __FILE__ == $0
   build_advanced_chapter(bib)  
   # appendix
   build_appendix(bib) 
+  # eratta
+  build_errata(bib)
   # ruby files
   get_ruby_into_position(ALGORITHM_CHAPTERS)
   # site map
