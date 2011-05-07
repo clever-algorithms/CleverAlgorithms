@@ -27,11 +27,11 @@ Ruby scripts are written in ASCII text and are parsed and executed in a linear m
 
 Comments in Ruby are defined by a \texttt{\#} character, after which the remainder of the line is ignored. The only exception is in strings, where the character can have a special meaning.
 
-The ruby interpreter can be used in an interactive manner by typing out a ruby script directly. This can be useful for testing specific behavior. For example, it is encouraged that you open the ruby interpreter and follow along this guide by typing out the examples. The ruby interpreter can be opened from the command line by typing \texttt{irb} and exited again by typing \texttt{exit} from within the interpreter.
+The Ruby interpreter can be used in an interactive manner by typing out a Ruby script directly. This can be useful for testing specific behavior. For example, it is encouraged that you open the Ruby interpreter and follow along this guide by typing out the examples. The Ruby interpreter can be opened from the command line by typing \texttt{irb} and exited again by typing \texttt{exit} from within the interpreter.
 
 % Variables
 \subsection{Variables}
-A variable holds a piece of information such as an integer, a scalar, boolean or a string.
+A variable holds a piece of information such as an integer, a scalar, boolean, or a string.
 
 \begin{lstlisting}
 a = 1  # a holds the integer value '1'
@@ -58,7 +58,7 @@ b = 2
 c = (a == b) # false
 \end{lstlisting}
 
-Ruby supports the classical \texttt{\&\&} and \texttt{||} for AND and or OR, but it also support the \texttt{and} and \texttt{or} keywords themselves.
+Ruby supports the classical \texttt{\&\&} and \texttt{||} for AND and OR, but it also supports the \texttt{and} and \texttt{or} keywords themselves.
 
 \begin{lstlisting}
 a = 1
@@ -69,7 +69,7 @@ c = a==1 and b==2 # true
 % Flow Control
 \subsection{Flow Control}
 \index{Ruby!Flow Control}
-A script is a sequence of statements that invoke pre-defined functionality. There are structures for manipulating the flow of control within the script such as conditional statements and loops.
+A script is a sequence of statements that invoke pre-defined functionality. There are structures for manipulating the flow of control within the script, such as conditional statements and loops.
 
 Conditional statements can take the traditional forms of \texttt{if} \emph{condition} \emph{then} \emph{action}, with the standard variants of \emph{if-then-else} and \emph{if-then-elseif}. For example:
 
@@ -77,7 +77,7 @@ Conditional statements can take the traditional forms of \texttt{if} \emph{condi
 a = 1
 b = 2
 if(a == b) 
-	a += 1 # equivalent to a = a + a
+	a += 1 # equivalent to a = a + 1
 elsif a == 1 # brackets around conditions are optional
 	a = 1 # this line is executed
 else 
@@ -85,14 +85,14 @@ else
 end
 \end{lstlisting}
 
-Conditional statements can also be added to the end of statements. For example a variable can be assigned a value only if a condition holds, defined all on one line.
+Conditional statements can also be added to the end of statements. For example, a variable can be assigned a value only if a condition holds, defined all on one line.
 
 \begin{lstlisting}
 a = 2
 b = 99 if a == 2 # b => 99
 \end{lstlisting}
 
-Loops allow a set of statements to be repeatedly executed \texttt{until} a condition is met or \texttt{while} a condition is not met
+Loops allow a set of statements to be repeatedly executed \texttt{until} a condition is met or \texttt{while} a condition is not met.
 
 \begin{lstlisting}
 a = 0
@@ -122,7 +122,7 @@ An array is a linear collection of variables and can be defined by creating a ne
 
 \begin{lstlisting}
 a = [] # define a new array implicitly
-a = Array.new # explicilty create a new array
+a = Array.new # explicitly create a new array
 a = Array.new(10) # create a new array with space for 10 items
 \end{lstlisting}
 
@@ -130,10 +130,10 @@ The contents of an array can be accessed by the index of the element.
 
 \begin{lstlisting}
 a = [1, 2, 3] # inline declaration and definition of an array
-b = a[0] # first element, equivilient to a.first
+b = a[0] # first element, equivalent to a.first
 \end{lstlisting}
 
-Arrays are also not fixed sized and elements can be added and deleted dynamically.
+Arrays are also not fix-sized and elements can be added and deleted dynamically.
 \begin{lstlisting}
 a = [1, 2, 3] # inline declaration and definition of an array
 a << 4 # => [1, 2, 3, 4]
@@ -187,7 +187,7 @@ end
 puts test_function("me") # => Test: me
 \end{lstlisting}
 
-Function arguments can have default values, meaning that if the argument is not provided in a call to the function, that the default is used.
+Function arguments can have default values, meaning that if the argument is not provided in a call to the function, the default is used.
 
 \begin{lstlisting}
 def test_function(a="me")
@@ -210,7 +210,7 @@ puts square(3) # => 9
 
 A block is a collection of statements that can be treated as a single unit. A block can be provided to a function and it can be provided with parameters. A block can be defined using curly brackets \{\} or the \texttt{do} and \texttt{end} keywords. Parameters to a block are signified by \texttt{|var|}.
 
-The following examples shows an array with a block passed to the constructor of the Array object that accepts a parameter of the current array index being initialized and return's the value with which to initialize the array.
+The following example shows an array with a block passed to the constructor of the Array object that accepts a parameter of the current array index being initialized and returns the value with which to initialize the array.
 
 \begin{lstlisting}
 b = Array.new(10) {|i| i} # define a new array initialized 0..9
@@ -221,14 +221,14 @@ b = Array.new(10) do |i| # => [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
 end
 \end{lstlisting}
 
-Everything is an object in ruby, even numbers, and as such everything has some behaviors defined. For example, an integer has a \texttt{.times} function that can be called that takes a block as a parameter, executing the block the integer number of times.
+Everything is an object in Ruby, even numbers, and as such everything has some behaviors defined. For example, an integer has a \texttt{.times} function that can be called that takes a block as a parameter, executing the block the integer number of times.
 
 \begin{lstlisting}
 10.times {|i| puts i} # prints 0..9 each on a new line
 \end{lstlisting}
 
 % 
-% ways of doing stuf
+% ways of doing stuff
 % 
 \section{Ruby Idioms}
 \index{Ruby!Idioms}
@@ -269,7 +269,7 @@ Those collections that are enumerable, such as arrays, provide convenient functi
 end
 \end{lstlisting}
 
-The \texttt{sort} function is a very heavily used enumeration function. It returns a copy of the collection that is sorted. 
+The \texttt{sort} function is a very heavily-used enumeration function. It returns a copy of the collection that is sorted. 
 
 \begin{lstlisting}
 a = [3, 2, 4, 1]
@@ -305,7 +305,7 @@ puts v.inspect # => [4,4]
 % conclusions
 \subsection{Conclusions}
 \index{Ruby!References}
-This quick-start guide has only scratched the surface of the Ruby Programming Language. Please refer to one of the referenced text books on the language for a more detailed introduction into this powerful and fun programming language \cite{Thomas2004, Flanagan2008}.
+This quick-start guide has only scratched the surface of the Ruby Programming Language. Please refer to one of the referenced textbooks on the language for a more detailed introduction to this powerful and fun programming language \cite{Thomas2004, Flanagan2008}.
 
 \renewcommand{\bibsection}{\section{\bibname}}
 \putbib
