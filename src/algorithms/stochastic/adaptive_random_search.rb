@@ -59,7 +59,7 @@ def search(max_iter, bounds, init_factor, s_factor, l_factor, iter_mult, max_no_
       count = 0
     else
       count += 1
-      count, stepSize = 0, (step_size/s_factor) if count >= max_no_impr
+      count, step_size = 0, (step_size/s_factor) if count >= max_no_impr
     end
     puts " > iteration #{(iter+1)}, best=#{current[:cost]}"
   end
