@@ -29,3 +29,5 @@ src/algorithms/*.log
 web/docs
 web/epub_temp
 web/*.epub
+**/*~
+**/*/*~
