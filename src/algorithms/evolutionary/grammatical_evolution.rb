@@ -21,7 +21,7 @@ end
 
 def one_point_crossover(parent1, parent2, codon_bits, p_cross=0.30)
   return ""+parent1[:bitstring] if rand()>=p_cross
-  cut = rand([parent1.size, parent2.size].min/codon_bits)
+  cut = rand([parent1[:bitstring].size, parent2[:bitstring].size].min/codon_bits)
   cut *= codon_bits
   p2size = parent2[:bitstring].size
   return parent1[:bitstring][0...cut]+parent2[:bitstring][cut...p2size]
