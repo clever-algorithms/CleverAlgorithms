@@ -83,7 +83,7 @@ end
 
 def recombine(subset, minmax)
   a, b = subset
-  d = rand(euclidean_distance(a[:vector], b[:vector]))/2.0
+  d = rand*euclidean_distance(a[:vector], b[:vector])/2.0
   children = []
   subset.each do |p|
     step = (rand<0.5) ? +d : -d
