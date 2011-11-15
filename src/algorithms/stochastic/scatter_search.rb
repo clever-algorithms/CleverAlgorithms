@@ -83,13 +83,13 @@ end
 
 def recombine(subset, minmax)
   a, b = subset
-  d = rand*euclidean_distance(a[:vector], b[:vector])/2.0
+	d = Array.new(a[:vector].size) {|i|(b[:vector][i]-a[:vector][i])/2.0}
   children = []
   subset.each do |p|
-    step = (rand<0.5) ? +d : -d
+		direction, r = ((rand<0.5) ? +1.0 : -1.0), rand
     child = {:vector=>Array.new(minmax.size)}
     child[:vector].each_index do |i|
-      child[:vector][i] = p[:vector][i] + step
+			child[:vector][i] = p[:vector][i] + (direction * r * d[i])
       child[:vector][i]=minmax[i][0] if child[:vector][i]<minmax[i][0]
       child[:vector][i]=minmax[i][1] if child[:vector][i]>minmax[i][1]
     end
