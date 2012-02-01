@@ -83,7 +83,6 @@ Algorithm~\ref{alg:pso} provides a pseudocode listing of the Particle Swarm Opti
 	\SetKwData{CurrentBest}{$P_{p\_best}$}
 	\SetKwData{CurrentPosition}{$P_{position}$}
 	\SetKwData{CurrentVelocity}{$P_{velocity}$}
-	\SetKwData{CurrentCost}{$P_{cost}$}
 	% functions
 	\SetKwFunction{Cost}{Cost}
 	\SetKwFunction{StopCondition}{StopCondition}
@@ -103,9 +102,8 @@ Algorithm~\ref{alg:pso} provides a pseudocode listing of the Particle Swarm Opti
 	\For{$i=1$ $\KwTo$ \PopulationSize} {
 		\CurrentVelocity $\leftarrow$ \RandomVelocity{}\;
 		\CurrentPosition $\leftarrow$ \RandomPosition{\PopulationSize}\;
-		\CurrentCost $\leftarrow$ \Cost{\CurrentPosition}\;
 		\CurrentBest $\leftarrow$ \CurrentPosition\;
-		\If{\CurrentCost $\leq$ \GlobalBest} {
+		\If{\Cost{\CurrentBest} $\leq$ \Cost{\GlobalBest}} {
 			\GlobalBest $\leftarrow$ \CurrentBest\;
 		}
 	}	
@@ -115,10 +113,9 @@ Algorithm~\ref{alg:pso} provides a pseudocode listing of the Particle Swarm Opti
 		\ForEach{\Particle $\in$ \Population} {
 			\CurrentVelocity $\leftarrow$ \UpdateVelocity{\CurrentVelocity, \GlobalBest, \CurrentBest}\;
 			\CurrentPosition $\leftarrow$ \UpdatePosition{\CurrentPosition, \CurrentVelocity}\;
-			\CurrentCost $\leftarrow$ \Cost{\CurrentPosition}\;
-			\If{\CurrentCost $\leq$ \CurrentBest} {
+			\If{\Cost{\CurrentPosition} $\leq$ \Cost{\CurrentBest}} {
 				\CurrentBest $\leftarrow$ \CurrentPosition\;
-				\If{\CurrentCost $\leq$ \GlobalBest} {
+				\If{\Cost{\CurrentBest} $\leq$ \Cost{\GlobalBest}} {
 					\GlobalBest $\leftarrow$ \CurrentBest\;
 				}
 			}
