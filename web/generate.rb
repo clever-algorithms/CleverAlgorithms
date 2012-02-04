@@ -392,13 +392,13 @@ def final_pretty_code_listing(lines, caption=nil, ruby_filename=nil)
   add_line(s, "<pre class='prettyprint lang-rb'>")
   add_line(s, raw)
   add_line(s, "</pre>")
-  if !ruby_filename.nil?
-	  add_line(s, "<div class='download_src'><a href='#{ruby_filename}'>Download Source</a></div>")
-	end
   if !caption.nil?
     caption = post_process_text(caption) # process text
     add_line(s, "<div class='caption'>#{caption}</div>") 
-  end
+  end  
+  if !ruby_filename.nil?
+	  add_line(s, "<div class='download_src'>Download: <a href='#{ruby_filename}'>#{ruby_filename}</a>. Unit test available in the <%=natureinspired_dev_url(\"github project\")%></div>")
+	end
   return s
 end
 
@@ -1089,15 +1089,15 @@ def head(name, parent, keywords)
   s = ""
   # title
   if parent.nil?
-    add_line(s, "<% content_for :head_title, \"#{name} - Clever Algorithms\" %>")
+    add_line(s, "<% content_for :head_title, \"#{name} - Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
   else 
-    add_line(s, "<% content_for :head_title, \"#{name} - #{parent} - Clever Algorithms\" %>")
+    add_line(s, "<% content_for :head_title, \"#{name} - Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
   end
   # description  
   if parent.nil?
-    add_line(s, "<% content_for :head_description, \"#{name} - Clever Algorithms\" %>")
+    add_line(s, "<% content_for :head_description, \"#{name} - Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
   else 
-    add_line(s, "<% content_for :head_description, \"#{name} - #{parent} - Clever Algorithms\" %>")
+    add_line(s, "<% content_for :head_description, \"#{name} - #{parent} - Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
   end
   # keywords
   if keywords.nil? or keywords.empty?
@@ -1287,10 +1287,7 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<% content_for :head_description, \"Clever Algorithms: Nature-Inspired Programming Recipes\" %>")
   add_line(s, "<% content_for :head_keywords, \"clever algorithms, computational intelligence, artificial intelligence, metaheuristics, biologically inspired natural, table of contents\" %>")
   # front matter
-  add_line(s, "<h1>Clever Algorithms</h1>")
-  add_line(s, "<h2>Nature-Inspired Programming Recipes</h2>")
-  add_line(s, "By Jason Brownlee<br /><br />")
-  add_line(s, "<h2>Table of Contents</h2>")
+  add_line(s, "<h1>Table of Contents</h1>")
   add_line(s, "<ol>")
   add_line(s, "<li><a href='copyright.html'>copyright</a></li>") # hard code copyright
   frontmatter.each do |name|
