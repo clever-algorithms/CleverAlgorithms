@@ -1165,15 +1165,32 @@ def html_for_chapter_overview(name, data, source, bib, subsecname)
   s << head(data.last[:chapter], nil, keywords.join(", "))
   s << breadcrumb(name, data.last[:chapter])
   s << recursive_html_for_chapter(data)
-  # Algorithms
-  add_line(s, "<h3>#{subsecname}</h3>")
-  add_line(s, "<ul>")  
+  # Overview (such as an algorithms list)
+  overview = ""
+  add_line(overview, "<h3>#{subsecname}</h3>")
+  add_line(overview, "<ul>")  
   algos.each do |filename|
     # super lazy at getting algorithm names - consider a better process
     algo_name = get_algorithm_name(source+"/"+filename+".tex")
-    add_line(s, "<li><a href='#{name}/#{filename}.html'>#{algo_name}</a></li>")
+    add_line(overview, "<li><a href='#{name}/#{filename}.html'>#{algo_name}</a></li>")
   end
-  add_line(s, "</ul>")
+  add_line(overview, "</ul>")
+  # work out the best place for the overview
+  # check for algorithms chapter that has an "Extensions" section
+  target = "Extensions</a></h3>"
+  if (s.include?(target))
+    index = s.rindex(target)
+    tmp = s[0...index]
+    pos = tmp.rindex("<h3>")
+    # super safe
+    if !pos.nil?
+      s.insert(pos, overview)
+    else 
+      s << overview
+    end
+  else
+   s << overview
+  end  
   # Bibliography
   # lazy check - some chapter overviews do not have a bib!
   citations = collect_citations_for_page(data)
