@@ -58,7 +58,7 @@ The Hopfield Network is comprised of a graph data structure with weighted edges 
 The weights of the network can be learned via a one-shot method (one-iteration through the patterns) if all patterns to be memorized by the network are known. Alternatively, the weights can be updated incrementally using the Hebb rule where weights are increased or decreased based on the difference between the actual and the expected output. The one-shot calculation of the network weights for a single node occurs as follows:
 
 \begin{equation}
-	w_{i,j} = \sum_{k=1}^{N} v_k^i \times v_k^j
+	w_{i,j} = \sum_{k=1}^{N} v_k^i\times v_k^j
 \end{equation}
 
 where $w_{i,j}$ is the weight between neuron $i$ and $j$, $N$ is the number of input patterns, $v$ is the input pattern and $v_k^i$ is the $i^{th}$ attribute on the $k^{th}$ input pattern.
@@ -66,7 +66,7 @@ where $w_{i,j}$ is the weight between neuron $i$ and $j$, $N$ is the number of i
 The propagation of the information through the network can be asynchronous where a random node is selected each iteration, or synchronously, where the output is calculated for each node before being applied to the whole network. Propagation of the information continues until no more changes are made or until a maximum number of iterations has completed, after which the output pattern from the network can be read. The activation for a single node is calculated as follows:
 
 \begin{equation}
-	n_i = \sum_{j=1}^n w_{i,j} \times n_j
+	n_i = \sum_{j=1}^n w_{i,j}\times n_j
 \end{equation}
 
 where $n_i$ is the activation of the $i^{th}$ neuron, $w_{i,j}$ with the weight between the nodes $i$ and $j$, and $n_j$ is the output of the $j^{th}$ neuron. The activation is transferred into an output using a transfer function, typically a step function as follows:

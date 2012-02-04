@@ -54,7 +54,8 @@ def tumble_cell(search_space, cell, step_size)
   return {:vector=>vector}
 end
 
-def chemotaxis(cells, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
+def chemotaxis(cells, search_space, chem_steps, swim_length, step_size, 
+    d_attr, w_attr, h_rep, w_rep) 
   best = nil
   chem_steps.times do |j|
     moved_cells = []   
@@ -80,12 +81,15 @@ def chemotaxis(cells, search_space, chem_steps, swim_length, step_size, d_attr, 
   return [best, cells]
 end
 
-def search(search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)  
+def search(search_space, pop_size, elim_disp_steps, repro_steps, 
+    chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, 
+    p_eliminate)  
   cells = Array.new(pop_size) { {:vector=>random_vector(search_space)} }
   best = nil
   elim_disp_steps.times do |l|
     repro_steps.times do |k|      
-      c_best, cells = chemotaxis(cells, search_space, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
+      c_best, cells = chemotaxis(cells, search_space, chem_steps, 
+        swim_length, step_size, d_attr, w_attr, h_rep, w_rep) 
       best = c_best if best.nil? or c_best[:cost] < best[:cost]
       puts " > best fitness=#{best[:fitness]}, cost=#{best[:cost]}"
       cells.sort{|x,y| x[:sum_nutrients]<=>y[:sum_nutrients]}
@@ -117,6 +121,8 @@ if __FILE__ == $0
   h_rep = d_attr
   w_rep = 10
   # execute the algorithm
-  best = search(search_space, pop_size, elim_disp_steps, repro_steps, chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, p_eliminate)
+  best = search(search_space, pop_size, elim_disp_steps, repro_steps, 
+    chem_steps, swim_length, step_size, d_attr, w_attr, h_rep, w_rep, 
+    p_eliminate)
   puts "done! Solution: c=#{best[:cost]}, v=#{best[:vector].inspect}"
 end

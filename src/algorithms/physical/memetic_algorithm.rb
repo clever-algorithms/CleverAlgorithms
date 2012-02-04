@@ -80,7 +80,8 @@ def bitclimber(child, search_space, p_mut, max_local_gens, bits_per_param)
   return current
 end
 
-def search(max_gens, search_space, pop_size, p_cross, p_mut, max_local_gens, p_local, bits_per_param=16)
+def search(max_gens, search_space, pop_size, p_cross, p_mut, max_local_gens, 
+    p_local, bits_per_param=16)
   pop = Array.new(pop_size) do |i|
     {:bitstring=>random_bitstring(search_space.size*bits_per_param)}
   end
@@ -93,7 +94,8 @@ def search(max_gens, search_space, pop_size, p_cross, p_mut, max_local_gens, p_l
     pop = []    
     children.each do |child|
       if rand() < p_local
-        child = bitclimber(child, search_space, p_mut, max_local_gens, bits_per_param) 
+        child = bitclimber(child, search_space, p_mut, max_local_gens, 
+          bits_per_param) 
       end
       pop << child
     end    
