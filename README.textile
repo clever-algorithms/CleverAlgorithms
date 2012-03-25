@@ -27,8 +27,6 @@ Jason Brownlee, *Clever Algorithms: Nature-Inspired Programming Recipes*, Lulu, 
 * "Download the PDF":http://www.lulu.com/product/file-download/clever-algorithms-nature-inspired-programming-recipes/14696557
 * "Read online":http://www.cleveralgorithms.com
 
-!http://www.cleveralgorithms.com/images/small_cover.png!
-
 h3. Technical Reports
 
 A large number of standalone technical reports were written during the development of the content for the book. The book is the primary source now, but if you really really want to see these now outdated technical reports: "click here":https://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace and scroll down to see a human readable listing.
