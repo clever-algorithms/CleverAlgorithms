@@ -55,7 +55,7 @@ def init_population(minmax, pop_size)
   strategy = Array.new(minmax.size) do |i| 
     [0,  (minmax[i][1]-minmax[i][0]) * 0.05]
   end
-  pop = Array.new(pop_size, {})
+  pop = Array.new(pop_size) { Hash.new }
   pop.each_index do |i|
     pop[i][:vector] = random_vector(minmax)
     pop[i][:strategy] = random_vector(strategy)
