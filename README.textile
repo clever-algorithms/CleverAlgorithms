@@ -27,6 +27,7 @@ h3. How to Build
 # @cd CleverAlgorithms@
 # @make r@ (creates the file @book/book.pdf@)
 # @make vl@ (to view the PDF on linux) or @make vm@ (to view the PDF on mac)
+# @make epub@ (creates epub versions)
 
 h3. Contribute
 

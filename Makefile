@@ -31,7 +31,9 @@ lulu: r
 clean: 
 	rm -rf ${BOOK}/*.pdf ${BOOK}/*.aux ${BOOK}/*.log ${BOOK}/*.out ${BOOK}/*.toc \
 		${BOOK}/*.idx ${BOOK}/*.ilg ${BOOK}/*.ind ${BOOK}/*.bak ${BOOK}/*.bbl ${BOOK}/*.blg
-	rm -rf ${WEB}/docs ${WEB}/epub_temp ${WEB}/*.epub 
+	rm -rf ${WEB}/docs ${WEB}/epub_temp
+	rm -rf *.epub 
+	rm -rf tests.log
 
 # View the development PDF on Linux
 vl:
@@ -45,6 +47,41 @@ vm:
 jl:
 	java -jar /opt/jabref/JabRef-2.7.2.jar 2>1 1>/dev/null &
 
-# create the webpage version
-web: web/generate.rb
-	ruby web/generate.rb
+# create the webpage version for CleverAlgorithms.com
+web: ${WEB}/generate.rb
+	ruby ${WEB}/generate.rb
+
+# create epub version for iphone/ipad and friends
+epub: ${WEB}/generate_epub.rb
+	ruby ${WEB}/generate_epub.rb
+
+# unit test ruby source code - DRY this up a bit
+test:
+	rm -rf tests.log
+	echo "testing..."
+	for file in src/algorithms/evolutionary/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/immune/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/neural/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/physical/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/probabilistic/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/stochastic/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/algorithms/swarm/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	for file in src/programming_paradigms/tests/* ; do \
+		ruby $$file | tee -a tests.log ; \
+	done
+	echo "DONE"
+	cat tests.log | grep -E ' Error:| Failure:|No such file or directory'

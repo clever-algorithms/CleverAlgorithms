@@ -5,7 +5,7 @@
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 require 'rubygems'
-require 'generate'
+require File.expand_path(File.dirname(__FILE__)) + '/generate'
 require 'pp'
 require 'cgi'
 require 'digest/sha1'
@@ -24,7 +24,7 @@ rescue LoadError
   exit
 end
 
-OUTPUT_DIR = "epub_temp"
+OUTPUT_DIR = "web/epub_temp"
 
 # Returns the svg for the latex expression
 def render_svg(latex)
@@ -95,11 +95,11 @@ end
 def nav_for_topic(topic, label, folder_prefix_letter)
   item = {:label => label,
    :content => "#{topic}.html"}     
-  lines = get_all_data_lines("../book/c_#{topic}.tex")
+  lines = get_all_data_lines("book/c_#{topic}.tex")
   data = general_process_file(lines)
   subpages = collect_subpages_for_page(data)
   item[:nav] = subpages.map do |page|
-    {:label => get_algorithm_name("../book/#{folder_prefix_letter}_#{topic}/#{page}.tex"),
+    {:label => get_algorithm_name("book/#{folder_prefix_letter}_#{topic}/#{page}.tex"),
      :content => "#{page}.html"}
   end
   item
@@ -207,7 +207,7 @@ if __FILE__ == $0
     identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
     uid         'http://www.cleveralgorithms.com/'
 
-    files Dir.glob("./epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
+    files Dir.glob("./web/epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.png")
     nav navigation_map
   end
   puts "Building epub file with LaTeX in pngs"
@@ -223,7 +223,7 @@ if __FILE__ == $0
     identifier  'urn:uuid:978-1-4467-8506-5-x', :scheme => 'ISBN'
     uid         'http://www.cleveralgorithms.com/'
 
-    files Dir.glob("./epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.svg")
+    files Dir.glob("./web/epub_assets/**")+ordered_html_files+Dir.glob("./#{OUTPUT_DIR}/LaTeX*.svg")
     nav navigation_map
   end
   puts "Building epub file with LaTeX in svgs"
