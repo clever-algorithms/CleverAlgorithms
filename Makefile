@@ -46,5 +46,5 @@ jl:
 	java -jar /opt/jabref/JabRef-2.7.2.jar 2>1 1>/dev/null &
 
 # create the webpage version
-web:
-	ruby ${WEB}/generate.rb
+web: web/generate.rb
+	ruby web/generate.rb

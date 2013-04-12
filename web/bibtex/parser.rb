@@ -6,7 +6,7 @@
 
 require 'racc/parser.rb'
 
-require 'bibtex/lexer'
+require File.expand_path(File.dirname(__FILE__)) +  '/lexer'
 
 module BibTeX
   class Parser < Racc::Parser

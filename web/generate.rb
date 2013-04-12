@@ -5,11 +5,11 @@
 # (c) Copyright 2011 Jason Brownlee. Some Rights Reserved. 
 # This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
-require 'bibtex'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex'
 
 
-OUTPUT_DIR = "docs"
-BIBTEX_FILE = "../workspace/bibtex.bib"
+OUTPUT_DIR = "web/docs"
+BIBTEX_FILE = "book/bibtex.bib"
 
 def create_directory(name)
   Dir.mkdir(name) unless File.directory?(name)
@@ -409,7 +409,7 @@ def pretty_print_code_listing(code_listing_line)
   parts = code_listing_line.split(",")
   raise "Caption not where expected" if !starts_with?(parts[2], "caption")
   caption = parts[2][(parts[2].index("=")+1)..-1]
-  raw = IO.readlines(filename)
+  raw = IO.readlines(filename[(filename.index("/")+1)..-1])
   ruby_filename = filename[(filename.rindex("/")+1)..-1]
   # trim top 7 lines
   raw = raw[6..-1]
@@ -456,7 +456,7 @@ def collect_subpages_for_page(data)
         next if e.nil? or e.empty?
         e.gsub(/\\newpage\\begin\{bibunit\}\\input\{/) do |c| 
           filename = e.match(/\\input\{([^}]+)\}/).to_s
-          subpages << filename[(filename.index("/")+1)...-1]
+          subpages << filename[(filename.rindex("/")+1)...-1]
           ""
         end        
       else 
@@ -1202,7 +1202,7 @@ def html_for_chapter_overview(name, data, source, bib, subsecname)
 end
 
 def process_chapter_overview(name, bib, source, subsecname="Algorithms")
-  lines = get_all_data_lines("../book/c_#{name}.tex")
+  lines = get_all_data_lines("book/c_#{name}.tex")
   processed = general_process_file(lines)
   html = html_for_chapter_overview(name, processed, source, bib, subsecname)
   filename = OUTPUT_DIR + "/"+name+".html"
@@ -1214,7 +1214,7 @@ end
 def build_algorithm_chapter(name, bib)
   dirname = OUTPUT_DIR + "/"+name
   create_directory(dirname)
-  source = "../book/a_"+name
+  source = "book/a_"+name
   # process chapter overview
   parent = process_chapter_overview(name, bib, source)  
   # process all algorithms for algorithm chapter  
@@ -1249,7 +1249,7 @@ def html_for_chapter(name, data, bib)
 end
 
 def build_chapter(bib, name)
-  lines = get_all_data_lines("../book/#{name}.tex")
+  lines = get_all_data_lines("book/#{name}.tex")
   processed = general_process_file(lines)
   output = name[(name.index('_')+1)..-1]
   html = html_for_chapter(output, processed, bib)  
@@ -1261,7 +1261,7 @@ end
 def build_advanced_chapter(bib, name="advanced")
   dirname = OUTPUT_DIR + "/"+name
   create_directory(dirname)
-  source = "../book/c_"+name
+  source = "book/c_"+name
   # process chapter overview
   parent = process_chapter_overview(name, bib, source, "Advanced Topics")  
   # process all algorithms for algorithm chapter  
@@ -1280,7 +1280,7 @@ def build_advanced_chapter(bib, name="advanced")
 end
 
 def build_appendix(bib, name="appendix1")
-  lines = get_all_data_lines("../book/b_#{name}.tex")
+  lines = get_all_data_lines("book/b_#{name}.tex")
   processed = general_process_file(lines)
   html = html_for_chapter(name, processed, bib)
   filename = OUTPUT_DIR + "/"+name+".html"
@@ -1289,7 +1289,7 @@ def build_appendix(bib, name="appendix1")
 end
 
 def build_errata(bib, name="errata")
-  lines = get_all_data_lines("../book/b_#{name}.tex")
+  lines = get_all_data_lines("book/b_#{name}.tex")
   processed = general_process_file(lines)
   html = html_for_chapter(name, processed, bib)
   filename = OUTPUT_DIR + "/"+name+".html"
@@ -1317,7 +1317,7 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<li><a href='introduction.html'>Introduction</a></li>")
   add_line(s, "<ol>")
   # add intro subsections
-  lines = get_all_data_lines("../book/c_introduction.tex")
+  lines = get_all_data_lines("book/c_introduction.tex")
   intro = general_process_file(lines)
   intro.last[:content].each do |element|
     next if !element.kind_of?(Hash)
@@ -1329,14 +1329,14 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<li><strong>Algorithms</strong></li>")
   add_line(s, "<ol>")
   algorithms.each do |name|
-    lines = get_all_data_lines("../book/c_#{name}.tex")
+    lines = get_all_data_lines("book/c_#{name}.tex")
     data = general_process_file(lines)  
     add_line(s, "<li><a href='#{name}.html'>#{data.last[:chapter]}</a></li>")
     algos = collect_subpages_for_page(data)
     add_line(s, "<ol>")
     algos.each do |filename|
       # super lazy at getting algorithm names - consider a better process
-      algo_name = get_algorithm_name("../book/a_#{name}/"+filename+".tex")
+      algo_name = get_algorithm_name("book/a_#{name}/"+filename+".tex")
       add_line(s, "<li><a href='#{name}/#{filename}.html'>#{algo_name}</a></li>")
     end
     add_line(s, "</ol>")
@@ -1346,14 +1346,14 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<li><strong>Extensions</strong></li>")  
   begin
     add_line(s, "<ol>")
-    lines = get_all_data_lines("../book/c_advanced.tex")
+    lines = get_all_data_lines("book/c_advanced.tex")
     data = general_process_file(lines)  
     add_line(s, "<li><a href='advanced.html'>#{data.last[:chapter]}</a></li>")
     algos = collect_subpages_for_page(data)
     add_line(s, "<ol>")
     algos.each do |filename|
       # super lazy at getting algorithm names - consider a better process
-      algo_name = get_algorithm_name("../book/c_advanced/"+filename+".tex")
+      algo_name = get_algorithm_name("book/c_advanced/"+filename+".tex")
       add_line(s, "<li><a href='advanced/#{filename}.html'>#{algo_name}</a></li>")
     end
     add_line(s, "</ol>")
@@ -1363,7 +1363,7 @@ def create_toc_html(algorithms, frontmatter)
   add_line(s, "<li><a href='appendix1.html'>Appendix A - Ruby: Quick-Start Guide</a></li>")
   add_line(s, "<ol>")
   # add appendix subsections
-  lines = get_all_data_lines("../book/b_appendix1.tex")
+  lines = get_all_data_lines("book/b_appendix1.tex")
   appendix = general_process_file(lines)
   appendix.last[:content].each do |element|
     next if !element.kind_of?(Hash)
@@ -1401,7 +1401,7 @@ end
 
 # lazy
 def build_copyright(name="f_copyright")
-  lines = get_all_data_lines("../book/#{name}.tex")
+  lines = get_all_data_lines("book/#{name}.tex")
   output = name[(name.index('_')+1)..-1]
   html = html_for_copyright(output, lines)
   filename = OUTPUT_DIR + "/"+output+".html"
@@ -1412,7 +1412,7 @@ end
 def get_ruby_into_position(chapters)
 	# all algorithm chapters
 	chapters.each do |chapter|
-		source = "../book/a_"+chapter
+		source = "book/a_"+chapter
 		Dir.entries(source).each do |file|
 		  next if file == "." or file == ".."
 		  next if File.extname(file) != ".tex"
@@ -1428,7 +1428,7 @@ def get_ruby_into_position(chapters)
 		  end
 		  raise "could not locate ruby file in #{source + "/" + file}" if filename.nil?
 		  # load
-			raw = IO.readlines(filename)
+			raw = IO.readlines(filename[(filename.index("/")+1)..-1])
 			ruby_filename = OUTPUT_DIR + "/" + chapter + "/" + filename[(filename.rindex("/")+1)..-1]
 			# write
 			File.open(ruby_filename, 'w') {|f| f.write(raw.join("")) }
@@ -1437,7 +1437,7 @@ def get_ruby_into_position(chapters)
 	# process advanced chapter
 	begin
 		chapter = "advanced"
-		source = "../book/c_"+chapter
+		source = "book/c_"+chapter
 		Dir.entries(source).each do |file|
 		  next if file == "." or file == ".."
 		  next if File.extname(file) != ".tex"
@@ -1453,7 +1453,7 @@ def get_ruby_into_position(chapters)
 		  next if filenames.empty? # some have no files
 		  # load
 		  filenames.each do |filename|
-				raw = IO.readlines(filename)
+				raw = IO.readlines(filename[(filename.index("/")+1)..-1])
 				ruby_filename = OUTPUT_DIR + "/" + chapter + "/" + filename[(filename.rindex("/")+1)..-1]
 				# write
 				File.open(ruby_filename, 'w') {|f| f.write(raw.join("")) }		  

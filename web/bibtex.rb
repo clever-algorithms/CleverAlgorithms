@@ -43,9 +43,9 @@ module BibTeX
 
 end
 
-require 'bibtex/string_replacement'
-require 'bibtex/elements'
-require 'bibtex/entry'
-require 'bibtex/error'
-require 'bibtex/parser'
-require 'bibtex/bibliography'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/string_replacement'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/elements'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/entry'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/error'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/parser'
+require File.expand_path(File.dirname(__FILE__)) + '/bibtex/bibliography'
