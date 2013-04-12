@@ -18,6 +18,74 @@ h3. Blurb
 
 bq. Implementing an Artificial Intelligence algorithm is difficult. Algorithm descriptions may be incomplete, inconsistent, and distributed across a number of papers, chapters and even websites. This can result in varied interpretations of algorithms, undue attrition of algorithms, and ultimately bad science. This book is an effort to address these issues by providing a handbook of algorithmic recipes drawn from the fields of Metaheuristics, Biologically Inspired Computation and Computational Intelligence, described in a complete, consistent, and centralized manner. These standardized descriptions were carefully designed to be accessible, usable, and understandable. Most of the algorithms described were originally inspired by biological and natural systems, such as the adaptive capabilities of genetic evolution and the acquired immune system, and the foraging behaviors of birds, bees, ants and bacteria. An encyclopedic algorithm reference, this book is intended for research scientists, engineers, students, and interested amateurs. Each algorithm description provides a working code example in the Ruby Programming Language.
 
+h3. Table of Contents
+
+# Background
+## Introduction
+# Algorithms
+## Stochastic Algorithms
+### Random Search
+### Adaptive Random Search
+### Stochastic Hill Climbing
+### Iterated Local Search
+### Guided Local Search
+### Variable Neighborhood Search
+### Greedy Randomized Adaptive Search
+### Scatter Search
+### Tabu Search
+### Reactive Tabu Search
+## Evolutionary Algorithms
+### Genetic Algorithm
+### Genetic Programming
+### Evolution Strategies
+### Differential Evolution
+### Evolutionary Programming
+### Grammatical Evolution
+### Gene Expression Programming
+### Learning Classifier System
+### Non-dominated Sorting Genetic Algorithm
+### Strength Pareto Evolutionary Algorithm
+## Physical Algorithms
+### Simulated Annealing
+### Extremal Optimization
+### Harmony Search
+### Cultural Algorithm
+### Memetic Algorithm
+## Probabilistic Algorithms
+### Population-Based Incremental Learning
+### Univariate Marginal Distribution Algorithm
+### Compact Genetic Algorithm
+### Bayesian Optimization Algorithm
+### Cross-Entropy Method
+## Swarm Algorithms
+### Particle Swarm Optimization
+### Ant System
+### Ant Colony System
+### Bees Algorithm
+### Bacterial Foraging Optimization Algorithm
+## Immune Algorithms
+### Clonal Selection Algorithm
+### Negative Selection Algorithm
+### Artificial Immune Recognition System
+### Immune Network Algorithm
+### Dendritic Cell Algorithm
+## Neural Algorithms
+### Perceptron
+### Back-propagation
+### Hopfield Network
+### Learning Vector Quantization
+### Self-Organizing Map
+# Extensions
+## Advanced Topics
+### Programming Paradigms
+### Devising New Algorithms
+### Testing Algorithms
+### Visualizing Algorithms
+### Problem Solving Strategies
+### Benchmarking Algorithms
+# Appendix A - Ruby: Quick-Start Guide
+
+
 h2. Project
 
 h3. How to Build
