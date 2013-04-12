@@ -31,7 +31,7 @@ lulu: r
 clean: 
 	rm -rf ${BOOK}/*.pdf ${BOOK}/*.aux ${BOOK}/*.log ${BOOK}/*.out ${BOOK}/*.toc \
 		${BOOK}/*.idx ${BOOK}/*.ilg ${BOOK}/*.ind ${BOOK}/*.bak ${BOOK}/*.bbl ${BOOK}/*.blg
-	rm -rf ${WEB}/docs
+	rm -rf ${WEB}/docs ${WEB}/epub_temp ${WEB}/*.epub 
 
 # View the development PDF on Linux
 vl:
