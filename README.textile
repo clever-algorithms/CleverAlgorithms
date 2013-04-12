@@ -1,77 +1,45 @@
 h1. Clever Algorithms: Nature-Inspired Programming Recipes
 
+!http://www.cleveralgorithms.com/images/CleverAlgorithms_3D_400.jpg!
+
 h2. Overview
 
-The Clever Algorithms project is an effort to describe a large number of algorithmic techniques from the the field of Artificial Intelligence in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. 
+*Clever Algorithms: Nature-Inspired Programming Recipes* is an open source book that has the goal to describe a large number of algorithmic techniques from the the field of Biologically Inspired Computation, Computational Intelligence and Metaheuristics in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. This is a repository for the book project used during the development and ongoing maintenance of the books' content.
 
-The Clever Algorithms project is currently hosted online at "http://www.CleverAlgorithms.com":http://www.CleverAlgorithms.com 
+The book was first released in early 2011 for free on the website "CleverAlgorithms.com":http://cleveralgorithms.com and is available for purchase as a paperback from "Amazon":http://www.amazon.com/gp/product/1446785068/ref=as_li_qf_sp_asin_tl?ie=UTF8&tag=inspiredalgor-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1446785068 and "Lulu":http://www.lulu.com/shop/jason-brownlee/clever-algorithms-nature-inspired-programming-recipes/paperback/product-14696556.html
 
-This is a repository for the *Clever Algorithms: Nature-Inspired Programming Recipes* project for hosting, versioning, and collaboration, used during the development of the content for deliverables (website and book), as well as for the ongoing maintenance of the outcomes from the project.
+h3. Book Details
 
-h2. Support Clever Algorithms
+| Title | *Clever Algorithms: Nature-Inspired Programming Recipes* |
+| Author | "Jason Brownlee":http://www.linkedin.com/in/jasonbrownlee |
+| Release |  Revision 2. 16th June 2012  |
 
-Like Clever Algorithms and want to support the project and more books in the series?
+h3. Blurb
 
-* Spread the word (blog, facebook, twitter, etc). 
-* "Buy the paperback":http://www.lulu.com/product/paperback/clever-algorithms-nature-inspired-programming-recipes/14696556, the author will receive a few dollars.
-* Gift a book to the author from his "Amazon Wish List":http://amzn.com/w/13F7P2FRNH0X7 (thanks guys, my wish list is shrinking fast!)
-* Contribute corrections, translations, ports, etc (see details below)
+bq. Implementing an Artificial Intelligence algorithm is difficult. Algorithm descriptions may be incomplete, inconsistent, and distributed across a number of papers, chapters and even websites. This can result in varied interpretations of algorithms, undue attrition of algorithms, and ultimately bad science. This book is an effort to address these issues by providing a handbook of algorithmic recipes drawn from the fields of Metaheuristics, Biologically Inspired Computation and Computational Intelligence, described in a complete, consistent, and centralized manner. These standardized descriptions were carefully designed to be accessible, usable, and understandable. Most of the algorithms described were originally inspired by biological and natural systems, such as the adaptive capabilities of genetic evolution and the acquired immune system, and the foraging behaviors of birds, bees, ants and bacteria. An encyclopedic algorithm reference, this book is intended for research scientists, engineers, students, and interested amateurs. Each algorithm description provides a working code example in the Ruby Programming Language.
 
-h2. Outcomes
+h2. Project
 
-h3. Book
+h3. How to Build
 
-Jason Brownlee, *Clever Algorithms: Nature-Inspired Programming Recipes*, Lulu, January 2011
+# Assumes a Linux or Mac workstation with make, Latex such as "TeXLive":http://www.tug.org/texlive/ or "MacTex":http://www.tug.org/mactex/ installed and maybe "JabRef":http://jabref.sourceforge.net/ 
+# <code>git clone git@github.com:jbrownlee/CleverAlgorithms.git</code>
+# @cd CleverAlgorithms/book@
+# @make paperback@ (creates the file @book/paperback.pdf@)
+# @make vl@ (to view the PDF on linux) or @make vm@ (to view the PDF on mac)
 
-* "Buy the paperback":http://www.lulu.com/product/paperback/clever-algorithms-nature-inspired-programming-recipes/14696556
-* "Download the PDF":http://www.lulu.com/product/file-download/clever-algorithms-nature-inspired-programming-recipes/14696557
-* "Read online":http://www.cleveralgorithms.com
+h3. Contribute
 
-h3. Technical Reports
+If you find a typo or a mistake, please email me at "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com or clone this project and make, make a change and submit a pull request. I will happily give you credit in the acknowledgments.
 
-A large number of standalone technical reports were written during the development of the content for the book. The book is the primary source now, but if you really really want to see these now outdated technical reports: "click here":https://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace and scroll down to see a human readable listing.
+h3. Support
 
-h3. Software
-
-* "Algorithms":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithms/ : The executable source code used in all algorithm descriptions. Each algorithm is in a separate file, and files are organized by algorithm taxonomic kingdom used in the book structure, specifically: stochastic, physical, evolutionary, probabilistic, swarm, and immune.
-* "Algorithm Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/algorithm_selection/ : A ruby script to apply the _data driven optimization algorithm selection_ methodology. Measures the popularity of a list of algorithms against a range of search engines, calculates a score and produces algorithm statistics and rankings. The script was prepared for the _Data-Driven Optimization Algorithm Selection_ technical report. Also see the tag for the "tech report version":http://github.com/jbrownlee/CleverAlgorithms/tree/alg_selection-techreport_v20100112-1
-* "Programming Language Selection Script":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/language_selection/ : A ruby script to evaluate the popularity of a list of programming languages for their use in implementing a typical optimization algorithm. Popularity is measured against a range of search engines and the results are summarized. The script was prepared for the _Programming Language Selection for Optimization Algorithms_ technical report.
-* "Programming Language Comparison Scripts":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/language_comparison/ : A set of scripts that implement the genetic algorithm in four different dynamic languages (Python, Perl, Ruby, and Lua), as well as a ruby script for analyzing the implementations. The scripts were prepared for the _Programming Language Selection for Optimization Algorithms_ technical report.
-
-h3. Other
-
-* "Clever Algorithms Paper Search":http://www.google.com/cse/home?cx=008815027030234776554:pwu9jj_wkb8 : An aggregate search using Google's 'custom search' service. Searches across the whole internet, biased towards google scholar, google books, IEEE explore, springer link, ACM digital library, and scirus. Useful for searching for all useful sources for a given technique name.
-
-h2. Breakdown
-
-This project is partitioned into five efforts:
-* "book/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/book/ : The content and structure for the publishable book. The book is prepared using the LaTex type setting system.
-* "deprecated/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/deprecated/ : A collection of the work product produced during the past attempts at completing the clever algorithms project (previously called the algorithm atlas and inspired algorithms).
-* "src/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/src/ : Complete source code for the examples provided in the book as well as programs prepared during the development of the content for the book. Algorithm examples are provided in the Ruby programming language.
-* "web/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/web/ : Scripts for generating HTML and eBook (experimental ePub) versions of the book's content. 
-* "workspace/":http://github.com/jbrownlee/CleverAlgorithms/tree/master/workspace/ : A workspace for content development such as notes and technical reports that facilitates exploration and investigation independent of the book content. Content developed in the workspace may provide the basis for the book or may be directly migrated into the book. Notes are in plain text, technical reports are prepared using the LaTex type setting system and organized into sub-directories. 
-
-h2. Contribute
-
-Found a typo in some content or a bug in the source code? Are you an expert in a given area and know some facts that could improve an algorithm description for all? Do you want to get that warm feeling from contributing to an open source project? Do you want to see your name as an acknowledgment in print?
-
-Two pillars of this effort are i) that the best domain experts are people outside of the project, and ii) that this work is subjected to continuous improvement. 
-
-*Please help to make this work less wrong!*
-
-You may want to:
-* Email the author: "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com
-* or, Message the author though the github website: (signup and login to github, go to "http://github.com/jbrownlee":http://github.com/jbrownlee and click "Message")
-* or, Fork the CleverAlgorithms project on github, make changes, and request a pull into the main project (again, you must signup and login to github and follow the github documentation for forking, contributing, and making a pull request).
+The best support you can give to this project is to buy a copy of the paperback and spread the word by writing a review, blog post or tweet.
 
 h2. License 
 
-(c) Copyright 2011 Jason Brownlee. Some Rights Reserved. 
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
-	<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />
-</a>
-
+(c) Copyright 2013 Jason Brownlee. Some Rights Reserved.
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
-
-Why would I release all of the work product from this project under a permissive license? Because I agree with "Tim O'Reilly":http://openp2p.com/lpt/a/3015 that "_obscurity is a far greater threat to authors and creative artists than piracy_". It is more important to me that the outcomes of this project are read and used than be treated as a revenue generating commodity.
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
+<img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />
+</a>
