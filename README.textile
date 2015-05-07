@@ -4,7 +4,7 @@ h1. Clever Algorithms: Nature-Inspired Programming Recipes
 
 h2. Overview
 
-*Clever Algorithms: Nature-Inspired Programming Recipes* is an open source book that describes a large number of algorithmic techniques from the the fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. This is a repository for the book project used during the development and ongoing maintenance of the books' content.
+*Clever Algorithms: Nature-Inspired Programming Recipes* is an open source book that describes a large number of algorithmic techniques from the fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. This is a repository for the book project used during the development and ongoing maintenance of the books' content.
 
 The book was first released in early 2011 for free on the website "CleverAlgorithms.com":http://cleveralgorithms.com and is available for purchase as a paperback from "Amazon":http://www.amazon.com/gp/product/1446785068/ref=as_li_qf_sp_asin_tl?ie=UTF8&tag=inspiredalgor-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1446785068 and "Lulu":http://www.lulu.com/shop/jason-brownlee/clever-algorithms-nature-inspired-programming-recipes/paperback/product-14696556.html
 
