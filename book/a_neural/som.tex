@@ -59,7 +59,7 @@ An initially random pool of vectors is prepared which are then exposed to traini
 The Self-Organizing map is comprised of a collection of codebook vectors connected together in a topological arrangement, typically a one dimensional line or a two dimensional grid. The codebook vectors themselves represent prototypes (points) within the domain, whereas the topological structure imposes an ordering between the vectors during the training process. The result is a low dimensional projection or approximation of the problem domain which may be visualized, or from which clusters may be extracted.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing codebook vectors using the Self-Organizing Map method. 
+Algorithm~\ref{alg:som_train} provides a high-level pseudocode for preparing codebook vectors using the Self-Organizing Map method.
 Codebook vectors are initialized to small floating point values, or sampled from the domain. The Best Matching Unit (BMU) is the codebook vector from the pool that has the minimum distance to an input vector. A distance measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}
@@ -130,7 +130,7 @@ The neighborhood is typically square (called bubble) where all neighborhood node
 	\Return{\CodebookVectors}\;
 	% end
 	\caption{Pseudocode for the SOM.}
-	\label{alg:train}
+	\label{alg:som_train}
 \end{algorithm}
 
 % Heuristics: Usage guidelines
