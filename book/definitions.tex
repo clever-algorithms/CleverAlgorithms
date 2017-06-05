@@ -1,11 +1,11 @@
 % The Clever Algorithms Project: http://www.CleverAlgorithms.com
-% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
+% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved.
 % This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
 
 
-% 
+%
 % Definitions
-% 
+%
 
 % The main title of the book
 \newcommand{\mybooktitle}{Clever Algorithms}
@@ -18,15 +18,15 @@
 
 
 % new macro for starting a new page and changing the style to empty
-% \newpage == ends the current page. 
-% \thispagestyle == works in the same manner as the \pagestyle, except that it changes the style for the current page only. 
+% \newpage == ends the current page.
+% \thispagestyle == works in the same manner as the \pagestyle, except that it changes the style for the current page only.
 % empty == Produces empty heads and feet - no page numbers
 \newcommand{\blanknonumber}{\newpage\thispagestyle{empty}}
 
 
-% 
+%
 % Packages
-% 
+%
 
 
 % a replacement for fancyheadings
@@ -44,7 +44,7 @@
 
 % add an index
 % http://ctan.unsw.edu.au/macros/latex/contrib/index/index.pdf
-\usepackage{index} 
+\usepackage{index}
 
 % Flexible and easy interface to page dimensions
 % http://www.ctan.org/tex-archive/macros/latex/contrib/geometry/
@@ -61,7 +61,7 @@
 \usepackage[usenames,dvipsnames]{color}
 
 % bold in ttfamily
-\usepackage{bold-extra}
+\usepackage{styles/bold-extra}
 
 % better spacing
 % http://ctan.unsw.edu.au/macros/latex/contrib/microtype/microtype.pdf
@@ -69,19 +69,19 @@
 
 % code listings (lots of languages)
 % http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
-\usepackage{listings} 
+\usepackage{listings}
 
 % http://mirror.aarnet.edu.au/pub/CTAN/macros/latex/contrib/listings/
-\lstset{language=ruby, 
-	basicstyle=\footnotesize\ttfamily, 
-  numbers=left, 
-  numberstyle=\tiny, 
+\lstset{language=ruby,
+	basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
 	keywordstyle=\bfseries\ttfamily,
-  frame=single, 
-  columns=flexible, 
-  upquote=true, 
-  showstringspaces=false, 
-  tabsize=2, 
+  frame=single,
+  columns=flexible,
+  upquote=true,
+  showstringspaces=false,
+  tabsize=2,
   captionpos=b,
   breaklines=true,
   breakatwhitespace=true}

@@ -1,0 +1,56 @@
+% bold-extra.sty - a jiffy to provide access (in latex) to (some of)
+% the fonts in ctan directory fonts/cm/mf-extra/bold
+%
+% by robin fairbairns, rf10@cam.ac.uk November 2001
+%
+% this package is provided under the provisions of the latex project
+% public licence, http://www.latex-project.org/lppl.txt
+%
+% this packages provides font shapes to support bold small caps and tt
+% text.  there is a choice of bold tt fonts, which are selected by
+% package options cmbtt and cmttb (this reflects the confusingly
+% similar font names).  the default (based on the author's estimation
+% of the fonts' relative merits) is cmttb.
+%
+% to use these fonts you need their metafont sources available to your
+% tex system (as far as i know, there are no type 1 versions of the
+% fonts available yet).  place them in an appropriate place under
+% fonts/source in your tds texmf tree; place this file somewhere like
+% tex/latex/misc in your tree.  see
+% http://www.tex.ac.uk/cgi-bin/texfaq2html?label=instpackages+wherefiles
+% for more details.
+
+\ProvidesPackage{bold-extra}[2001/11/13 v0.1 Use fonts from cm/mf-extra/bold]
+\NeedsTeXFormat{LaTeX2e}
+
+\newif\if@cmttb
+\DeclareOption{cmttb}{\@cmttbtrue}
+\DeclareOption{cmbtt}{\@cmttbfalse}
+\ExecuteOptions{cmttb}
+\ProcessOptions
+
+% declare bold small caps font
+\DeclareFontShape{OT1}{cmr}{b}{sc}
+   {
+    <5><6><7><8><9><10><12><10.95><14.4><17.28><20.74><24.88>cmbcsc10
+    }{}
+\DeclareFontShape{OT1}{cmr}{bx}{sc}
+   {<->ssub*cmr/b/sc}{}
+
+% declare bold tt font: note, we use cmttb10 by default rather than
+% the cmbtt series (which seem over-bold to me)
+\if@cmttb
+\DeclareFontShape{OT1}{cmtt}{b}{n}
+   {
+    <5><6><7><8><9><10><12><10.95><14.4><17.28><20.74><24.88>cmttb10
+    }{}
+\else
+\DeclareFontShape{OT1}{cmtt}{b}{n}
+   {
+    <5><6><7><8>cmbtt8%
+    <9>cmbtt9%
+    <10><12><10.95><14.4><17.28><20.74><24.88>cmbtt10
+    }{}
+\fi
+\DeclareFontShape{OT1}{cmtt}{bx}{n}
+   {<->ssub*cmtt/b/n}{}

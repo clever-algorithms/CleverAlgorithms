@@ -1,7 +1,3 @@
-% The Clever Algorithms Project: http://www.CleverAlgorithms.com
-% (c) Copyright 2010 Jason Brownlee. Some Rights Reserved. 
-% This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
-
 \documentclass[twoside, openright]{book}
 \include{definitions}
 \include{f_title_page}
@@ -12,18 +8,18 @@
 % \includeonly{f_copyright}
 
 \begin{document}
-\defaultbibliography{book/bibtex}
+\defaultbibliography{bibtex}
 \frontmatter
 	\maketitle
-	\include{f_copyright}		
+	\include{f_copyright}
 	\cleardoublepage\include{f_toc}
 	\addtocontents{toc}{\protect\markboth{Contents}{}}
 	\cleardoublepage\include{f_foreword}
 	\cleardoublepage\include{f_preface}
-	\cleardoublepage\include{f_acknowledgments}	
-\mainmatter 
+	\cleardoublepage\include{f_acknowledgments}
+\mainmatter
 	\part{Background}
-		\include{c_introduction}		
+		\include{c_introduction}
 	\part{Algorithms}
 		\include{c_stochastic}
 		\include{c_evolution}
@@ -38,12 +34,12 @@
 		\appendix
 		\include{b_appendix1}
 		\cleardoublepage
-		\include{b_errata}	
+		\include{b_errata}
 	% correct handling of the index (new odd page)
   \cleardoublepage
   \phantomsection
 	\addcontentsline{toc}{part}{Index}
-	{\footnotesize \printindex}	
+	{\footnotesize \printindex}
 	% blank page
 	\blanknonumber\cleardoublepage
 \end{document}

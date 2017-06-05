@@ -1,87 +1,94 @@
-# The Clever Algorithms Project: http://www.CleverAlgorithms.com
-# (c) Copyright 2011 Jason Brownlee. Some Rights Reserved. 
-# This work is licensed under a Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License.
-
 # Project Makefile
 
-# constants
-BOOK=$(CURDIR)/book
+# book directory
+DIR_BOOK=$(CURDIR)/book
+# build directory
+BUILD=$(CURDIR)/build
+# final output directory
+DIST=$(CURDIR)/dist
+# book latex filename without extension
+BOOK_FILE=book
+# web directory
 WEB=$(CURDIR)/web
+# code directory
+SRC=$(CURDIR)/src
+# build log file
+LOG=${BUILD}/book.log
+TESTS_LOG=${BUILD}/tests.log
+# release filename without extension
+RELEASE=clever_algorithms
 
-# Build the PDF for the paperback for development
-r:
-	pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BOOK} book.tex 1> ${BOOK}/book.log 2>&1;true 
-	makeindex ${BOOK}/book;true	
-	pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BOOK} book.tex 1> ${BOOK}/book.log 2>&1;true 
-	pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BOOK} book.tex 1> ${BOOK}/book.log 2>&1;true 
-	for file in ${BOOK}/bu*.aux ; do \
-		bibtex $$file 2>&1 1>${BOOK}/book.log ; \
+.PHONY: init clean web
+
+# initialize the project
+init:
+	mkdir -p ${BUILD}
+	mkdir -p ${DIST}
+
+# finalize the project
+dist: build
+	# screen copy
+	cp ${BUILD}/${RELEASE}.pdf ${DIST}/
+	# lulu copy
+	ps2pdf13 -dPDFSETTINGS=/prepress ${BUILD}/book.pdf ${DIST}/${RELEASE}_lulu.pdf
+	# zip package
+	(cd ${BUILD}; zip -r ${RELEASE}.zip ${RELEASE}.pdf code)
+	cp ${BUILD}/${RELEASE}.zip ${DIST}/
+
+# build book pdf
+build: init
+	rm -rf ${BUILD}/*
+	cp ${DIR_BOOK}/bibtex.bib ${BUILD}/
+	cp -r ${SRC} ${BUILD}/code
+	(cd ${DIR_BOOK};pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BUILD} ${BOOK_FILE}.tex 1>>${LOG} 2>&1)
+	(cd ${BUILD};makeindex ${BOOK_FILE} 1>>${LOG} 2>&1)
+	(cd ${DIR_BOOK};pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BUILD} ${BOOK_FILE}.tex 1>>${LOG} 2>&1)
+	for file in ${BUILD}/bu*.aux ; do \
+		(cd ${BUILD};bibtex $$(basename $$file) 1>>${LOG} 2>&1); \
 	done
-	pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BOOK} book.tex 1> ${BOOK}/book.log 2>&1;true 
-	pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BOOK} book.tex 1> ${BOOK}/book.log 2>&1;true 
-	grep -i "undefined" ${BOOK}/book.log;true 
-	# grep -i "warning" ${BOOK}/book.log;true 
-	grep -i "error" ${BOOK}/book.log;true
-
-# Build the PDF for lulu
-lulu: r
-	ps2pdf13 -dPDFSETTINGS=/prepress ${BOOK}/book.pdf ${BOOK}/book-lulu.pdf
+	(cd ${DIR_BOOK};pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BUILD} ${BOOK_FILE}.tex 1>>${LOG} 2>&1)
+	rm ${LOG}
+	(cd ${DIR_BOOK};pdflatex -halt-on-error -interaction=errorstopmode -output-directory ${BUILD} ${BOOK_FILE}.tex 1>>${LOG} 2>&1)
+	grep -i "undefined" ${LOG};true
+	grep -i "error" ${LOG};true
+	cp ${BUILD}/book.pdf ${BUILD}/${RELEASE}.pdf
 
 # clean the project
-clean: 
-	rm -rf ${BOOK}/*.pdf ${BOOK}/*.aux ${BOOK}/*.log ${BOOK}/*.out ${BOOK}/*.toc \
-		${BOOK}/*.idx ${BOOK}/*.ilg ${BOOK}/*.ind ${BOOK}/*.bak ${BOOK}/*.bbl ${BOOK}/*.blg
-	rm -rf ${WEB}/docs ${WEB}/epub_temp
-	rm -rf *.epub 
-	rm -rf tests.log
+clean:
+	rm -rf ${DIST}
+	rm -rf ${BUILD}
 
-# View the development PDF on Linux
-vl:
-	acroread ${BOOK}/book.pdf 2>&1 1>/dev/null &
-
-# View the development PDF on Mac
-vm:
-	open -a Preview ${BOOK}/book.pdf
-
-# run jabref on my linux workstation
-jl:
-	java -jar /opt/jabref/JabRef-2.7.2.jar 2>1 1>/dev/null &
-
-# create the webpage version for CleverAlgorithms.com
-web: ${WEB}/generate.rb
+# create the webpage version
+web: init
 	ruby ${WEB}/generate.rb
 
-# create epub version for iphone/ipad and friends
-epub: ${WEB}/generate_epub.rb
-	ruby ${WEB}/generate_epub.rb
-
-# unit test ruby source code - DRY this up a bit
-test:
-	rm -rf tests.log
+# unit test ruby source code
+test: init
+	rm -rf ${TESTS_LOG}
 	echo "testing..."
 	for file in src/algorithms/evolutionary/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/immune/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/neural/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/physical/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/probabilistic/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/stochastic/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/algorithms/swarm/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	for file in src/programming_paradigms/tests/* ; do \
-		ruby $$file | tee -a tests.log ; \
+		ruby $$file | tee -a ${TESTS_LOG} ; \
 	done
 	echo "DONE"
-	cat tests.log | grep -E ' Error:| Failure:|No such file or directory'
+	cat ${TESTS_LOG} | grep -E ' Error:| Failure:|No such file or directory'
