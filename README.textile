@@ -1,6 +1,6 @@
 h1. Clever Algorithms: Nature-Inspired Programming Recipes
 
-!http://www.cleveralgorithms.com/images/CleverAlgorithms_3D_400.jpg!
+!https://raw.githubusercontent.com/clever-algorithms/CleverAlgorithms/master/release/cover_3d.jpg!
 
 h2. Overview
 
@@ -93,10 +93,10 @@ h2. Project
 
 h3. How to Build
 
-# Assumes a Linux or Mac workstation with make, Latex such as "TeXLive":http://www.tug.org/texlive/ or "MacTex":http://www.tug.org/mactex/ installed and maybe "JabRef":http://jabref.sourceforge.net/
+# Assumes a POSIX workstation with LaTex installed.
 # <code>git clone https://github.com/clever-algorithms/CleverAlgorithms.git</code>
 # @cd CleverAlgorithms@
-# @make dist@ (creates the book PDF)
+# @make dist@
 
 h3. Status
 
