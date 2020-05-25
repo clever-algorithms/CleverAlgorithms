@@ -94,7 +94,7 @@ h2. Project
 h3. How to Build
 
 # Assumes a Linux or Mac workstation with make, Latex such as "TeXLive":http://www.tug.org/texlive/ or "MacTex":http://www.tug.org/mactex/ installed and maybe "JabRef":http://jabref.sourceforge.net/
-# <code>git clone git@github.com:jbrownlee/CleverAlgorithms.git</code>
+# <code>git clone https://github.com/clever-algorithms/CleverAlgorithms.git</code>
 # @cd CleverAlgorithms@
 # @make dist@ (creates the book PDF)
 
