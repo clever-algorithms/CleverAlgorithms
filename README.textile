@@ -12,6 +12,11 @@ h3. Book Details
 | Author | Jason Brownlee |
 | Release |  Revision 2. 16th June 2012  |
 
+h3. Download
+
+* "PDF":https://raw.githubusercontent.com/clever-algorithms/CleverAlgorithms/master/release/clever_algorithms.pdf
+* "Source Code":https://raw.githubusercontent.com/clever-algorithms/CleverAlgorithms/master/release/clever_algorithms-src.zip
+
 h3. Blurb
 
 bq. Implementing an Artificial Intelligence algorithm is difficult. Algorithm descriptions may be incomplete, inconsistent, and distributed across a number of papers, chapters and even websites. This can result in varied interpretations of algorithms, undue attrition of algorithms, and ultimately bad science. This book is an effort to address these issues by providing a handbook of algorithmic recipes drawn from the fields of Metaheuristics, Biologically Inspired Computation and Computational Intelligence, described in a complete, consistent, and centralized manner. These standardized descriptions were carefully designed to be accessible, usable, and understandable. Most of the algorithms described were originally inspired by biological and natural systems, such as the adaptive capabilities of genetic evolution and the acquired immune system, and the foraging behaviors of birds, bees, ants and bacteria. An encyclopedic algorithm reference, this book is intended for research scientists, engineers, students, and interested amateurs. Each algorithm description provides a working code example in the Ruby Programming Language.
