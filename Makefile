@@ -30,10 +30,10 @@ dist: build
 	# screen copy
 	cp ${BUILD}/${RELEASE}.pdf ${DIST}/
 	# lulu copy
-	ps2pdf13 -dPDFSETTINGS=/prepress ${BUILD}/book.pdf ${DIST}/${RELEASE}_lulu.pdf
+	###ps2pdf13 -dPDFSETTINGS=/prepress ${BUILD}/book.pdf ${DIST}/${RELEASE}_lulu.pdf
 	# zip package
-	(cd ${BUILD}; zip -r ${RELEASE}.zip ${RELEASE}.pdf code)
-	cp ${BUILD}/${RELEASE}.zip ${DIST}/
+	(cd ${BUILD}; zip -r ${RELEASE}-src.zip ${RELEASE}.pdf code)
+	cp ${BUILD}/${RELEASE}-src.zip ${DIST}/
 
 # build book pdf
 build: init
