@@ -6,12 +6,10 @@ h2. Overview
 
 *Clever Algorithms: Nature-Inspired Programming Recipes* is an open source book that describes a large number of algorithmic techniques from the the fields of Biologically Inspired Computation, Computational Intelligence and Metaheuristics in a complete, consistent, and centralized manner such that they are accessible, usable, and understandable. This is a repository for the book project used during the development and ongoing maintenance of the books' content.
 
-The book was first released in early 2011 for free on the website "CleverAlgorithms.com":http://cleveralgorithms.com and is available for purchase as a paperback from "Amazon":http://www.amazon.com/gp/product/1446785068/ref=as_li_qf_sp_asin_tl?ie=UTF8&tag=inspiredalgor-20&linkCode=as2&camp=1789&creative=9325&creativeASIN=1446785068 and "Lulu":http://www.lulu.com/shop/jason-brownlee/clever-algorithms-nature-inspired-programming-recipes/paperback/product-14696556.html
-
 h3. Book Details
 
 | Title | *Clever Algorithms: Nature-Inspired Programming Recipes* |
-| Author | "Jason Brownlee":http://www.linkedin.com/in/jasonbrownlee |
+| Author | Jason Brownlee |
 | Release |  Revision 2. 16th June 2012  |
 
 h3. Blurb
@@ -90,24 +88,19 @@ h2. Project
 
 h3. How to Build
 
-# Assumes a Linux or Mac workstation with make, Latex such as "TeXLive":http://www.tug.org/texlive/ or "MacTex":http://www.tug.org/mactex/ installed and maybe "JabRef":http://jabref.sourceforge.net/ 
+# Assumes a Linux or Mac workstation with make, Latex such as "TeXLive":http://www.tug.org/texlive/ or "MacTex":http://www.tug.org/mactex/ installed and maybe "JabRef":http://jabref.sourceforge.net/
 # <code>git clone git@github.com:jbrownlee/CleverAlgorithms.git</code>
 # @cd CleverAlgorithms@
-# @make r@ (creates the file @book/book.pdf@)
-# @make vl@ (to view the PDF on linux) or @make vm@ (to view the PDF on mac)
-# @make epub@ (creates epub versions)
+# @make dist@ (creates the book PDF)
 
-h3. Contribute
+h3. Status
 
-If you find a typo or a mistake, please email me at "jasonb@CleverAlgorithms.com":mailto:jasonb@CleverAlgorithms.com or clone this project and make, make a change and submit a pull request. I will happily give you credit in the acknowledgments.
+I no longer have the capacity to support this project and the paperback book is no longer for sale.
 
-h3. Support
 
-The best support you can give to this project is to buy a copy of the paperback and spread the word by writing a review, blog post or tweet.
+h2. License
 
-h2. License 
-
-(c) Copyright 2013 Jason Brownlee. Some Rights Reserved.
+(c) Copyright 2011-2020 Jason Brownlee. Some Rights Reserved.
 This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">Creative Commons Attribution-Noncommercial-Share Alike 2.5 Australia License</a>.
 <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/au/">
 <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-nc-sa/2.5/au/88x31.png" />
