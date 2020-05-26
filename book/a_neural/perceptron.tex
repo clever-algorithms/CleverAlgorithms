@@ -56,7 +56,7 @@ The system is trained using a supervised learning method, where the error betwee
 The Perceptron is comprised of a data structure (weights) and separate procedures for training and applying the structure. The structure is really just a vector of weights (one for each expected input) and a bias term.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a pseudocode for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
+Algorithm~\ref{alg:perceptron_train} provides a pseudocode for training the Perceptron. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of the network to a given input pattern is calculated as follows:
 \begin{equation}
 	activation \leftarrow \sum_{k=1}^{n}\big( w_{k} \times x_{ki}\big) + w_{bias} \times 1.0
 \end{equation}
@@ -105,7 +105,7 @@ where $w_i$ is the $i^{th}$ weight at time $t$ and $t+1$, $\alpha$ is the learni
 	\Return{\Weights}\;
 	% end
 	\caption{Pseudocode for the Perceptron.}
-	\label{alg:train}
+	\label{alg:perceptron_train}
 \end{algorithm}
 
 % Heuristics: Usage guidelines

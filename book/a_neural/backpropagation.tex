@@ -60,7 +60,7 @@ Each layer of the network provides an abstraction of the information processing 
 The Back-propagation algorithm is a method for training the weights in a multi-layer feed-forward neural network. As such, it requires a network structure to be defined of one or more layers where one layer is fully connected to the next layer. A standard network structure is one input layer, one hidden layer, and one output layer. The method is primarily concerned with adapting the weights to the calculated error in the presence of input patterns, and the method is applied backward from the network output layer through to the input layer.
 
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing a network using the Back-propagation training method. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
+Algorithm~\ref{alg:backpropagation_train} provides a high-level pseudocode for preparing a network using the Back-propagation training method. A weight is initialized for each input plus an additional weight for a fixed bias constant input that is almost always set to 1.0. The activation of a single neuron to a given input pattern is calculated as follows:
 \begin{equation}
 	activation = \bigg(\sum_{k=1}^{n} w_{k} \times x_{ki}\bigg) + w_{bias} \times 1.0
 \end{equation}
@@ -137,7 +137,7 @@ where $w_i(t+1)$ is the updated $i^{th}$ weight, $ed_k$ is the error derivative 
 	\Return{\Network}\;
 	% end
 	\caption{Pseudocode for Back-propagation.}
-	\label{alg:train}
+	\label{alg:backpropagation_train}
 \end{algorithm}
 
 % Heuristics: Usage guidelines

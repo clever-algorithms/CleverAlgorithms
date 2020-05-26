@@ -55,7 +55,7 @@ The Artificial Immune Recognition System maintains a pool of memory cells that a
 % The algorithmic procedure summarizes the specifics of realizing a strategy as a systemized and parameterized computation. It outlines how the algorithm is organized in terms of the data structures and representations. The procedure may be described in terms of software engineering and computer science artifacts such as Pseudocode, design diagrams, and relevant mathematical equations.
 \subsection{Procedure}
 % What is the computational recipe for a technique?
-Algorithm~\ref{alg:train} provides a high-level pseudocode for preparing memory cell vectors using the Artificial Immune Recognition System, specifically the canonical AIRS2. 
+Algorithm~\ref{alg:airs_train} provides a high-level pseudocode for preparing memory cell vectors using the Artificial Immune Recognition System, specifically the canonical AIRS2.
 An affinity (distance) measure between input patterns must be defined. For real-valued vectors, this is commonly the Euclidean distance:
 
 \begin{equation}
@@ -134,7 +134,7 @@ where $n$ is the number of attributes, $x$ is the input vector and $c$ is a give
 	\Return{\MemoryPool}\;
 	% end
 	\caption{Pseudocode for AIRS2.}
-	\label{alg:train}
+	\label{alg:airs_train}
 \end{algorithm}
 
 % Heuristics: Usage guidelines
