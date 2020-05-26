@@ -74,7 +74,7 @@ def search(cities, tabu_list_size, candidate_list_size, max_iter)
       current = best_candidate
       best = best_candidate if best_candidate[:cost] < best[:cost]
       best_candidate_edges.each {|edge| tabu_list.push(edge)}
-      tabu_list.pop while tabu_list.size > tabu_list_size
+      tabu_list.shift while tabu_list.size > tabu_list_size
     end
     puts " > iteration #{(iter+1)}, best=#{best[:cost]}"
   end
